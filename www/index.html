@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>DCF Stock Valuation Calculator — Intrinsic Value &amp; Margin of Safety | KashVector</title>
+  <meta name="description" content="Free DCF calculator. Enter any stock ticker to estimate intrinsic value, margin of safety, and expected returns across Bear, Base, and Bull scenarios using live Yahoo Finance data.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DCF Stock Valuation Calculator",
+    "url": "https://kashvector.com/dcf/",
+    "description": "Estimate intrinsic value and margin of safety for any stock using Discounted Cash Flow analysis.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is DCF analysis?", "acceptedAnswer": { "@type": "Answer", "text": "Discounted Cash Flow analysis estimates what a business is worth today based on the cash it is expected to generate in the future. Future cash flows are discounted back to present value because money received later is worth less than money received now." } },
+      { "@type": "Question", "name": "What discount rate should I use?", "acceptedAnswer": { "@type": "Answer", "text": "This tool calculates WACC automatically from Yahoo Finance data. As a guide: stable large-caps 7-9%, growth companies 10-12%, higher-risk businesses 12-15%." } },
+      { "@type": "Question", "name": "Why does terminal value matter so much?", "acceptedAnswer": { "@type": "Answer", "text": "Terminal value often represents 60-80% of the total DCF result, making the terminal growth rate assumption extremely important. When the tool flags terminal value over 70%, treat the result with extra caution." } },
+      { "@type": "Question", "name": "Is this free and does it store my data?", "acceptedAnswer": { "@type": "Answer", "text": "Completely free, no sign-up required. No personal data is collected or stored. Only the ticker symbol is sent externally to Yahoo Finance via a Cloudflare Worker proxy." } }
+    ]
+  }
+  </script>
+  <link rel="canonical" href="https://kashvector.com/dcf/">
+  <meta property="og:title" content="DCF Stock Valuation Calculator — Intrinsic Value &amp; Margin of Safety | KashVector">
+  <meta property="og:description" content="Free DCF calculator. Estimate intrinsic value and margin of safety across Bear, Base &amp; Bull scenarios. No sign-up.">
+  <meta property="og:url" content="https://kashvector.com/dcf/">
+  <meta property="og:type" content="website">
+  <script src="/kv-theme.js"></script>
+  <script src="/kv-banner.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="../dcf-icon.svg">
+</head>
+<body>
+  <header class="app-header">
+    <a class="home-logo" href="/" aria-label="All KashVector tools">
+      <img src="/logo.svg" alt="KashVector" width="32" height="32">
+      <span class="home-logo-label">← All tools</span>
+    </a>
+    <div class="app-header-center">
+      <h1>
+        <img src="../dcf-icon.svg" alt="" width="32" height="32" style="vertical-align:middle;margin-right:8px;border-radius:6px">
+        DCF Valuation
+      </h1>
+      <p class="tagline">Discounted Cash Flow · Intrinsic Value · Margin of Safety</p>
+      <div class="header-concepts">
+        <span class="concept-pill"><strong>Free Cash Flow</strong><span>Money the business actually generates</span></span>
+        <span class="concept-pill"><strong>Discount Rate</strong><span>Your required return (risk)</span></span>
+        <span class="concept-pill"><strong>Intrinsic Value</strong><span>What the stock is worth today</span></span>
+      </div>
+    </div>
+    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
+  </header>
+
+  <nav class="kv-tool-nav" aria-label="KashVector tools">
+    <a href="/stock/">Stock Evaluator</a>
+    <a href="/budget/">Budget</a>
+    <a href="/debt-recycling/">Debt Recycling</a>
+    <a href="/portfolio-health/">Portfolio</a>
+    <a href="/fire/">FIRE</a>
+    <a href="/mortgage/">Mortgage Calculator</a>
+    <a href="/super-compare/">Salary Sacrifice</a>
+    <a href="/rent-vs-buy/">Rent vs Buy</a>
+    <a href="/life-buyback/">Life Buyback</a>
+    <a href="/budget-impact/">Budget Impact</a>
+    <a href="/dcf/" class="kv-nav-active" aria-current="page">DCF Valuation</a>
+    <a href="/articles/">Articles</a>
+  </nav>
+
+  <main>
+    <section class="notice">
+      <strong>Individual stocks only.</strong> DCF requires meaningful free cash flow — it will not produce reliable results for ETFs, early-stage companies with no FCF, or financial companies without normalization.
+    </section>
+
+    <section class="search-bar">
+      <div class="ac-wrapper">
+        <input type="text" id="ticker-input" placeholder="Ticker or company name (e.g. AAPL, BHP)" autocomplete="off">
+        <div id="autocomplete-list" role="listbox" hidden></div>
+      </div>
+      <label class="asx-toggle">
+        <input type="checkbox" id="asx-checkbox">
+        <span>ASX stock</span>
+      </label>
+      <label class="asx-toggle nse-toggle">
+        <input type="checkbox" id="nse-checkbox">
+        <span>NSE / BSE</span>
+      </label>
+      <button id="analyse-btn">Analyse</button>
+    </section>
+    <p class="hint" id="market-hint">Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).</p>
+
+    <details class="market-hint">
+      <summary>Using another market? Add a suffix to the ticker</summary>
+      <ul>
+        <li><strong>Australia</strong> — <code>.AX</code> (or tick ASX box)</li>
+        <li><strong>India (NSE)</strong> — <code>.NS</code> (e.g. <code>RELIANCE.NS</code>)</li>
+        <li><strong>India (BSE)</strong> — <code>.BO</code> (e.g. <code>TATAMOTORS.BO</code>)</li>
+        <li><strong>UK</strong> — <code>.L</code> &nbsp;|&nbsp; <strong>Germany</strong> — <code>.DE</code> &nbsp;|&nbsp; <strong>Hong Kong</strong> — <code>.HK</code></li>
+      </ul>
+    </details>
+
+    <section id="recent" class="recent" hidden></section>
+    <section id="status" class="status" hidden></section>
+
+    <div id="dcf-layout" class="dcf-layout" hidden>
+
+      <!-- LEFT: Inputs -->
+      <aside class="inputs-panel">
+        <div class="input-section">
+          <div class="input-row">
+            <label for="fcf-input">Free Cash Flow
+              <span id="fcf-source" class="fcf-source"></span>
+            </label>
+            <input type="text" id="fcf-input" inputmode="numeric" placeholder="e.g. 5,000,000,000">
+            <div id="fcf-normalized-row" class="normalized-row" hidden>
+              <label for="fcf-normalized">Normalised FCF
+                <span class="tip" data-tip="Insurance/bank FCF includes investment flows. Use a conservative estimate of sustainable cash earnings.">?</span>
+              </label>
+              <input type="text" id="fcf-normalized" inputmode="numeric">
+            </div>
+          </div>
+          <div class="input-row">
+            <label>Projection Years</label>
+            <div class="slider-row">
+              <input type="range" id="years-slider" min="3" max="10" value="5">
+              <span id="years-display">5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenarios-inputs">
+          <div class="scenario-header-row">
+            <span></span>
+            <span class="scenario-label bear-label">Bear</span>
+            <span class="scenario-label base-label">Base</span>
+            <span class="scenario-label bull-label">Bull</span>
+          </div>
+          <div class="scenario-input-row">
+            <label>5yr Growth %</label>
+            <input type="number" id="growth-bear" class="scenario-num" step="0.5" min="-5" max="30">
+            <input type="number" id="growth-base" class="scenario-num" step="0.5" min="-5" max="30">
+            <input type="number" id="growth-bull" class="scenario-num" step="0.5" min="-5" max="30">
+          </div>
+          <div class="scenario-input-row">
+            <label>Terminal %</label>
+            <input type="number" id="tgrowth-bear" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
+            <input type="number" id="tgrowth-base" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
+            <input type="number" id="tgrowth-bull" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
+          </div>
+          <div class="scenario-input-row">
+            <label>WACC %
+              <span class="tip" data-tip="Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.">?</span>
+            </label>
+            <input type="number" id="wacc-bear" class="scenario-num" step="0.1" min="1" max="25">
+            <input type="number" id="wacc-base" class="scenario-num" step="0.1" min="1" max="25">
+            <input type="number" id="wacc-bull" class="scenario-num" step="0.1" min="1" max="25">
+          </div>
+        </div>
+
+        <details class="wacc-breakdown" id="wacc-details">
+          <summary>How WACC is calculated</summary>
+          <div id="wacc-breakdown-content"></div>
+          <div class="wacc-assumptions">
+            <label>Risk-free rate %
+              <input type="number" id="rf-input" step="0.1" min="0" max="10" value="4.5">
+            </label>
+            <label>Equity risk premium %
+              <input type="number" id="erp-input" step="0.1" min="1" max="15" value="5.5">
+            </label>
+          </div>
+        </details>
+
+        <button id="recalc-btn" class="recalc-btn">↻ Recalculate</button>
+      </aside>
+
+      <!-- RIGHT: Results -->
+      <div class="results-panel">
+        <section id="summary" class="summary" hidden></section>
+        <section id="financial-warning" class="financial-warning" hidden></section>
+        <section id="scenarios" class="scenarios-results" hidden></section>
+        <section id="disclaimer" class="disclaimer" hidden>
+          <p>⚠️ <strong>Not financial advice.</strong> DCF valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. Always use multiple valuation methods and consult a licensed financial adviser before making investment decisions.</p>
+        </section>
+        <section id="charts" class="charts-section" hidden>
+          <div class="chart-card">
+            <h3>DCF Value Breakdown <span id="tv-warning" class="tv-warning" hidden>⚠ Terminal value &gt;70% — highly sensitive to terminal growth assumption</span></h3>
+            <canvas id="breakdown-chart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3>Intrinsic Value vs Current Price</h3>
+            <canvas id="price-chart"></canvas>
+          </div>
+        </section>
+        <section id="how-dcf" class="how-dcf" hidden>
+          <details>
+            <summary>How DCF valuation works — a plain-English guide</summary>
+            <ol>
+              <li><strong>Estimate future cash flows</strong> — Forecast what free cash flow the business will generate each year over the projection period. The tool seeds this from Yahoo Finance data and your growth rate input.</li>
+              <li><strong>Discount them to today</strong> — A dollar earned in 5 years is worth less than a dollar today. We divide each year's cash flow by (1 + discount rate)<sup>year</sup> to get its present value.</li>
+              <li><strong>Add a terminal value</strong> — Beyond the forecast period, the business keeps operating. Terminal value captures all future cash flows as a perpetuity growing at the terminal growth rate. <em>This often drives 60–80% of the total value — treat it with care.</em></li>
+              <li><strong>Adjust for debt and cash</strong> — Subtract net debt (total debt minus cash) from firm value to get equity value. A cash-rich company is worth more per share.</li>
+              <li><strong>Divide by shares outstanding</strong> — Equity value ÷ shares = intrinsic value per share. Compare to current price to find margin of safety and expected return.</li>
+            </ol>
+          </details>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <section class="tool-info">
+    <div class="tool-about">
+      <h2>About this tool</h2>
+      <p>Enter any stock ticker to estimate its intrinsic value using Discounted Cash Flow analysis. The tool fetches live data from Yahoo Finance, calculates WACC from first principles (cost of equity via CAPM, cost of debt from income statement), and runs three scenarios — Bear, Base, and Bull — so you can see the full range of possible outcomes.</p>
+      <p>Results show intrinsic value per share, margin of safety versus today's price, and expected annualised return if the stock converges to fair value over 1, 3, or 5 years. Financial sector companies (banks, insurance) automatically trigger a reliability warning with normalised FCF input and alternative multiples. Designed for individual stocks with meaningful positive free cash flow.</p>
+    </div>
+    <div class="tool-faq">
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item">
+        <summary>What is DCF analysis?</summary>
+        <p>Discounted Cash Flow analysis estimates what a business is worth today based on the cash it is expected to generate in the future. Future cash flows are "discounted" back to present value because money received later is worth less than money received now. The result is an intrinsic value — what the stock should theoretically be worth if the market were perfectly rational.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What discount rate (WACC) should I use?</summary>
+        <p>This tool calculates WACC automatically from Yahoo Finance data using the CAPM formula for cost of equity (Risk-free rate + Beta × Equity risk premium) and interest expense for cost of debt. As a rough guide: stable large-caps sit around 7–9%, growth companies 10–12%, and higher-risk businesses 12–15%. You can override the calculated value directly in the input fields.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why does terminal value matter so much?</summary>
+        <p>Terminal value (the value beyond the forecast period) often represents 60–80% of the total DCF result. This makes the terminal growth rate assumption extremely important — a 0.5% change in terminal growth can shift intrinsic value by 10–20%. When the tool flags "terminal value &gt;70%", treat the result with extra caution and test different terminal growth assumptions.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why does the tool show a warning for insurance and financial companies?</summary>
+        <p>Insurance and bank free cash flows include large investment portfolio movements and reserve changes that aren't true "owner earnings." Raw DCF for these companies routinely overstates value significantly. The tool prompts you to enter a normalised FCF — a conservative estimate of sustainable cash earnings — and also shows P/E, P/B, and ROE as more reliable valuation cross-checks for this sector.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is this free? Does it store my data?</summary>
+        <p>Completely free, no sign-up required. No personal data is collected or stored. The only data sent externally is the ticker symbol you enter, which is forwarded to Yahoo Finance via a Cloudflare Worker proxy to retrieve financial data.</p>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <p>Data: Yahoo Finance (delayed ~15 min). Not financial advice. Do your own research.</p>
+    <p><a href="/privacy-site.html">Privacy Policy</a> · <a href="/">All KashVector tools</a></p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+  <script src="data.js"></script>
+  <script src="calc/wacc.js"></script>
+  <script src="calc/dcf.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
