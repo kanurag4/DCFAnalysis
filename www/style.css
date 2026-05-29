@@ -268,6 +268,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
 .sc-cagr-row .cagr-val { font-weight: 600; color: var(--kv-text); }
 .sc-cagr-row.highlight .cagr-val { color: var(--kv-accent); }
 .sc-caveat { font-size: 0.68rem; color: var(--kv-muted); margin-top: 8px; font-style: italic; line-height: 1.4; }
+.sc-no-result { font-size: 0.82rem; color: var(--kv-warn); margin-top: 8px; line-height: 1.5; }
 
 /* ── Disclaimer ── */
 .disclaimer {

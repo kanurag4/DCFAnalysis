@@ -88,7 +88,9 @@ if (els.nse) {
   });
 }
 
-els.fcfInput.addEventListener('input', () => formatMoneyInput(els.fcfInput));
+// Only format normalised FCF (user-entered, must be positive).
+// Do NOT format the main FCF input — it is pre-filled from Yahoo and may be negative;
+// formatMoneyInput strips the minus sign.
 if (els.fcfNorm) els.fcfNorm.addEventListener('input', () => formatMoneyInput(els.fcfNorm));
 
 renderRecent();
@@ -150,13 +152,21 @@ function onRecalc() {
 // ── Pre-fill inputs ───────────────────────────────────────────────────────
 
 function prefillInputs(data) {
-  // FCF
+  // FCF — show raw Yahoo value; negative FCF is valid to display but can't be used in DCF
   const fcf = data.freeCashflow ?? (data.operatingCashflow ? data.operatingCashflow * 0.8 : null);
   const isFcfEstimated = data.freeCashflow === null && data.operatingCashflow !== null;
+  const isFcfNegative  = fcf !== null && fcf <= 0;
+
   if (fcf !== null) {
+    // Use raw display — don't run formatMoneyInput here as it strips the minus sign
     els.fcfInput.value = Math.round(fcf).toLocaleString('en-AU');
-    els.fcfSource.textContent = isFcfEstimated ? '⚠ estimated' : '✓ Yahoo';
-    els.fcfSource.className = 'fcf-source ' + (isFcfEstimated ? 'estimated' : 'confirmed');
+    if (isFcfNegative) {
+      els.fcfSource.textContent = '⚠ negative';
+      els.fcfSource.className = 'fcf-source estimated';
+    } else {
+      els.fcfSource.textContent = isFcfEstimated ? '⚠ estimated' : '✓ Yahoo';
+      els.fcfSource.className = 'fcf-source ' + (isFcfEstimated ? 'estimated' : 'confirmed');
+    }
   } else {
     els.fcfInput.value = '';
     els.fcfSource.textContent = '⚠ unavailable';
@@ -166,8 +176,15 @@ function prefillInputs(data) {
   // Financial sector: show normalised FCF field
   if (isFinancialSector(data.sector) && els.fcfNormRow) {
     els.fcfNormRow.hidden = false;
-    if (els.fcfNorm && fcf !== null) {
-      els.fcfNorm.value = Math.round(fcf * 0.6).toLocaleString('en-AU');
+    if (els.fcfNorm) {
+      if (isFcfNegative || fcf === null) {
+        // Don't seed a negative default — leave empty so user must enter a positive estimate
+        els.fcfNorm.value = '';
+        els.fcfNorm.placeholder = 'Enter positive sustainable FCF';
+      } else {
+        els.fcfNorm.value = Math.round(fcf * 0.6).toLocaleString('en-AU');
+        els.fcfNorm.placeholder = '';
+      }
     }
   } else if (els.fcfNormRow) {
     els.fcfNormRow.hidden = true;
@@ -308,6 +325,11 @@ function buildScenarios(data) {
     const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
     const wacc           = parseFloat(waccEl.value)  / 100 || 0.10;
 
+    // Guard: negative or zero FCF cannot produce a DCF result
+    if (fcfRaw <= 0) {
+      return { key, growthRate, terminalGrowth, wacc, result: null, fcfNegative: true };
+    }
+
     const result = calculateDCF({
       fcf: fcfRaw, growthRate, terminalGrowth, wacc,
       projectionYears: years,
@@ -324,13 +346,16 @@ function buildScenarios(data) {
 // ── Render scenario cards ─────────────────────────────────────────────────
 
 function renderScenarios(scenarios, data, sym) {
-  const cards = scenarios.map(({ key, result }) => {
+  const cards = scenarios.map(({ key, result, fcfNegative }) => {
     if (!result) {
+      const msg = fcfNegative
+        ? isFinancialSector(currentData?.sector)
+          ? 'Reported FCF is negative. Enter a positive Normalised FCF in the inputs panel to run the DCF.'
+          : 'FCF is negative — DCF requires positive free cash flow. This company may not be suitable for DCF valuation.'
+        : 'WACC must exceed the terminal growth rate.';
       return `<div class="scenario-card ${key}">
         <div class="sc-header ${key}">${key.toUpperCase()}</div>
-        <div style="font-size:0.82rem;color:var(--kv-muted);margin-top:8px;">
-          ${parseMoney(els.fcfInput) <= 0 ? 'Enter a positive FCF to calculate.' : 'WACC must exceed terminal growth rate.'}
-        </div>
+        <div class="sc-no-result">${msg}</div>
       </div>`;
     }
     if (result.intrinsicValue === null) {
