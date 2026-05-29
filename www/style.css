@@ -197,6 +197,12 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
   border-radius: 4px; color: var(--kv-text); font-size: 0.82rem; outline: none;
 }
 
+/* Live RF rate badge */
+.rf-live {
+  font-size: 0.65rem; font-weight: 700; color: var(--kv-pass);
+  margin-bottom: 3px; display: block; letter-spacing: 0.03em;
+}
+
 /* Recalculate */
 .recalc-btn {
   padding: 10px; background: var(--kv-card-2); border: 1px solid var(--kv-border);

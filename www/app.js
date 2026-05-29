@@ -1,6 +1,9 @@
 // app.js — ONLY file allowed to touch the DOM.
 'use strict';
 
+// Register Chart.js datalabels plugin (loaded via CDN after chart.js)
+if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
+
 const $ = id => document.getElementById(id);
 
 const els = {
@@ -90,6 +93,7 @@ if (els.fcfNorm) els.fcfNorm.addEventListener('input', () => formatMoneyInput(el
 
 renderRecent();
 bootstrapFromUrl();
+fetchAndSetRiskFreeRate();
 window.addEventListener('popstate', bootstrapFromUrl);
 
 // ── URL bootstrap ─────────────────────────────────────────────────────────
@@ -375,9 +379,10 @@ function renderCharts(scenarios, currentPrice, sym) {
   const maxTVPct = Math.max(...scenarios.filter(s => s.result).map(s => s.result.terminalValuePct));
   els.tvWarning.hidden = maxTVPct <= 70;
 
-  // Chart 1: Stacked bar — PV FCFs + PV Terminal Value
-  const pvFcfTotals = scenarios.map(s => s.result ? s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9 : 0);
-  const pvTerminals  = scenarios.map(s => s.result ? s.result.pvTerminal / 1e9 : 0);
+  // Chart 1: Stacked bar — PV FCFs (green) + PV Terminal Value (orange)
+  // Green = near-term certain cash flows; Orange = uncertain terminal value
+  const pvFcfTotals = scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
+  const pvTerminals  = scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
 
   if (breakdownChart) breakdownChart.destroy();
   breakdownChart = new Chart($('breakdown-chart'), {
@@ -385,13 +390,22 @@ function renderCharts(scenarios, currentPrice, sym) {
     data: {
       labels,
       datasets: [
-        { label: 'PV of FCFs (forecast)', data: pvFcfTotals, backgroundColor: 'rgba(56,189,248,0.7)', borderRadius: 4 },
-        { label: 'PV of Terminal Value',  data: pvTerminals,  backgroundColor: 'rgba(129,140,248,0.7)', borderRadius: 4 },
+        { label: 'PV of FCFs (forecast years)', data: pvFcfTotals, backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
+        { label: 'PV of Terminal Value',         data: pvTerminals,  backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
       ],
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+      plugins: {
+        legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+        datalabels: {
+          color: '#fff',
+          font: { size: 10, weight: 'bold' },
+          formatter: (value) => value >= 0.5 ? `${sym}${value.toFixed(1)}B` : '',
+          anchor: 'center',
+          align: 'center',
+        },
+      },
       scales: {
         x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(51,65,85,0.5)' } },
         y: {
@@ -409,10 +423,10 @@ function renderCharts(scenarios, currentPrice, sym) {
   const chartData   = [currentPrice ?? 0, ...intrinsics];
   const chartLabels = ['Current Price', 'Bear', 'Base', 'Bull'];
   const chartColors = [
-    'rgba(245,158,11,0.7)',
-    'rgba(239,68,68,0.7)',
-    'rgba(56,189,248,0.7)',
-    'rgba(34,197,94,0.7)',
+    'rgba(245,158,11,0.8)',   // amber — current price
+    'rgba(239,68,68,0.8)',    // red   — bear
+    'rgba(56,189,248,0.8)',   // sky   — base
+    'rgba(34,197,94,0.8)',    // green — bull
   ];
 
   if (priceChart) priceChart.destroy();
@@ -425,7 +439,17 @@ function renderCharts(scenarios, currentPrice, sym) {
     options: {
       indexAxis: 'y',
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          color: '#fff',
+          font: { size: 11, weight: 'bold' },
+          formatter: (value) => value > 0 ? `${sym}${value.toFixed(2)}` : '',
+          anchor: 'end',
+          align: 'start',
+          offset: 4,
+        },
+      },
       scales: {
         x: {
           ticks: { color: '#94a3b8', callback: v => `${sym}${v.toFixed(2)}` },
@@ -576,4 +600,37 @@ function formatMoneyInput(el) {
 
 function parseMoney(el) {
   return parseInt(String(el.value).replace(/,/g, ''), 10) || 0;
+}
+
+// Fetch live US 10-year Treasury yield via ^TNX through the Worker.
+// ^TNX price on Yahoo Finance = yield in % (e.g. 4.25 means 4.25%).
+// Updates the RF rate input silently; keeps 4.5% default on any failure.
+async function fetchAndSetRiskFreeRate() {
+  try {
+    const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent('^TNX')}`;
+    const resp = await fetch(url);
+    if (!resp.ok) return;
+    const body = await resp.json();
+    const result = body?.quoteSummary?.result?.[0];
+    const raw =
+      result?.summaryDetail?.previousClose?.raw ??
+      result?.summaryDetail?.regularMarketPrice?.raw ??
+      result?.financialData?.currentPrice?.raw;
+    if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
+      const yieldPct = +raw.toFixed(2);
+      els.rfInput.value = yieldPct;
+      els.rfInput.title = `Live US 10-yr Treasury yield: ${yieldPct}%`;
+      // Add a small live indicator next to the input label
+      const rfLabel = els.rfInput.closest('label');
+      if (rfLabel && !rfLabel.querySelector('.rf-live')) {
+        const badge = document.createElement('span');
+        badge.className = 'rf-live';
+        badge.textContent = '● live';
+        badge.title = 'Fetched from US 10-year Treasury yield (^TNX)';
+        rfLabel.insertBefore(badge, els.rfInput);
+      }
+    }
+  } catch (_) {
+    // silently fall back to hardcoded 4.5%
+  }
 }
