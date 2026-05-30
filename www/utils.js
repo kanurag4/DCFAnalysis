@@ -37,7 +37,7 @@ function isRealEstateSector(sector) {
 function isBankOrInsurance(sector, industry) {
   const s = sector || '';
   const i = industry || '';
-  return /bank|insurance/i.test(i) || /insurance/i.test(s);
+  return /bank|insurance/i.test(i) || /bank|insurance/i.test(s);
 }
 
 // Sustainable dividend growth seed. Dividends grow slower and steadier than

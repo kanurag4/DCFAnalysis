@@ -471,7 +471,7 @@ function renderFinancialWarning(data, sym) {
   }
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
   if (isBankOrInsurance(data.sector, data.industry)) {
-    const kind = (/insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '')) ? 'Insurance' : 'Bank';
+    const kind = /insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank';
     const reason = kind === 'Bank'
       ? 'deposits are a raw material rather than funding, so there is no clean free cash flow and WACC cannot be derived the usual way'
       : 'free cash flow is dominated by investment-portfolio and reserve movements, not owner earnings';
@@ -563,16 +563,27 @@ function buildScenarios(data) {
     const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
     const wacc           = parseFloat(waccEl.value)  / 100 || 0.10;
 
-    if (fcfRaw <= 0) {
-      // Use revenue normalisation if a target margin is set
+    if (fcfRaw === null) {
+      // Empty FCF input — offer revenue normalisation if available, else prompt user
       if (normFcf !== null) {
         const result = calculateDCF({
           fcf: normFcf, growthRate, terminalGrowth, wacc,
           projectionYears: years,
-          totalDebt:         data.totalDebt ?? 0,
-          totalCash:         data.totalCash ?? 0,
-          sharesOutstanding: data.sharesOutstanding,
-          currentPrice:      data.price,
+          totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
+          sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
+        });
+        return { key, growthRate, terminalGrowth, wacc, result, normalised: true };
+      }
+      return { key, growthRate, terminalGrowth, wacc, result: null, fcfMissing: true };
+    }
+    if (fcfRaw <= 0) {
+      // Negative FCF — offer revenue normalisation if available
+      if (normFcf !== null) {
+        const result = calculateDCF({
+          fcf: normFcf, growthRate, terminalGrowth, wacc,
+          projectionYears: years,
+          totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
+          sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
         });
         return { key, growthRate, terminalGrowth, wacc, result, normalised: true };
       }
@@ -595,10 +606,12 @@ function buildScenarios(data) {
 // ── Render scenario cards ─────────────────────────────────────────────────
 
 function renderScenarios(scenarios, data, sym) {
-  const cards = scenarios.map(({ key, result, fcfNegative, noDividend, normalised }) => {
+  const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, normalised }) => {
     if (!result) {
       let msg;
-      if (noDividend) {
+      if (fcfMissing) {
+        msg = 'Enter a Free Cash Flow value in the inputs panel to run the DCF.';
+      } else if (noDividend) {
         msg = 'No dividend data available — the Dividend Discount Model needs a dividend. Enter an annual dividend per share in the inputs panel, or use the metrics above.';
       } else if (fcfNegative) {
         msg = isFinancialSector(currentData?.sector)
@@ -637,7 +650,7 @@ function renderScenarios(scenarios, data, sym) {
       <div class="sc-header ${key}">${key.toUpperCase()}</div>
       <div class="sc-intrinsic">${sym}${result.intrinsicValue.toFixed(2)}</div>
       <div class="sc-price">vs current ${sym}${(data.price ?? 0).toFixed(2)}</div>
-      <span class="sc-mos ${mosClass}">${mosPct > 0 ? '+' : ''}${mosPct}% ${mosLabel}</span>
+      <span class="sc-mos ${mosClass}">${parseFloat(mosPct) > 0 ? '+' : ''}${mosPct}% ${mosLabel}</span>
       <div class="sc-divider"></div>
       <div class="sc-cagr-title">Expected return to reach intrinsic value:</div>
       <div class="sc-cagr-row"><span>1 yr</span><span class="cagr-val">${fmtCagr(result.cagr1yr)}</span></div>
@@ -952,6 +965,7 @@ function formatMoneyInput(el) {
 }
 
 function parseMoney(el) {
+  if (String(el.value).trim() === '') return null;
   return parseInt(String(el.value).replace(/,/g, ''), 10) || 0;
 }
 
@@ -965,6 +979,7 @@ function resetRfErp() {
   els.rfInput.value  = liveRfRate;
   els.erpInput.value = 5.5;
   recomputeDiscount();
+  if (currentData) renderAll(currentData);
 }
 
 function recomputeDiscount() {
@@ -1010,7 +1025,8 @@ function recomputeDiscount() {
     }
   }
   renderDiscountBreakdown();
-  renderAll(currentData);
+  // Do NOT call renderAll here — mid-edit keystrokes would flash partial valuations.
+  // Full re-render happens via the Recalculate button or the ↺ reset button.
 }
 
 async function fetchAndSetRiskFreeRate() {
@@ -1029,25 +1045,22 @@ async function fetchAndSetRiskFreeRate() {
       liveRfRate = yieldPct;
       els.rfInput.value = yieldPct;
       els.rfInput.title = `Live US 10-yr Treasury yield: ${yieldPct}%`;
-      // Build: "Risk-free rate %  ● live" on one row, then input, then note below
-      const rfLabel = els.rfInput.closest('label');
-      if (rfLabel && !rfLabel.querySelector('.rf-live')) {
-        const textNode = [...rfLabel.childNodes].find(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
-        if (textNode) {
-          const headerRow = document.createElement('span');
-          headerRow.className = 'rf-header-row';
-          headerRow.textContent = textNode.textContent.trim();
-          const badge = document.createElement('span');
-          badge.className = 'rf-live';
-          badge.textContent = '● live';
-          badge.title = 'US 10-year Treasury yield (^TNX)';
-          headerRow.appendChild(badge);
-          rfLabel.replaceChild(headerRow, textNode);
+      // Append ● live badge and note. The label text lives in #rf-label-text
+      // (a pre-existing span) so we can target it directly — no text-node traversal.
+      const rfLabelText = $('rf-label-text');
+      if (rfLabelText && !rfLabelText.querySelector('.rf-live')) {
+        const badge = document.createElement('span');
+        badge.className = 'rf-live';
+        badge.textContent = '● live';
+        badge.title = 'US 10-year Treasury yield (^TNX)';
+        rfLabelText.appendChild(badge);
+        const rfLabel = els.rfInput.closest('label');
+        if (rfLabel) {
+          const note = document.createElement('span');
+          note.className = 'rf-note';
+          note.textContent = 'US 10-yr Treasury yield (^TNX)';
+          rfLabel.appendChild(note);
         }
-        const note = document.createElement('span');
-        note.className = 'rf-note';
-        note.textContent = 'US 10-yr Treasury yield (^TNX)';
-        rfLabel.appendChild(note);
       }
     }
   } catch (_) {
