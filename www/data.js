@@ -31,7 +31,9 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   // Derive tax rate so calc/wacc.js receives a plain 0–1 number
   const taxExpense = rawVal(inc?.incomeTaxExpense);
   const preTax     = rawVal(inc?.incomeBeforeTax);
-  const taxRate    = (taxExpense !== null && preTax !== null && preTax > 0)
+  // Guard both values positive: negative taxExpense (tax benefit) or negative
+  // preTax would produce an invalid tax rate that would silently distort WACC.
+  const taxRate    = (taxExpense !== null && taxExpense > 0 && preTax !== null && preTax > 0)
     ? taxExpense / preTax : null;
 
   return {

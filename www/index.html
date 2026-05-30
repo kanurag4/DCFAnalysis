@@ -26,7 +26,11 @@
       { "@type": "Question", "name": "What is DCF analysis?", "acceptedAnswer": { "@type": "Answer", "text": "Discounted Cash Flow analysis estimates what a business is worth today based on the cash it is expected to generate in the future. Future cash flows are discounted back to present value because money received later is worth less than money received now." } },
       { "@type": "Question", "name": "What discount rate should I use?", "acceptedAnswer": { "@type": "Answer", "text": "This tool calculates WACC automatically from Yahoo Finance data. As a guide: stable large-caps 7-9%, growth companies 10-12%, higher-risk businesses 12-15%." } },
       { "@type": "Question", "name": "Why does terminal value matter so much?", "acceptedAnswer": { "@type": "Answer", "text": "Terminal value often represents 60-80% of the total DCF result, making the terminal growth rate assumption extremely important. When the tool flags terminal value over 70%, treat the result with extra caution." } },
-      { "@type": "Question", "name": "Is this free and does it store my data?", "acceptedAnswer": { "@type": "Answer", "text": "Completely free, no sign-up required. No personal data is collected or stored. Only the ticker symbol is sent externally to Yahoo Finance via a Cloudflare Worker proxy." } }
+      { "@type": "Question", "name": "What is the margin of safety?", "acceptedAnswer": { "@type": "Answer", "text": "The margin of safety is the gap between a stock's estimated intrinsic value and its current market price. A positive margin means the stock trades below what the DCF says it's worth. Value investors insist on a margin of safety so that even if their assumptions are somewhat wrong, they don't overpay." } },
+      { "@type": "Question", "name": "Why do banks and insurers use the Dividend Discount Model instead of DCF?", "acceptedAnswer": { "@type": "Answer", "text": "Free cash flow is structurally meaningless for financial companies: bank deposits are a raw material not a funding source, and insurer cash flow is dominated by investment and reserve movements. The tool automatically switches banks and insurers to the Dividend Discount Model (DDM), valuing them from dividends discounted at the cost of equity." } },
+      { "@type": "Question", "name": "How does the tool value international stocks like ASX or Indian shares?", "acceptedAnswer": { "@type": "Answer", "text": "Add the market suffix (.AX for Australia, .NS or .BO for India, .L for the UK). The tool uses the correct local 10-year government bond yield as the risk-free rate, a market-appropriate equity risk premium, and a sector WACC reference range. It also floors beta for non-US stocks, since Yahoo measures beta against the S&P 500 which understates international risk." } },
+      { "@type": "Question", "name": "What if a company has negative free cash flow?", "acceptedAnswer": { "@type": "Answer", "text": "For growth companies with negative or missing FCF, the tool lets you normalise free cash flow from revenue multiplied by a target FCF margin (your estimate of the margin at maturity), and estimates when FCF should turn positive. This is the standard approach for valuing pre-profit growth companies." } },
+      { "@type": "Question", "name": "Is this free and does it store my data?", "acceptedAnswer": { "@type": "Answer", "text": "Completely free, no sign-up required. No personal data is collected or stored. Only the ticker symbol is sent externally to Yahoo Finance via a Cloudflare Worker proxy. Recently viewed tickers are saved locally in your browser only." } }
     ]
   }
   </script>
@@ -174,7 +178,7 @@
             <input type="number" id="tgrowth-bull" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
           </div>
           <div class="scenario-input-row">
-            <label id="discount-label">WACC %
+            <label id="discount-label"><span id="discount-label-text">WACC %</span>
               <span id="discount-tip" class="tip" data-tip="Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.">?</span>
             </label>
             <input type="number" id="wacc-bear" class="scenario-num" step="0.1" min="1" max="25">
@@ -256,8 +260,10 @@
   <section class="tool-info">
     <div class="tool-about">
       <h2>About this tool</h2>
-      <p>Enter any stock ticker to estimate its intrinsic value using Discounted Cash Flow analysis. The tool fetches live data from Yahoo Finance, calculates WACC from first principles (cost of equity via CAPM, cost of debt from income statement), and runs three scenarios — Bear, Base, and Bull — so you can see the full range of possible outcomes.</p>
-      <p>Results show intrinsic value per share, margin of safety versus today's price, and expected annualised return if the stock converges to fair value over 1, 3, or 5 years. Financial sector companies (banks, insurance) automatically trigger a reliability warning with normalised FCF input and alternative multiples. Designed for individual stocks with meaningful positive free cash flow.</p>
+      <p>Enter any stock ticker to estimate its intrinsic value using Discounted Cash Flow (DCF) analysis. The tool pulls live data from Yahoo Finance, calculates the discount rate (WACC) from first principles — cost of equity via the CAPM formula, cost of debt from the income statement, weighted by the company's actual capital structure — and runs three scenarios side by side: <strong>Bear, Base, and Bull</strong>. Each scenario shows intrinsic value per share, the margin of safety versus today's price, and the expected annualised return if the price converges to fair value over 1, 3, or 5 years.</p>
+      <p>It adapts the method to the company. <strong>Banks and insurers</strong> automatically switch to the <strong>Dividend Discount Model (DDM)</strong>, because free cash flow is structurally meaningless for them — deposits and reserves are raw materials, not owner earnings. Other dividend payers can optionally be valued with DDM too. When a company has <strong>negative or missing free cash flow</strong> (common for fast-growing firms), you can normalise it from revenue × a target margin, and the tool estimates when FCF is likely to turn positive.</p>
+      <p>The discount rate is tailored to the market. For <strong>US, Australian (ASX), and Indian (NSE/BSE)</strong> stocks the tool fetches the correct local 10-year government bond yield as the risk-free rate, applies a market-appropriate equity risk premium, and shows a sector-specific WACC reference range (e.g. ASX miners 10–12%, US utilities 5.5–6.5%, Indian IT 11–14%). For non-US stocks it also applies a <strong>beta floor</strong>, because Yahoo measures beta against the S&P 500, which understates risk for international shares. Australian stocks get an explanation of <strong>franking credits</strong> and how dividend imputation affects the effective tax rate.</p>
+      <p>It's built for individual stocks — not ETFs, indices, or pre-revenue companies — and works across US, Australian, Indian, UK, and other major markets with automatic currency handling. Everything runs in your browser; the only thing sent externally is the ticker symbol.</p>
     </div>
     <div class="tool-faq">
       <h2>Frequently asked questions</h2>
@@ -278,8 +284,52 @@
         <p>Insurance and bank free cash flows include large investment portfolio movements and reserve changes that aren't true "owner earnings." Raw DCF for these companies routinely overstates value significantly. The tool prompts you to enter a normalised FCF — a conservative estimate of sustainable cash earnings — and also shows P/E, P/B, and ROE as more reliable valuation cross-checks for this sector.</p>
       </details>
       <details class="faq-item">
+        <summary>What do the Bear, Base, and Bull scenarios mean?</summary>
+        <p>Rather than producing a single false-precision number, the tool runs three cases so you can see a range. <strong>Base</strong> uses the seeded growth and discount-rate assumptions. <strong>Bear</strong> applies lower growth and a higher discount rate (more conservative). <strong>Bull</strong> applies higher growth and a lower discount rate (more optimistic). If the current price sits below even the Bear intrinsic value, that's a strong signal; if it's above the Bull value, the stock looks expensive on these assumptions. You can edit every input and recalculate.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is the margin of safety?</summary>
+        <p>The margin of safety is the gap between a stock's estimated intrinsic value and its current market price, expressed as a percentage. A positive margin means the stock trades below what the DCF says it's worth; a negative margin means it trades above. Value investors like Benjamin Graham and Warren Buffett insist on buying with a margin of safety so that even if their assumptions are somewhat wrong, they don't overpay. The tool flags each scenario as Undervalued, Fairly Valued, or Overvalued based on this gap.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why do banks and insurers use a different model (DDM)?</summary>
+        <p>Traditional FCF-based DCF is structurally broken for financial companies. For banks, "debt" is mostly customer deposits — a raw material, not a funding source — so there's no clean free cash flow and WACC can't be derived in the usual way. For insurers, cash flow is dominated by investment-portfolio movements and reserve changes, not owner earnings. So the tool automatically switches banks and insurers to the <strong>Dividend Discount Model (DDM)</strong>, which values the stock from the dividends it actually pays, discounted at the cost of equity. It also shows banking-specific metrics: P/B, P/E, ROE, and dividend yield.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How does the tool handle international (ASX, India, UK) stocks?</summary>
+        <p>Add the market suffix to the ticker — <code>.AX</code> for Australia, <code>.NS</code>/<code>.BO</code> for India, <code>.L</code> for the UK — or tick the ASX / NSE box. The tool then uses the correct local 10-year government bond yield as the risk-free rate (US ~4.5%, Australia ~4.8%, India ~7.0%), a market-appropriate equity risk premium, and a sector WACC reference range for that market. Currencies are handled automatically, including the UK's pence-vs-pounds quirk. International betas are also floored (see below).</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is beta, and why does the tool "floor" it for non-US stocks?</summary>
+        <p>Beta measures how much a stock moves relative to the overall market — it scales the equity risk premium in the CAPM cost-of-equity formula. Yahoo Finance computes beta against the <strong>S&P 500</strong>. For US stocks that's correct, but for Australian or Indian stocks it understates risk, because those markets don't move in lockstep with the S&P 500 — producing artificially low betas (e.g. an ASX insurer showing 0.17). The tool applies a minimum beta floor (0.5 for ASX and most international, 0.6 for India) when seeding the discount rate, and flags when it has done so. You can always override it.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What are franking credits and how do they affect Australian valuations?</summary>
+        <p>Australia uses a dividend imputation system: companies pass on the corporate tax they've already paid as "franking credits" attached to dividends, which shareholders can use to reduce their own tax. In a professional DCF this is captured by a variable called Gamma (γ), which the ACCC values at 0.4–0.5. Including it effectively lowers the company's tax rate and therefore its WACC by roughly 0.3–0.8%. For ASX stocks the tool shows an explanation of this, but stays on the standard post-tax WACC by default — the conservative choice most retail investors make.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What if a company has negative or no free cash flow?</summary>
+        <p>Fast-growing companies often reinvest everything and show negative FCF, which a naïve DCF can't value. The tool lets you normalise FCF from <strong>revenue × a target margin</strong> — your estimate of the FCF margin the business will earn at maturity (e.g. 15% for software, 8% for retail). It seeds this from the reported profit margin and estimates roughly when FCF should turn positive given your revenue growth. This is Damodaran's preferred approach for pre-profit growth companies. The result is clearly labelled as revenue-normalised.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What does "net debt exceeds firm value" mean?</summary>
+        <p>For some capital-heavy companies (large conglomerates reinvesting aggressively, or firms carrying huge debt loads), the DCF firm value comes out lower than the company's net debt, leaving negative equity. Rather than show a nonsensical negative share price, the tool tells you plainly that the equity is worth zero on a DCF basis with the current assumptions — meaning the market is pricing the stock on future growth or asset value that a DCF on today's cash flow can't justify. Try a higher growth rate, or sanity-check that the cash flow isn't distorted by one-off items.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What growth rate and equity risk premium should I use?</summary>
+        <p>The tool seeds growth from Yahoo's revenue and earnings growth, but you should sanity-check it — no company grows at 25% forever, and terminal growth should never exceed long-run GDP (~2–3%). The equity risk premium (the extra return investors demand for holding stocks over bonds) defaults to 5.5%, the long-run US historical figure from Professor Aswath Damodaran's data. Use 4–6% for stable developed markets and 7–9% for emerging markets like India. A 1% change in this input can move the valuation by 15–25%, so it matters.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How accurate is this? What are the limitations?</summary>
+        <p>A DCF is only as good as its assumptions — small changes in growth or discount rate produce large swings in output, which is exactly why this tool shows three scenarios instead of one number. It works best for mature, stable, cash-generative businesses. It's less reliable for cyclical commodities (volatile earnings), early-stage companies (no FCF history), REITs (better valued on Funds From Operations), and conglomerates priced on future optionality. Treat the output as one input into your research, not a verdict. This tool is not financial advice — always do your own research and consult a licensed adviser.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which markets and exchanges are supported?</summary>
+        <p>Any ticker Yahoo Finance covers — US (no suffix), Australia (<code>.AX</code>), India NSE (<code>.NS</code>) and BSE (<code>.BO</code>), UK (<code>.L</code>), Germany (<code>.DE</code>), Hong Kong (<code>.HK</code>), and more. US, Australian, and Indian stocks get the full market-specific treatment (local risk-free rate, equity risk premium, and sector WACC ranges). Other markets work too, with a sensible default discount rate you can adjust.</p>
+      </details>
+      <details class="faq-item">
         <summary>Is this free? Does it store my data?</summary>
-        <p>Completely free, no sign-up required. No personal data is collected or stored. The only data sent externally is the ticker symbol you enter, which is forwarded to Yahoo Finance via a Cloudflare Worker proxy to retrieve financial data.</p>
+        <p>Completely free, no sign-up required. No personal data is collected or stored, and nothing runs on a server you log into — all the calculation happens in your browser. The only data sent externally is the ticker symbol you enter, which is forwarded to Yahoo Finance via a Cloudflare Worker proxy to retrieve the financial data. Your recently viewed tickers are saved locally in your own browser for convenience and never leave your device.</p>
       </details>
     </div>
   </section>

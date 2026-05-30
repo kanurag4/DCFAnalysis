@@ -22,6 +22,10 @@ function escapeHtml(s) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
+// Broad financial-sector check used to show the normalised-FCF panel for
+// asset managers, exchanges, and other financials that still run on DCF.
+// Intentionally wider than isBankOrInsurance — see that function for the
+// subset that switches to DDM entirely.
 function isFinancialSector(sector) {
   return !!(sector && /financial|insurance/i.test(sector));
 }
@@ -30,10 +34,11 @@ function isRealEstateSector(sector) {
   return !!(sector && /real estate/i.test(sector));
 }
 
-// Banks and insurers — FCF-based DCF is structurally broken for these, so the
-// tool defaults them to the Dividend Discount Model. Matches on industry first
-// (e.g. "Banks—Diversified", "Insurance—Property & Casualty") with a sector
-// fallback for insurance.
+// Narrow check: only banks and insurers where FCF-based DCF is structurally
+// broken — defaults them to DDM. Intentionally excludes asset managers, payment
+// networks, and exchanges that have real FCF and remain on the DCF path.
+// Contrast with isFinancialSector, which is broader and gates the normalised-FCF
+// panel rather than the full model switch.
 function isBankOrInsurance(sector, industry) {
   const s = sector || '';
   const i = industry || '';
@@ -65,6 +70,31 @@ function getMarketBetaFloor(ticker) {
   return 0.5;                           // other international (.L, .HK, .DE …)
 }
 
+// WACC reference ranges for US stocks by sector.
+function getUsSectorWaccRange(sector, industry) {
+  const combined = `${(industry || '')} ${(sector || '')}`.toLowerCase();
+  if (/utilit/.test(combined))                                              return { label: 'Regulated Utilities',       range: '5.5–6.5%'   };
+  if (/real estate|reit/.test(combined))                                   return { label: 'Real Estate (REITs)',        range: '6.5–7.5%'   };
+  if (/energy|oil|gas/.test(combined))                                     return { label: 'Energy & Oil / Gas',         range: '6.5–7.5%'   };
+  if (/aerospace|defense/.test(combined))                                  return { label: 'Aerospace & Defense',        range: '7.0–8.0%'   };
+  if (/retail|apparel|consumer cyclical/.test(combined))                   return { label: 'Retail & Apparel',           range: '7.5–8.5%'   };
+  if (/biotech|pharmaceutical|drug|health/.test(combined))                 return { label: 'Biotech & Pharmaceuticals',  range: '8.0–10.0%'  };
+  if (/technology|software|semiconductor|electronic|internet/.test(combined)) return { label: 'Technology & Software',  range: '8.5–10.5%'  };
+  return null;
+}
+
+// WACC reference ranges for Indian (.NS / .BO) stocks by sector.
+function getIndianSectorWaccRange(sector, industry) {
+  const combined = `${(industry || '')} ${(sector || '')}`.toLowerCase();
+  if (/bank|insurance|financial/.test(combined))                        return { label: 'Banking & Financial Services', range: '10.0–12.0%' };
+  if (/software|information technology|it service|technology/.test(combined)) return { label: 'IT & Software',                  range: '11.0–14.0%' };
+  if (/consumer|fmcg|beverage|food|tobacco|household/.test(combined))   return { label: 'FMCG & Consumer Staples',        range: '9.0–11.0%'  };
+  if (/utilit|infrastructure|power|electric|water/.test(combined))      return { label: 'Utilities & Infrastructure',      range: '8.0–10.0%'  };
+  if (/health|pharma|biotechnology|medical/.test(combined))             return { label: 'Pharmaceuticals & Healthcare',    range: '10.0–12.0%' };
+  if (/material|steel|metal|mining|oil|energy|coal|chemical/.test(combined)) return { label: 'Commodities & Resources',   range: '11.0–13.0%' };
+  return null;
+}
+
 // Average of revenueGrowth + earningsGrowth, clamped to [-0.05, 0.25]. Falls back to 0.05.
 function deriveBaseGrowth(revenueGrowth, earningsGrowth) {
   const valid = [revenueGrowth, earningsGrowth].filter(v => safe(v) !== null);
@@ -93,5 +123,6 @@ if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   isFinancialSector, isRealEstateSector, isBankOrInsurance,
   isAsxTicker, getAsxSectorWaccRange,
+  getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
 };

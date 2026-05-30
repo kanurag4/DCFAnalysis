@@ -15,6 +15,8 @@ function calculateWACC({
   const re = riskFreeRate + effectiveBeta * erp;
 
   const isRdEstimated = interestExpense === null || interestExpense === undefined || d === 0;
+  // +0.5% spread over the historical book yield approximates the premium between
+  // a company's new-issuance market cost of debt and its reported coupon rate.
   const rd = isRdEstimated ? 0.05 : (Math.abs(interestExpense) / d + 0.005);
 
   const isTcEstimated = taxRate === null || taxRate === undefined || taxRate < 0 || taxRate >= 1;

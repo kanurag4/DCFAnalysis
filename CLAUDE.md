@@ -14,23 +14,23 @@ KashVector DCF tool. Source repo — deploys to `kashvector.com/dcf/` by xcopy t
 | Phase 4 — HTML + CSS (`index.html`, `style.css`) | ✅ Done |
 | Phase 5 — App logic (`app.js`) | ✅ Done |
 | Phase 5b — DDM (`calc/ddm.js`, `tests/ddm.test.js`, app.js branching) | ✅ Done |
-| Phase 6 — Local testing + bug fixes | ⏳ In progress — resume here |
-| Phase 7 — Icon (`dcf-icon.svg`) | ⏳ Pending |
-| Phase 8 — Deploy | ⏳ Pending |
+| Phase 6 — Local testing + bug fixes | ✅ Done |
+| Phase 7 — Icon (`dcf-icon.svg`) | ✅ Done — thin price line on axes (yr1 +10%, yr2 −5%, yr3 +20%), green on muted axes |
+| Phase 8 — Deploy | ⏳ Pending — not started; awaiting go-ahead |
 
-**Remaining Phase 6 test cases:**
-- AAPL (US, DCF + optional DDM toggle)
-- BHP.AX (ASX, plain DCF)
-- CBA.AX (bank DDM)
-- Mobile layout (390px)
-- Light mode
-- Invalid ticker / network error
-
-**Already tested and fixed (2026-05-30):**
-- QBE.AX ✅ — DDM beta floor, dividend growth cap
+**Phase 6 — all passed (2026-05-30):**
+- QBE.AX ✅ — DDM seeding correct after beta floor + growth cap fix
 - LLOY.L ✅ — GBp currency unit mismatch fixed
 - RELINFRA.NS ✅ — WACC beta floor extended to DCF
 - RELIANCE.NS ✅ — negative equity handled gracefully
+- AAPL ✅ — US DCF, DDM toggle visible and working
+- BHP.AX ✅ — ASX plain DCF, beta floor note shown
+- CBA.AX ✅ — bank DDM, correct seeding
+- Mobile 390px ✅
+- Light mode ✅
+- Invalid ticker ✅
+
+**Next up (when ready): Phase 7 — Icon, Phase 8 — Deploy. Do not proceed until asked.**
 
 ---
 
@@ -145,9 +145,44 @@ Intrinsic Value = Σ PV(D) + PV(TV)        ← per share directly (no net debt s
 
 ---
 
-## DDM Beta Floor — Non-US Markets (Article Reference)
+## WACC & Cost of Equity — Article Reference (consolidated)
 
-### The problem
+> Everything the article needs on the discount rate, in one place. All implemented as of 2026-05-30.
+
+### 1. The WACC formula (as implemented in `calc/wacc.js`)
+
+```
+Re   = RF + Beta × ERP                          (CAPM cost of equity)
+Rd   = |interestExpense| / totalDebt + 0.5%     (cost of debt; +50bp new-issuance spread)
+       └ falls back to 5.0% if interest/debt unavailable
+Tc   = incomeTaxExpense / incomeBeforeTax        (from data.js; guarded > 0; default 25%)
+WACC = (E/V)·Re + (D/V)·Rd·(1 − Tc)
+       E = market cap, D = total debt, V = E + D
+```
+
+DCF discounts FCF at **WACC**. DDM (banks/insurance) discounts dividends at **Re only** — no debt component.
+
+### 2. Market-specific risk-free rate (live, by ticker suffix)
+
+| Market | Detection | Live source (via Worker) | Fallback |
+|---|---|---|---|
+| US / other | no `.AX`/`.NS`/`.BO` | US 10-yr Treasury `^TNX` | 4.5% |
+| Australia | `.AX` | Australian 10-yr Govt Bond `^GSBG10.AX` | 4.8% |
+| India | `.NS` / `.BO` | Indian 10-yr Govt Bond `^INBMKG10.NS` | 7.0% |
+
+Fetched on stock load. The RF input shows a live badge (`● live` / `● live AUS` / `● live IND`). The "↺ Reset to defaults" button restores the **market-appropriate** RF + MRP, not always the US values.
+
+### 3. Market Risk Premium (MRP / ERP) defaults
+
+| Market | Default seed | Typical range | Basis |
+|---|---|---|---|
+| US / other | 5.5% | 4–6% | Damodaran long-run US historical premium (since 1928) |
+| Australia | 6.0% | 5.5–6.5% | Developed, AAA-rated; lower than emerging markets |
+| India | 7.5% | 7–9% | Emerging-market premium (political + currency risk) |
+
+A 1% change in ERP flows directly into Re → for DDM it changes the (Re − g) denominator and can shift intrinsic value by **15–25%**.
+
+### 4. Beta floor — the problem
 
 Yahoo Finance computes beta by regressing a stock's returns against the S&P 500. For US stocks this is correct. For non-US stocks it systematically **understates risk**:
 
@@ -168,7 +203,7 @@ Yahoo Finance computes beta by regressing a stock's returns against the S&P 500.
 
 **Scope**: the floor affects the **initial seed values** for WACC (DCF) and cost-of-equity (DDM) inputs. Users can override all inputs directly. When the floor is applied, an amber warning is shown in both the WACC breakdown and the DDM cost-of-equity breakdown panels.
 
-**For emerging markets (India)**: even with the beta floor, WACC for Indian stocks may still be seeded too low because the tool uses the US risk-free rate (~4.5%) instead of the Indian G-Sec yield (~7%). Users analysing Indian stocks should manually raise WACC to 12–15% to account for country risk premium. The breakdown warning message notes this explicitly.
+**For emerging markets (India)**: the tool now seeds the Indian 10-yr G-Sec yield (~7%) as RF and a 7.5% MRP for `.NS`/`.BO` tickers, so WACC starts in a realistic 10–13% band rather than the old ~6%. Users can still raise it further for stock-specific country/execution risk. (Historical note: before the India market support was added, the tool used the US RF rate here and the breakdown warned users to raise WACC manually — that warning no longer applies.)
 
 **For QBE.AX after fix**: beta floored 0.17 → 0.5, Re = 4.46% + 0.5 × 5.5% = **7.21%**. DDM intrinsic now in a sensible range (~$23 AUD base).
 
@@ -187,6 +222,51 @@ The ERP input defaults to **5.5%** — the long-run US historical equity premium
 - **For Australian stocks specifically**: Damodaran's implied ERP for Australia is typically 5–6%, so the 5.5% default is reasonable. Some analysts use 6% for ASX to capture the franking-credit distortion in dividend yields.
 
 This distinction matters significantly for DDM: a 1% change in ERP flows directly into Re, which changes the (Re − g) denominator and can shift intrinsic value by 15–25%.
+
+### Sector WACC reference ranges (shown read-only in the breakdown panel)
+
+The breakdown shows a "<market> sector reference: X–Y% (label)" line, matched on Yahoo sector/industry. These are guidance only — they do not change the calculated WACC.
+
+**US** (`getUsSectorWaccRange`):
+
+| Sector | Range | Why |
+|---|---|---|
+| Technology & Software | 8.5–10.5% | High equity betas, negligible long-term leverage |
+| Biotech & Pharmaceuticals | 8.0–10.0% | Pipeline risk tempered by stable healthcare demand |
+| Retail & Apparel | 7.5–8.5% | Macro-cycle sensitive, softened by lease structures |
+| Aerospace & Defense | 7.0–8.0% | Multi-year government backlogs, predictable cash |
+| Energy & Oil / Gas | 6.5–7.5% | Volatile earnings balanced by heavy debt use |
+| Real Estate (REITs) | 6.5–7.5% | Tangible rental assets + cheap leverage |
+| Regulated Utilities | 5.5–6.5% | Lowest risk tier; guaranteed rate returns |
+
+**Australia / ASX** (`getAsxSectorWaccRange`):
+
+| Sector | Range | Why |
+|---|---|---|
+| Banking & Financials | 8.5–9.5% | Regulated, large asset bases, credit/macro cycle exposure |
+| Mining & Resources | 10.0–12.0% | Cyclical commodities, heavy capex, high asset beta |
+| Real Estate (A-REIT) | 7.5–9.0% | Predictable lease income + cheap corporate debt |
+| Healthcare & Biotech | 8.5–10.0% | Capital-light global earnings; small caps higher |
+| Utilities & Infrastructure | 6.5–8.0% | Regulated monopolies, inflation-linked cash, cheap debt |
+
+**India** (`getIndianSectorWaccRange`):
+
+| Sector | Range | Why |
+|---|---|---|
+| IT & Software | 11.0–14.0% | High beta, high growth, near-zero debt — relies on costly equity |
+| FMCG & Consumer Staples | 9.0–11.0% | Low beta, stable demand, low debt |
+| Utilities & Infrastructure | 8.0–10.0% | Capital-intensive but heavy low-cost long-term debt |
+| Pharmaceuticals & Healthcare | 10.0–12.0% | Moderate R&D risk, steady demand, low-moderate leverage |
+| Commodities (Steel/Oil/Mining) | 11.0–13.0% | Cyclical, volatile global prices raise cost of equity |
+| Banking & Financial Services | 10.0–12.0% | Regulated, credit-cycle exposed |
+
+### Franking credits (Australia — informational only)
+
+For ASX stocks the breakdown shows a collapsible "Franking credits (dividend imputation)" note. Australia's dividend imputation system passes corporate tax credits to shareholders. The ACCC values Gamma (γ) at **0.4–0.5**. Including it lowers the effective tax rate: `Tc_eff = Tc × (1 − γ)`, which reduces post-tax WACC by roughly 0.3–0.8%. **The tool does NOT apply this** — it stays on standard post-tax WACC conservatively, as most retail investors do. The note explains the adjustment for users who want to make it themselves.
+
+### Live recompute behaviour (`recomputeDiscount` in app.js)
+
+Editing the RF rate or ERP inputs live-updates the Bear/Base/Bull WACC (or DDM cost-of-equity) seeds, debounced ~350ms. It re-derives Re explicitly (`rf + effectiveBeta × erp`) and the full WACC, and refreshes the breakdown panel — but does **not** re-run the scenario cards mid-edit (that would flash partial valuations). Full re-render happens on the Recalculate button or the RF/ERP reset button.
 
 ---
 

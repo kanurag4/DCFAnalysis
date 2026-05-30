@@ -69,7 +69,8 @@ const RECENT_MAX = 8;
 let currentData   = null;
 let liveRfRate    = 4.5;   // updated when US 10-yr Treasury is fetched
 let liveAusRfRate = 4.8;   // updated when Australian 10-yr bond is fetched; 4.8% default
-let currentMarket = 'us';  // 'us' | 'aus' | 'other' — gates ASX-specific enhancements
+let liveIndRfRate = 7.0;   // updated when Indian 10-yr Govt bond is fetched; 7.0% default
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -199,15 +200,23 @@ function prefillInputs(data) {
 
   // ── Market detection — ASX gets Australian RF rate + MRP ──────────────────
   const isAsx = isAsxTicker(data.ticker);
-  currentMarket = isAsx ? 'aus' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
+  const isInd = !isAsx && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.NS') || data.ticker.toUpperCase().endsWith('.BO')));
+  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
 
   if (isAsx) {
-    els.rfInput.value  = liveAusRfRate;   // immediate seed; async fetch may update
-    els.erpInput.value = 6.0;             // Australian MRP midpoint
+    els.rfInput.value  = liveAusRfRate;
+    els.erpInput.value = 6.0;
+    setRfBadge('aus', liveAusRfRate);   // immediate — async fetch may refine the value
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Australian MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
-    fetchAndSetAustralianRfRate();        // async — updates RF + badge + recomputes when done
+    fetchAndSetAustralianRfRate();
+  } else if (isInd) {
+    els.rfInput.value  = liveIndRfRate;
+    els.erpInput.value = 7.5;
+    setRfBadge('ind', liveIndRfRate);   // immediate — async fetch may refine the value
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP (7.0–9.0%)'; els.erpMarketNote.hidden = false; }
+    fetchAndSetIndianRfRate();
   } else {
-    els.rfInput.value  = liveRfRate;      // restore US rate
+    els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
     setRfBadge('us', liveRfRate);
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
@@ -349,9 +358,8 @@ function applyModelUI() {
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
 
   if (els.growthLabel) els.growthLabel.textContent = ddm ? 'Div Growth %' : '5yr Growth %';
-  if (els.discountLabel && els.discountLabel.childNodes[0]) {
-    els.discountLabel.childNodes[0].nodeValue = ddm ? 'Cost of Equity % ' : 'WACC % ';
-  }
+  const discountLabelText = $('discount-label-text');
+  if (discountLabelText) discountLabelText.textContent = ddm ? 'Cost of Equity %' : 'WACC %';
   if (els.discountTip) els.discountTip.setAttribute('data-tip', ddm
     ? 'Cost of equity via CAPM (risk-free + beta × equity risk premium). Higher = lower valuation.'
     : 'Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.');
@@ -394,11 +402,14 @@ function renderDiscountBreakdown() {
     const floorNote = lastCapm.betaWasFloored
       ? `<div class="wacc-row"><span class="wacc-src wacc-floor-note">⚠ Yahoo beta (${lastCapm.rawBeta.toFixed(2)}) is measured vs S&P 500 and understates risk for this market. Floored to ${lastCapm.beta.toFixed(2)} — adjust if you have a local-market beta.</span></div>`
       : '';
-    const asxRangeDdm = currentMarket === 'aus' && currentData
-      ? getAsxSectorWaccRange(currentData.sector, currentData.industry) : null;
-    const sectorRowDdm = asxRangeDdm
+    const ddmAsxRange = currentMarket === 'aus' && currentData ? getAsxSectorWaccRange(currentData.sector, currentData.industry) : null;
+    const ddmIndRange = currentMarket === 'ind' && currentData ? getIndianSectorWaccRange(currentData.sector, currentData.industry) : null;
+    const ddmUsRange  = currentMarket === 'us'  && currentData ? getUsSectorWaccRange(currentData.sector, currentData.industry) : null;
+    const ddmSectorRef = ddmAsxRange || ddmIndRange || ddmUsRange;
+    const ddmMarketLabel = currentMarket === 'ind' ? 'India' : currentMarket === 'aus' ? 'ASX' : 'US';
+    const sectorRowDdm = ddmSectorRef
       ? `<div class="wacc-divider"></div>
-         <div class="wacc-row"><span class="wacc-src">ASX sector reference: <strong>${asxRangeDdm.range}</strong> (${asxRangeDdm.label})</span></div>`
+         <div class="wacc-row"><span class="wacc-src">${ddmMarketLabel} sector reference: <strong>${ddmSectorRef.range}</strong> (${ddmSectorRef.label})</span></div>`
       : '';
     els.waccContent.innerHTML = `
       <div class="wacc-row"><span>Cost of Equity (Re)</span><span class="wacc-val">${pct(lastCapm.re)}</span></div>
@@ -474,11 +485,17 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     : '';
   const asxRange = currentMarket === 'aus' && currentData
     ? getAsxSectorWaccRange(currentData.sector, currentData.industry) : null;
-  const sectorRow = asxRange
+  const indRange = currentMarket === 'ind' && currentData
+    ? getIndianSectorWaccRange(currentData.sector, currentData.industry) : null;
+  const usRange  = currentMarket === 'us' && currentData
+    ? getUsSectorWaccRange(currentData.sector, currentData.industry) : null;
+  const sectorRef = asxRange || indRange || usRange;
+  const marketLabel = currentMarket === 'ind' ? 'India' : currentMarket === 'aus' ? 'ASX' : 'US';
+  const sectorRow = sectorRef
     ? `<div class="wacc-divider"></div>
-       <div class="wacc-row"><span class="wacc-src">ASX sector reference: <strong>${asxRange.range}</strong> (${asxRange.label})</span></div>`
+       <div class="wacc-row"><span class="wacc-src">${marketLabel} sector reference: <strong>${sectorRef.range}</strong> (${sectorRef.label})</span></div>`
     : '';
-  const frankingBlock = currentMarket === 'aus'
+  const frankingBlock = currentMarket === 'aus' // franking credits are ASX-specific
     ? `<details class="wacc-franking">
          <summary>Franking credits (dividend imputation)</summary>
          <p>Australian companies pass corporate tax credits (franking credits) to shareholders. The ACCC values the benefit — Gamma (γ) — at <strong>0.4–0.5</strong>.</p>
@@ -574,7 +591,7 @@ function buildScenarios(data) {
       ? parseFloat(String(els.dividendInput.value).replace(/,/g, ''))
       : NaN;
     return configs.map(({ key, growthEl, tgEl, waccEl }) => {
-      const growthRate     = parseFloat(growthEl.value) / 100 || 0;
+      const growthRate     = parseFloat(growthEl.value) / 100 || 0; // 0% is a valid DDM case (flat dividend perpetuity)
       const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
       const costOfEquity   = parseFloat(waccEl.value)  / 100 || 0.09;
       if (!(dividend > 0)) {
@@ -595,9 +612,10 @@ function buildScenarios(data) {
     && els.fcfNorm && els.fcfNorm.value;
   const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
 
-  // Revenue-normalised FCF for negative/null FCF growth companies
+  // Revenue-normalised FCF — only for stocks not already using the financial
+  // normalised-FCF field (useNormFcf). Applying both would double-normalise.
   const targetMarginPct = els.targetMarginInput ? parseFloat(els.targetMarginInput.value) : NaN;
-  const normFcf = (!isNaN(targetMarginPct) && targetMarginPct > 0 && data.totalRevenue > 0)
+  const normFcf = (!useNormFcf && !isNaN(targetMarginPct) && targetMarginPct > 0 && data.totalRevenue > 0)
     ? data.totalRevenue * (targetMarginPct / 100)
     : null;
 
@@ -936,7 +954,10 @@ function renderRecent() {
   els.recent.hidden = false;
   els.recent.innerHTML = '<span class="recent-label">Recent:</span>' +
     list.map(e => {
-      const label = e.asx ? `${escapeHtml(e.ticker)}.AX` : escapeHtml(e.ticker);
+      // data.ticker is already the resolved symbol (e.g. BHP.AX), so only append
+      // .AX for legacy/bare entries that don't already carry a market suffix.
+      const display = (e.asx && !e.ticker.includes('.')) ? `${e.ticker}.AX` : e.ticker;
+      const label = escapeHtml(display);
       return `<span class="chip" data-t="${escapeHtml(e.ticker)}" data-asx="${e.asx ? '1' : '0'}">
         <span class="label">${label}</span>
         <span class="x" data-remove="1">×</span>
@@ -1008,8 +1029,10 @@ function formatMoneyInput(el) {
 }
 
 function parseMoney(el) {
-  if (String(el.value).trim() === '') return null;
-  return parseInt(String(el.value).replace(/,/g, ''), 10) || 0;
+  const s = String(el.value).trim();
+  if (!s) return null;
+  const n = Number(s.replace(/,/g, ''));
+  return isNaN(n) ? null : n;
 }
 
 // Fetch live US 10-year Treasury yield via ^TNX through the Worker.
@@ -1022,6 +1045,9 @@ function resetRfErp() {
   if (currentMarket === 'aus') {
     els.rfInput.value  = liveAusRfRate;
     els.erpInput.value = 6.0;
+  } else if (currentMarket === 'ind') {
+    els.rfInput.value  = liveIndRfRate;
+    els.erpInput.value = 7.5;
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -1062,7 +1088,8 @@ function recomputeDiscount() {
       els.waccBear.value = +(waccPct + 1).toFixed(2);
       els.waccBull.value = +(Math.max(1, waccPct - 1)).toFixed(2);
       lastWaccResult = waccResult;
-      lastCapm = { ...lastCapm, rf, erp, beta: effectiveBeta, rawBeta, betaWasFloored };
+      const re = rf + effectiveBeta * erp;
+      lastCapm = { re, rf, erp, beta: effectiveBeta, rawBeta, betaWasFloored };
     } else {
       // No capital structure data — fall back to pure CAPM (Re only)
       const re    = rf + effectiveBeta * erp;
@@ -1087,9 +1114,14 @@ function setRfBadge(market, rate) {
     badge.className = 'rf-live';
     rfLabelText.appendChild(badge);
   }
-  const isAus = market === 'aus';
-  badge.textContent = isAus ? '● live AUS' : '● live';
-  badge.title = isAus ? 'Australian 10-yr Govt Bond (^GSBG10.AX)' : 'US 10-yr Treasury yield (^TNX)';
+  const labels = {
+    aus: { badge: '● live AUS', note: 'Australian 10-yr Govt Bond (^GSBG10.AX)', title: 'Australian 10-yr Govt Bond' },
+    ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond',                  title: 'Indian 10-yr Govt Bond'    },
+    us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX)',           title: 'Live US 10-yr Treasury yield' },
+  };
+  const lbl = labels[market] || labels.us;
+  badge.textContent = lbl.badge;
+  badge.title = lbl.note;
   const rfLabel = els.rfInput.closest('label');
   if (rfLabel) {
     let note = rfLabel.querySelector('.rf-note');
@@ -1098,9 +1130,9 @@ function setRfBadge(market, rate) {
       note.className = 'rf-note';
       rfLabel.appendChild(note);
     }
-    note.textContent = isAus ? 'Australian 10-yr Govt Bond (^GSBG10.AX)' : 'US 10-yr Treasury yield (^TNX)';
+    note.textContent = lbl.note;
   }
-  els.rfInput.title = `${isAus ? 'Australian 10-yr Govt Bond' : 'Live US 10-yr Treasury yield'}: ${rate}%`;
+  els.rfInput.title = `${lbl.title}: ${rate}%`;
 }
 
 async function fetchAndSetRiskFreeRate() {
@@ -1116,7 +1148,7 @@ async function fetchAndSetRiskFreeRate() {
       result?.financialData?.currentPrice?.raw;
     if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
       liveRfRate = +raw.toFixed(2);
-      if (currentMarket !== 'aus') {
+      if (currentMarket === 'us' || currentMarket === 'other') {
         els.rfInput.value = liveRfRate;
         setRfBadge('us', liveRfRate);
       }
@@ -1127,10 +1159,11 @@ async function fetchAndSetRiskFreeRate() {
 }
 
 async function fetchAndSetAustralianRfRate() {
+  let fetchSucceeded = false;
   try {
     const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent('^GSBG10.AX')}`;
     const resp = await fetch(url);
-    if (!resp.ok) return;
+    if (!resp.ok) throw new Error('not ok');
     const body = await resp.json();
     const result = body?.quoteSummary?.result?.[0];
     const raw =
@@ -1139,14 +1172,40 @@ async function fetchAndSetAustralianRfRate() {
       result?.financialData?.currentPrice?.raw;
     if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
       liveAusRfRate = +raw.toFixed(2);
+      fetchSucceeded = true;
     }
   } catch (_) {
-    // silently fall back to 4.8%
+    // silently fall back to 4.8% default
   }
-  // Only apply if still on an ASX stock (user may have switched)
   if (currentMarket === 'aus') {
     els.rfInput.value = liveAusRfRate;
     setRfBadge('aus', liveAusRfRate);
-    recomputeDiscount();
+    if (fetchSucceeded) recomputeDiscount();
+  }
+}
+
+async function fetchAndSetIndianRfRate() {
+  let fetchSucceeded = false;
+  try {
+    const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent('^INBMKG10.NS')}`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('not ok');
+    const body = await resp.json();
+    const result = body?.quoteSummary?.result?.[0];
+    const raw =
+      result?.summaryDetail?.previousClose?.raw ??
+      result?.summaryDetail?.regularMarketPrice?.raw ??
+      result?.financialData?.currentPrice?.raw;
+    if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
+      liveIndRfRate = +raw.toFixed(2);
+      fetchSucceeded = true;
+    }
+  } catch (_) {
+    // silently fall back to 7.0% default
+  }
+  if (currentMarket === 'ind') {
+    els.rfInput.value = liveIndRfRate;
+    setRfBadge('ind', liveIndRfRate);
+    if (fetchSucceeded) recomputeDiscount();
   }
 }

@@ -2,7 +2,7 @@ const assert = require('assert');
 const { test } = require('node:test');
 const {
   safe, fmt, isBankOrInsurance, isFinancialSector, isRealEstateSector,
-  isAsxTicker, getAsxSectorWaccRange,
+  isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
 } = require('../www/utils.js');
 
@@ -50,6 +50,80 @@ test('getAsxSectorWaccRange: real estate sector', () => {
 test('getAsxSectorWaccRange: returns null for unknown sector', () => {
   assert.strictEqual(getAsxSectorWaccRange('Technology', 'Software'), null);
   assert.strictEqual(getAsxSectorWaccRange(null, null), null);
+});
+
+// ── getUsSectorWaccRange ──────────────────────────────────────────────────────
+
+test('getUsSectorWaccRange: technology sector', () => {
+  const r = getUsSectorWaccRange('Technology', 'Software—Application');
+  assert.strictEqual(r.range, '8.5–10.5%');
+});
+
+test('getUsSectorWaccRange: biotech/pharma', () => {
+  const r = getUsSectorWaccRange('Healthcare', 'Biotechnology');
+  assert.strictEqual(r.range, '8.0–10.0%');
+});
+
+test('getUsSectorWaccRange: retail', () => {
+  const r = getUsSectorWaccRange('Consumer Cyclical', 'Apparel Retail');
+  assert.strictEqual(r.range, '7.5–8.5%');
+});
+
+test('getUsSectorWaccRange: aerospace & defense', () => {
+  const r = getUsSectorWaccRange('Industrials', 'Aerospace & Defense');
+  assert.strictEqual(r.range, '7.0–8.0%');
+});
+
+test('getUsSectorWaccRange: energy', () => {
+  const r = getUsSectorWaccRange('Energy', 'Oil & Gas Integrated');
+  assert.strictEqual(r.range, '6.5–7.5%');
+});
+
+test('getUsSectorWaccRange: REITs', () => {
+  const r = getUsSectorWaccRange('Real Estate', 'REIT—Industrial');
+  assert.strictEqual(r.range, '6.5–7.5%');
+});
+
+test('getUsSectorWaccRange: utilities', () => {
+  const r = getUsSectorWaccRange('Utilities', 'Utilities—Regulated Electric');
+  assert.strictEqual(r.range, '5.5–6.5%');
+});
+
+test('getUsSectorWaccRange: returns null for unmatched sector', () => {
+  assert.strictEqual(getUsSectorWaccRange('Financial Services', 'Banks'), null);
+  assert.strictEqual(getUsSectorWaccRange(null, null), null);
+});
+
+// ── getIndianSectorWaccRange ──────────────────────────────────────────────────
+
+test('getIndianSectorWaccRange: IT sector', () => {
+  const r = getIndianSectorWaccRange('Technology', 'Information Technology Services');
+  assert.strictEqual(r.range, '11.0–14.0%');
+});
+
+test('getIndianSectorWaccRange: FMCG sector', () => {
+  const r = getIndianSectorWaccRange('Consumer Defensive', 'Household & Personal Products');
+  assert.strictEqual(r.range, '9.0–11.0%');
+});
+
+test('getIndianSectorWaccRange: Utilities sector', () => {
+  const r = getIndianSectorWaccRange('Utilities', 'Utilities—Regulated Electric');
+  assert.strictEqual(r.range, '8.0–10.0%');
+});
+
+test('getIndianSectorWaccRange: Pharma sector', () => {
+  const r = getIndianSectorWaccRange('Healthcare', 'Drug Manufacturers');
+  assert.strictEqual(r.range, '10.0–12.0%');
+});
+
+test('getIndianSectorWaccRange: Commodities sector', () => {
+  const r = getIndianSectorWaccRange('Energy', 'Oil & Gas Integrated');
+  assert.strictEqual(r.range, '11.0–13.0%');
+});
+
+test('getIndianSectorWaccRange: returns null for unknown sector', () => {
+  assert.strictEqual(getIndianSectorWaccRange('Real Estate', null), null);
+  assert.strictEqual(getIndianSectorWaccRange(null, null), null);
 });
 
 // ── isBankOrInsurance ────────────────────────────────────────────────────────
