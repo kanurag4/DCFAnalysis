@@ -1,10 +1,48 @@
 const assert = require('assert');
 const { test } = require('node:test');
 const {
-  safe, fmt, isBankOrInsurance, isFinancialSector, isRealEstateSector,
+  safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector,
   isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
 } = require('../www/utils.js');
+
+// ── deriveFcf ────────────────────────────────────────────────────────────────
+
+test('deriveFcf: prefers reported free cash flow', () => {
+  const r = deriveFcf(500e6, 800e6, -400e6);
+  assert.strictEqual(r.value, 500e6);
+  assert.strictEqual(r.method, 'reported');
+});
+
+test('deriveFcf: reported FCF used even when negative', () => {
+  const r = deriveFcf(-120e6, 800e6, -400e6);
+  assert.strictEqual(r.value, -120e6);
+  assert.strictEqual(r.method, 'reported');
+});
+
+test('deriveFcf: derives OCF minus CapEx when FCF missing', () => {
+  // capital-intensive: OCF 1000, CapEx 700 → FCF 300 (proxy would have said 800)
+  const r = deriveFcf(null, 1000e6, -700e6);
+  assert.strictEqual(r.value, 300e6);
+  assert.strictEqual(r.method, 'derived');
+});
+
+test('deriveFcf: CapEx magnitude used regardless of sign convention', () => {
+  assert.strictEqual(deriveFcf(null, 1000, -700).value, 300);
+  assert.strictEqual(deriveFcf(null, 1000, 700).value, 300);
+});
+
+test('deriveFcf: falls back to OCF x 0.8 only when CapEx also missing', () => {
+  const r = deriveFcf(null, 1000e6, null);
+  assert.strictEqual(r.value, 800e6);
+  assert.strictEqual(r.method, 'proxy');
+});
+
+test('deriveFcf: returns null when no cash flow data', () => {
+  const r = deriveFcf(null, null, null);
+  assert.strictEqual(r.value, null);
+  assert.strictEqual(r.method, 'none');
+});
 
 // ── isAsxTicker ──────────────────────────────────────────────────────────────
 

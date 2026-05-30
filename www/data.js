@@ -22,6 +22,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   if (!result) throw new Error(`No data for "${symbol}". Check the ticker spelling and market suffix (e.g. .AX, .NS).`);
 
   const inc = result.incomeStatementHistory?.incomeStatementHistory?.[0];
+  const cf  = result.cashflowStatementHistory?.cashflowStatements?.[0];
 
   // UK stocks quoted in pence (GBp): Yahoo returns price in pence but dividend
   // rates in GBP (pounds). Multiply dividends by 100 so all values are in pence.
@@ -47,6 +48,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     // DCF core inputs
     freeCashflow:      rawVal(result.financialData?.freeCashflow),
     operatingCashflow: rawVal(result.financialData?.operatingCashflow),
+    capitalExpenditures: rawVal(cf?.capitalExpenditures),  // negative in Yahoo (outflow); used for FCF = OCF − |CapEx|
     totalCash:         rawVal(result.financialData?.totalCash),
     totalDebt:         rawVal(result.financialData?.totalDebt),
     sharesOutstanding: rawVal(result.defaultKeyStatistics?.sharesOutstanding),

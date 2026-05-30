@@ -26,6 +26,21 @@ function escapeHtml(s) {
 // asset managers, exchanges, and other financials that still run on DCF.
 // Intentionally wider than isBankOrInsurance — see that function for the
 // subset that switches to DDM entirely.
+// Free cash flow to use for valuation, and how it was obtained.
+// Prefer Yahoo's reported FCF (already OCF − CapEx). If missing, derive it as
+// OCF − |CapEx| using actual capital expenditure. Only if CapEx is also missing
+// fall back to OCF × 0.8 — a rough proxy (CapEx ≈ 20% of OCF) that overstates
+// FCF for very capital-intensive businesses (miners, energy, utilities, telcos).
+// Returns { value, method } with method 'reported' | 'derived' | 'proxy' | 'none'.
+function deriveFcf(freeCashflow, operatingCashflow, capex) {
+  if (safe(freeCashflow) !== null) return { value: freeCashflow, method: 'reported' };
+  if (safe(operatingCashflow) !== null) {
+    if (safe(capex) !== null) return { value: operatingCashflow - Math.abs(capex), method: 'derived' };
+    return { value: operatingCashflow * 0.8, method: 'proxy' };
+  }
+  return { value: null, method: 'none' };
+}
+
 function isFinancialSector(sector) {
   return !!(sector && /financial|insurance/i.test(sector));
 }
@@ -121,6 +136,7 @@ function getAsxSectorWaccRange(sector, industry) {
 
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
+  deriveFcf,
   isFinancialSector, isRealEstateSector, isBankOrInsurance,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,

@@ -140,8 +140,9 @@ Intrinsic Value = Σ PV(D) + PV(TV)        ← per share directly (no net debt s
 
 - `interestExpense` from Yahoo is **negative** (expense convention) — `calculateWACC` uses `Math.abs()`
 - `debtToEquity` from Yahoo is a **percentage** (e.g. 53.2 means 53.2%) — divide by 100 before use
-- `freeCashflow` may be null for some ASX stocks — falls back to `operatingCashflow × 0.8`
-- `incomeStatementHistory` was added to Worker MODULES on 2026-05-29 for this tool
+- `freeCashflow` may be null for some ASX stocks. `deriveFcf()` (utils.js) handles the fallback: reported FCF → else `operatingCashflow − |capitalExpenditures|` (real CapEx) → else `operatingCashflow × 0.8` as a last resort. The `× 0.8` proxy assumes CapEx ≈ 20% of OCF and overstates FCF for capital-intensive firms, so it's only used when CapEx is also missing. Badge shows ✓ Yahoo / ≈ OCF − CapEx / ⚠ rough est.
+- `capitalExpenditures` from Yahoo is **negative** (outflow convention) — `deriveFcf` uses `Math.abs()`. Sourced from `cashflowStatementHistory.cashflowStatements[0]`.
+- `incomeStatementHistory` was added to Worker MODULES on 2026-05-29; `cashflowStatementHistory` added 2026-05-30 (for real-CapEx FCF) — both require Worker redeploy
 - **Beta for non-US stocks is measured vs S&P 500** — produces artificially low values for ASX, Indian, and other international stocks because their correlation to the US market is low. See section below.
 - **UK stocks (GBp): Yahoo returns price in pence but dividend rates in GBP (pounds).** `data.js` detects `currency === 'GBp'` and multiplies `dividendRate` and `trailingAnnualDividendRate` by 100 so all values are consistently in pence. Without this fix, DDM intrinsic for LLOY.L showed p0.67 vs price p101.90 → -99% MoS instead of the correct ~67p vs 101.90p.
 

@@ -222,10 +222,10 @@ function prefillInputs(data) {
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
   }
 
-  // ── FCF (DCF) — show raw Yahoo value; negative FCF is valid to display but can't be used ──
-  const fcf = data.freeCashflow ?? (data.operatingCashflow ? data.operatingCashflow * 0.8 : null);
-  const isFcfEstimated = data.freeCashflow === null && data.operatingCashflow !== null;
-  const isFcfNegative  = fcf !== null && fcf <= 0;
+  // ── FCF (DCF) — reported FCF, else OCF − CapEx, else OCF × 0.8 proxy ──
+  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+  const fcf = fcfInfo.value;
+  const isFcfNegative = fcf !== null && fcf <= 0;
 
   if (fcf !== null) {
     // Use raw display — don't run formatMoneyInput here as it strips the minus sign
@@ -233,9 +233,15 @@ function prefillInputs(data) {
     if (isFcfNegative) {
       els.fcfSource.textContent = '⚠ negative';
       els.fcfSource.className = 'fcf-source estimated';
+    } else if (fcfInfo.method === 'reported') {
+      els.fcfSource.textContent = '✓ Yahoo';
+      els.fcfSource.className = 'fcf-source confirmed';
+    } else if (fcfInfo.method === 'derived') {
+      els.fcfSource.textContent = '≈ OCF − CapEx';
+      els.fcfSource.className = 'fcf-source confirmed';
     } else {
-      els.fcfSource.textContent = isFcfEstimated ? '⚠ estimated' : '✓ Yahoo';
-      els.fcfSource.className = 'fcf-source ' + (isFcfEstimated ? 'estimated' : 'confirmed');
+      els.fcfSource.textContent = '⚠ rough est. (OCF × 0.8)';
+      els.fcfSource.className = 'fcf-source estimated';
     }
   } else {
     els.fcfInput.value = '';
@@ -451,11 +457,12 @@ function renderAll(data) {
 // ── Key metrics ───────────────────────────────────────────────────────────
 
 function renderSummary(data, sym) {
-  const fcf    = data.freeCashflow ?? (data.operatingCashflow ? data.operatingCashflow * 0.8 : null);
+  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+  const fcf     = fcfInfo.value;
   const netDebt = (data.totalDebt ?? 0) - (data.totalCash ?? 0);
   const range  = `${fmt(data.fiftyTwoWeekLow, 2, '', sym)} – ${fmt(data.fiftyTwoWeekHigh, 2, '', sym)}`;
-  const fcfNote = (data.freeCashflow === null && data.operatingCashflow !== null)
-    ? ' <span class="stat-warn">⚠ est.</span>' : '';
+  const fcfNote = fcfInfo.method === 'proxy'   ? ' <span class="stat-warn">⚠ est.</span>'
+                : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>' : '';
 
   els.summary.innerHTML = `
     <h2>${escapeHtml(data.name)} <span class="symbol">(${escapeHtml(data.ticker)})</span></h2>
@@ -760,7 +767,7 @@ function renderBreakeven(data, sym) {
   if (isBankIns || valuationModel === 'ddm' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }
-  const fcf = data.freeCashflow ?? (data.operatingCashflow ? data.operatingCashflow * 0.8 : null);
+  const fcf = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures).value;
   if (fcf !== null && fcf > 0) { els.breakevenCallout.hidden = true; return; }
 
   const targetMarginPct = parseFloat(els.targetMarginInput?.value);
