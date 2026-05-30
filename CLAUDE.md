@@ -16,7 +16,9 @@ KashVector DCF tool. Source repo — deploys to `kashvector.com/dcf/` by xcopy t
 | Phase 5b — DDM (`calc/ddm.js`, `tests/ddm.test.js`, app.js branching) | ✅ Done |
 | Phase 6 — Local testing + bug fixes | ✅ Done |
 | Phase 7 — Icon (`dcf-icon.svg`) | ✅ Done — thin price line on axes (yr1 +10%, yr2 −5%, yr3 +20%), green on muted axes |
-| Phase 8 — Deploy | ⏳ Pending — not started; awaiting go-ahead |
+| Phase 8 — Deploy | ✅ **Done — LIVE at kashvector.com/dcf/ (2026-05-30)** |
+
+**Deployed 2026-05-30.** Source repo committed + pushed (github.com/kanurag4/DCFAnalysis). Deployed via xcopy `www/` → `StockAnalysis/www/dcf/`, hub card added as #2, sitemap + ItemList JSON-LD updated, cross-tool nav DCF link added to 8 static pages + both kv-nav.js copies. StockAnalysis pushed (stock-evaluator repo main). Verified live: /dcf/ and /dcf-icon.svg both return 200.
 
 **Phase 6 — all passed (2026-05-30):**
 - QBE.AX ✅ — DDM seeding correct after beta floor + growth cap fix
