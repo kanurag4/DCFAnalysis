@@ -30,6 +30,41 @@ function isRealEstateSector(sector) {
   return !!(sector && /real estate/i.test(sector));
 }
 
+// Banks and insurers — FCF-based DCF is structurally broken for these, so the
+// tool defaults them to the Dividend Discount Model. Matches on industry first
+// (e.g. "Banks—Diversified", "Insurance—Property & Casualty") with a sector
+// fallback for insurance.
+function isBankOrInsurance(sector, industry) {
+  const s = sector || '';
+  const i = industry || '';
+  return /bank|insurance/i.test(i) || /insurance/i.test(s);
+}
+
+// Sustainable dividend growth seed. Dividends grow slower and steadier than
+// earnings, so we use earningsGrowth (then revenueGrowth) but clamp tighter
+// than deriveBaseGrowth. Falls back to 0.04.
+function deriveDividendGrowth(earningsGrowth, revenueGrowth) {
+  const g = [earningsGrowth, revenueGrowth].find(v => safe(v) !== null);
+  if (g === undefined) return 0.04;
+  // Cap at 6%: mature financials don't sustain high dividend growth the way
+  // earnings can spike in a good underwriting / credit year.
+  return Math.max(0.0, Math.min(0.06, g));
+}
+
+// Minimum beta to use when seeding DDM cost of equity for non-US markets.
+// Yahoo Finance computes beta against the S&P 500. For ASX / Indian / other
+// international stocks the correlation to the S&P 500 is low, producing
+// artificially small betas and therefore unrealistically low Re seeds.
+// US tickers (no suffix) get floor 0 — Yahoo's beta is correct by definition.
+function getMarketBetaFloor(ticker) {
+  if (!ticker) return 0;
+  const t = ticker.toUpperCase();
+  if (!t.includes('.')) return 0;       // US — no floor
+  if (t.endsWith('.AX')) return 0.5;    // ASX vs S&P 500 understates beta
+  if (t.endsWith('.NS') || t.endsWith('.BO')) return 0.6;  // India
+  return 0.5;                           // other international (.L, .HK, .DE …)
+}
+
 // Average of revenueGrowth + earningsGrowth, clamped to [-0.05, 0.25]. Falls back to 0.05.
 function deriveBaseGrowth(revenueGrowth, earningsGrowth) {
   const valid = [revenueGrowth, earningsGrowth].filter(v => safe(v) !== null);
@@ -40,5 +75,6 @@ function deriveBaseGrowth(revenueGrowth, earningsGrowth) {
 
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
-  isFinancialSector, isRealEstateSector, deriveBaseGrowth,
+  isFinancialSector, isRealEstateSector, isBankOrInsurance,
+  deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
 };

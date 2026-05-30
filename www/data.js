@@ -23,6 +23,11 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
 
   const inc = result.incomeStatementHistory?.incomeStatementHistory?.[0];
 
+  // UK stocks quoted in pence (GBp): Yahoo returns price in pence but dividend
+  // rates in GBP (pounds). Multiply dividends by 100 so all values are in pence.
+  const currency = result.summaryDetail?.currency ?? null;
+  const gbpToPence = currency === 'GBp' ? 100 : 1;
+
   // Derive tax rate so calc/wacc.js receives a plain 0–1 number
   const taxExpense = rawVal(inc?.incomeTaxExpense);
   const preTax     = rawVal(inc?.incomeBeforeTax);
@@ -60,12 +65,21 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     returnOnEquity:    rawVal(result.financialData?.returnOnEquity),
     dividendYield:     rawVal(result.summaryDetail?.dividendYield),
     priceToBook:       rawVal(result.defaultKeyStatistics?.priceToBook),
+    // DDM inputs (banks/insurance) — annual dividend per share.
+    // GBp stocks: Yahoo returns these in GBP (pounds) while price is in pence → multiply by 100.
+    dividendRate:               rawMul(result.summaryDetail?.dividendRate, gbpToPence),
+    trailingAnnualDividendRate: rawMul(result.defaultKeyStatistics?.trailingAnnualDividendRate, gbpToPence),
   };
 }
 
 function rawVal(obj) {
   const v = obj?.raw;
   return (v != null && isFinite(v)) ? v : null;
+}
+
+function rawMul(obj, multiplier) {
+  const v = rawVal(obj);
+  return v !== null ? v * multiplier : null;
 }
 
 function explainStatus(status, symbol) {

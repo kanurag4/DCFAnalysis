@@ -28,6 +28,19 @@ function calculateDCF({
   const netDebt = (totalDebt || 0) - (totalCash || 0);
   const equityValue = firmValue - netDebt;
 
+  // Net debt exceeds firm value — equity is worthless under DCF assumptions.
+  // Return null intrinsicValue so the UI can show a meaningful message rather
+  // than a nonsense negative share price.
+  if (equityValue < 0) {
+    return {
+      intrinsicValue: null, firmValue, equityValue, netDebt,
+      pvFcfs, pvTerminal, terminalValuePct,
+      forecastedFcfs, marginOfSafety: null,
+      cagr1yr: null, cagr3yr: null, cagr5yr: null,
+      negativeEquity: true,
+    };
+  }
+
   let intrinsicValue = null;
   if (sharesOutstanding && sharesOutstanding > 0) {
     intrinsicValue = equityValue / sharesOutstanding;
@@ -46,6 +59,7 @@ function calculateDCF({
     pvFcfs, pvTerminal, terminalValuePct,
     forecastedFcfs, marginOfSafety,
     cagr1yr, cagr3yr, cagr5yr,
+    negativeEquity: false,
   };
 }
 

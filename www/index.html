@@ -115,8 +115,13 @@
 
       <!-- LEFT: Inputs -->
       <aside class="inputs-panel">
+        <div id="model-toggle-row" class="model-toggle-row" hidden>
+          <span id="model-label" class="model-label"></span>
+          <button id="ddm-toggle" class="model-toggle-btn" type="button"></button>
+        </div>
+
         <div class="input-section">
-          <div class="input-row">
+          <div class="input-row" id="fcf-row">
             <label for="fcf-input">Free Cash Flow
               <span id="fcf-source" class="fcf-source"></span>
             </label>
@@ -127,6 +132,18 @@
               </label>
               <input type="text" id="fcf-normalized" inputmode="numeric">
             </div>
+          </div>
+          <div class="input-row" id="target-margin-row" hidden>
+            <label for="target-margin-input">Target FCF Margin %
+              <span class="tip" data-tip="What FCF margin do you expect this business to earn at maturity? Applied to current revenue to estimate a normalised FCF for the DCF. E.g. 15% for tech, 20% for SaaS, 8% for retail. Seeded from Yahoo's reported profit margin if available.">?</span>
+            </label>
+            <input type="number" id="target-margin-input" step="0.5" min="0.5" max="50" placeholder="e.g. 15">
+          </div>
+          <div class="input-row" id="dividend-row" hidden>
+            <label for="dividend-input">Annual Dividend / Share (D0)
+              <span class="tip" data-tip="Current annual dividend per share. The model grows this forward by your dividend growth rate. Seeded from Yahoo's trailing dividend.">?</span>
+            </label>
+            <input type="text" id="dividend-input" inputmode="decimal" placeholder="e.g. 4.65">
           </div>
           <div class="input-row">
             <label>Projection Years</label>
@@ -145,7 +162,7 @@
             <span class="scenario-label bull-label">Bull</span>
           </div>
           <div class="scenario-input-row">
-            <label>5yr Growth %</label>
+            <label id="growth-label">5yr Growth %</label>
             <input type="number" id="growth-bear" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-base" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-bull" class="scenario-num" step="0.5" min="-5" max="30">
@@ -157,8 +174,8 @@
             <input type="number" id="tgrowth-bull" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
           </div>
           <div class="scenario-input-row">
-            <label>WACC %
-              <span class="tip" data-tip="Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.">?</span>
+            <label id="discount-label">WACC %
+              <span id="discount-tip" class="tip" data-tip="Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.">?</span>
             </label>
             <input type="number" id="wacc-bear" class="scenario-num" step="0.1" min="1" max="25">
             <input type="number" id="wacc-base" class="scenario-num" step="0.1" min="1" max="25">
@@ -167,16 +184,20 @@
         </div>
 
         <details class="wacc-breakdown" id="wacc-details">
-          <summary>How WACC is calculated</summary>
+          <summary id="wacc-summary">How WACC is calculated</summary>
           <div id="wacc-breakdown-content"></div>
           <div class="wacc-assumptions">
             <label>Risk-free rate %
               <input type="number" id="rf-input" step="0.1" min="0" max="10" value="4.5">
             </label>
-            <label>Equity risk premium %
+            <label>
+              <span class="label-row">Equity risk premium %
+                <span class="tip" data-tip="The extra return investors demand for holding stocks over risk-free bonds. Default 5.5% is the long-run US historical premium (Damodaran). Use 4–5% for stable developed markets, 7–9% for emerging markets.">?</span>
+              </span>
               <input type="number" id="erp-input" step="0.1" min="1" max="15" value="5.5">
             </label>
           </div>
+          <button id="rf-erp-reset-btn" class="rf-erp-reset" type="button">↺ Reset to defaults</button>
         </details>
 
         <button id="recalc-btn" class="recalc-btn">↻ Recalculate</button>
@@ -186,13 +207,14 @@
       <div class="results-panel">
         <section id="summary" class="summary" hidden></section>
         <section id="financial-warning" class="financial-warning" hidden></section>
+        <section id="breakeven-callout" class="breakeven-callout" hidden></section>
         <section id="scenarios" class="scenarios-results" hidden></section>
         <section id="disclaimer" class="disclaimer" hidden>
           <p>⚠️ <strong>Not financial advice.</strong> DCF valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. Always use multiple valuation methods and consult a licensed financial adviser before making investment decisions.</p>
         </section>
         <section id="charts" class="charts-section" hidden>
           <div class="chart-card">
-            <h3>DCF Value Breakdown <span id="tv-warning" class="tv-warning" hidden>⚠ Terminal value &gt;70% — highly sensitive to terminal growth assumption</span></h3>
+            <h3><span id="breakdown-title">DCF Value Breakdown</span> <span id="tv-warning" class="tv-warning" hidden>⚠ Terminal value &gt;70% — highly sensitive to terminal growth assumption</span></h3>
             <canvas id="breakdown-chart"></canvas>
           </div>
           <div class="chart-card">
@@ -209,6 +231,18 @@
               <li><strong>Add a terminal value</strong> — Beyond the forecast period, the business keeps operating. Terminal value captures all future cash flows as a perpetuity growing at the terminal growth rate. <em>This often drives 60–80% of the total value — treat it with care.</em></li>
               <li><strong>Adjust for debt and cash</strong> — Subtract net debt (total debt minus cash) from firm value to get equity value. A cash-rich company is worth more per share.</li>
               <li><strong>Divide by shares outstanding</strong> — Equity value ÷ shares = intrinsic value per share. Compare to current price to find margin of safety and expected return.</li>
+            </ol>
+          </details>
+        </section>
+        <section id="how-ddm" class="how-dcf" hidden>
+          <details>
+            <summary>How the Dividend Discount Model works — a plain-English guide</summary>
+            <ol>
+              <li><strong>Why not DCF?</strong> — For banks and insurers, "free cash flow" is meaningless: deposits and reserves are raw materials, not owner earnings, and there is no clean capital structure to derive WACC from. The DDM values the stock from what it actually pays shareholders — dividends.</li>
+              <li><strong>Project the dividend</strong> — Start from the current annual dividend per share and grow it each year by your dividend growth rate over the projection period.</li>
+              <li><strong>Discount to today</strong> — Each future dividend is divided by (1 + cost of equity)<sup>year</sup>. Cost of equity comes from CAPM (risk-free rate + beta × equity risk premium) — no debt component.</li>
+              <li><strong>Add a terminal value</strong> — Beyond the forecast, dividends are valued as a perpetuity growing at the terminal growth rate (Gordon Growth Model), then discounted back.</li>
+              <li><strong>Sum to intrinsic value per share</strong> — Because dividends are already per share, the total is the intrinsic value per share directly — no net-debt or share-count step. Compare to current price for margin of safety and expected return.</li>
             </ol>
           </details>
         </section>
@@ -258,6 +292,7 @@
   <script src="data.js"></script>
   <script src="calc/wacc.js"></script>
   <script src="calc/dcf.js"></script>
+  <script src="calc/ddm.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
   <script src="app.js"></script>

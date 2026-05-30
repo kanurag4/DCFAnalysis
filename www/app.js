@@ -41,24 +41,63 @@ const els = {
   erpInput:     $('erp-input'),
   waccContent:  $('wacc-breakdown-content'),
   tvWarning:    $('tv-warning'),
+  howDdm:       $('how-ddm'),
+  // DDM model controls
+  modelToggleRow: $('model-toggle-row'),
+  modelLabel:     $('model-label'),
+  ddmToggle:      $('ddm-toggle'),
+  fcfRow:         $('fcf-row'),
+  dividendRow:    $('dividend-row'),
+  dividendInput:  $('dividend-input'),
+  growthLabel:    $('growth-label'),
+  discountLabel:  $('discount-label'),
+  discountTip:    $('discount-tip'),
+  waccSummary:      $('wacc-summary'),
+  breakdownTitle:   $('breakdown-title'),
+  rfErpResetBtn:    $('rf-erp-reset-btn'),
+  // Revenue-normalisation (negative FCF / growth companies)
+  targetMarginRow:  $('target-margin-row'),
+  targetMarginInput:$('target-margin-input'),
+  breakevenCallout: $('breakeven-callout'),
 };
 
-const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', GBP: '£', EUR: '€', HKD: 'HK$', SGD: 'S$' };
+const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
 const RECENT_KEY = 'dcf_recent_tickers';
 const RECENT_MAX = 8;
 
 let currentData   = null;
+let liveRfRate    = 4.5;   // updated when live Treasury yield is fetched
 let breakdownChart = null;
 let priceChart    = null;
+
+// Valuation model: 'dcf' (default) or 'ddm' (banks/insurance, or user-toggled).
+let valuationModel = 'dcf';
+// Per-model seed values computed at prefill, so toggling re-applies clean assumptions.
+let modelSeeds = null;
+// Whether the loaded stock pays a dividend (gates the optional DDM toggle).
+let dividendAvailable = false;
+// Cached discount-rate detail for the breakdown panel (re-rendered on model switch).
+let lastWaccResult = null;
+let lastCapm = null;
 
 // ── Init ──────────────────────────────────────────────────────────────────
 
 els.yearsSlider.addEventListener('input', () => {
   els.yearsDisplay.textContent = els.yearsSlider.value;
+  if (currentData) renderAll(currentData);
 });
 
 els.analyseBtn.addEventListener('click', onAnalyse);
 els.recalcBtn.addEventListener('click', onRecalc);
+if (els.ddmToggle) els.ddmToggle.addEventListener('click', onToggleModel);
+
+// Re-derive discount rates live as RF or ERP values change (debounced).
+let _waccTimer = null;
+const debouncedRecompute = () => { clearTimeout(_waccTimer); _waccTimer = setTimeout(recomputeDiscount, 350); };
+els.rfInput.addEventListener('input',  debouncedRecompute);
+els.erpInput.addEventListener('input', debouncedRecompute);
+// Reset RF + ERP to defaults, then recalculate.
+if (els.rfErpResetBtn) els.rfErpResetBtn.addEventListener('click', resetRfErp);
 
 els.input.addEventListener('keydown', e => {
   if (e.key === 'Enter') { hideAc(); onAnalyse(); }
@@ -152,7 +191,10 @@ function onRecalc() {
 // ── Pre-fill inputs ───────────────────────────────────────────────────────
 
 function prefillInputs(data) {
-  // FCF — show raw Yahoo value; negative FCF is valid to display but can't be used in DCF
+  const isBankIns = isBankOrInsurance(data.sector, data.industry);
+  valuationModel = isBankIns ? 'ddm' : 'dcf';
+
+  // ── FCF (DCF) — show raw Yahoo value; negative FCF is valid to display but can't be used ──
   const fcf = data.freeCashflow ?? (data.operatingCashflow ? data.operatingCashflow * 0.8 : null);
   const isFcfEstimated = data.freeCashflow === null && data.operatingCashflow !== null;
   const isFcfNegative  = fcf !== null && fcf <= 0;
@@ -173,12 +215,26 @@ function prefillInputs(data) {
     els.fcfSource.className = 'fcf-source estimated';
   }
 
-  // Financial sector: show normalised FCF field
-  if (isFinancialSector(data.sector) && els.fcfNormRow) {
-    els.fcfNormRow.hidden = false;
-    if (els.fcfNorm) {
+  // Target FCF margin (revenue normalisation) — shown for negative/null FCF non-bank stocks
+  const showTargetMargin = !isBankIns && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
+  if (els.targetMarginRow) {
+    els.targetMarginRow.hidden = !showTargetMargin;
+    if (showTargetMargin && els.targetMarginInput && !els.targetMarginInput.value) {
+      const seedMargin = (data.profitMargins != null && data.profitMargins > 0)
+        ? +(data.profitMargins * 100).toFixed(1)
+        : 10;
+      els.targetMarginInput.value = seedMargin;
+    }
+    if (!showTargetMargin && els.targetMarginInput) els.targetMarginInput.value = '';
+  }
+
+  // Normalised FCF row — only for OTHER financials (banks/insurance use DDM, not DCF)
+  const showNorm = isFinancialSector(data.sector) && !isBankIns;
+  if (els.fcfNormRow) {
+    els.fcfNormRow.hidden = !showNorm;
+    if (!showNorm && els.fcfNorm) els.fcfNorm.value = '';
+    if (showNorm && els.fcfNorm) {
       if (isFcfNegative || fcf === null) {
-        // Don't seed a negative default — leave empty so user must enter a positive estimate
         els.fcfNorm.value = '';
         els.fcfNorm.placeholder = 'Enter positive sustainable FCF';
       } else {
@@ -186,37 +242,157 @@ function prefillInputs(data) {
         els.fcfNorm.placeholder = '';
       }
     }
-  } else if (els.fcfNormRow) {
-    els.fcfNormRow.hidden = true;
   }
 
-  // Growth
-  const baseGrowth    = deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth);
-  const baseGrowthPct = +(baseGrowth * 100).toFixed(1);
-  els.growthBase.value = baseGrowthPct;
-  els.growthBear.value = +(Math.max(-5, baseGrowthPct * 0.5)).toFixed(1);
-  els.growthBull.value = +(Math.min(30, baseGrowthPct * 1.5)).toFixed(1);
-
-  // WACC
+  // ── WACC (also gives the CAPM cost of equity Re used to seed DDM) ──
   const rf  = parseFloat(els.rfInput.value)  / 100 || 0.045;
   const erp = parseFloat(els.erpInput.value) / 100 || 0.055;
+  const beta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
+
+  // Apply market-specific beta floor before seeding both WACC and DDM.
+  // Yahoo betas for non-US stocks are measured vs S&P 500 and understate
+  // domestic systematic risk. The floor affects the initial seed only —
+  // the user can override all inputs directly.
+  const betaFloor = getMarketBetaFloor(data.ticker);
+  const effectiveBeta = Math.max(beta, betaFloor);
+  const betaWasFloored = effectiveBeta > beta;
+
   const waccResult = calculateWACC({
     marketCap:       data.marketCap,
     totalDebt:       data.totalDebt,
-    beta:            data.beta,
+    beta:            effectiveBeta,
     interestExpense: data.interestExpense,
     taxRate:         data.taxRate,
     riskFreeRate:    rf,
     erp,
   });
 
-  if (waccResult) {
-    const waccPct = +(waccResult.wacc * 100).toFixed(2);
-    els.waccBase.value = waccPct;
-    els.waccBear.value = +(waccPct + 1).toFixed(2);
-    els.waccBull.value = +(Math.max(1, waccPct - 1)).toFixed(2);
-    renderWACCBreakdown(waccResult);
+  const re = rf + effectiveBeta * erp;
+  lastWaccResult = waccResult;
+  lastCapm = { re, rf, erp, beta: effectiveBeta, rawBeta: beta, betaWasFloored };
+
+  // ── DCF growth seeds ──
+  const baseGrowthPct = +(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100).toFixed(1);
+
+  // ── DDM seeds — D0 from trailing dividend → indicated rate → price × yield ──
+  const dividend = data.trailingAnnualDividendRate
+    ?? data.dividendRate
+    ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
+  dividendAvailable = dividend != null && dividend > 0;
+  const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
+  const rePct = +(re * 100).toFixed(2);
+
+  modelSeeds = {
+    dcf: {
+      growth:   { bear: +(Math.max(-5, baseGrowthPct * 0.5)).toFixed(1), base: baseGrowthPct, bull: +(Math.min(30, baseGrowthPct * 1.5)).toFixed(1) },
+      tgrowth:  { bear: 2.5, base: 2.5, bull: 2.5 },
+      discount: waccResult
+        ? { bear: +(waccResult.wacc * 100 + 1).toFixed(2), base: +(waccResult.wacc * 100).toFixed(2), bull: +(Math.max(1, waccResult.wacc * 100 - 1)).toFixed(2) }
+        : { bear: 11, base: 10, bull: 9 },
+    },
+    ddm: {
+      dividend,
+      growth:   { bear: +(Math.max(0, divGrowthPct * 0.5)).toFixed(1), base: divGrowthPct, bull: +(Math.min(12, divGrowthPct * 1.5)).toFixed(1) },
+      tgrowth:  { bear: 2.5, base: 2.5, bull: 2.5 },
+      discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
+    },
+  };
+
+  seedInputsForModel(valuationModel);
+  applyModelUI();
+}
+
+// Write a model's seed values into the shared scenario inputs.
+function seedInputsForModel(model) {
+  if (!modelSeeds) return;
+  const s = modelSeeds[model];
+  els.growthBear.value  = s.growth.bear;
+  els.growthBase.value  = s.growth.base;
+  els.growthBull.value  = s.growth.bull;
+  els.tgrowthBear.value = s.tgrowth.bear;
+  els.tgrowthBase.value = s.tgrowth.base;
+  els.tgrowthBull.value = s.tgrowth.bull;
+  els.waccBear.value    = s.discount.bear;
+  els.waccBase.value    = s.discount.base;
+  els.waccBull.value    = s.discount.bull;
+  if (model === 'ddm' && els.dividendInput) {
+    els.dividendInput.value = s.dividend != null ? (+s.dividend).toFixed(2) : '';
+    els.dividendInput.placeholder = s.dividend != null ? '' : 'Enter annual dividend / share';
   }
+}
+
+// Relabel shared inputs, swap input rows, and refresh the toggle + breakdown for the active model.
+function applyModelUI() {
+  const ddm = valuationModel === 'ddm';
+  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry);
+
+  if (els.fcfRow)      els.fcfRow.hidden = ddm;
+  if (els.dividendRow) els.dividendRow.hidden = !ddm;
+
+  if (els.growthLabel) els.growthLabel.textContent = ddm ? 'Div Growth %' : '5yr Growth %';
+  if (els.discountLabel && els.discountLabel.childNodes[0]) {
+    els.discountLabel.childNodes[0].nodeValue = ddm ? 'Cost of Equity % ' : 'WACC % ';
+  }
+  if (els.discountTip) els.discountTip.setAttribute('data-tip', ddm
+    ? 'Cost of equity via CAPM (risk-free + beta × equity risk premium). Higher = lower valuation.'
+    : 'Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.');
+  if (els.waccSummary)    els.waccSummary.textContent    = ddm ? 'How cost of equity is calculated' : 'How WACC is calculated';
+  if (els.breakdownTitle) els.breakdownTitle.textContent = ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown';
+
+  renderDiscountBreakdown();
+  updateModelToggle(isBankIns);
+}
+
+function updateModelToggle(isBankIns) {
+  if (!els.modelToggleRow) return;
+  if (isBankIns) {
+    // Banks/insurance are locked to DDM — show a static notice, no toggle.
+    els.modelToggleRow.hidden = false;
+    els.modelLabel.textContent = '🏦 Dividend Discount Model — DCF is unreliable for banks & insurers.';
+    if (els.ddmToggle) els.ddmToggle.hidden = true;
+    return;
+  }
+  if (!dividendAvailable) {
+    els.modelToggleRow.hidden = true;
+    return;
+  }
+  // Non-bank dividend payer — offer the optional DDM view.
+  els.modelToggleRow.hidden = false;
+  if (els.ddmToggle) els.ddmToggle.hidden = false;
+  if (valuationModel === 'ddm') {
+    els.modelLabel.textContent = 'Dividend Discount Model';
+    els.ddmToggle.textContent  = '← Back to DCF';
+  } else {
+    els.modelLabel.textContent = 'Discounted Cash Flow';
+    els.ddmToggle.textContent  = 'Value with DDM instead →';
+  }
+}
+
+function renderDiscountBreakdown() {
+  if (valuationModel === 'ddm') {
+    if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
+    const pct = v => (v * 100).toFixed(2) + '%';
+    const floorNote = lastCapm.betaWasFloored
+      ? `<div class="wacc-row"><span class="wacc-src wacc-floor-note">⚠ Yahoo beta (${lastCapm.rawBeta.toFixed(2)}) is measured vs S&P 500 and understates risk for this market. Floored to ${lastCapm.beta.toFixed(2)} — adjust if you have a local-market beta.</span></div>`
+      : '';
+    els.waccContent.innerHTML = `
+      <div class="wacc-row"><span>Cost of Equity (Re)</span><span class="wacc-val">${pct(lastCapm.re)}</span></div>
+      <div class="wacc-row"><span class="wacc-src">CAPM: RF ${pct(lastCapm.rf)} + Beta ${lastCapm.beta.toFixed(2)} × ERP ${pct(lastCapm.erp)}</span></div>
+      ${floorNote}
+      <div class="wacc-divider"></div>
+      <div class="wacc-row"><span class="wacc-src">No debt component — DDM discounts dividends at the cost of equity only.</span></div>
+    `;
+    return;
+  }
+  if (lastWaccResult) renderWACCBreakdown(lastWaccResult, lastCapm?.betaWasFloored, lastCapm?.rawBeta, lastCapm?.beta);
+  else els.waccContent.innerHTML = '';
+}
+
+function onToggleModel() {
+  valuationModel = valuationModel === 'ddm' ? 'dcf' : 'ddm';
+  seedInputsForModel(valuationModel);
+  applyModelUI();
+  if (currentData) renderAll(currentData);
 }
 
 // ── Render all ────────────────────────────────────────────────────────────
@@ -226,9 +402,13 @@ function renderAll(data) {
   renderSummary(data, sym);
   renderFinancialWarning(data, sym);
   const scenarios = buildScenarios(data);
+  renderBreakeven(data, sym);
   renderScenarios(scenarios, data, sym);
   renderCharts(scenarios, data.price, sym);
-  show(els.layout, els.howDcf, els.disclaimer);
+  // Show the explainer matching the active model
+  if (els.howDcf) els.howDcf.hidden = valuationModel === 'ddm';
+  if (els.howDdm) els.howDdm.hidden = valuationModel !== 'ddm';
+  show(els.layout, els.disclaimer);
 }
 
 // ── Key metrics ───────────────────────────────────────────────────────────
@@ -261,11 +441,15 @@ function renderSummary(data, sym) {
 
 // ── WACC breakdown ────────────────────────────────────────────────────────
 
-function renderWACCBreakdown(w) {
+function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
   const pct = v => (v * 100).toFixed(2) + '%';
+  const floorNote = betaWasFloored
+    ? `<div class="wacc-row"><span class="wacc-src wacc-floor-note">⚠ Yahoo beta (${(rawBeta).toFixed(2)}) is measured vs S&P 500 and understates risk for this market. Floored to ${(flooredBeta).toFixed(2)} — adjust if you have a local-market beta. For emerging markets (India, etc.) consider raising WACC further to account for country risk.</span></div>`
+    : '';
   els.waccContent.innerHTML = `
     <div class="wacc-row"><span>Cost of Equity (Re)</span><span class="wacc-val">${pct(w.re)}</span></div>
-    <div class="wacc-row"><span class="wacc-src">RF ${pct(w.riskFreeRate)} + Beta × ERP ${pct(w.erp)}</span></div>
+    <div class="wacc-row"><span class="wacc-src">RF ${pct(w.riskFreeRate)} + Beta ${flooredBeta != null ? flooredBeta.toFixed(2) : w.beta?.toFixed(2) ?? ''} × ERP ${pct(w.erp)}</span></div>
+    ${floorNote}
     <div class="wacc-row"><span>Cost of Debt (Rd) ${w.isRdEstimated ? '<span class="wacc-estimated">(estimated)</span>' : ''}</span><span class="wacc-val">${pct(w.rd)}</span></div>
     <div class="wacc-row"><span>Tax Rate (Tc) ${w.isTcEstimated ? '<span class="wacc-estimated">(estimated)</span>' : ''}</span><span class="wacc-val">${pct(w.tc)}</span></div>
     <div class="wacc-row"><span>Capital Structure</span><span class="wacc-val">E ${(w.eWeight * 100).toFixed(0)}% / D ${(w.dWeight * 100).toFixed(0)}%</span></div>
@@ -281,6 +465,30 @@ function renderFinancialWarning(data, sym) {
     els.finWarning.innerHTML = `
       <h3>⚠️ REIT Detected</h3>
       <p>Real Estate Investment Trusts are better valued using Funds from Operations (FFO), not Free Cash Flow. DCF results for REITs should be treated with significant caution.</p>
+    `;
+    show(els.finWarning);
+    return;
+  }
+  // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
+  if (isBankOrInsurance(data.sector, data.industry)) {
+    const kind = (/insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '')) ? 'Insurance' : 'Bank';
+    const reason = kind === 'Bank'
+      ? 'deposits are a raw material rather than funding, so there is no clean free cash flow and WACC cannot be derived the usual way'
+      : 'free cash flow is dominated by investment-portfolio and reserve movements, not owner earnings';
+    const pe  = fmt(data.trailingPE, 1, 'x');
+    const pb  = fmt(data.priceToBook, 2, 'x');
+    const roe = data.returnOnEquity !== null ? fmt(data.returnOnEquity * 100, 1, '%') : 'N/A';
+    const div = data.dividendYield  !== null ? fmt(data.dividendYield  * 100, 2, '%') : 'N/A';
+    els.finWarning.innerHTML = `
+      <h3>🏦 ${kind} — Dividend Discount Model</h3>
+      <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>Dividend Discount Model (DDM)</strong> instead${dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown'}.</p>
+      <p style="font-size:0.78rem;color:var(--kv-muted)">Key ${kind.toLowerCase()} valuation metrics:</p>
+      <div class="alt-multiples">
+        <div class="alt-multiple"><div class="am-label">P/B</div><div class="am-value">${pb}</div><div class="am-note">&lt;1 = below book</div></div>
+        <div class="alt-multiple"><div class="am-label">ROE</div><div class="am-value">${roe}</div><div class="am-note">Return on equity</div></div>
+        <div class="alt-multiple"><div class="am-label">P/E (TTM)</div><div class="am-value">${pe}</div><div class="am-note">Earnings multiple</div></div>
+        <div class="alt-multiple"><div class="am-label">Div Yield</div><div class="am-value">${div}</div><div class="am-note">Income signal</div></div>
+      </div>
     `;
     show(els.finWarning);
     return;
@@ -310,23 +518,64 @@ function renderFinancialWarning(data, sym) {
 // ── Build scenarios ───────────────────────────────────────────────────────
 
 function buildScenarios(data) {
-  const useNormFcf = isFinancialSector(data.sector) && els.fcfNorm && els.fcfNorm.value;
-  const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
-  const years  = parseInt(els.yearsSlider.value, 10);
-
+  const years   = parseInt(els.yearsSlider.value, 10);
   const configs = [
     { key: 'bear', growthEl: els.growthBear, tgEl: els.tgrowthBear, waccEl: els.waccBear },
     { key: 'base', growthEl: els.growthBase, tgEl: els.tgrowthBase, waccEl: els.waccBase },
     { key: 'bull', growthEl: els.growthBull, tgEl: els.tgrowthBull, waccEl: els.waccBull },
   ];
 
+  // ── DDM (banks/insurance, or user-toggled) ──
+  if (valuationModel === 'ddm') {
+    const dividend = els.dividendInput
+      ? parseFloat(String(els.dividendInput.value).replace(/,/g, ''))
+      : NaN;
+    return configs.map(({ key, growthEl, tgEl, waccEl }) => {
+      const growthRate     = parseFloat(growthEl.value) / 100 || 0;
+      const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
+      const costOfEquity   = parseFloat(waccEl.value)  / 100 || 0.09;
+      if (!(dividend > 0)) {
+        return { key, growthRate, terminalGrowth, wacc: costOfEquity, result: null, noDividend: true };
+      }
+      const result = calculateDDM({
+        dividend, growthRate, terminalGrowth, costOfEquity,
+        projectionYears: years, currentPrice: data.price,
+      });
+      return { key, growthRate, terminalGrowth, wacc: costOfEquity, result };
+    });
+  }
+
+  // ── DCF ──
+  // Normalised FCF only applies to non-bank/insurance financials.
+  const useNormFcf = isFinancialSector(data.sector)
+    && !isBankOrInsurance(data.sector, data.industry)
+    && els.fcfNorm && els.fcfNorm.value;
+  const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
+
+  // Revenue-normalised FCF for negative/null FCF growth companies
+  const targetMarginPct = els.targetMarginInput ? parseFloat(els.targetMarginInput.value) : NaN;
+  const normFcf = (!isNaN(targetMarginPct) && targetMarginPct > 0 && data.totalRevenue > 0)
+    ? data.totalRevenue * (targetMarginPct / 100)
+    : null;
+
   return configs.map(({ key, growthEl, tgEl, waccEl }) => {
     const growthRate     = parseFloat(growthEl.value) / 100 || 0.05;
     const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
     const wacc           = parseFloat(waccEl.value)  / 100 || 0.10;
 
-    // Guard: negative or zero FCF cannot produce a DCF result
     if (fcfRaw <= 0) {
+      // Use revenue normalisation if a target margin is set
+      if (normFcf !== null) {
+        const result = calculateDCF({
+          fcf: normFcf, growthRate, terminalGrowth, wacc,
+          projectionYears: years,
+          totalDebt:         data.totalDebt ?? 0,
+          totalCash:         data.totalCash ?? 0,
+          sharesOutstanding: data.sharesOutstanding,
+          currentPrice:      data.price,
+        });
+        return { key, growthRate, terminalGrowth, wacc, result, normalised: true };
+      }
       return { key, growthRate, terminalGrowth, wacc, result: null, fcfNegative: true };
     }
 
@@ -346,19 +595,32 @@ function buildScenarios(data) {
 // ── Render scenario cards ─────────────────────────────────────────────────
 
 function renderScenarios(scenarios, data, sym) {
-  const cards = scenarios.map(({ key, result, fcfNegative }) => {
+  const cards = scenarios.map(({ key, result, fcfNegative, noDividend, normalised }) => {
     if (!result) {
-      const msg = fcfNegative
-        ? isFinancialSector(currentData?.sector)
+      let msg;
+      if (noDividend) {
+        msg = 'No dividend data available — the Dividend Discount Model needs a dividend. Enter an annual dividend per share in the inputs panel, or use the metrics above.';
+      } else if (fcfNegative) {
+        msg = isFinancialSector(currentData?.sector)
           ? 'Reported FCF is negative. Enter a positive Normalised FCF in the inputs panel to run the DCF.'
-          : 'FCF is negative — DCF requires positive free cash flow. This company may not be suitable for DCF valuation.'
-        : 'WACC must exceed the terminal growth rate.';
+          : 'FCF is negative — DCF requires positive free cash flow. This company may not be suitable for DCF valuation.';
+      } else {
+        msg = valuationModel === 'ddm'
+          ? 'Cost of equity must exceed the terminal growth rate.'
+          : 'WACC must exceed the terminal growth rate.';
+      }
       return `<div class="scenario-card ${key}">
         <div class="sc-header ${key}">${key.toUpperCase()}</div>
         <div class="sc-no-result">${msg}</div>
       </div>`;
     }
     if (result.intrinsicValue === null) {
+      if (result.negativeEquity) {
+        return `<div class="scenario-card ${key}">
+          <div class="sc-header ${key}">${key.toUpperCase()}</div>
+          <div class="sc-no-result">Net debt (${formatMarketCap(result.netDebt, sym)}) exceeds DCF firm value (${formatMarketCap(result.firmValue, sym)}). Under these assumptions the equity is worth zero on a DCF basis. The stock is likely priced on future growth or asset value — try a higher growth rate or check the FCF is not inflated by one-off items.</div>
+        </div>`;
+      }
       return `<div class="scenario-card ${key}">
         <div class="sc-header ${key}">${key.toUpperCase()}</div>
         <div style="font-size:0.82rem;color:var(--kv-muted);margin-top:8px;">Shares outstanding unavailable — showing firm value only.</div>
@@ -381,33 +643,99 @@ function renderScenarios(scenarios, data, sym) {
       <div class="sc-cagr-row"><span>1 yr</span><span class="cagr-val">${fmtCagr(result.cagr1yr)}</span></div>
       <div class="sc-cagr-row highlight"><span>3 yrs</span><span class="cagr-val">${fmtCagr(result.cagr3yr)}</span></div>
       <div class="sc-cagr-row"><span>5 yrs</span><span class="cagr-val">${fmtCagr(result.cagr5yr)}</span></div>
-      <div class="sc-caveat">Assumes market price converges to intrinsic value. No guarantee of timing.</div>
+      <div class="sc-caveat">Assumes market price converges to intrinsic value. No guarantee of timing.${normalised ? ' FCF estimated as Revenue × target margin.' : ''}</div>
     </div>`;
   }).join('');
 
-  els.scenarios.innerHTML = `<h3>Intrinsic Value Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)</h3><div class="scenario-cards">${cards}</div>`;
+  const isNormalised = scenarios.some(s => s.normalised);
+  const heading = isNormalised
+    ? `Intrinsic Value Estimate (${parseInt(els.yearsSlider.value, 10)}-yr · Revenue-normalised)`
+    : `Intrinsic Value Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`;
+  els.scenarios.innerHTML = `<h3>${heading}</h3><div class="scenario-cards">${cards}</div>`;
   show(els.scenarios);
 }
 
 function fmtCagr(v) {
-  if (v === null || v === undefined) return 'N/A';
+  if (v === null || v === undefined || !isFinite(v)) return 'N/A';
   const pct = (v * 100).toFixed(1);
   return `<span class="${v >= 0 ? 'stat-up' : 'stat-down'}">${v >= 0 ? '+' : ''}${pct}% p.a.</span>`;
 }
 
 // ── Charts ────────────────────────────────────────────────────────────────
 
+// ── Revenue normalisation helpers ─────────────────────────────────────────
+
+// Projects when FCF turns positive given linear margin improvement from
+// currentMargin to targetMargin over `years`, at `revenueGrowth` per year.
+function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, years) {
+  if (!revenue || targetMargin <= 0 || !isFinite(currentMargin)) return null;
+  if (currentMargin >= 0) return null; // already positive
+  const deltaPerYear = (targetMargin - currentMargin) / years;
+  if (deltaPerYear <= 0) return null;
+  // Exact breakeven: currentMargin + t × deltaPerYear = 0
+  const t = Math.ceil(-currentMargin / deltaPerYear);
+  if (t > 15) return { year: null };
+  const breakevenRevenue = revenue * Math.pow(1 + revenueGrowth, t);
+  const breakevenFcf     = breakevenRevenue * (currentMargin + t * deltaPerYear);
+  return { year: t, fcf: breakevenFcf };
+}
+
+function renderBreakeven(data, sym) {
+  if (!els.breakevenCallout) return;
+  const isBankIns = isBankOrInsurance(data.sector, data.industry);
+  if (isBankIns || valuationModel === 'ddm' || !data.totalRevenue) {
+    els.breakevenCallout.hidden = true; return;
+  }
+  const fcf = data.freeCashflow ?? (data.operatingCashflow ? data.operatingCashflow * 0.8 : null);
+  if (fcf !== null && fcf > 0) { els.breakevenCallout.hidden = true; return; }
+
+  const targetMarginPct = parseFloat(els.targetMarginInput?.value);
+  if (isNaN(targetMarginPct) || targetMarginPct <= 0) { els.breakevenCallout.hidden = true; return; }
+
+  const currentMargin    = fcf !== null ? fcf / data.totalRevenue : -0.1;
+  const targetMargin     = targetMarginPct / 100;
+  const revenueGrowth    = parseFloat(els.growthBase.value) / 100 || 0.1;
+  const years            = parseInt(els.yearsSlider.value, 10);
+  const normFcf          = data.totalRevenue * targetMargin;
+
+  const bk = computeBreakeven(data.totalRevenue, currentMargin, targetMargin, revenueGrowth, years);
+  const normLine = `Valuation uses <strong>${formatMarketCap(normFcf, sym)}</strong> normalised FCF (revenue × ${targetMarginPct}% target margin).`;
+
+  let msg;
+  if (!bk) {
+    msg = `${normLine}`;
+  } else if (bk.year === null) {
+    msg = `At ${(revenueGrowth * 100).toFixed(1)}% revenue growth, FCF does not turn positive within the forecast period — consider a higher target margin. ${normLine}`;
+  } else {
+    msg = `At ${(revenueGrowth * 100).toFixed(1)}% revenue growth, FCF is estimated to turn positive in <strong>Year ${bk.year}</strong> (${formatMarketCap(bk.fcf, sym)}). ${normLine}`;
+  }
+
+  els.breakevenCallout.innerHTML = `<span class="be-icon">📈</span><span>${msg}</span>`;
+  els.breakevenCallout.hidden = false;
+}
+
 function renderCharts(scenarios, currentPrice, sym) {
   const labels = ['Bear', 'Base', 'Bull'];
 
   // Terminal value warning
-  const maxTVPct = Math.max(...scenarios.filter(s => s.result).map(s => s.result.terminalValuePct));
+  const withResult = scenarios.filter(s => s.result);
+  const maxTVPct = withResult.length ? Math.max(...withResult.map(s => s.result.terminalValuePct)) : 0;
   els.tvWarning.hidden = maxTVPct <= 70;
 
-  // Chart 1: Stacked bar — PV FCFs (green) + PV Terminal Value (orange)
-  // Green = near-term certain cash flows; Orange = uncertain terminal value
-  const pvFcfTotals = scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
-  const pvTerminals  = scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
+  const ddm = valuationModel === 'ddm';
+
+  // Chart 1: Stacked bar — near-term PV (green) + PV Terminal Value (orange).
+  // DCF works in $B of firm value; DDM works in per-share currency units.
+  const stackNear = ddm
+    ? scenarios.map(s => s.result ? +s.result.pvDividends.reduce((a, b) => a + b, 0).toFixed(2) : 0)
+    : scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
+  const stackTerminal = ddm
+    ? scenarios.map(s => s.result ? +s.result.pvTerminal.toFixed(2) : 0)
+    : scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
+
+  const fmtBar    = ddm ? (v => `${sym}${v.toFixed(2)}`) : (v => `${sym}${v.toFixed(1)}B`);
+  const labelMin  = ddm ? 0.01 : 0.5;
+  const nearLabel = ddm ? 'PV of Dividends (forecast years)' : 'PV of FCFs (forecast years)';
 
   if (breakdownChart) breakdownChart.destroy();
   breakdownChart = new Chart($('breakdown-chart'), {
@@ -415,8 +743,8 @@ function renderCharts(scenarios, currentPrice, sym) {
     data: {
       labels,
       datasets: [
-        { label: 'PV of FCFs (forecast years)', data: pvFcfTotals, backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
-        { label: 'PV of Terminal Value',         data: pvTerminals,  backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
+        { label: nearLabel,               data: stackNear,     backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
+        { label: 'PV of Terminal Value',  data: stackTerminal, backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
       ],
     },
     options: {
@@ -426,7 +754,7 @@ function renderCharts(scenarios, currentPrice, sym) {
         datalabels: {
           color: '#fff',
           font: { size: 10, weight: 'bold' },
-          formatter: (value) => value >= 0.5 ? `${sym}${value.toFixed(1)}B` : '',
+          formatter: (value) => value >= labelMin ? fmtBar(value) : '',
           anchor: 'center',
           align: 'center',
         },
@@ -435,7 +763,7 @@ function renderCharts(scenarios, currentPrice, sym) {
         x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(51,65,85,0.5)' } },
         y: {
           stacked: true,
-          ticks: { color: '#94a3b8', callback: v => `${sym}${v.toFixed(1)}B` },
+          ticks: { color: '#94a3b8', callback: v => fmtBar(v) },
           grid: { color: 'rgba(51,65,85,0.5)' },
           afterFit: scale => { scale.width = 72; },
         },
@@ -590,7 +918,7 @@ function showError(msg) {
 }
 
 function hideResults() {
-  [els.summary, els.finWarning, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.layout]
+  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.layout]
     .forEach(el => { if (el) el.hidden = true; });
   els.status.hidden = true;
 }
@@ -630,6 +958,61 @@ function parseMoney(el) {
 // Fetch live US 10-year Treasury yield via ^TNX through the Worker.
 // ^TNX price on Yahoo Finance = yield in % (e.g. 4.25 means 4.25%).
 // Updates the RF rate input silently; keeps 4.5% default on any failure.
+// Re-derive WACC (DCF) or cost of equity (DDM) from current RF + ERP inputs,
+// update the scenario discount inputs and breakdown panel, then re-render.
+// Called whenever the user edits the RF or ERP fields.
+function resetRfErp() {
+  els.rfInput.value  = liveRfRate;
+  els.erpInput.value = 5.5;
+  recomputeDiscount();
+}
+
+function recomputeDiscount() {
+  if (!currentData) return;
+  const rf  = parseFloat(els.rfInput.value)  / 100 || 0.045;
+  const erp = parseFloat(els.erpInput.value) / 100 || 0.055;
+  const rawBeta = (currentData.beta != null && isFinite(currentData.beta) && currentData.beta > 0)
+    ? currentData.beta : 1.0;
+  const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(currentData.ticker));
+  const betaWasFloored = effectiveBeta > rawBeta;
+
+  if (valuationModel === 'ddm') {
+    const re    = rf + effectiveBeta * erp;
+    const rePct = +(re * 100).toFixed(2);
+    els.waccBase.value = rePct;
+    els.waccBear.value = +(rePct + 1).toFixed(2);
+    els.waccBull.value = +(Math.max(1, rePct - 1)).toFixed(2);
+    lastCapm = { re, rf, erp, beta: effectiveBeta, rawBeta, betaWasFloored };
+  } else {
+    const waccResult = calculateWACC({
+      marketCap:       currentData.marketCap,
+      totalDebt:       currentData.totalDebt,
+      beta:            effectiveBeta,
+      interestExpense: currentData.interestExpense,
+      taxRate:         currentData.taxRate,
+      riskFreeRate:    rf,
+      erp,
+    });
+    if (waccResult) {
+      const waccPct = +(waccResult.wacc * 100).toFixed(2);
+      els.waccBase.value = waccPct;
+      els.waccBear.value = +(waccPct + 1).toFixed(2);
+      els.waccBull.value = +(Math.max(1, waccPct - 1)).toFixed(2);
+      lastWaccResult = waccResult;
+      lastCapm = { ...lastCapm, rf, erp, beta: effectiveBeta, rawBeta, betaWasFloored };
+    } else {
+      // No capital structure data — fall back to pure CAPM (Re only)
+      const re    = rf + effectiveBeta * erp;
+      const rePct = +(re * 100).toFixed(2);
+      els.waccBase.value = rePct;
+      els.waccBear.value = +(rePct + 1).toFixed(2);
+      els.waccBull.value = +(Math.max(1, rePct - 1)).toFixed(2);
+    }
+  }
+  renderDiscountBreakdown();
+  renderAll(currentData);
+}
+
 async function fetchAndSetRiskFreeRate() {
   try {
     const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent('^TNX')}`;
@@ -643,16 +1026,28 @@ async function fetchAndSetRiskFreeRate() {
       result?.financialData?.currentPrice?.raw;
     if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
       const yieldPct = +raw.toFixed(2);
+      liveRfRate = yieldPct;
       els.rfInput.value = yieldPct;
       els.rfInput.title = `Live US 10-yr Treasury yield: ${yieldPct}%`;
-      // Add a small live indicator next to the input label
+      // Build: "Risk-free rate %  ● live" on one row, then input, then note below
       const rfLabel = els.rfInput.closest('label');
       if (rfLabel && !rfLabel.querySelector('.rf-live')) {
-        const badge = document.createElement('span');
-        badge.className = 'rf-live';
-        badge.textContent = '● live';
-        badge.title = 'Fetched from US 10-year Treasury yield (^TNX)';
-        rfLabel.insertBefore(badge, els.rfInput);
+        const textNode = [...rfLabel.childNodes].find(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim());
+        if (textNode) {
+          const headerRow = document.createElement('span');
+          headerRow.className = 'rf-header-row';
+          headerRow.textContent = textNode.textContent.trim();
+          const badge = document.createElement('span');
+          badge.className = 'rf-live';
+          badge.textContent = '● live';
+          badge.title = 'US 10-year Treasury yield (^TNX)';
+          headerRow.appendChild(badge);
+          rfLabel.replaceChild(headerRow, textNode);
+        }
+        const note = document.createElement('span');
+        note.className = 'rf-note';
+        note.textContent = 'US 10-yr Treasury yield (^TNX)';
+        rfLabel.appendChild(note);
       }
     }
   } catch (_) {
