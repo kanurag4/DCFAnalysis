@@ -211,6 +211,12 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
 .wacc-total { color: var(--kv-accent); font-weight: 700; }
 .wacc-estimated { color: var(--kv-warn); font-size: 0.72rem; }
 .wacc-floor-note { color: var(--kv-warn); line-height: 1.5; }
+/* Franking credits collapsible (ASX only) */
+.wacc-franking { margin-top: 8px; }
+.wacc-franking summary { cursor: pointer; color: var(--kv-accent); font-size: 0.78rem; padding: 2px 0; list-style: none; }
+.wacc-franking summary::-webkit-details-marker { display: none; }
+.wacc-franking p { font-size: 0.75rem; color: var(--kv-muted); line-height: 1.6; margin: 6px 0 0; }
+.wacc-franking code { background: var(--kv-card-2); padding: 1px 4px; border-radius: 3px; font-size: 0.72rem; font-family: monospace; }
 .wacc-assumptions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .wacc-assumptions label { font-size: 0.78rem; color: var(--kv-muted); display: flex; flex-direction: column; gap: 3px; }
 .wacc-assumptions .label-row { display: flex; align-items: center; gap: 4px; }

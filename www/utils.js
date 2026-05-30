@@ -73,8 +73,25 @@ function deriveBaseGrowth(revenueGrowth, earningsGrowth) {
   return Math.max(-0.05, Math.min(0.25, avg));
 }
 
+function isAsxTicker(ticker) {
+  return !!(ticker && ticker.toUpperCase().endsWith('.AX'));
+}
+
+// Returns { label, range } for the known ASX sector WACC reference ranges,
+// or null when the sector/industry doesn't match any known category.
+function getAsxSectorWaccRange(sector, industry) {
+  const combined = `${(industry || '')} ${(sector || '')}`.toLowerCase();
+  if (/bank|insurance|financial/.test(combined))              return { label: 'Banking & Financials',     range: '8.5–9.5%'  };
+  if (/mining|resource|material|gold|steel|coal|iron|copper/.test(combined)) return { label: 'Mining & Resources', range: '10.0–12.0%' };
+  if (/real estate|reit|property/.test(combined))             return { label: 'Real Estate (A-REIT)',      range: '7.5–9.0%'  };
+  if (/health|biotech|pharmaceutical|medical/.test(combined)) return { label: 'Healthcare & Biotech',     range: '8.5–10.0%' };
+  if (/utilit|infrastructure|gas|electric|water|transport/.test(combined)) return { label: 'Utilities & Infrastructure', range: '6.5–8.0%' };
+  return null;
+}
+
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   isFinancialSector, isRealEstateSector, isBankOrInsurance,
+  isAsxTicker, getAsxSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
 };

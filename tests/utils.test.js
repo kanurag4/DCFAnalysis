@@ -2,8 +2,55 @@ const assert = require('assert');
 const { test } = require('node:test');
 const {
   safe, fmt, isBankOrInsurance, isFinancialSector, isRealEstateSector,
+  isAsxTicker, getAsxSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
 } = require('../www/utils.js');
+
+// ── isAsxTicker ──────────────────────────────────────────────────────────────
+
+test('isAsxTicker: returns true for .AX suffix', () => {
+  assert.ok(isAsxTicker('CBA.AX'));
+  assert.ok(isAsxTicker('bhp.ax')); // case-insensitive
+});
+
+test('isAsxTicker: returns false for non-ASX tickers', () => {
+  assert.ok(!isAsxTicker('AAPL'));
+  assert.ok(!isAsxTicker('LLOY.L'));
+  assert.ok(!isAsxTicker('RELIANCE.NS'));
+  assert.ok(!isAsxTicker(null));
+});
+
+// ── getAsxSectorWaccRange ─────────────────────────────────────────────────────
+
+test('getAsxSectorWaccRange: banking sector', () => {
+  const r = getAsxSectorWaccRange('Financial Services', 'Banks—Diversified');
+  assert.strictEqual(r.range, '8.5–9.5%');
+});
+
+test('getAsxSectorWaccRange: mining sector', () => {
+  const r = getAsxSectorWaccRange('Basic Materials', 'Copper Mining');
+  assert.strictEqual(r.range, '10.0–12.0%');
+});
+
+test('getAsxSectorWaccRange: utilities sector', () => {
+  const r = getAsxSectorWaccRange('Utilities', 'Utilities—Regulated Gas');
+  assert.strictEqual(r.range, '6.5–8.0%');
+});
+
+test('getAsxSectorWaccRange: healthcare sector', () => {
+  const r = getAsxSectorWaccRange('Healthcare', 'Biotechnology');
+  assert.strictEqual(r.range, '8.5–10.0%');
+});
+
+test('getAsxSectorWaccRange: real estate sector', () => {
+  const r = getAsxSectorWaccRange('Real Estate', 'REIT—Industrial');
+  assert.strictEqual(r.range, '7.5–9.0%');
+});
+
+test('getAsxSectorWaccRange: returns null for unknown sector', () => {
+  assert.strictEqual(getAsxSectorWaccRange('Technology', 'Software'), null);
+  assert.strictEqual(getAsxSectorWaccRange(null, null), null);
+});
 
 // ── isBankOrInsurance ────────────────────────────────────────────────────────
 
