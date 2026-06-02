@@ -15,7 +15,7 @@ const { evaluateStock } = require('./lib/evaluate.js');
 const { rankRows, rankFunnel } = require('./lib/rank.js');
 const { mergeFirstSeen } = require('./lib/firstSeen.js');
 
-const TOP_N = 10;
+const TOP_N = 20;
 const MAX_MARGIN = 0.8;   // drop > 80% margins — the most assumption-fragile valuations
 const CACHE = path.join(__dirname, '_evaluated.json'); // gitignored scratch (scripts/_*)
 
