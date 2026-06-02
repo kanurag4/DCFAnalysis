@@ -1,0 +1,75 @@
+// www/asx-undervalued/app.js — DOM-only. Pure helpers live in ../utils.js.
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $('status');
+  const tableEl = $('rank-table');
+  const bodyEl = $('rank-body');
+  const asAtEl = $('as-at');
+
+  async function getJSON(url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Failed to load ${url} (${res.status})`);
+    return res.json();
+  }
+
+  async function fetchLivePrices(tickers) {
+    try {
+      const base = (CONFIG.YAHOO_PROXY_URL || '').replace(/\/$/, '');
+      const url = `${base}/quote?symbols=${encodeURIComponent(tickers.join(','))}`;
+      const arr = await getJSON(url);
+      const map = {};
+      for (const q of arr) if (q && q.symbol) map[q.symbol] = q.regularMarketPrice;
+      return map;
+    } catch (_) {
+      return {}; // live prices are best-effort; fall back to snapshot price
+    }
+  }
+
+  function pct(x) { return `${(x * 100).toFixed(1)}%`; }
+
+  function row(r, livePrice, firstSeen) {
+    const price = (typeof livePrice === 'number' && livePrice > 0) ? livePrice : r.snapshotPrice;
+    const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
+    const sym = r.currency === 'GBp' ? 'p' : '$';
+    const fs = firstSeen ? `${firstSeen.firstSeen} @ ${sym}${Number(firstSeen.firstPrice).toFixed(2)}` : '—';
+    const tag = r.method === 'DDM' ? 'ddm' : 'dcf';
+    return `<tr>
+      <td>${r.rank}</td>
+      <td><div class="tk">${escapeHtml(r.ticker)}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
+      <td>${escapeHtml(r.sector || '—')}</td>
+      <td><span class="tag ${tag}">${r.method}</span></td>
+      <td class="num">${sym}${r.intrinsic.toFixed(2)}</td>
+      <td class="num">${sym}${Number(r.snapshotPrice).toFixed(2)}</td>
+      <td class="num">${sym}${Number(price).toFixed(2)}</td>
+      <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
+      <td class="num">${pct(r.wacc)}</td>
+      <td class="num">${r.terminalValuePct == null ? '—' : r.terminalValuePct.toFixed(0) + '%'}</td>
+      <td class="num">${r.trailingPE == null ? '—' : r.trailingPE.toFixed(1)}</td>
+      <td>${fs}</td>
+    </tr>`;
+  }
+
+  async function init() {
+    let rankings, firstSeen;
+    try {
+      [rankings, firstSeen] = await Promise.all([
+        getJSON('./rankings.json'),
+        getJSON('./first-seen.json').catch(() => ({})),
+      ]);
+    } catch (err) {
+      statusEl.textContent = 'Could not load the rankings. Please try again later.';
+      return;
+    }
+
+    asAtEl.textContent = `As at ${rankings.asAt}.`;
+    const rows = rankings.rows || [];
+    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
+
+    const live = await fetchLivePrices(rows.map(r => r.ticker));
+    bodyEl.innerHTML = rows.map(r => row(r, live[r.ticker], firstSeen[r.ticker])).join('');
+    statusEl.hidden = true;
+    tableEl.hidden = false;
+  }
+
+  init();
+}());
