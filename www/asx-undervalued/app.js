@@ -84,7 +84,7 @@
       return;
     }
 
-    asAtEl.textContent = `As at ${rankings.asAt}.`;
+    asAtEl.textContent = `As at ${rankings.asAt} · refreshed monthly.`;
     renderScreenSummary(rankings.summary);
     const rows = rankings.rows || [];
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
