@@ -20,6 +20,7 @@ function evaluateStock(data, params) {
   const base = {
     ticker: data.ticker, name: data.name, sector: data.sector,
     snapshotPrice: data.price, currency: data.currency, trailingPE: data.trailingPE,
+    marketCap: data.marketCap, operatingMargin: data.operatingMargins, analystTarget: data.targetMeanPrice,
   };
 
   // Banks/insurers → DDM (FCF-based DCF is structurally broken for them).

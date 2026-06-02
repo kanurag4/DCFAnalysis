@@ -69,6 +69,8 @@ function mapQuoteSummary(body, symbol) {
     trailingPE:        rawVal(result.summaryDetail?.trailingPE),
     totalRevenue:      rawVal(result.financialData?.totalRevenue),
     profitMargins:     rawVal(result.financialData?.profitMargins),
+    operatingMargins:  rawVal(result.financialData?.operatingMargins),
+    targetMeanPrice:   rawVal(result.financialData?.targetMeanPrice),
     fiftyTwoWeekHigh:  rawVal(result.summaryDetail?.fiftyTwoWeekHigh),
     fiftyTwoWeekLow:   rawVal(result.summaryDetail?.fiftyTwoWeekLow),
     // Financial sector alternative multiples

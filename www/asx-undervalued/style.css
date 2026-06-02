@@ -52,7 +52,7 @@ main { max-width:1100px; margin:0 auto; padding:20px 16px 0; }
 
 .table-card { background:var(--kv-card); border:1px solid var(--kv-border); border-radius:12px; width:100%; min-width:0; overflow:hidden; }
 .table-scroll { overflow-x:auto; }
-#rank-table { width:100%; min-width:880px; border-collapse:collapse; font-size:0.85rem; }
+#rank-table { width:100%; min-width:1120px; border-collapse:collapse; font-size:0.85rem; }
 #rank-table th, #rank-table td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--kv-border); white-space:nowrap; }
 #rank-table th { color:var(--kv-muted); font-weight:600; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.03em; }
 #rank-table td.num, #rank-table th.num { text-align:right; }

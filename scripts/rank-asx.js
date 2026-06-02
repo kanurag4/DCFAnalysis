@@ -105,6 +105,9 @@ function rankAndWrite({ asAt, tickerCount, evaluated }) {
     wacc: +r.wacc.toFixed(4),
     terminalValuePct: r.terminalValuePct != null ? +r.terminalValuePct.toFixed(1) : null,
     trailingPE: r.trailingPE != null ? +r.trailingPE.toFixed(1) : null,
+    marketCap: r.marketCap != null ? Math.round(r.marketCap) : null,
+    operatingMargin: r.operatingMargin != null ? +r.operatingMargin.toFixed(4) : null,
+    analystTarget: r.analystTarget != null ? +r.analystTarget.toFixed(2) : null,
     currency: r.currency ?? 'AUD',
   }));
 

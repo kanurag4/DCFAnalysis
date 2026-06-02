@@ -50,17 +50,23 @@
     const sym = r.currency === 'GBp' ? 'p' : '$';
     const fs = firstSeen ? `${firstSeen.firstSeen} @ ${sym}${Number(firstSeen.firstPrice).toFixed(2)}` : '—';
     const tag = r.method === 'DDM' ? 'ddm' : 'dcf';
+    const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, sym);
+    const target = (r.analystTarget == null) ? '—' : `${sym}${r.analystTarget.toFixed(2)}`;
+    const opMargin = (r.operatingMargin == null) ? '—' : `${(r.operatingMargin * 100).toFixed(1)}%`;
     return `<tr>
       <td>${r.rank}</td>
       <td><div class="tk">${escapeHtml(r.ticker)}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
       <td>${escapeHtml(r.sector || '—')}</td>
+      <td class="num">${mktCap}</td>
       <td><span class="tag ${tag}">${r.method}</span></td>
       <td class="num">${sym}${r.intrinsic.toFixed(2)}</td>
+      <td class="num">${target}</td>
       <td class="num">${sym}${Number(r.snapshotPrice).toFixed(2)}</td>
       <td class="num">${sym}${Number(price).toFixed(2)}</td>
       <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
       <td class="num">${pct(r.wacc)}</td>
       <td class="num">${r.terminalValuePct == null ? '—' : r.terminalValuePct.toFixed(0) + '%'}</td>
+      <td class="num">${opMargin}</td>
       <td class="num">${r.trailingPE == null ? '—' : r.trailingPE.toFixed(1)}</td>
       <td>${fs}</td>
     </tr>`;

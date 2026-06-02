@@ -5,7 +5,7 @@ const { mapQuoteSummary } = require('../www/data.js');
 const sample = {
   quoteSummary: { result: [{
     quoteType: { longName: 'BHP Group', shortName: 'BHP' },
-    financialData: { currentPrice: { raw: 40 }, freeCashflow: { raw: 1000 }, operatingCashflow: { raw: 1500 }, totalCash: { raw: 200 }, totalDebt: { raw: 500 }, revenueGrowth: { raw: 0.05 }, earningsGrowth: { raw: 0.07 } },
+    financialData: { currentPrice: { raw: 40 }, freeCashflow: { raw: 1000 }, operatingCashflow: { raw: 1500 }, totalCash: { raw: 200 }, totalDebt: { raw: 500 }, revenueGrowth: { raw: 0.05 }, earningsGrowth: { raw: 0.07 }, operatingMargins: { raw: 0.18 }, targetMeanPrice: { raw: 52.5 } },
     summaryDetail: { marketCap: { raw: 200000 }, beta: { raw: 0.9 }, currency: 'AUD', dividendRate: { raw: 2 }, dividendYield: { raw: 0.05 } },
     defaultKeyStatistics: { sharesOutstanding: { raw: 5000 }, trailingAnnualDividendRate: { raw: 2.1 } },
     assetProfile: { sector: 'Basic Materials', industry: 'Other Industrial Metals & Mining' },
@@ -24,6 +24,9 @@ test('maps core DCF fields from a quoteSummary payload', () => {
   assert.strictEqual(d.beta, 0.9);
   assert.strictEqual(d.taxRate, 0.3); // 30/100
   assert.strictEqual(d.trailingAnnualDividendRate, 2.1);
+  assert.strictEqual(d.marketCap, 200000);
+  assert.strictEqual(d.operatingMargins, 0.18);
+  assert.strictEqual(d.targetMeanPrice, 52.5);
 });
 
 test('throws a clear error when result is empty', () => {
