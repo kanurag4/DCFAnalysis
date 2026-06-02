@@ -32,10 +32,11 @@
     if (!el || !s) return;
     const d = s.dropped || {};
     const parts = [];
+    const capPct = s.marginCapPct || 80;
     if (d.overvalued) parts.push(`${d.overvalued} overvalued`);
     if (d.unvaluable) parts.push(`${d.unvaluable} unvaluable`);
     if (d.proxyFcf) parts.push(`${d.proxyFcf} with rough cash-flow data`);
-    if (d.marginOver150) parts.push(`${d.marginOver150} with implausible margins`);
+    if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
     el.innerHTML = `From ${s.tickers} ASX 300 names, <strong>${s.qualified} qualified</strong> this month` +

@@ -1,7 +1,12 @@
 // scripts/rank-asx.js
 // Monthly batch: evaluate the ASX 300 base case, rank by margin of safety,
 // write www/asx-undervalued/rankings.json + merge first-seen.json.
-// Run: node scripts/rank-asx.js   (reads scripts/asx300.json)
+//
+//   node scripts/rank-asx.js            fetch all tickers, evaluate, rank, write
+//   node scripts/rank-asx.js --rerank   re-rank the LAST run's cached data (no fetch)
+//
+// --rerank lets you tune filters (e.g. the margin cap) instantly without a 16-min
+// re-fetch. The fetch phase caches the evaluated set to scripts/_evaluated.json.
 const fs = require('node:fs');
 const path = require('node:path');
 const { fetchSymbol } = require('./fetch-yahoo.js');
@@ -9,6 +14,10 @@ const { marketParamsFor } = require('./lib/market.js');
 const { evaluateStock } = require('./lib/evaluate.js');
 const { rankRows, rankFunnel } = require('./lib/rank.js');
 const { mergeFirstSeen } = require('./lib/firstSeen.js');
+
+const TOP_N = 10;
+const MAX_MARGIN = 0.8;   // drop > 80% margins — the most assumption-fragile valuations
+const CACHE = path.join(__dirname, '_evaluated.json'); // gitignored scratch (scripts/_*)
 
 // Read the proxy URL straight from www/config.js without a DOM.
 function readProxyUrl() {
@@ -27,7 +36,8 @@ async function fetchAusRf(proxyUrl) {
   return (pct && pct > 0 && pct < 0.15) ? pct : 0.048;
 }
 
-async function main() {
+// Fetch + evaluate every ticker. Returns { asAt, tickers, evaluated }.
+async function gather() {
   const proxyUrl = readProxyUrl();
   const tickers = JSON.parse(fs.readFileSync(path.join(__dirname, 'asx300.json'), 'utf8'));
   const asAt = new Date().toISOString().slice(0, 10);
@@ -64,16 +74,23 @@ async function main() {
     console.log(`Sweep recovered ${failed.length - stillFailed.length}; ${stillFailed.length} unrecoverable: ${stillFailed.join(', ') || '—'}`);
   }
 
-  const ranked = rankRows(evaluated, { topN: 10, maxMargin: 1.5 });
-  const f = rankFunnel(evaluated, { maxMargin: 1.5 });
-  const fetchFailed = tickers.length - evaluated.length;
+  const out = { asAt, tickerCount: tickers.length, evaluated };
+  fs.writeFileSync(CACHE, JSON.stringify(out) + '\n'); // cache for --rerank
+  return out;
+}
+
+function rankAndWrite({ asAt, tickerCount, evaluated }) {
+  const ranked = rankRows(evaluated, { topN: TOP_N, maxMargin: MAX_MARGIN });
+  const f = rankFunnel(evaluated, { maxMargin: MAX_MARGIN });
+  const fetchFailed = tickerCount - evaluated.length;
+  const capPct = Math.round(MAX_MARGIN * 100);
   console.log(
-    `\nFunnel: ${tickers.length} tickers → ${fetchFailed} fetch-failed → ${f.evaluated} evaluated` +
+    `\nFunnel: ${tickerCount} tickers → ${fetchFailed} fetch-failed → ${f.evaluated} evaluated` +
     `\n        − ${f.unvaluable} unvaluable (no/neg FCF, neg equity, bank w/o dividend)` +
     `\n        − ${f.overvalued} overvalued (price ≥ intrinsic)` +
-    `\n        − ${f.capped} margin > 150% (likely one-off-inflated FCF)` +
+    `\n        − ${f.capped} margin > ${capPct}% (likely one-off-inflated FCF)` +
     `\n        − ${f.proxyDropped} rough proxy-FCF (no reported FCF or CapEx)` +
-    `\n        = ${f.kept} qualified → showing top ${ranked.length} (cap 10)`
+    `\n        = ${f.kept} qualified → showing top ${ranked.length} (cap ${TOP_N})`
   );
 
   const outDir = path.join(__dirname, '../www/asx-undervalued');
@@ -92,15 +109,16 @@ async function main() {
   }));
 
   const summary = {
-    tickers: tickers.length,
+    tickers: tickerCount,
     evaluated: f.evaluated,
     qualified: f.kept,
     shown: ranked.length,
+    marginCapPct: capPct,
     dropped: {
       fetchFailed,
       unvaluable: f.unvaluable,
       overvalued: f.overvalued,
-      marginOver150: f.capped,
+      marginOverCap: f.capped,
       proxyFcf: f.proxyDropped,
     },
   };
@@ -115,6 +133,18 @@ async function main() {
   console.log(`\nTop ${rounded.length}:`);
   for (const r of rounded) console.log(`  ${r.rank}. ${r.ticker} ${(r.marginOfSafety * 100).toFixed(0)}% (${r.method})`);
   console.log(`\nWrote ${outDir}\\rankings.json and first-seen.json`);
+}
+
+async function main() {
+  let data;
+  if (process.argv.includes('--rerank')) {
+    if (!fs.existsSync(CACHE)) throw new Error('No cached data — run `node scripts/rank-asx.js` (without --rerank) first.');
+    data = JSON.parse(fs.readFileSync(CACHE, 'utf8'));
+    console.log(`Re-ranking ${data.evaluated.length} cached rows from ${data.asAt} (no fetch).`);
+  } else {
+    data = await gather();
+  }
+  rankAndWrite(data);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });
