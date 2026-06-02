@@ -18,6 +18,12 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   try { body = await res.json(); }
   catch (_) { throw new Error('The data service returned an unreadable response. Please try again.'); }
 
+  return mapQuoteSummary(body, symbol);
+}
+
+// Pure: maps a Yahoo quoteSummary JSON body to the DCF tool's data shape.
+// No network, no DOM — safe to import in Node for the batch ranking job.
+function mapQuoteSummary(body, symbol) {
   const result = body?.quoteSummary?.result?.[0];
   if (!result) throw new Error(`No data for "${symbol}". Check the ticker spelling and market suffix (e.g. .AX, .NS).`);
 
@@ -94,3 +100,5 @@ function explainStatus(status, symbol) {
   if (status >= 500) return 'Yahoo Finance looks temporarily unavailable. Try again in a minute.';
   return `Data service error (HTTP ${status}). Please try again.`;
 }
+
+if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary };
