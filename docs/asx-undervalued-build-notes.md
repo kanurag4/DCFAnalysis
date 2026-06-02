@@ -105,6 +105,11 @@ review the funnel + top 10, **stop for human approval**, then publish. Filters c
 instantly via a `--rerank` cache (re-rank last run's data without re-fetching) — that's how
 the 150%→80% cap change was made without another 16-minute run.
 
+## Article style reference
+When drafting, follow the existing KashVector article style/structure in
+`C:\Projects\Articles` (e.g. the DCF & DDM piece already cross-linked from the tool).
+The user will pair-write it with Claude later — this doc is the source material.
+
 ## 6. Possible article angles / titles
 - "What happens when you DCF the entire ASX 300?" (findings-led)
 - "The bug that returned the right-looking wrong answer" (the rate-limit silent-failure story)
