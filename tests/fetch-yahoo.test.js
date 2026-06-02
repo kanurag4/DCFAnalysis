@@ -22,3 +22,28 @@ test('fetchSymbol returns null on HTTP error (so the batch can skip it)', async 
   const d = await fetchSymbol('BAD.AX', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
   assert.strictEqual(d, null);
 });
+
+test('fetchSymbol retries on transient failure then succeeds', async () => {
+  const ok = { quoteSummary: { result: [{ quoteType: { longName: 'Retry Co' },
+    financialData: { currentPrice: { raw: 9 } }, summaryDetail: { currency: 'AUD' },
+    defaultKeyStatistics: {}, assetProfile: {} }] } };
+  let calls = 0;
+  const fakeFetch = async () => {
+    calls++;
+    if (calls < 3) return { ok: false, status: 429, json: async () => ({}) }; // rate-limited twice
+    return { ok: true, status: 200, json: async () => ok };
+  };
+  const noSleep = async () => {};
+  const d = await fetchSymbol('RTY.AX', { fetchImpl: fakeFetch, proxyUrl: 'https://x', retries: 3, sleepImpl: noSleep });
+  assert.strictEqual(calls, 3);
+  assert.strictEqual(d.name, 'Retry Co');
+});
+
+test('fetchSymbol gives up and returns null after exhausting retries', async () => {
+  let calls = 0;
+  const fakeFetch = async () => { calls++; return { ok: false, status: 429, json: async () => ({}) }; };
+  const noSleep = async () => {};
+  const d = await fetchSymbol('NOPE.AX', { fetchImpl: fakeFetch, proxyUrl: 'https://x', retries: 2, sleepImpl: noSleep });
+  assert.strictEqual(d, null);
+  assert.strictEqual(calls, 3); // initial + 2 retries
+});

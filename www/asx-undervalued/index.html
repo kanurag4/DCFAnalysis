@@ -53,6 +53,18 @@
       Always do your own research. <span id="as-at" class="as-at"></span></p>
     </section>
 
+    <section class="rules-card">
+      <h2 class="rules-title">How a stock makes this list</h2>
+      <p class="rules-intro">Every ASX 300 company is run through the base-case engine, then must clear <strong>all four</strong> rules below. The list is capped at 10 — so a strict month can show fewer.</p>
+      <ul class="rules-list">
+        <li><strong>Undervalued</strong> — base-case intrinsic value is above the current price (positive margin of safety). Most large caps trade above their conservative base case and are screened out here.</li>
+        <li><strong>Valuable by the model</strong> — produced a real intrinsic value. Companies with no/negative free cash flow, with net debt exceeding firm value, or banks/insurers paying no dividend can't be valued and are dropped.</li>
+        <li><strong>Real cash flow</strong> — free cash flow came from a reported figure or operating cash flow minus capital expenditure. The rough <em>OCF × 0.8</em> proxy is excluded because it fakes undervaluation.</li>
+        <li><strong>Plausible margin</strong> — margin of safety is 150% or less. Larger gaps are almost always one-off-inflated cash flow (e.g. asset sales), not genuine bargains.</li>
+      </ul>
+      <p id="screen-summary" class="screen-summary" hidden></p>
+    </section>
+
     <section class="table-card">
       <div id="status" class="status">Loading rankings…</div>
       <div class="table-scroll">

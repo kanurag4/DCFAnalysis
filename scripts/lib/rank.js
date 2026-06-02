@@ -14,4 +14,20 @@ function rankRows(rows, { topN = 10, maxMargin = 1.5 } = {}) {
   return kept.slice(0, topN).map((r, i) => ({ ...r, rank: i + 1 }));
 }
 
-module.exports = { rankRows };
+// Pure: categorise every evaluated row into mutually-exclusive funnel buckets,
+// using the SAME predicates (and order) as rankRows so the two can't drift.
+// Lets the orchestrator print why stocks were dropped each run.
+function rankFunnel(rows, { maxMargin = 1.5 } = {}) {
+  let unvaluable = 0, overvalued = 0, capped = 0, proxyDropped = 0, kept = 0;
+  for (const r of rows) {
+    if (r.excluded || r.intrinsic == null || r.marginOfSafety == null) { unvaluable++; continue; }
+    if (r.marginOfSafety <= 0) { overvalued++; continue; }            // not undervalued
+    if (r.marginOfSafety > maxMargin) { capped++; continue; }         // implausible margin
+    const realFcf = (r.method === 'DDM' || r.fcfMethod === 'reported' || r.fcfMethod === 'derived');
+    if (!realFcf) { proxyDropped++; continue; }                       // rough proxy FCF
+    kept++;
+  }
+  return { evaluated: rows.length, unvaluable, overvalued, capped, proxyDropped, kept };
+}
+
+module.exports = { rankRows, rankFunnel };

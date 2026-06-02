@@ -27,6 +27,22 @@
 
   function pct(x) { return `${(x * 100).toFixed(1)}%`; }
 
+  function renderScreenSummary(s) {
+    const el = $('screen-summary');
+    if (!el || !s) return;
+    const d = s.dropped || {};
+    const parts = [];
+    if (d.overvalued) parts.push(`${d.overvalued} overvalued`);
+    if (d.unvaluable) parts.push(`${d.unvaluable} unvaluable`);
+    if (d.proxyFcf) parts.push(`${d.proxyFcf} with rough cash-flow data`);
+    if (d.marginOver150) parts.push(`${d.marginOver150} with implausible margins`);
+    if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
+    const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
+    el.innerHTML = `From ${s.tickers} ASX 300 names, <strong>${s.qualified} qualified</strong> this month` +
+      `${s.shown < s.qualified ? ` (showing the top ${s.shown})` : ''}.${dropText}`;
+    el.hidden = false;
+  }
+
   function row(r, livePrice, firstSeen) {
     const price = (typeof livePrice === 'number' && livePrice > 0) ? livePrice : r.snapshotPrice;
     const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
@@ -62,6 +78,7 @@
     }
 
     asAtEl.textContent = `As at ${rankings.asAt}.`;
+    renderScreenSummary(rankings.summary);
     const rows = rankings.rows || [];
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
 
