@@ -32,7 +32,32 @@ KashVector DCF tool. Source repo — deploys to `kashvector.com/dcf/` by xcopy t
 - Light mode ✅
 - Invalid ticker ✅
 
-**Next up (when ready): Phase 7 — Icon, Phase 8 — Deploy. Do not proceed until asked.**
+---
+
+## Feature: Most Undervalued ASX 300 screen — ✅ LIVE (2026-06-02)
+
+Monthly screen at **kashvector.com/dcf/asx-undervalued/** ranking the ASX 300 by base-case
+DCF/DDM margin of safety. Offline Node batch (`scripts/`, dev-only, never deployed) reuses
+the live tool's pure calc modules unchanged. Shows **top 20** at an **80% margin cap**.
+
+- Batch: `node scripts/rank-asx.js` (~16 min, 3.2s throttle + retry — see rate-limit note),
+  then `--rerank` re-ranks the cached `_evaluated.json` instantly (tune `TOP_N`/`MAX_MARGIN`).
+- Monthly refresh runbook: **`/refresh-asx-undervalued`** skill (run → review funnel/top-N →
+  approve → publish).
+- Columns: Fair value (bold green), Mkt cap, Analyst tgt, Op margin, WACC/Re, TV%, P/E,
+  margin, first-seen. Filters: undervalued · valuable · real-FCF (drop OCF×0.8 proxy) · ≤80% margin.
+- **Rate-limit gotcha:** Worker caps 20 req/60s per IP; 400ms throttle silently 429'd ~80%
+  of fetches. The `rankFunnel` (`fetch-failed` count) exposes this — keep it ~0.
+- Build notes / article material: `docs/asx-undervalued-build-notes.md`.
+- Published companion article: `kashvector.com/articles/most-undervalued-asx-300/`.
+
+### TOMORROW: extend the screen to the S&P 500
+Build a "Most Undervalued S&P 500" list the same way. The batch is already parameterised for
+it — `marketParamsFor` has US branches (no `.AX` suffix → US RF ~4.5% / ERP 5.5%, **no beta
+floor**), and `evaluateStock`/`rankRows` are market-agnostic. Plan: generate `scripts/sp500.json`
+(top ~500 US tickers), add a US RF fetch (`^TNX`), a second output page (or a market toggle),
+and decide whether it's a separate page or a tabbed view. Spec extension noted in the original
+design doc (S&P 500 was the planned next market).
 
 ---
 
