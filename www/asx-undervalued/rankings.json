@@ -1,0 +1,20 @@
+{
+  "asAt": "2026-06-02",
+  "universe": "ASX 300",
+  "rows": [
+    {
+      "rank": 1,
+      "ticker": "TLS.AX",
+      "name": "Telstra Group Limited",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 8.03,
+      "snapshotPrice": 5.15,
+      "marginOfSafety": 0.5592,
+      "wacc": 0.0681,
+      "terminalValuePct": 82.4,
+      "trailingPE": 25.8,
+      "currency": "AUD"
+    }
+  ]
+}
