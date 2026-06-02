@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+  <title>Most Undervalued ASX 300 Stocks — DCF Screen | KashVector</title>
+  <meta name="description" content="A monthly, automated DCF/DDM screen of the ASX 300 ranking stocks by margin of safety. Not financial advice — assumptions-driven. Free, no sign-up.">
+  <script src="/kv-theme.js"></script>
+  <script src="/kv-banner.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="../../dcf-icon.svg">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Most Undervalued ASX 300 Stocks","url":"https://kashvector.com/dcf/asx-undervalued/","description":"Automated monthly DCF/DDM screen ranking ASX 300 stocks by margin of safety.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"}}
+  </script>
+</head>
+<body>
+  <header class="app-header">
+    <a href="../../" class="home-logo" aria-label="All KashVector tools">
+      <img src="../../logo.svg" alt="KashVector" width="32" height="32">
+      <span class="home-logo-label">← All tools</span>
+    </a>
+    <div class="app-header-center">
+      <h1>
+        <img src="../../dcf-icon.svg" alt="" width="32" height="32" style="vertical-align:middle;margin-right:8px;border-radius:6px">
+        Most Undervalued ASX 300
+      </h1>
+      <p>A monthly DCF/DDM screen, ranked by margin of safety</p>
+    </div>
+    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
+  </header>
+
+  <nav class="kv-tool-nav" aria-label="KashVector tools">
+    <a href="/stock/">Stock Evaluator</a>
+    <a href="/dcf/" class="kv-nav-active" aria-current="page">DCF Valuation</a>
+    <a href="/budget/">Budget</a>
+    <a href="/debt-recycling/">Debt Recycling</a>
+    <a href="/portfolio-health/">Portfolio</a>
+    <a href="/fire/">FIRE</a>
+    <a href="/mortgage/">Mortgage Calculator</a>
+    <a href="/super-compare/">Salary Sacrifice</a>
+    <a href="/rent-vs-buy/">Rent vs Buy</a>
+    <a href="/life-buyback/">Life Buyback</a>
+    <a href="/budget-impact/">Budget Impact</a>
+    <a href="/articles/">Articles</a>
+  </nav>
+
+  <main>
+    <section class="editorial">
+      <p>⚠️ <strong>This is an automated screen, not financial advice or a recommendation.</strong>
+      It shows where a <strong>base-case</strong> DCF (or DDM for banks/insurers) valuation sits
+      above the current price. DCF is highly sensitive to assumptions — see the method note below.
+      Always do your own research. <span id="as-at" class="as-at"></span></p>
+    </section>
+
+    <section class="table-card">
+      <div id="status" class="status">Loading rankings…</div>
+      <div class="table-scroll">
+        <table id="rank-table" hidden>
+          <thead>
+            <tr>
+              <th>#</th><th>Stock</th><th>Sector</th><th>Method</th>
+              <th class="num">Intrinsic</th><th class="num">Price (as at)</th>
+              <th class="num">Live price</th><th class="num">Margin (live)</th>
+              <th class="num">WACC/Re</th><th class="num">TV %</th>
+              <th class="num">P/E</th><th>First seen</th>
+            </tr>
+          </thead>
+          <tbody id="rank-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tool-info">
+      <div class="tool-about">
+        <h2>About this screen</h2>
+        <p>Each month we run every ASX 300 company through the same base-case engine as the
+        <a href="../">DCF Valuation tool</a>: a five-year cash-flow projection, 2.5% terminal growth,
+        and a WACC derived from market data. Banks and insurers — where DCF doesn't work — are valued
+        with a Dividend Discount Model instead and labelled <strong>DDM</strong>.</p>
+        <p>We rank by <strong>margin of safety</strong> (how far intrinsic value sits above price) and
+        show the top 10. Stocks with unreliable cash-flow data, no positive cash flow, or implausibly
+        large margins are filtered out, because those are usually data artifacts rather than bargains.</p>
+      </div>
+      <div class="tool-faq">
+        <h2>Frequently asked questions</h2>
+        <details class="faq-item"><summary>Is this a buy list?</summary><p>No. It's a starting point for research. A DCF says what a stock is worth <em>if</em> a set of assumptions hold — and small changes in those assumptions move the answer a lot. Treat it as a screen, not advice.</p></details>
+        <details class="faq-item"><summary>How often is it updated?</summary><p>Roughly monthly. The "as at" date at the top shows when the snapshot was taken. The current price shown updates live each time you open the page.</p></details>
+        <details class="faq-item"><summary>Why are some stocks valued with DDM?</summary><p>Banks and insurers have cash flows (deposits, reserves) that aren't owner earnings, so DCF overstates them. For those we use a Dividend Discount Model and label the row DDM.</p></details>
+        <details class="faq-item"><summary>What does "first seen" mean?</summary><p>The date a stock first entered this list and its price then. It's shown for transparency — it is <strong>not</strong> a performance or return claim.</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>⚠️ Not financial advice. Valuations are estimates based on assumptions and public data; they may be wrong. Consult a licensed adviser before investing.</p>
+    <p><a href="../../">← All KashVector tools</a></p>
+  </footer>
+
+  <script src="../config.js"></script>
+  <script src="../utils.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
