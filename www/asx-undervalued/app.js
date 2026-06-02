@@ -59,7 +59,7 @@
       <td>${escapeHtml(r.sector || '—')}</td>
       <td class="num">${mktCap}</td>
       <td><span class="tag ${tag}">${r.method}</span></td>
-      <td class="num">${sym}${r.intrinsic.toFixed(2)}</td>
+      <td class="num fv">${sym}${r.intrinsic.toFixed(2)}</td>
       <td class="num">${target}</td>
       <td class="num">${sym}${Number(r.snapshotPrice).toFixed(2)}</td>
       <td class="num">${sym}${Number(price).toFixed(2)}</td>
