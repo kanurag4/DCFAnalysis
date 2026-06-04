@@ -53,6 +53,13 @@
     const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, sym);
     const target = (r.analystTarget == null) ? '—' : `${sym}${r.analystTarget.toFixed(2)}`;
     const opMargin = (r.operatingMargin == null) ? '—' : `${(r.operatingMargin * 100).toFixed(1)}%`;
+    // % change from first-listed price to live price — tracks whether the screen's picks performed
+    const firstPrice = firstSeen ? Number(firstSeen.firstPrice) : null;
+    const sinceListed = (firstPrice && firstPrice > 0 && price > 0)
+      ? (price - firstPrice) / firstPrice : null;
+    const sinceListedHtml = sinceListed == null
+      ? '—'
+      : `<span class="${sinceListed >= 0 ? 'pos' : 'neg'}">${sinceListed >= 0 ? '+' : ''}${pct(sinceListed)}</span>`;
     return `<tr>
       <td>${r.rank}</td>
       <td><div class="tk">${escapeHtml(r.ticker)}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
@@ -61,9 +68,9 @@
       <td><span class="tag ${tag}">${r.method}</span></td>
       <td class="num fv">${sym}${r.intrinsic.toFixed(2)}</td>
       <td class="num">${target}</td>
-      <td class="num">${sym}${Number(r.snapshotPrice).toFixed(2)}</td>
       <td class="num">${sym}${Number(price).toFixed(2)}</td>
       <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
+      <td class="num">${sinceListedHtml}</td>
       <td class="num">${pct(r.wacc)}</td>
       <td class="num">${r.terminalValuePct == null ? '—' : r.terminalValuePct.toFixed(0) + '%'}</td>
       <td class="num">${opMargin}</td>
