@@ -53,19 +53,23 @@
     <section class="editorial">
       <p>⚠️ <strong>This is an automated screen, not financial advice or a recommendation.</strong>
       It shows where a <strong>base-case</strong> DCF (or DDM for banks/insurers) valuation sits
-      above the current price. DCF is highly sensitive to assumptions — see the method note below.
-      This is <strong>purely quantitative</strong>: it does not read news, judge management quality,
-      or weigh competitive position, litigation, or recent events. Always do your own research.
+      above the current price. For non-bank financial companies (exchanges, asset managers, payment
+      networks), reported free cash flow is normalised downward — matching the same adjustment the
+      <a href="../">DCF tool</a> applies. DCF is highly sensitive to assumptions — see the method
+      note below. This is <strong>purely quantitative</strong>: it does not read news, judge
+      management quality, or weigh competitive position, litigation, or recent events. Always do
+      your own research.
       <span id="as-at" class="as-at"></span></p>
     </section>
 
     <section class="rules-card">
       <h2 class="rules-title">How a stock makes this list</h2>
-      <p class="rules-intro">Every ASX 300 company is run through the base-case engine, then must clear <strong>all four</strong> rules below. The list is capped at 20 — so a strict month can show fewer.</p>
+      <p class="rules-intro">Every ASX 300 company is run through the base-case engine, then must clear <strong>all five</strong> rules below. The list is capped at 20 — so a strict month can show fewer.</p>
       <ul class="rules-list">
         <li><strong>Undervalued</strong> — base-case intrinsic value is above the current price (positive margin of safety). Most large caps trade above their conservative base case and are screened out here.</li>
         <li><strong>Valuable by the model</strong> — produced a real intrinsic value. Companies with no/negative free cash flow, with net debt exceeding firm value, or banks/insurers paying no dividend can't be valued and are dropped.</li>
         <li><strong>Real cash flow</strong> — free cash flow came from a reported figure or operating cash flow minus capital expenditure. The rough <em>OCF × 0.8</em> proxy is excluded because it fakes undervaluation.</li>
+        <li><strong>Normalised for financials</strong> — for non-bank financial companies (exchanges, asset managers, payment networks), reported free cash flow overstates owner earnings. The screen applies the same normalisation as the DCF tool — reducing reported FCF before valuation — so fair values match what you'd see entering those tickers manually.</li>
         <li><strong>Plausible margin</strong> — margin of safety is 80% or less. When the model says a stock is worth far more than double its price, that usually reflects one-off-inflated or cyclically-peaked cash flow (e.g. a miner or contractor at the top of its cycle), not a genuine bargain — so those are excluded.</li>
       </ul>
       <p id="screen-summary" class="screen-summary" hidden></p>
@@ -99,7 +103,10 @@
         with a Dividend Discount Model instead and labelled <strong>DDM</strong>.</p>
         <p>We rank by <strong>margin of safety</strong> (how far intrinsic value sits above price) and
         show the top 20. Stocks with unreliable cash-flow data, no positive cash flow, or implausibly
-        large margins are filtered out, because those are usually data artifacts rather than bargains.</p>
+        large margins are filtered out, because those are usually data artifacts rather than bargains.
+        For non-bank financials (exchanges, asset managers, payment networks) we apply the same free
+        cash flow normalisation as the DCF tool, so the screen's fair values match what you'd get
+        entering those tickers manually.</p>
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
