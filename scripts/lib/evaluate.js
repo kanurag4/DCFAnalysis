@@ -3,7 +3,7 @@
 // Returns a ranked-row object, or { excluded: true, reason } when un-rankable.
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector,
 } = require('../../www/utils.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
@@ -11,6 +11,14 @@ const { calculateDDM } = require('../../www/calc/ddm.js');
 
 const TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
+
+// The live tool runs its DCF/DDM off the values shown in the input boxes, which
+// are rounded for display: growth/dividend-growth to 1 dp, WACC/Re to 2 dp, and
+// the FCF/dividend inputs to integer / 2 dp respectively. To reproduce the
+// calculator to the penny, the batch must round its seeds the same way before
+// calling the calc engines.
+const round1pct = (x) => +(x * 100).toFixed(1) / 100;  // 1 dp as a percent (growth)
+const round2pct = (x) => +(x * 100).toFixed(2) / 100;  // 2 dp as a percent (WACC / Re)
 
 function evaluateStock(data, params) {
   const { rf, erp } = params;
@@ -28,10 +36,10 @@ function evaluateStock(data, params) {
     const dividend = data.trailingAnnualDividendRate
       ?? data.dividendRate
       ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
-    const re = rf + effectiveBeta * erp;
+    const re = round2pct(rf + effectiveBeta * erp);
     const result = calculateDDM({
-      dividend,
-      growthRate: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth),
+      dividend: dividend != null ? +(+dividend).toFixed(2) : dividend,
+      growthRate: round1pct(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth)),
       terminalGrowth: TERMINAL_GROWTH,
       costOfEquity: re,
       projectionYears: PROJECTION_YEARS,
@@ -51,18 +59,33 @@ function evaluateStock(data, params) {
 
   // Everyone else → DCF.
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+
+  // Non-bank financial-sector stocks (exchanges, asset managers, card networks):
+  // the live DCF tool seeds a normalised FCF of fcf × 0.6, because reported FCF
+  // overstates owner earnings for financials. Mirror it so the batch's base case
+  // matches the tool. Banks/insurers never reach here — they use DDM above — so
+  // isFinancialSector() alone is the right guard at this point.
+  // The live tool seeds an integer FCF input (Math.round), and for non-bank
+  // financials a normalised fcf × 0.6 (reported FCF overstates owner earnings).
+  let baseFcf = fcfInfo.value;
+  if (baseFcf != null) {
+    if (isFinancialSector(data.sector) && baseFcf > 0) baseFcf = baseFcf * 0.6;
+    baseFcf = Math.round(baseFcf);
+  }
+
   const waccResult = calculateWACC({
     marketCap: data.marketCap, totalDebt: data.totalDebt, beta: effectiveBeta,
     interestExpense: data.interestExpense, taxRate: data.taxRate,
     riskFreeRate: rf, erp,
   });
   if (!waccResult) return { ...base, excluded: true, reason: 'no-wacc' };
+  const waccUsed = round2pct(waccResult.wacc);
 
   const result = calculateDCF({
-    fcf: fcfInfo.value,
-    growthRate: deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth),
+    fcf: baseFcf,
+    growthRate: round1pct(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth)),
     terminalGrowth: TERMINAL_GROWTH,
-    wacc: waccResult.wacc,
+    wacc: waccUsed,
     projectionYears: PROJECTION_YEARS,
     totalDebt: data.totalDebt, totalCash: data.totalCash,
     sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
@@ -74,7 +97,7 @@ function evaluateStock(data, params) {
     ...base, method: 'DCF', fcfMethod: fcfInfo.method,
     intrinsic: result.intrinsicValue,
     marginOfSafety: result.marginOfSafety,
-    wacc: waccResult.wacc,
+    wacc: waccUsed,
     terminalValuePct: result.terminalValuePct,
   };
 }

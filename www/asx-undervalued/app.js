@@ -39,7 +39,7 @@
     if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
-    el.innerHTML = `From ${s.tickers} ASX 300 names, <strong>${s.qualified} qualified</strong> this month` +
+    el.innerHTML = `From ${s.tickers} ${s.universe || 'ASX 300'} names, <strong>${s.qualified} qualified</strong> this month` +
       `${s.shown < s.qualified ? ` (showing the top ${s.shown})` : ''}.${dropText}`;
     el.hidden = false;
   }
@@ -85,7 +85,7 @@
     }
 
     asAtEl.textContent = `As at ${rankings.asAt} · refreshed monthly.`;
-    renderScreenSummary(rankings.summary);
+    renderScreenSummary({ ...rankings.summary, universe: rankings.universe });
     const rows = rankings.rows || [];
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
 
