@@ -86,6 +86,42 @@ so its non-bank financials (e.g. GQG.AX) are overstated. Fixing it = `node scrip
 
 ---
 
+## Android App — Upcoming (planned ~2026-06-07)
+
+**Decision: Option A — add DCF as a new tab/screen inside the existing Stock Evaluator app.**
+Not a standalone app. Saves Play Console setup, keystore, and Worker origin work — all already
+in place for the Stock Evaluator.
+
+### Existing app facts
+- App: `com.stockeval.app` — "Buffett Stock Evaluator" — Google Play, versionCode 16 / 1.14
+- Keystore: `C:\Users\Anurag\keystores\buffett-upload.jks` — **losing it = can never update**
+- Worker: `Origin: https://localhost` already in `ALLOWED_ORIGINS` — DCF fetches work in-app
+- Mechanics: `npx cap sync` (copies www → android assets), `npx cap open android` (Android Studio)
+  After `npx cap add android`: fix `android/app/build.gradle` line 22 →
+  `proguard-android-optimize.txt`. AAB upload to Play Console is manual.
+
+### DCF is Capacitor-ready by design
+Only `app.js` touches DOM/window/localStorage. All calc/data/utils are pure — `www/` wraps as-is.
+
+### Key UX questions to resolve in brainstorming
+1. **Navigation model** — how does the user switch between Stock Evaluator and DCF?
+   (Bottom nav tabs? Top tabs? Home screen listing both tools? Drawer?)
+2. **App identity** — "Buffett Stock Evaluator" is narrow now; may need broadening in the
+   Play Store listing and app title bar.
+3. **Web nav suppression** — the DCF page has a `← All tools` logo and `kv-tool-nav` bar
+   that make no sense in-app. The Stock Evaluator already strips `kv-tool-nav` via an inline
+   Capacitor guard (`if(window.Capacitor&&isNativePlatform())nav.remove()`); DCF needs the same,
+   and the home-logo link probably hides too.
+4. **Screen real-estate** — DCF collapses to single-column on mobile already; check how it
+   feels with app chrome (status bar, bottom nav) around it.
+
+### Session start checklist
+- Load `/kashvector-reference` (Capacitor mechanics) + project memory (android-app-planning.md)
+- Run `/brainstorming` on the UX — Option A is decided, so go straight to navigation model
+- No code until the UX is agreed and specced
+
+---
+
 ## Architecture
 
 ### DOM Boundary Rule (Capacitor-ready)
