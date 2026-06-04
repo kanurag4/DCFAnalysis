@@ -44,8 +44,10 @@ the live tool's pure calc modules unchanged. Shows **top 20** at an **80% margin
   then `--rerank` re-ranks the cached `_evaluated.json` instantly (tune `TOP_N`/`MAX_MARGIN`).
 - Monthly refresh runbook: **`/refresh-asx-undervalued`** skill (run → review funnel/top-N →
   approve → publish).
-- Columns: Fair value (bold green), Mkt cap, Analyst tgt, Op margin, WACC/Re, TV%, P/E,
-  margin, first-seen. Filters: undervalued · valuable · real-FCF (drop OCF×0.8 proxy) · ≤80% margin.
+- Columns: Fair value (bold green), Mkt cap, Analyst tgt, Live price, **Since listed** (% change
+  from first-seen price to live price — green/red; `—` until a stock persists across months),
+  Margin (live), WACC/Re, TV%, Op margin, P/E, First seen (date @ price).
+  Filters: undervalued · valuable · real-FCF (drop OCF×0.8 proxy) · ≤80% margin.
 - **Rate-limit gotcha:** Worker caps 20 req/60s per IP; 400ms throttle silently 429'd ~80%
   of fetches. The `rankFunnel` (`fetch-failed` count) exposes this — keep it ~0.
 - Build notes / article material: `docs/asx-undervalued-build-notes.md`.
@@ -57,6 +59,8 @@ Sibling of the ASX screen at **kashvector.com/dcf/sp500-undervalued/** (separate
 tabbed view). Ranks the S&P 500 by base-case DCF/DDM margin of safety. Top 20, 80% cap, USD.
 
 - Batch: `node scripts/rank-sp500.js` (~27 min, 502 tickers, same 3.2s throttle + sweep).
+- Columns: same as the ASX screen — Fair value, Mkt cap, Analyst tgt, Live price, Since listed,
+  Margin (live), WACC/Re, TV%, Op margin, P/E, First seen. Both screens share the same `app.js`.
 - Tickers: `scripts/sp500.json` from stockanalysis.com via `scripts/build-sp500.js`, **dot→dash
   normalized** (`BRK.B`→`BRK-B`) so Yahoo resolves them AND US detection (`!includes('.')`) works.
 - US RF: live `^TNX` (~4.5%), read from the raw `summaryDetail` chain in `scripts/lib/rf.js`.
