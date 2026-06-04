@@ -18,6 +18,7 @@ const config = {
   topN: 20,
   maxMargin: 0.8,
   cacheFile: '_evaluated-sp500.json', // gitignored (scripts/_*)
+  rawFile: '_raw-sp500.json',         // raw data cache for --reeval
 };
 
 runScreen(config).catch(err => { console.error(err); process.exit(1); });

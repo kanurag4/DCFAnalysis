@@ -36,11 +36,12 @@ async function gather(config) {
   console.log(`${config.rfLabel}: ${(rf * 100).toFixed(2)}%  | tickers: ${tickers.length}  | asAt: ${asAt}`);
 
   const evaluated = [];
+  const raw = [];           // keep the mapped data for instant --reeval (no re-fetch)
   const failed = [];
   let done = 0;
   for (const ticker of tickers) {
     const data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
-    if (data) evaluated.push(evaluateStock(data, marketParamsFor(ticker, live)));
+    if (data) { raw.push(data); evaluated.push(evaluateStock(data, marketParamsFor(ticker, live))); }
     else failed.push(ticker);
     if (++done % 25 === 0) console.log(`  …${done}/${tickers.length}  (failed so far: ${failed.length})`);
     await sleep(THROTTLE_MS);
@@ -54,7 +55,7 @@ async function gather(config) {
     const stillFailed = [];
     for (const ticker of failed) {
       const data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
-      if (data) evaluated.push(evaluateStock(data, marketParamsFor(ticker, live)));
+      if (data) { raw.push(data); evaluated.push(evaluateStock(data, marketParamsFor(ticker, live))); }
       else stillFailed.push(ticker);
       await sleep(THROTTLE_MS);
     }
@@ -62,7 +63,13 @@ async function gather(config) {
   }
 
   const out = { asAt, tickerCount: tickers.length, evaluated };
-  fs.writeFileSync(path.join(__dirname, '..', config.cacheFile), JSON.stringify(out) + '\n');
+  fs.writeFileSync(path.join(__dirname, '..', config.cacheFile), JSON.stringify(out) + '\n'); // for --rerank
+  // Raw cache for --reeval: re-apply engine/parity fixes instantly without
+  // re-hitting the Worker. Stores the RF so re-eval reuses the same seed.
+  if (config.rawFile) {
+    fs.writeFileSync(path.join(__dirname, '..', config.rawFile),
+      JSON.stringify({ asAt, tickerCount: tickers.length, rf, liveKey: config.liveKey, raw }) + '\n');
+  }
   return out;
 }
 
@@ -129,7 +136,18 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
 async function runScreen(config, argv = process.argv) {
   const cachePath = path.join(__dirname, '..', config.cacheFile);
   let data;
-  if (argv.includes('--rerank')) {
+  if (argv.includes('--reeval')) {
+    // Re-run evaluateStock on the cached RAW data (no fetch) — for engine/parity
+    // fixes. Refreshes the evaluated cache too, so a later --rerank stays in sync.
+    const rawPath = path.join(__dirname, '..', config.rawFile || '');
+    if (!config.rawFile || !fs.existsSync(rawPath)) throw new Error(`No raw cache at ${config.rawFile} — run a full fetch first.`);
+    const b = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
+    const live = { [b.liveKey || config.liveKey]: b.rf };
+    console.log(`Re-evaluating ${b.raw.length} cached raw rows from ${b.asAt} (no fetch; rf=${(b.rf * 100).toFixed(2)}%).`);
+    const evaluated = b.raw.map(d => evaluateStock(d, marketParamsFor(d.ticker, live)));
+    data = { asAt: b.asAt, tickerCount: b.tickerCount, evaluated };
+    fs.writeFileSync(cachePath, JSON.stringify(data) + '\n');
+  } else if (argv.includes('--rerank')) {
     if (!fs.existsSync(cachePath)) throw new Error(`No cached data at ${config.cacheFile} — run without --rerank first.`);
     data = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
     console.log(`Re-ranking ${data.evaluated.length} cached rows from ${data.asAt} (no fetch).`);

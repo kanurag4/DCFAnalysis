@@ -18,6 +18,7 @@ const config = {
   topN: 20,
   maxMargin: 0.8,          // drop > 80% margins — the most assumption-fragile valuations
   cacheFile: '_evaluated.json', // unchanged so existing cache + --rerank keep working
+  rawFile: '_raw-asx.json',     // raw data cache for --reeval (gitignored scripts/_*)
 };
 
 runScreen(config).catch(err => { console.error(err); process.exit(1); });

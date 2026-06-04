@@ -1,6 +1,9 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
 const { evaluateStock } = require('../scripts/lib/evaluate.js');
+const { calculateWACC } = require('../www/calc/wacc.js');
+const { calculateDCF } = require('../www/calc/dcf.js');
+const { deriveBaseGrowth } = require('../www/utils.js');
 
 const params = { rf: 0.048, erp: 0.06 };
 
@@ -74,4 +77,21 @@ test('non-financial stocks use full FCF (no haircut)', () => {
   const full = evaluateStock(usFixture({ freeCashflow: 1000e6 }), usParams);
   const less = evaluateStock(usFixture({ freeCashflow: 600e6 }), usParams);
   assert.ok(Math.abs(full.intrinsic - less.intrinsic) > 1, 'non-financial must not be haircut');
+});
+
+test('DCF runs off rounded display inputs (1dp growth, 2dp WACC) — matches the calculator to the penny', () => {
+  // beta 0.97 → Re = 4.5% + 0.97×5.5% = 9.835% (non-2dp); growth avg(12.3,18.8)=15.55% (non-1dp).
+  const d = usFixture({ beta: 0.97, totalDebt: 0, revenueGrowth: 0.123, earningsGrowth: 0.188, freeCashflow: 1000e6 });
+  const r = evaluateStock(d, usParams);
+  const w = calculateWACC({ marketCap: d.marketCap, totalDebt: d.totalDebt, beta: 0.97, interestExpense: d.interestExpense, taxRate: d.taxRate, riskFreeRate: usParams.rf, erp: usParams.erp });
+  const expected = calculateDCF({
+    fcf: Math.round(1000e6),
+    growthRate:    +(deriveBaseGrowth(0.123, 0.188) * 100).toFixed(1) / 100,
+    terminalGrowth: 0.025,
+    wacc:          +(w.wacc * 100).toFixed(2) / 100,
+    projectionYears: 5,
+    totalDebt: d.totalDebt, totalCash: d.totalCash, sharesOutstanding: d.sharesOutstanding, currentPrice: d.price,
+  });
+  assert.ok(Math.abs(r.intrinsic - expected.intrinsicValue) < 1e-9,
+    `evaluateStock should match the calculator's rounded-input DCF; got ${r.intrinsic}, expected ${expected.intrinsicValue}`);
 });
