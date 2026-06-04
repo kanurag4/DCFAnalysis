@@ -216,4 +216,29 @@ green after the orchestrator refactor), ASX `--rerank` byte-identical check
 passes, the S&P 500 funnel looks sane (fetchFailed ≈ 0, plausible top-20), and
 the page renders correctly in the local server (dark + light, mobile width).
 Deployment happens in a later, separately-approved turn.
-```
+
+## Addendum — engine-parity fixes found during build (2026-06-04)
+
+Verifying batch fair values against the live DCF tool surfaced three places where
+`evaluateStock` diverged from the tool's base case. All fixed in the **shared**
+engine (`scripts/lib/evaluate.js` / `rf.js`), so they apply to **both** screens;
+the ASX screen needs its own re-run to pick them up (logged as a follow-up).
+
+1. **Non-bank financial FCF haircut.** The tool seeds normalised FCF = `fcf × 0.6`
+   for non-bank financials (`app.js` prefill + buildScenarios). The batch used full
+   FCF and overstated Visa/exchanges/asset managers ~40% (V $516 vs tool $310),
+   flooding the top of the list. Now mirrored.
+2. **`^TNX` RF read.** `mapQuoteSummary` derives `.price` only from
+   `financialData.currentPrice`, which rate indices leave null — so the US RF
+   silently fell back to 4.5%. `rf.js` now reads the raw `summaryDetail.previousClose
+   → regularMarketPrice → financialData.currentPrice` chain (mirrors the live tool),
+   giving the real ~4.46%.
+3. **Display-precision rounding.** The tool runs its DCF/DDM off the rounded values
+   shown in the input boxes. `evaluateStock` now rounds growth to 1 dp, WACC/Re to
+   2 dp, FCF to integer, dividend to 2 dp before the calc — removing the last ~$1–2
+   residual (e.g. LH full $457.28 → rounded $458.26 = the tool, to the penny).
+
+**Tooling added:** `run-screen.js` now caches raw fetched data to `_raw-<mkt>.json`
+and supports `--reeval` (re-run `evaluateStock` on the raw cache in ~2s) so future
+parity fixes don't require a 27-min re-fetch. New tests: `tests/evaluate.test.js`
+(haircut + rounding characterization), `tests/rf.test.js` (raw-chain RF parsing).

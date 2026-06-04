@@ -736,4 +736,16 @@ git commit -m "docs: S&P 500 undervalued screen live; refresh runbook"
 - **No-deploy gate:** enforced — Tasks 1–8 are local; Task 9 is explicitly gated on approval.
 - **Type/name consistency:** `runScreen(config)` config keys (`universe, tickersFile, outDir, currency, liveKey, fetchRf, rfLabel, topN, maxMargin, cacheFile`) are identical across T3/T4/T5. `fetchUsRf`/`fetchAusRf`/`fetchRfRate` signatures match T2 across consumers. `normalizeUsTickers` matches T1.
 - **Deviation from spec (intentional):** ASX cache stays `_evaluated.json` (not renamed to `_evaluated-asx.json`) so the existing cache powers the byte-identical check with zero prep; SP500 cache is `_evaluated-sp500.json`. The shared-`app.js` `ASX 300` literal is made universe-driven (T7 Step 3) rather than forking `app.js`, preserving DRY.
+
+## Post-build addendum (2026-06-04)
+
+Verifying fair values against the live tool surfaced three engine-parity bugs not in
+the original plan, all fixed in the shared engine (see the spec addendum for detail):
+**(1)** non-bank financial `fcf × 0.6` haircut, **(2)** `^TNX` RF read from raw
+`summaryDetail` (mapQuoteSummary leaves index `.price` null), **(3)** seeds rounded to
+the tool's display precision (growth 1 dp, WACC/Re 2 dp). Added `--reeval` + a raw-data
+cache to `run-screen.js` so parity fixes re-apply in ~2s. New tests in
+`tests/evaluate.test.js` and `tests/rf.test.js`. The S&P 500 snapshot was re-run to
+apply all three; the **ASX screen still needs its own re-run + redeploy** (separate,
+user-approved follow-up) since it's live with the pre-fix engine.
 ```

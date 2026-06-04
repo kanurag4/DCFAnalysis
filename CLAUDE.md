@@ -51,13 +51,38 @@ the live tool's pure calc modules unchanged. Shows **top 20** at an **80% margin
 - Build notes / article material: `docs/asx-undervalued-build-notes.md`.
 - Published companion article: `kashvector.com/articles/most-undervalued-asx-300/`.
 
-### TOMORROW: extend the screen to the S&P 500
-Build a "Most Undervalued S&P 500" list the same way. The batch is already parameterised for
-it — `marketParamsFor` has US branches (no `.AX` suffix → US RF ~4.5% / ERP 5.5%, **no beta
-floor**), and `evaluateStock`/`rankRows` are market-agnostic. Plan: generate `scripts/sp500.json`
-(top ~500 US tickers), add a US RF fetch (`^TNX`), a second output page (or a market toggle),
-and decide whether it's a separate page or a tabbed view. Spec extension noted in the original
-design doc (S&P 500 was the planned next market).
+## Feature: Most Undervalued S&P 500 screen — ✅ BUILT (pending deploy approval, 2026-06-04)
+
+Sibling of the ASX screen at **kashvector.com/dcf/sp500-undervalued/** (separate page, not a
+tabbed view). Ranks the S&P 500 by base-case DCF/DDM margin of safety. Top 20, 80% cap, USD.
+
+- Batch: `node scripts/rank-sp500.js` (~27 min, 502 tickers, same 3.2s throttle + sweep).
+- Tickers: `scripts/sp500.json` from stockanalysis.com via `scripts/build-sp500.js`, **dot→dash
+  normalized** (`BRK.B`→`BRK-B`) so Yahoo resolves them AND US detection (`!includes('.')`) works.
+- US RF: live `^TNX` (~4.5%), read from the raw `summaryDetail` chain in `scripts/lib/rf.js`.
+- Refresh runbook: **`/refresh-sp500-undervalued`** skill.
+- Design doc: `docs/superpowers/specs/2026-06-04-sp500-undervalued-screen-design.md`.
+- Spec/plan + this work: `docs/superpowers/plans/2026-06-04-sp500-undervalued-screen.md`.
+
+### Shared orchestrator (`scripts/lib/run-screen.js`)
+Both `rank-asx.js` and `rank-sp500.js` are thin wrappers over `runScreen(config)`. Three modes:
+- (default) full fetch → evaluate → rank → write; also caches raw data to `_raw-<mkt>.json`.
+- `--rerank` re-ranks the cached `_evaluated-<mkt>.json` instantly (tune `TOP_N`/`MAX_MARGIN`).
+- `--reeval` re-runs `evaluateStock` on the cached **raw** data in ~2s — for engine/parity
+  fixes, no 27-min re-fetch. (ASX refactor verified byte-identical via `--rerank`.)
+
+### Engine parity — the batch reproduces the live tool's base case to the penny
+`scripts/lib/evaluate.js` must match what the DCF tool shows. Three fixes found during the
+S&P 500 build (2026-06-04), all in the **shared** engine → they apply to **both** screens:
+1. **Non-bank financials get a 0.6 FCF haircut** (`fcf × 0.6`) — the tool's normalised-FCF
+   seed. Without it Visa/exchanges/asset managers overstate ~40% and flood the list.
+2. **`^TNX` RF read from raw `summaryDetail`** (mapQuoteSummary leaves index `.price` null).
+3. **Seeds rounded to display precision** before the calc call: growth 1 dp, WACC/Re 2 dp,
+   FCF integer, dividend 2 dp. (e.g. LH: full-precision $457.28 → rounded $458.26 = the tool.)
+
+**⚠ ASX re-run pending:** the ASX screen is LIVE with the OLD engine (no haircut/rounding),
+so its non-bank financials (e.g. GQG.AX) are overstated. Fixing it = `node scripts/rank-asx.js`
+(full re-fetch — `--reeval` needs a raw cache it doesn't have yet) → review → redeploy.
 
 ---
 
