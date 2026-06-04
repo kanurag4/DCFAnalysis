@@ -45,3 +45,33 @@ test('excludes a bank with no dividend', () => {
   const r = evaluateStock({ ...dcfStock, ticker: 'CCC.AX', sector: 'Financial Services', industry: 'Banks', trailingAnnualDividendRate: null, dividendRate: null, dividendYield: null }, params);
   assert.strictEqual(r.excluded, true);
 });
+
+// ── Non-bank financial-sector FCF normalisation (must mirror the live tool) ──
+// The live DCF tool seeds normalised FCF = fcf * 0.6 for non-bank financials
+// (app.js prefill + buildScenarios). The batch must apply the same haircut, or
+// it overstates fair value for Visa/exchanges/asset managers and floods the list.
+const usParams = { rf: 0.045, erp: 0.055 };
+const usFixture = (over = {}) => ({
+  ticker: 'TEST', name: 'Test Co', sector: 'Technology', industry: 'Software',
+  price: 50, currency: 'USD', trailingPE: 20, marketCap: 50000e6,
+  operatingMargins: 0.25, targetMeanPrice: 60,
+  beta: 1.0, freeCashflow: 1000e6, operatingCashflow: 1200e6, capitalExpenditures: -200e6,
+  totalDebt: 0, totalCash: 0, sharesOutstanding: 1000e6,
+  interestExpense: null, taxRate: null, revenueGrowth: 0.10, earningsGrowth: 0.10,
+  ...over,
+});
+
+test('non-bank financial gets the 0.6 FCF haircut (fin@F == nonfin@0.6F)', () => {
+  const fin  = evaluateStock(usFixture({ sector: 'Financial Services', industry: 'Asset Management', freeCashflow: 1000e6 }), usParams);
+  const tech = evaluateStock(usFixture({ sector: 'Technology', industry: 'Software', freeCashflow: 600e6 }), usParams);
+  assert.strictEqual(fin.method, 'DCF');
+  assert.strictEqual(tech.method, 'DCF');
+  assert.ok(Math.abs(fin.intrinsic - tech.intrinsic) <= 0.01,
+    `financial(1000) should equal non-financial(600); got ${fin.intrinsic} vs ${tech.intrinsic}`);
+});
+
+test('non-financial stocks use full FCF (no haircut)', () => {
+  const full = evaluateStock(usFixture({ freeCashflow: 1000e6 }), usParams);
+  const less = evaluateStock(usFixture({ freeCashflow: 600e6 }), usParams);
+  assert.ok(Math.abs(full.intrinsic - less.intrinsic) > 1, 'non-financial must not be haircut');
+});

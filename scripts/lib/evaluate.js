@@ -3,7 +3,7 @@
 // Returns a ranked-row object, or { excluded: true, reason } when un-rankable.
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector,
 } = require('../../www/utils.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
@@ -51,6 +51,17 @@ function evaluateStock(data, params) {
 
   // Everyone else → DCF.
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+
+  // Non-bank financial-sector stocks (exchanges, asset managers, card networks):
+  // the live DCF tool seeds a normalised FCF of fcf × 0.6, because reported FCF
+  // overstates owner earnings for financials. Mirror it so the batch's base case
+  // matches the tool. Banks/insurers never reach here — they use DDM above — so
+  // isFinancialSector() alone is the right guard at this point.
+  let baseFcf = fcfInfo.value;
+  if (isFinancialSector(data.sector) && baseFcf != null && baseFcf > 0) {
+    baseFcf = Math.round(baseFcf * 0.6);
+  }
+
   const waccResult = calculateWACC({
     marketCap: data.marketCap, totalDebt: data.totalDebt, beta: effectiveBeta,
     interestExpense: data.interestExpense, taxRate: data.taxRate,
@@ -59,7 +70,7 @@ function evaluateStock(data, params) {
   if (!waccResult) return { ...base, excluded: true, reason: 'no-wacc' };
 
   const result = calculateDCF({
-    fcf: fcfInfo.value,
+    fcf: baseFcf,
     growthRate: deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth),
     terminalGrowth: TERMINAL_GROWTH,
     wacc: waccResult.wacc,
