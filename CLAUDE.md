@@ -80,9 +80,8 @@ S&P 500 build (2026-06-04), all in the **shared** engine → they apply to **bot
 3. **Seeds rounded to display precision** before the calc call: growth 1 dp, WACC/Re 2 dp,
    FCF integer, dividend 2 dp. (e.g. LH: full-precision $457.28 → rounded $458.26 = the tool.)
 
-**⚠ ASX re-run pending:** the ASX screen is LIVE with the OLD engine (no haircut/rounding),
-so its non-bank financials (e.g. GQG.AX) are overstated. Fixing it = `node scripts/rank-asx.js`
-(full re-fetch — `--reeval` needs a raw cache it doesn't have yet) → review → redeploy.
+**ASX re-run done 2026-06-04** — engine parity fixes applied; ASX raw cache now written
+(`scripts/_raw-asx.json`) so future ASX tweaks can use `--reeval`.
 
 ---
 
