@@ -69,8 +69,8 @@
       <td class="num fv">${sym}${r.intrinsic.toFixed(2)}</td>
       <td class="num">${target}</td>
       <td class="num">${sym}${Number(price).toFixed(2)}</td>
-      <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
       <td class="num">${sinceListedHtml}</td>
+      <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
       <td class="num">${pct(r.wacc)}</td>
       <td class="num">${r.terminalValuePct == null ? '—' : r.terminalValuePct.toFixed(0) + '%'}</td>
       <td class="num">${opMargin}</td>
