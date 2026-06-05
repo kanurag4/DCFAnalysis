@@ -1,0 +1,71 @@
+{
+  "asAt": "2026-06-05",
+  "universe": "NIFTY 100",
+  "summary": {
+    "tickers": 100,
+    "evaluated": 100,
+    "qualified": 3,
+    "shown": 3,
+    "marginCapPct": 80,
+    "dropped": {
+      "fetchFailed": 0,
+      "unvaluable": 45,
+      "overvalued": 48,
+      "marginOverCap": 4,
+      "proxyFcf": 0
+    }
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "ticker": "M&M.NS",
+      "name": "Mahindra & Mahindra Limited",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 4068.18,
+      "snapshotPrice": 3040.5,
+      "marginOfSafety": 0.338,
+      "wacc": 0.0939,
+      "terminalValuePct": 79.2,
+      "trailingPE": 20,
+      "marketCap": 3650917498880,
+      "operatingMargin": 0.164,
+      "analystTarget": 4143.65,
+      "currency": "INR"
+    },
+    {
+      "rank": 2,
+      "ticker": "TATASTEEL.NS",
+      "name": "Tata Steel Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 253.96,
+      "snapshotPrice": 206.77,
+      "marginOfSafety": 0.2282,
+      "wacc": 0.1019,
+      "terminalValuePct": 77.2,
+      "trailingPE": 23.9,
+      "marketCap": 2578804113408,
+      "operatingMargin": 0.097,
+      "analystTarget": 224.89,
+      "currency": "INR"
+    },
+    {
+      "rank": 3,
+      "ticker": "HINDZINC.NS",
+      "name": "Hindustan Zinc Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 669.03,
+      "snapshotPrice": 566.8,
+      "marginOfSafety": 0.1804,
+      "wacc": 0.116,
+      "terminalValuePct": 73.6,
+      "trailingPE": 17.3,
+      "marketCap": 2394910621696,
+      "operatingMargin": 0.5246,
+      "analystTarget": 655.19,
+      "currency": "INR"
+    }
+  ]
+}
