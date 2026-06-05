@@ -9,8 +9,8 @@ const { runScreen } = require('./lib/run-screen.js');
 const { fetchIndRf } = require('./lib/rf.js');
 
 const config = {
-  universe: 'NIFTY 100',
-  tickersFile: 'nifty100.json',
+  universe: 'NIFTY 500',
+  tickersFile: 'nifty500.json',
   outDir: 'nifty-undervalued',
   currency: 'INR',
   liveKey: 'indRf',
