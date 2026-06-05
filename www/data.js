@@ -25,7 +25,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
 // No network, no DOM — safe to import in Node for the batch ranking job.
 function mapQuoteSummary(body, symbol) {
   const result = body?.quoteSummary?.result?.[0];
-  if (!result) throw new Error(`No data for "${symbol}". Check the ticker spelling and market suffix (e.g. .AX, .NS).`);
+  if (!result) throw new Error(`No data returned for "${symbol}". The ticker may be delisted or temporarily unavailable — check the symbol and try again.`);
 
   const inc = result.incomeStatementHistory?.incomeStatementHistory?.[0];
   const cf  = result.cashflowStatementHistory?.cashflowStatements?.[0];
@@ -97,7 +97,7 @@ function rawMul(obj, multiplier) {
 function explainStatus(status, symbol) {
   if (status === 404) return `Ticker "${symbol}" not found. Check the symbol and any suffix (.AX, .NS, .L).`;
   if (status === 429) return 'Too many requests. Please wait a minute and try again.';
-  if (status === 403) return "Data service declined the request. Verify the Worker's origin allowlist.";
+  if (status === 403) return 'Access was denied by the data service. Please try again, or contact support if this keeps happening.';
   if (status === 401) return 'Data provider rejected the request. Please try again shortly.';
   if (status >= 500) return 'Yahoo Finance looks temporarily unavailable. Try again in a minute.';
   return `Data service error (HTTP ${status}). Please try again.`;

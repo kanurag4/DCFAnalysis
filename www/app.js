@@ -181,7 +181,15 @@ async function onAnalyse(opts = {}) {
     saveRecent(data.ticker, isASX);
     renderRecent();
   } catch (err) {
-    showError(err.message || String(err));
+    const rawInput = els.input.value.trim();
+    const isBareSymbol = !rawInput.includes('.');
+    const isConnectivityError = /couldn't reach|internet connection/i.test(err.message);
+    let msg = err.message || String(err);
+    if (isBareSymbol && !isConnectivityError) {
+      if (isASX) msg = `"${rawInput.toUpperCase()}" was not found on the ASX. Untick "ASX stock" to search US or other stocks.`;
+      else if (isNSE) msg = `"${rawInput.toUpperCase()}" was not found on NSE/BSE. Untick "NSE / BSE" to search US or other stocks.`;
+    }
+    showError(msg);
   } finally {
     setLoading(false);
   }

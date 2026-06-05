@@ -242,6 +242,7 @@ Intrinsic Value = Σ PV(D) + PV(TV)        ← per share directly (no net debt s
 - **CSS `[hidden]` override**: `.input-row { display: flex }` overrides the browser's built-in `[hidden] { display: none }`. Fixed with `[hidden] { display: none !important }` at top of `style.css`. Any future display-setting CSS class on a toggled element will need this rule to work correctly.
 - **Projection year slider**: auto-recalculates on drag (no need to click Recalculate). All other inputs still require the Recalculate button.
 - **RF rate live badge**: restructured label as flex row so "● live" appears inline with "Risk-free rate %", and a subtitle below the input confirms "US 10-yr Treasury yield (^TNX)".
+- **ASX/NSE wrong-market error**: if a bare symbol (no `.` suffix) is searched with ASX or NSE ticked and any error occurs (404, 5xx, empty result), `app.js` replaces the generic Yahoo error with a targeted message: `"AAPL" was not found on the ASX. Untick "ASX stock" to search US or other stocks.` Yahoo returns 5xx (not 404) for invalid suffixes like `AAPL.AX`, so the check is `!isConnectivityError` rather than matching "not found". Genuine network errors ("Couldn't reach the data service") pass through unchanged. Same logic applied to `www/stock/app.js`.
 
 ---
 
