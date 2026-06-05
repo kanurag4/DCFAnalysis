@@ -33,7 +33,8 @@ async function fetchRfRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FET
   return (pct && pct > 0 && pct < 0.15) ? pct : fallback;
 }
 
-const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',       0.045, { proxyUrl });
-const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX', 0.048, { proxyUrl });
+const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',         0.045, { proxyUrl });
+const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.048, { proxyUrl });
+const fetchIndRf = (proxyUrl) => fetchRfRate('^INBMKG10.NS', 0.07,  { proxyUrl });
 
-module.exports = { fetchRfRate, fetchUsRf, fetchAusRf };
+module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf };

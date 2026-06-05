@@ -47,7 +47,7 @@
   function row(r, livePrice, firstSeen) {
     const price = (typeof livePrice === 'number' && livePrice > 0) ? livePrice : r.snapshotPrice;
     const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
-    const sym = r.currency === 'GBp' ? 'p' : '$';
+    const sym = r.currency === 'GBp' ? 'p' : r.currency === 'INR' ? '₹' : '$';
     const fs = firstSeen ? `${firstSeen.firstSeen} @ ${sym}${Number(firstSeen.firstPrice).toFixed(2)}` : '—';
     const tag = r.method === 'DDM' ? 'ddm' : 'dcf';
     const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, sym);
