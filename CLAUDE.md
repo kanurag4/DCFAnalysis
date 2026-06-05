@@ -89,6 +89,26 @@ S&P 500 build (2026-06-04), all in the **shared** engine → they apply to **bot
 
 ---
 
+## Feature: Most Undervalued NIFTY 500 screen — ✅ LIVE (2026-06-05)
+
+Sibling of the ASX and S&P 500 screens at **kashvector.com/dcf/nifty-undervalued/**. Ranks
+the NIFTY 500 by base-case DCF/DDM margin of safety. Top 20, 80% cap, INR.
+
+- Batch: `node scripts/rank-nifty.js` (~27 min, 500 tickers, same 3.2s throttle + sweep).
+- Columns: same as ASX/S&P 500 screens. Currency: `₹` (Yahoo returns `currency: 'INR'` for `.NS`).
+- Tickers: `scripts/nifty500.json` (500 entries built from `ind_nifty500list.csv` by `scripts/build-nifty500.js`).
+  Special symbols with `&` or `-` handled via `encodeURIComponent(symbol)` in `scripts/lib/fetch-yahoo.js`.
+- IND RF: `^INBMKG10.NS` via `fetchIndRf` in `scripts/lib/rf.js` (fallback 7.0% — Yahoo often
+  returns the fallback; 7% is correct for current Indian G-Sec rates).
+- Refresh runbook: **`/refresh-nifty-undervalued`** skill.
+- First run: 15 stocks qualified from 500 (2026-06-05).
+
+**Incremental delta-fetch pattern** (used when expanding the ticker list): `scripts/fetch-nifty-delta.js`
+reads `_raw-nifty.json`, fetches only new tickers, merges back. Then `--reeval` covers all tickers.
+Reuse this pattern for any future ticker-list expansion on any screen.
+
+---
+
 ## Android App — Upcoming (planned ~2026-06-07)
 
 **Decision: Option A — add DCF as a new tab/screen inside the existing Stock Evaluator app.**
