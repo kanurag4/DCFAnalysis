@@ -81,6 +81,13 @@ function evaluateStock(data, params) {
   if (!waccResult) return { ...base, excluded: true, reason: 'no-wacc' };
   const waccUsed = round2pct(waccResult.wacc);
 
+  // Flag extreme leverage: when debt > 65% of total capital, WACC is weighted almost
+  // entirely by cost of debt and understates equity risk — fair value needs extra caution.
+  const totalDebtVal = data.totalDebt || 0;
+  const mktCapVal = data.marketCap || 0;
+  const capitalBase = totalDebtVal + mktCapVal;
+  const highLeverage = capitalBase > 0 && (totalDebtVal / capitalBase) > 0.65;
+
   const result = calculateDCF({
     fcf: baseFcf,
     growthRate: round1pct(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth)),
@@ -99,6 +106,7 @@ function evaluateStock(data, params) {
     marginOfSafety: result.marginOfSafety,
     wacc: waccUsed,
     terminalValuePct: result.terminalValuePct,
+    ...(highLeverage ? { highLeverage: true } : {}),
   };
 }
 

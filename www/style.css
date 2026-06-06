@@ -141,6 +141,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
 }
 #analyse-btn:hover { background: var(--kv-accent-h); }
 #analyse-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.search-row { display: contents; }
+.go-btn { display: none; }
 .hint { font-size: 0.8rem; color: var(--kv-muted); margin-bottom: 8px; }
 .market-hint { font-size: 0.82rem; color: var(--kv-muted); margin-bottom: 16px; }
 .market-hint summary { cursor: pointer; color: var(--kv-accent); }
@@ -451,4 +453,19 @@ html:not(.dark) .scenario-num { background: #edf2f7; }
 @media (max-width: 600px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .tool-info { grid-template-columns: 1fr; }
+  /* Go button: inline with the input on mobile; Analyse button hidden */
+  #analyse-btn { display: none; }
+  .search-row {
+    display: flex; flex: 0 0 100%; gap: 8px; align-items: center;
+  }
+  .search-row .ac-wrapper { flex: 1; }
+  .go-btn {
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+    padding: 0 16px; height: 44px;
+    background: var(--kv-accent); color: #0f172a;
+    border: none; border-radius: 8px; font-size: 1rem; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+  }
+  .go-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 }

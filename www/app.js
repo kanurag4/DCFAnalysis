@@ -11,6 +11,7 @@ const els = {
   asx:          $('asx-checkbox'),
   nse:          $('nse-checkbox'),
   analyseBtn:   $('analyse-btn'),
+  goBtn:        $('go-btn'),
   recalcBtn:    $('recalc-btn'),
   recent:       $('recent'),
   status:       $('status'),
@@ -92,6 +93,7 @@ els.yearsSlider.addEventListener('input', () => {
 });
 
 els.analyseBtn.addEventListener('click', onAnalyse);
+els.goBtn.addEventListener('click', onAnalyse);
 els.recalcBtn.addEventListener('click', onRecalc);
 if (els.ddmToggle) els.ddmToggle.addEventListener('click', onToggleModel);
 
@@ -1001,6 +1003,8 @@ function renderRecent() {
 function setLoading(on) {
   els.analyseBtn.disabled = on;
   els.analyseBtn.textContent = on ? 'Analysing…' : 'Analyse';
+  els.goBtn.disabled = on;
+  els.goBtn.textContent = on ? '…' : 'Go';
 }
 
 function showError(msg) {

@@ -104,9 +104,12 @@
     </div>
 
     <section class="search-bar">
-      <div class="ac-wrapper">
-        <input type="text" id="ticker-input" placeholder="Ticker or company name (e.g. AAPL, BHP)" autocomplete="off">
-        <div id="autocomplete-list" role="listbox" hidden></div>
+      <div class="search-row">
+        <div class="ac-wrapper">
+          <input type="text" id="ticker-input" placeholder="Ticker or company name (e.g. AAPL, BHP)" autocomplete="off">
+          <div id="autocomplete-list" role="listbox" hidden></div>
+        </div>
+        <button class="go-btn" id="go-btn" aria-label="Analyse">Go</button>
       </div>
       <label class="asx-toggle">
         <input type="checkbox" id="asx-checkbox">

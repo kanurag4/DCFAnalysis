@@ -104,6 +104,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
     operatingMargin: r.operatingMargin != null ? +r.operatingMargin.toFixed(4) : null,
     analystTarget: r.analystTarget != null ? +r.analystTarget.toFixed(2) : null,
     currency: r.currency ?? config.currency,
+    ...(r.highLeverage ? { highLeverage: true } : {}),
   }));
 
   const summary = {

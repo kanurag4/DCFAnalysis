@@ -99,6 +99,15 @@ on the ticker (`CHTR*`) and inject an amber footnote below the table. Current fl
 by 83% debt weight). Manual curation rule: financial investment companies (e.g. MFF.AX) whose FCF
 includes large investment flows should be removed and replaced with the next in the ranked list.
 
+### Mobile "Go" button — added 2026-06-06
+On mobile (≤600px) the Analyse button is replaced by a compact "Go" button placed **inline to the right of the search input** on the same row. This prevents the autocomplete dropdown (which drops below the input) from covering the action button.
+
+**Implementation pattern** (both `www/dcf/index.html` and `www/stock/index.html`):
+- `.ac-wrapper` and `#go-btn` are wrapped in `<div class="search-row">`.
+- Desktop: `.search-row { display: contents }` — wrapper is invisible to the outer flex layout; `.go-btn { display: none }`. No change to desktop layout.
+- Mobile: `.search-row { display: flex; flex: 0 0 100%; gap: 8px }` — wrapper claims a full row in `.search-bar`, then lays input (`flex: 1`) and Go button (`flex: 0 0 auto`) side-by-side. The autocomplete dropdown falls below the input and cannot reach the Go button (which is to its right).
+- `#go-btn` is wired to `onAnalyse` in `app.js`; `setLoading` disables it and swaps text to `'…'`.
+
 ---
 
 ## Feature: Most Undervalued NIFTY 500 screen — ✅ LIVE (2026-06-05)
