@@ -53,7 +53,11 @@ the live tool's pure calc modules unchanged. Shows **top 20** at an **80% margin
 - Build notes / article material: `docs/asx-undervalued-build-notes.md`.
 - Published companion article: `kashvector.com/articles/most-undervalued-asx-300/`.
 
-## Feature: Most Undervalued S&P 500 screen — ✅ BUILT (pending deploy approval, 2026-06-04)
+**Manual curation (2026-06-06):** MFF.AX (MFF Capital Investments, rank 3) removed — financial
+investment company; DCF inflates value via investment flows in FCF. Replaced by BPT.AX (Beach
+Energy, rank 20, 11.7% MoS). BPT.AX added to `first-seen.json`.
+
+## Feature: Most Undervalued S&P 500 screen — ✅ LIVE (2026-06-04)
 
 Sibling of the ASX screen at **kashvector.com/dcf/sp500-undervalued/** (separate page, not a
 tabbed view). Ranks the S&P 500 by base-case DCF/DDM margin of safety. Top 20, 80% cap, USD.
@@ -86,6 +90,14 @@ S&P 500 build (2026-06-04), all in the **shared** engine → they apply to **bot
 
 **ASX re-run done 2026-06-04** — engine parity fixes applied; ASX raw cache now written
 (`scripts/_raw-asx.json`) so future ASX tweaks can use `--reeval`.
+
+### High-leverage flag (`highLeverage: true`) — added 2026-06-06
+`evaluate.js` sets `highLeverage: true` on any DCF stock where `totalDebt / (totalDebt + marketCap) > 0.65`.
+`run-screen.js` passes it through to `rankings.json`. All three screen `app.js` files render an asterisk
+on the ticker (`CHTR*`) and inject an amber footnote below the table. Current flagged stock: **CHTR**
+(Charter Communications, SP500, D/V 83%, WACC 4.6% — interest expense null → 5% fallback dominated
+by 83% debt weight). Manual curation rule: financial investment companies (e.g. MFF.AX) whose FCF
+includes large investment flows should be removed and replaced with the next in the ranked list.
 
 ---
 
