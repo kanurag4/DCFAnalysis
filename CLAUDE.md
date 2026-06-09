@@ -130,39 +130,43 @@ Reuse this pattern for any future ticker-list expansion on any screen.
 
 ---
 
-## Android App — Upcoming (planned ~2026-06-07)
+## Android App v2 — ✅ Built (2026-06-09), pending Play Store upload
 
-**Decision: Option A — add DCF as a new tab/screen inside the existing Stock Evaluator app.**
-Not a standalone app. Saves Play Console setup, keystore, and Worker origin work — all already
-in place for the Stock Evaluator.
+**App: `com.stockeval.app` — "Stock Evaluator" — versionCode 18 / versionName 1.16**
+AAB built and ready. To be uploaded to Play Console + tested on internal track before production.
 
-### Existing app facts
-- App: `com.stockeval.app` — "Buffett Stock Evaluator" — Google Play, versionCode 16 / 1.14
+### What shipped
+- `webDir` expanded from `www/stock` to `www` — entire site served by WebView
+- New in-app home screen at `www/app/index.html` — tool picker with Stock Evaluator + DCF cards,
+  light/dark theme toggle (uses shared `kv-theme` localStorage key)
+- `www/index.html` redirects to `/app/index.html` when running inside Capacitor
+- Capacitor guards on all tool pages strip web chrome (nav bar, home logo, kv-banner):
+  `www/stock/index.html`, `www/dcf/index.html`, `www/dcf/asx-undervalued/index.html`,
+  `www/dcf/sp500-undervalued/index.html`, `www/dcf/nifty-undervalued/index.html`
+- DCF page injects a compact **"Undervalued list"** strip (heading + pill row) with 🇦🇺 ASX /
+  🇺🇸 S&P / 🇮🇳 NIFTY pills — each opens **kashvector.com** in the system browser (live data,
+  no app update needed on monthly refresh). The `.screens-row` pills are removed in-app.
+- Back button returns to home screen from any page; exits app from home screen
+  (via `OnBackPressedDispatcher` in `MainActivity.java` — `onBackPressed()` override does not
+  work in Capacitor 5)
+- App name updated in `android/app/src/main/res/values/strings.xml` (not `capacitor.config.json`
+  — that only applies at `npx cap add android` time)
+
+### Capacitor gotchas (lessons learnt 2026-06-09)
+- **Always use explicit file paths** — `/app/index.html` not `/app/`. Directory paths cause a
+  redirect loop (Capacitor SPA fallback serves `index.html` → redirect fires again → loop).
+- **`onBackPressed()` override is ignored in Capacitor 5** — use
+  `getOnBackPressedDispatcher().addCallback()` in `onCreate()` instead.
+- **`webView.canGoBack()` always returns false** in Capacitor — don't rely on it; check the
+  current URL instead.
+- **App name lives in `strings.xml`**, not `capacitor.config.json`.
+- **Rankings pages open in system browser** (`window.open(url, '_system')`) so monthly data
+  refreshes don't require an app update.
+
+### Key facts
 - Keystore: `C:\Users\Anurag\keystores\buffett-upload.jks` — **losing it = can never update**
-- Worker: `Origin: https://localhost` already in `ALLOWED_ORIGINS` — DCF fetches work in-app
-- Mechanics: `npx cap sync` (copies www → android assets), `npx cap open android` (Android Studio)
-  After `npx cap add android`: fix `android/app/build.gradle` line 22 →
-  `proguard-android-optimize.txt`. AAB upload to Play Console is manual.
-
-### DCF is Capacitor-ready by design
-Only `app.js` touches DOM/window/localStorage. All calc/data/utils are pure — `www/` wraps as-is.
-
-### Key UX questions to resolve in brainstorming
-1. **Navigation model** — how does the user switch between Stock Evaluator and DCF?
-   (Bottom nav tabs? Top tabs? Home screen listing both tools? Drawer?)
-2. **App identity** — "Buffett Stock Evaluator" is narrow now; may need broadening in the
-   Play Store listing and app title bar.
-3. **Web nav suppression** — the DCF page has a `← All tools` logo and `kv-tool-nav` bar
-   that make no sense in-app. The Stock Evaluator already strips `kv-tool-nav` via an inline
-   Capacitor guard (`if(window.Capacitor&&isNativePlatform())nav.remove()`); DCF needs the same,
-   and the home-logo link probably hides too.
-4. **Screen real-estate** — DCF collapses to single-column on mobile already; check how it
-   feels with app chrome (status bar, bottom nav) around it.
-
-### Session start checklist
-- Load `/kashvector-reference` (Capacitor mechanics) + project memory (android-app-planning.md)
-- Run `/brainstorming` on the UX — Option A is decided, so go straight to navigation model
-- No code until the UX is agreed and specced
+- Worker: `Origin: https://localhost` already in `ALLOWED_ORIGINS` — all Yahoo fetches work in-app
+- Mechanics: `npx cap sync` → Clean Project in Android Studio → Run / Build signed AAB
 
 ---
 
