@@ -130,29 +130,36 @@ Reuse this pattern for any future ticker-list expansion on any screen.
 
 ---
 
-## Android App v2 — ✅ Built (2026-06-09), pending Play Store upload
+## Android App v2 — ✅ Built (2026-06-10), ready for Play Store upload
 
 **App: `com.stockeval.app` — "Stock Evaluator" — versionCode 18 / versionName 1.16**
-AAB built and ready. To be uploaded to Play Console + tested on internal track before production.
+AAB built. Upload to Play Console internal track, test, then promote to production.
 
 ### What shipped
 - `webDir` expanded from `www/stock` to `www` — entire site served by WebView
-- New in-app home screen at `www/app/index.html` — tool picker with Stock Evaluator + DCF cards,
-  light/dark theme toggle (uses shared `kv-theme` localStorage key)
-- `www/index.html` redirects to `/app/index.html` when running inside Capacitor
-- Capacitor guards on all tool pages strip web chrome (nav bar, home logo, kv-banner):
+- New in-app home screen at `www/app/index.html` — tool picker with **Buffett Evaluator** + DCF
+  cards, light/dark theme toggle (uses shared `kv-theme` localStorage key)
+- `www/index.html` redirects to `/app/index.html` when running inside Capacitor (redirect script
+  is at the top of `<head>`, before JSON-LD/CSS, to eliminate hub page flash)
+- Capacitor guards on all tool pages strip web chrome (nav bar, home logo); `kv-banner.js` is
+  **not loaded at all** in Capacitor — conditional injection via `else` branch instead:
   `www/stock/index.html`, `www/dcf/index.html`, `www/dcf/asx-undervalued/index.html`,
   `www/dcf/sp500-undervalued/index.html`, `www/dcf/nifty-undervalued/index.html`
 - DCF page injects a compact **"Undervalued list"** strip (heading + pill row) with 🇦🇺 ASX /
   🇺🇸 S&P / 🇮🇳 NIFTY pills — each opens **kashvector.com** in the system browser (live data,
-  no app update needed on monthly refresh). The `.screens-row` pills are removed in-app.
+  no app update needed on monthly refresh). The `.screens-row` pills are hidden immediately via
+  injected `<style>` (synchronous) then removed on DOMContentLoaded.
 - Back button returns to home screen from any page; exits app from home screen
   (via `OnBackPressedDispatcher` in `MainActivity.java` — `onBackPressed()` override does not
-  work in Capacitor 5)
+  work in Capacitor 5). Null URL exits app (not navigate home).
 - App name updated in `android/app/src/main/res/values/strings.xml` (not `capacitor.config.json`
   — that only applies at `npx cap add android` time)
+- Privacy policy at `www/privacy.html` updated for v2: new app name, DCF tool added, localStorage
+  section expanded (recent tickers + theme preference), rankings external browser note added.
+- Play Store badge added to `www/dcf/index.html` (web only — hidden via `isNative` check in
+  `dcf/app.js`, same pattern as stock page).
 
-### Capacitor gotchas (lessons learnt 2026-06-09)
+### Capacitor gotchas (lessons learnt 2026-06-09 / 2026-06-10)
 - **Always use explicit file paths** — `/app/index.html` not `/app/`. Directory paths cause a
   redirect loop (Capacitor SPA fallback serves `index.html` → redirect fires again → loop).
 - **`onBackPressed()` override is ignored in Capacitor 5** — use
@@ -162,6 +169,18 @@ AAB built and ready. To be uploaded to Play Console + tested on internal track b
 - **App name lives in `strings.xml`**, not `capacitor.config.json`.
 - **Rankings pages open in system browser** (`window.open(url, '_system')`) so monthly data
   refreshes don't require an app update.
+- **Never load `kv-banner.js` unconditionally in `<head>`** — the Capacitor guard cannot un-fetch
+  a script already parsed. Use conditional injection: skip the `<script src>` tag entirely and
+  dynamically append the script only in the `else` (web) branch of the guard.
+- **`.screens-row` (or any element below the guard script in the DOM) cannot be removed
+  synchronously** — it hasn't been parsed yet. Fix: inject `<style>.screens-row{display:none
+  !important}</style>` synchronously to prevent rendering, then remove the node on
+  `DOMContentLoaded`.
+- **Back button null check must use `equals()` not `contains()`** — and null URL should exit the
+  app, not navigate home. Correct pattern: `if (url == null || url.equals("https://localhost/
+  app/index.html")) { finish(); } else { loadUrl(home); }`.
+- **Capacitor redirect in `www/index.html` must be at the top of `<head>`** — placing it in
+  `<body>` (after 580+ lines of JSON-LD/CSS) causes the full hub page to flash before redirect.
 
 ### Key facts
 - Keystore: `C:\Users\Anurag\keystores\buffett-upload.jks` — **losing it = can never update**
