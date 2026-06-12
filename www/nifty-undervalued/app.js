@@ -62,7 +62,7 @@
       : `<span class="${sinceListed >= 0 ? 'pos' : 'neg'}">${sinceListed >= 0 ? '+' : ''}${pct(sinceListed)}</span>`;
     return `<tr>
       <td>${r.rank}</td>
-      <td><div class="tk">${escapeHtml(r.ticker)}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
+      <td><div class="tk">${escapeHtml(r.ticker)}${r.highLeverage ? '<sup title="High leverage — see note below">*</sup>' : ''}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
       <td>${escapeHtml(r.sector || '—')}</td>
       <td class="num">${mktCap}</td>
       <td><span class="tag ${tag}">${r.method}</span></td>
@@ -100,6 +100,13 @@
     bodyEl.innerHTML = rows.map(r => row(r, live[r.ticker], firstSeen[r.ticker])).join('');
     statusEl.hidden = true;
     tableEl.hidden = false;
+    if (rows.some(r => r.highLeverage)) {
+      const note = document.createElement('p');
+      note.className = 'leverage-note';
+      note.style.cssText = 'margin:8px 0 0;padding:8px 12px;background:#fff8e1;border-left:3px solid #f59e0b;border-radius:4px;font-size:0.82rem;color:#92400e;';
+      note.textContent = '* High leverage — debt exceeds 65% of enterprise value. WACC is dominated by the cost of debt; a low interest expense (or null → 5% fallback) can understate the true discount rate. Treat the fair-value estimate with extra caution.';
+      tableEl.parentNode.insertAdjacentElement('afterend', note);
+    }
   }
 
   init();
