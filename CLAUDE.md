@@ -91,13 +91,15 @@ S&P 500 build (2026-06-04), all in the **shared** engine → they apply to **bot
 **ASX re-run done 2026-06-04** — engine parity fixes applied; ASX raw cache now written
 (`scripts/_raw-asx.json`) so future ASX tweaks can use `--reeval`.
 
-### High-leverage flag (`highLeverage: true`) — added 2026-06-06
+### High-leverage flag (`highLeverage: true`) — added 2026-06-06, rendered 2026-06-12
 `evaluate.js` sets `highLeverage: true` on any DCF stock where `totalDebt / (totalDebt + marketCap) > 0.65`.
 `run-screen.js` passes it through to `rankings.json`. All three screen `app.js` files render an asterisk
-on the ticker (`CHTR*`) and inject an amber footnote below the table. Current flagged stock: **CHTR**
-(Charter Communications, SP500, D/V 83%, WACC 4.6% — interest expense null → 5% fallback dominated
-by 83% debt weight). Manual curation rule: financial investment companies (e.g. MFF.AX) whose FCF
-includes large investment flows should be removed and replaced with the next in the ranked list.
+on the ticker (`CHTR*`) with a hover tooltip, and inject an amber footnote below the table when any
+flagged stock is present. The footnote is dormant until the next batch re-run populates `highLeverage`
+in `rankings.json`. Current flagged stock: **CHTR** (Charter Communications, SP500, D/V 83%, WACC 4.6%
+— interest expense null → 5% fallback dominated by 83% debt weight). Manual curation rule: financial
+investment companies (e.g. MFF.AX) whose FCF includes large investment flows should be removed and
+replaced with the next in the ranked list.
 
 ### Mobile "Go" button — added 2026-06-06
 On mobile (≤600px) the Analyse button is replaced by a compact "Go" button placed **inline to the right of the search input** on the same row. This prevents the autocomplete dropdown (which drops below the input) from covering the action button.
