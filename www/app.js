@@ -65,6 +65,12 @@ const els = {
 
 const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
 const RECENT_KEY = 'dcf_recent_tickers';
+
+const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+if (isNative) {
+  const badge = document.getElementById('kv-play-badge');
+  if (badge) badge.hidden = true;
+}
 const RECENT_MAX = 8;
 
 let currentData   = null;

@@ -113,6 +113,13 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
   .screens-row { flex-direction: column; }
 }
 
+/* ── Play Store badge (web only) ── */
+#kv-play-badge {
+  text-align: center;
+  padding: 12px 16px 4px;
+}
+#kv-play-badge img { display: inline-block; }
+
 /* ── Search bar ── */
 .search-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
 .ac-wrapper { position: relative; flex: 1 1 280px; min-width: 0; }
