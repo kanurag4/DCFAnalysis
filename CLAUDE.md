@@ -159,7 +159,8 @@ AAB built. Upload to Play Console internal track, test, then promote to producti
 - Privacy policy at `www/privacy.html` updated for v2: new app name, DCF tool added, localStorage
   section expanded (recent tickers + theme preference), rankings external browser note added.
 - Play Store badge added to `www/dcf/index.html` (web only — hidden via `isNative` check in
-  `dcf/app.js`, same pattern as stock page).
+  `dcf/app.js`, same pattern as stock page). **Implemented 2026-06-15** (`www/index.html`,
+  `www/style.css`, `www/app.js` — badge sits above the screens-row; CSS mirrors stock page).
 
 ### Capacitor gotchas (lessons learnt 2026-06-09 / 2026-06-10)
 - **Always use explicit file paths** — `/app/index.html` not `/app/`. Directory paths cause a
