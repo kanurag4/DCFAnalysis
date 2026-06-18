@@ -184,3 +184,5 @@ html:not(.dark) footer { color:#475569; }
   font-style: italic;
   padding: 16px 8px !important;
 }
+.activity-table .pos { color: var(--kv-pass); }
+.activity-table .neg { color: var(--kv-fail); }
