@@ -57,6 +57,12 @@ the live tool's pure calc modules unchanged. Shows **top 20** at an **80% margin
 investment company; DCF inflates value via investment flows in FCF. Replaced by BPT.AX (Beach
 Energy, rank 20, 11.7% MoS). BPT.AX added to `first-seen.json`.
 
+**Manual curation (2026-06-18):** MFF.AX reappeared at rank 2 — removed again, same reason.
+Replaced by WOR.AX (Worley Limited, rank 21, 8% MoS). WOR.AX added to `first-seen.json`.
+
+**ASX refresh 2026-06-18:** First real portfolio rebalance. 4 exits: RGN.AX, JBH.AX, VNT.AX,
+SDF.AX (all positive returns). Portfolio value: **$10,669.56 (+6.7%)** from $10,000 seed.
+
 ## Feature: Most Undervalued S&P 500 screen — ✅ LIVE (2026-06-04)
 
 Sibling of the ASX screen at **kashvector.com/dcf/sp500-undervalued/** (separate page, not a
@@ -129,6 +135,33 @@ the NIFTY 500 by base-case DCF/DDM margin of safety. Top 20, 80% cap, INR.
 **Incremental delta-fetch pattern** (used when expanding the ticker list): `scripts/fetch-nifty-delta.js`
 reads `_raw-nifty.json`, fetches only new tickers, merges back. Then `--reeval` covers all tickers.
 Reuse this pattern for any future ticker-list expansion on any screen.
+
+---
+
+## Feature: Paper Portfolio Tracker — ✅ LIVE (2026-06-18)
+
+Amber hero card on all three undervalued screens showing what a hypothetical equal-weight,
+monthly-rebalanced portfolio would be worth today.
+
+- **Starting values:** ASX $10,000 AUD · S&P 500 $10,000 USD · NIFTY ₹1,00,000 (₹1L)
+- **Hero card:** live portfolio value, % gain since inception, N holdings, start date, days since investing
+- **Exits table:** stocks that left the list in the most recent batch — entry/exit date+price, return % (green/red)
+- **Data files:** `portfolio-value.json` (running total, written by batch) + `sold.json` (exit history, appended by batch)
+- Rebalance runs only in full-fetch mode (not `--rerank`/`--reeval`)
+- Returns are **price return only** — dividends not included (known limitation, footnote planned)
+
+### Key implementation notes
+- `scripts/lib/portfolio.js` — pure `computeRebalance()` function; tested (114 tests total)
+- `startingValue` stored in `portfolio-value.json` and preserved through rebalances; NIFTY config has `startingValue: 100000`
+- `run-screen.js` reads old `rankings.json` BEFORE `rankAndWrite` overwrites it, then calls `updatePortfolio`
+- Hero label auto-formats: `₹1L` for INR ≥ 100000, `$10K` / `$XK` for others
+- Activity table only shows exits from `exitDate === rankings.asAt` (current month only; full history in `sold.json`)
+
+### ASX portfolio history
+| Date | Value | Change | Notes |
+|---|---|---|---|
+| 2026-06-04 | $10,000 | — | Seeded |
+| 2026-06-18 | $10,669.56 | +6.7% | First rebalance; 4 exits (RGN, JBH, VNT, SDF) |
 
 ---
 
