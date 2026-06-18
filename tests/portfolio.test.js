@@ -1,0 +1,77 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const { computeRebalance, STARTING_VALUE } = require('../scripts/lib/portfolio.js');
+
+describe('computeRebalance', () => {
+  it('first run: returns $10K, correct N, no sold entries', () => {
+    const { portfolio, sold } = computeRebalance(
+      null, [],
+      [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }],
+      [], {}, '2026-06-01'
+    );
+    assert.equal(portfolio.value, STARTING_VALUE);
+    assert.equal(portfolio.N, 2);
+    assert.equal(portfolio.asAt, '2026-06-01');
+    assert.equal(portfolio.startedAt, '2026-06-01');
+    assert.deepEqual(sold, []);
+  });
+
+  it('no leavers: portfolio grows by weighted price movement', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 11 }, { ticker: 'BBB', snapshotPrice: 22 }];
+    const { portfolio, sold } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-01');
+    // each slot $5000; AAA +10% = $5500, BBB +10% = $5500 → $11000
+    assert.equal(portfolio.value, 11000);
+    assert.equal(portfolio.N, 2);
+    assert.equal(portfolio.startedAt, '2026-06-01'); // preserved
+    assert.deepEqual(sold, []);
+  });
+
+  it('one leaver: proceeds pooled, entry/exit recorded from firstSeen', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 12 }, { ticker: 'CCC', snapshotPrice: 5 }];
+    const allEvaluated = [{ ticker: 'BBB', snapshotPrice: 18 }];
+    const firstSeen = { BBB: { firstSeen: '2026-05-01', firstPrice: 19 } };
+    const { portfolio, sold } = computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, '2026-07-01');
+    // AAA: 5000*(12/10)=6000; BBB: 5000*(18/20)=4500 → total 10500
+    assert.equal(portfolio.value, 10500);
+    assert.equal(portfolio.N, 2);
+    assert.equal(sold.length, 1);
+    assert.equal(sold[0].ticker, 'BBB');
+    assert.equal(sold[0].entryDate, '2026-05-01');
+    assert.equal(sold[0].entryPrice, 19);
+    assert.equal(sold[0].exitDate, '2026-07-01');
+    assert.equal(sold[0].exitPrice, 18);
+  });
+
+  it('leaver with no price in allEvaluated: uses old price (factor 1)', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'CCC', snapshotPrice: 5 }];
+    const { portfolio, sold } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-01');
+    // BBB: no new price → factor 1 → $5000; AAA: no change → $5000; total $10000
+    assert.equal(portfolio.value, 10000);
+    assert.equal(sold[0].exitPrice, 20);
+  });
+
+  it('portfolio declines when prices fall', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 9 }, { ticker: 'BBB', snapshotPrice: 18 }];
+    const { portfolio, sold } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-01');
+    // AAA: 5000*0.9=4500; BBB: 5000*0.9=4500 → 9000
+    assert.equal(portfolio.value, 9000);
+    assert.deepEqual(sold, []);
+  });
+
+  it('leaver with no firstSeen entry: falls back to oldPortfolio.asAt + old price', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'CCC', snapshotPrice: 5 }];
+    const { sold } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-01');
+    assert.equal(sold[0].entryDate, '2026-06-01');
+    assert.equal(sold[0].entryPrice, 20);
+  });
+});
