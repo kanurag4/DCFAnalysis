@@ -125,36 +125,40 @@ html:not(.dark) footer { color:#475569; }
 .portfolio-hero {
   margin: 0 0 16px;
   padding: 16px 20px;
-  background: var(--kv-card);
-  border: 1px solid var(--kv-border);
+  background: rgba(245, 158, 11, 0.07);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-left: 4px solid var(--kv-warn);
   border-radius: 10px;
 }
 .portfolio-hero-label {
   font-size: 0.78rem;
   color: var(--kv-muted);
   margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 .portfolio-hero-stat {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .portfolio-hero-value {
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--kv-text);
+  line-height: 1;
 }
 .portfolio-hero-gain {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 .portfolio-hero-gain.pos { color: var(--kv-pass); }
 .portfolio-hero-gain.neg { color: var(--kv-fail); }
 .portfolio-hero-note {
   font-size: 0.75rem;
   color: var(--kv-muted);
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 /* ── Recent activity table ── */
@@ -192,4 +196,10 @@ html:not(.dark) footer { color:#475569; }
   border-bottom: 1px solid var(--kv-border);
   color: var(--kv-text);
   white-space: nowrap;
+}
+.activity-empty {
+  text-align: center;
+  color: var(--kv-muted);
+  font-style: italic;
+  padding: 16px 8px !important;
 }

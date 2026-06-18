@@ -111,20 +111,25 @@
 
   function renderActivityTable(soldData, asAt, currency) {
     const recent = soldData.filter(function(s) { return s.exitDate === asAt; });
-    if (!recent.length) return;
     const sym = currency === 'INR' ? '₹' : '$';
-    const tbodyRows = recent.map(function(s) {
-      const ret    = (s.exitPrice - s.entryPrice) / s.entryPrice;
-      const retStr = (ret >= 0 ? '+' : '') + (ret * 100).toFixed(1) + '%';
-      return '<tr>' +
-        '<td>' + escapeHtml(s.ticker) + '</td>' +
-        '<td>' + s.entryDate + '</td>' +
-        '<td class="num">' + sym + Number(s.entryPrice).toFixed(2) + '</td>' +
-        '<td>' + s.exitDate + '</td>' +
-        '<td class="num">' + sym + Number(s.exitPrice).toFixed(2) + '</td>' +
-        '<td class="num ' + (ret >= 0 ? 'pos' : 'neg') + '">' + retStr + '</td>' +
-      '</tr>';
-    }).join('');
+
+    let tbodyContent;
+    if (!recent.length) {
+      tbodyContent = '<tr><td colspan="6" class="activity-empty">No exits this month — check back after the next monthly refresh.</td></tr>';
+    } else {
+      tbodyContent = recent.map(function(s) {
+        const ret    = (s.exitPrice - s.entryPrice) / s.entryPrice;
+        const retStr = (ret >= 0 ? '+' : '') + (ret * 100).toFixed(1) + '%';
+        return '<tr>' +
+          '<td>' + escapeHtml(s.ticker) + '</td>' +
+          '<td>' + s.entryDate + '</td>' +
+          '<td class="num">' + sym + Number(s.entryPrice).toFixed(2) + '</td>' +
+          '<td>' + s.exitDate + '</td>' +
+          '<td class="num">' + sym + Number(s.exitPrice).toFixed(2) + '</td>' +
+          '<td class="num ' + (ret >= 0 ? 'pos' : 'neg') + '">' + retStr + '</td>' +
+        '</tr>';
+      }).join('');
+    }
 
     const el = document.createElement('section');
     el.className = 'activity-card';
@@ -135,7 +140,7 @@
           '<th>Stock</th><th>Entry date</th><th class="num">Entry price</th>' +
           '<th>Exit date</th><th class="num">Exit price</th><th class="num">Return</th>' +
         '</tr></thead>' +
-        '<tbody>' + tbodyRows + '</tbody>' +
+        '<tbody>' + tbodyContent + '</tbody>' +
       '</table></div>';
 
     const leverageNote = document.querySelector('.leverage-note');
@@ -174,7 +179,7 @@
       tableEl.parentNode.insertAdjacentElement('afterend', note);
     }
     if (portfolioData) renderHeroCard(portfolioData, rows, live);
-    if (soldData && soldData.length) renderActivityTable(soldData, rankings.asAt, rows[0] ? rows[0].currency : null);
+    renderActivityTable(soldData || [], rankings.asAt, rows[0] ? rows[0].currency : null);
   }
 
   init();
