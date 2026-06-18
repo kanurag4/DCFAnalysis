@@ -120,3 +120,76 @@ html:not(.dark) footer { color:#475569; }
   .sharesight-cta a { width: 100%; text-align: center; }
   .sharesight-affiliate-note { text-align: left; }
 }
+
+/* ── Paper portfolio hero card ── */
+.portfolio-hero {
+  margin: 0 0 16px;
+  padding: 16px 20px;
+  background: var(--kv-card);
+  border: 1px solid var(--kv-border);
+  border-radius: 10px;
+}
+.portfolio-hero-label {
+  font-size: 0.78rem;
+  color: var(--kv-muted);
+  margin-bottom: 8px;
+}
+.portfolio-hero-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.portfolio-hero-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--kv-text);
+}
+.portfolio-hero-gain {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.portfolio-hero-gain.pos { color: var(--kv-pass); }
+.portfolio-hero-gain.neg { color: var(--kv-fail); }
+.portfolio-hero-note {
+  font-size: 0.75rem;
+  color: var(--kv-muted);
+  margin-top: 4px;
+}
+
+/* ── Recent activity table ── */
+.activity-card {
+  margin: 16px 0 0;
+  padding: 16px 20px;
+  background: var(--kv-card);
+  border: 1px solid var(--kv-border);
+  border-radius: 10px;
+}
+.activity-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--kv-text);
+  margin: 0 0 12px;
+}
+.activity-table {
+  width: 100%;
+  font-size: 0.82rem;
+  border-collapse: collapse;
+  min-width: 420px;
+}
+.activity-table th {
+  color: var(--kv-muted);
+  font-weight: 500;
+  padding: 4px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--kv-border);
+  white-space: nowrap;
+}
+.activity-table th.num,
+.activity-table td.num { text-align: right; }
+.activity-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--kv-border);
+  color: var(--kv-text);
+  white-space: nowrap;
+}
