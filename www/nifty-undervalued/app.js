@@ -88,13 +88,18 @@
         ? live[r.ticker] : r.snapshotPrice;
       liveValue += slotBase * (lp / r.snapshotPrice);
     }
+    // Live value = sum of each holding's slot adjusted for intra-month price movement.
+    // Since-inception gain is correct because portfolioData.value already bakes in all
+    // prior rebalance gains; this only tracks movement since the last batch run.
     const startVal = portfolioData.startingValue || 10000;
     const gain    = liveValue - startVal;
     const gainPct = (gain / startVal * 100).toFixed(1);
     const gainStr = (gain >= 0 ? '+' : '') + gainPct + '%';
     const sym     = (rows[0] && rows[0].currency === 'INR') ? '₹' : '$';
     const since   = portfolioData.startedAt || portfolioData.asAt;
-    const startLabel = (sym === '₹' && startVal >= 100000) ? sym + '1L' : sym + (startVal / 1000) + 'K';
+    const startLabel = (sym === '₹' && startVal >= 100000)
+      ? sym + (startVal / 100000) + 'L'
+      : sym + (startVal / 1000) + 'K';
 
     const el = document.createElement('section');
     el.className = 'portfolio-hero';
@@ -112,6 +117,7 @@
   }
 
   function renderActivityTable(soldData, asAt, currency) {
+    // Only show exits from the most recent batch run; older history accumulates in sold.json but isn't shown.
     const recent = soldData.filter(function(s) { return s.exitDate === asAt; });
     const sym = currency === 'INR' ? '₹' : '$';
 
@@ -181,7 +187,7 @@
       tableEl.parentNode.insertAdjacentElement('afterend', note);
     }
     if (portfolioData) renderHeroCard(portfolioData, rows, live);
-    renderActivityTable(soldData || [], rankings.asAt, rows[0] ? rows[0].currency : null);
+    if (portfolioData) renderActivityTable(soldData || [], rankings.asAt, rows[0] ? rows[0].currency : null);
   }
 
   init();

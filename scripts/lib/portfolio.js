@@ -10,9 +10,11 @@ const STARTING_VALUE = 10000;
  * @param {Array}       allEvaluated  full evaluated set from this batch { ticker, snapshotPrice }
  * @param {Object}      firstSeen     { [ticker]: { firstSeen, firstPrice } }
  * @param {string}      asAt          YYYY-MM-DD date of this batch run
+ * @param {number}      [startingValue]  initial portfolio value for first run (default: STARTING_VALUE)
  * @returns {{ portfolio: Object, sold: Array }}
  */
-function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, asAt) {
+function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, asAt, startingValue) {
+  const seedValue = (startingValue != null && startingValue > 0) ? startingValue : STARTING_VALUE;
   const newTickers = new Set(newRows.map(r => r.ticker));
 
   // Build a price lookup for leaver stocks from the full evaluated set
@@ -28,7 +30,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
   // First run — nothing to rebalance from
   if (!oldPortfolio || oldPortfolio.N === 0 || !oldRows.length) {
     return {
-      portfolio: { value: STARTING_VALUE, N: newRows.length, asAt, startedAt: asAt, startingValue: STARTING_VALUE },
+      portfolio: { value: seedValue, N: newRows.length, asAt, startedAt: asAt, startingValue: seedValue },
       sold: [],
     };
   }

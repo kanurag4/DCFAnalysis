@@ -151,7 +151,7 @@ function updatePortfolio(config, data, oldRankings) {
   const newRows = newRankings.rows || [];
 
   const { portfolio, sold } = computeRebalance(
-    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt
+    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt, config.startingValue
   );
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
@@ -160,9 +160,11 @@ function updatePortfolio(config, data, oldRankings) {
   if (sold.length) {
     console.log(`\nPortfolio: sold ${sold.length} — ${sold.map(s => s.ticker).join(', ')}`);
   }
-  const gain = portfolio.value - STARTING_VALUE;
+  const startVal = portfolio.startingValue || STARTING_VALUE;
+  const gain = portfolio.value - startVal;
   const sign = gain >= 0 ? '+' : '';
-  console.log(`Portfolio: $${portfolio.value.toFixed(2)} (${sign}${(gain / STARTING_VALUE * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
+  const sym = config.currency === 'INR' ? '₹' : '$';
+  console.log(`Portfolio: ${sym}${portfolio.value.toFixed(2)} (${sign}${(gain / startVal * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
 }
 
 async function runScreen(config, argv = process.argv) {

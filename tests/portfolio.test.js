@@ -74,4 +74,25 @@ describe('computeRebalance', () => {
     assert.equal(sold[0].entryDate, '2026-06-01');
     assert.equal(sold[0].entryPrice, 20);
   });
+
+  it('first run with custom startingValue: seeds value and startingValue correctly', () => {
+    const { portfolio, sold } = computeRebalance(
+      null, [],
+      [{ ticker: 'AAA', snapshotPrice: 100 }, { ticker: 'BBB', snapshotPrice: 200 }],
+      [], {}, '2026-06-05', 100000
+    );
+    assert.equal(portfolio.value, 100000);
+    assert.equal(portfolio.startingValue, 100000);
+    assert.equal(portfolio.N, 2);
+    assert.deepEqual(sold, []);
+  });
+
+  it('startingValue is preserved through subsequent rebalances', () => {
+    const oldPortfolio = { value: 100000, N: 2, asAt: '2026-06-05', startedAt: '2026-06-05', startingValue: 100000 };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 100 }, { ticker: 'BBB', snapshotPrice: 200 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 110 }, { ticker: 'BBB', snapshotPrice: 220 }];
+    const { portfolio } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-05');
+    assert.equal(portfolio.startingValue, 100000);
+    assert.equal(portfolio.value, 110000); // both up 10%
+  });
 });
