@@ -28,7 +28,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
   // First run — nothing to rebalance from
   if (!oldPortfolio || oldPortfolio.N === 0 || !oldRows.length) {
     return {
-      portfolio: { value: STARTING_VALUE, N: newRows.length, asAt, startedAt: asAt },
+      portfolio: { value: STARTING_VALUE, N: newRows.length, asAt, startedAt: asAt, startingValue: STARTING_VALUE },
       sold: [],
     };
   }
@@ -64,6 +64,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
       N: newRows.length,
       asAt,
       startedAt: oldPortfolio.startedAt || oldPortfolio.asAt,
+      startingValue: oldPortfolio.startingValue || STARTING_VALUE,
     },
     sold,
   };

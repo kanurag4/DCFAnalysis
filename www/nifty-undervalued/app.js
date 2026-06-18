@@ -39,7 +39,7 @@
     if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
-    el.innerHTML = `From ${s.tickers} ${s.universe || 'NIFTY 100'} names, <strong>${s.qualified} qualified</strong> this month` +
+    el.innerHTML = `From ${s.tickers} ${s.universe || 'NIFTY 500'} names, <strong>${s.qualified} qualified</strong> this month` +
       `${s.shown < s.qualified ? ` (showing the top ${s.shown})` : ''}.${dropText}`;
     el.hidden = false;
   }
@@ -79,12 +79,85 @@
     </tr>`;
   }
 
+  function renderHeroCard(portfolioData, rows, live) {
+    if (!portfolioData || portfolioData.N === 0 || !rows.length) return;
+    const slotBase = portfolioData.value / portfolioData.N;
+    let liveValue = 0;
+    for (const r of rows) {
+      const lp = (typeof live[r.ticker] === 'number' && live[r.ticker] > 0)
+        ? live[r.ticker] : r.snapshotPrice;
+      liveValue += slotBase * (lp / r.snapshotPrice);
+    }
+    const startVal = portfolioData.startingValue || 10000;
+    const gain    = liveValue - startVal;
+    const gainPct = (gain / startVal * 100).toFixed(1);
+    const gainStr = (gain >= 0 ? '+' : '') + gainPct + '%';
+    const sym     = (rows[0] && rows[0].currency === 'INR') ? '₹' : '$';
+    const since   = portfolioData.startedAt || portfolioData.asAt;
+    const startLabel = (sym === '₹' && startVal >= 100000) ? sym + '1L' : sym + (startVal / 1000) + 'K';
+
+    const el = document.createElement('section');
+    el.className = 'portfolio-hero';
+    el.innerHTML =
+      '<div class="portfolio-hero-inner">' +
+        '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced monthly</div>' +
+        '<div class="portfolio-hero-stat">' +
+          '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
+          '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
+        '</div>' +
+        '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + '</div>' +
+      '</div>';
+
+    tableEl.parentNode.insertAdjacentElement('beforebegin', el);
+  }
+
+  function renderActivityTable(soldData, asAt, currency) {
+    const recent = soldData.filter(function(s) { return s.exitDate === asAt; });
+    const sym = currency === 'INR' ? '₹' : '$';
+
+    let tbodyContent;
+    if (!recent.length) {
+      tbodyContent = '<tr><td colspan="6" class="activity-empty">No exits this month — check back after the next monthly refresh.</td></tr>';
+    } else {
+      tbodyContent = recent.map(function(s) {
+        const ret    = (s.exitPrice - s.entryPrice) / s.entryPrice;
+        const retStr = (ret >= 0 ? '+' : '') + (ret * 100).toFixed(1) + '%';
+        return '<tr>' +
+          '<td>' + escapeHtml(s.ticker) + '</td>' +
+          '<td>' + s.entryDate + '</td>' +
+          '<td class="num">' + sym + Number(s.entryPrice).toFixed(2) + '</td>' +
+          '<td>' + s.exitDate + '</td>' +
+          '<td class="num">' + sym + Number(s.exitPrice).toFixed(2) + '</td>' +
+          '<td class="num ' + (ret >= 0 ? 'pos' : 'neg') + '">' + retStr + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    const el = document.createElement('section');
+    el.className = 'activity-card';
+    el.innerHTML =
+      '<h3 class="activity-title">Stocks that exited this month</h3>' +
+      '<div class="table-scroll"><table class="activity-table">' +
+        '<thead><tr>' +
+          '<th>Stock</th><th>Entry date</th><th class="num">Entry price</th>' +
+          '<th>Exit date</th><th class="num">Exit price</th><th class="num">Return</th>' +
+        '</tr></thead>' +
+        '<tbody>' + tbodyContent + '</tbody>' +
+      '</table></div>';
+
+    const leverageNote = document.querySelector('.leverage-note');
+    const ref = leverageNote || tableEl.parentNode;
+    ref.insertAdjacentElement('afterend', el);
+  }
+
   async function init() {
-    let rankings, firstSeen;
+    let rankings, firstSeen, portfolioData, soldData;
     try {
-      [rankings, firstSeen] = await Promise.all([
+      [rankings, firstSeen, portfolioData, soldData] = await Promise.all([
         getJSON('./rankings.json'),
         getJSON('./first-seen.json').catch(() => ({})),
+        getJSON('./portfolio-value.json').catch(() => null),
+        getJSON('./sold.json').catch(() => []),
       ]);
     } catch (err) {
       statusEl.textContent = 'Could not load the rankings. Please try again later.';
@@ -107,6 +180,8 @@
       note.textContent = '* High leverage — debt exceeds 65% of enterprise value. WACC is dominated by the cost of debt; a low interest expense (or null → 5% fallback) can understate the true discount rate. Treat the fair-value estimate with extra caution.';
       tableEl.parentNode.insertAdjacentElement('afterend', note);
     }
+    if (portfolioData) renderHeroCard(portfolioData, rows, live);
+    renderActivityTable(soldData || [], rankings.asAt, rows[0] ? rows[0].currency : null);
   }
 
   init();

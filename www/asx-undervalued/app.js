@@ -88,17 +88,19 @@
         ? live[r.ticker] : r.snapshotPrice;
       liveValue += slotBase * (lp / r.snapshotPrice);
     }
-    const gain    = liveValue - 10000;
-    const gainPct = (gain / 10000 * 100).toFixed(1);
+    const startVal = portfolioData.startingValue || 10000;
+    const gain    = liveValue - startVal;
+    const gainPct = (gain / startVal * 100).toFixed(1);
     const gainStr = (gain >= 0 ? '+' : '') + gainPct + '%';
     const sym     = (rows[0] && rows[0].currency === 'INR') ? '₹' : '$';
     const since   = portfolioData.startedAt || portfolioData.asAt;
+    const startLabel = (sym === '₹' && startVal >= 100000) ? sym + '1L' : sym + (startVal / 1000) + 'K';
 
     const el = document.createElement('section');
     el.className = 'portfolio-hero';
     el.innerHTML =
       '<div class="portfolio-hero-inner">' +
-        '<div class="portfolio-hero-label">' + sym + '10K paper portfolio · equally weighted, rebalanced monthly</div>' +
+        '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced monthly</div>' +
         '<div class="portfolio-hero-stat">' +
           '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
           '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
