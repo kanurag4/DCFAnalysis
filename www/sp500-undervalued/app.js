@@ -97,6 +97,7 @@
     const gainStr = (gain >= 0 ? '+' : '') + gainPct + '%';
     const sym     = (rows[0] && rows[0].currency === 'INR') ? '₹' : '$';
     const since   = portfolioData.startedAt || portfolioData.asAt;
+    const days    = Math.floor((Date.now() - new Date(since).getTime()) / 86400000);
     const startLabel = (sym === '₹' && startVal >= 100000)
       ? sym + (startVal / 100000) + 'L'
       : sym + (startVal / 1000) + 'K';
@@ -110,7 +111,7 @@
           '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
           '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
         '</div>' +
-        '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + '</div>' +
+        '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + ' · ' + days + ' days</div>' +
       '</div>';
 
     tableEl.parentNode.insertAdjacentElement('beforebegin', el);
