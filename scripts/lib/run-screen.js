@@ -14,6 +14,7 @@ const { marketParamsFor } = require('./market.js');
 const { evaluateStock } = require('./evaluate.js');
 const { rankRows, rankFunnel } = require('./rank.js');
 const { mergeFirstSeen } = require('./firstSeen.js');
+const { computeRebalance, STARTING_VALUE } = require('./portfolio.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // ~18.75 req/min keeps us under the 20/60s Worker cap
@@ -134,9 +135,40 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   console.log(`\nWrote ${outDir}\\rankings.json and first-seen.json`);
 }
 
+function updatePortfolio(config, data, oldRankings) {
+  const outDir = path.join(__dirname, '../../www', config.outDir);
+  const portfolioPath = path.join(outDir, 'portfolio-value.json');
+  const soldPath      = path.join(outDir, 'sold.json');
+  const fsPath        = path.join(outDir, 'first-seen.json');
+
+  const oldPortfolio = fs.existsSync(portfolioPath) ? JSON.parse(fs.readFileSync(portfolioPath, 'utf8')) : null;
+  const oldRows      = (oldRankings && oldRankings.rows) ? oldRankings.rows : [];
+  const existingSold = fs.existsSync(soldPath) ? JSON.parse(fs.readFileSync(soldPath, 'utf8')) : [];
+  const firstSeen    = fs.existsSync(fsPath) ? JSON.parse(fs.readFileSync(fsPath, 'utf8')) : {};
+
+  // New rankings were just written by rankAndWrite — read them back
+  const newRankings = JSON.parse(fs.readFileSync(path.join(outDir, 'rankings.json'), 'utf8'));
+  const newRows = newRankings.rows || [];
+
+  const { portfolio, sold } = computeRebalance(
+    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt
+  );
+
+  fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
+  fs.writeFileSync(soldPath, JSON.stringify([...existingSold, ...sold], null, 2) + '\n');
+
+  if (sold.length) {
+    console.log(`\nPortfolio: sold ${sold.length} — ${sold.map(s => s.ticker).join(', ')}`);
+  }
+  const gain = portfolio.value - STARTING_VALUE;
+  const sign = gain >= 0 ? '+' : '';
+  console.log(`Portfolio: $${portfolio.value.toFixed(2)} (${sign}${(gain / STARTING_VALUE * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
+}
+
 async function runScreen(config, argv = process.argv) {
   const cachePath = path.join(__dirname, '..', config.cacheFile);
   let data;
+
   if (argv.includes('--reeval')) {
     // Re-run evaluateStock on the cached RAW data (no fetch) — for engine/parity
     // fixes. Refreshes the evaluated cache too, so a later --rerank stays in sync.
@@ -148,14 +180,25 @@ async function runScreen(config, argv = process.argv) {
     const evaluated = b.raw.map(d => evaluateStock(d, marketParamsFor(d.ticker, live)));
     data = { asAt: b.asAt, tickerCount: b.tickerCount, evaluated };
     fs.writeFileSync(cachePath, JSON.stringify(data) + '\n');
+    rankAndWrite(config, data);
+
   } else if (argv.includes('--rerank')) {
     if (!fs.existsSync(cachePath)) throw new Error(`No cached data at ${config.cacheFile} — run without --rerank first.`);
     data = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
     console.log(`Re-ranking ${data.evaluated.length} cached rows from ${data.asAt} (no fetch).`);
+    rankAndWrite(config, data);
+
   } else {
+    // Full fetch — read old rankings BEFORE rankAndWrite overwrites them
+    const outDir = path.join(__dirname, '../../www', config.outDir);
+    const rankingsPath = path.join(outDir, 'rankings.json');
+    const oldRankings = fs.existsSync(rankingsPath)
+      ? JSON.parse(fs.readFileSync(rankingsPath, 'utf8'))
+      : null;
     data = await gather(config);
+    rankAndWrite(config, data);
+    updatePortfolio(config, data, oldRankings);
   }
-  rankAndWrite(config, data);
 }
 
 module.exports = { runScreen };
