@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "ticker": "RGN.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 2.25,
+    "exitDate": "2026-06-18",
+    "exitPrice": 2.4
+  },
+  {
+    "ticker": "JBH.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 71.05,
+    "exitDate": "2026-06-18",
+    "exitPrice": 78.51
+  },
+  {
+    "ticker": "VNT.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 6.3,
+    "exitDate": "2026-06-18",
+    "exitPrice": 6.63
+  },
+  {
+    "ticker": "SDF.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 4,
+    "exitDate": "2026-06-18",
+    "exitPrice": 5.16
+  }
+]
