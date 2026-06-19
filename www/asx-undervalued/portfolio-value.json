@@ -1,7 +1,10 @@
 {
-  "value": 10669.56,
+  "value": 10680.45,
   "N": 20,
-  "asAt": "2026-06-18",
+  "asAt": "2026-06-19",
   "startedAt": "2026-06-04",
-  "startingValue": 10000
+  "startingValue": 10000,
+  "indexSeedPrice": 8911.1,
+  "indexName": "ASX 200",
+  "indexTicker": "^AXJO"
 }
