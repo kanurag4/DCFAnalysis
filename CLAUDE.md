@@ -63,6 +63,18 @@ Replaced by WOR.AX (Worley Limited, rank 21, 8% MoS). WOR.AX added to `first-see
 **ASX refresh 2026-06-18:** First real portfolio rebalance. 4 exits: RGN.AX, JBH.AX, VNT.AX,
 SDF.AX (all positive returns). Portfolio value: **$10,669.56 (+6.7%)** from $10,000 seed.
 
+**Manual curation (2026-06-19):** MFF.AX reappeared at rank 3 — removed for the third time,
+same reason. Replaced by WOR.AX (Worley Limited, rank 21, 14% MoS).
+
+**ASX refresh 2026-06-19:** 300 tickers, 0 fetch-failed, 27 qualified. 2 exits: MGH.AX, WOR.AX.
+Portfolio value: **$10,680.45 (+6.8%)**. `^AXJO` seeded @ 8,911.10 for index benchmark.
+
+**S&P 500 refresh 2026-06-19:** 502 tickers, 0 fetch-failed, 65 qualified, top 20 shown.
+Portfolio value: **$9,676.88 (-3.2%)**. `^GSPC` seeded @ 7,420.1 for index benchmark.
+
+**NIFTY refresh 2026-06-19:** 500 tickers, 0 fetch-failed, 16 qualified. 2 exits: RPOWER.NS,
+KAJARIACER.NS. Portfolio value: **₹1,01,352 (+1.4%)**. `^NSEI` seeded @ 24,168 for index benchmark.
+
 ## Feature: Most Undervalued S&P 500 screen — ✅ LIVE (2026-06-04)
 
 Sibling of the ASX screen at **kashvector.com/dcf/sp500-undervalued/** (separate page, not a
@@ -151,17 +163,44 @@ monthly-rebalanced portfolio would be worth today.
 - Returns are **price return only** — dividends not included (known limitation, footnote planned)
 
 ### Key implementation notes
-- `scripts/lib/portfolio.js` — pure `computeRebalance()` function; tested (114 tests total)
+- `scripts/lib/portfolio.js` — pure `computeRebalance()` function; tested (117 tests total)
 - `startingValue` stored in `portfolio-value.json` and preserved through rebalances; NIFTY config has `startingValue: 100000`
 - `run-screen.js` reads old `rankings.json` BEFORE `rankAndWrite` overwrites it, then calls `updatePortfolio`
 - Hero label auto-formats: `₹1L` for INR ≥ 100000, `$10K` / `$XK` for others
 - Activity table only shows exits from `exitDate === rankings.asAt` (current month only; full history in `sold.json`)
 
-### ASX portfolio history
+### Index benchmark on hero card — added 2026-06-19
+Each screen's hero card shows a right-aligned "vs [Index] ±X%" comparison for the same period as the portfolio.
+
+- `rank-asx.js` config: `indexTicker: '^AXJO'`, `indexName: 'ASX 200'`
+- `rank-sp500.js` config: `indexTicker: '^GSPC'`, `indexName: 'S&P 500'`
+- `rank-nifty.js` config: `indexTicker: '^NSEI'`, `indexName: 'NIFTY 50'`
+- `scripts/lib/rf.js` exports `fetchIndexPrice(symbol, proxyUrl)` — same `summaryDetail` chain as RF rate fetching; no ÷100, no clamping; returns null on failure.
+- `run-screen.js` fetches the index price in `gather()` and passes it to `updatePortfolio()` as `indexMeta: { indexPrice, indexName, indexTicker }`.
+- `portfolio.js` `computeRebalance()` accepts `indexMeta` as 8th param. First run seeds `indexSeedPrice` / `indexName` / `indexTicker` into `portfolio-value.json`; subsequent runs preserve the original seed (never overwrite).
+- Front-end `app.js` on each screen: adds `indexTicker` to the live-price fetch batch, computes `(livePrice − seedPrice) / seedPrice`, renders `.portfolio-hero-index` div right-aligned in `.portfolio-hero-stat` (flex space-between).
+- **Seed timing note:** if the batch runs before `fetchIndexPrice` is wired up, patch with `node scripts/patch-index-seeds.js` (one-off; delete after use). Seeded 2026-06-19: `^AXJO` @ 8,911 · `^GSPC` @ 7,420 · `^NSEI` @ 24,168.
+
+### Portfolio history
+
+**ASX** (seed $10,000 AUD · 2026-06-04):
 | Date | Value | Change | Notes |
 |---|---|---|---|
 | 2026-06-04 | $10,000 | — | Seeded |
 | 2026-06-18 | $10,669.56 | +6.7% | First rebalance; 4 exits (RGN, JBH, VNT, SDF) |
+| 2026-06-19 | $10,680.45 | +6.8% | 2 exits (MGH, WOR); ^AXJO @ 8,911 seeded |
+
+**S&P 500** (seed $10,000 USD · 2026-06-04):
+| Date | Value | Change | Notes |
+|---|---|---|---|
+| 2026-06-04 | $10,000 | — | Seeded |
+| 2026-06-19 | $9,676.88 | -3.2% | First rebalance; ^GSPC @ 7,420 seeded |
+
+**NIFTY** (seed ₹1,00,000 · 2026-06-05):
+| Date | Value | Change | Notes |
+|---|---|---|---|
+| 2026-06-05 | ₹1,00,000 | — | Seeded |
+| 2026-06-19 | ₹1,01,352 | +1.4% | 2 exits (RPOWER, KAJARIACER); ^NSEI @ 24,168 seeded |
 
 ---
 
@@ -194,6 +233,9 @@ AAB built. Upload to Play Console internal track, test, then promote to producti
 - Play Store badge added to `www/dcf/index.html` (web only — hidden via `isNative` check in
   `dcf/app.js`, same pattern as stock page). **Implemented 2026-06-15** (`www/index.html`,
   `www/style.css`, `www/app.js` — badge sits above the screens-row; CSS mirrors stock page).
+- Play Store badge also added to all three ranking pages (`asx-undervalued/`, `sp500-undervalued/`,
+  `nifty-undervalued/`) **2026-06-19** — same `#kv-play-badge` block before `</main>`, hidden via
+  `isNative` check in each page's `app.js`.
 
 ### Capacitor gotchas (lessons learnt 2026-06-09 / 2026-06-10)
 - **Always use explicit file paths** — `/app/index.html` not `/app/`. Directory paths cause a
@@ -262,7 +304,7 @@ config.js → utils.js → data.js → calc/wacc.js → calc/dcf.js → calc/ddm
 ## Commands
 
 ```bash
-npm test          # Run 22 unit tests (Node built-in runner): 5 wacc + 8 dcf + 9 ddm
+npm test          # Run 117 unit tests (Node built-in runner): 5 wacc + 8 dcf + 9 ddm + 95 portfolio
 npm run dev       # http-server www -p 8000 — open http://localhost:8000
 ```
 
