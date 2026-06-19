@@ -229,7 +229,8 @@ html:not(.dark) footer { color:#475569; }
 /* ── Play Store badge (web only) ── */
 #kv-play-badge {
   text-align: center;
-  padding: 24px 16px 8px;
+  padding: 0 16px 4px;
+  margin-bottom: 12px;
 }
 #kv-play-badge .play-badge-label {
   font-size: 0.75rem;
