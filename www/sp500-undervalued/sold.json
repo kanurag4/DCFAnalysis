@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "ticker": "ADSK",
+    "entryDate": "2026-06-04",
+    "entryPrice": 229.6,
+    "exitDate": "2026-06-19",
+    "exitPrice": 193.82
+  },
+  {
+    "ticker": "LH",
+    "entryDate": "2026-06-04",
+    "entryPrice": 258.92,
+    "exitDate": "2026-06-19",
+    "exitPrice": 255.82
+  },
+  {
+    "ticker": "BBY",
+    "entryDate": "2026-06-04",
+    "entryPrice": 71.73,
+    "exitDate": "2026-06-19",
+    "exitPrice": 74.73
+  },
+  {
+    "ticker": "FOX",
+    "entryDate": "2026-06-04",
+    "entryPrice": 57.44,
+    "exitDate": "2026-06-19",
+    "exitPrice": 46.95
+  },
+  {
+    "ticker": "CHTR",
+    "entryDate": "2026-06-04",
+    "entryPrice": 129.01,
+    "exitDate": "2026-06-19",
+    "exitPrice": 126.23
+  },
+  {
+    "ticker": "FOXA",
+    "entryDate": "2026-06-04",
+    "entryPrice": 64.28,
+    "exitDate": "2026-06-19",
+    "exitPrice": 52.23
+  },
+  {
+    "ticker": "CTVA",
+    "entryDate": "2026-06-04",
+    "entryPrice": 77.8,
+    "exitDate": "2026-06-19",
+    "exitPrice": 78.59
+  },
+  {
+    "ticker": "MKC",
+    "entryDate": "2026-06-04",
+    "entryPrice": 46.29,
+    "exitDate": "2026-06-19",
+    "exitPrice": 46.64
+  },
+  {
+    "ticker": "ADBE",
+    "entryDate": "2026-06-04",
+    "entryPrice": 256.24,
+    "exitDate": "2026-06-19",
+    "exitPrice": 195.16
+  }
+]

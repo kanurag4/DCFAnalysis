@@ -1,5 +1,8 @@
 // www/sp500-undervalued/app.js — DOM-only. Pure helpers live in ../utils.js.
 (function () {
+  const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+  if (isNative) { const b = document.getElementById('kv-play-badge'); if (b) b.hidden = true; }
+
   const $ = (id) => document.getElementById(id);
   const statusEl = $('status');
   const tableEl = $('rank-table');
