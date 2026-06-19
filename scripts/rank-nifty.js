@@ -19,6 +19,8 @@ const config = {
   topN: 20,
   maxMargin: 0.8,
   startingValue: 100000,
+  indexTicker: '^NSEI',
+  indexName: 'NIFTY 50',
   cacheFile: '_evaluated-nifty.json',
   rawFile: '_raw-nifty.json',
 };

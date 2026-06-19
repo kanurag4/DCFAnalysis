@@ -17,6 +17,8 @@ const config = {
   rfLabel: 'AUS RF',
   topN: 20,
   maxMargin: 0.8,          // drop > 80% margins — the most assumption-fragile valuations
+  indexTicker: '^AXJO',
+  indexName: 'ASX 200',
   cacheFile: '_evaluated.json', // unchanged so existing cache + --rerank keep working
   rawFile: '_raw-asx.json',     // raw data cache for --reeval (gitignored scripts/_*)
 };

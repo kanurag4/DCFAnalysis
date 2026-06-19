@@ -105,14 +105,33 @@
       ? sym + (startVal / 100000) + 'L'
       : sym + (startVal / 1000) + 'K';
 
+    const indexTicker   = portfolioData.indexTicker || null;
+    const indexSeedPrice = portfolioData.indexSeedPrice || null;
+    const indexName     = portfolioData.indexName || '';
+    const liveIndexPrice = (indexTicker && typeof live[indexTicker] === 'number' && live[indexTicker] > 0)
+      ? live[indexTicker] : null;
+    const indexRet = (liveIndexPrice && indexSeedPrice && indexSeedPrice > 0)
+      ? (liveIndexPrice - indexSeedPrice) / indexSeedPrice : null;
+    const indexHtml = indexRet != null
+      ? '<div class="portfolio-hero-index">' +
+          '<span class="portfolio-hero-index-name">vs ' + escapeHtml(indexName) + '</span>' +
+          '<span class="portfolio-hero-gain ' + (indexRet >= 0 ? 'pos' : 'neg') + '">' +
+            (indexRet >= 0 ? '+' : '') + (indexRet * 100).toFixed(1) + '%' +
+          '</span>' +
+        '</div>'
+      : '';
+
     const el = document.createElement('section');
     el.className = 'portfolio-hero';
     el.innerHTML =
       '<div class="portfolio-hero-inner">' +
         '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced monthly</div>' +
         '<div class="portfolio-hero-stat">' +
-          '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
-          '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
+          '<div class="portfolio-hero-left">' +
+            '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
+            '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
+          '</div>' +
+          indexHtml +
         '</div>' +
         '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + ' · ' + days + ' days</div>' +
       '</div>';
@@ -179,7 +198,9 @@
     const rows = rankings.rows || [];
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
 
-    const live = await fetchLivePrices(rows.map(r => r.ticker));
+    const tickersForLive = rows.map(r => r.ticker);
+    if (portfolioData && portfolioData.indexTicker) tickersForLive.push(portfolioData.indexTicker);
+    const live = await fetchLivePrices(tickersForLive);
     bodyEl.innerHTML = rows.map(r => row(r, live[r.ticker], firstSeen[r.ticker])).join('');
     statusEl.hidden = true;
     tableEl.hidden = false;

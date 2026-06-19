@@ -11,10 +11,18 @@ const STARTING_VALUE = 10000;
  * @param {Object}      firstSeen     { [ticker]: { firstSeen, firstPrice } }
  * @param {string}      asAt          YYYY-MM-DD date of this batch run
  * @param {number}      [startingValue]  initial portfolio value for first run (default: STARTING_VALUE)
+ * @param {Object|null} [indexMeta]   { indexPrice, indexName, indexTicker } — seeds index baseline on first run
  * @returns {{ portfolio: Object, sold: Array }}
  */
-function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, asAt, startingValue) {
+function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, asAt, startingValue, indexMeta) {
   const seedValue = (startingValue != null && startingValue > 0) ? startingValue : STARTING_VALUE;
+
+  // Resolve index fields: preserve existing seed from oldPortfolio; seed now if not yet stored.
+  const existingIndexSeed = oldPortfolio && oldPortfolio.indexSeedPrice != null
+    ? { indexSeedPrice: oldPortfolio.indexSeedPrice, indexName: oldPortfolio.indexName, indexTicker: oldPortfolio.indexTicker }
+    : (indexMeta && indexMeta.indexPrice != null)
+      ? { indexSeedPrice: indexMeta.indexPrice, indexName: indexMeta.indexName, indexTicker: indexMeta.indexTicker }
+      : null;
   const newTickers = new Set(newRows.map(r => r.ticker));
 
   // Build a price lookup for leaver stocks from the full evaluated set
@@ -30,7 +38,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
   // First run — nothing to rebalance from
   if (!oldPortfolio || oldPortfolio.N === 0 || !oldRows.length) {
     return {
-      portfolio: { value: seedValue, N: newRows.length, asAt, startedAt: asAt, startingValue: seedValue },
+      portfolio: { value: seedValue, N: newRows.length, asAt, startedAt: asAt, startingValue: seedValue, ...existingIndexSeed },
       sold: [],
     };
   }
@@ -67,6 +75,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
       asAt,
       startedAt: oldPortfolio.startedAt || oldPortfolio.asAt,
       startingValue: oldPortfolio.startingValue || STARTING_VALUE,
+      ...existingIndexSeed,
     },
     sold,
   };

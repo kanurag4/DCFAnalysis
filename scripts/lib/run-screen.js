@@ -10,6 +10,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { fetchSymbol } = require('../fetch-yahoo.js');
+const { fetchIndexPrice } = require('./rf.js');
 const { marketParamsFor } = require('./market.js');
 const { evaluateStock } = require('./evaluate.js');
 const { rankRows, rankFunnel } = require('./rank.js');
@@ -63,7 +64,14 @@ async function gather(config) {
     console.log(`Sweep recovered ${failed.length - stillFailed.length}; ${stillFailed.length} unrecoverable: ${stillFailed.join(', ') || '—'}`);
   }
 
-  const out = { asAt, tickerCount: tickers.length, evaluated };
+  // Fetch current index level for hero card benchmark comparison (best-effort).
+  let indexPrice = null;
+  if (config.indexTicker) {
+    indexPrice = await fetchIndexPrice(config.indexTicker, proxyUrl);
+    if (indexPrice != null) console.log(`${config.indexName || config.indexTicker}: ${indexPrice.toFixed(2)}`);
+  }
+
+  const out = { asAt, tickerCount: tickers.length, evaluated, indexPrice };
   fs.writeFileSync(path.join(__dirname, '..', config.cacheFile), JSON.stringify(out) + '\n'); // for --rerank
   // Raw cache for --reeval: re-apply engine/parity fixes instantly without
   // re-hitting the Worker. Stores the RF so re-eval reuses the same seed.
@@ -150,8 +158,11 @@ function updatePortfolio(config, data, oldRankings) {
   const newRankings = JSON.parse(fs.readFileSync(path.join(outDir, 'rankings.json'), 'utf8'));
   const newRows = newRankings.rows || [];
 
+  const indexMeta = (config.indexTicker && data.indexPrice != null)
+    ? { indexPrice: data.indexPrice, indexName: config.indexName, indexTicker: config.indexTicker }
+    : null;
   const { portfolio, sold } = computeRebalance(
-    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt, config.startingValue
+    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt, config.startingValue, indexMeta
   );
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');

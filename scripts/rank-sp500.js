@@ -17,6 +17,8 @@ const config = {
   rfLabel: 'US RF',
   topN: 20,
   maxMargin: 0.8,
+  indexTicker: '^GSPC',
+  indexName: 'S&P 500',
   cacheFile: '_evaluated-sp500.json', // gitignored (scripts/_*)
   rawFile: '_raw-sp500.json',         // raw data cache for --reeval
 };

@@ -37,4 +37,23 @@ const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',         0.045, { proxyUrl }
 const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.048, { proxyUrl });
 const fetchIndRf = (proxyUrl) => fetchRfRate('^INBMKG10.NS', 0.07,  { proxyUrl });
 
-module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf };
+// Fetch a raw equity index level (points, not a rate — no ÷100, no clamping).
+// Uses the same summaryDetail chain as fetchRfRate because mapQuoteSummary
+// leaves .price null for index symbols. Returns null on any failure.
+async function fetchIndexPrice(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
+  try {
+    const url = `${proxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}`;
+    const body = await fetchImpl(url);
+    const r = body?.quoteSummary?.result?.[0];
+    const raw =
+      r?.summaryDetail?.regularMarketPrice?.raw ??
+      r?.summaryDetail?.previousClose?.raw ??
+      r?.financialData?.currentPrice?.raw ??
+      null;
+    return (raw != null && isFinite(raw) && raw > 0) ? raw : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf, fetchIndexPrice };

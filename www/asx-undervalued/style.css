@@ -139,9 +139,29 @@ html:not(.dark) footer { color:#475569; }
 }
 .portfolio-hero-stat {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.portfolio-hero-left {
+  display: flex;
   align-items: baseline;
   gap: 12px;
   flex-wrap: wrap;
+}
+.portfolio-hero-index {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.portfolio-hero-index-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--kv-muted);
 }
 .portfolio-hero-value {
   font-size: 2rem;

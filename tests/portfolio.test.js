@@ -95,4 +95,38 @@ describe('computeRebalance', () => {
     assert.equal(portfolio.startingValue, 100000);
     assert.equal(portfolio.value, 110000); // both up 10%
   });
+
+  it('first run with indexMeta: seeds indexSeedPrice, indexName, indexTicker', () => {
+    const { portfolio } = computeRebalance(
+      null, [],
+      [{ ticker: 'AAA', snapshotPrice: 10 }],
+      [], {}, '2026-06-19', undefined,
+      { indexPrice: 8200.5, indexName: 'ASX 200', indexTicker: '^AXJO' }
+    );
+    assert.equal(portfolio.indexSeedPrice, 8200.5);
+    assert.equal(portfolio.indexName, 'ASX 200');
+    assert.equal(portfolio.indexTicker, '^AXJO');
+  });
+
+  it('subsequent run: preserves indexSeedPrice from oldPortfolio (not overwritten by new indexMeta)', () => {
+    const oldPortfolio = { value: 10000, N: 1, asAt: '2026-06-19', startedAt: '2026-06-19', startingValue: 10000, indexSeedPrice: 8200.5, indexName: 'ASX 200', indexTicker: '^AXJO' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 11 }];
+    const { portfolio } = computeRebalance(
+      oldPortfolio, oldRows, newRows, [], {}, '2026-07-19', undefined,
+      { indexPrice: 8500, indexName: 'ASX 200', indexTicker: '^AXJO' }
+    );
+    assert.equal(portfolio.indexSeedPrice, 8200.5); // original seed preserved
+    assert.equal(portfolio.indexName, 'ASX 200');
+  });
+
+  it('first run without indexMeta: no index fields in portfolio', () => {
+    const { portfolio } = computeRebalance(
+      null, [],
+      [{ ticker: 'AAA', snapshotPrice: 10 }],
+      [], {}, '2026-06-19'
+    );
+    assert.equal(portfolio.indexSeedPrice, undefined);
+    assert.equal(portfolio.indexName, undefined);
+  });
 });
