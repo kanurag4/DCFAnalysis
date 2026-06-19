@@ -3,5 +3,8 @@
   "N": 16,
   "asAt": "2026-06-19",
   "startedAt": "2026-06-05",
-  "startingValue": 100000
+  "startingValue": 100000,
+  "indexSeedPrice": 24168,
+  "indexName": "NIFTY 50",
+  "indexTicker": "^NSEI"
 }
