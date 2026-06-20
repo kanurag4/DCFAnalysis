@@ -193,7 +193,10 @@
       return;
     }
 
-    asAtEl.textContent = `As at ${rankings.asAt} · refreshed monthly.`;
+    const [ay, am, ad] = rankings.asAt.split('-');
+    const aMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    asAtEl.textContent = `Last refreshed: ${parseInt(ad)} ${aMonths[parseInt(am)-1]} ${ay}`;
+    asAtEl.hidden = false;
     renderScreenSummary({ ...rankings.summary, universe: rankings.universe });
     const rows = rankings.rows || [];
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
