@@ -133,6 +133,9 @@
           '</div>' +
           indexHtml +
         '</div>' +
+        ((portfolioData.dividendsTotal && portfolioData.dividendsTotal > 0)
+          ? '<div class="portfolio-hero-dividends">Dividends earned: ' + sym + Math.round(portfolioData.dividendsTotal).toLocaleString() + '</div>'
+          : '') +
         '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + ' · ' + days + ' days</div>' +
       '</div>';
 

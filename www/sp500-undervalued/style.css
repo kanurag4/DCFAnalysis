@@ -180,6 +180,7 @@ html:not(.dark) footer { color:#475569; }
   color: var(--kv-muted);
   margin-top: 6px;
 }
+.portfolio-hero-dividends { margin-top: 6px; font-size: 0.85rem; font-weight: 600; color: var(--kv-pass); }
 
 /* ── Recent activity table ── */
 .activity-card {
