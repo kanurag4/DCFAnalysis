@@ -146,10 +146,13 @@
     // Only show exits from the most recent batch run; older history accumulates in sold.json but isn't shown.
     const recent = soldData.filter(function(s) { return s.exitDate === asAt; });
     const sym = currency === 'INR' ? '₹' : '$';
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const ap = String(asAt).split('-');
+    const asAtLabel = ap.length === 3 ? (parseInt(ap[2]) + ' ' + months[parseInt(ap[1]) - 1] + ' ' + ap[0]) : asAt;
 
     let tbodyContent;
     if (!recent.length) {
-      tbodyContent = '<tr><td colspan="6" class="activity-empty">No exits this month — check back after the next monthly refresh.</td></tr>';
+      tbodyContent = '<tr><td colspan="6" class="activity-empty">No exits in the last run — check back after the next refresh.</td></tr>';
     } else {
       tbodyContent = recent.map(function(s) {
         const ret    = (s.exitPrice - s.entryPrice) / s.entryPrice;
@@ -168,7 +171,7 @@
     const el = document.createElement('section');
     el.className = 'activity-card';
     el.innerHTML =
-      '<h3 class="activity-title">Stocks that exited this month</h3>' +
+      '<h3 class="activity-title">Stocks exited after last run on ' + asAtLabel + '</h3>' +
       '<div class="table-scroll"><table class="activity-table">' +
         '<thead><tr>' +
           '<th>Stock</th><th>Entry date</th><th class="num">Entry price</th>' +
