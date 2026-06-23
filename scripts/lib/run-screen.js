@@ -10,6 +10,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { fetchSymbol } = require('../fetch-yahoo.js');
+const { fetchDividends } = require('./fetch-dividends.js');
 const { fetchIndexPrice } = require('./rf.js');
 const { marketParamsFor } = require('./market.js');
 const { evaluateStock } = require('./evaluate.js');
@@ -143,7 +144,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   console.log(`\nWrote ${outDir}\\rankings.json and first-seen.json`);
 }
 
-function updatePortfolio(config, data, oldRankings) {
+async function updatePortfolio(config, data, oldRankings) {
   const outDir = path.join(__dirname, '../../www', config.outDir);
   const portfolioPath = path.join(outDir, 'portfolio-value.json');
   const soldPath      = path.join(outDir, 'sold.json');
@@ -161,8 +162,25 @@ function updatePortfolio(config, data, oldRankings) {
   const indexMeta = (config.indexTicker && data.indexPrice != null)
     ? { indexPrice: data.indexPrice, indexName: config.indexName, indexTicker: config.indexTicker }
     : null;
+
+  // Credit real dividends earned by the PRIOR holdings over (oldAsAt, asAt].
+  // Going-forward only: first run has no oldPortfolio, so nothing is fetched.
+  const proxyUrl = readProxyUrl();
+  const dividendsByTicker = {};
+  if (oldPortfolio && oldPortfolio.asAt && oldRows.length) {
+    const sleepMs = 3200; // stay under the Worker's 20 req/60s cap
+    let paid = 0;
+    for (const r of oldRows) {
+      const events = await fetchDividends(r.ticker, oldPortfolio.asAt, data.asAt, { proxyUrl, retries: 1, backoffMs: 4000 });
+      const total = events.reduce((s, e) => s + e.amount, 0);
+      if (total > 0) { dividendsByTicker[r.ticker] = total; paid++; }
+      await sleep(sleepMs);
+    }
+    console.log(`Dividends: ${paid}/${oldRows.length} prior holdings paid over ${oldPortfolio.asAt}→${data.asAt}`);
+  }
+
   const { portfolio, sold } = computeRebalance(
-    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt, config.startingValue, indexMeta
+    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt, config.startingValue, indexMeta, dividendsByTicker
   );
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
@@ -176,6 +194,9 @@ function updatePortfolio(config, data, oldRankings) {
   const sign = gain >= 0 ? '+' : '';
   const sym = config.currency === 'INR' ? '₹' : '$';
   console.log(`Portfolio: ${sym}${portfolio.value.toFixed(2)} (${sign}${(gain / startVal * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
+  if (portfolio.dividendsTotal) {
+    console.log(`Dividends: ${sym}${portfolio.dividendsTotal.toFixed(2)} earned cumulatively`);
+  }
 }
 
 async function runScreen(config, argv = process.argv) {
@@ -210,7 +231,7 @@ async function runScreen(config, argv = process.argv) {
       : null;
     data = await gather(config);
     rankAndWrite(config, data);
-    updatePortfolio(config, data, oldRankings);
+    await updatePortfolio(config, data, oldRankings);
   }
 }
 
