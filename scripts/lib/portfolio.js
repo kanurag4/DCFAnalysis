@@ -12,9 +12,10 @@ const STARTING_VALUE = 10000;
  * @param {string}      asAt          YYYY-MM-DD date of this batch run
  * @param {number}      [startingValue]  initial portfolio value for first run (default: STARTING_VALUE)
  * @param {Object|null} [indexMeta]   { indexPrice, indexName, indexTicker } — seeds index baseline on first run
+ * @param {Object}      [dividendsByTicker]  { [ticker]: totalPerShareAmount } — real ex-div cash over (oldAsAt, asAt]
  * @returns {{ portfolio: Object, sold: Array }}
  */
-function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, asAt, startingValue, indexMeta) {
+function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, asAt, startingValue, indexMeta, dividendsByTicker = {}) {
   const seedValue = (startingValue != null && startingValue > 0) ? startingValue : STARTING_VALUE;
 
   // Resolve index fields: preserve existing seed from oldPortfolio; seed now if not yet stored.
@@ -38,7 +39,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
   // First run — nothing to rebalance from
   if (!oldPortfolio || oldPortfolio.N === 0 || !oldRows.length) {
     return {
-      portfolio: { value: seedValue, N: newRows.length, asAt, startedAt: asAt, startingValue: seedValue, ...existingIndexSeed },
+      portfolio: { value: seedValue, N: newRows.length, asAt, startedAt: asAt, startingValue: seedValue, dividendsTotal: 0, ...existingIndexSeed },
       sold: [],
     };
   }
@@ -48,13 +49,17 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
   for (const r of oldRows) oldPriceMap[r.ticker] = r.snapshotPrice;
 
   let totalPool = 0;
+  let periodDividends = 0;
   const sold = [];
 
   for (const r of oldRows) {
     const oldPrice = oldPriceMap[r.ticker];
     const newPrice = newPriceMap[r.ticker] ?? oldPrice; // fallback: treat as no movement
     const currentValue = slotValue * (newPrice / oldPrice);
-    totalPool += currentValue;
+    const shares = slotValue / oldPrice;                 // implied shares for this period
+    const divCash = shares * (dividendsByTicker[r.ticker] || 0);
+    totalPool += currentValue + divCash;
+    periodDividends += divCash;
 
     if (!newTickers.has(r.ticker)) {
       const fs = firstSeen[r.ticker] || {};
@@ -75,6 +80,7 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
       asAt,
       startedAt: oldPortfolio.startedAt || oldPortfolio.asAt,
       startingValue: oldPortfolio.startingValue || STARTING_VALUE,
+      dividendsTotal: +(((oldPortfolio.dividendsTotal || 0) + periodDividends)).toFixed(2),
       ...existingIndexSeed,
     },
     sold,

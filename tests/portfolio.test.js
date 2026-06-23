@@ -129,4 +129,61 @@ describe('computeRebalance', () => {
     assert.equal(portfolio.indexSeedPrice, undefined);
     assert.equal(portfolio.indexName, undefined);
   });
+
+  it('first run: dividendsTotal is 0', () => {
+    const { portfolio } = computeRebalance(
+      null, [],
+      [{ ticker: 'AAA', snapshotPrice: 10 }],
+      [], {}, '2026-06-01'
+    );
+    assert.equal(portfolio.dividendsTotal, 0);
+  });
+
+  it('credits dividends: pool rises by shares × per-share amount', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    // AAA pays $0.50/share. Slot $5000 / $10 = 500 shares → $250 dividend cash.
+    const divs = { AAA: 0.5 };
+    const { portfolio } = computeRebalance(
+      oldPortfolio, oldRows, newRows, [], {}, '2026-07-01', undefined, null, divs
+    );
+    assert.equal(portfolio.value, 10250);       // 10000 price-flat + 250 dividends
+    assert.equal(portfolio.dividendsTotal, 250);
+  });
+
+  it('dividendsTotal accumulates across rebalances', () => {
+    const oldPortfolio = { value: 10000, N: 1, asAt: '2026-06-01', startedAt: '2026-06-01', dividendsTotal: 100 };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 10 }];
+    // 1000 shares × $0.10 = $100 this period → cumulative 200.
+    const { portfolio } = computeRebalance(
+      oldPortfolio, oldRows, newRows, [], {}, '2026-07-01', undefined, null, { AAA: 0.1 }
+    );
+    assert.equal(portfolio.dividendsTotal, 200);
+    assert.equal(portfolio.value, 10100);
+  });
+
+  it('a leaver still earns its final-period dividends', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'CCC', snapshotPrice: 5 }];
+    const allEvaluated = [{ ticker: 'BBB', snapshotPrice: 20 }];
+    // BBB leaves; slot $5000 / $20 = 250 shares × $0.40 = $100 dividend before exit.
+    const { portfolio, sold } = computeRebalance(
+      oldPortfolio, oldRows, newRows, allEvaluated, {}, '2026-07-01', undefined, null, { BBB: 0.4 }
+    );
+    assert.equal(portfolio.value, 10100);
+    assert.equal(portfolio.dividendsTotal, 100);
+    assert.equal(sold[0].ticker, 'BBB');
+  });
+
+  it('omitting dividendsByTicker is byte-identical to no dividends', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 11 }, { ticker: 'BBB', snapshotPrice: 22 }];
+    const { portfolio } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-01');
+    assert.equal(portfolio.value, 11000);
+    assert.equal(portfolio.dividendsTotal, 0);
+  });
 });
