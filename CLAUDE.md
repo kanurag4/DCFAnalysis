@@ -160,10 +160,10 @@ monthly-rebalanced portfolio would be worth today.
 - **Exits table:** stocks that left the list in the most recent batch — entry/exit date+price, return % (green/red)
 - **Data files:** `portfolio-value.json` (running total, written by batch) + `sold.json` (exit history, appended by batch)
 - Rebalance runs only in full-fetch mode (not `--rerank`/`--reeval`)
-- Returns are **price return only** — dividends not included (known limitation, footnote planned)
+- Returns are **total return** — real dividend events are credited at each rebalance (see Actual dividends below). Going-forward only: dividends accrue from the first full-fetch run after 2026-06-23.
 
 ### Key implementation notes
-- `scripts/lib/portfolio.js` — pure `computeRebalance()` function; tested (117 tests total)
+- `scripts/lib/portfolio.js` — pure `computeRebalance()` function; tested (126 tests total)
 - `startingValue` stored in `portfolio-value.json` and preserved through rebalances; NIFTY config has `startingValue: 100000`
 - `run-screen.js` reads old `rankings.json` BEFORE `rankAndWrite` overwrites it, then calls `updatePortfolio`
 - Hero label auto-formats: `₹1L` for INR ≥ 100000, `$10K` / `$XK` for others
@@ -180,6 +180,31 @@ Each screen's hero card shows a right-aligned "vs [Index] ±X%" comparison for t
 - `portfolio.js` `computeRebalance()` accepts `indexMeta` as 8th param. First run seeds `indexSeedPrice` / `indexName` / `indexTicker` into `portfolio-value.json`; subsequent runs preserve the original seed (never overwrite).
 - Front-end `app.js` on each screen: adds `indexTicker` to the live-price fetch batch, computes `(livePrice − seedPrice) / seedPrice`, renders `.portfolio-hero-index` div right-aligned in `.portfolio-hero-stat` (flex space-between).
 - **Seed timing note:** if the batch runs before `fetchIndexPrice` is wired up, patch with `node scripts/patch-index-seeds.js` (one-off; delete after use). Seeded 2026-06-19: `^AXJO` @ 8,911 · `^GSPC` @ 7,420 · `^NSEI` @ 24,168.
+
+### Actual dividends — added 2026-06-23
+Converts the tracker from price return to **total return** by crediting real Yahoo ex-dividend
+events to the prior holdings at each monthly rebalance, reinvested equal-weight into the pool.
+**Going-forward only** — no backfill (past monthly holdings weren't retained). Spec/plan:
+`docs/superpowers/specs/2026-06-20-portfolio-dividends-design.md` + `docs/superpowers/plans/2026-06-20-portfolio-dividends.md`.
+
+- **Worker** `/dividends/{symbol}?period1=<sec>&period2=<sec>` (`worker/yahoo-proxy.js`) proxies Yahoo's
+  `chart?...&events=div` API → normalized `[{ date:"YYYY-MM-DD", amount }]`, sorted ascending.
+  Best-effort: returns `[]` on any non-OK Yahoo response so a missing history never breaks a rebalance.
+- `scripts/lib/fetch-dividends.js` — `fetchDividends(symbol, fromISO, toISO, { proxyUrl, retries, backoffMs })`.
+  Converts ISO → unix seconds; **window filter is `(fromISO, toISO]`** (strictly after old asAt, on/before new asAt)
+  so consecutive months neither overlap nor gap. Returns `[]` on failure. `fetchImpl`/`sleepImpl` injectable for tests.
+- `run-screen.js` `updatePortfolio()` is now **async**: for each prior holding it fetches dividends over
+  `(oldPortfolio.asAt, data.asAt]`, throttled at 3.2s (under the Worker's 20 req/60s cap), sums per-share
+  amounts into `dividendsByTicker`, and passes it to `computeRebalance`. First run (no oldPortfolio) skips the fetch.
+- `computeRebalance(..., dividendsByTicker = {})` — 9th param. Per held row: `shares = slotValue / oldPrice`,
+  `divCash = shares × (dividendsByTicker[ticker] || 0)`, added to the pool. Output gains cumulative
+  `dividendsTotal` (2 dp). **Backward-compatible:** omitting the param → `divCash` 0, `dividendsTotal` accumulates 0,
+  output byte-identical to before (guards the existing tests). Leavers still earn their final-period dividends before exit.
+- `portfolio-value.json` gains an additive `dividendsTotal` field (absent = treated as 0).
+- Front-end (all three `app.js`): renders `.portfolio-hero-dividends` ("Dividends earned: $X") in the hero,
+  **only when `dividendsTotal > 0`** — so the going-forward-only choice shows as nothing rather than a confusing `$0`.
+- **Runtime cost:** adds ~20 throttled fetches (~1 min) per full-fetch run. `--rerank`/`--reeval` never credit dividends.
+- **First credit lands at the next monthly full-fetch refresh** of each screen (the `/refresh-*` skills run `node scripts/rank-*.js` with no flags = full fetch, so dividends run automatically).
 
 ### Portfolio history
 
