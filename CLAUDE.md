@@ -69,6 +69,11 @@ same reason. Replaced by WOR.AX (Worley Limited, rank 21, 14% MoS).
 **ASX refresh 2026-06-19:** 300 tickers, 0 fetch-failed, 27 qualified. 2 exits: MGH.AX, WOR.AX.
 Portfolio value: **$10,680.45 (+6.8%)**. `^AXJO` seeded @ 8,911.10 for index benchmark.
 
+**ASX refresh 2026-06-25:** 300 tickers, 0 fetch-failed, 28 qualified, top 20 shown. 1 exit: BGA.AX.
+Manual curation: MFF.AX (rank 3, LIC) removed again; WPR.AX (rank 10, REIT — Waypoint REIT) removed.
+Replaced by MGH.AX (MAAS Group, rank 21, 14% MoS) and GMD.AX (Genesis Minerals, rank 22, 12% MoS).
+Portfolio value: **$10,442.27 (+4.4%)**. GMD.AX added to `first-seen.json` @ $5.32.
+
 **S&P 500 refresh 2026-06-19:** 502 tickers, 0 fetch-failed, 65 qualified, top 20 shown.
 Portfolio value: **$9,676.88 (-3.2%)**. `^GSPC` seeded @ 7,420.1 for index benchmark.
 
