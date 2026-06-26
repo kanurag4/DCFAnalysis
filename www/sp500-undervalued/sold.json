@@ -61,5 +61,33 @@
     "entryPrice": 256.24,
     "exitDate": "2026-06-19",
     "exitPrice": 195.16
+  },
+  {
+    "ticker": "CTSH",
+    "entryDate": "2026-06-19",
+    "entryPrice": 43.7,
+    "exitDate": "2026-06-26",
+    "exitPrice": 39.15
+  },
+  {
+    "ticker": "STE",
+    "entryDate": "2026-06-04",
+    "entryPrice": 210.19,
+    "exitDate": "2026-06-26",
+    "exitPrice": 210.6
+  },
+  {
+    "ticker": "UAL",
+    "entryDate": "2026-06-19",
+    "entryPrice": 118.32,
+    "exitDate": "2026-06-26",
+    "exitPrice": 134.605
+  },
+  {
+    "ticker": "CAH",
+    "entryDate": "2026-06-04",
+    "entryPrice": 195.85,
+    "exitDate": "2026-06-26",
+    "exitPrice": 234.75
   }
 ]
