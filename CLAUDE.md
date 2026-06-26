@@ -77,6 +77,9 @@ Portfolio value: **$10,442.27 (+4.4%)**. GMD.AX added to `first-seen.json` @ $5.
 **S&P 500 refresh 2026-06-19:** 502 tickers, 0 fetch-failed, 65 qualified, top 20 shown.
 Portfolio value: **$9,676.88 (-3.2%)**. `^GSPC` seeded @ 7,420.1 for index benchmark.
 
+**S&P 500 refresh 2026-06-26:** 502 tickers, 0 fetch-failed, 72 qualified, top 20 shown. 4 exits: CTSH, STE, UAL, CAH.
+Portfolio value: **$9,770.07 (-2.3%)**. Manual curation: DLR (REIT), AMP (financial asset manager), FRT (REIT) removed; MDT, IBM (kept — reversed exit), MKC added.
+
 **NIFTY refresh 2026-06-19:** 500 tickers, 0 fetch-failed, 16 qualified. 2 exits: RPOWER.NS,
 KAJARIACER.NS. Portfolio value: **₹1,01,352 (+1.4%)**. `^NSEI` seeded @ 24,168 for index benchmark.
 
@@ -225,6 +228,7 @@ events to the prior holdings at each monthly rebalance, reinvested equal-weight 
 |---|---|---|---|
 | 2026-06-04 | $10,000 | — | Seeded |
 | 2026-06-19 | $9,676.88 | -3.2% | First rebalance; ^GSPC @ 7,420 seeded |
+| 2026-06-26 | $9,770.07 | -2.3% | 4 exits (CTSH, STE, UAL, CAH); curated: removed DLR/AMP/FRT, added MDT/IBM(kept)/MKC |
 
 **NIFTY** (seed ₹1,00,000 · 2026-06-05):
 | Date | Value | Change | Notes |
