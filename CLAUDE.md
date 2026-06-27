@@ -83,6 +83,11 @@ Portfolio value: **$9,770.07 (-2.3%)**. Manual curation: DLR (REIT), AMP (financ
 **NIFTY refresh 2026-06-19:** 500 tickers, 0 fetch-failed, 16 qualified. 2 exits: RPOWER.NS,
 KAJARIACER.NS. Portfolio value: **₹1,01,352 (+1.4%)**. `^NSEI` seeded @ 24,168 for index benchmark.
 
+**NIFTY refresh 2026-06-27:** 500 tickers, 0 fetch-failed, 15 qualified. 1 exit: AEGISLOG.NS.
+Portfolio value: **₹1,00,480.70 (+0.5%)**. Manual curation: TATAINVEST.NS (Tata Investment Corp,
+financial holding co — FCF inflated by investment flows) removed; replaced by HEROMOTOCO.NS
+(Hero MotoCorp, rank 15, 88% MoS). NIFTY 50 @ 24,021.65.
+
 ## Feature: Most Undervalued S&P 500 screen — ✅ LIVE (2026-06-04)
 
 Sibling of the ASX screen at **kashvector.com/dcf/sp500-undervalued/** (separate page, not a
@@ -235,6 +240,7 @@ events to the prior holdings at each monthly rebalance, reinvested equal-weight 
 |---|---|---|---|
 | 2026-06-05 | ₹1,00,000 | — | Seeded |
 | 2026-06-19 | ₹1,01,352 | +1.4% | 2 exits (RPOWER, KAJARIACER); ^NSEI @ 24,168 seeded |
+| 2026-06-27 | ₹1,00,480.70 | +0.5% | 1 exit (AEGISLOG); curated: removed TATAINVEST, added HEROMOTOCO |
 
 ---
 
