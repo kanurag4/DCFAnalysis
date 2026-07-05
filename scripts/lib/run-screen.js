@@ -85,8 +85,12 @@ async function gather(config) {
 
 function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   const { topN, maxMargin } = config;
-  const ranked = rankRows(evaluated, { topN, maxMargin });
-  const f = rankFunnel(evaluated, { maxMargin });
+  const blacklist = new Set(config.blacklist || []);
+  const eligible = blacklist.size
+    ? evaluated.map(r => blacklist.has(r.ticker) ? { ...r, excluded: true, reason: 'manual-blacklist' } : r)
+    : evaluated;
+  const ranked = rankRows(eligible, { topN, maxMargin });
+  const f = rankFunnel(eligible, { maxMargin });
   const fetchFailed = tickerCount - evaluated.length;
   const capPct = Math.round(maxMargin * 100);
   console.log(

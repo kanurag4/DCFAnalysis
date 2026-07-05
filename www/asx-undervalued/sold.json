@@ -40,5 +40,19 @@
     "entryPrice": 5.39,
     "exitDate": "2026-06-25",
     "exitPrice": 5.79
+  },
+  {
+    "ticker": "ORA.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 1.26,
+    "exitDate": "2026-07-05",
+    "exitPrice": 1.385
+  },
+  {
+    "ticker": "GMD.AX",
+    "entryDate": "2026-06-25",
+    "entryPrice": 5.32,
+    "exitDate": "2026-07-05",
+    "exitPrice": 6.29
   }
 ]
