@@ -43,6 +43,7 @@ const els = {
   waccContent:  $('wacc-breakdown-content'),
   tvWarning:    $('tv-warning'),
   howDdm:       $('how-ddm'),
+  ggmCrosscheck: $('ggm-crosscheck'),
   // DDM model controls
   modelToggleRow: $('model-toggle-row'),
   modelLabel:     $('model-label'),
@@ -70,6 +71,23 @@ const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && win
 if (isNative) {
   const badge = document.getElementById('kv-play-badge');
   if (badge) badge.hidden = true;
+
+  // In the app, "Privacy Policy" must point at the Android app policy
+  // (privacy.html), not the site-wide web policy (privacy-site.html).
+  const privacyLink = document.getElementById('privacy-link');
+  if (privacyLink) privacyLink.href = '/privacy.html';
+
+  // Undervalued-list links are relative (asx-undervalued/, sp500-undervalued/, ...).
+  // Their bundled copy is frozen at build time and Capacitor's local server mishandles
+  // directory-style paths (redirects to the app's landing page). Open the live,
+  // always-current kashvector.com page in the system browser instead.
+  document.querySelectorAll('.screen-pill').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = new URL(link.getAttribute('href'), 'https://kashvector.com/dcf/').href;
+      window.open(url, '_system');
+    });
+  });
 }
 const RECENT_MAX = 8;
 
@@ -467,6 +485,10 @@ function renderAll(data) {
   // Show the explainer matching the active model
   if (els.howDcf) els.howDcf.hidden = valuationModel === 'ddm';
   if (els.howDdm) els.howDdm.hidden = valuationModel !== 'ddm';
+  if (els.ggmCrosscheck) {
+    els.ggmCrosscheck.href = '/gordon-growth/?ticker=' + encodeURIComponent(data.ticker);
+    els.ggmCrosscheck.hidden = false;
+  }
   show(els.layout, els.disclaimer);
 }
 
@@ -1020,7 +1042,7 @@ function showError(msg) {
 }
 
 function hideResults() {
-  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.layout]
+  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.ggmCrosscheck, els.layout]
     .forEach(el => { if (el) el.hidden = true; });
   els.status.hidden = true;
 }
