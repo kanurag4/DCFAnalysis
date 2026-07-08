@@ -125,7 +125,7 @@
     el.className = 'portfolio-hero';
     el.innerHTML =
       '<div class="portfolio-hero-inner">' +
-        '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced monthly</div>' +
+        '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced weekly</div>' +
         '<div class="portfolio-hero-stat">' +
           '<div class="portfolio-hero-left">' +
             '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +

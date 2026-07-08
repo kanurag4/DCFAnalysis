@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
   <title>Most Undervalued S&P 500 Stocks — July 2026 DCF Ranking | KashVector</title>
-  <meta name="description" content="Which S&P 500 stocks are trading furthest below their DCF intrinsic value right now? A monthly automated screen ranked by margin of safety. Free, no sign-up.">
+  <meta name="description" content="Which S&P 500 stocks are trading furthest below their DCF intrinsic value right now? A weekly automated screen ranked by margin of safety. Free, no sign-up.">
   <script src="/kv-theme.js"></script>
   <script src="/kv-banner.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/svg+xml" href="../../dcf-icon.svg">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Most Undervalued S&P 500 Stocks","url":"https://kashvector.com/dcf/sp500-undervalued/","description":"Automated monthly DCF/DDM screen ranking S&P 500 stocks by margin of safety.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Most Undervalued S&P 500 Stocks","url":"https://kashvector.com/dcf/sp500-undervalued/","description":"Automated weekly DCF/DDM screen ranking S&P 500 stocks by margin of safety.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
 </head>
 <body>
@@ -25,7 +25,7 @@
         <img src="../../dcf-icon.svg" alt="" width="32" height="32" style="vertical-align:middle;margin-right:8px;border-radius:6px">
         Most Undervalued S&P 500
       </h1>
-      <p>A monthly DCF/DDM screen, ranked by margin of safety</p>
+      <p>A weekly DCF/DDM screen, ranked by margin of safety</p>
     </div>
     <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
   </header>
@@ -75,7 +75,7 @@
 
     <section class="rules-card">
       <h2 class="rules-title">How a stock makes this list</h2>
-      <p class="rules-intro">Every S&P 500 company is run through the base-case engine, then must clear <strong>all five</strong> rules below. The list is capped at 20 — so a strict month can show fewer.</p>
+      <p class="rules-intro">Every S&P 500 company is run through the base-case engine, then must clear <strong>all five</strong> rules below. The list is capped at 20 — so a strict week can show fewer.</p>
       <ul class="rules-list">
         <li><strong>Undervalued</strong> — base-case intrinsic value is above the current price (positive margin of safety). Most large caps trade above their conservative base case and are screened out here.</li>
         <li><strong>Valuable by the model</strong> — produced a real intrinsic value. Companies with no/negative free cash flow, with net debt exceeding firm value, or banks/insurers paying no dividend can't be valued and are dropped.</li>
@@ -125,7 +125,7 @@
     <section class="tool-info">
       <div class="tool-about">
         <h2>About this screen</h2>
-        <p>Each month we run every S&P 500 company through the same base-case engine as the
+        <p>Each week we run every S&P 500 company through the same base-case engine as the
         <a href="../">DCF Valuation tool</a>: a five-year cash-flow projection, 2.5% terminal growth,
         and a WACC derived from market data. Banks and insurers — where DCF doesn't work — are valued
         with a Dividend Discount Model instead and labelled <strong>DDM</strong>.</p>
@@ -139,7 +139,7 @@
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
         <details class="faq-item"><summary>Is this a buy list?</summary><p>No. It's a starting point for research. A DCF says what a stock is worth <em>if</em> a set of assumptions hold — and small changes in those assumptions move the answer a lot. Treat it as a screen, not advice.</p></details>
-        <details class="faq-item"><summary>How often is it updated?</summary><p>Roughly monthly. The "as at" date at the top shows when the snapshot was taken. The current price shown updates live each time you open the page.</p></details>
+        <details class="faq-item"><summary>How often is it updated?</summary><p>Roughly weekly. The "as at" date at the top shows when the snapshot was taken. The current price shown updates live each time you open the page.</p></details>
         <details class="faq-item"><summary>Why are some stocks valued with DDM?</summary><p>Banks and insurers have cash flows (deposits, reserves) that aren't owner earnings, so DCF overstates them. For those we use a Dividend Discount Model and label the row DDM.</p></details>
         <details class="faq-item"><summary>Does it consider news, management, or competition?</summary><p>No. This is a <strong>purely quantitative</strong> screen built from reported financial data. It does not read news, assess management quality, brand strength, competitive position, regulatory or litigation risk, or any recent events. A stock can look cheap here while facing real problems the numbers don't yet show — which is exactly why this is a starting point for research, not a verdict.</p></details>
         <details class="faq-item"><summary>What does "first seen" mean?</summary><p>The date a stock first entered this list and its price then. It's shown for transparency — it is <strong>not</strong> a performance or return claim.</p></details>
