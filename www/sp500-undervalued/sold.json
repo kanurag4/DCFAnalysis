@@ -89,5 +89,54 @@
     "entryPrice": 195.85,
     "exitDate": "2026-06-26",
     "exitPrice": 234.75
+  },
+  {
+    "ticker": "HPE",
+    "entryDate": "2026-06-19",
+    "entryPrice": 47.41,
+    "exitDate": "2026-07-08",
+    "exitPrice": 43.47
+  },
+  {
+    "ticker": "INTU",
+    "entryDate": "2026-06-19",
+    "entryPrice": 267,
+    "exitDate": "2026-07-08",
+    "exitPrice": 281.17
+  },
+  {
+    "ticker": "YUM",
+    "entryDate": "2026-06-04",
+    "entryPrice": 148.44,
+    "exitDate": "2026-07-08",
+    "exitPrice": 167.49
+  },
+  {
+    "ticker": "CBOE",
+    "entryDate": "2026-06-19",
+    "entryPrice": 249.1,
+    "exitDate": "2026-07-08",
+    "exitPrice": 258.64
+  },
+  {
+    "ticker": "EFX",
+    "entryDate": "2026-06-19",
+    "entryPrice": 153.93,
+    "exitDate": "2026-07-08",
+    "exitPrice": 174.58
+  },
+  {
+    "ticker": "IBM",
+    "entryDate": "2026-06-19",
+    "entryPrice": 249.1,
+    "exitDate": "2026-07-08",
+    "exitPrice": 306.13
+  },
+  {
+    "ticker": "MKC",
+    "entryDate": "2026-06-26",
+    "entryPrice": 48.35,
+    "exitDate": "2026-07-08",
+    "exitPrice": 52.22
   }
 ]

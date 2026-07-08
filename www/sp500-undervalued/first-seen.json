@@ -88,8 +88,8 @@
     "firstPrice": 440.93
   },
   "MKC": {
-    "firstSeen": "2026-06-04",
-    "firstPrice": 46.29
+    "firstSeen": "2026-06-26",
+    "firstPrice": 48.35
   },
   "STE": {
     "firstSeen": "2026-06-04",
@@ -139,10 +139,6 @@
     "firstSeen": "2026-06-26",
     "firstPrice": 80.52
   },
-  "MKC": {
-    "firstSeen": "2026-06-26",
-    "firstPrice": 48.35
-  },
   "BAX": {
     "firstSeen": "2026-06-26",
     "firstPrice": 21.55
@@ -154,5 +150,13 @@
   "MRK": {
     "firstSeen": "2026-06-26",
     "firstPrice": 125.45
+  },
+  "BKNG": {
+    "firstSeen": "2026-07-08",
+    "firstPrice": 181.95
+  },
+  "RTX": {
+    "firstSeen": "2026-07-08",
+    "firstPrice": 200.85
   }
 }
