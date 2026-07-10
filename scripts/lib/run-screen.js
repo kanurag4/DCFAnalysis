@@ -9,6 +9,7 @@
 //   runScreen(config, '--rerank') re-rank config.cacheFile (no fetch)
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 const { fetchSymbol } = require('../fetch-yahoo.js');
 const { fetchDividends } = require('./fetch-dividends.js');
 const { fetchIndexPrice } = require('./rf.js');
@@ -83,6 +84,21 @@ async function gather(config) {
   return out;
 }
 
+// The set of tickers on the last *published* (git HEAD) cycle — the stable anchor
+// for detecting first-seen reentry, since it survives separate --rerank/--reeval
+// process invocations that mutate the on-disk rankings.json without committing.
+function readPublishedTickers(config) {
+  try {
+    const repoRoot = path.join(__dirname, '../..');
+    const rel = `www/${config.outDir}/rankings.json`;
+    const out = execFileSync('git', ['show', `HEAD:${rel}`], { cwd: repoRoot, stdio: ['ignore', 'pipe', 'ignore'] }).toString();
+    const json = JSON.parse(out);
+    return new Set((json.rows || []).map(r => r.ticker));
+  } catch (_) {
+    return new Set(); // no committed rankings yet (first-ever run)
+  }
+}
+
 function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   const { topN, maxMargin } = config;
   const blacklist = new Set(config.blacklist || []);
@@ -141,7 +157,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
 
   const fsPath = path.join(outDir, 'first-seen.json');
   const ledger = fs.existsSync(fsPath) ? JSON.parse(fs.readFileSync(fsPath, 'utf8')) : {};
-  fs.writeFileSync(fsPath, JSON.stringify(mergeFirstSeen(ledger, rounded, asAt), null, 2) + '\n');
+  fs.writeFileSync(fsPath, JSON.stringify(mergeFirstSeen(ledger, rounded, asAt, readPublishedTickers(config)), null, 2) + '\n');
 
   console.log(`\nTop ${rounded.length}:`);
   for (const r of rounded) console.log(`  ${r.rank}. ${r.ticker} ${(r.marginOfSafety * 100).toFixed(0)}% (${r.method})`);
