@@ -148,6 +148,32 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   console.log(`\nWrote ${outDir}\\rankings.json and first-seen.json`);
 }
 
+// Append (or seed) a { date, portfolioValue, indexPrice } snapshot for the
+// timeline chart on the hero card. Called once per full-fetch run, after the
+// rebalance — so it always reflects the just-written portfolio.value.
+function appendPortfolioHistory(config, portfolio, indexMeta) {
+  const outDir = path.join(__dirname, '../../www', config.outDir);
+  const histPath = path.join(outDir, 'portfolio-history.json');
+  const history = fs.existsSync(histPath) ? JSON.parse(fs.readFileSync(histPath, 'utf8')) : [];
+  const indexPrice = indexMeta ? indexMeta.indexPrice : (portfolio.indexSeedPrice ?? null);
+
+  if (!history.length) {
+    // Seed the inception point so the chart has a baseline even on the first run.
+    history.push({
+      date: portfolio.startedAt || portfolio.asAt,
+      portfolioValue: portfolio.startingValue || STARTING_VALUE,
+      indexPrice,
+    });
+  }
+
+  const last = history[history.length - 1];
+  const point = { date: portfolio.asAt, portfolioValue: portfolio.value, indexPrice };
+  if (last.date === portfolio.asAt) history[history.length - 1] = point; // idempotent same-day rerun
+  else history.push(point);
+
+  fs.writeFileSync(histPath, JSON.stringify(history, null, 2) + '\n');
+}
+
 async function updatePortfolio(config, data, oldRankings) {
   const outDir = path.join(__dirname, '../../www', config.outDir);
   const portfolioPath = path.join(outDir, 'portfolio-value.json');
@@ -189,6 +215,7 @@ async function updatePortfolio(config, data, oldRankings) {
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
   fs.writeFileSync(soldPath, JSON.stringify([...existingSold, ...sold], null, 2) + '\n');
+  appendPortfolioHistory(config, portfolio, indexMeta);
 
   if (sold.length) {
     console.log(`\nPortfolio: sold ${sold.length} — ${sold.map(s => s.ticker).join(', ')}`);

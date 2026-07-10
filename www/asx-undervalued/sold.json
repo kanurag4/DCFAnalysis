@@ -54,5 +54,19 @@
     "entryPrice": 5.32,
     "exitDate": "2026-07-05",
     "exitPrice": 6.29
+  },
+  {
+    "ticker": "GOZ.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 2.12,
+    "exitDate": "2026-07-10",
+    "exitPrice": 2.18
+  },
+  {
+    "ticker": "MGH.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 5.04,
+    "exitDate": "2026-07-10",
+    "exitPrice": 5.57
   }
 ]

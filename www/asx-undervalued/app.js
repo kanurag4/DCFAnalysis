@@ -82,7 +82,74 @@
     </tr>`;
   }
 
-  function renderHeroCard(portfolioData, rows, live) {
+  function drawPortfolioChart(canvas, history, sym, indexName) {
+    if (!history || history.length < 2 || typeof Chart === 'undefined') return;
+    const isDark = document.documentElement.classList.contains('dark');
+    const gridColor = isDark ? 'rgba(148,163,184,0.15)' : 'rgba(15,23,42,0.1)';
+    const tickColor = isDark ? '#94a3b8' : '#475569';
+    const labels = history.map(h => {
+      const [y, m, d] = h.date.split('-');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return h.date === 'Now' ? 'Now' : `${parseInt(d)} ${months[parseInt(m) - 1]}`;
+    });
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Portfolio',
+            data: history.map(h => h.portfolioPct),
+            borderColor: '#22c55e',
+            backgroundColor: 'rgba(34,197,94,0.1)',
+            borderWidth: 2,
+            pointRadius: 2,
+            tension: 0.25,
+            fill: true,
+          },
+          {
+            label: indexName || 'Index',
+            data: history.map(h => h.indexPct),
+            borderColor: '#38bdf8',
+            backgroundColor: 'transparent',
+            borderWidth: 1.5,
+            borderDash: [4, 3],
+            pointRadius: 2,
+            tension: 0.25,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: { color: tickColor, boxWidth: 10, boxHeight: 2, font: { size: 10 }, padding: 8 },
+          },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(1)}%`,
+            },
+          },
+        },
+        scales: {
+          x: { ticks: { color: tickColor, font: { size: 10 }, maxRotation: 0 }, grid: { display: false } },
+          y: {
+            ticks: { color: tickColor, font: { size: 10 }, callback: v => `${v >= 0 ? '+' : ''}${v}%` },
+            grid: { color: gridColor },
+            afterFit: (scale) => { scale.width = 44; },
+          },
+        },
+      },
+    });
+  }
+
+  function renderHeroCard(portfolioData, rows, live, history) {
     if (!portfolioData || portfolioData.N === 0 || !rows.length) return;
     const slotBase = portfolioData.value / portfolioData.N;
     let liveValue = 0;
@@ -121,25 +188,60 @@
         '</div>'
       : '';
 
+    // Build the chart series: historical snapshots (% return vs the inception date)
+    // plus a final "Now" point using today's live figures, so the line always reaches
+    // today even between batch runs.
+    let chartPoints = null;
+    if (Array.isArray(history) && history.length) {
+      const indexBaseline = history[0].indexPrice;
+      chartPoints = history.map(h => ({
+        date: h.date,
+        portfolioPct: (h.portfolioValue - startVal) / startVal * 100,
+        indexPct: (indexBaseline > 0) ? (h.indexPrice - indexBaseline) / indexBaseline * 100 : null,
+      }));
+      const lastIndexPct = chartPoints[chartPoints.length - 1].indexPct;
+      chartPoints.push({
+        date: 'Now',
+        portfolioPct: parseFloat(gainPct),
+        indexPct: (liveIndexPrice && indexBaseline > 0)
+          ? (liveIndexPrice - indexBaseline) / indexBaseline * 100
+          : lastIndexPct,
+      });
+    }
+    const chartHtml = chartPoints && chartPoints.length >= 2
+      ? '<div class="portfolio-hero-chart-col">' +
+          '<div class="portfolio-hero-chart-title">Portfolio vs ' + escapeHtml(indexName || 'index') + ' over time</div>' +
+          '<div class="portfolio-hero-chart-wrap"><canvas id="portfolio-history-chart"></canvas></div>' +
+        '</div>'
+      : '';
+
     const el = document.createElement('section');
     el.className = 'portfolio-hero';
     el.innerHTML =
-      '<div class="portfolio-hero-inner">' +
-        '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced weekly</div>' +
-        '<div class="portfolio-hero-stat">' +
-          '<div class="portfolio-hero-left">' +
-            '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
-            '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
+      '<div class="portfolio-hero-row">' +
+        '<div class="portfolio-hero-col">' +
+          '<div class="portfolio-hero-inner">' +
+            '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced weekly</div>' +
+            '<div class="portfolio-hero-stat">' +
+              '<div class="portfolio-hero-left">' +
+                '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
+                '<span class="portfolio-hero-gain ' + (gain >= 0 ? 'pos' : 'neg') + '">' + gainStr + '</span>' +
+              '</div>' +
+              indexHtml +
+            '</div>' +
+            ((portfolioData.dividendsTotal && portfolioData.dividendsTotal > 0)
+              ? '<div class="portfolio-hero-dividends">Dividends earned: ' + sym + Math.round(portfolioData.dividendsTotal).toLocaleString() + '</div>'
+              : '') +
+            '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + ' · ' + days + ' days</div>' +
           '</div>' +
-          indexHtml +
         '</div>' +
-        ((portfolioData.dividendsTotal && portfolioData.dividendsTotal > 0)
-          ? '<div class="portfolio-hero-dividends">Dividends earned: ' + sym + Math.round(portfolioData.dividendsTotal).toLocaleString() + '</div>'
-          : '') +
-        '<div class="portfolio-hero-note">' + portfolioData.N + ' holdings · live prices · since ' + since + ' · ' + days + ' days</div>' +
+        chartHtml +
       '</div>';
 
     tableEl.parentNode.insertAdjacentElement('beforebegin', el);
+    if (chartPoints && chartPoints.length >= 2) {
+      drawPortfolioChart($('portfolio-history-chart'), chartPoints, sym, indexName);
+    }
   }
 
   function renderActivityTable(soldData, asAt, currency) {
@@ -186,13 +288,14 @@
   }
 
   async function init() {
-    let rankings, firstSeen, portfolioData, soldData;
+    let rankings, firstSeen, portfolioData, soldData, portfolioHistory;
     try {
-      [rankings, firstSeen, portfolioData, soldData] = await Promise.all([
+      [rankings, firstSeen, portfolioData, soldData, portfolioHistory] = await Promise.all([
         getJSON('./rankings.json'),
         getJSON('./first-seen.json').catch(() => ({})),
         getJSON('./portfolio-value.json').catch(() => null),
         getJSON('./sold.json').catch(() => []),
+        getJSON('./portfolio-history.json').catch(() => []),
       ]);
     } catch (err) {
       statusEl.textContent = 'Could not load the rankings. Please try again later.';
@@ -220,7 +323,7 @@
       note.textContent = '* High leverage — debt exceeds 65% of enterprise value. WACC is dominated by the cost of debt; a low interest expense (or null → 5% fallback) can understate the true discount rate. Treat the fair-value estimate with extra caution.';
       tableEl.parentNode.insertAdjacentElement('afterend', note);
     }
-    if (portfolioData) renderHeroCard(portfolioData, rows, live);
+    if (portfolioData) renderHeroCard(portfolioData, rows, live, portfolioHistory);
     if (portfolioData) renderActivityTable(soldData || [], rankings.asAt, rows[0] ? rows[0].currency : null);
   }
 

@@ -20,7 +20,9 @@ const config = {
   // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
   // MFF.AX: LIC (MFF Capital Investments) — FCF inflated by investment flows, removed 4x (2026-06 to 2026-07).
   // WPR.AX: REIT (Waypoint REIT) — same DCF-on-investment-flows issue, removed 2x.
-  blacklist: ['MFF.AX', 'WPR.AX'],
+  // GOZ.AX: REIT (Growthpoint Properties Australia) — rental FCF not DCF-representative, removed 2026-07-10.
+  // RGN.AX: REIT (Region Group) — same REIT FCF issue, removed 2026-07-10.
+  blacklist: ['MFF.AX', 'WPR.AX', 'GOZ.AX', 'RGN.AX'],
   indexTicker: '^AXJO',
   indexName: 'ASX 200',
   cacheFile: '_evaluated.json', // unchanged so existing cache + --rerank keep working

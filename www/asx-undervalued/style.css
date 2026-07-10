@@ -182,6 +182,46 @@ html:not(.dark) footer { color:#475569; }
 }
 .portfolio-hero-dividends { margin-top: 6px; font-size: 0.85rem; font-weight: 600; color: var(--kv-pass); }
 
+/* ── Hero two-column layout: stat card left, timeline chart right ── */
+.portfolio-hero-row {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+}
+.portfolio-hero-col {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+.portfolio-hero-chart-col {
+  flex: 1 1 50%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid rgba(245, 158, 11, 0.25);
+  padding-left: 20px;
+}
+.portfolio-hero-chart-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--kv-muted);
+  margin-bottom: 6px;
+}
+.portfolio-hero-chart-wrap { position: relative; height: 120px; }
+.portfolio-hero-chart-wrap canvas { width: 100% !important; height: 120px !important; display: block; }
+@media (max-width: 700px) {
+  .portfolio-hero-row { flex-direction: column; }
+  .portfolio-hero-chart-col {
+    border-left: none;
+    border-top: 1px solid rgba(245, 158, 11, 0.25);
+    padding-left: 0;
+    padding-top: 14px;
+    margin-top: 6px;
+  }
+}
+
 /* ── Recent activity table ── */
 .activity-card {
   margin: 16px 0 0;
