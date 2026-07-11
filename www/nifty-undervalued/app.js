@@ -87,6 +87,10 @@
     const isDark = document.documentElement.classList.contains('dark');
     const gridColor = isDark ? 'rgba(148,163,184,0.15)' : 'rgba(15,23,42,0.1)';
     const tickColor = isDark ? '#94a3b8' : '#475569';
+    // Sky-400 (#38bdf8) is the dark-mode accent — too light/low-contrast against the
+    // light-mode background and too close to the portfolio green. Use navy (kv-accent
+    // light-mode token) in light mode for real separation between the two lines.
+    const indexColor = isDark ? '#38bdf8' : '#0369a1';
     const labels = history.map(h => {
       const [y, m, d] = h.date.split('-');
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -110,10 +114,10 @@
           {
             label: indexName || 'Index',
             data: history.map(h => h.indexPct),
-            borderColor: '#38bdf8',
+            borderColor: indexColor,
             backgroundColor: 'transparent',
-            borderWidth: 1.5,
-            borderDash: [4, 3],
+            borderWidth: 2,
+            borderDash: [5, 3],
             pointRadius: 2,
             tension: 0.25,
             fill: false,
