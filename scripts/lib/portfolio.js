@@ -69,6 +69,12 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
         entryPrice: +(fs.firstPrice != null ? fs.firstPrice : oldPrice).toFixed(4),
         exitDate: asAt,
         exitPrice: +newPrice.toFixed(4),
+        // Dollar P&L for this stock's final rebalance period only (slot value at the
+        // most recent rebalance to exit) — NOT cumulative since entryDate, because the
+        // pool is redivided equally across holdings at every rebalance. A stock's
+        // percentage "return" shown elsewhere (entryPrice → exitPrice) and this dollar
+        // figure are different measurements; do not sum/compare them directly.
+        dollarPnl: +(currentValue + divCash - slotValue).toFixed(2),
       });
     }
   }

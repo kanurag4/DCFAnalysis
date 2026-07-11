@@ -66,6 +66,31 @@ describe('computeRebalance', () => {
     assert.deepEqual(sold, []);
   });
 
+  it('leaver dollarPnl: final-period slot P&L, not cumulative since entryDate', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 12 }, { ticker: 'CCC', snapshotPrice: 5 }];
+    const allEvaluated = [{ ticker: 'BBB', snapshotPrice: 18 }];
+    // BBB firstSeen far earlier at $19, but dollarPnl uses THIS period's slot ($5000) and
+    // price move ($20 → $18), not the firstSeen price.
+    const firstSeen = { BBB: { firstSeen: '2026-05-01', firstPrice: 19 } };
+    const { sold } = computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSeen, '2026-07-01');
+    // slot $5000; currentValue = 5000*(18/20) = 4500; dollarPnl = 4500 - 5000 = -500
+    assert.equal(sold[0].dollarPnl, -500);
+  });
+
+  it('leaver dollarPnl includes final-period dividends', () => {
+    const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
+    const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];
+    const newRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'CCC', snapshotPrice: 5 }];
+    const allEvaluated = [{ ticker: 'BBB', snapshotPrice: 20 }];
+    // BBB flat price, but pays $0.40/share → 250 shares × $0.40 = $100 dividend.
+    const { sold } = computeRebalance(
+      oldPortfolio, oldRows, newRows, allEvaluated, {}, '2026-07-01', undefined, null, { BBB: 0.4 }
+    );
+    assert.equal(sold[0].dollarPnl, 100);
+  });
+
   it('leaver with no firstSeen entry: falls back to oldPortfolio.asAt + old price', () => {
     const oldPortfolio = { value: 10000, N: 2, asAt: '2026-06-01', startedAt: '2026-06-01' };
     const oldRows = [{ ticker: 'AAA', snapshotPrice: 10 }, { ticker: 'BBB', snapshotPrice: 20 }];

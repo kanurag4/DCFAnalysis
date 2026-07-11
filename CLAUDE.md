@@ -220,6 +220,17 @@ events to the prior holdings at each monthly rebalance, reinvested equal-weight 
 - **Runtime cost:** adds ~20 throttled fetches (~1 min) per full-fetch run. `--rerank`/`--reeval` never credit dividends.
 - **First credit lands at the next monthly full-fetch refresh** of each screen (the `/refresh-*` skills run `node scripts/rank-*.js` with no flags = full fetch, so dividends run automatically).
 
+### `sold.json` gains `dollarPnl` — added 2026-07-11
+Each `sold` entry now includes `dollarPnl`: the exiting stock's dollar profit/loss for its **final
+rebalance period only** — `slotValue × (exitPrice/lastRebalancePrice − 1) + finalPeriodDividends`.
+**This is not cumulative since `entryDate`.** Because the pool is redivided equally across all
+current holdings at every rebalance, a stock's dollar contribution resets each period — only the
+percentage return (`entryPrice` → `exitPrice`, shown elsewhere) is cumulative since first listing.
+Consuming code (e.g. StockAnalysis's `/dcf/exits/` review page) must not sum or compare `dollarPnl`
+against the displayed return percentage as if they measure the same thing.
+**Going-forward only** — existing `sold.json` entries written before this change have no
+`dollarPnl` field; consumers must treat its absence as "unknown", not zero.
+
 ### Portfolio history
 
 **ASX** (seed $10,000 AUD · 2026-06-04):
