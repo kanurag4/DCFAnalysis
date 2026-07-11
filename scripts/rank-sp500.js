@@ -17,6 +17,12 @@ const config = {
   rfLabel: 'US RF',
   topN: 20,
   maxMargin: 0.8,
+  // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
+  // DLR: REIT (Digital Realty Trust) — rental FCF not DCF-representative, removed 2026-06-26, reappeared 2026-07-10.
+  // FRT: REIT (Federal Realty Investment Trust) — same REIT FCF issue, removed 2026-06-26, reappeared 2026-07-10.
+  // AMP: financial asset manager (Ameriprise) — FCF inflated by investment flows, removed 2026-06-26, reappeared 2026-07-10.
+  // ARE: REIT (Alexandria Real Estate Equities) — same REIT FCF issue, backfilled in after the DLR/FRT/AMP correction on 2026-07-10.
+  blacklist: ['DLR', 'FRT', 'AMP', 'ARE'],
   indexTicker: '^GSPC',
   indexName: 'S&P 500',
   cacheFile: '_evaluated-sp500.json', // gitignored (scripts/_*)
