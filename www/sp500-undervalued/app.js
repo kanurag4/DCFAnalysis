@@ -193,7 +193,10 @@
     // today even between batch runs.
     let chartPoints = null;
     if (Array.isArray(history) && history.length) {
-      const indexBaseline = history[0].indexPrice;
+      // Use indexSeedPrice (same baseline as the hero stat's % figure) so the chart
+      // and the hero card never disagree — history[0].indexPrice can drift from
+      // indexSeedPrice if the seed was patched after the fact (see kashvector-lessons.md).
+      const indexBaseline = indexSeedPrice || history[0].indexPrice;
       chartPoints = history.map(h => ({
         date: h.date,
         portfolioPct: (h.portfolioValue - startVal) / startVal * 100,
