@@ -18,6 +18,10 @@ const config = {
   rfLabel: 'IND RF',
   topN: 20,
   maxMargin: 0.8,
+  // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
+  // TATAINVEST.NS: financial holding co (Tata Investment Corp) — FCF inflated by investment
+  // flows, removed 2026-06-27 but reappeared 2026-07-11 with no permanent blacklist.
+  blacklist: ['TATAINVEST.NS'],
   startingValue: 100000,
   indexTicker: '^NSEI',
   indexName: 'NIFTY 50',

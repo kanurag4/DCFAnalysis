@@ -19,5 +19,33 @@
     "entryPrice": 770.4,
     "exitDate": "2026-06-27",
     "exitPrice": 1137
+  },
+  {
+    "ticker": "JPPOWER.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 19.03,
+    "exitDate": "2026-07-11",
+    "exitPrice": 17.02
+  },
+  {
+    "ticker": "ECLERX.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 1380.1,
+    "exitDate": "2026-07-11",
+    "exitPrice": 1621.7
+  },
+  {
+    "ticker": "SAGILITY.NS",
+    "entryDate": "2026-06-19",
+    "entryPrice": 39.49,
+    "exitDate": "2026-07-11",
+    "exitPrice": 42.53
+  },
+  {
+    "ticker": "HEROMOTOCO.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 4835,
+    "exitDate": "2026-07-11",
+    "exitPrice": 4949.1
   }
 ]
