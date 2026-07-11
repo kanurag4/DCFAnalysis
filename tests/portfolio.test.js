@@ -1,6 +1,6 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
-const { computeRebalance, STARTING_VALUE } = require('../scripts/lib/portfolio.js');
+const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require('../scripts/lib/portfolio.js');
 
 describe('computeRebalance', () => {
   it('first run: returns $10K, correct N, no sold entries', () => {
@@ -185,5 +185,32 @@ describe('computeRebalance', () => {
     const { portfolio } = computeRebalance(oldPortfolio, oldRows, newRows, [], {}, '2026-07-01');
     assert.equal(portfolio.value, 11000);
     assert.equal(portfolio.dividendsTotal, 0);
+  });
+});
+
+describe('checkIndexSeedConsistency', () => {
+  it('returns null when indexSeedPrice matches history[0].indexPrice', () => {
+    const portfolio = { indexSeedPrice: 8686.1 };
+    const history = [{ date: '2026-06-04', indexPrice: 8686.1 }];
+    assert.equal(checkIndexSeedConsistency(portfolio, history), null);
+  });
+
+  it('returns an error string when they diverge (the 2026-07-12 incident)', () => {
+    const portfolio = { indexSeedPrice: 8911.1 };
+    const history = [{ date: '2026-06-04', indexPrice: 8686.1 }];
+    const error = checkIndexSeedConsistency(portfolio, history);
+    assert.match(error, /does not match/);
+  });
+
+  it('returns null when the index is not tracked yet', () => {
+    assert.equal(checkIndexSeedConsistency({}, []), null);
+    assert.equal(checkIndexSeedConsistency(null, []), null);
+    assert.equal(checkIndexSeedConsistency({ indexSeedPrice: 100 }, []), null);
+  });
+
+  it('tolerates float rounding noise', () => {
+    const portfolio = { indexSeedPrice: 8686.10 };
+    const history = [{ date: '2026-06-04', indexPrice: 8686.1000001 }];
+    assert.equal(checkIndexSeedConsistency(portfolio, history), null);
   });
 });

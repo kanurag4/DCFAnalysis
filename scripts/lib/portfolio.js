@@ -87,4 +87,27 @@ function computeRebalance(oldPortfolio, oldRows, newRows, allEvaluated, firstSee
   };
 }
 
-module.exports = { computeRebalance, STARTING_VALUE };
+/**
+ * Invariant check: portfolio.indexSeedPrice (drives the hero stat's index %) and
+ * history[0].indexPrice (drives the chart's day-one baseline) must always be the
+ * same number — otherwise the hero card and the timeline chart compute the index's
+ * return from two different starting prices and visibly disagree (see CLAUDE.md,
+ * "Corrected 2026-07-12", for the incident this guards against).
+ * @param {Object|null} portfolio  current portfolio-value.json contents
+ * @param {Array}       history    current portfolio-history.json contents
+ * @returns {string|null} null if consistent, else a descriptive error message
+ */
+function checkIndexSeedConsistency(portfolio, history) {
+  if (!portfolio || portfolio.indexSeedPrice == null) return null; // no index tracked yet
+  if (!Array.isArray(history) || !history.length || history[0].indexPrice == null) return null;
+  const seedFromHistory = history[0].indexPrice;
+  const diff = Math.abs(portfolio.indexSeedPrice - seedFromHistory);
+  if (diff > 0.01) {
+    return `indexSeedPrice (${portfolio.indexSeedPrice}) does not match portfolio-history.json[0].indexPrice ` +
+      `(${seedFromHistory}) — the hero stat and timeline chart will show conflicting index returns. ` +
+      `Reset indexSeedPrice in portfolio-value.json to match history[0].indexPrice.`;
+  }
+  return null;
+}
+
+module.exports = { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE };

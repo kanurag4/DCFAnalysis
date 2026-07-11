@@ -17,7 +17,7 @@ const { marketParamsFor } = require('./market.js');
 const { evaluateStock } = require('./evaluate.js');
 const { rankRows, rankFunnel } = require('./rank.js');
 const { mergeFirstSeen } = require('./firstSeen.js');
-const { computeRebalance, STARTING_VALUE } = require('./portfolio.js');
+const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require('./portfolio.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // ~18.75 req/min keeps us under the 20/60s Worker cap
@@ -188,6 +188,7 @@ function appendPortfolioHistory(config, portfolio, indexMeta) {
   else history.push(point);
 
   fs.writeFileSync(histPath, JSON.stringify(history, null, 2) + '\n');
+  return history;
 }
 
 async function updatePortfolio(config, data, oldRankings) {
@@ -231,7 +232,13 @@ async function updatePortfolio(config, data, oldRankings) {
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
   fs.writeFileSync(soldPath, JSON.stringify([...existingSold, ...sold], null, 2) + '\n');
-  appendPortfolioHistory(config, portfolio, indexMeta);
+  const history = appendPortfolioHistory(config, portfolio, indexMeta);
+
+  // Guard against the hero stat and timeline chart silently disagreeing again
+  // (see CLAUDE.md "Corrected 2026-07-12") — fail the batch loudly instead of
+  // deploying inconsistent index-return figures.
+  const seedError = checkIndexSeedConsistency(portfolio, history);
+  if (seedError) throw new Error(`[${config.outDir}] ${seedError}`);
 
   if (sold.length) {
     console.log(`\nPortfolio: sold ${sold.length} — ${sold.map(s => s.ticker).join(', ')}`);
