@@ -41,8 +41,14 @@ main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 
 /* ── Survivorship rules ── */
 .rules-card { background:var(--kv-card); border:1px solid var(--kv-border); border-radius:12px; padding:16px 20px; margin-bottom:16px; }
-.rules-title { font-size:0.95rem; font-weight:600; color:var(--kv-text); margin:0 0 6px; }
-.rules-intro { font-size:0.84rem; color:var(--kv-muted); line-height:1.5; margin:0 0 12px; }
+.rules-details summary { cursor:pointer; list-style:none; padding:0 20px; position:relative; }
+.rules-details summary::-webkit-details-marker { display:none; }
+.rules-details summary::before, .rules-details summary::after { content:'+'; position:absolute; top:0; color:var(--kv-muted); }
+.rules-details summary::before { left:0; }
+.rules-details summary::after { right:0; }
+.rules-details[open] summary::before, .rules-details[open] summary::after { content:'−'; }
+.rules-title { font-size:0.95rem; font-weight:600; color:var(--kv-text); margin:0; }
+.rules-intro { font-size:0.84rem; color:var(--kv-muted); line-height:1.5; margin:12px 0 12px; }
 .rules-list { margin:0; padding-left:20px; display:grid; gap:8px; }
 .rules-list li { font-size:0.84rem; color:var(--kv-muted); line-height:1.5; }
 .rules-list li strong { color:var(--kv-text); }
@@ -100,6 +106,25 @@ html:not(.dark) footer { color:#475569; }
   .theme-toggle { position:static; flex:0 0 auto; order:3; width:44px; height:44px; }
   .kv-tool-nav { justify-content:flex-start; }
   .tool-info { grid-template-columns:1fr; }
+}
+
+/* ── Sharesight affiliate block ── */
+.sharesight-promo { max-width: 900px; margin: 48px auto 0; padding: 0 20px; }
+.sharesight-promo-inner { display: flex; align-items: center; gap: 20px; padding: 18px 22px; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 12px; }
+.sharesight-logo-wrap { flex: 0 0 auto; background: #fff; border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; }
+.sharesight-logo-wrap img { height: 28px; width: auto; display: block; }
+.sharesight-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.sharesight-offer { font-size: 0.85rem; color: var(--kv-accent) !important; }
+.sharesight-copy > p:not(.sharesight-offer) { font-size: 0.85rem; color: var(--kv-muted); line-height: 1.5; }
+.sharesight-cta { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.sharesight-cta a { display: inline-block; padding: 9px 18px; background: var(--kv-accent); color: #0f172a; font-weight: 600; font-size: 0.85rem; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.15s; }
+.sharesight-cta a:hover { opacity: 0.85; }
+.sharesight-affiliate-note { font-size: 0.7rem; color: var(--kv-muted); text-align: right; }
+@media (max-width: 600px) {
+  .sharesight-promo-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .sharesight-cta { align-items: flex-start; width: 100%; }
+  .sharesight-cta a { width: 100%; text-align: center; }
+  .sharesight-affiliate-note { text-align: left; }
 }
 
 /* ── Paper portfolio hero card ── */

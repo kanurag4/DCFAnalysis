@@ -74,15 +74,17 @@
     </section>
 
     <section class="rules-card">
-      <h2 class="rules-title">How a stock makes this list</h2>
-      <p class="rules-intro">Every S&P 500 company is run through the base-case engine, then must clear <strong>all five</strong> rules below. The list is capped at 20 — so a strict week can show fewer.</p>
-      <ul class="rules-list">
-        <li><strong>Undervalued</strong> — base-case intrinsic value is above the current price (positive margin of safety). Most large caps trade above their conservative base case and are screened out here.</li>
-        <li><strong>Valuable by the model</strong> — produced a real intrinsic value. Companies with no/negative free cash flow, with net debt exceeding firm value, or banks/insurers paying no dividend can't be valued and are dropped.</li>
-        <li><strong>Real cash flow</strong> — free cash flow came from a reported figure or operating cash flow minus capital expenditure. The rough <em>OCF × 0.8</em> proxy is excluded because it fakes undervaluation.</li>
-        <li><strong>Normalised for financials</strong> — for non-bank financial companies (exchanges, asset managers, payment networks), reported free cash flow overstates owner earnings. The screen applies the same normalisation as the DCF tool — reducing reported FCF before valuation — so fair values match what you'd see entering those tickers manually.</li>
-        <li><strong>Plausible margin</strong> — margin of safety is 80% or less. When the model says a stock is worth far more than double its price, that usually reflects one-off-inflated or cyclically-peaked cash flow (e.g. a miner or contractor at the top of its cycle), not a genuine bargain — so those are excluded.</li>
-      </ul>
+      <details class="rules-details">
+        <summary class="rules-title">How a stock makes this list</summary>
+        <p class="rules-intro">Every S&P 500 company is run through the base-case engine, then must clear <strong>all five</strong> rules below. The list is capped at 20 — so a strict week can show fewer.</p>
+        <ul class="rules-list">
+          <li><strong>Undervalued</strong> — base-case intrinsic value is above the current price (positive margin of safety). Most large caps trade above their conservative base case and are screened out here.</li>
+          <li><strong>Valuable by the model</strong> — produced a real intrinsic value. Companies with no/negative free cash flow, with net debt exceeding firm value, or banks/insurers paying no dividend can't be valued and are dropped.</li>
+          <li><strong>Real cash flow</strong> — free cash flow came from a reported figure or operating cash flow minus capital expenditure. The rough <em>OCF × 0.8</em> proxy is excluded because it fakes undervaluation.</li>
+          <li><strong>Normalised for financials</strong> — for non-bank financial companies (exchanges, asset managers, payment networks), reported free cash flow overstates owner earnings. The screen applies the same normalisation as the DCF tool — reducing reported FCF before valuation — so fair values match what you'd see entering those tickers manually.</li>
+          <li><strong>Plausible margin</strong> — margin of safety is 80% or less. When the model says a stock is worth far more than double its price, that usually reflects one-off-inflated or cyclically-peaked cash flow (e.g. a miner or contractor at the top of its cycle), not a genuine bargain — so those are excluded.</li>
+        </ul>
+      </details>
       <p id="screen-summary" class="screen-summary" hidden></p>
       <p class="rules-cta">Want to value a different stock? <a href="../">Open the DCF Valuation tool →</a></p>
     </section>
