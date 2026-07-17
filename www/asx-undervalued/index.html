@@ -8,6 +8,7 @@
   <meta name="description" content="A weekly, automated DCF/DDM screen of the ASX 300 ranking stocks by margin of safety. Not financial advice — assumptions-driven. Free, no sign-up.">
   <script src="/kv-theme.js"></script>
   <script src="/kv-banner.js"></script>
+  <link rel="stylesheet" href="/kv-shared.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/svg+xml" href="../../dcf-icon.svg">
   <script type="application/ld+json">
@@ -30,23 +31,8 @@
     <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
   </header>
 
-  <nav class="kv-tool-nav" aria-label="KashVector tools">
-    <a href="/stock/">Stock Evaluator</a>
-    <a href="/dcf/" class="kv-nav-active" aria-current="page">DCF Valuation</a>
-    <a href="/gordon-growth/">Gordon Growth</a>
-    <a href="/budget/">Budget</a>
-    <a href="/debt-recycling/">Debt Recycling</a>
-    <a href="/portfolio-health/">Portfolio</a>
-    <a href="/fire/">FIRE</a>
-    <a href="/mortgage/">Mortgage Calculator</a>
-    <a href="/super-compare/">Salary Sacrifice</a>
-    <a href="/rent-vs-buy/">Rent vs Buy</a>
-    <a href="/life-buyback/">Life Buyback</a>
-    <a href="/budget-impact/">Budget Impact</a>
-    <a href="/hecs/">HECS</a>
-    <a href="/articles/">Articles</a>
-    <a href="/contact/">Contact</a>
-  </nav>
+  <div id="kv-nav-placeholder" style="height:41px"></div>
+  <script src="/kv-nav.js"></script>
 
   <main>
     <div id="kv-play-badge">

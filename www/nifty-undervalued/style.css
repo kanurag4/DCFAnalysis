@@ -15,23 +15,6 @@ body { margin:0; font:15px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 .app-header { position:relative; text-align:center; padding:18px 52px; border-bottom:1px solid var(--kv-border); }
 .app-header h1 { font-size:1.4rem; margin:0; }
 .app-header p { margin:4px 0 0; color:var(--kv-muted); font-size:0.9rem; }
-.home-logo { position:absolute; top:12px; left:16px; display:flex; flex-direction:column; align-items:center; gap:3px; text-decoration:none; }
-.home-logo img { width:32px; height:32px; opacity:0.9; transition:opacity .15s; }
-.home-logo:hover img { opacity:1; }
-.home-logo-label { font-size:0.6rem; font-weight:500; letter-spacing:0.03em; color:var(--kv-muted); white-space:nowrap; transition:color .15s; }
-.home-logo:hover .home-logo-label { color:var(--kv-accent); }
-.theme-toggle { position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
-  border:1px solid var(--kv-border); background:var(--kv-card); cursor:pointer; display:flex;
-  align-items:center; justify-content:center; color:var(--kv-muted); transition:background .15s,border-color .15s; }
-.theme-toggle:hover { background:var(--kv-card-2); border-color:var(--kv-accent); color:var(--kv-text); }
-
-/* ── Cross-tool nav ── */
-.kv-tool-nav { display:flex; justify-content:center; overflow-x:auto; border-bottom:1px solid var(--kv-border); background:var(--kv-bg); padding:0 16px; scrollbar-width:none; }
-.kv-tool-nav::-webkit-scrollbar { display:none; }
-.kv-tool-nav a { flex-shrink:0; padding:10px 14px; font-size:0.82rem; font-weight:500; color:var(--kv-muted); text-decoration:none; border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s; }
-.kv-tool-nav a:hover { color:var(--kv-text); }
-.kv-tool-nav a.kv-nav-active { color:var(--kv-accent); border-bottom-color:var(--kv-accent); }
-
 main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 .editorial { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:12px 16px; margin-bottom:16px; }
 .editorial p { margin:0 0 8px; font-size:0.85rem; color:var(--kv-text); line-height:1.55; }
@@ -90,10 +73,6 @@ footer a { color:var(--kv-accent); }
 /* ── Light mode ── */
 html:not(.dark) { --kv-bg:#edf2f7; --kv-card:#d4dce8; --kv-card-2:#c5cfe0; --kv-text:#0f172a;
   --kv-muted:#475569; --kv-border:#e2e8f0; --kv-accent:#0369a1; --kv-warn:#d97706; }
-html:not(.dark) .kv-tool-nav { background:#edf2f7; border-color:#e2e8f0; }
-html:not(.dark) .kv-tool-nav a { color:#475569; }
-html:not(.dark) .kv-tool-nav a:hover { color:#0f172a; }
-html:not(.dark) .kv-tool-nav a.kv-nav-active { color:#0369a1; border-bottom-color:#0369a1; }
 html:not(.dark) footer { color:#475569; }
 
 /* ── Mobile ── */
@@ -104,7 +83,6 @@ html:not(.dark) footer { color:#475569; }
   .app-header-center { flex:1; min-width:0; order:2; text-align:center; }
   .app-header h1 { font-size:1.1rem; }
   .theme-toggle { position:static; flex:0 0 auto; order:3; width:44px; height:44px; }
-  .kv-tool-nav { justify-content:flex-start; }
   .tool-info { grid-template-columns:1fr; }
 }
 
