@@ -64,8 +64,8 @@
     "firstPrice": 4.97
   },
   "ORA.AX": {
-    "firstSeen": "2026-06-02",
-    "firstPrice": 1.26
+    "firstSeen": "2026-07-17",
+    "firstPrice": 1.44
   },
   "PRN.AX": {
     "firstSeen": "2026-06-02",
@@ -150,5 +150,9 @@
   "MTS.AX": {
     "firstSeen": "2026-07-05",
     "firstPrice": 3
+  },
+  "AAI.AX": {
+    "firstSeen": "2026-07-17",
+    "firstPrice": 66.98
   }
 }

@@ -1,8 +1,37 @@
 [
-  { "date": "2026-06-04", "portfolioValue": 10000,   "indexPrice": 8686.10 },
-  { "date": "2026-06-18", "portfolioValue": 10669.56, "indexPrice": 8911.10 },
-  { "date": "2026-06-19", "portfolioValue": 10680.45, "indexPrice": 8828.70 },
-  { "date": "2026-06-25", "portfolioValue": 10442.27, "indexPrice": 8748.70 },
-  { "date": "2026-07-05", "portfolioValue": 10509.10, "indexPrice": 8844.40 },
-  { "date": "2026-07-10", "portfolioValue": 10535.45, "indexPrice": 8762.50 }
+  {
+    "date": "2026-06-04",
+    "portfolioValue": 10000,
+    "indexPrice": 8686.1
+  },
+  {
+    "date": "2026-06-18",
+    "portfolioValue": 10669.56,
+    "indexPrice": 8911.1
+  },
+  {
+    "date": "2026-06-19",
+    "portfolioValue": 10680.45,
+    "indexPrice": 8828.7
+  },
+  {
+    "date": "2026-06-25",
+    "portfolioValue": 10442.27,
+    "indexPrice": 8748.7
+  },
+  {
+    "date": "2026-07-05",
+    "portfolioValue": 10509.1,
+    "indexPrice": 8844.4
+  },
+  {
+    "date": "2026-07-10",
+    "portfolioValue": 10535.45,
+    "indexPrice": 8762.5
+  },
+  {
+    "date": "2026-07-17",
+    "portfolioValue": 10607.3,
+    "indexPrice": 8840.7
+  }
 ]

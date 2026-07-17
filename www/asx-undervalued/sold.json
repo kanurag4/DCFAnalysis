@@ -68,5 +68,21 @@
     "entryPrice": 5.04,
     "exitDate": "2026-07-10",
     "exitPrice": 5.57
+  },
+  {
+    "ticker": "BGA.AX",
+    "entryDate": "2026-07-10",
+    "entryPrice": 5.99,
+    "exitDate": "2026-07-17",
+    "exitPrice": 6.1,
+    "dollarPnl": 9.67
+  },
+  {
+    "ticker": "JBH.AX",
+    "entryDate": "2026-07-10",
+    "entryPrice": 78.1,
+    "exitDate": "2026-07-17",
+    "exitPrice": 79.81,
+    "dollarPnl": 11.53
   }
 ]
