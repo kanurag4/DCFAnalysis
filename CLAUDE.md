@@ -368,6 +368,11 @@ Never open via `file://` — fetch() will break.
 
 ```powershell
 xcopy /E /Y /I "C:\Projects\DCFAnalysis\www" "C:\Projects\StockAnalysis\www\dcf"
+# kv-theme.js / kv-banner.js in this repo's www/ are LOCAL DEV ONLY — the live site
+# loads them from the root (/kv-theme.js). The 2026-07-17 consolidation deleted the
+# stray www/dcf/ copies; the xcopy re-creates them, so delete before committing:
+del "C:\Projects\StockAnalysis\www\dcf\kv-theme.js"
+del "C:\Projects\StockAnalysis\www\dcf\kv-banner.js"
 copy "C:\Projects\DCFAnalysis\www\dcf-icon.svg" "C:\Projects\StockAnalysis\www\dcf-icon.svg"
 cd "C:\Projects\StockAnalysis"
 git add www/dcf/ www/dcf-icon.svg
@@ -375,7 +380,9 @@ git commit -m "Deploy DCF tool update"
 git push
 ```
 
-Cloudflare Pages auto-deploys in ~1 min. Also need: hub card in `www/index.html`, sitemap entry, nav updates in all 10 tool pages + `kv-nav.js` + `www/budget/kv-nav.js`.
+Cloudflare Pages auto-deploys in ~1 min. Also need: hub card in `www/index.html`, sitemap entry, nav updates via `kv-nav.js` `TOOLS` array (single source since 2026-07-17).
+
+**Drift guard (added after the 2026-07-18 incident):** before committing a deploy, `git status www/dcf` must show only the files you intended (for a monthly snapshot: the 5 JSON files). Anything else means StockAnalysis-side changes (e.g. the 2026-07-17 nav/kv-shared.css consolidation) were never backported here and the xcopy just clobbered them live — stop, restore the deploy target from its git HEAD, backport into this repo, then redeploy.
 
 ---
 
