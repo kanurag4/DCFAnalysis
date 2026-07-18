@@ -75,7 +75,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
 .screen-pill-label { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .screen-pill-label strong { font-size: 0.9rem; color: var(--kv-pass); white-space: nowrap; }
 .screen-pill-label span { font-size: 0.75rem; color: var(--kv-muted); white-space: nowrap; }
-.screen-pill-label .screen-pill-date { font-size: 0.68rem; }
+.screen-pill-label .screen-pill-date { font-size: 0.68rem; color: var(--kv-accent); }
 .screen-pill-date:empty { display: none; }
 .screen-pill-arrow { flex: 0 0 auto; color: var(--kv-pass); font-weight: 700; font-size: 1rem; }
 @media (max-width: 600px) {
