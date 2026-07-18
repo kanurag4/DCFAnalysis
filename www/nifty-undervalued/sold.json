@@ -47,5 +47,21 @@
     "entryPrice": 4835,
     "exitDate": "2026-07-11",
     "exitPrice": 4949.1
+  },
+  {
+    "ticker": "LUPIN.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 2267.7,
+    "exitDate": "2026-07-18",
+    "exitPrice": 2443.2,
+    "dollarPnl": -112.4
+  },
+  {
+    "ticker": "M&M.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 3040.5,
+    "exitDate": "2026-07-18",
+    "exitPrice": 3179.2,
+    "dollarPnl": 127.21
   }
 ]
