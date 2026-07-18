@@ -64,7 +64,7 @@ const els = {
   breakevenCallout: $('breakeven-callout'),
 };
 
-const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
+const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
 const RECENT_KEY = 'dcf_recent_tickers';
 
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
@@ -108,7 +108,12 @@ let currentData   = null;
 let liveRfRate    = 4.5;   // updated when US 10-yr Treasury is fetched
 let liveAusRfRate = 4.8;   // updated when Australian 10-yr bond is fetched; 4.8% default
 let liveIndRfRate = 7.0;   // updated when Indian 10-yr Govt bond is fetched; 7.0% default
-let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'other'
+// Korea: no live 10-yr KTB yield ticker exists on Yahoo (see docs/japan-korea-market-research.md
+// in the source repo) — these are fixed, never overwritten by a fetch.
+const KOR_RF      = 4.3;
+const KOR_ERP     = 7.5;
+const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the Korea numbers" panel
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -248,7 +253,8 @@ function prefillInputs(data) {
   // ── Market detection — ASX gets Australian RF rate + MRP ──────────────────
   const isAsx = isAsxTicker(data.ticker);
   const isInd = !isAsx && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.NS') || data.ticker.toUpperCase().endsWith('.BO')));
-  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
+  const isKor = !isAsx && !isInd && !!(data.ticker && data.ticker.toUpperCase().endsWith('.KS'));
+  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
 
   if (isAsx) {
     els.rfInput.value  = liveAusRfRate;
@@ -262,6 +268,12 @@ function prefillInputs(data) {
     setRfBadge('ind', liveIndRfRate);   // immediate — async fetch may refine the value
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP (7.0–9.0%)'; els.erpMarketNote.hidden = false; }
     fetchAndSetIndianRfRate();
+  } else if (isKor) {
+    els.rfInput.value  = KOR_RF;
+    els.erpInput.value = KOR_ERP;
+    setRfBadge('kor', KOR_RF);   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP incl. governance-risk premium (7.5%)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — Korea has no live rate source to fetch.
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -363,10 +375,15 @@ function prefillInputs(data) {
   const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
   const rePct = +(re * 100).toFixed(2);
 
+  // Terminal growth default is 2.5% for every market except Korea, which seeds lower
+  // (KOR_TGROWTH) to reflect structurally lower long-run growth expectations — see the
+  // "About the Korea numbers" panel for the reasoning.
+  const marketTGrowth = currentMarket === 'kor' ? KOR_TGROWTH : 2.5;
+
   modelSeeds = {
     dcf: {
       growth:   { bear: +(Math.max(-5, baseGrowthPct * 0.5)).toFixed(1), base: baseGrowthPct, bull: +(Math.min(30, baseGrowthPct * 1.5)).toFixed(1) },
-      tgrowth:  { bear: 2.5, base: 2.5, bull: 2.5 },
+      tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
       discount: waccResult
         ? { bear: +(waccResult.wacc * 100 + 1).toFixed(2), base: +(waccResult.wacc * 100).toFixed(2), bull: +(Math.max(1, waccResult.wacc * 100 - 1)).toFixed(2) }
         : { bear: 11, base: 10, bull: 9 },
@@ -374,7 +391,7 @@ function prefillInputs(data) {
     ddm: {
       dividend,
       growth:   { bear: +(Math.max(0, divGrowthPct * 0.5)).toFixed(1), base: divGrowthPct, bull: +(Math.min(12, divGrowthPct * 1.5)).toFixed(1) },
-      tgrowth:  { bear: 2.5, base: 2.5, bull: 2.5 },
+      tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
       discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
     },
   };
@@ -448,6 +465,19 @@ function updateModelToggle(isBankIns) {
   }
 }
 
+// Informational-only panel explaining the Korea-specific seeds (governance-risk
+// premium, static RF, lower terminal growth) — same collapsible pattern as the
+// AUS franking-credits note. Shared by both the DCF and DDM breakdown renderers.
+function koreaInfoBlock() {
+  if (currentMarket !== 'kor') return '';
+  return `<details class="wacc-franking">
+       <summary>About the Korea numbers</summary>
+       <p><strong>Governance risk premium:</strong> Korea's equity risk premium is set to 7.5% (vs 5.5% for the US), partly reflecting a premium institutional investors typically add for Korean equities given historically weaker minority-shareholder protections.</p>
+       <p><strong>Static risk-free rate:</strong> fixed at ~4.3% (Korea's approximate 10-year government bond yield). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
+       <p><strong>Lower terminal growth assumption:</strong> 1.75% vs the tool's 2.5% default, reflecting Korea's structurally lower long-run growth expectations.</p>
+     </details>`;
+}
+
 function renderDiscountBreakdown() {
   if (valuationModel === 'ddm') {
     if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
@@ -471,6 +501,7 @@ function renderDiscountBreakdown() {
       <div class="wacc-divider"></div>
       <div class="wacc-row"><span class="wacc-src">No debt component — DDM discounts dividends at the cost of equity only.</span></div>
       ${sectorRowDdm}
+      ${koreaInfoBlock()}
     `;
     return;
   }
@@ -573,6 +604,7 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     <div class="wacc-row wacc-total"><span>Calculated WACC</span><span>${pct(w.wacc)}</span></div>
     ${sectorRow}
     ${frankingBlock}
+    ${koreaInfoBlock()}
   `;
 }
 
@@ -1108,6 +1140,9 @@ function resetRfErp() {
   } else if (currentMarket === 'ind') {
     els.rfInput.value  = liveIndRfRate;
     els.erpInput.value = 7.5;
+  } else if (currentMarket === 'kor') {
+    els.rfInput.value  = KOR_RF;
+    els.erpInput.value = KOR_ERP;
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -1177,6 +1212,7 @@ function setRfBadge(market, rate) {
   const labels = {
     aus: { badge: '● live AUS', note: 'Australian 10-yr Govt Bond (^GSBG10.AX)', title: 'Australian 10-yr Govt Bond' },
     ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond',                  title: 'Indian 10-yr Govt Bond'    },
+    kor: { badge: '○ fixed',    note: 'Fixed estimate — no live Korean bond-yield source available', title: 'Korea 10-yr Govt Bond yield (fixed estimate, not live)' },
     us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX)',           title: 'Live US 10-yr Treasury yield' },
   };
   const lbl = labels[market] || labels.us;

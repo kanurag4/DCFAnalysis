@@ -82,6 +82,10 @@ function getMarketBetaFloor(ticker) {
   if (!t.includes('.')) return 0;       // US — no floor
   if (t.endsWith('.AX')) return 0.5;    // ASX vs S&P 500 understates beta
   if (t.endsWith('.NS') || t.endsWith('.BO')) return 0.6;  // India
+  // Korea: historically low betas (0.5-0.7) for mature firms partly reflect low share-price
+  // volatility and low debt under the old regime — likely understated now that governance
+  // reform and active investing are returning volatility. Floored at 0.6, matching India.
+  if (t.endsWith('.KS')) return 0.6;
   return 0.5;                           // other international (.L, .HK, .DE …)
 }
 

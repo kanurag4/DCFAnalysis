@@ -9,7 +9,7 @@ const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 
-const TERMINAL_GROWTH = 0.025;
+const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
 
 // The live tool runs its DCF/DDM off the values shown in the input boxes, which
@@ -21,7 +21,7 @@ const round1pct = (x) => +(x * 100).toFixed(1) / 100;  // 1 dp as a percent (gro
 const round2pct = (x) => +(x * 100).toFixed(2) / 100;  // 2 dp as a percent (WACC / Re)
 
 function evaluateStock(data, params) {
-  const { rf, erp } = params;
+  const { rf, erp, terminalGrowth = DEFAULT_TERMINAL_GROWTH } = params;
   const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(data.ticker));
 
@@ -40,7 +40,7 @@ function evaluateStock(data, params) {
     const result = calculateDDM({
       dividend: dividend != null ? +(+dividend).toFixed(2) : dividend,
       growthRate: round1pct(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth)),
-      terminalGrowth: TERMINAL_GROWTH,
+      terminalGrowth,
       costOfEquity: re,
       projectionYears: PROJECTION_YEARS,
       currentPrice: data.price,
@@ -91,7 +91,7 @@ function evaluateStock(data, params) {
   const result = calculateDCF({
     fcf: baseFcf,
     growthRate: round1pct(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth)),
-    terminalGrowth: TERMINAL_GROWTH,
+    terminalGrowth,
     wacc: waccUsed,
     projectionYears: PROJECTION_YEARS,
     totalDebt: data.totalDebt, totalCash: data.totalCash,

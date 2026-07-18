@@ -35,9 +35,12 @@ async function gather(config) {
   const tickers = JSON.parse(fs.readFileSync(path.join(__dirname, '..', config.tickersFile), 'utf8'));
   const asAt = new Date().toISOString().slice(0, 10);
 
-  const rf = await config.fetchRf(proxyUrl);
+  // Korea has no live RF source (see market.js) — config.fetchRf is absent, so rf
+  // stays null and marketParamsFor's static fallback applies for every ticker.
+  const rf = config.fetchRf ? await config.fetchRf(proxyUrl) : null;
   const live = { [config.liveKey]: rf };
-  console.log(`${config.rfLabel}: ${(rf * 100).toFixed(2)}%  | tickers: ${tickers.length}  | asAt: ${asAt}`);
+  const rfDisplay = rf != null ? `${(rf * 100).toFixed(2)}%` : 'static (no live source)';
+  console.log(`${config.rfLabel}: ${rfDisplay}  | tickers: ${tickers.length}  | asAt: ${asAt}`);
 
   const evaluated = [];
   const raw = [];           // keep the mapped data for instant --reeval (no re-fetch)
@@ -121,21 +124,30 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   const outDir = path.join(__dirname, '../../www', config.outDir);
   fs.mkdirSync(outDir, { recursive: true });
 
-  const rounded = ranked.map(r => ({
-    rank: r.rank, ticker: r.ticker, name: r.name, sector: r.sector ?? null,
-    method: r.method,
-    intrinsic: +r.intrinsic.toFixed(2),
-    snapshotPrice: +Number(r.snapshotPrice).toFixed(2),
-    marginOfSafety: +r.marginOfSafety.toFixed(4),
-    wacc: +r.wacc.toFixed(4),
-    terminalValuePct: r.terminalValuePct != null ? +r.terminalValuePct.toFixed(1) : null,
-    trailingPE: r.trailingPE != null ? +r.trailingPE.toFixed(1) : null,
-    marketCap: r.marketCap != null ? Math.round(r.marketCap) : null,
-    operatingMargin: r.operatingMargin != null ? +r.operatingMargin.toFixed(4) : null,
-    analystTarget: r.analystTarget != null ? +r.analystTarget.toFixed(2) : null,
-    currency: r.currency ?? config.currency,
-    ...(r.highLeverage ? { highLeverage: true } : {}),
-  }));
+  // Chaebol-affiliate annotation (Korea screen only — config.chaebolAffiliates is a
+  // manually curated { ticker: 'Group Name' } map). Additive, not exclusionary — mirrors
+  // the highLeverage flag's rendering pattern (asterisk + tooltip + footnote), never
+  // affects ranking order. Undefined for every other market's config, so this is a
+  // no-op there.
+  const rounded = ranked.map(r => {
+    const chaebolGroup = config.chaebolAffiliates ? config.chaebolAffiliates[r.ticker] : undefined;
+    return {
+      rank: r.rank, ticker: r.ticker, name: r.name, sector: r.sector ?? null,
+      method: r.method,
+      intrinsic: +r.intrinsic.toFixed(2),
+      snapshotPrice: +Number(r.snapshotPrice).toFixed(2),
+      marginOfSafety: +r.marginOfSafety.toFixed(4),
+      wacc: +r.wacc.toFixed(4),
+      terminalValuePct: r.terminalValuePct != null ? +r.terminalValuePct.toFixed(1) : null,
+      trailingPE: r.trailingPE != null ? +r.trailingPE.toFixed(1) : null,
+      marketCap: r.marketCap != null ? Math.round(r.marketCap) : null,
+      operatingMargin: r.operatingMargin != null ? +r.operatingMargin.toFixed(4) : null,
+      analystTarget: r.analystTarget != null ? +r.analystTarget.toFixed(2) : null,
+      currency: r.currency ?? config.currency,
+      ...(r.highLeverage ? { highLeverage: true } : {}),
+      ...(chaebolGroup ? { chaebolGroup } : {}),
+    };
+  });
 
   const summary = {
     tickers: tickerCount,
@@ -246,7 +258,8 @@ async function updatePortfolio(config, data, oldRankings) {
   const startVal = portfolio.startingValue || STARTING_VALUE;
   const gain = portfolio.value - startVal;
   const sign = gain >= 0 ? '+' : '';
-  const sym = config.currency === 'INR' ? '₹' : '$';
+  const CURRENCY_SYMBOLS = { INR: '₹', KRW: '₩' };
+  const sym = CURRENCY_SYMBOLS[config.currency] ?? '$';
   console.log(`Portfolio: ${sym}${portfolio.value.toFixed(2)} (${sign}${(gain / startVal * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
   if (portfolio.dividendsTotal) {
     console.log(`Dividends: ${sym}${portfolio.dividendsTotal.toFixed(2)} earned cumulatively`);
@@ -264,7 +277,8 @@ async function runScreen(config, argv = process.argv) {
     if (!config.rawFile || !fs.existsSync(rawPath)) throw new Error(`No raw cache at ${config.rawFile} — run a full fetch first.`);
     const b = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
     const live = { [b.liveKey || config.liveKey]: b.rf };
-    console.log(`Re-evaluating ${b.raw.length} cached raw rows from ${b.asAt} (no fetch; rf=${(b.rf * 100).toFixed(2)}%).`);
+    const rfDisplay = b.rf != null ? `${(b.rf * 100).toFixed(2)}%` : 'static (no live source)';
+    console.log(`Re-evaluating ${b.raw.length} cached raw rows from ${b.asAt} (no fetch; rf=${rfDisplay}).`);
     const evaluated = b.raw.map(d => evaluateStock(d, marketParamsFor(d.ticker, live)));
     data = { asAt: b.asAt, tickerCount: b.tickerCount, evaluated };
     fs.writeFileSync(cachePath, JSON.stringify(data) + '\n');

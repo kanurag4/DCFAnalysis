@@ -49,6 +49,15 @@ test('excludes a bank with no dividend', () => {
   assert.strictEqual(r.excluded, true);
 });
 
+test('uses a market-specific terminalGrowth when provided, defaults to 2.5% otherwise', () => {
+  const defaultResult = evaluateStock(dcfStock, params);
+  const lowerGrowthResult = evaluateStock(dcfStock, { ...params, terminalGrowth: 0.0175 });
+  // Same ticker/inputs, only terminalGrowth differs — isolates its effect. A lower
+  // terminal growth rate produces a lower terminal value and thus a lower intrinsic
+  // value, all else equal — confirms the param actually reaches calculateDCF.
+  assert.ok(lowerGrowthResult.intrinsic < defaultResult.intrinsic);
+});
+
 // ── Non-bank financial-sector FCF normalisation (must mirror the live tool) ──
 // The live DCF tool seeds normalised FCF = fcf * 0.6 for non-bank financials
 // (app.js prefill + buildScenarios). The batch must apply the same haircut, or

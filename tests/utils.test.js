@@ -239,6 +239,11 @@ test('getMarketBetaFloor: other international tickers floored at 0.5', () => {
   assert.strictEqual(getMarketBetaFloor('SAP.DE'), 0.5);
 });
 
+test('getMarketBetaFloor: Korean tickers floored at 0.6', () => {
+  assert.strictEqual(getMarketBetaFloor('005930.KS'), 0.6);
+  assert.strictEqual(getMarketBetaFloor('000660.KS'), 0.6);
+});
+
 test('getMarketBetaFloor: handles null/empty gracefully', () => {
   assert.strictEqual(getMarketBetaFloor(null), 0);
   assert.strictEqual(getMarketBetaFloor(''), 0);
