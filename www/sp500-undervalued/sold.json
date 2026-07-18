@@ -145,5 +145,37 @@
     "entryPrice": 210.19,
     "exitDate": "2026-07-10",
     "exitPrice": 216
+  },
+  {
+    "ticker": "ADBE",
+    "entryDate": "2026-07-08",
+    "entryPrice": 221.54,
+    "exitDate": "2026-07-18",
+    "exitPrice": 237.25,
+    "dollarPnl": 31.22
+  },
+  {
+    "ticker": "MDT",
+    "entryDate": "2026-06-26",
+    "entryPrice": 80.52,
+    "exitDate": "2026-07-18",
+    "exitPrice": 83.2,
+    "dollarPnl": -4.1
+  },
+  {
+    "ticker": "VLO",
+    "entryDate": "2026-06-04",
+    "entryPrice": 261.45,
+    "exitDate": "2026-07-18",
+    "exitPrice": 309.65,
+    "dollarPnl": 52.92
+  },
+  {
+    "ticker": "DLTR",
+    "entryDate": "2026-06-04",
+    "entryPrice": 112.5,
+    "exitDate": "2026-07-18",
+    "exitPrice": 125.94,
+    "dollarPnl": 4.23
   }
 ]
