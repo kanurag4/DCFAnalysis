@@ -177,9 +177,49 @@ doesn't know about Korea yet). Ticker list: `kospi200-list.json`. Raw evaluated 
 `_explore-kospi-evaluated.json`. Delete all three once this research is either acted on or
 shelved — they are not meant to survive into any real implementation.
 
-## Open decision — where the user is at (2026-07-18)
+## Empirical validation — Nikkei 225 exploratory run (2026-07-18)
 
-**Still on the fence about whether Korea clears the bar**, specifically because of the
-chaebol-affiliate finding above. Japan exploratory pass not yet run (queued next). No Spec A
-written. Nothing built. This document exists so the research and the empirical KOSPI finding
-aren't lost regardless of which way the decision goes.
+Ran all 225 Nikkei 225 constituents through the same throwaway-script pattern, using the
+proposed Japan parameters above. Ticker list sourced from Wikipedia's Nikkei 225 page (a
+different wikitext structure than KOSPI 200's — sector-grouped bulleted list, not a single
+wikitable; parsed with a dedicated regex).
+
+**Funnel:** 225 tickers → 0 fetch-failed → 225 evaluated → 89 unvaluable → 74 overvalued →
+**33 capped (14.7% of the universe)** → 0 proxy-FCF dropped → **29 qualified**, top 20 shown.
+
+The 14.7% capped rate is meaningfully lower than KOSPI's 25% — consistent with Japan having
+fewer of the acute related-party-transaction distortions the chaebol structure produces (still
+somewhat elevated vs ASX's ~12%/S&P 500's ~16%/NIFTY's ~3%, which tracks the cross-shareholding
+and cash-hoarding concerns from the user's Japan research, just less severe than Korea's).
+
+**Top 20:** Astellas Pharma 74% · Takeda Pharma 68% · Kyowa Kirin 62% · NEC 60% · Yamato
+Holdings 55% · SECOM 52% · Nissan Chemical 52% · Mitsubishi Heavy Industries 51% · Sumitomo
+Chemical 46% · Konami Group 43% · Kobe Steel 40% · Subaru 36% · Japan Exchange Group 35% ·
+ZOZO 34% · Yamaha 22% · Amada 22% · Hitachi 20% · Terumo 18% · Baycurrent 17% · NSK 17%.
+
+**Qualitative read:** unlike KOSPI's top 6 (half chaebol-affiliate names), Japan's top 20 spans
+pharma, logistics, industrials, and tech with no single keiretsu group obviously dominating the
+upper ranks. Mitsubishi Heavy Industries and Sumitomo Chemical are keiretsu-descended names
+worth a similar cross-shareholding-proceeds caveat, but they read as core operating businesses
+rather than holding-company-style entities (the closer analogue to Hotel Shilla/Samsung E&A).
+This is a materially cleaner-looking list than KOSPI's — doesn't mean Japan is risk-free (the
+cross-shareholding-unwinding caveat still applies to any name that's been liquidating keiretsu
+stakes), but the structural-distortion concentration looks lower.
+
+Throwaway exploration script: `explore-nikkei.js` (repo root, not committed). Ticker list:
+`nikkei225-list.json`. Raw evaluated output: `_explore-nikkei-evaluated.json`. Wikitext source:
+`nikkei225.wiki`. Parser: `parse-nikkei.js`. Delete all once this research is acted on or
+shelved — not meant to survive into any real implementation.
+
+## Status (2026-07-18)
+
+**Korea (KOSPI 200): approved, in build.** User decided to proceed despite the chaebol-affiliate
+finding, with the flag-not-filter design (see the KOSPI design spec,
+`docs/superpowers/specs/2026-07-18-kospi-undervalued-screen-design.md`, approved and in
+implementation as of this writing).
+
+**Japan (Nikkei 225): still an open, separate decision.** Not yet brainstormed into a spec. The
+empirical picture is more favorable than Korea's (lower capped rate, less concentrated
+structural-risk names at the top), which may make the "on the fence" calculus different for
+Japan than it was for Korea — but that's a decision for whenever this gets picked up, not
+assumed here.
