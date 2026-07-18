@@ -163,6 +163,80 @@ Reuse this pattern for any future ticker-list expansion on any screen.
 
 ---
 
+## Feature: Most Undervalued KOSPI 200 screen — ✅ LIVE (2026-07-18)
+
+Fourth sibling screen at **kashvector.com/dcf/kospi-undervalued/**. Ranks the KOSPI 200 by
+base-case DCF/DDM margin of safety. Top 20, 80% cap, KRW. Design + research:
+`docs/japan-korea-market-research.md` and
+`docs/superpowers/specs/2026-07-18-kospi-undervalued-screen-design.md`.
+
+- Batch: `node scripts/rank-kospi.js` (~11 min, 200 tickers, same 3.2s throttle + sweep).
+- Columns: same as the other three screens. Currency: `₩`.
+- Tickers: `scripts/kospi200.json` (200 entries, built by `scripts/build-kospi200.js` —
+  self-contained: fetches Wikipedia's raw wikitext directly, no manual pre-step, unlike ASX's
+  Playwright-browser scrape or NIFTY's manual CSV). Codes are mostly 5-6 plain digits but a
+  few mix in letters (e.g. Samsung Epis Holdings, `0126Z0`) — the parser
+  (`scripts/lib/kospi-list.js`) accepts both.
+- KOR RF: **no live source exists** — exhaustive search (13+ ticker guesses through the
+  Worker, direct Yahoo Finance verification, web search) found no working symbol for a
+  Korean 10-yr KTB yield, unlike `^GSBG10.AX`/`^INBMKG10.NS` which work because they're
+  actual exchange-listed index products. `market.js`'s `.KS` branch returns a **static 4.3%**,
+  never fetched; `rank-kospi.js`'s `fetchRf: null` skips the attempt entirely (see the
+  "no live RF source" architecture note below).
+- Refresh runbook: **`/refresh-kospi-undervalued`** skill — has one extra review step no
+  other screen needs: proactively cross-check new qualifiers against the chaebol list
+  (see below), since Korea's structural risk is common enough to need it from day one.
+- First run: 13 stocks qualified from 200 (2026-07-18), 25% margin-cap rate (vs ASX ~12%/
+  S&P 500 ~16%/NIFTY ~3%) — consistent with the chaebol-related FCF distortion this screen
+  was specifically built to flag, not filter out. 3 of the first 13 flagged (Hotel Shilla,
+  HD-Hyundai Marine Engine, Samsung E&A — all Samsung/Hyundai Group affiliates).
+
+### Chaebol-affiliate flag (`chaebolGroup`) — new mechanism, no other screen has this
+
+Korea's large family-controlled conglomerates (chaebol — Samsung, Hyundai, SK, LG, Lotte, and
+~10-15 others) can shift cash between affiliated companies via transfer pricing, sub-optimal
+M&A, or related-party real-estate deals, distorting reported FCF in ways Yahoo's basic fields
+can't detect. Unlike ASX's REIT problem (a handful of names — WPR.AX, MFF.AX — handled by a
+reactive blacklist added after a name reappears a few times), chaebol affiliation isn't rare
+in KOSPI 200 — most of Korea's largest companies belong to one of the major groups, so
+blacklisting them would exclude a third or more of the investable universe.
+
+**Design: flag, don't filter** — mirrors the existing `highLeverage` flag's rendering pattern
+exactly (asterisk + tooltip + amber footnote), except using a dagger (†) to stay visually
+distinct since both flags can co-occur on the same ticker. Flagged names **stay on the list**;
+the flag is purely informational.
+
+- `scripts/rank-kospi.js`'s `chaebolAffiliates` config — a manually curated
+  `{ 'TICKER.KS': 'Group Name' }` map, same maintenance workflow as the `blacklist` arrays
+  (add proactively when a new qualifier turns out to be an affiliate; see the refresh skill).
+- `scripts/lib/run-screen.js`'s `rankAndWrite` attaches `chaebolGroup` to each output row
+  (post-rank, purely additive — never affects ranking order or margin calculation).
+- `www/kospi-undervalued/app.js` renders the † + tooltip on the ticker and an amber footnote
+  when any row is flagged, explaining what the flag does and doesn't mean (not a bad-company
+  signal; absence of the flag doesn't mean a stock is verified clean either).
+
+### Portfolio timeline chart — single-point-vs-line fix (2026-07-18)
+
+The shared `renderHeroCard`/`drawPortfolioChart` pattern (copied from NIFTY) always appended
+a synthetic "Now" point on top of the real history array, so a **brand-new screen's first-ever
+run** showed two dots for the same calendar day ("18 Jul" + "Now", both today) connected by a
+misleading line implying movement across a period that didn't exist. Fixed in
+`www/kospi-undervalued/app.js` only (not backported to the other three screens, which have
+enough real history that this doesn't surface the same way):
+- Skip the synthetic "Now" point when the latest real history entry's date already equals
+  today — render that single point alone (no line, `showLine: false`) instead.
+- `showLine` is gated on `history.length >= 2` (genuine multi-period data), not on the
+  padded `chartPoints.length` which always includes the synthetic point — becomes a real
+  connected line automatically once a second real batch-run snapshot exists.
+- Chart y-axis also gets `beginAtZero: true` so a fresh screen's day-1 point (always exactly
+  0% by construction) visually anchors at the shared baseline regardless of how the other
+  series has since drifted.
+
+**If any future screen launches fresh** (not just KOSPI), backport this same fix — the
+underlying bug (same-day duplicate dot on a brand-new screen) is generic, not Korea-specific.
+
+---
+
 ## Feature: Paper Portfolio Tracker — ✅ LIVE (2026-06-18)
 
 Amber hero card on all three undervalued screens showing what a hypothetical equal-weight,
@@ -424,6 +498,19 @@ Intrinsic Value = Σ PV(D) + PV(TV)        ← per share directly (no net debt s
 - **Projection year slider**: auto-recalculates on drag (no need to click Recalculate). All other inputs still require the Recalculate button.
 - **RF rate live badge**: restructured label as flex row so "● live" appears inline with "Risk-free rate %", and a subtitle below the input confirms "US 10-yr Treasury yield (^TNX)".
 - **ASX/NSE wrong-market error**: if a bare symbol (no `.` suffix) is searched with ASX or NSE ticked and any error occurs (404, 5xx, empty result), `app.js` replaces the generic Yahoo error with a targeted message: `"AAPL" was not found on the ASX. Untick "ASX stock" to search US or other stocks.` Yahoo returns 5xx (not 404) for invalid suffixes like `AAPL.AX`, so the check is `!isConnectivityError` rather than matching "not found". Genuine network errors ("Couldn't reach the data service") pass through unchanged. Same logic applied to `www/stock/app.js`.
+- **Per-market terminal growth is hand-synced across two files, not shared code** (added 2026-07-18
+  for Korea): `scripts/lib/market.js`'s `marketParamsFor()` (batch-side) and `www/app.js`'s
+  inline `KOR_RF`/`KOR_ERP`/`KOR_TGROWTH` constants (live-tool-side) are two independent
+  implementations that must be kept in sync by hand — `market.js`'s header comment says as much
+  ("mirrors app.js prefillInputs()"). This is the existing pattern (AUS/IND RF/ERP were already
+  duplicated this way), not new, but it's now easier to drift since a THIRD value (terminal
+  growth) is hand-synced too. If Korea's numbers ever look wrong in the batch but right in the
+  live tool (or vice versa), check both files agree before assuming a calc bug.
+- **`evaluateStock`'s terminal growth defaults to 2.5% if `params.terminalGrowth` is omitted**
+  (`scripts/lib/evaluate.js`) — backward-compatible for every market except Korea, which is the
+  only one that actually overrides it (1.75%). Any future market-specific terminal-growth seed
+  should follow the same `params.terminalGrowth ?? DEFAULT_TERMINAL_GROWTH` pattern, not a new
+  hardcoded constant.
 
 ---
 
@@ -460,11 +547,24 @@ DCF discounts FCF at **WACC**. DDM (banks/insurance) discounts dividends at **Re
 
 | Market | Detection | Live source (via Worker) | Fallback |
 |---|---|---|---|
-| US / other | no `.AX`/`.NS`/`.BO` | US 10-yr Treasury `^TNX` | 4.5% |
+| US / other | no `.AX`/`.NS`/`.BO`/`.KS` | US 10-yr Treasury `^TNX` | 4.5% |
 | Australia | `.AX` | Australian 10-yr Govt Bond `^GSBG10.AX` | 4.8% |
 | India | `.NS` / `.BO` | Indian 10-yr Govt Bond `^INBMKG10.NS` | 7.0% |
+| Korea | `.KS` | **none — no live source exists** (see below) | 4.3%, always |
 
-Fetched on stock load. The RF input shows a live badge (`● live` / `● live AUS` / `● live IND`). The "↺ Reset to defaults" button restores the **market-appropriate** RF + MRP, not always the US values.
+Fetched on stock load. The RF input shows a live badge (`● live` / `● live AUS` / `● live IND`) — except Korea, which shows `○ fixed` instead, since claiming "live" for a rate that's never actually fetched would be misleading. The "↺ Reset to defaults" button restores the **market-appropriate** RF + MRP, not always the US values.
+
+**Korea has no live RF source, by design, not by omission.** Unlike `^GSBG10.AX`/`^INBMKG10.NS`
+(actual exchange-listed bond-index products, hence fetchable via Yahoo), no equivalent exists
+for Korea Exchange. Confirmed via exhaustive search (2026-07-18): 13+ plausible ticker guesses
+(`^KR10Y`, `KR10YT=RR`, etc.) all returned HTTP 502 through the Worker; a search-engine-
+synthesized answer claiming a working ticker (`JP10Y-JP` for Japan, by extension implying a
+Korean equivalent) was directly verified false via WebFetch (404 on Yahoo Finance directly —
+the answer had conflated CNBC's ticker convention with Yahoo's). `fetchAndSetRiskFreeRate`-style
+functions were **not** written for Korea in `app.js` — there is no `fetchAndSetKoreanRfRate()` to
+silently fail; the 4.3% seed is a plain constant (`KOR_RF`). Don't add a live-fetch attempt for
+Korea without first re-verifying a working ticker exists — the research in
+`docs/japan-korea-market-research.md` documents what was already tried.
 
 ### 3. Market Risk Premium (MRP / ERP) defaults
 
@@ -473,6 +573,7 @@ Fetched on stock load. The RF input shows a live badge (`● live` / `● live A
 | US / other | 5.5% | 4–6% | Damodaran long-run US historical premium (since 1928) |
 | Australia | 6.0% | 5.5–6.5% | Developed, AAA-rated; lower than emerging markets |
 | India | 7.5% | 7–9% | Emerging-market premium (political + currency risk) |
+| Korea | 7.5% | — | Developed-market baseline **plus an explicit 1–3% governance-risk premium** — institutional investors typically add this for Korean equities given historically weaker minority-shareholder protections (the "Korea Discount"). Same 7.5% number as India, different underlying reason — documented separately in each market's info panel, not copy-pasted. |
 
 A 1% change in ERP flows directly into Re → for DDM it changes the (Re − g) denominator and can shift intrinsic value by **15–25%**.
 
@@ -493,6 +594,7 @@ Yahoo Finance computes beta by regressing a stock's returns against the S&P 500.
 | US | no `.` suffix | none | Yahoo beta vs S&P 500 is correct by definition |
 | ASX | `.AX` | 0.5 | ASX financials typically 0.6–1.0 vs ASX 200 |
 | India | `.NS` / `.BO` | 0.6 | Low India–US correlation; Nifty financials higher systematic risk |
+| Korea | `.KS` | 0.6 | Historically low Japanese/Korean betas (0.5–0.7) partly reflect low share-price volatility under the old regime — likely understated now that governance reform and active investing are returning volatility. Matches India's floor. |
 | Other int'l | any other suffix | 0.5 | Conservative floor for `.L`, `.HK`, `.DE`, etc. |
 
 **Scope**: the floor affects the **initial seed values** for WACC (DCF) and cost-of-equity (DDM) inputs. Users can override all inputs directly. When the floor is applied, an amber warning is shown in both the WACC breakdown and the DDM cost-of-equity breakdown panels.
