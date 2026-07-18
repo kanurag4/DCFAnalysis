@@ -71,6 +71,14 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
   min-width: 0;
 }
 .screen-pill:hover { border-color: var(--kv-pass); background: rgba(34,197,94,0.14); }
+.screen-pill-new { position: relative; border-color: rgba(245,158,11,0.55) !important; overflow: visible; }
+.screen-pill-new .new-badge {
+  position: absolute; top: -9px; right: 10px;
+  background: linear-gradient(135deg, #fcd34d, #f59e0b); color: #3a2a05;
+  font-size: 0.62rem; font-weight: 800; padding: 1px 9px; border-radius: 999px;
+  text-transform: uppercase; pointer-events: none;
+}
+html:not(.dark) .screen-pill-new { border-color: rgba(245,158,11,0.65) !important; }
 .screen-pill-flag { font-size: 1.4rem; line-height: 1; flex: 0 0 auto; }
 .screen-pill-label { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .screen-pill-label strong { font-size: 0.9rem; color: var(--kv-pass); white-space: nowrap; }

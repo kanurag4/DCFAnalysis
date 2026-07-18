@@ -33,6 +33,28 @@
     }
   }
 
+  // Index tickers need the summaryDetail chain, not the bulk /quote endpoint used
+  // for regular stocks — confirmed via direct comparison that /quote returns a value
+  // ~7% off from /quoteSummary for ^KS200 specifically (a Yahoo-side quirk for this
+  // symbol; other index tickers checked fine via /quote). Fetching the index price the
+  // same way the batch does (scripts/lib/rf.js's fetchIndexPrice) keeps the hero card's
+  // live comparison internally consistent with the seed it's being compared against.
+  async function fetchIndexPriceLive(indexTicker) {
+    try {
+      const base = (CONFIG.YAHOO_PROXY_URL || '').replace(/\/$/, '');
+      const url = `${base}/quoteSummary/${encodeURIComponent(indexTicker)}`;
+      const body = await getJSON(url);
+      const r = body?.quoteSummary?.result?.[0];
+      const raw = r?.summaryDetail?.regularMarketPrice?.raw
+        ?? r?.summaryDetail?.previousClose?.raw
+        ?? r?.financialData?.currentPrice?.raw
+        ?? null;
+      return (raw != null && isFinite(raw) && raw > 0) ? raw : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   function pct(x) { return `${(x * 100).toFixed(1)}%`; }
 
   function renderScreenSummary(s) {
@@ -348,8 +370,11 @@
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
 
     const tickersForLive = rows.map(r => r.ticker);
-    if (portfolioData && portfolioData.indexTicker) tickersForLive.push(portfolioData.indexTicker);
     const live = await fetchLivePrices(tickersForLive);
+    if (portfolioData && portfolioData.indexTicker) {
+      const indexPrice = await fetchIndexPriceLive(portfolioData.indexTicker);
+      if (indexPrice != null) live[portfolioData.indexTicker] = indexPrice;
+    }
     bodyEl.innerHTML = rows.map(r => row(r, live[r.ticker], firstSeen[r.ticker])).join('');
     statusEl.hidden = true;
     tableEl.hidden = false;
