@@ -89,6 +89,19 @@ if (isNative) {
     });
   });
 }
+if (!isNative) {
+  // Fill each screen pill's "Updated d Mon" line from that screen's rankings.json.
+  // Relative paths resolve both locally and at /dcf/; failures leave the line empty.
+  document.querySelectorAll('.screen-pill-date[data-screen]').forEach((el) => {
+    fetch(el.dataset.screen + '/rankings.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        const label = data && formatUpdatedDate(data.asAt);
+        if (label) el.textContent = label;
+      })
+      .catch(() => {});
+  });
+}
 const RECENT_MAX = 8;
 
 let currentData   = null;

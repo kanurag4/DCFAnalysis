@@ -134,6 +134,20 @@ function getAsxSectorWaccRange(sector, industry) {
   return null;
 }
 
+// "Updated 17 Jul" from a batch asAt date (YYYY-MM-DD); year appended only when
+// it differs from the current year. Returns null for anything unparseable so
+// callers can leave the pill's date line empty rather than render garbage.
+function formatUpdatedDate(asAt, now = new Date()) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(asAt || ''));
+  if (!m) return null;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const year = +m[1], month = +m[2], day = +m[3];
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  let label = `Updated ${day} ${months[month - 1]}`;
+  if (year !== now.getFullYear()) label += ` ${year}`;
+  return label;
+}
+
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
@@ -141,4 +155,5 @@ if (typeof module !== 'undefined') module.exports = {
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
+  formatUpdatedDate,
 };
