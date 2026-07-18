@@ -92,7 +92,7 @@
   }
 
   function drawPortfolioChart(canvas, history, sym, indexName, showLine) {
-    if (!history || history.length < 2 || typeof Chart === 'undefined') return;
+    if (!history || history.length < 1 || typeof Chart === 'undefined') return;
     const isDark = document.documentElement.classList.contains('dark');
     const gridColor = isDark ? 'rgba(148,163,184,0.15)' : 'rgba(15,23,42,0.1)';
     const tickColor = isDark ? '#94a3b8' : '#475569';
@@ -213,7 +213,10 @@
 
     // Build the chart series: historical snapshots (% return vs the inception date)
     // plus a final "Now" point using today's live figures, so the line always reaches
-    // today even between batch runs.
+    // today even between batch runs. If the latest snapshot IS today's batch run,
+    // skip the synthetic "Now" point entirely — it would just duplicate the same day
+    // as a second dot (e.g. "18 Jul" + "Now" both being 18 Jul). Only add "Now" when
+    // there's a genuine gap between the last snapshot and the moment the page loads.
     let chartPoints = null;
     if (Array.isArray(history) && history.length) {
       // Use indexSeedPrice (same baseline as the hero stat's % figure) so the chart
@@ -225,16 +228,20 @@
         portfolioPct: (h.portfolioValue - startVal) / startVal * 100,
         indexPct: (indexBaseline > 0) ? (h.indexPrice - indexBaseline) / indexBaseline * 100 : null,
       }));
-      const lastIndexPct = chartPoints[chartPoints.length - 1].indexPct;
-      chartPoints.push({
-        date: 'Now',
-        portfolioPct: parseFloat(gainPct),
-        indexPct: (liveIndexPrice && indexBaseline > 0)
-          ? (liveIndexPrice - indexBaseline) / indexBaseline * 100
-          : lastIndexPct,
-      });
+      const lastHistoryDate = history[history.length - 1].date;
+      const todayStr = new Date().toISOString().slice(0, 10);
+      if (lastHistoryDate !== todayStr) {
+        const lastIndexPct = chartPoints[chartPoints.length - 1].indexPct;
+        chartPoints.push({
+          date: 'Now',
+          portfolioPct: parseFloat(gainPct),
+          indexPct: (liveIndexPrice && indexBaseline > 0)
+            ? (liveIndexPrice - indexBaseline) / indexBaseline * 100
+            : lastIndexPct,
+        });
+      }
     }
-    const chartHtml = chartPoints && chartPoints.length >= 2
+    const chartHtml = chartPoints && chartPoints.length >= 1
       ? '<div class="portfolio-hero-chart-col">' +
           '<div class="portfolio-hero-chart-title">Portfolio vs ' + escapeHtml(indexName || 'index') + ' over time</div>' +
           '<div class="portfolio-hero-chart-wrap"><canvas id="portfolio-history-chart"></canvas></div>' +
@@ -265,11 +272,10 @@
       '</div>';
 
     tableEl.parentNode.insertAdjacentElement('beforebegin', el);
-    if (chartPoints && chartPoints.length >= 2) {
-      // showLine requires genuine multi-period history (>=2 real batch-run snapshots),
-      // not just the synthetic "Now" point padded onto a single day-1 snapshot — a
-      // same-day "day-1 + now" pair isn't a trend, so it renders as two dots, not a
-      // line. Becomes a real connected line from the next monthly refresh onward.
+    if (chartPoints && chartPoints.length >= 1) {
+      // showLine requires genuine multi-period history (>=2 real batch-run snapshots) —
+      // a single day-1 point renders as one dot, no line. Becomes a real connected line
+      // from the next monthly refresh onward, once a second real snapshot exists.
       const showLine = Array.isArray(history) && history.length >= 2;
       drawPortfolioChart($('portfolio-history-chart'), chartPoints, sym, indexName, showLine);
     }
