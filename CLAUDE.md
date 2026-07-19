@@ -235,6 +235,17 @@ enough real history that this doesn't surface the same way):
 **If any future screen launches fresh** (not just KOSPI), backport this same fix — the
 underlying bug (same-day duplicate dot on a brand-new screen) is generic, not Korea-specific.
 
+**Possible future tweak (noted 2026-07-19, user watching):** the `history.length >= 2` gate
+is stricter than the bug it fixed. Once a fresh screen is ≥1 day past its first snapshot,
+the "18 Jul" seed dot + "Now" dot span genuinely different days — a connecting line would no
+longer imply a fake period, yet the gate still renders two disconnected floating dots until
+the *second monthly batch run*. If that looks wrong in practice (user checking KOSPI/Nikkei
+2026-07-20), change the gate in **both** `www/kospi-undervalued/app.js` and
+`www/nikkei-undervalued/app.js` (and any later fresh screen) from `history.length >= 2` to
+"chartPoints spans ≥2 distinct dates" — i.e. also draw the line when a synthetic "Now" point
+exists on a later day than the single real snapshot. The same-day duplicate-dot case (the
+original bug) must stay dot-only.
+
 ---
 
 ## Feature: Most Undervalued Nikkei 225 screen — built 2026-07-19, pending deploy
