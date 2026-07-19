@@ -244,6 +244,15 @@ test('getMarketBetaFloor: Korean tickers floored at 0.6', () => {
   assert.strictEqual(getMarketBetaFloor('000660.KS'), 0.6);
 });
 
+test('getMarketBetaFloor: Japanese tickers floored at 0.6', () => {
+  assert.strictEqual(getMarketBetaFloor('7203.T'), 0.6);
+  assert.strictEqual(getMarketBetaFloor('6758.T'), 0.6);
+});
+
+test('getMarketBetaFloor: .TO (Toronto) is other-international 0.5, not the .T Japan floor', () => {
+  assert.strictEqual(getMarketBetaFloor('SHOP.TO'), 0.5);
+});
+
 test('getMarketBetaFloor: handles null/empty gracefully', () => {
   assert.strictEqual(getMarketBetaFloor(null), 0);
   assert.strictEqual(getMarketBetaFloor(''), 0);

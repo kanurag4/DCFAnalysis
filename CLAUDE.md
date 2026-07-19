@@ -237,6 +237,54 @@ underlying bug (same-day duplicate dot on a brand-new screen) is generic, not Ko
 
 ---
 
+## Feature: Most Undervalued Nikkei 225 screen — built 2026-07-19, pending deploy
+
+Fifth sibling screen at **kashvector.com/dcf/nikkei-undervalued/**. Ranks the Nikkei 225 by
+base-case DCF/DDM margin of safety. Top 20, 80% cap, JPY. Built straight from the KOSPI
+pattern per user instruction (no separate spec — decisions recorded here and in the research
+doc `docs/japan-korea-market-research.md`).
+
+- Batch: `node scripts/rank-nikkei.js` (~13 min, 225 tickers, same 3.2s throttle + sweep).
+- Columns: same as the other four screens. Currency: `¥`. Portfolio seed: **¥1,000,000**
+  (hero label `¥1M`).
+- Tickers: `scripts/nikkei225.json` (225 entries, built by `scripts/build-nikkei225.js` —
+  fetches Wikipedia's raw wikitext like KOSPI's builder, but the Components section is a
+  **sector-grouped bulleted list, not a wikitable**: parser `scripts/lib/nikkei-list.js`
+  extracts `{{tyo2|CODE}}` templates scoped to that section only, since the template also
+  appears in article prose. Codes are 4 chars, historically digits but now sometimes
+  alphanumeric — e.g. Archion `543A.T`).
+- JPN RF: **no live source exists** (same situation as Korea — see the research doc's
+  exhaustive-search finding). `market.js`'s `.T` branch returns a **static 2.8%** (post-
+  deflation JGB regime); `rank-nikkei.js` has `fetchRf: null`. ERP 6.0% (developed-market
+  tier), beta floor 0.6, terminal growth seed **1.5%** (second market-specific override
+  after Korea's 1.75%). Live tool mirrors these as `JPN_RF`/`JPN_ERP`/`JPN_TGROWTH` in
+  `app.js` (hand-synced, same drift warning as Korea) with the `○ fixed` badge and an
+  "About the Japan numbers" panel.
+- **No keiretsu flag** (decided 2026-07-19): Japan's structural risk (cross-shareholding
+  unwinding under the revised Corporate Governance Code) is diffuse, not concentrated like
+  Korea's chaebol problem — the exploratory top 20 showed no group dominating. Covered by
+  page disclosure copy instead; the config-driven `chaebolAffiliates` mechanism in
+  `run-screen.js` stays one config line away if curation ever demands it. Structurally
+  misleading names use the reactive `blacklist` pattern like ASX/NIFTY.
+- **Benchmark: `^N225`** (decided 2026-07-19 — same-index-both-ways like every other
+  screen; TOPIX-as-benchmark considered and rejected for consistency). **`^N225` has the
+  same `/quote` vs `/quoteSummary` endpoint discrepancy as `^KS200`** (4.03% apart,
+  confirmed 2026-07-19) — the page uses the `fetchIndexPriceLive()` summaryDetail-chain
+  pattern inherited from the KOSPI template. Page also inherits KOSPI's fresh-screen
+  chart fix (single dot day 1, `showLine` gated on real history ≥ 2).
+- Gold "New" badge on **both** the KOSPI and Nikkei pills (user instruction 2026-07-19 —
+  not moved, doubled) on all three pill locations (`/dcf/`, `/gordon-growth/`, hub).
+- Refresh runbook: **`/refresh-nikkei-undervalued`** skill — standard funnel/top-20 review +
+  approval gate; no chaebol step, but adds a reactive "cross-shareholding eyeball" check
+  for suspiciously high margins on industrial conglomerates.
+- First run (2026-07-19): 225 tickers, 0 fetch-failed, 29 qualified (14.7% margin-cap rate —
+  elevated vs ASX ~12%/S&P ~16%/NIFTY ~3%, well below KOSPI ~25%), top 20 shown. Funnel
+  matches the 2026-07-18 exploratory run near-exactly (88 vs 89 unvaluable, 75 vs 74
+  overvalued, 33 capped both). Top 3: Astellas Pharma 74%, Takeda 68%, Kyowa Kirin 62%.
+  `^N225` seeded @ 66,835.54.
+
+---
+
 ## Feature: Paper Portfolio Tracker — ✅ LIVE (2026-06-18)
 
 Amber hero card on all three undervalued screens showing what a hypothetical equal-weight,
@@ -430,7 +478,7 @@ config.js → utils.js → data.js → calc/wacc.js → calc/dcf.js → calc/ddm
 ## Commands
 
 ```bash
-npm test          # Run 117 unit tests (Node built-in runner): 5 wacc + 8 dcf + 9 ddm + 95 portfolio
+npm test          # Run 160 unit tests (Node built-in runner): wacc, dcf, ddm, portfolio, market, lists, utils
 npm run dev       # http-server www -p 8000 — open http://localhost:8000
 ```
 
@@ -507,8 +555,8 @@ Intrinsic Value = Σ PV(D) + PV(TV)        ← per share directly (no net debt s
   growth) is hand-synced too. If Korea's numbers ever look wrong in the batch but right in the
   live tool (or vice versa), check both files agree before assuming a calc bug.
 - **`evaluateStock`'s terminal growth defaults to 2.5% if `params.terminalGrowth` is omitted**
-  (`scripts/lib/evaluate.js`) — backward-compatible for every market except Korea, which is the
-  only one that actually overrides it (1.75%). Any future market-specific terminal-growth seed
+  (`scripts/lib/evaluate.js`) — backward-compatible for every market except Korea (1.75%) and
+  Japan (1.5%), the only two that override it. Any future market-specific terminal-growth seed
   should follow the same `params.terminalGrowth ?? DEFAULT_TERMINAL_GROWTH` pattern, not a new
   hardcoded constant.
 
@@ -551,6 +599,7 @@ DCF discounts FCF at **WACC**. DDM (banks/insurance) discounts dividends at **Re
 | Australia | `.AX` | Australian 10-yr Govt Bond `^GSBG10.AX` | 4.8% |
 | India | `.NS` / `.BO` | Indian 10-yr Govt Bond `^INBMKG10.NS` | 7.0% |
 | Korea | `.KS` | **none — no live source exists** (see below) | 4.3%, always |
+| Japan | `.T` | **none — no live source exists** (same finding) | 2.8%, always |
 
 Fetched on stock load. The RF input shows a live badge (`● live` / `● live AUS` / `● live IND`) — except Korea, which shows `○ fixed` instead, since claiming "live" for a rate that's never actually fetched would be misleading. The "↺ Reset to defaults" button restores the **market-appropriate** RF + MRP, not always the US values.
 
@@ -574,6 +623,7 @@ Korea without first re-verifying a working ticker exists — the research in
 | Australia | 6.0% | 5.5–6.5% | Developed, AAA-rated; lower than emerging markets |
 | India | 7.5% | 7–9% | Emerging-market premium (political + currency risk) |
 | Korea | 7.5% | — | Developed-market baseline **plus an explicit 1–3% governance-risk premium** — institutional investors typically add this for Korean equities given historically weaker minority-shareholder protections (the "Korea Discount"). Same 7.5% number as India, different underlying reason — documented separately in each market's info panel, not copy-pasted. |
+| Japan | 6.0% | 5.5–6.5% | Developed-market tier (~AUS level); no governance-premium uplift. |
 
 A 1% change in ERP flows directly into Re → for DDM it changes the (Re − g) denominator and can shift intrinsic value by **15–25%**.
 
@@ -595,6 +645,7 @@ Yahoo Finance computes beta by regressing a stock's returns against the S&P 500.
 | ASX | `.AX` | 0.5 | ASX financials typically 0.6–1.0 vs ASX 200 |
 | India | `.NS` / `.BO` | 0.6 | Low India–US correlation; Nifty financials higher systematic risk |
 | Korea | `.KS` | 0.6 | Historically low Japanese/Korean betas (0.5–0.7) partly reflect low share-price volatility under the old regime — likely understated now that governance reform and active investing are returning volatility. Matches India's floor. |
+| Japan | `.T` | 0.6 | Same reasoning as Korea — deflation-era price stagnation understates beta; volatility returning as BOJ exits deflation policy. (`.TO` Toronto deliberately does NOT match this branch — tested.) |
 | Other int'l | any other suffix | 0.5 | Conservative floor for `.L`, `.HK`, `.DE`, etc. |
 
 **Scope**: the floor affects the **initial seed values** for WACC (DCF) and cost-of-equity (DDM) inputs. Users can override all inputs directly. When the floor is applied, an amber warning is shown in both the WACC breakdown and the DDM cost-of-equity breakdown panels.

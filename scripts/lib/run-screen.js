@@ -258,7 +258,7 @@ async function updatePortfolio(config, data, oldRankings) {
   const startVal = portfolio.startingValue || STARTING_VALUE;
   const gain = portfolio.value - startVal;
   const sign = gain >= 0 ? '+' : '';
-  const CURRENCY_SYMBOLS = { INR: '₹', KRW: '₩' };
+  const CURRENCY_SYMBOLS = { INR: '₹', KRW: '₩', JPY: '¥' };
   const sym = CURRENCY_SYMBOLS[config.currency] ?? '$';
   console.log(`Portfolio: ${sym}${portfolio.value.toFixed(2)} (${sign}${(gain / startVal * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
   if (portfolio.dividendsTotal) {

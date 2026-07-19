@@ -86,6 +86,10 @@ function getMarketBetaFloor(ticker) {
   // volatility and low debt under the old regime — likely understated now that governance
   // reform and active investing are returning volatility. Floored at 0.6, matching India.
   if (t.endsWith('.KS')) return 0.6;
+  // Japan: historically low betas (0.5-0.7) partly reflect deflation-era price stagnation —
+  // likely understated now that volatility is returning as BOJ exits deflation policy.
+  // Floored at 0.6, matching Korea/India.
+  if (t.endsWith('.T')) return 0.6;
   return 0.5;                           // other international (.L, .HK, .DE …)
 }
 

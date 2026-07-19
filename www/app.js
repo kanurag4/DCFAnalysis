@@ -64,7 +64,7 @@ const els = {
   breakevenCallout: $('breakeven-callout'),
 };
 
-const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
+const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
 const RECENT_KEY = 'dcf_recent_tickers';
 
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
@@ -113,7 +113,12 @@ let liveIndRfRate = 7.0;   // updated when Indian 10-yr Govt bond is fetched; 7.
 const KOR_RF      = 4.3;
 const KOR_ERP     = 7.5;
 const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the Korea numbers" panel
-let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'other'
+// Japan: same situation as Korea — no live 10-yr JGB yield ticker exists on Yahoo
+// (see docs/japan-korea-market-research.md in the source repo) — fixed, never fetched.
+const JPN_RF      = 2.8;   // post-deflation JGB regime (~30-yr high)
+const JPN_ERP     = 6.0;   // developed-market tier (~AUS level)
+const JPN_TGROWTH = 1.5;   // vs the tool's 2.5% default — see the "About the Japan numbers" panel
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -254,7 +259,8 @@ function prefillInputs(data) {
   const isAsx = isAsxTicker(data.ticker);
   const isInd = !isAsx && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.NS') || data.ticker.toUpperCase().endsWith('.BO')));
   const isKor = !isAsx && !isInd && !!(data.ticker && data.ticker.toUpperCase().endsWith('.KS'));
-  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
+  const isJpn = !isAsx && !isInd && !isKor && !!(data.ticker && data.ticker.toUpperCase().endsWith('.T'));
+  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : isJpn ? 'jpn' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
 
   if (isAsx) {
     els.rfInput.value  = liveAusRfRate;
@@ -274,6 +280,12 @@ function prefillInputs(data) {
     setRfBadge('kor', KOR_RF);   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP incl. governance-risk premium (7.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Korea has no live rate source to fetch.
+  } else if (isJpn) {
+    els.rfInput.value  = JPN_RF;
+    els.erpInput.value = JPN_ERP;
+    setRfBadge('jpn', JPN_RF);   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — Japan has no live rate source to fetch.
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -375,10 +387,12 @@ function prefillInputs(data) {
   const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
   const rePct = +(re * 100).toFixed(2);
 
-  // Terminal growth default is 2.5% for every market except Korea, which seeds lower
-  // (KOR_TGROWTH) to reflect structurally lower long-run growth expectations — see the
-  // "About the Korea numbers" panel for the reasoning.
-  const marketTGrowth = currentMarket === 'kor' ? KOR_TGROWTH : 2.5;
+  // Terminal growth default is 2.5% for every market except Korea and Japan, which seed
+  // lower (KOR_TGROWTH / JPN_TGROWTH) to reflect structurally lower long-run growth
+  // expectations — see each market's "About the … numbers" panel for the reasoning.
+  const marketTGrowth = currentMarket === 'kor' ? KOR_TGROWTH
+                      : currentMarket === 'jpn' ? JPN_TGROWTH
+                      : 2.5;
 
   modelSeeds = {
     dcf: {
@@ -478,6 +492,19 @@ function koreaInfoBlock() {
      </details>`;
 }
 
+// Informational-only panel explaining the Japan-specific seeds — same collapsible
+// pattern as the Korea panel. Shared by both the DCF and DDM breakdown renderers.
+function japanInfoBlock() {
+  if (currentMarket !== 'jpn') return '';
+  return `<details class="wacc-franking">
+       <summary>About the Japan numbers</summary>
+       <p><strong>Risk-free rate:</strong> fixed at ~2.8% (Japan's approximate 10-year government bond yield — a 30-year high as the BOJ exits deflation-era policy). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
+       <p><strong>Lower terminal growth assumption:</strong> 1.5% vs the tool's 2.5% default. The old deflation-era convention of 0–0.5% is outdated, but Japan's demographic-constrained long-run growth still warrants a below-default cap.</p>
+       <p><strong>Beta floor:</strong> historically low Japanese betas (0.5–0.7) partly reflect deflation-era price stagnation and are likely understated as volatility returns — floored at 0.6.</p>
+       <p><strong>Cross-shareholding caveat:</strong> some Japanese companies are unwinding historic cross-shareholdings (keiretsu stakes) under the revised Corporate Governance Code. Sale proceeds can inflate reported cash flow — treat unusually high FCF with care.</p>
+     </details>`;
+}
+
 function renderDiscountBreakdown() {
   if (valuationModel === 'ddm') {
     if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
@@ -502,6 +529,7 @@ function renderDiscountBreakdown() {
       <div class="wacc-row"><span class="wacc-src">No debt component — DDM discounts dividends at the cost of equity only.</span></div>
       ${sectorRowDdm}
       ${koreaInfoBlock()}
+      ${japanInfoBlock()}
     `;
     return;
   }
@@ -605,6 +633,7 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     ${sectorRow}
     ${frankingBlock}
     ${koreaInfoBlock()}
+    ${japanInfoBlock()}
   `;
 }
 
@@ -1143,6 +1172,9 @@ function resetRfErp() {
   } else if (currentMarket === 'kor') {
     els.rfInput.value  = KOR_RF;
     els.erpInput.value = KOR_ERP;
+  } else if (currentMarket === 'jpn') {
+    els.rfInput.value  = JPN_RF;
+    els.erpInput.value = JPN_ERP;
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -1213,6 +1245,7 @@ function setRfBadge(market, rate) {
     aus: { badge: '● live AUS', note: 'Australian 10-yr Govt Bond (^GSBG10.AX)', title: 'Australian 10-yr Govt Bond' },
     ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond',                  title: 'Indian 10-yr Govt Bond'    },
     kor: { badge: '○ fixed',    note: 'Fixed estimate — no live Korean bond-yield source available', title: 'Korea 10-yr Govt Bond yield (fixed estimate, not live)' },
+    jpn: { badge: '○ fixed',    note: 'Fixed estimate — no live Japanese bond-yield source available', title: 'Japan 10-yr Govt Bond (JGB) yield (fixed estimate, not live)' },
     us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX)',           title: 'Live US 10-yr Treasury yield' },
   };
   const lbl = labels[market] || labels.us;
