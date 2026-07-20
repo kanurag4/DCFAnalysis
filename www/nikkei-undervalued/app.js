@@ -292,10 +292,14 @@
 
     tableEl.parentNode.insertAdjacentElement('beforebegin', el);
     if (chartPoints && chartPoints.length >= 1) {
-      // showLine requires genuine multi-period history (>=2 real batch-run snapshots) —
-      // a single day-1 point renders as one dot, no line. Becomes a real connected line
-      // from the next monthly refresh onward, once a second real snapshot exists.
-      const showLine = Array.isArray(history) && history.length >= 2;
+      // showLine requires >=2 chart points spanning genuinely different dates. The
+      // same-day dedup above (skipping the synthetic "Now" point when it would land
+      // on the last real snapshot's date) already guarantees that whenever chartPoints
+      // has 2+ entries, they're on different days — so gating on chartPoints.length is
+      // both correct and less strict than the old history.length>=2 gate, which kept
+      // showing two disconnected dots even once "Now" was a day past the single seed
+      // snapshot, right up until the second monthly batch run.
+      const showLine = chartPoints.length >= 2;
       drawPortfolioChart($('portfolio-history-chart'), chartPoints, sym, indexName, showLine);
     }
   }
