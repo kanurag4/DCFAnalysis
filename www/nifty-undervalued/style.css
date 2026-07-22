@@ -90,24 +90,20 @@ html:not(.dark) .activity-card { box-shadow: 0 1px 2px rgba(20,30,40,.06); }
   .tool-info { grid-template-columns:1fr; }
 }
 
-/* ── Sharesight affiliate block ── */
-.sharesight-promo { max-width: 900px; margin: 48px auto 0; padding: 0 20px; }
-.sharesight-promo-inner { display: flex; align-items: center; gap: 20px; padding: 18px 22px; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 12px; }
-.sharesight-logo-wrap { flex: 0 0 auto; background: #fff; border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; }
-.sharesight-logo-wrap img { height: 28px; width: auto; display: block; }
-.sharesight-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-.sharesight-offer { font-size: 0.85rem; color: var(--kv-accent) !important; }
-.sharesight-copy > p:not(.sharesight-offer) { font-size: 0.85rem; color: var(--kv-muted); line-height: 1.5; }
-.sharesight-cta { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-.sharesight-cta a { display: inline-block; padding: 9px 18px; background: var(--kv-accent); color: var(--kv-bg); font-weight: 600; font-size: 0.85rem; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.15s; }
-html:not(.dark) .sharesight-cta a { color: #faf8f4; }
-.sharesight-cta a:hover { opacity: 0.85; }
-.sharesight-affiliate-note { font-size: 0.7rem; color: var(--kv-muted); text-align: right; }
-@media (max-width: 600px) {
-  .sharesight-promo-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .sharesight-cta { align-items: flex-start; width: 100%; }
-  .sharesight-cta a { width: 100%; text-align: center; }
-  .sharesight-affiliate-note { text-align: left; }
+/* ── Affiliate promos (Sharesight + Simply Wall St) ── */
+.affiliate-promo-grid { max-width: 900px; margin: 48px auto 0; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.affiliate-promo-note { max-width: 900px; margin: 10px auto 0; padding: 0 20px; font-size: 0.7rem; color: var(--kv-muted); text-align: center; }
+.sharesight-promo, .simplywallst-promo { margin: 0; padding: 0; }
+.sharesight-promo-inner, .simplywallst-promo-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; height: 100%; padding: 16px 18px; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 12px; }
+.sharesight-logo-wrap, .simplywallst-logo-wrap { flex: 0 0 auto; background: #fff; border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; }
+.sharesight-logo-wrap img, .simplywallst-logo-wrap img { height: 22px; width: auto; display: block; }
+.sharesight-offer, .simplywallst-offer { font-size: 0.82rem; color: var(--kv-accent) !important; line-height: 1.4; margin: 0; }
+.sharesight-cta, .simplywallst-cta { width: 100%; }
+.sharesight-cta a, .simplywallst-cta a { display: inline-block; padding: 8px 16px; background: var(--kv-accent); color: var(--kv-bg); font-weight: 600; font-size: 0.82rem; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.15s; }
+html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: #faf8f4; }
+.sharesight-cta a:hover, .simplywallst-cta a:hover { opacity: 0.85; }
+@media (max-width: 640px) {
+  .affiliate-promo-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Paper portfolio hero card ── */
