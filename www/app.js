@@ -943,7 +943,7 @@ function renderCharts(scenarios, currentPrice, sym) {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+        legend: { labels: { color: '#93a0bd', font: { size: 11 } } },
         datalabels: {
           color: '#fff',
           font: { size: 10, weight: 'bold' },
@@ -953,11 +953,11 @@ function renderCharts(scenarios, currentPrice, sym) {
         },
       },
       scales: {
-        x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: 'rgba(51,65,85,0.5)' } },
+        x: { stacked: true, ticks: { color: '#93a0bd' }, grid: { color: 'rgba(34,48,82,0.5)' } },
         y: {
           stacked: true,
-          ticks: { color: '#94a3b8', callback: v => fmtBar(v) },
-          grid: { color: 'rgba(51,65,85,0.5)' },
+          ticks: { color: '#93a0bd', callback: v => fmtBar(v) },
+          grid: { color: 'rgba(34,48,82,0.5)' },
           afterFit: scale => { scale.width = 72; },
         },
       },
@@ -969,9 +969,9 @@ function renderCharts(scenarios, currentPrice, sym) {
   const chartData   = [currentPrice ?? 0, ...intrinsics];
   const chartLabels = ['Current Price', 'Bear', 'Base', 'Bull'];
   const chartColors = [
-    'rgba(245,158,11,0.8)',   // amber — current price
+    'rgba(147,160,189,0.8)',  // slate — current price
     'rgba(239,68,68,0.8)',    // red   — bear
-    'rgba(56,189,248,0.8)',   // sky   — base
+    'rgba(245,166,35,0.8)',   // amber — base (matches --kv-accent)
     'rgba(34,197,94,0.8)',    // green — bull
   ];
 
@@ -998,10 +998,10 @@ function renderCharts(scenarios, currentPrice, sym) {
       },
       scales: {
         x: {
-          ticks: { color: '#94a3b8', callback: v => `${sym}${v.toFixed(2)}` },
-          grid: { color: 'rgba(51,65,85,0.5)' },
+          ticks: { color: '#93a0bd', callback: v => `${sym}${v.toFixed(2)}` },
+          grid: { color: 'rgba(34,48,82,0.5)' },
         },
-        y: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+        y: { ticks: { color: '#93a0bd' }, grid: { display: false } },
       },
     },
   });
