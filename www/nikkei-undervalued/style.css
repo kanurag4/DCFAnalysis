@@ -5,10 +5,6 @@
   --text: var(--kv-text); --muted: var(--kv-muted); --accent: var(--kv-accent);
   --border: var(--kv-border); --pass: var(--kv-pass); --fail: var(--kv-fail); --warn: var(--kv-warn);
 }
-html { --kv-bg:#0b1120; --kv-card:#111a30; --kv-card-2:#182342; --kv-text:#f5f7fc;
-  --kv-muted:#93a0bd; --kv-accent:#f5a623; --kv-border:#223052; --kv-pass:#22c55e;
-  --kv-fail:#ef4444; --kv-warn:#f97316; }
-* { box-sizing: border-box; }
 body { margin:0; font:15.5px 'Carlito',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   background:var(--kv-bg); color:var(--kv-text); font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
@@ -72,8 +68,6 @@ footer { max-width:900px; margin:40px auto 0; padding:20px 16px 40px; border-top
 footer a { color:var(--kv-accent); }
 
 /* ── Light mode ── */
-html:not(.dark) { --kv-bg:#faf8f4; --kv-card:#ffffff; --kv-card-2:#f1ede4; --kv-text:#16202b;
-  --kv-muted:#4d5c6b; --kv-border:#e7e2d8; --kv-accent:#1a3a5f; --kv-warn:#b45309; }
 html:not(.dark) footer { color:#4d5c6b; }
 html:not(.dark) .table-card,
 html:not(.dark) .rules-card,
