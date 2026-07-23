@@ -184,7 +184,7 @@ html:not(.dark) .screen-pill-new { border-color: rgba(245,166,35,0.65) !importan
 .scenario-header-row { display: grid; grid-template-columns: 1fr 56px 56px 56px; gap: 4px; margin-bottom: 8px; }
 .scenario-label { font-size: 0.75rem; font-weight: 700; text-align: center; padding: 2px 4px; border-radius: 4px; }
 .bear-label { color: var(--kv-fail); background: rgba(239,68,68,0.1); }
-.base-label { color: var(--kv-accent); background: rgba(245,166,35,0.1); }
+.base-label { color: #f5a623; background: rgba(245,166,35,0.1); } /* RAG scale — fixed amber, independent of tool accent */
 .bull-label { color: var(--kv-pass); background: rgba(34,197,94,0.1); }
 .scenario-input-row { display: grid; grid-template-columns: 1fr 56px 56px 56px; gap: 4px; margin-bottom: 6px; align-items: center; }
 .scenario-input-row label { font-size: 0.78rem; color: var(--kv-muted); display: flex; align-items: center; gap: 4px; }
@@ -299,7 +299,7 @@ html:not(.dark) .screen-pill-new { border-color: rgba(245,166,35,0.65) !importan
 .scenario-card.bull { border-color: rgba(34,197,94,0.4); }
 .sc-header { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 10px; }
 .sc-header.bear { color: var(--kv-fail); }
-.sc-header.base { color: var(--kv-accent); }
+.sc-header.base { color: #f5a623; } /* RAG scale — fixed amber, independent of tool accent */
 .sc-header.bull { color: var(--kv-pass); }
 .sc-intrinsic { font-size: 1.4rem; font-weight: 700; color: var(--kv-text); }
 .sc-price { font-size: 0.78rem; color: var(--kv-muted); margin-top: 2px; }
