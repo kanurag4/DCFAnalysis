@@ -320,7 +320,9 @@ function prefillInputs(data) {
     els.fcfSource.className = 'fcf-source estimated';
   }
 
-  renderGrowthSuggestion(data, isFcfNegative || fcf === null);
+  // Strictly <0 (not <=0 like isFcfNegative above) to match the same
+  // negative-FCF threshold Stock Evaluator and GGM use for this suggestion.
+  renderGrowthSuggestion(data, fcf === null || fcf < 0);
 
   // Target FCF margin (revenue normalisation) — shown for negative/null FCF non-bank stocks
   const showTargetMargin = !isBankIns && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
