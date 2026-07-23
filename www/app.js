@@ -320,6 +320,8 @@ function prefillInputs(data) {
     els.fcfSource.className = 'fcf-source estimated';
   }
 
+  renderGrowthSuggestion(data, isFcfNegative || fcf === null);
+
   // Target FCF margin (revenue normalisation) — shown for negative/null FCF non-bank stocks
   const showTargetMargin = !isBankIns && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
   if (els.targetMarginRow) {
@@ -562,6 +564,28 @@ function renderAll(data) {
     els.ggmCrosscheck.hidden = false;
   }
   show(els.layout, els.disclaimer);
+}
+
+// ── Cross-tool suggestion ────────────────────────────────────────────────
+
+function renderGrowthSuggestion(data, isNegativeOrMissingFcf) {
+  const container = document.getElementById('growthSuggestion');
+  if (!container || isNative || !window.kvScenario) return;
+
+  if (!isNegativeOrMissingFcf) { container.innerHTML = ''; return; }
+
+  const fieldMap = { ticker: { param: 'ticker' } };
+  const href = window.kvScenario.buildLink(
+    fieldMap,
+    () => data.ticker,
+    location.origin + '/growth/'
+  );
+
+  window.kvScenario.renderSuggestion(container, {
+    text: 'Negative free cash flow makes a standard DCF unreliable here — see this company valued with a model built for it',
+    href,
+    dismissKey: 'dcf:growth',
+  });
 }
 
 // ── Key metrics ───────────────────────────────────────────────────────────
@@ -1119,6 +1143,8 @@ function hideResults() {
   [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.ggmCrosscheck, els.layout]
     .forEach(el => { if (el) el.hidden = true; });
   els.status.hidden = true;
+  const growthSuggestion = document.getElementById('growthSuggestion');
+  if (growthSuggestion) growthSuggestion.innerHTML = '';
 }
 
 function show(...nodes) { nodes.forEach(n => { if (n) n.hidden = false; }); }
