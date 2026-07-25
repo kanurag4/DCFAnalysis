@@ -85,51 +85,8 @@ html:not(.dark) .screen-pill-new { border-color: rgba(245,166,35,0.65) !importan
 }
 #kv-play-badge img { display: inline-block; }
 
-/* ── Search bar ── */
-.search-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
-.ac-wrapper { position: relative; flex: 1 1 280px; min-width: 0; }
-#ticker-input {
-  width: 100%; padding: 10px 14px; background: var(--kv-card-2);
-  border: 1px solid var(--kv-border); border-radius: 8px;
-  color: var(--kv-text); font-size: 0.95rem; outline: none; transition: border-color 0.15s;
-}
-#ticker-input:focus { border-color: var(--kv-accent); }
-#autocomplete-list {
-  position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
-  background: var(--kv-card); border: 1px solid var(--kv-border);
-  border-radius: 8px; margin-top: 4px; overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-}
-.ac-item { padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-.ac-item:hover { background: var(--kv-card-2); }
-.ac-name { font-size: 0.9rem; color: var(--kv-text); }
-.ac-meta { font-size: 0.78rem; color: var(--kv-muted); }
-.asx-toggle { display: flex; align-items: center; gap: 6px; font-size: 0.875rem; cursor: pointer; color: var(--kv-muted); white-space: nowrap; }
-.asx-toggle input { cursor: pointer; accent-color: var(--kv-accent); }
-#analyse-btn {
-  padding: 10px 24px; background: var(--kv-accent); color: var(--kv-bg);
-  border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
-  cursor: pointer; transition: background 0.15s; white-space: nowrap;
-}
-#analyse-btn:hover { background: var(--kv-accent-h); }
-#analyse-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.search-row { display: contents; }
-.go-btn { display: none; }
-.hint { font-size: 0.8rem; color: var(--kv-muted); margin-bottom: 8px; }
-.market-hint { font-size: 0.82rem; color: var(--kv-muted); margin-bottom: 16px; }
-.market-hint summary { cursor: pointer; color: var(--kv-accent); }
-.market-hint ul { margin-top: 8px; padding-left: 20px; line-height: 2; }
-
-/* Recent */
-.recent { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 16px; }
-.recent-label { font-size: 0.78rem; color: var(--kv-muted); }
-.chip {
-  display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
-  background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 20px;
-  font-size: 0.8rem; cursor: pointer; transition: border-color 0.15s;
-}
-.chip:hover { border-color: var(--kv-accent); }
-.chip .x { color: var(--kv-muted); font-size: 0.9rem; }
+/* ── Search bar, autocomplete, market checkboxes, hint, recents ──
+   Now in /kv-ticker-input.css (shared across all 4 stock tools). ── */
 
 /* Status */
 .status { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 0.9rem; }
@@ -325,16 +282,6 @@ html:not(.dark) .screen-pill-new { border-color: rgba(245,166,35,0.65) !importan
 }
 .disclaimer strong { color: var(--kv-text); }
 
-/* ── GGM cross-check pill ── */
-.cross-check-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 16px; border-radius: 8px; margin-bottom: 16px;
-  border: 1px solid rgba(245,166,35,0.35); background: rgba(245,166,35,0.07);
-  font-size: 0.85rem; font-weight: 500; color: var(--kv-accent);
-  text-decoration: none; transition: border-color 0.15s, background 0.15s;
-}
-.cross-check-pill:hover { border-color: var(--kv-accent); background: rgba(245,166,35,0.13); color: var(--kv-accent-h); }
-
 /* ── Charts ── */
 .charts-section { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
 .chart-card {
@@ -419,21 +366,7 @@ html:not(.dark) .scenario-num { background: var(--kv-card-2); }
 @media (max-width: 600px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .tool-info { grid-template-columns: 1fr; }
-  /* Go button: inline with the input on mobile; Analyse button hidden */
-  #analyse-btn { display: none; }
-  .search-row {
-    display: flex; flex: 0 0 100%; gap: 8px; align-items: center;
-  }
-  .search-row .ac-wrapper { flex: 1; }
-  .go-btn {
-    display: flex; align-items: center; justify-content: center;
-    flex: 0 0 auto;
-    padding: 0 16px; height: 44px;
-    background: var(--kv-accent); color: var(--kv-bg);
-    border: none; border-radius: 8px; font-size: 1rem; font-weight: 600;
-    cursor: pointer; white-space: nowrap;
-  }
-  .go-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  /* Go button / Analyse button swap now in /kv-ticker-input.css (same 600px breakpoint) */
 }
 
 /* ── Affiliate promos (Sharesight + Simply Wall St) ── */

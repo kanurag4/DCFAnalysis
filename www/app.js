@@ -7,13 +7,7 @@ if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
 const $ = id => document.getElementById(id);
 
 const els = {
-  input:        $('ticker-input'),
-  asx:          $('asx-checkbox'),
-  nse:          $('nse-checkbox'),
-  analyseBtn:   $('analyse-btn'),
-  goBtn:        $('go-btn'),
   recalcBtn:    $('recalc-btn'),
-  recent:       $('recent'),
   status:       $('status'),
   layout:       $('dcf-layout'),
   summary:      $('summary'),
@@ -22,7 +16,6 @@ const els = {
   disclaimer:   $('disclaimer'),
   charts:       $('charts'),
   howDcf:       $('how-dcf'),
-  acList:       $('autocomplete-list'),
   fcfInput:     $('fcf-input'),
   fcfSource:    $('fcf-source'),
   fcfNormRow:   $('fcf-normalized-row'),
@@ -43,7 +36,6 @@ const els = {
   waccContent:  $('wacc-breakdown-content'),
   tvWarning:    $('tv-warning'),
   howDdm:       $('how-ddm'),
-  ggmCrosscheck: $('ggm-crosscheck'),
   // DDM model controls
   modelToggleRow: $('model-toggle-row'),
   modelLabel:     $('model-label'),
@@ -65,7 +57,6 @@ const els = {
 };
 
 const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
-const RECENT_KEY = 'dcf_recent_tickers';
 
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 if (isNative) {
@@ -102,7 +93,6 @@ if (!isNative) {
       .catch(() => {});
   });
 }
-const RECENT_MAX = 8;
 
 let currentData   = null;
 let liveRfRate    = 4.5;   // updated when US 10-yr Treasury is fetched
@@ -139,8 +129,6 @@ els.yearsSlider.addEventListener('input', () => {
   if (currentData) renderAll(currentData);
 });
 
-els.analyseBtn.addEventListener('click', onAnalyse);
-els.goBtn.addEventListener('click', onAnalyse);
 els.recalcBtn.addEventListener('click', onRecalc);
 if (els.ddmToggle) els.ddmToggle.addEventListener('click', onToggleModel);
 
@@ -152,85 +140,45 @@ els.erpInput.addEventListener('input', debouncedRecompute);
 // Reset RF + ERP to defaults, then recalculate.
 if (els.rfErpResetBtn) els.rfErpResetBtn.addEventListener('click', resetRfErp);
 
-els.input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { hideAc(); onAnalyse(); }
-  if (e.key === 'Escape') hideAc();
-});
-
-let _acTimer = null;
-els.input.addEventListener('input', () => {
-  clearTimeout(_acTimer);
-  const q = els.input.value.trim();
-  if (q.length < 3) { hideAc(); return; }
-  _acTimer = setTimeout(() => fetchAc(q), 300);
-});
-
-document.addEventListener('click', e => {
-  if (!els.input.contains(e.target) && !els.acList.contains(e.target)) hideAc();
-});
-
-els.asx.addEventListener('change', () => {
-  if (els.asx.checked && els.nse) els.nse.checked = false;
-  updateHint();
-});
-if (els.nse) {
-  els.nse.addEventListener('change', () => {
-    if (els.nse.checked) els.asx.checked = false;
-    updateHint();
-  });
-}
-
 // Only format normalised FCF (user-entered, must be positive).
 // Do NOT format the main FCF input — it is pre-filled from Yahoo and may be negative;
 // formatMoneyInput strips the minus sign.
 if (els.fcfNorm) els.fcfNorm.addEventListener('input', () => formatMoneyInput(els.fcfNorm));
 
-renderRecent();
-bootstrapFromUrl();
 fetchAndSetRiskFreeRate();
-window.addEventListener('popstate', bootstrapFromUrl);
 
-// ── URL bootstrap ─────────────────────────────────────────────────────────
-
-function bootstrapFromUrl() {
-  const params = new URLSearchParams(location.search);
-  const t = params.get('ticker');
-  if (!t || t.length > 20) return;
-  els.input.value = t;
-  els.asx.checked = params.get('asx') === '1';
-  if (els.nse) els.nse.checked = params.get('nse') === '1';
-  onAnalyse({ fromUrl: true });
-}
+// Ticker input, autocomplete, recents, market checkboxes, and ?ticker= URL
+// read/write are all owned by the shared kv-ticker-input.js module.
+const ctl = window.kvTickerInput.mount({
+  tool: 'dcf',
+  proxyUrl: CONFIG.YAHOO_PROXY_URL,
+  minChars: 3,
+  hints: {
+    none: 'Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).',
+    nse:  'Tick <strong>NSE / BSE</strong> for Indian tickers (e.g. RELIANCE, TCS). Adds <code>.NS</code> suffix automatically.',
+  },
+  onAnalyse: (req) => onAnalyse(req),
+});
 
 // ── Analyse ───────────────────────────────────────────────────────────────
 
-async function onAnalyse(opts = {}) {
-  let ticker = els.input.value.trim();
-  if (!ticker) { showError('Enter a ticker symbol.'); return; }
+async function onAnalyse(req) {
+  if (!req.symbol) { showError('Enter a ticker symbol.'); return; }
 
-  const isASX = els.asx.checked;
-  const isNSE = !!(els.nse?.checked);
-  if (isNSE && !ticker.includes('.')) ticker += '.NS';
-
-  if (!opts.fromUrl) {
-    const p = new URLSearchParams({ ticker });
-    if (isASX) p.set('asx', '1');
-    if (isNSE) p.set('nse', '1');
-    history.pushState({}, '', `?${p}`);
-  }
+  const isASX = req.isAsx;
+  const isNSE = req.isNse;
 
   setLoading(true);
   hideResults();
 
   try {
-    const data = await fetchDCFData(ticker, isASX, '', '', CONFIG.YAHOO_PROXY_URL);
+    const data = await fetchDCFData(req.symbol, isASX, '', '', CONFIG.YAHOO_PROXY_URL);
     currentData = data;
     prefillInputs(data);
     renderAll(data);
-    saveRecent(data.ticker, isASX);
-    renderRecent();
+    ctl.recordRecent(data.ticker, { isAsx: isASX, isNse: isNSE });
   } catch (err) {
-    const rawInput = els.input.value.trim();
+    const rawInput = req.raw;
     const isBareSymbol = !rawInput.includes('.');
     const isConnectivityError = /couldn't reach|internet connection/i.test(err.message);
     let msg = err.message || String(err);
@@ -561,10 +509,6 @@ function renderAll(data) {
   // Show the explainer matching the active model
   if (els.howDcf) els.howDcf.hidden = valuationModel === 'ddm';
   if (els.howDdm) els.howDdm.hidden = valuationModel !== 'ddm';
-  if (els.ggmCrosscheck) {
-    els.ggmCrosscheck.href = '/gordon-growth/?ticker=' + encodeURIComponent(data.ticker);
-    els.ggmCrosscheck.hidden = false;
-  }
   show(els.layout, els.disclaimer);
 }
 
@@ -1035,105 +979,9 @@ function renderCharts(scenarios, currentPrice, sym) {
   show(els.charts);
 }
 
-// ── Autocomplete ──────────────────────────────────────────────────────────
-
-async function fetchAc(q) {
-  try {
-    const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/search?q=${encodeURIComponent(q)}`;
-    const resp = await fetch(url);
-    if (!resp.ok) { hideAc(); return; }
-    let results = await resp.json();
-    if (!Array.isArray(results) || results.length === 0) { hideAc(); return; }
-    if (els.nse?.checked) {
-      results = [
-        ...results.filter(r => r.symbol.endsWith('.NS')),
-        ...results.filter(r => !r.symbol.endsWith('.NS')),
-      ];
-    }
-    renderAc(results);
-  } catch (_) { hideAc(); }
-}
-
-function renderAc(results) {
-  els.acList.innerHTML = results.map(r =>
-    `<div class="ac-item" data-symbol="${escapeHtml(r.symbol)}" role="option" tabindex="-1">
-      <span class="ac-name">${escapeHtml(r.name)}</span>
-      <span class="ac-meta">${escapeHtml(r.symbol)}${r.exchange ? ' · ' + escapeHtml(r.exchange) : ''}</span>
-    </div>`
-  ).join('');
-  els.acList.hidden = false;
-  els.acList.querySelectorAll('.ac-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const sym = item.dataset.symbol;
-      els.input.value = sym;
-      if (els.nse) {
-        const isIndian = sym.endsWith('.NS') || sym.endsWith('.BO');
-        els.nse.checked = isIndian;
-        if (isIndian) els.asx.checked = false;
-        updateHint();
-      }
-      hideAc();
-      onAnalyse();
-    });
-  });
-}
-
-function hideAc() { els.acList.hidden = true; els.acList.innerHTML = ''; }
-
-// ── Recent tickers ────────────────────────────────────────────────────────
-
-function loadRecent() {
-  try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch (_) { return []; }
-}
-
-function saveRecent(ticker, isASX) {
-  const entry = { ticker: ticker.toUpperCase(), asx: !!isASX };
-  const list = loadRecent().filter(e => !(e.ticker === entry.ticker && e.asx === entry.asx));
-  list.unshift(entry);
-  localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, RECENT_MAX)));
-}
-
-function renderRecent() {
-  const list = loadRecent();
-  if (list.length === 0) { els.recent.hidden = true; return; }
-  els.recent.hidden = false;
-  els.recent.innerHTML = '<span class="recent-label">Recent:</span>' +
-    list.map(e => {
-      // data.ticker is already the resolved symbol (e.g. BHP.AX), so only append
-      // .AX for legacy/bare entries that don't already carry a market suffix.
-      const display = (e.asx && !e.ticker.includes('.')) ? `${e.ticker}.AX` : e.ticker;
-      const label = escapeHtml(display);
-      return `<span class="chip" data-t="${escapeHtml(e.ticker)}" data-asx="${e.asx ? '1' : '0'}">
-        <span class="label">${label}</span>
-        <span class="x" data-remove="1">×</span>
-      </span>`;
-    }).join('');
-  els.recent.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', ev => {
-      const t   = chip.dataset.t;
-      const asx = chip.dataset.asx === '1';
-      if (ev.target.dataset.remove) {
-        ev.stopPropagation();
-        const list = loadRecent().filter(e => !(e.ticker === t && e.asx === asx));
-        localStorage.setItem(RECENT_KEY, JSON.stringify(list));
-        renderRecent();
-        return;
-      }
-      els.input.value = t;
-      els.asx.checked = asx;
-      onAnalyse();
-    });
-  });
-}
-
 // ── Helpers ───────────────────────────────────────────────────────────────
 
-function setLoading(on) {
-  els.analyseBtn.disabled = on;
-  els.analyseBtn.textContent = on ? 'Analysing…' : 'Analyse';
-  els.goBtn.disabled = on;
-  els.goBtn.textContent = on ? '…' : 'Go';
-}
+function setLoading(on) { ctl.setLoading(on); }
 
 function showError(msg) {
   els.status.textContent = msg;
@@ -1142,7 +990,7 @@ function showError(msg) {
 }
 
 function hideResults() {
-  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.ggmCrosscheck, els.layout]
+  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.layout]
     .forEach(el => { if (el) el.hidden = true; });
   els.status.hidden = true;
   const growthSuggestion = document.getElementById('growthSuggestion');
@@ -1150,16 +998,6 @@ function hideResults() {
 }
 
 function show(...nodes) { nodes.forEach(n => { if (n) n.hidden = false; }); }
-
-function updateHint() {
-  const hint = $('market-hint');
-  if (!hint) return;
-  if (els.nse?.checked) {
-    hint.innerHTML = 'Tick <strong>NSE / BSE</strong> for Indian tickers (e.g. RELIANCE, TCS). Adds <code>.NS</code> suffix automatically.';
-  } else {
-    hint.innerHTML = 'Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).';
-  }
-}
 
 function formatMoneyInput(el) {
   const pos = el.selectionStart;

@@ -1,0 +1,143 @@
+/* www/kv-ticker-input.css — shared search bar, autocomplete dropdown,
+ * market checkboxes, hint text, recent-ticker chips, and evaluation
+ * switcher for the four stock tools (stock, dcf, gordon-growth, growth).
+ *
+ * Link this after /kv-shared.css and before the tool's own style.css, so
+ * a tool can still override anything below if it genuinely needs to.
+ * Uses the var(--kv-x, var(--x, #hex)) fallback chain throughout — Stock
+ * Evaluator uses unprefixed vars (--bg/--accent/etc.) and doesn't import
+ * brand.css, everything else uses --kv-*.
+ *
+ * Card/decorative chrome around the search bar (e.g. Stock Evaluator's
+ * own background/border/padding on .search-bar) stays in each tool's own
+ * style.css — this file owns layout + component styling only.
+ */
+
+.search-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.search-row { display: contents; }
+.ac-wrapper { position: relative; flex: 1 1 280px; min-width: 0; }
+
+#ticker-input {
+  width: 100%; padding: 10px 14px;
+  background: var(--kv-card-2, var(--card-2, #182342));
+  border: 1px solid var(--kv-border, var(--border, #223052));
+  border-radius: 8px;
+  color: var(--kv-text, var(--text, #f5f7fc));
+  font-size: 0.95rem; outline: none; transition: border-color 0.15s;
+}
+#ticker-input:focus { border-color: var(--kv-accent, var(--accent, #f5a623)); }
+
+#autocomplete-list {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 100;
+  background: var(--kv-card, var(--card, #111a30));
+  border: 1px solid var(--kv-border, var(--border, #223052));
+  border-radius: 8px; margin-top: 4px;
+  max-height: 240px; overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.ac-item { padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.ac-item:hover, .ac-item:focus { background: var(--kv-card-2, var(--card-2, #182342)); outline: none; }
+.ac-name {
+  font-size: 0.9rem; color: var(--kv-text, var(--text, #f5f7fc));
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ac-meta { font-size: 0.78rem; color: var(--kv-muted, var(--muted, #93a0bd)); white-space: nowrap; }
+
+.asx-toggle {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.875rem; cursor: pointer; user-select: none;
+  color: var(--kv-muted, var(--muted, #93a0bd)); white-space: nowrap;
+}
+.asx-toggle input { cursor: pointer; accent-color: var(--kv-accent, var(--accent, #f5a623)); }
+
+.go-btn { display: none; }
+#analyse-btn {
+  padding: 10px 24px;
+  background: var(--kv-accent, var(--accent, #f5a623));
+  color: var(--kv-bg, var(--bg, #0b1120));
+  border: none; border-radius: 8px; font-weight: 600; font-size: 0.95rem;
+  cursor: pointer; transition: background 0.15s; white-space: nowrap;
+}
+#analyse-btn:hover { background: var(--kv-accent-h, var(--accent-h, #ffb84d)); }
+#analyse-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.hint { font-size: 0.82rem; color: var(--kv-muted, var(--muted, #93a0bd)); margin-bottom: 8px; }
+.hint a { color: var(--kv-accent, var(--accent, #f5a623)); }
+
+.market-hint { font-size: 0.82rem; color: var(--kv-muted, var(--muted, #93a0bd)); margin-bottom: 16px; }
+.market-hint summary { cursor: pointer; color: var(--kv-accent, var(--accent, #f5a623)); }
+.market-hint ul { margin-top: 8px; padding-left: 20px; line-height: 2; }
+.market-hint code {
+  background: var(--kv-card-2, var(--card-2, #182342));
+  padding: 1px 5px; border-radius: 3px; font-size: 0.85em;
+  color: var(--kv-text, var(--text, #f5f7fc));
+}
+.market-hint strong { color: var(--kv-text, var(--text, #f5f7fc)); }
+
+/* ── Recent tickers ── */
+.recent { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 16px; }
+.recent-label { font-size: 0.78rem; color: var(--kv-muted, var(--muted, #93a0bd)); }
+.chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+  background: var(--kv-card, var(--card, #111a30));
+  border: 1px solid var(--kv-border, var(--border, #223052));
+  border-radius: 20px;
+  font-size: 0.8rem; color: var(--kv-text, var(--text, #f5f7fc));
+  cursor: pointer; transition: border-color 0.15s;
+}
+.chip:hover { border-color: var(--kv-accent, var(--accent, #f5a623)); }
+.chip .x { color: var(--kv-muted, var(--muted, #93a0bd)); font-size: 0.9rem; line-height: 1; padding: 0 2px; }
+.chip .x:hover { color: var(--kv-fail, var(--fail, #ef4444)); }
+/* Score colouring — Stock Evaluator only (config.showScores); neutral chips everywhere else */
+.chip-green { border-color: var(--kv-pass, var(--pass, #22c55e)); color: var(--kv-pass, var(--pass, #22c55e)); }
+.chip-amber { border-color: var(--kv-warn, var(--warn, #f97316)); color: var(--kv-warn, var(--warn, #f97316)); }
+.chip-red   { border-color: var(--kv-fail, var(--fail, #ef4444)); color: var(--kv-fail, var(--fail, #ef4444)); }
+
+/* ── Mobile: swap the wide Analyse button for a compact Go button ── */
+@media (max-width: 600px) {
+  #analyse-btn { display: none; }
+  .search-row { display: flex; flex: 0 0 100%; gap: 8px; align-items: center; }
+  .search-row .ac-wrapper { flex: 1; }
+  .go-btn {
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto; padding: 0 16px; height: 44px;
+    background: var(--kv-accent, var(--accent, #f5a623));
+    color: var(--kv-bg, var(--bg, #0b1120));
+    border: none; border-radius: 8px; font-size: 1rem; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+  }
+  .go-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .chip { min-height: 36px; padding: 6px 10px; }
+}
+
+/* ── Evaluation switcher (Phase 4) ──────────────────────────────────────
+ * Segmented pills inside the content column, not a fourth full-bleed bar —
+ * there are already header + .kv-tool-nav + the article banner stacked
+ * above this. Active tool's pill is hardcoded in markup (correct pre-JS);
+ * hrefs are rewritten at runtime by kv-ticker-input.js as the ticker
+ * changes. */
+.kv-eval-switcher {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-bottom: 12px; padding: 6px; border-radius: 12px;
+  background: var(--kv-card, var(--card, #111a30));
+  border: 1px solid var(--kv-border, var(--border, #223052));
+}
+.kv-eval-switcher-label {
+  font-size: 0.75rem; color: var(--kv-muted, var(--muted, #93a0bd));
+  padding: 0 4px 0 6px; white-space: nowrap;
+}
+.kv-eval-switcher a {
+  padding: 6px 12px; border-radius: 8px;
+  font-size: 0.82rem; font-weight: 600; text-decoration: none;
+  color: var(--kv-muted, var(--muted, #93a0bd));
+  transition: background 0.15s, color 0.15s;
+}
+.kv-eval-switcher a:hover { color: var(--kv-text, var(--text, #f5f7fc)); }
+.kv-eval-switcher a.kv-eval-active {
+  background: var(--kv-accent, var(--accent, #f5a623));
+  color: var(--kv-bg, var(--bg, #0b1120));
+}
+@media (max-width: 480px) {
+  .kv-eval-switcher-label { display: none; }
+  .kv-eval-switcher { justify-content: center; }
+}
