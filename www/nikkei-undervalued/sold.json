@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "ticker": "6113.T",
+    "entryDate": "2026-07-19",
+    "entryPrice": 2753,
+    "exitDate": "2026-07-25",
+    "exitPrice": 2867,
+    "dollarPnl": 2070.47
+  },
+  {
+    "ticker": "6471.T",
+    "entryDate": "2026-07-19",
+    "entryPrice": 1097.5,
+    "exitDate": "2026-07-25",
+    "exitPrice": 1107.5,
+    "dollarPnl": 455.58
+  }
+]
