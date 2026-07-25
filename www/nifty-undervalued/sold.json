@@ -63,5 +63,29 @@
     "exitDate": "2026-07-18",
     "exitPrice": 3179.2,
     "dollarPnl": 127.21
+  },
+  {
+    "ticker": "BSOFT.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 327.8,
+    "exitDate": "2026-07-25",
+    "exitPrice": 282.4,
+    "dollarPnl": -155.98
+  },
+  {
+    "ticker": "WIPRO.NS",
+    "entryDate": "2026-07-11",
+    "entryPrice": 175.46,
+    "exitDate": "2026-07-25",
+    "exitPrice": 177.12,
+    "dollarPnl": 50.6
+  },
+  {
+    "ticker": "LTM.NS",
+    "entryDate": "2026-07-18",
+    "entryPrice": 4075.6,
+    "exitDate": "2026-07-25",
+    "exitPrice": 4091.8,
+    "dollarPnl": 31.61
   }
 ]
