@@ -501,11 +501,15 @@ Never open via `file://` — fetch() will break.
 
 ```powershell
 xcopy /E /Y /I "C:\Projects\DCFAnalysis\www" "C:\Projects\StockAnalysis\www\dcf"
-# kv-theme.js / kv-banner.js in this repo's www/ are LOCAL DEV ONLY — the live site
-# loads them from the root (/kv-theme.js). The 2026-07-17 consolidation deleted the
-# stray www/dcf/ copies; the xcopy re-creates them, so delete before committing:
+# kv-theme.js / kv-banner.js / kv-scenario.js / kv-ticker-input.js / kv-ticker-input.css
+# in this repo's www/ are LOCAL DEV ONLY — the live site loads them from the root
+# (/kv-theme.js etc). The 2026-07-17 consolidation deleted the stray www/dcf/ copies;
+# the xcopy re-creates them, so delete before committing:
 del "C:\Projects\StockAnalysis\www\dcf\kv-theme.js"
 del "C:\Projects\StockAnalysis\www\dcf\kv-banner.js"
+del "C:\Projects\StockAnalysis\www\dcf\kv-scenario.js"
+del "C:\Projects\StockAnalysis\www\dcf\kv-ticker-input.js"
+del "C:\Projects\StockAnalysis\www\dcf\kv-ticker-input.css"
 copy "C:\Projects\DCFAnalysis\www\dcf-icon.svg" "C:\Projects\StockAnalysis\www\dcf-icon.svg"
 cd "C:\Projects\StockAnalysis"
 git add www/dcf/ www/dcf-icon.svg
