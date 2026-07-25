@@ -31,6 +31,8 @@ const config = {
     '071970.KS': 'Hyundai Heavy Industries Group', // HD-Hyundai Marine Engine
     '028050.KS': 'Samsung Group',        // Samsung E&A
     '0126Z0.KS': 'Samsung Group',        // Samsung Epis Holdings
+    '011780.KS': 'Kumho Asiana Group',   // Kumho Petrochemical, added 2026-07-25
+    '161890.KS': 'Kolmar Group',         // Kolmar Korea, added 2026-07-25
   },
   blacklist: [],
   startingValue: 10000000,

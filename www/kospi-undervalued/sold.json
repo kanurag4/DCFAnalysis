@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "ticker": "069960.KS",
+    "entryDate": "2026-07-18",
+    "entryPrice": 157400,
+    "exitDate": "2026-07-25",
+    "exitPrice": 129600,
+    "dollarPnl": -135861.6
+  },
+  {
+    "ticker": "028050.KS",
+    "entryDate": "2026-07-18",
+    "entryPrice": 40850,
+    "exitDate": "2026-07-25",
+    "exitPrice": 47600,
+    "dollarPnl": 127106.68
+  },
+  {
+    "ticker": "086280.KS",
+    "entryDate": "2026-07-18",
+    "entryPrice": 188600,
+    "exitDate": "2026-07-25",
+    "exitPrice": 207000,
+    "dollarPnl": 75046.9
+  }
+]
