@@ -23,11 +23,7 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // ~18.75 req/min keeps us under the 20/60s Worker cap
 
 // Read the proxy URL straight from www/config.js without a DOM.
-// YAHOO_PROXY_URL_OVERRIDE lets batch/automation runs (e.g. cloud routines whose
-// network policy blocks *.workers.dev) hit an alternate route to the same Worker
-// without touching the live site's config.js — see CLAUDE.md's Deploy section.
 function readProxyUrl() {
-  if (process.env.YAHOO_PROXY_URL_OVERRIDE) return process.env.YAHOO_PROXY_URL_OVERRIDE;
   const src = fs.readFileSync(path.join(__dirname, '../../www/config.js'), 'utf8');
   const m = src.match(/YAHOO_PROXY_URL\s*[:=]\s*['"]([^'"]+)['"]/);
   if (!m) throw new Error('Could not find YAHOO_PROXY_URL in www/config.js');
