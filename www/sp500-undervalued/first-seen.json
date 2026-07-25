@@ -12,8 +12,8 @@
     "firstPrice": 138.45
   },
   "DLTR": {
-    "firstSeen": "2026-06-04",
-    "firstPrice": 112.5
+    "firstSeen": "2026-07-25",
+    "firstPrice": 120.45
   },
   "ADSK": {
     "firstSeen": "2026-06-04",
@@ -96,8 +96,8 @@
     "firstPrice": 210.19
   },
   "ADBE": {
-    "firstSeen": "2026-07-08",
-    "firstPrice": 221.54
+    "firstSeen": "2026-07-25",
+    "firstPrice": 225.11
   },
   "HPE": {
     "firstSeen": "2026-07-10",
@@ -166,5 +166,21 @@
   "REGN": {
     "firstSeen": "2026-07-18",
     "firstPrice": 676.69
+  },
+  "MMM": {
+    "firstSeen": "2026-07-25",
+    "firstPrice": 172.62
+  },
+  "DHI": {
+    "firstSeen": "2026-07-25",
+    "firstPrice": 146.76
+  },
+  "T": {
+    "firstSeen": "2026-07-25",
+    "firstPrice": 24.13
+  },
+  "ALB": {
+    "firstSeen": "2026-07-25",
+    "firstPrice": 114.85
   }
 }

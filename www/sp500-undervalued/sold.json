@@ -177,5 +177,53 @@
     "exitDate": "2026-07-18",
     "exitPrice": 125.94,
     "dollarPnl": 4.23
+  },
+  {
+    "ticker": "FOXA",
+    "entryDate": "2026-07-18",
+    "entryPrice": 57.62,
+    "exitDate": "2026-07-25",
+    "exitPrice": 55.31,
+    "dollarPnl": -20.85
+  },
+  {
+    "ticker": "RTX",
+    "entryDate": "2026-07-08",
+    "entryPrice": 200.85,
+    "exitDate": "2026-07-25",
+    "exitPrice": 212.79,
+    "dollarPnl": 51.82
+  },
+  {
+    "ticker": "CHTR",
+    "entryDate": "2026-07-08",
+    "entryPrice": 138.02,
+    "exitDate": "2026-07-25",
+    "exitPrice": 123.31,
+    "dollarPnl": -31.91
+  },
+  {
+    "ticker": "LH",
+    "entryDate": "2026-06-26",
+    "entryPrice": 266.34,
+    "exitDate": "2026-07-25",
+    "exitPrice": 296.77,
+    "dollarPnl": 24.62
+  },
+  {
+    "ticker": "LDOS",
+    "entryDate": "2026-06-19",
+    "entryPrice": 107.12,
+    "exitDate": "2026-07-25",
+    "exitPrice": 112.14,
+    "dollarPnl": 27.65
+  },
+  {
+    "ticker": "CAH",
+    "entryDate": "2026-07-18",
+    "entryPrice": 228.52,
+    "exitDate": "2026-07-25",
+    "exitPrice": 228.03,
+    "dollarPnl": -1.12
   }
 ]
