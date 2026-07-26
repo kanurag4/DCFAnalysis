@@ -17,6 +17,7 @@ main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 .editorial p { margin:0 0 8px; font-size:0.85rem; color:var(--kv-text); line-height:1.55; }
 .editorial p:last-child { margin-bottom:0; }
 .as-at { display:block; text-align:right; font-size:0.78rem; color:var(--kv-pass); padding:8px 12px 4px; }
+.app-header-center .as-at { text-align:center; padding:2px 0 0; font-weight:600; }
 .status { padding:24px; text-align:center; color:var(--kv-muted); }
 
 /* ── Survivorship rules ── */

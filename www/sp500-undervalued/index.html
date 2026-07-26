@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0b1120">
-  <title>The 20 Most Undervalued S&P 500 Stocks — Weekly DCF Ranking | KashVector</title>
-  <meta name="description" content="Which S&P 500 stocks are trading furthest below their DCF intrinsic value right now? A weekly automated screen ranked by margin of safety. Free, no sign-up.">
+  <title>20 Most Undervalued S&P 500 Stocks 2026 — Weekly DCF Ranking | KashVector</title>
+  <meta name="description" content="Which S&P 500 stocks are trading furthest below their DCF or DDM intrinsic value right now? A weekly automated screen ranked by margin of safety. Free, no sign-up.">
   <script src="/kv-theme.js"></script>
   <script src="/kv-banner.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,7 @@
         Most Undervalued S&P 500
       </h1>
       <p>A weekly DCF/DDM screen, ranked by margin of safety</p>
+      <div id="as-at" class="as-at" hidden></div>
     </div>
     <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
   </header>
@@ -55,17 +56,6 @@
       <p>🇯🇵 Looking for Japanese stocks? <a href="../nikkei-undervalued/">See the Most Undervalued Nikkei 225 screen →</a></p>
     </section>
 
-    <section class="editorial">
-      <p>⚠️ <strong>This is an automated screen, not financial advice or a recommendation.</strong>
-      It shows where a <strong>base-case</strong> DCF (or DDM for banks/insurers) valuation sits
-      above the current price. For non-bank financial companies (exchanges, asset managers, payment
-      networks), reported free cash flow is normalised downward — matching the same adjustment the
-      <a href="../">DCF tool</a> applies. DCF is highly sensitive to assumptions — see the method
-      note below. This is <strong>purely quantitative</strong>: it does not read news, judge
-      management quality, or weigh competitive position, litigation, or recent events. Always do
-      your own research.</p>
-    </section>
-
     <section class="rules-card">
       <details class="rules-details">
         <summary class="rules-title">How a stock makes this list</summary>
@@ -84,7 +74,6 @@
 
     <section class="table-card">
       <div id="status" class="status">Loading rankings…</div>
-      <div id="as-at" class="as-at" hidden></div>
       <div class="table-scroll">
         <table id="rank-table" hidden>
           <thead>
@@ -153,6 +142,17 @@
         <details class="faq-item"><summary>Does it consider news, management, or competition?</summary><p>No. This is a <strong>purely quantitative</strong> screen built from reported financial data. It does not read news, assess management quality, brand strength, competitive position, regulatory or litigation risk, or any recent events. A stock can look cheap here while facing real problems the numbers don't yet show — which is exactly why this is a starting point for research, not a verdict.</p></details>
         <details class="faq-item"><summary>What does "first seen" mean?</summary><p>The date a stock first entered this list and its price then. It's shown for transparency — it is <strong>not</strong> a performance or return claim.</p></details>
       </div>
+    </section>
+
+    <section class="editorial">
+      <p>⚠️ <strong>This is an automated screen, not financial advice or a recommendation.</strong>
+      It shows where a <strong>base-case</strong> DCF (or DDM for banks/insurers) valuation sits
+      above the current price. For non-bank financial companies (exchanges, asset managers, payment
+      networks), reported free cash flow is normalised downward — matching the same adjustment the
+      <a href="../">DCF tool</a> applies. DCF is highly sensitive to assumptions — see the method
+      note above. This is <strong>purely quantitative</strong>: it does not read news, judge
+      management quality, or weigh competitive position, litigation, or recent events. Always do
+      your own research.</p>
     </section>
 
   </main>
