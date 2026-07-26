@@ -34,6 +34,38 @@ KashVector DCF tool. Source repo — deploys to `kashvector.com/dcf/` by xcopy t
 
 ---
 
+## Undervalued screens — SEO pass (2026-07-26)
+
+Search Console showed all 5 undervalued screens ranking ~position 7-8 but converting under 1%
+CTR — titles had no freshness signal and meta descriptions led with a disclaimer instead of
+the value proposition. Applied identically across ASX/S&P 500/NIFTY/KOSPI/Nikkei
+`index.html` + `style.css`:
+
+- **Title gets a year** (`Most Undervalued ASX 300 Stocks 2026 — Weekly DCF Screen | KashVector`),
+  since searchers use year-qualified queries (`undervalued stocks asx 2022`, etc.).
+  **Maintenance: bump the year in all 5 `<title>` tags every January** — nothing else does
+  this automatically, and a stale year looks worse than no year.
+- Meta description rewritten to lead with a question ("Which X stocks are trading furthest
+  below their DCF or DDM intrinsic value right now?") instead of "Not financial advice —
+  assumptions-driven." — that line still exists, just not in the SERP snippet.
+- `#as-at` ("Last refreshed: …") moved from inside `.table-card` into `.app-header-center`,
+  right under the subtitle — was previously buried well down the page. Same element/id,
+  same `app.js` binding (`$('as-at')`), just relocated in the DOM; a header-scoped CSS
+  override (`.app-header-center .as-at`) centers it instead of the table-card's right-align.
+- The `⚠️ automated screen, not financial advice` disclaimer `<section class="editorial">`
+  moved from just above `.rules-card` to the bottom of `<main>`, after the affiliate promo
+  grid and the About/FAQ section. Its "see the method note below" now reads "above" since
+  the rules-card it refers to is now above it, not below. KOSPI/Nikkei's extra
+  country-specific paragraph (chaebol/keiretsu risk) was **not** moved — it stays in its
+  original top-of-page `.editorial` section since it's informational context for reading the
+  table, not a legal disclaimer.
+
+Mirrored into `C:\Projects\StockAnalysis\www\dcf\` and pushed there too (both repos'
+`index.html`/`style.css` for all 5 screens must stay in sync — see the xcopy deploy step in
+each `refresh-*-undervalued` skill).
+
+---
+
 ## Feature: Most Undervalued ASX 300 screen — ✅ LIVE (2026-06-02)
 
 Monthly screen at **kashvector.com/dcf/asx-undervalued/** ranking the ASX 300 by base-case
