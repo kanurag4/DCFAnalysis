@@ -6,7 +6,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
 
   const raw = ticker.trim().toUpperCase();
   const symbol = raw.includes('.') ? raw : (isASX ? `${raw}.AX` : raw);
-  const url = `${yahooProxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}`;
+  const url = `${yahooProxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}?tool=dcf`;
 
   let res;
   try { res = await fetch(url); }
