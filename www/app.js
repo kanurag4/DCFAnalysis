@@ -1212,6 +1212,7 @@ if (window.kvGuide) {
     steps: [
       { target: '#ticker-input', placement: 'above', text: 'Type any ticker — try your own, or AAPL if you\'re just exploring (add .AX for ASX, .NS/.BO for India, or tick the box below).' },
       { target: '#asx-checkbox', text: 'Tick this for Australian tickers without a suffix, like BHP or CBA.' },
+      { target: '#market-suffix-details', text: 'Covers markets that don\'t have their own checkbox — add the matching suffix to your ticker instead, like .L for London or .DE for Germany.' },
       { target: '#go-btn', text: 'Click Analyse — I\'ll pick back up once your results are ready.' },
       { waitFor: '#dcf-layout:not([hidden])', text: 'Waiting for your analysis to finish...' },
       { target: '#fcf-input', text: 'Free Cash Flow is the engine of the whole valuation — the actual cash the business generates each year, before any accounting adjustments.' },
