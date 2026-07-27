@@ -1204,3 +1204,33 @@ async function fetchAndSetIndianRfRate() {
     if (fetchSucceeded) recomputeDiscount();
   }
 }
+
+if (window.kvGuide) {
+  window.kvGuide.mount({
+    tool: 'dcf',
+    buttonTarget: '#guideBtn',
+    steps: [
+      { target: '#ticker-input', text: 'Type any ticker — try your own, or AAPL if you\'re just exploring (add .AX for ASX, .NS/.BO for India, or tick the box below).' },
+      { target: '#asx-checkbox', text: 'Tick this for Australian tickers without a suffix, like BHP or CBA.' },
+      { target: '#go-btn', text: 'Click Analyse — I\'ll pick back up once your results are ready.' },
+      { waitFor: '#dcf-layout:not([hidden])', text: 'Waiting for your analysis to finish...' },
+      { target: '#fcf-input', text: 'Free Cash Flow is the engine of the whole valuation — the actual cash the business generates each year, before any accounting adjustments.' },
+      { target: '#dividend-input', text: 'For banks and insurers, the model values the stock from its dividend per share instead of free cash flow, since FCF isn\'t a reliable owner-earnings measure for financial companies.' },
+      { target: '[data-guide-row="growth"]', text: 'The 5-year growth rate for each scenario — how fast the business is assumed to grow its cash flow (or dividend) over the projection period.' },
+      { target: '[data-guide-row="terminal"]', text: 'The growth rate assumed forever after the projection period. This one small number often drives 60-80% of the total valuation — small changes here move the answer the most.' },
+      { target: '[data-guide-row="wacc"]', text: 'Your discount rate — WACC for a standard DCF, or Cost of Equity for the Dividend Discount Model. Once you\'ve adjusted any assumption above, click Recalculate to see the new result.' },
+      { target: '#wacc-details', title: 'How the discount rate is calculated', text: 'See exactly how this rate was built from market data, and override the risk-free rate or equity risk premium if you disagree with the defaults.' },
+      { target: '#ddm-toggle', text: 'This company qualifies for both models — click here to see it valued the other way.' },
+      { target: '#summary', text: 'The headline result: the estimated intrinsic value per share, and how it compares to today\'s price.' },
+      { target: '#scenarios', text: 'Bear, Base, and Bull cases side by side, each showing its own margin of safety — the gap between intrinsic value and the current price.' },
+      { target: '#charts', text: 'A visual breakdown of the valuation, plus a warning if terminal value makes up more than 70% of the total (meaning the result is especially sensitive to the terminal growth assumption).' },
+      { target: '#financial-warning', text: 'A note on why this company\'s free cash flow was normalised — raw FCF can be misleading for financial companies.' },
+      { target: '#breakeven-callout', text: 'An estimate of when this company\'s free cash flow is expected to turn positive, based on your growth assumption.' },
+    ],
+    results: [
+      { target: '#summary', text: 'The headline result: the estimated intrinsic value per share, and how it compares to today\'s price.' },
+      { target: '#scenarios', text: 'Bear, Base, and Bull cases side by side, each showing its own margin of safety.' },
+      { target: '#charts', text: 'A visual breakdown of the valuation and how it compares to the current price.' },
+    ],
+  });
+}
