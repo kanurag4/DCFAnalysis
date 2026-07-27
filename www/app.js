@@ -1210,7 +1210,7 @@ if (window.kvGuide) {
     tool: 'dcf',
     buttonTarget: '#guideBtn',
     steps: [
-      { target: '#ticker-input', text: 'Type any ticker — try your own, or AAPL if you\'re just exploring (add .AX for ASX, .NS/.BO for India, or tick the box below).' },
+      { target: '#ticker-input', placement: 'above', text: 'Type any ticker — try your own, or AAPL if you\'re just exploring (add .AX for ASX, .NS/.BO for India, or tick the box below).' },
       { target: '#asx-checkbox', text: 'Tick this for Australian tickers without a suffix, like BHP or CBA.' },
       { target: '#go-btn', text: 'Click Analyse — I\'ll pick back up once your results are ready.' },
       { waitFor: '#dcf-layout:not([hidden])', text: 'Waiting for your analysis to finish...' },
