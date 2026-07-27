@@ -48,6 +48,7 @@
   <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/kv-shared.css">
   <link rel="stylesheet" href="/kv-ticker-input.css">
+  <link rel="stylesheet" href="/kv-guide.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/svg+xml" href="../dcf-icon.svg">
 </head>
@@ -125,6 +126,10 @@
       <a href="/gordon-growth/" data-kv-tool="ggm">Dividend</a>
       <a href="/growth/" data-kv-tool="growth">Growth</a>
     </nav>
+
+    <div style="text-align:center;margin-bottom:12px;">
+      <button type="button" id="guideBtn" class="kv-guide-trigger">✨ Guide me</button>
+    </div>
 
     <section class="search-bar">
       <div class="search-row">
@@ -209,19 +214,19 @@
             <span class="scenario-label base-label">Base</span>
             <span class="scenario-label bull-label">Bull</span>
           </div>
-          <div class="scenario-input-row">
+          <div class="scenario-input-row" data-guide-row="growth">
             <label id="growth-label">5yr Growth %</label>
             <input type="number" id="growth-bear" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-base" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-bull" class="scenario-num" step="0.5" min="-5" max="30">
           </div>
-          <div class="scenario-input-row">
+          <div class="scenario-input-row" data-guide-row="terminal">
             <label>Terminal %</label>
             <input type="number" id="tgrowth-bear" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
             <input type="number" id="tgrowth-base" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
             <input type="number" id="tgrowth-bull" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
           </div>
-          <div class="scenario-input-row">
+          <div class="scenario-input-row" data-guide-row="wacc">
             <label id="discount-label"><span id="discount-label-text">WACC %</span>
               <span id="discount-tip" class="tip" data-tip="Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.">?</span>
             </label>
@@ -424,6 +429,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
   <script src="/kv-ticker-input.js"></script>
+  <script src="/kv-guide.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
