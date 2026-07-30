@@ -58,6 +58,10 @@ const els = {
 
 const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
 
+// Glossary term annotation — degrades to a plain escaped label if
+// kv-glossary.js failed to load, so a missing script never breaks rendering.
+const T = (key, label) => window.kvGlossary ? kvGlossary.term(key, label) : escapeHtml(label);
+
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 if (isNative) {
   const badge = document.getElementById('kv-play-badge');
@@ -393,12 +397,14 @@ function applyModelUI() {
   if (els.fcfRow)      els.fcfRow.hidden = ddm;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
 
-  if (els.growthLabel) els.growthLabel.textContent = ddm ? 'Div Growth %' : '5yr Growth %';
+  // innerHTML (not textContent) so the glossary term span survives the
+  // DDM/DCF toggle — a plain textContent write would strip it every time.
+  if (els.growthLabel) els.growthLabel.innerHTML = T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %');
   const discountLabelText = $('discount-label-text');
-  if (discountLabelText) discountLabelText.textContent = ddm ? 'Cost of Equity %' : 'WACC %';
+  if (discountLabelText) discountLabelText.innerHTML = T(ddm ? 'cost-of-equity' : 'wacc', ddm ? 'Cost of Equity %' : 'WACC %');
   if (els.discountTip) els.discountTip.setAttribute('data-tip', ddm
-    ? 'Cost of equity via CAPM (risk-free + beta × equity risk premium). Higher = lower valuation.'
-    : 'Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.');
+    ? 'Higher cost of equity = lower valuation.'
+    : 'Higher WACC = lower valuation.');
   if (els.waccSummary)    els.waccSummary.textContent    = ddm ? 'How cost of equity is calculated' : 'How WACC is calculated';
   if (els.breakdownTitle) els.breakdownTitle.textContent = ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown';
 
@@ -549,15 +555,15 @@ function renderSummary(data, sym) {
     ${data.sector ? `<div class="sector">${escapeHtml(data.sector)}${data.industry ? ' · ' + escapeHtml(data.industry) : ''}</div>` : ''}
     <div class="stats">
       <div class="stat"><div class="stat-label">Price</div><div class="stat-value">${fmt(data.price, 2, '', sym)}</div></div>
-      <div class="stat"><div class="stat-label">Market Cap</div><div class="stat-value">${formatMarketCap(data.marketCap, sym)}</div></div>
-      <div class="stat"><div class="stat-label">Free Cash Flow</div><div class="stat-value">${formatMarketCap(fcf, sym)}${fcfNote}</div></div>
-      <div class="stat"><div class="stat-label">Operating CF</div><div class="stat-value">${formatMarketCap(data.operatingCashflow, sym)}</div></div>
+      <div class="stat"><div class="stat-label">${T('market-cap', 'Market Cap')}</div><div class="stat-value">${formatMarketCap(data.marketCap, sym)}</div></div>
+      <div class="stat"><div class="stat-label">${T('free-cash-flow', 'Free Cash Flow')}</div><div class="stat-value">${formatMarketCap(fcf, sym)}${fcfNote}</div></div>
+      <div class="stat"><div class="stat-label">${T('operating-cash-flow', 'Operating CF')}</div><div class="stat-value">${formatMarketCap(data.operatingCashflow, sym)}</div></div>
       <div class="stat"><div class="stat-label">Revenue (TTM)</div><div class="stat-value">${formatMarketCap(data.totalRevenue, sym)}</div></div>
-      <div class="stat"><div class="stat-label">Revenue Growth</div><div class="stat-value">${data.revenueGrowth !== null ? fmt(data.revenueGrowth * 100, 1, '%') : 'N/A'}</div></div>
-      <div class="stat"><div class="stat-label">Net Debt</div><div class="stat-value ${netDebt > 0 ? 'stat-down' : 'stat-up'}">${formatMarketCap(netDebt, sym)}</div></div>
-      <div class="stat"><div class="stat-label">Beta</div><div class="stat-value">${fmt(data.beta, 2)}</div></div>
-      <div class="stat"><div class="stat-label">PE (TTM)</div><div class="stat-value">${fmt(data.trailingPE, 1, 'x')}</div></div>
-      <div class="stat"><div class="stat-label">52-Week Range</div><div class="stat-value">${range}</div></div>
+      <div class="stat"><div class="stat-label">${T('revenue-growth', 'Revenue Growth')}</div><div class="stat-value">${data.revenueGrowth !== null ? fmt(data.revenueGrowth * 100, 1, '%') : 'N/A'}</div></div>
+      <div class="stat"><div class="stat-label">${T('net-debt', 'Net Debt')}</div><div class="stat-value ${netDebt > 0 ? 'stat-down' : 'stat-up'}">${formatMarketCap(netDebt, sym)}</div></div>
+      <div class="stat"><div class="stat-label">${T('beta', 'Beta')}</div><div class="stat-value">${fmt(data.beta, 2)}</div></div>
+      <div class="stat"><div class="stat-label">${T('pe-ratio', 'PE (TTM)')}</div><div class="stat-value">${fmt(data.trailingPE, 1, 'x')}</div></div>
+      <div class="stat"><div class="stat-label">${T('52-week-range', '52-Week Range')}</div><div class="stat-value">${range}</div></div>
     </div>
   `;
   show(els.summary);
@@ -585,7 +591,7 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
   const frankingBlock = currentMarket === 'aus' // franking credits are ASX-specific
     ? `<details class="wacc-franking">
          <summary>Franking credits (dividend imputation)</summary>
-         <p>Australian companies pass corporate tax credits (franking credits) to shareholders. The ACCC values the benefit — Gamma (γ) — at <strong>0.4–0.5</strong>.</p>
+         <p>Australian companies pass corporate tax credits (${T('franking-credits', 'franking credits')}) to shareholders. The ACCC values the benefit — Gamma (γ) — at <strong>0.4–0.5</strong>.</p>
          <p>The adjustment formula: <code>Tc_eff = Tc × (1 − γ)</code>. Applying γ = 0.45 would lower the effective tax rate from ${pct(w.tc)} to ~${pct(w.tc * (1 - 0.45))}, reducing WACC by roughly 0.3–0.8%.</p>
          <p>This tool uses standard post-tax WACC conservatively and does not apply the adjustment. For professional analysis with a domestic investor base, you may reduce WACC by that margin.</p>
        </details>`
@@ -629,7 +635,7 @@ function renderFinancialWarning(data, sym) {
     const roe = data.returnOnEquity !== null ? fmt(data.returnOnEquity * 100, 1, '%') : 'N/A';
     const div = data.dividendYield  !== null ? fmt(data.dividendYield  * 100, 2, '%') : 'N/A';
     els.finWarning.innerHTML = `
-      <h3>🏦 ${kind} — Dividend Discount Model</h3>
+      <h3>🏦 ${kind} — ${T('ddm', 'Dividend Discount Model')}</h3>
       <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>Dividend Discount Model (DDM)</strong> instead${dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown'}.</p>
       <p style="font-size:0.78rem;color:var(--kv-muted)">Key ${kind.toLowerCase()} valuation metrics:</p>
       <div class="alt-multiples">
@@ -811,9 +817,10 @@ function renderScenarios(scenarios, data, sym) {
   }).join('');
 
   const isNormalised = scenarios.some(s => s.normalised);
+  const ivLabel = T('intrinsic-value', 'Intrinsic Value');
   const heading = isNormalised
-    ? `Intrinsic Value Estimate (${parseInt(els.yearsSlider.value, 10)}-yr · Revenue-normalised)`
-    : `Intrinsic Value Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`;
+    ? `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-yr · Revenue-normalised)`
+    : `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`;
   els.scenarios.innerHTML = `<h3>${heading}</h3><div class="scenario-cards">${cards}</div>`;
   show(els.scenarios);
 }
@@ -1203,35 +1210,4 @@ async function fetchAndSetIndianRfRate() {
     setRfBadge('ind', liveIndRfRate);
     if (fetchSucceeded) recomputeDiscount();
   }
-}
-
-if (window.kvGuide) {
-  window.kvGuide.mount({
-    tool: 'dcf',
-    buttonTarget: '#guideBtn',
-    steps: [
-      { target: '#ticker-input', placement: 'above', text: 'Type any ticker — try your own, or AAPL if you\'re just exploring (add .AX for ASX, .NS/.BO for India, or tick the box below).' },
-      { target: '#asx-checkbox', text: 'Tick this for Australian tickers without a suffix, like BHP or CBA.' },
-      { target: '#market-suffix-details', text: 'Covers markets that don\'t have their own checkbox — add the matching suffix to your ticker instead, like .L for London or .DE for Germany.' },
-      { target: '#go-btn', text: 'Click Analyse — I\'ll pick back up once your results are ready.' },
-      { waitFor: '#dcf-layout:not([hidden])', text: 'Waiting for your analysis to finish...' },
-      { target: '#fcf-input', text: 'Free Cash Flow is the engine of the whole valuation — the actual cash the business generates each year, before any accounting adjustments.' },
-      { target: '#dividend-input', text: 'For banks and insurers, the model values the stock from its dividend per share instead of free cash flow, since FCF isn\'t a reliable owner-earnings measure for financial companies.' },
-      { target: '[data-guide-row="growth"]', text: 'The 5-year growth rate for each scenario — how fast the business is assumed to grow its cash flow (or dividend) over the projection period.' },
-      { target: '[data-guide-row="terminal"]', text: 'The growth rate assumed forever after the projection period. This one small number often drives 60-80% of the total valuation — small changes here move the answer the most.' },
-      { target: '[data-guide-row="wacc"]', text: 'Your discount rate — WACC for a standard DCF, or Cost of Equity for the Dividend Discount Model. Once you\'ve adjusted any assumption above, click Recalculate to see the new result.' },
-      { target: '#wacc-details', title: 'How the discount rate is calculated', text: 'See exactly how this rate was built from market data, and override the risk-free rate or equity risk premium if you disagree with the defaults.' },
-      { target: '#ddm-toggle', text: 'This company qualifies for both models — click here to see it valued the other way.' },
-      { target: '#summary', text: 'The headline result: the estimated intrinsic value per share, and how it compares to today\'s price.' },
-      { target: '#scenarios', text: 'Bear, Base, and Bull cases side by side, each showing its own margin of safety — the gap between intrinsic value and the current price.' },
-      { target: '#charts', text: 'A visual breakdown of the valuation, plus a warning if terminal value makes up more than 70% of the total (meaning the result is especially sensitive to the terminal growth assumption).' },
-      { target: '#financial-warning', text: 'A note on why this company\'s free cash flow was normalised — raw FCF can be misleading for financial companies.' },
-      { target: '#breakeven-callout', text: 'An estimate of when this company\'s free cash flow is expected to turn positive, based on your growth assumption.' },
-    ],
-    results: [
-      { target: '#summary', text: 'The headline result: the estimated intrinsic value per share, and how it compares to today\'s price.' },
-      { target: '#scenarios', text: 'Bear, Base, and Bull cases side by side, each showing its own margin of safety.' },
-      { target: '#charts', text: 'A visual breakdown of the valuation and how it compares to the current price.' },
-    ],
-  });
 }

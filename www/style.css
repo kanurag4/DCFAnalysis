@@ -13,6 +13,7 @@ body {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: env(safe-area-inset-top);
 }
 a { color: var(--kv-accent); text-decoration: none; }
 a:hover { color: var(--kv-accent-h); }
@@ -75,7 +76,26 @@ html:not(.dark) .screen-pill-new { border-color: rgba(245,166,35,0.65) !importan
 .screen-pill-date:empty { display: none; }
 .screen-pill-arrow { flex: 0 0 auto; color: var(--kv-pass); font-weight: 700; font-size: 1rem; }
 @media (max-width: 600px) {
-  .screens-row { flex-direction: column; }
+  /* 5 pills don't divide evenly into a 2-column grid (a lone half-width
+     pill on the last row looks broken) — a single horizontally-scrollable
+     row keeps every pill the same size, same pattern as kv-nav.js's
+     mobile tool-nav bar. */
+  .screens-row {
+    display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    /* overflow-x: auto forces overflow-y to auto too (can't mix visible +
+       auto on the two axes) — without this, the top-poking .new-badge
+       pill gets clipped. Padding gives it room; the matching negative
+       margin keeps the row's visible position unchanged. */
+    padding-top: 12px; margin-top: -12px;
+  }
+  .screens-row::-webkit-scrollbar { display: none; }
+  .screen-pill { flex: 0 0 148px; gap: 6px; padding: 8px 10px; }
+  .screen-pill-flag { font-size: 1.05rem; }
+  .screen-pill-label strong { font-size: 0.76rem; }
+  .screen-pill-label span { font-size: 0.6rem; }
+  .screen-pill-label strong, .screen-pill-label > span { overflow: hidden; text-overflow: ellipsis; }
+  .screen-pill-arrow { font-size: 0.75rem; }
 }
 
 /* ── Play Store badge (web only) ── */

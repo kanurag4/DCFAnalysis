@@ -2,7 +2,7 @@
 <html lang="en" class="dark tool-dcf">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0b1120">
   <title>Free DCF Calculator — Auto-Filled Intrinsic Value for US, ASX &amp; NSE Stocks | KashVector</title>
   <meta name="description" content="What is a stock really worth? Type a ticker and get a full DCF intrinsic value with auto-filled financials — Bear, Base and Bull scenarios. ASX, US and NSE. Free, no sign-up.">
@@ -48,7 +48,7 @@
   <link rel="stylesheet" href="/brand.css">
   <link rel="stylesheet" href="/kv-shared.css">
   <link rel="stylesheet" href="/kv-ticker-input.css">
-  <link rel="stylesheet" href="/kv-guide.css">
+  <link rel="stylesheet" href="/kv-glossary.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/svg+xml" href="../dcf-icon.svg">
 </head>
@@ -127,10 +127,6 @@
       <a href="/growth/" data-kv-tool="growth">Growth</a>
     </nav>
 
-    <div style="text-align:center;margin-bottom:12px;">
-      <button type="button" id="guideBtn" class="kv-guide-trigger">✨ Guide me</button>
-    </div>
-
     <section class="search-bar">
       <div class="search-row">
         <div class="ac-wrapper">
@@ -151,7 +147,7 @@
     </section>
     <p class="hint" id="market-hint">Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).</p>
 
-    <details class="market-hint" id="market-suffix-details">
+    <details class="market-hint">
       <summary>Using another market? Add a suffix to the ticker</summary>
       <ul>
         <li><strong>Australia</strong> — <code>.AX</code> (or tick ASX box)</li>
@@ -175,12 +171,12 @@
 
         <div class="input-section">
           <div class="input-row" id="fcf-row">
-            <label for="fcf-input">Free Cash Flow
+            <label for="fcf-input"><span class="kv-term" data-term="free-cash-flow" tabindex="0" role="button" aria-expanded="false">Free Cash Flow</span>
               <span id="fcf-source" class="fcf-source"></span>
             </label>
             <input type="text" id="fcf-input" inputmode="numeric" placeholder="e.g. 5,000,000,000">
             <div id="fcf-normalized-row" class="normalized-row" hidden>
-              <label for="fcf-normalized">Normalised FCF
+              <label for="fcf-normalized"><span class="kv-term" data-term="normalised-fcf" tabindex="0" role="button" aria-expanded="false">Normalised FCF</span>
                 <span class="tip" data-tip="Insurance/bank FCF includes investment flows. Use a conservative estimate of sustainable cash earnings.">?</span>
               </label>
               <input type="text" id="fcf-normalized" inputmode="numeric">
@@ -193,7 +189,7 @@
             <input type="number" id="target-margin-input" step="0.5" min="0.5" max="50" placeholder="e.g. 15">
           </div>
           <div class="input-row" id="dividend-row" hidden>
-            <label for="dividend-input">Annual Dividend / Share (D0)
+            <label for="dividend-input"><span class="kv-term" data-term="dividend-per-share" tabindex="0" role="button" aria-expanded="false">Annual Dividend / Share (D0)</span>
               <span class="tip" data-tip="Current annual dividend per share. The model grows this forward by your dividend growth rate. Seeded from Yahoo's trailing dividend.">?</span>
             </label>
             <input type="text" id="dividend-input" inputmode="decimal" placeholder="e.g. 4.65">
@@ -214,21 +210,21 @@
             <span class="scenario-label base-label">Base</span>
             <span class="scenario-label bull-label">Bull</span>
           </div>
-          <div class="scenario-input-row" data-guide-row="growth">
+          <div class="scenario-input-row">
             <label id="growth-label">5yr Growth %</label>
             <input type="number" id="growth-bear" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-base" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-bull" class="scenario-num" step="0.5" min="-5" max="30">
           </div>
-          <div class="scenario-input-row" data-guide-row="terminal">
-            <label>Terminal %</label>
+          <div class="scenario-input-row">
+            <label><span class="kv-term" data-term="terminal-growth" tabindex="0" role="button" aria-expanded="false">Terminal %</span></label>
             <input type="number" id="tgrowth-bear" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
             <input type="number" id="tgrowth-base" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
             <input type="number" id="tgrowth-bull" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
           </div>
-          <div class="scenario-input-row" data-guide-row="wacc">
+          <div class="scenario-input-row">
             <label id="discount-label"><span id="discount-label-text">WACC %</span>
-              <span id="discount-tip" class="tip" data-tip="Weighted Average Cost of Capital — your required rate of return. Higher WACC = lower valuation.">?</span>
+              <span id="discount-tip" class="tip" data-tip="Higher WACC = lower valuation.">?</span>
             </label>
             <input type="number" id="wacc-bear" class="scenario-num" step="0.1" min="1" max="25">
             <input type="number" id="wacc-base" class="scenario-num" step="0.1" min="1" max="25">
@@ -241,12 +237,12 @@
           <div id="wacc-breakdown-content"></div>
           <div class="wacc-assumptions">
             <label>
-              <span id="rf-label-text" class="rf-header-row">Risk-free rate %</span>
+              <span id="rf-label-text" class="rf-header-row"><span class="kv-term" data-term="risk-free-rate" tabindex="0" role="button" aria-expanded="false">Risk-free rate %</span></span>
               <input type="number" id="rf-input" step="0.1" min="0" max="10" value="4.5">
             </label>
             <label>
-              <span class="label-row">Equity risk premium %
-                <span class="tip" data-tip="The extra return investors demand for holding stocks over risk-free bonds. Default 5.5% is the long-run US historical premium (Damodaran). Use 4–5% for stable developed markets, 7–9% for emerging markets.">?</span>
+              <span class="label-row"><span class="kv-term" data-term="equity-risk-premium" tabindex="0" role="button" aria-expanded="false">Equity risk premium %</span>
+                <span class="tip" data-tip="Default 5.5% is the long-run US historical premium (Damodaran). Use 4–5% for stable developed markets, 7–9% for emerging markets.">?</span>
               </span>
               <input type="number" id="erp-input" step="0.1" min="1" max="15" value="5.5">
               <span id="erp-market-note" class="rf-note" hidden></span>
@@ -284,9 +280,9 @@
             <ol>
               <li><strong>Estimate future cash flows</strong> — Forecast what free cash flow the business will generate each year over the projection period. The tool seeds this from Yahoo Finance data and your growth rate input.</li>
               <li><strong>Discount them to today</strong> — A dollar earned in 5 years is worth less than a dollar today. We divide each year's cash flow by (1 + discount rate)<sup>year</sup> to get its present value.</li>
-              <li><strong>Add a terminal value</strong> — Beyond the forecast period, the business keeps operating. Terminal value captures all future cash flows as a perpetuity growing at the terminal growth rate. <em>This often drives 60–80% of the total value — treat it with care.</em></li>
+              <li><strong>Add a <span class="kv-term" data-term="terminal-value" tabindex="0" role="button" aria-expanded="false">terminal value</span></strong> — Beyond the forecast period, the business keeps operating. Terminal value captures all future cash flows as a perpetuity growing at the terminal growth rate. <em>This often drives 60–80% of the total value — treat it with care.</em></li>
               <li><strong>Adjust for debt and cash</strong> — Subtract net debt (total debt minus cash) from firm value to get equity value. A cash-rich company is worth more per share.</li>
-              <li><strong>Divide by shares outstanding</strong> — Equity value ÷ shares = intrinsic value per share. Compare to current price to find margin of safety and expected return.</li>
+              <li><strong>Divide by shares outstanding</strong> — Equity value ÷ shares = intrinsic value per share. Compare to current price to find <span class="kv-term" data-term="margin-of-safety" tabindex="0" role="button" aria-expanded="false">margin of safety</span> and expected return.</li>
             </ol>
           </details>
         </section>
@@ -297,8 +293,8 @@
               <li><strong>Why not DCF?</strong> — For banks and insurers, "free cash flow" is meaningless: deposits and reserves are raw materials, not owner earnings, and there is no clean capital structure to derive WACC from. The DDM values the stock from what it actually pays shareholders — dividends.</li>
               <li><strong>Project the dividend</strong> — Start from the current annual dividend per share and grow it each year by your dividend growth rate over the projection period.</li>
               <li><strong>Discount to today</strong> — Each future dividend is divided by (1 + cost of equity)<sup>year</sup>. Cost of equity comes from CAPM (risk-free rate + beta × equity risk premium) — no debt component.</li>
-              <li><strong>Add a terminal value</strong> — Beyond the forecast, dividends are valued as a perpetuity growing at the terminal growth rate (Gordon Growth Model), then discounted back.</li>
-              <li><strong>Sum to intrinsic value per share</strong> — Because dividends are already per share, the total is the intrinsic value per share directly — no net-debt or share-count step. Compare to current price for margin of safety and expected return.</li>
+              <li><strong>Add a <span class="kv-term" data-term="terminal-value" tabindex="0" role="button" aria-expanded="false">terminal value</span></strong> — Beyond the forecast, dividends are valued as a perpetuity growing at the terminal growth rate (Gordon Growth Model), then discounted back.</li>
+              <li><strong>Sum to intrinsic value per share</strong> — Because dividends are already per share, the total is the intrinsic value per share directly — no net-debt or share-count step. Compare to current price for <span class="kv-term" data-term="margin-of-safety" tabindex="0" role="button" aria-expanded="false">margin of safety</span> and expected return.</li>
             </ol>
           </details>
         </section>
@@ -345,6 +341,7 @@
       <p>The discount rate is tailored to the market. For <strong>US, Australian (ASX), and Indian (NSE/BSE)</strong> stocks the tool fetches the correct local 10-year government bond yield as the risk-free rate, applies a market-appropriate equity risk premium, and shows a sector-specific WACC reference range (e.g. ASX miners 10–12%, US utilities 5.5–6.5%, Indian IT 11–14%). For non-US stocks it also applies a <strong>beta floor</strong>, because Yahoo measures beta against the S&P 500, which understates risk for international shares. Australian stocks get an explanation of <strong>franking credits</strong> and how dividend imputation affects the effective tax rate.</p>
       <p>It's built for individual stocks — not ETFs, indices, or pre-revenue companies — and works across US, Australian, Indian, UK, and other major markets with automatic currency handling. Everything runs in your browser; the only thing sent externally is the ticker symbol.</p>
       <p style="margin-top:12px;font-size:0.85rem;"><strong style="color:var(--kv-text)">Further reading:</strong> <a href="/articles/dcf-ddm-stock-valuation/" style="color:var(--kv-accent);text-decoration:none;" onmouseover="this.style.color='var(--kv-accent-h)'" onmouseout="this.style.color='var(--kv-accent)'">How to Value a Stock: DCF and the Dividend Discount Model — the methods, the exact inputs, and when to use each →</a></p>
+      <p style="margin-top:6px;font-size:0.85rem;"><a href="/glossary/" style="color:var(--kv-accent);text-decoration:none;" onmouseover="this.style.color='var(--kv-accent-h)'" onmouseout="this.style.color='var(--kv-accent)'">Not sure what a term means? See the Financial Terms Glossary →</a></p>
     </div>
     <div class="tool-faq">
       <h2>Frequently asked questions</h2>
@@ -429,7 +426,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
   <script src="/kv-ticker-input.js"></script>
-  <script src="/kv-guide.js"></script>
+  <script src="/kv-glossary-data.js"></script>
+  <script src="/kv-glossary.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
