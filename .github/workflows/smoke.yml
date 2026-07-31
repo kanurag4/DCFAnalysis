@@ -1,0 +1,53 @@
+name: smoke (throwaway — Worker egress test)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: curl workers.dev host
+        run: |
+          echo "--- stock-evaluator.anurag-kor.workers.dev ---"
+          curl -sS -o body_workersdev.txt -w "HTTP_STATUS:%{http_code} TIME_TOTAL:%{time_total}\n" --max-time 20 "https://stock-evaluator.anurag-kor.workers.dev/search?q=AAPL" || echo "CURL EXIT: $?"
+          echo "body:"; cat body_workersdev.txt 2>/dev/null || echo "(no body)"
+
+      - name: curl custom domain host
+        run: |
+          echo "--- api.kashvector.com ---"
+          curl -sS -o body_customdomain.txt -w "HTTP_STATUS:%{http_code} TIME_TOTAL:%{time_total}\n" --max-time 20 "https://api.kashvector.com/search?q=AAPL" || echo "CURL EXIT: $?"
+          echo "body:"; cat body_customdomain.txt 2>/dev/null || echo "(no body)"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: npm test
+        run: npm test
+
+      - name: 5-ticker pilot-market slice via fetch-yahoo.js
+        run: |
+          node -e "
+          const { fetchSymbol } = require('./scripts/fetch-yahoo.js');
+          const tickers = ['AAPL', 'JPM', 'XOM', 'PFE', 'WMT'];
+          (async () => {
+            for (const t of tickers) {
+              let status = 'no-http-status-captured';
+              const origFetch = global.fetch;
+              const data = await fetchSymbol(t, {
+                proxyUrl: 'https://stock-evaluator.anurag-kor.workers.dev',
+                retries: 1,
+                backoffMs: 2000,
+                fetchImpl: async (url) => {
+                  const res = await origFetch(url);
+                  status = res.status;
+                  return res;
+                },
+              });
+              console.log(t, '-> HTTP', status, '-> mapped:', data ? \`price=\${data.price} name=\${data.name}\` : 'NULL (miss)');
+            }
+          })().catch(e => { console.error('FATAL', e); process.exit(1); });
+          "
