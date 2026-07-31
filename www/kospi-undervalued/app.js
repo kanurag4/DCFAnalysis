@@ -33,25 +33,24 @@
     }
   }
 
-  // Index tickers need the summaryDetail chain, not the bulk /quote endpoint used
-  // for regular stocks — confirmed via direct comparison that /quote returns a value
-  // ~7% off from /quoteSummary for ^KS200 (a Yahoo-side quirk found 2026-07;
-  // other index tickers checked fine via /quote). Kept quoteSummary for ^KS11
-  // after the 2026-07-31 benchmark switch too, since it's the proven-reliable
-  // path — no evidence /quote has the same issue for ^KS11, but no reason to
-  // risk it either. Fetching the index price the same way the batch does
-  // (scripts/lib/rf.js's fetchIndexPrice) keeps the hero card's live
-  // comparison internally consistent with the seed it's being compared against.
+  // Uses /history (last daily close), not quoteSummary. Switched 2026-07-31
+  // after finding quoteSummary's regularMarketPrice/previousClose unreliable
+  // specifically for index tickers during the July 2026 KOSPI/Nikkei
+  // volatility — regularMarketPrice was consistently null, and previousClose
+  // was found stuck a full day-plus stale (verified against independent
+  // sources: /history had the correct up-to-date close the whole time
+  // quoteSummary served a stale one). Also matches scripts/lib/rf.js's
+  // fetchIndexPrice, so the live comparison and the weekly batch snapshot
+  // pull from the same source.
   async function fetchIndexPriceLive(indexTicker) {
     try {
       const base = (CONFIG.YAHOO_PROXY_URL || '').replace(/\/$/, '');
-      const url = `${base}/quoteSummary/${encodeURIComponent(indexTicker)}`;
+      const period2 = Math.floor(Date.now() / 1000);
+      const period1 = period2 - 10 * 24 * 60 * 60; // 10 days back — crosses any weekend/holiday gap
+      const url = `${base}/history/${encodeURIComponent(indexTicker)}?period1=${period1}&period2=${period2}`;
       const body = await getJSON(url);
-      const r = body?.quoteSummary?.result?.[0];
-      const raw = r?.summaryDetail?.regularMarketPrice?.raw
-        ?? r?.summaryDetail?.previousClose?.raw
-        ?? r?.financialData?.currentPrice?.raw
-        ?? null;
+      if (!Array.isArray(body) || !body.length) return null;
+      const raw = body[body.length - 1]?.close; // ascending by date — last entry is most recent
       return (raw != null && isFinite(raw) && raw > 0) ? raw : null;
     } catch (_) {
       return null;

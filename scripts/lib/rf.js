@@ -38,18 +38,27 @@ const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.048, { proxyUrl })
 const fetchIndRf = (proxyUrl) => fetchRfRate('^INBMKG10.NS', 0.07,  { proxyUrl });
 
 // Fetch a raw equity index level (points, not a rate — no ÷100, no clamping).
-// Uses the same summaryDetail chain as fetchRfRate because mapQuoteSummary
-// leaves .price null for index symbols. Returns null on any failure.
+//
+// Uses the /history chart endpoint (last available daily close), NOT the
+// quoteSummary summaryDetail chain fetchRfRate above uses. Switched
+// 2026-07-31 after finding quoteSummary's regularMarketPrice/previousClose
+// unreliable specifically for index tickers during the July 2026 KOSPI/
+// Nikkei volatility: regularMarketPrice was consistently null, and
+// previousClose was found stuck a full day-plus stale for both ^KS11 and
+// ^N225 (verified by comparing against independent sources — Yahoo's own
+// chart history had the correct up-to-date close the whole time
+// quoteSummary was serving a stale one). /history returns the same closes
+// the live tool's own chart already relies on, so this also keeps the
+// batch snapshot internally consistent with what users see.
 async function fetchIndexPrice(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
   try {
-    const url = `${proxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}`;
+    const period2 = Math.floor(Date.now() / 1000);
+    const period1 = period2 - 10 * 24 * 60 * 60; // 10 days back — crosses any weekend/holiday gap
+    const url = `${proxyUrl.replace(/\/$/, '')}/history/${encodeURIComponent(symbol)}` +
+      `?period1=${period1}&period2=${period2}`;
     const body = await fetchImpl(url);
-    const r = body?.quoteSummary?.result?.[0];
-    const raw =
-      r?.summaryDetail?.regularMarketPrice?.raw ??
-      r?.summaryDetail?.previousClose?.raw ??
-      r?.financialData?.currentPrice?.raw ??
-      null;
+    if (!Array.isArray(body) || !body.length) return null;
+    const raw = body[body.length - 1]?.close; // ascending by date — last entry is most recent
     return (raw != null && isFinite(raw) && raw > 0) ? raw : null;
   } catch (_) {
     return null;

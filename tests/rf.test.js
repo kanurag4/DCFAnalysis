@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { fetchRfRate } = require('../scripts/lib/rf.js');
+const { fetchRfRate, fetchIndexPrice } = require('../scripts/lib/rf.js');
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `expected ~${b}, got ${a}`);
 // Minimal raw quoteSummary body with one summaryDetail field populated.
@@ -33,4 +33,35 @@ test('falls back when out of the plausible band', async () => {
 
 test('falls back when the fetch throws', async () => {
   near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => { throw new Error('boom'); } }), 0.045);
+});
+
+// fetchIndexPrice — switched 2026-07-31 to read /history (last daily close)
+// instead of quoteSummary, after finding quoteSummary stuck stale for index
+// tickers during the July 2026 KOSPI/Nikkei volatility.
+test('fetchIndexPrice returns the last entry\'s close from /history', async () => {
+  const history = [
+    { date: '2026-07-29', close: 100 },
+    { date: '2026-07-30', close: 105 },
+    { date: '2026-07-31', close: 110 },
+  ];
+  const price = await fetchIndexPrice('^N225', 'x', async () => history);
+  near(price, 110);
+});
+
+test('fetchIndexPrice returns null on an empty history array', async () => {
+  assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => []), null);
+});
+
+test('fetchIndexPrice returns null when the body is not an array', async () => {
+  assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => null), null);
+  assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => ({})), null);
+});
+
+test('fetchIndexPrice returns null on a non-positive or missing close', async () => {
+  assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => [{ date: '2026-07-31', close: 0 }]), null);
+  assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => [{ date: '2026-07-31' }]), null);
+});
+
+test('fetchIndexPrice returns null when the fetch throws', async () => {
+  assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => { throw new Error('boom'); }), null);
 });
