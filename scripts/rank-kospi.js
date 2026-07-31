@@ -36,8 +36,13 @@ const config = {
   },
   blacklist: [],
   startingValue: 10000000,
-  indexTicker: '^KS200',
-  indexName: 'KOSPI 200',
+  // Switched from ^KS200 to ^KS11 (Composite) 2026-07-31 — "KOSPI" almost
+  // always means the Composite in headlines/news, not the 200-stock
+  // sub-index, and showing "-25% vs KOSPI 200" confused readers comparing
+  // against real-world "KOSPI" coverage of the same crash. History was
+  // backfilled in ^KS11 terms — see portfolio-history.json.
+  indexTicker: '^KS11',
+  indexName: 'KOSPI Composite',
   cacheFile: '_evaluated-kospi.json',
   rawFile: '_raw-kospi.json',
 };

@@ -35,10 +35,13 @@
 
   // Index tickers need the summaryDetail chain, not the bulk /quote endpoint used
   // for regular stocks — confirmed via direct comparison that /quote returns a value
-  // ~7% off from /quoteSummary for ^KS200 specifically (a Yahoo-side quirk for this
-  // symbol; other index tickers checked fine via /quote). Fetching the index price the
-  // same way the batch does (scripts/lib/rf.js's fetchIndexPrice) keeps the hero card's
-  // live comparison internally consistent with the seed it's being compared against.
+  // ~7% off from /quoteSummary for ^KS200 (a Yahoo-side quirk found 2026-07;
+  // other index tickers checked fine via /quote). Kept quoteSummary for ^KS11
+  // after the 2026-07-31 benchmark switch too, since it's the proven-reliable
+  // path — no evidence /quote has the same issue for ^KS11, but no reason to
+  // risk it either. Fetching the index price the same way the batch does
+  // (scripts/lib/rf.js's fetchIndexPrice) keeps the hero card's live
+  // comparison internally consistent with the seed it's being compared against.
   async function fetchIndexPriceLive(indexTicker) {
     try {
       const base = (CONFIG.YAHOO_PROXY_URL || '').replace(/\/$/, '');
