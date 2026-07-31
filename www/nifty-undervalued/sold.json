@@ -87,5 +87,61 @@
     "exitDate": "2026-07-25",
     "exitPrice": 4091.8,
     "dollarPnl": 31.61
+  },
+  {
+    "ticker": "TBOTEK.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 1225.2,
+    "exitDate": "2026-07-31",
+    "exitPrice": 1531.2,
+    "dollarPnl": 561.2
+  },
+  {
+    "ticker": "INDIAMART.NS",
+    "entryDate": "2026-07-25",
+    "entryPrice": 1759.9,
+    "exitDate": "2026-07-31",
+    "exitPrice": 1799.8,
+    "dollarPnl": 177.9
+  },
+  {
+    "ticker": "TATASTEEL.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 206.77,
+    "exitDate": "2026-07-31",
+    "exitPrice": 189.69,
+    "dollarPnl": 301.56
+  },
+  {
+    "ticker": "ZENSARTECH.NS",
+    "entryDate": "2026-07-18",
+    "entryPrice": 518.15,
+    "exitDate": "2026-07-31",
+    "exitPrice": 507.95,
+    "dollarPnl": 31.8
+  },
+  {
+    "ticker": "HINDZINC.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 566.8,
+    "exitDate": "2026-07-31",
+    "exitPrice": 539.2,
+    "dollarPnl": 106.95
+  },
+  {
+    "ticker": "SAREGAMA.NS",
+    "entryDate": "2026-06-19",
+    "entryPrice": 465.9,
+    "exitDate": "2026-07-31",
+    "exitPrice": 522.85,
+    "dollarPnl": 416.45
+  },
+  {
+    "ticker": "LUPIN.NS",
+    "entryDate": "2026-07-25",
+    "entryPrice": 2370.5,
+    "exitDate": "2026-07-31",
+    "exitPrice": 2415,
+    "dollarPnl": 147.31
   }
 ]
