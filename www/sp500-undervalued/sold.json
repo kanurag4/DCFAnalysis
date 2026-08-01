@@ -225,5 +225,85 @@
     "exitDate": "2026-07-25",
     "exitPrice": 228.03,
     "dollarPnl": -1.12
+  },
+  {
+    "ticker": "DHI",
+    "entryDate": "2026-07-25",
+    "entryPrice": 146.76,
+    "exitDate": "2026-08-01",
+    "exitPrice": 143.06,
+    "dollarPnl": -13.2
+  },
+  {
+    "ticker": "UHS",
+    "entryDate": "2026-06-04",
+    "entryPrice": 145.98,
+    "exitDate": "2026-08-01",
+    "exitPrice": 168.44,
+    "dollarPnl": 42.66
+  },
+  {
+    "ticker": "BAX",
+    "entryDate": "2026-06-26",
+    "entryPrice": 21.55,
+    "exitDate": "2026-08-01",
+    "exitPrice": 26.16,
+    "dollarPnl": 87.89
+  },
+  {
+    "ticker": "PFG",
+    "entryDate": "2026-06-04",
+    "entryPrice": 101.19,
+    "exitDate": "2026-08-01",
+    "exitPrice": 113.7,
+    "dollarPnl": 20.58
+  },
+  {
+    "ticker": "YUM",
+    "entryDate": "2026-07-18",
+    "entryPrice": 147.92,
+    "exitDate": "2026-08-01",
+    "exitPrice": 153.28,
+    "dollarPnl": 15.33
+  },
+  {
+    "ticker": "CTSH",
+    "entryDate": "2026-07-08",
+    "entryPrice": 43.94,
+    "exitDate": "2026-08-01",
+    "exitPrice": 55.35,
+    "dollarPnl": 114.05
+  },
+  {
+    "ticker": "ADBE",
+    "entryDate": "2026-07-25",
+    "entryPrice": 225.11,
+    "exitDate": "2026-08-01",
+    "exitPrice": 250.41,
+    "dollarPnl": 58.84
+  },
+  {
+    "ticker": "DLTR",
+    "entryDate": "2026-07-25",
+    "entryPrice": 120.45,
+    "exitDate": "2026-08-01",
+    "exitPrice": 127.21,
+    "dollarPnl": 29.38
+  },
+  {
+    "ticker": "BR",
+    "entryDate": "2026-06-04",
+    "entryPrice": 152.59,
+    "exitDate": "2026-08-01",
+    "exitPrice": 153.95,
+    "dollarPnl": 17.68
+  },
+  {
+    "ticker": "ALB",
+    "entryDate": "2026-07-25",
+    "entryPrice": 114.85,
+    "exitDate": "2026-08-01",
+    "exitPrice": 117.64,
+    "dollarPnl": 12.72
   }
 ]
