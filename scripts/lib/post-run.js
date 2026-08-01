@@ -43,6 +43,7 @@ function buildPayload(market, { repoRoot, sha = '', runUrl = '', logPath = 'run.
   const history = readJsonIfExists(path.join(dir, 'portfolio-history.json')) || [];
 
   return {
+    kind: 'run', // vs 'published' -- see publish-screen.yml's notify step; lets one /ingest route both
     market,
     asAt: rankings.asAt,
     sha,

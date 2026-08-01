@@ -1,0 +1,149 @@
+name: Publish undervalued screen
+
+on:
+  workflow_dispatch:
+    inputs:
+      market:
+        description: Market to publish
+        required: true
+        type: choice
+        options: [asx, sp500, nifty, kospi, nikkei]
+      sha:
+        description: Commit sha on staging/<market> to publish (must match its current tip)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-${{ inputs.market }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MARKET: ${{ inputs.market }}
+      SHA: ${{ inputs.sha }}
+    steps:
+      - name: Resolve market -> outDir
+        id: market
+        run: |
+          case "$MARKET" in
+            asx) OUTDIR=asx-undervalued ;;
+            sp500) OUTDIR=sp500-undervalued ;;
+            nifty) OUTDIR=nifty-undervalued ;;
+            kospi) OUTDIR=kospi-undervalued ;;
+            nikkei) OUTDIR=nikkei-undervalued ;;
+            *) echo "::error::unknown market: $MARKET"; exit 1 ;;
+          esac
+          echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout DCFAnalysis (master, full history for cherry-pick)
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          path: dcf
+
+      # Stops you approving run A and shipping run B if a second run started
+      # against this market while you were still reviewing the first one.
+      - name: Assert sha is the current tip of staging/<market>
+        working-directory: dcf
+        run: |
+          git fetch origin "staging/$MARKET"
+          TIP=$(git rev-parse "origin/staging/$MARKET")
+          if [ "$TIP" != "$SHA" ]; then
+            echo "::error::staging/$MARKET has moved -- its tip is $TIP, but the approved commit was $SHA. A newer run must have started since you reviewed this one. Re-review the current run before publishing."
+            exit 1
+          fi
+
+      # Cherry-pick, not fast-forward: each staging/<market> branch is cut from
+      # master at run time, so after several markets run and get approved one
+      # by one, every approval after the first has a stale base and can't ff.
+      # The 5 markets write to disjoint www/<market>-undervalued/ directories,
+      # so this is conflict-free by construction -- a conflict here means
+      # something is genuinely wrong, and cherry-pick's own non-zero exit on
+      # conflict is exactly the "fail loudly, never auto-resolve" behaviour wanted.
+      - name: Cherry-pick the reviewed commit onto master
+        working-directory: dcf
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git cherry-pick "$SHA"
+          git push origin master
+
+      - name: Checkout stock-evaluator with the cross-repo publish PAT
+        uses: actions/checkout@v4
+        with:
+          repository: kanurag4/stock-evaluator
+          ref: main
+          token: ${{ secrets.KV_PUBLISH_PAT }}
+          path: kv
+
+      # Deliberate deviation from the manual refresh-*-undervalued skills: they
+      # xcopy the WHOLE www tree into www/dcf then delete the shared-script
+      # copies it drags in -- that exact pattern clobbered the 2026-07-17
+      # consolidation on 2026-07-18. Copying only the 5 files this workflow is
+      # supposed to touch makes that class of incident structurally impossible.
+      - name: Copy only the 5 snapshot files
+        env:
+          OUTDIR: ${{ steps.market.outputs.outdir }}
+        run: |
+          mkdir -p "kv/www/dcf/$OUTDIR"
+          for f in rankings.json first-seen.json sold.json portfolio-value.json portfolio-history.json; do
+            cp "dcf/www/$OUTDIR/$f" "kv/www/dcf/$OUTDIR/$f"
+          done
+
+      - name: Assert only the 5 expected files changed
+        working-directory: kv
+        env:
+          OUTDIR: ${{ steps.market.outputs.outdir }}
+        run: |
+          CHANGED=$(git status --porcelain -- www/dcf)
+          echo "$CHANGED"
+          UNEXPECTED=$(echo "$CHANGED" | grep -vE "www/dcf/$OUTDIR/(rankings|first-seen|sold|portfolio-value|portfolio-history)\.json\$" || true)
+          if [ -n "$UNEXPECTED" ]; then
+            echo "::error::Unexpected changes under www/dcf -- refusing to publish. The source repo may have drifted from the deploy target; reconcile before retrying."
+            exit 1
+          fi
+          COUNT=$(echo "$CHANGED" | grep -c . || true)
+          if [ "$COUNT" -ne 5 ]; then
+            echo "::error::Expected exactly 5 changed files under www/dcf/$OUTDIR, got $COUNT."
+            exit 1
+          fi
+
+      - name: Commit and push to stock-evaluator (Cloudflare Pages deploys on push to main)
+        id: deploy
+        working-directory: kv
+        env:
+          OUTDIR: ${{ steps.market.outputs.outdir }}
+        run: |
+          ASAT=$(node -e "console.log(require('./www/dcf/$OUTDIR/rankings.json').asAt)")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "www/dcf/$OUTDIR"
+          git commit -m "Deploy: $MARKET undervalued snapshot $ASAT"
+          git push origin main
+          echo "asat=$ASAT" >> "$GITHUB_OUTPUT"
+
+      - name: Delete the published staging branch (cleanup, non-fatal)
+        working-directory: dcf
+        run: git push origin --delete "staging/$MARKET" || true
+
+      - name: Notify admin console
+        env:
+          ADMIN_INGEST_URL: ${{ secrets.ADMIN_INGEST_URL }}
+          RUN_INGEST_SECRET: ${{ secrets.RUN_INGEST_SECRET }}
+          ASAT: ${{ steps.deploy.outputs.asat }}
+        run: |
+          if [ -z "$ADMIN_INGEST_URL" ] || [ -z "$RUN_INGEST_SECRET" ]; then
+            echo "ADMIN_INGEST_URL/RUN_INGEST_SECRET not set -- skipping (kv-admin not wired up yet). The deploy above already succeeded regardless."
+            exit 0
+          fi
+          curl -sS -f -X POST "$ADMIN_INGEST_URL" \
+            -H "Authorization: Bearer $RUN_INGEST_SECRET" \
+            -H "Content-Type: application/json" \
+            -d "{\"kind\":\"published\",\"market\":\"$MARKET\",\"sha\":\"$SHA\",\"asAt\":\"$ASAT\"}"
