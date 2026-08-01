@@ -72,7 +72,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git cherry-pick "$SHA"
+          if git cherry-pick "$SHA"; then
+            echo "Cherry-pick applied cleanly."
+          elif [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+            echo "::error::Cherry-pick hit a real conflict -- not auto-resolving."
+            exit 1
+          else
+            # Empty patch, no conflicts: master already has this exact change --
+            # e.g. an earlier publish attempt for this SHA got this far before
+            # failing on a later step (see the 2026-08-01 ASX incident, where a
+            # retry then hit "previous cherry-pick is now empty" and dead-ended).
+            # Not a real failure -- skip the empty pick and continue.
+            echo "Cherry-pick would be empty -- master already has this change (likely a prior publish attempt for this SHA got partway through). Skipping."
+            git cherry-pick --skip
+          fi
           git push origin master
 
       - name: Checkout stock-evaluator with the cross-repo publish PAT
@@ -97,7 +110,7 @@ jobs:
             cp "dcf/www/$OUTDIR/$f" "kv/www/dcf/$OUTDIR/$f"
           done
 
-      - name: Assert only the 5 expected files changed
+      - name: Assert only expected files changed (and at least one did)
         working-directory: kv
         env:
           OUTDIR: ${{ steps.market.outputs.outdir }}
@@ -109,9 +122,13 @@ jobs:
             echo "::error::Unexpected changes under www/dcf -- refusing to publish. The source repo may have drifted from the deploy target; reconcile before retrying."
             exit 1
           fi
+          # Was "exactly 5" -- too strict for a quiet run (e.g. a weekend with no
+          # rankings/exits/first-seen movement) that legitimately only touches
+          # rankings.json + portfolio-value.json + portfolio-history.json. Only
+          # a genuine no-op (0 changed) is refused now; 1-5 is a valid publish.
           COUNT=$(echo "$CHANGED" | grep -c . || true)
-          if [ "$COUNT" -ne 5 ]; then
-            echo "::error::Expected exactly 5 changed files under www/dcf/$OUTDIR, got $COUNT."
+          if [ "$COUNT" -eq 0 ]; then
+            echo "::error::No changes at all under www/dcf/$OUTDIR -- this run produced nothing new to publish."
             exit 1
           fi
 
