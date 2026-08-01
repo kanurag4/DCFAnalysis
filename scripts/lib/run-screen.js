@@ -248,6 +248,16 @@ async function updatePortfolio(config, data, oldRankings) {
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
   fs.writeFileSync(soldPath, JSON.stringify([...existingSold, ...sold], null, 2) + '\n');
+
+  // This run's own new exits only, as opposed to soldPath's full cumulative
+  // ledger -- a scratch file scoped to this CI job's workspace, read by
+  // post-run.js so the admin console can show "what changed this run" instead
+  // of the market's entire exit history (that full history belongs on the
+  // public /dcf/exits/ page, not the per-run review screen). Not under www/,
+  // so it's never swept into the staging-branch commit or the
+  // publish-screen.yml 5-file assertion; gitignored via the scripts/_* pattern.
+  fs.writeFileSync(path.join(__dirname, '../_last-sold.json'), JSON.stringify(sold, null, 2) + '\n');
+
   const history = appendPortfolioHistory(config, portfolio, indexMeta);
 
   // Guard against the hero stat and timeline chart silently disagreeing again

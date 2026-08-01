@@ -38,7 +38,13 @@ function buildPayload(market, { repoRoot, sha = '', runUrl = '', logPath = 'run.
   const rankings = readJsonIfExists(path.join(dir, 'rankings.json'));
   if (!rankings) throw new Error(`no rankings.json found at ${dir} -- did the batch run first?`);
 
-  const sold = readJsonIfExists(path.join(dir, 'sold.json')) || [];
+  // This run's own new exits, NOT dir/sold.json (that's the market's entire
+  // all-time exit ledger, correct for the public /dcf/exits/ page but not for
+  // an admin-console "what happened this run" preview -- was previously read
+  // straight from sold.json, which made every run look like the whole history
+  // just exited). Written by updatePortfolio() in run-screen.js earlier in the
+  // same CI job.
+  const sold = readJsonIfExists(path.join(repoRoot, 'scripts', '_last-sold.json')) || [];
   const portfolioValue = readJsonIfExists(path.join(dir, 'portfolio-value.json')) || null;
   const history = readJsonIfExists(path.join(dir, 'portfolio-history.json')) || [];
 
