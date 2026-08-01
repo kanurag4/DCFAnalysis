@@ -1,0 +1,77 @@
+name: Refresh undervalued screen
+
+on:
+  workflow_dispatch:
+    inputs:
+      market:
+        description: Market to refresh
+        required: true
+        type: choice
+        options: [asx, sp500, nifty, kospi, nikkei]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-${{ inputs.market }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: npm test (abort on failure)
+        run: npm test
+
+      - name: Run the batch
+        env:
+          KV_BATCH_KEY: ${{ secrets.KV_BATCH_KEY }}
+        run: node scripts/rank-${{ inputs.market }}.js 2>&1 | tee run.log
+
+      - name: Commit snapshot to staging branch
+        id: stage
+        run: |
+          MARKET="${{ inputs.market }}"
+          case "$MARKET" in
+            asx) OUTDIR=asx-undervalued ;;
+            sp500) OUTDIR=sp500-undervalued ;;
+            nifty) OUTDIR=nifty-undervalued ;;
+            kospi) OUTDIR=kospi-undervalued ;;
+            nikkei) OUTDIR=nikkei-undervalued ;;
+            *) echo "unknown market: $MARKET"; exit 1 ;;
+          esac
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          ASAT=$(node -e "console.log(require('./www/$OUTDIR/rankings.json').asAt)")
+
+          git checkout -B "staging/$MARKET"
+          git add \
+            "www/$OUTDIR/rankings.json" \
+            "www/$OUTDIR/first-seen.json" \
+            "www/$OUTDIR/sold.json" \
+            "www/$OUTDIR/portfolio-value.json" \
+            "www/$OUTDIR/portfolio-history.json"
+          git commit -m "data: ${MARKET} undervalued snapshot ${ASAT} (staged via admin console)"
+          git push --force origin "staging/$MARKET"
+
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"
+
+      - name: Notify admin console
+        env:
+          ADMIN_INGEST_URL: ${{ secrets.ADMIN_INGEST_URL }}
+          RUN_INGEST_SECRET: ${{ secrets.RUN_INGEST_SECRET }}
+          STAGED_SHA: ${{ steps.stage.outputs.sha }}
+          RUN_LOG_PATH: run.log
+        run: node scripts/post-run.js ${{ inputs.market }}
