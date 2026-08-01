@@ -15,6 +15,7 @@
 // 20 showed no group dominating, unlike KOSPI's. Covered by page disclosure copy instead;
 // the config-driven flag mechanism stays available if curation ever demands it.
 const { runScreen } = require('./lib/run-screen.js');
+const blacklistEntries = require('./blacklist-nikkei.json');
 
 const config = {
   universe: 'Nikkei 225',
@@ -26,7 +27,8 @@ const config = {
   rfLabel: 'JPN RF',
   topN: 20,
   maxMargin: 0.8,
-  blacklist: [],
+  // Moved to scripts/blacklist-nikkei.json (2026-08-01) — see rank-asx.js's comment.
+  blacklist: blacklistEntries.map(e => e.ticker),
   startingValue: 1000000,   // ¥1,000,000 — the natural round local figure, same real-value
                             // ballpark as the other screens' seeds (~USD 6.5–7K at ~150 ¥/$)
   indexTicker: '^N225',

@@ -7,6 +7,7 @@
 //   node scripts/rank-nifty.js --reeval   re-evaluate cached raw data (~2s, no fetch)
 const { runScreen } = require('./lib/run-screen.js');
 const { fetchIndRf } = require('./lib/rf.js');
+const blacklistEntries = require('./blacklist-nifty.json');
 
 const config = {
   universe: 'NIFTY 500',
@@ -19,9 +20,9 @@ const config = {
   topN: 20,
   maxMargin: 0.8,
   // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
-  // TATAINVEST.NS: financial holding co (Tata Investment Corp) — FCF inflated by investment
-  // flows, removed 2026-06-27 but reappeared 2026-07-11 with no permanent blacklist.
-  blacklist: ['TATAINVEST.NS'],
+  // Moved to scripts/blacklist-nifty.json (2026-08-01) so the admin console's "Exclude &
+  // re-run" action can append to it mechanically — see each entry's `reason` there.
+  blacklist: blacklistEntries.map(e => e.ticker),
   startingValue: 100000,
   indexTicker: '^NSEI',
   indexName: 'NIFTY 50',

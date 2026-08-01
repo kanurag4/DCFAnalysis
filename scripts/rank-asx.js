@@ -6,6 +6,7 @@
 //   node scripts/rank-asx.js --rerank   re-rank the LAST run's cached data (no fetch)
 const { runScreen } = require('./lib/run-screen.js');
 const { fetchAusRf } = require('./lib/rf.js');
+const blacklistEntries = require('./blacklist-asx.json');
 
 const config = {
   universe: 'ASX 300',
@@ -18,11 +19,9 @@ const config = {
   topN: 20,
   maxMargin: 0.8,          // drop > 80% margins — the most assumption-fragile valuations
   // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
-  // MFF.AX: LIC (MFF Capital Investments) — FCF inflated by investment flows, removed 4x (2026-06 to 2026-07).
-  // WPR.AX: REIT (Waypoint REIT) — same DCF-on-investment-flows issue, removed 2x.
-  // GOZ.AX: REIT (Growthpoint Properties Australia) — rental FCF not DCF-representative, removed 2026-07-10.
-  // RGN.AX: REIT (Region Group) — same REIT FCF issue, removed 2026-07-10.
-  blacklist: ['MFF.AX', 'WPR.AX', 'GOZ.AX', 'RGN.AX'],
+  // Moved to scripts/blacklist-asx.json (2026-08-01) so the admin console's "Exclude &
+  // re-run" action can append to it mechanically — see each entry's `reason` there.
+  blacklist: blacklistEntries.map(e => e.ticker),
   indexTicker: '^AXJO',
   indexName: 'ASX 200',
   cacheFile: '_evaluated.json', // unchanged so existing cache + --rerank keep working

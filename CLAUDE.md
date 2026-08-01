@@ -553,6 +553,50 @@ Cloudflare Pages auto-deploys in ~1 min. Also need: hub card in `www/index.html`
 
 **Drift guard (added after the 2026-07-18 incident):** before committing a deploy, `git status www/dcf` must show only the files you intended (for a monthly snapshot: the 5 JSON files). Anything else means StockAnalysis-side changes (e.g. the 2026-07-17 nav/kv-shared.css consolidation) were never backported here and the xcopy just clobbered them live — stop, restore the deploy target from its git HEAD, backport into this repo, then redeploy.
 
+**This manual `xcopy` deploy is still the right path for actual tool code changes** (edits to
+a screen's `index.html`/`style.css`/`app.js`). It is **no longer the path for the routine
+monthly data refresh** — see "Automated refresh (admin console)" below.
+
+---
+
+## Automated refresh (admin console) — shipped 2026-08-01
+
+The routine monthly snapshot refresh for all 5 markets now runs via
+`kashvector.com/admin/` (a Cloudflare Access-gated page in `StockAnalysis`) instead of
+manually invoking the `/refresh-<market>-undervalued` skills. Full design:
+`C:\Users\Anurag\.claude\plans\can-i-put-the-peaceful-frost.md`; architecture summary in
+`StockAnalysis/Kashvector.md`'s "Admin console" note; concrete gotchas hit while building it
+in `Rules/kashvector-lessons.md`'s "Admin console build" section.
+
+- **`.github/workflows/refresh-screen.yml`** — `workflow_dispatch` (market: asx/sp500/nifty/
+  kospi/nikkei), runs `npm test` then `node scripts/rank-<market>.js` unchanged, commits the 5
+  snapshot files to a force-pushed `staging/<market>` branch (nothing touches `master`), then
+  `scripts/post-run.js` (testable core in `scripts/lib/post-run.js`) POSTs a review payload to
+  the `kv-admin` Worker's `/ingest` endpoint.
+- **`.github/workflows/publish-screen.yml`** — `workflow_dispatch` (market + sha), asserts
+  `sha` is still `staging/<market>`'s tip, **cherry-picks** it onto `master` (not a
+  fast-forward — approving several markets in one sitting means every approval after the first
+  has a stale base), then checks out `kanurag4/stock-evaluator` with a cross-repo PAT
+  (`KV_PUBLISH_PAT` secret) and copies **only** the 5 snapshot files into
+  `www/dcf/<market>-undervalued/` — deliberately not the full `xcopy` this repo's manual
+  deploy uses, since that's what caused the 2026-07-18 incident.
+- **`scripts/lib/batch-auth.js`** — shared `X-KV-Batch-Key` header builder, wired into
+  `fetch-yahoo.js`/`lib/fetch-dividends.js`/`lib/rf.js`, inert unless `KV_BATCH_KEY` is set
+  (so a bare local `node scripts/rank-*.js` run is unaffected). Matches a `BATCH_KEY` bypass
+  added to `worker/yahoo-proxy.js` in `StockAnalysis` that skips the per-IP rate limiter for
+  keyed requests — verified live at full 502-ticker scale (S&P 500, 2026-08-01): 0 fetch-failed.
+- **`readProxyUrl()` in `scripts/lib/run-screen.js`** now honours a `YAHOO_PROXY_URL` env
+  override before falling back to parsing `www/config.js`.
+- **`KV_PUBLISH_PAT` repo secret expires 2026-10-30.** It's the same fine-grained GitHub PAT
+  value as `kv-admin`'s `GITHUB_TOKEN` Worker secret in `StockAnalysis` — both need rotating
+  together (`gh secret set KV_PUBLISH_PAT` here, `wrangler secret put GITHUB_TOKEN -c
+  worker-admin/wrangler.toml` there) or the publish workflow and the console's Run/Approve
+  buttons start failing with auth errors.
+- **Still manual, on purpose:** editing a `blacklist`/chaebol map and the `--rerank` re-run
+  that follows, the portfolio-replay recovery procedure, quarterly ticker-list refreshes, and
+  the January `<title>` year bump. The console flags candidates for these (e.g. an unblacklisted
+  REIT-looking name) but has no "edit and re-rank" action — that stays a Claude Code session.
+
 ---
 
 ## DDM — Implemented (2026-05-30)

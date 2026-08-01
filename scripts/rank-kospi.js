@@ -10,6 +10,7 @@
 // docs/japan-korea-market-research.md) — the static rf/erp/terminalGrowth seeds live
 // entirely in marketParamsFor's .KS branch.
 const { runScreen } = require('./lib/run-screen.js');
+const blacklistEntries = require('./blacklist-kospi.json');
 
 const config = {
   universe: 'KOSPI 200',
@@ -34,7 +35,8 @@ const config = {
     '011780.KS': 'Kumho Asiana Group',   // Kumho Petrochemical, added 2026-07-25
     '161890.KS': 'Kolmar Group',         // Kolmar Korea, added 2026-07-25
   },
-  blacklist: [],
+  // Moved to scripts/blacklist-kospi.json (2026-08-01) — see rank-asx.js's comment.
+  blacklist: blacklistEntries.map(e => e.ticker),
   startingValue: 10000000,
   // Switched from ^KS200 to ^KS11 (Composite) 2026-07-31 — "KOSPI" almost
   // always means the Composite in headlines/news, not the 200-stock
