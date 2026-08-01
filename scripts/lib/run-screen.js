@@ -22,8 +22,12 @@ const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require(
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // ~18.75 req/min keeps us under the 20/60s Worker cap
 
-// Read the proxy URL straight from www/config.js without a DOM.
+// Read the proxy URL straight from www/config.js without a DOM. An explicit
+// YAHOO_PROXY_URL env var overrides this (set by the GitHub Actions
+// refresh-screen workflow so CI doesn't depend on parsing a checked-out file
+// path it doesn't otherwise need).
 function readProxyUrl() {
+  if (process.env.YAHOO_PROXY_URL) return process.env.YAHOO_PROXY_URL;
   const src = fs.readFileSync(path.join(__dirname, '../../www/config.js'), 'utf8');
   const m = src.match(/YAHOO_PROXY_URL\s*[:=]\s*['"]([^'"]+)['"]/);
   if (!m) throw new Error('Could not find YAHOO_PROXY_URL in www/config.js');
@@ -303,4 +307,4 @@ async function runScreen(config, argv = process.argv) {
   }
 }
 
-module.exports = { runScreen };
+module.exports = { runScreen, readProxyUrl };

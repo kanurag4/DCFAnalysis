@@ -9,8 +9,10 @@
 // null (their value lives in summaryDetail). Clamped to a plausible band;
 // otherwise the documented per-market fallback is returned (matches the live
 // tool's silent fallback). fetchImpl is injectable for testing.
+const { batchHeaders } = require('./batch-auth.js');
+
 const DEFAULT_FETCH = async (url) => {
-  const res = await fetch(url);
+  const res = await fetch(url, { headers: batchHeaders() });
   if (!res || !res.ok) return null;
   return res.json();
 };

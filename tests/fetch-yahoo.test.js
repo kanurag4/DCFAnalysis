@@ -47,3 +47,38 @@ test('fetchSymbol gives up and returns null after exhausting retries', async () 
   assert.strictEqual(d, null);
   assert.strictEqual(calls, 3); // initial + 2 retries
 });
+
+test('fetchSymbol sends X-KV-Batch-Key when KV_BATCH_KEY is set (admin-console batch auth)', async () => {
+  const stubBody = { quoteSummary: { result: [{ quoteType: { longName: 'Batch Co' },
+    financialData: { currentPrice: { raw: 5 } }, summaryDetail: { currency: 'USD' },
+    defaultKeyStatistics: {}, assetProfile: {} }] } };
+  let capturedHeaders = null;
+  const fakeFetch = async (url, opts) => {
+    capturedHeaders = opts && opts.headers;
+    return { ok: true, status: 200, json: async () => stubBody };
+  };
+  const prev = process.env.KV_BATCH_KEY;
+  process.env.KV_BATCH_KEY = 'test-secret';
+  try {
+    await fetchSymbol('BATCH', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  } finally {
+    if (prev === undefined) delete process.env.KV_BATCH_KEY; else process.env.KV_BATCH_KEY = prev;
+  }
+  assert.deepStrictEqual(capturedHeaders, { 'X-KV-Batch-Key': 'test-secret' });
+});
+
+test('fetchSymbol sends no batch-key header when KV_BATCH_KEY is unset (dev-machine runs stay unauthenticated)', async () => {
+  let capturedHeaders = 'not-called';
+  const fakeFetch = async (url, opts) => {
+    capturedHeaders = opts && opts.headers;
+    return { ok: false, status: 404, json: async () => ({}) };
+  };
+  const prev = process.env.KV_BATCH_KEY;
+  delete process.env.KV_BATCH_KEY;
+  try {
+    await fetchSymbol('NOKEY', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  } finally {
+    if (prev !== undefined) process.env.KV_BATCH_KEY = prev;
+  }
+  assert.deepStrictEqual(capturedHeaders, {});
+});
