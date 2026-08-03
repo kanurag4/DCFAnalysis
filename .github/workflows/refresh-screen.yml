@@ -7,7 +7,7 @@ on:
         description: Market to refresh
         required: true
         type: choice
-        options: [asx, sp500, nifty, kospi, nikkei]
+        options: [asx, sp500, nifty, kospi, nikkei, europe]
       exclude:
         description: Comma-separated tickers to permanently blacklist before this run (optional -- the admin console's "Exclude & re-run" action)
         required: false
@@ -65,6 +65,7 @@ jobs:
             nifty) OUTDIR=nifty-undervalued ;;
             kospi) OUTDIR=kospi-undervalued ;;
             nikkei) OUTDIR=nikkei-undervalued ;;
+            europe) OUTDIR=europe-undervalued ;;
             *) echo "unknown market: $MARKET"; exit 1 ;;
           esac
 

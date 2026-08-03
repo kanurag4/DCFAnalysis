@@ -7,7 +7,7 @@ on:
         description: Market to publish
         required: true
         type: choice
-        options: [asx, sp500, nifty, kospi, nikkei]
+        options: [asx, sp500, nifty, kospi, nikkei, europe]
       sha:
         description: Commit sha on staging/<market> to publish (must match its current tip)
         required: true
@@ -37,6 +37,7 @@ jobs:
             nifty) OUTDIR=nifty-undervalued ;;
             kospi) OUTDIR=kospi-undervalued ;;
             nikkei) OUTDIR=nikkei-undervalued ;;
+            europe) OUTDIR=europe-undervalued ;;
             *) echo "::error::unknown market: $MARKET"; exit 1 ;;
           esac
           echo "outdir=$OUTDIR" >> "$GITHUB_OUTPUT"

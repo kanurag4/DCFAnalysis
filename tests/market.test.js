@@ -33,3 +33,36 @@ test('Japanese ticker ignores any live rf passed in (no live source exists)', ()
 test('.TO (Toronto) does not match the .T Japan branch', () => {
   assert.deepStrictEqual(marketParamsFor('SHOP.TO'), { rf: 0.045, erp: 0.055, terminalGrowth: 0.025 });
 });
+
+test('UK (.L) ticker gets fixed Gilt-proxy rf/erp/terminalGrowth, no live override possible', () => {
+  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.050, erp: 0.06, terminalGrowth: 0.02 });
+});
+
+test('UK (.L) ticker ignores any live rf passed in (no live source exists)', () => {
+  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.050, erp: 0.06, terminalGrowth: 0.02 });
+});
+
+test('German (.DE) ticker gets fixed Bund-proxy rf/erp/terminalGrowth', () => {
+  assert.deepStrictEqual(marketParamsFor('SAP.DE'), { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 });
+});
+
+test('French (.PA), Dutch (.AS), Italian (.MI), Spanish (.MC) tickers all get the same eurozone bucket', () => {
+  const expected = { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 };
+  assert.deepStrictEqual(marketParamsFor('MC.PA'), expected);
+  assert.deepStrictEqual(marketParamsFor('ASML.AS'), expected);
+  assert.deepStrictEqual(marketParamsFor('ENI.MI'), expected);
+  assert.deepStrictEqual(marketParamsFor('SAN.MC'), expected);
+});
+
+test('Belgian (.BR), Portuguese (.LS), Austrian (.VI), Finnish (.HE), Irish (.IR) tickers get the eurozone bucket', () => {
+  const expected = { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 };
+  assert.deepStrictEqual(marketParamsFor('ABI.BR'), expected);
+  assert.deepStrictEqual(marketParamsFor('EDP.LS'), expected);
+  assert.deepStrictEqual(marketParamsFor('OMV.VI'), expected);
+  assert.deepStrictEqual(marketParamsFor('NOKIA.HE'), expected);
+  assert.deepStrictEqual(marketParamsFor('RYA.IR'), expected);
+});
+
+test('eurozone tickers ignore any live rf passed in (no live source exists)', () => {
+  assert.deepStrictEqual(marketParamsFor('SAP.DE', { euRf: 0.09 }), { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 });
+});

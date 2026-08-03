@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { fetchRfRate, fetchIndexPrice } = require('../scripts/lib/rf.js');
+const { fetchRfRate, fetchIndexPrice, fetchFxRate } = require('../scripts/lib/rf.js');
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `expected ~${b}, got ${a}`);
 // Minimal raw quoteSummary body with one summaryDetail field populated.
@@ -64,4 +64,19 @@ test('fetchIndexPrice returns null on a non-positive or missing close', async ()
 
 test('fetchIndexPrice returns null when the fetch throws', async () => {
   assert.strictEqual(await fetchIndexPrice('^N225', 'x', async () => { throw new Error('boom'); }), null);
+});
+
+test('fetchFxRate reads summaryDetail.previousClose with no /100 scaling', async () => {
+  const r = await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 1.1723) });
+  near(r, 1.1723);
+});
+
+test('fetchFxRate falls back when out of the plausible 0.5-2 band', async () => {
+  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 0.03) }), 1.17);
+  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 45) }), 1.17);
+});
+
+test('fetchFxRate falls back when the fetch throws or returns nothing usable', async () => {
+  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => { throw new Error('boom'); } }), 1.17);
+  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => ({}) }), 1.17);
 });

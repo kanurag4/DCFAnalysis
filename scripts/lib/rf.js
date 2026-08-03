@@ -67,4 +67,30 @@ async function fetchIndexPrice(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
   }
 }
 
-module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf, fetchIndexPrice };
+// Fetch an FX rate via the Worker proxy — same raw-quote chain as fetchRfRate
+// (previousClose -> regularMarketPrice -> currentPrice) but WITHOUT the /100
+// scaling (that's specific to percentage yields) and a plausibility band suited
+// to a GBP/EUR-style rate rather than a bond yield. Used only by the Europe
+// screen's paper-portfolio rebalance (scripts/lib/fx.js) -- never by ranking or
+// valuation, which stay currency-agnostic.
+async function fetchFxRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FETCH } = {}) {
+  let raw = null;
+  try {
+    const url = `${proxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}`;
+    const body = await fetchImpl(url);
+    const r = body?.quoteSummary?.result?.[0];
+    raw =
+      r?.summaryDetail?.previousClose?.raw ??
+      r?.summaryDetail?.regularMarketPrice?.raw ??
+      r?.financialData?.currentPrice?.raw ??
+      null;
+  } catch (_) {
+    raw = null;
+  }
+  // GBPEUR=X has traded in a 0.5-2 band for decades; outside that, treat as bad data.
+  return (raw != null && isFinite(raw) && raw > 0.5 && raw < 2) ? raw : fallback;
+}
+
+const fetchGbpEurRate = (proxyUrl) => fetchFxRate('GBPEUR=X', 1.17, { proxyUrl });
+
+module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchGbpEurRate };

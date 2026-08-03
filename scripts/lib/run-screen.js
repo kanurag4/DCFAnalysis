@@ -18,6 +18,7 @@ const { evaluateStock } = require('./evaluate.js');
 const { rankRows, rankFunnel } = require('./rank.js');
 const { mergeFirstSeen } = require('./firstSeen.js');
 const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require('./portfolio.js');
+const { prepareEurRebalanceInputs } = require('./fx.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // ~18.75 req/min keeps us under the 20/60s Worker cap
@@ -43,6 +44,8 @@ async function gather(config) {
   // stays null and marketParamsFor's static fallback applies for every ticker.
   const rf = config.fetchRf ? await config.fetchRf(proxyUrl) : null;
   const live = { [config.liveKey]: rf };
+  const fx = config.fetchFx ? await config.fetchFx(proxyUrl) : null;
+  if (fx != null) console.log(`GBP/EUR: ${fx.toFixed(4)}`);
   const rfDisplay = rf != null ? `${(rf * 100).toFixed(2)}%` : 'static (no live source)';
   console.log(`${config.rfLabel}: ${rfDisplay}  | tickers: ${tickers.length}  | asAt: ${asAt}`);
 
@@ -80,13 +83,13 @@ async function gather(config) {
     if (indexPrice != null) console.log(`${config.indexName || config.indexTicker}: ${indexPrice.toFixed(2)}`);
   }
 
-  const out = { asAt, tickerCount: tickers.length, evaluated, indexPrice };
+  const out = { asAt, tickerCount: tickers.length, evaluated, indexPrice, fxRate: fx };
   fs.writeFileSync(path.join(__dirname, '..', config.cacheFile), JSON.stringify(out) + '\n'); // for --rerank
   // Raw cache for --reeval: re-apply engine/parity fixes instantly without
   // re-hitting the Worker. Stores the RF so re-eval reuses the same seed.
   if (config.rawFile) {
     fs.writeFileSync(path.join(__dirname, '..', config.rawFile),
-      JSON.stringify({ asAt, tickerCount: tickers.length, rf, liveKey: config.liveKey, raw }) + '\n');
+      JSON.stringify({ asAt, tickerCount: tickers.length, rf, fx, liveKey: config.liveKey, raw }) + '\n');
   }
   return out;
 }
@@ -106,7 +109,7 @@ function readPublishedTickers(config) {
   }
 }
 
-function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
+function rankAndWrite(config, { asAt, tickerCount, evaluated, fxRate }) {
   const { topN, maxMargin } = config;
   const blacklist = new Set(config.blacklist || []);
   const eligible = blacklist.size
@@ -169,7 +172,10 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated }) {
   };
 
   fs.writeFileSync(path.join(outDir, 'rankings.json'),
-    JSON.stringify({ asAt, universe: config.universe, summary, rows: rounded }, null, 2) + '\n');
+    JSON.stringify({
+      asAt, universe: config.universe, summary, rows: rounded,
+      ...(fxRate != null ? { fxRate } : {}),
+    }, null, 2) + '\n');
 
   const fsPath = path.join(outDir, 'first-seen.json');
   const ledger = fs.existsSync(fsPath) ? JSON.parse(fs.readFileSync(fsPath, 'utf8')) : {};
@@ -242,8 +248,20 @@ async function updatePortfolio(config, data, oldRankings) {
     console.log(`Dividends: ${paid}/${oldRows.length} prior holdings paid over ${oldPortfolio.asAt}→${data.asAt}`);
   }
 
+  // For every market except Europe, config.fetchFx is undefined and this is a
+  // pure pass-through -- computeRebalance() itself is never modified. For
+  // Europe, this converts GBP-priced rows to EUR "shadow" prices using
+  // last run's persisted rate (oldFx) and this run's fresh rate (newFx), so a
+  // GBP position's return correctly reflects both its own native-currency move
+  // AND the GBP/EUR exchange-rate move between rebalances -- see fx.js.
+  const oldFx = oldRankings && oldRankings.fxRate != null ? oldRankings.fxRate : null;
+  const rebalanceInputs = config.fetchFx
+    ? prepareEurRebalanceInputs({ oldRows, newRows, allEvaluated: data.evaluated, firstSeen, oldFx, newFx: data.fxRate ?? null })
+    : { oldRows, newRows, allEvaluated: data.evaluated, firstSeen };
+
   const { portfolio, sold } = computeRebalance(
-    oldPortfolio, oldRows, newRows, data.evaluated, firstSeen, data.asAt, config.startingValue, indexMeta, dividendsByTicker
+    oldPortfolio, rebalanceInputs.oldRows, rebalanceInputs.newRows, rebalanceInputs.allEvaluated,
+    rebalanceInputs.firstSeen, data.asAt, config.startingValue, indexMeta, dividendsByTicker
   );
 
   fs.writeFileSync(portfolioPath, JSON.stringify(portfolio, null, 2) + '\n');
@@ -272,7 +290,7 @@ async function updatePortfolio(config, data, oldRankings) {
   const startVal = portfolio.startingValue || STARTING_VALUE;
   const gain = portfolio.value - startVal;
   const sign = gain >= 0 ? '+' : '';
-  const CURRENCY_SYMBOLS = { INR: '₹', KRW: '₩', JPY: '¥' };
+  const CURRENCY_SYMBOLS = { INR: '₹', KRW: '₩', JPY: '¥', EUR: '€' };
   const sym = CURRENCY_SYMBOLS[config.currency] ?? '$';
   console.log(`Portfolio: ${sym}${portfolio.value.toFixed(2)} (${sign}${(gain / startVal * 100).toFixed(1)}%) · ${portfolio.N} holdings`);
   if (portfolio.dividendsTotal) {
@@ -294,7 +312,7 @@ async function runScreen(config, argv = process.argv) {
     const rfDisplay = b.rf != null ? `${(b.rf * 100).toFixed(2)}%` : 'static (no live source)';
     console.log(`Re-evaluating ${b.raw.length} cached raw rows from ${b.asAt} (no fetch; rf=${rfDisplay}).`);
     const evaluated = b.raw.map(d => evaluateStock(d, marketParamsFor(d.ticker, live)));
-    data = { asAt: b.asAt, tickerCount: b.tickerCount, evaluated };
+    data = { asAt: b.asAt, tickerCount: b.tickerCount, evaluated, fxRate: b.fx };
     fs.writeFileSync(cachePath, JSON.stringify(data) + '\n');
     rankAndWrite(config, data);
 

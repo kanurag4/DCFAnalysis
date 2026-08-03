@@ -17,6 +17,18 @@ function marketParamsFor(ticker, live = {}) {
   // capped at 1.5% per the deflation-exit research (old 0–0.5% convention is outdated,
   // but 2.5% would overstate Japan's demographic-constrained long-run growth).
   if (t.endsWith('.T')) return { rf: 0.028, erp: 0.06, terminalGrowth: 0.015 };
+  // UK: no live 10-yr Gilt yield ticker on Yahoo (same "no live source" situation as
+  // Korea/Japan) -- fixed rf reflects the ~5.0% Gilt regime (spot-checked 2026-08-03).
+  // erp/terminalGrowth are near-US-tier (mature, liquid developed market).
+  if (t.endsWith('.L')) return { rf: 0.050, erp: 0.06, terminalGrowth: 0.02 };
+  // Eurozone: same "no live source" situation -- fixed rf reflects the ~3.2% Bund
+  // regime (spot-checked 2026-08-03). One bucket for every eurozone exchange suffix
+  // (Germany/France/Netherlands/Italy/Spain/Belgium/Portugal/Austria/Finland/Ireland) --
+  // the DCF discount rate is already a market-wide seed, not a country-specific one,
+  // matching how ASX/NIFTY/etc. each get one rf regardless of which state/exchange
+  // within that market a ticker is on.
+  const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
+  if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 };
   if (!t.includes('.')) return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 };
   return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
 }
