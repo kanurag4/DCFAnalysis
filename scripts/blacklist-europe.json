@@ -1,1 +1,8 @@
-[]
+[
+  { "ticker": "III.L", "reason": "Listed private-equity investor (3i Group) — returns come from portfolio realisations, so reported FCF is investment flows rather than operating earnings", "addedAt": "2026-08-03" },
+  { "ticker": "FCIT.L", "reason": "Closed-end investment trust (F&C Investment Trust) — FCF is investment flows", "addedAt": "2026-08-03" },
+  { "ticker": "SMT.L", "reason": "Closed-end investment trust (Scottish Mortgage) — FCF is investment flows", "addedAt": "2026-08-03" },
+  { "ticker": "PCT.L", "reason": "Closed-end investment trust (Polar Capital Technology) — FCF is investment flows", "addedAt": "2026-08-03" },
+  { "ticker": "ALW.L", "reason": "Closed-end investment trust (Alliance Witan) — FCF is investment flows", "addedAt": "2026-08-03" },
+  { "ticker": "PSH.L", "reason": "Closed-end fund (Pershing Square Holdings) — holds a listed-equity portfolio; FCF is investment flows", "addedAt": "2026-08-03" }
+]

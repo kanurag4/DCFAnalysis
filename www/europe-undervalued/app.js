@@ -339,7 +339,7 @@
     asAtEl.hidden = false;
     renderScreenSummary({ ...rankings.summary, universe: rankings.universe });
     const rows = rankings.rows || [];
-    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
+    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this week.'; return; }
 
     const tickersForLive = rows.map(r => r.ticker);
     if (portfolioData && portfolioData.indexTicker) tickersForLive.push(portfolioData.indexTicker);
