@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { fetchRfRate, fetchIndexPrice, fetchFxRate } = require('../scripts/lib/rf.js');
+const { fetchRfRate, fetchIndexPrice, fetchFxRate, fetchEurFxRates } = require('../scripts/lib/rf.js');
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `expected ~${b}, got ${a}`);
 // Minimal raw quoteSummary body with one summaryDetail field populated.
@@ -67,16 +67,43 @@ test('fetchIndexPrice returns null when the fetch throws', async () => {
 });
 
 test('fetchFxRate reads summaryDetail.previousClose with no /100 scaling', async () => {
-  const r = await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 1.1723) });
+  const r = await fetchFxRate('GBPEUR=X', { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 1.1723) });
   near(r, 1.1723);
 });
 
-test('fetchFxRate falls back when out of the plausible 0.5-2 band', async () => {
-  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 0.03) }), 1.17);
-  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 45) }), 1.17);
+// Returns null, not a fallback: a plausible-looking stand-in used to get persisted as
+// if it were a real quote, then compared against the next run's real rate, inventing
+// an FX move that never happened. Provenance is the caller's decision now.
+test('fetchFxRate returns null when out of the plausible band', async () => {
+  assert.strictEqual(await fetchFxRate('GBPEUR=X', { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 0.03) }), null);
+  assert.strictEqual(await fetchFxRate('GBPEUR=X', { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 45) }), null);
 });
 
-test('fetchFxRate falls back when the fetch throws or returns nothing usable', async () => {
-  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => { throw new Error('boom'); } }), 1.17);
-  near(await fetchFxRate('GBPEUR=X', 1.17, { proxyUrl: 'x', fetchImpl: async () => ({}) }), 1.17);
+test('fetchFxRate returns null when the fetch throws or returns nothing usable', async () => {
+  assert.strictEqual(await fetchFxRate('GBPEUR=X', { proxyUrl: 'x', fetchImpl: async () => { throw new Error('boom'); } }), null);
+  assert.strictEqual(await fetchFxRate('GBPEUR=X', { proxyUrl: 'x', fetchImpl: async () => ({}) }), null);
+});
+
+test('fetchEurFxRates marks source live when every rate is fetched', async () => {
+  const orig = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => detail('previousClose', 1.1) });
+  try {
+    const out = await fetchEurFxRates('http://x');
+    assert.strictEqual(out.source, 'live');
+    assert.deepEqual(out.missing, []);
+    near(out.rates.GBP, 1.1);
+    near(out.rates.USD, 1.1);
+  } finally { global.fetch = orig; }
+});
+
+test('fetchEurFxRates marks source fallback and lists missing when every fetch fails', async () => {
+  const orig = global.fetch;
+  global.fetch = async () => ({ ok: false, json: async () => ({}) });
+  try {
+    const out = await fetchEurFxRates('http://x');
+    assert.strictEqual(out.source, 'fallback');
+    assert.deepEqual(out.missing, ['GBP', 'USD']);
+    near(out.rates.GBP, 1.17);  // documented stand-ins, but flagged as such
+    near(out.rates.USD, 0.92);
+  } finally { global.fetch = orig; }
 });

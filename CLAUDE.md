@@ -355,30 +355,54 @@ plan `docs/superpowers/plans/2026-08-02-europe-undervalued-screener.md` (both in
   growth); the eurozone-suffix branch (`.DE .PA .AS .MI .MC .BR .LS .VI .HE .IR`) returns a
   static **3.2%** (Bund-proxy, 5.5% ERP, 1.8% terminal growth) — values spot-checked against
   real 10-yr UK Gilt/German Bund yields 2026-08-03, will drift stale over time like any
-  hardcoded macro assumption, re-check periodically. **⚠️ Unlike Korea and Japan, these are
-  NOT currently mirrored into the live tool's `app.js`** — `prefillInputs()` only branches on
-  `isAsx`/`isInd`/`isKor`/`isJpn`; a `.L` or eurozone-suffix ticker falls into the generic
-  `else` bucket (US live rf + 5.5% ERP) instead of the UK/eurozone values above. This breaks
-  the "must match the live DCF tool exactly" engine-parity rule for this one market only —
-  manually valuing a UK/EU stock in the live tool today gives a different fair value than the
-  batch screen computes for the same ticker. Not fixed as part of the Europe launch (the
-  build's scope was the batch/screen infrastructure only, `app.js` was never touched) — if
-  this needs closing, add `isUk`/`isEurozone` detection to `prefillInputs()` mirroring
-  `UK_RF`/`UK_ERP`/`EU_RF`/`EU_ERP` constants, same pattern as `KOR_RF`/`JPN_RF`.
+  hardcoded macro assumption, re-check periodically. **Mirrored into the live tool** as
+  `UK_RF`/`UK_ERP`/`UK_TGROWTH` and `EU_RF`/`EU_ERP`/`EU_TGROWTH` in `www/app.js`, with
+  `isUk`/`isEurozone` branches in `prefillInputs()`, `resetRfErp()`, the terminal-growth seed,
+  `setRfBadge()`'s `○ fixed` labels, and "About the UK/eurozone numbers" panels — same pattern
+  as Korea/Japan (closed 2026-08-03, one commit after the screen launched; the engine-parity
+  gap it plugged is described in `Rules/kashvector-lessons.md`). **These are two independent
+  hand-synced implementations — a change to `market.js`'s constants without the matching
+  change in `www/app.js` silently breaks parity for this market, same drift warning as
+  `KOR_RF`/`JPN_RF`.** Note `market.js` dispatches on the ticker *suffix* while `fx.js`
+  dispatches on Yahoo's reported *currency*; they disagree for the three LSE-listed non-GBp
+  names (`CPG.L`/`IHG.L` report USD, `MTLN.L` reports EUR), which get UK Gilt seeds. That is
+  deliberate for the two genuine UK companies and a known rough edge for `MTLN.L`.
 - **FX-aware paper portfolio — the one genuinely new mechanism, no other screen has this**
   (`scripts/lib/fx.js`, unit-tested in `tests/fx.test.js`). Ranking (a %) and per-row display
-  (`p` for GBp rows, `€` for eurozone rows) need no conversion — only the pooled €10,000
-  paper portfolio does, since it's the one place GBP and EUR positions get blended into a
-  single number. `fx.js` converts GBp/GBP rows to EUR "shadow" prices immediately before (and
-  only for) the `computeRebalance()` call in `run-screen.js`'s `updatePortfolio()` —
-  `computeRebalance()` itself was never modified, so the other 5 markets have zero risk.
-  Uses **two different rates**, not one: last run's persisted `oldFx` (from the previous
-  `rankings.json`'s `fxRate` field) for old holdings, this run's fresh `newFx` (from
-  `fetchGbpEurRate` in `rf.js`, via the Worker's `/quoteSummary/GBPEUR=X` route) for new ones
-  — captures real GBP/EUR drift between rebalances, not just each stock's own native-currency
-  return. Fails open to a `1.17` fallback (never blocks the batch) if the live fetch fails or
-  returns outside the plausible `0.5`–`2` band; the run log prints `GBP/EUR: X.XXXX` for the
-  weekly review to sanity-check.
+  (each row shows its own native currency) need no conversion — only the pooled €10,000 paper
+  portfolio does, since it's the one place mixed-currency positions get blended into a single
+  number. `fx.js` converts to EUR "shadow" values immediately before (and only for) the
+  `computeRebalance()` call in `run-screen.js`'s `updatePortfolio()` — `computeRebalance()`
+  itself was never modified, so the other 5 markets have zero risk (every path is gated on
+  `config.fetchFx`, which only `rank-europe.js` sets).
+  - **Rates are a map, not a scalar** (`{ GBP, USD }`, EUR per unit; `GBp` is handled as
+    GBP/100). USD is in there because `CPG.L` and `IHG.L` are LSE-listed but **report in
+    USD** — an early version passed any non-GBp currency through unconverted, silently
+    pooling USD as if it were EUR. Anything with no rate is returned to the caller as
+    `unconvertible` and logged loudly rather than quietly mis-pooled.
+  - **Prices use two different rates**, deliberately: last run's persisted rates for old
+    holdings, this run's fresh rates for new ones — captures real currency drift between
+    rebalances, not just each stock's own native-currency move.
+  - **Dividends use the OLD rate, not the new one, and this is load-bearing.**
+    `computeRebalance()` derives `shares = slotValue / oldPrice` then
+    `divCash = shares × dividend`, so the dividend must share a currency basis with
+    `oldPrice`. Converting at `oldFx` makes the rate cancel algebraically, collapsing
+    `divCash` to `slotValue × (dividend_native / oldPrice_native)` — the true native
+    dividend yield, identical to what every single-currency market produces. **Not
+    converting the dividend at all** (the bug as originally shipped, caught by peer review
+    before the second run) left a pence dividend multiplied by a EUR-basis share count: a
+    ~85× overstatement on every GBp holding, i.e. ~half the universe, which would have been
+    written permanently into `portfolio-value.json`. `tests/fx.test.js` locks this with a
+    unit-consistency test asserting `divCash` is a few euro on a €500 slot, not hundreds.
+  - **Fallbacks are flagged, never laundered into real data.** `fetchFxRate` returns `null`
+    on failure; `fetchEurFxRates` substitutes a documented stand-in and reports
+    `source: 'live' | 'partial' | 'fallback'` plus which currencies are `missing`. Both the
+    rates and the source are persisted (`fxRates`/`fxSource` in `rankings.json`). When
+    either the previous or current run is not fully live, `updatePortfolio()` uses **this
+    run's rates for both sides**, making the FX component of every ratio exactly 1.0 so only
+    genuine price moves flow through. The earlier design persisted a bare `1.17` fallback
+    indistinguishably from a live quote and then compared it against the next run's real
+    rate, fabricating a permanent phantom currency move across half the portfolio.
 - **Benchmark: `^STOXX`** (STOXX Europe 600 — verified resolving via the Worker's `/history`
   route 2026-08-03, no crumb/cookie handshake needed, same as every other index benchmark).
 - Gold "New" badge moved to **Europe only** on launch (user decision 2026-08-03, reversing

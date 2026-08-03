@@ -3,6 +3,11 @@
   const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
   if (isNative) { const b = document.getElementById('kv-play-badge'); if (b) b.hidden = true; }
 
+  // Per-row price symbols. GBp is pence (Yahoo quotes UK prices in pence, not
+  // pounds) so it renders a bare 'p' suffix-style marker; everything else is a
+  // conventional prefix symbol.
+  const PRICE_SYMBOLS = { GBp: 'p', EUR: '€', USD: '$', GBP: '£' };
+
   const $ = (id) => document.getElementById(id);
   const statusEl = $('status');
   const tableEl = $('rank-table');
@@ -42,7 +47,7 @@
     if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
-    el.innerHTML = `From ${s.tickers} ${s.universe || 'S&P 500'} names, <strong>${s.qualified} qualified</strong> this month` +
+    el.innerHTML = `From ${s.tickers} ${s.universe || 'Europe'} names, <strong>${s.qualified} qualified</strong> this week` +
       `${s.shown < s.qualified ? ` (showing the top ${s.shown})` : ''}.${dropText}`;
     el.hidden = false;
   }
@@ -50,10 +55,18 @@
   function row(r, livePrice, firstSeen) {
     const price = (typeof livePrice === 'number' && livePrice > 0) ? livePrice : r.snapshotPrice;
     const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
-    const sym = r.currency === 'GBp' ? 'p' : '€';
+    // Map from the row's actual currency — do NOT assume "not GBp means EUR".
+    // This universe is genuinely mixed: CPG.L and IHG.L are LSE-listed but
+    // USD-quoted, and labelling those '€' states a falsehood about the price.
+    const sym = PRICE_SYMBOLS[r.currency] || (r.currency ? r.currency + ' ' : '€');
     const fs = firstSeen ? `${firstSeen.firstSeen} @ ${sym}${Number(firstSeen.firstPrice).toFixed(2)}` : '—';
     const tag = r.method === 'DDM' ? 'ddm' : 'dcf';
-    const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, sym);
+    // Market cap is NOT in the same unit as price for GBp names: Yahoo quotes UK
+    // prices in pence but reports marketCap in POUNDS (verified — III.L's
+    // marketCap/price implies 10M shares, marketCap/(price/100) implies the real
+    // ~1.0B). Using the price symbol here rendered Aviva's £20.7B as "p20.74B".
+    const capSym = r.currency === 'GBp' ? '£' : sym;
+    const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, capSym);
     const target = (r.analystTarget == null) ? '—' : `${sym}${r.analystTarget.toFixed(2)}`;
     const opMargin = (r.operatingMargin == null) ? '—' : `${(r.operatingMargin * 100).toFixed(1)}%`;
     // % change from first-listed price to live price — tracks whether the screen's picks performed
@@ -174,9 +187,9 @@
     const sym     = '€'; // the pool is always EUR-denominated (see fx.js) — never derived from rows[0]
     const since   = portfolioData.startedAt || portfolioData.asAt;
     const days    = Math.floor((Date.now() - new Date(since).getTime()) / 86400000);
-    const startLabel = (sym === '₹' && startVal >= 100000)
-      ? sym + (startVal / 100000) + 'L'
-      : sym + (startVal / 1000) + 'K';
+    // No lakh/crore branch here (unlike the NIFTY screen this was cloned from) —
+    // the pool is always EUR, so €10K is the only shape this ever takes.
+    const startLabel = sym + (startVal / 1000) + 'K';
 
     const indexTicker   = portfolioData.indexTicker || null;
     const indexSeedPrice = portfolioData.indexSeedPrice || null;
@@ -259,10 +272,13 @@
     }
   }
 
-  function renderActivityTable(soldData, asAt, currency) {
+  // sold.json entries are always EUR: fx.js converts every price to EUR before
+  // computeRebalance() produces them, regardless of the stock's native currency.
+  // No currency parameter — there is nothing to vary.
+  function renderActivityTable(soldData, asAt) {
     // Only show exits from the most recent batch run; older history accumulates in sold.json but isn't shown.
     const recent = soldData.filter(function(s) { return s.exitDate === asAt; });
-    const sym = currency === 'EUR' ? '€' : '$';
+    const sym = '€';
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const ap = String(asAt).split('-');
     const asAtLabel = ap.length === 3 ? (parseInt(ap[2]) + ' ' + months[parseInt(ap[1]) - 1] + ' ' + ap[0]) : asAt;
@@ -339,7 +355,7 @@
       tableEl.parentNode.insertAdjacentElement('afterend', note);
     }
     if (portfolioData) renderHeroCard(portfolioData, rows, live, portfolioHistory);
-    if (portfolioData) renderActivityTable(soldData || [], rankings.asAt, 'EUR'); // sold.json entries are always EUR (see fx.js) — never derived from rows[0]
+    if (portfolioData) renderActivityTable(soldData || [], rankings.asAt);
   }
 
   init();

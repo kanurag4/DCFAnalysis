@@ -70,10 +70,17 @@ async function fetchIndexPrice(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
 // Fetch an FX rate via the Worker proxy — same raw-quote chain as fetchRfRate
 // (previousClose -> regularMarketPrice -> currentPrice) but WITHOUT the /100
 // scaling (that's specific to percentage yields) and a plausibility band suited
-// to a GBP/EUR-style rate rather than a bond yield. Used only by the Europe
-// screen's paper-portfolio rebalance (scripts/lib/fx.js) -- never by ranking or
+// to an FX rate rather than a bond yield. Used only by the Europe screen's
+// paper-portfolio rebalance (scripts/lib/fx.js) -- never by ranking or
 // valuation, which stay currency-agnostic.
-async function fetchFxRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FETCH } = {}) {
+//
+// Returns null (NOT a fallback) when the fetch fails or the value is
+// implausible. Returning a plausible-looking fallback here was a real bug: it
+// got persisted into rankings.json indistinguishably from a live quote, then
+// read back as the *previous* run's rate on the next refresh, fabricating a
+// permanent phantom FX move across half the portfolio. Provenance is the
+// caller's to decide -- see fetchFxRates.
+async function fetchFxRate(symbol, { proxyUrl, fetchImpl = DEFAULT_FETCH, min = 0.5, max = 2 } = {}) {
   let raw = null;
   try {
     const url = `${proxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}`;
@@ -87,10 +94,43 @@ async function fetchFxRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FET
   } catch (_) {
     raw = null;
   }
-  // GBPEUR=X has traded in a 0.5-2 band for decades; outside that, treat as bad data.
-  return (raw != null && isFinite(raw) && raw > 0.5 && raw < 2) ? raw : fallback;
+  return (raw != null && isFinite(raw) && raw > min && raw < max) ? raw : null;
 }
 
-const fetchGbpEurRate = (proxyUrl) => fetchFxRate('GBPEUR=X', 1.17, { proxyUrl });
+// Every non-EUR currency present in the Europe universe, as EUR per 1 unit.
+// GBp (pence) is handled by fx.js as GBP/100 -- it needs no rate of its own.
+// USD is here because CPG.L and IHG.L are LSE-listed but report in USD
+// (verified 2026-08-03); without it they were silently pooled as if EUR.
+// Plausibility bands are wide enough to survive years of drift but tight
+// enough to reject a garbage quote.
+const EUR_FX_SYMBOLS = {
+  GBP: { symbol: 'GBPEUR=X', fallback: 1.17, min: 0.5, max: 2 },
+  USD: { symbol: 'USDEUR=X', fallback: 0.92, min: 0.5, max: 2 },
+};
 
-module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchGbpEurRate };
+// Fetch every rate the Europe screen needs. Returns
+// `{ rates: { GBP, USD }, source: 'live' | 'partial' | 'fallback', missing: [...] }`.
+//
+// `source` is persisted alongside the rates so the next run can tell a real
+// quote from a stand-in. A run whose rates are not fully live must NOT be
+// compared against a different run's rates (see updatePortfolio) -- doing so
+// invents currency moves that never happened.
+async function fetchEurFxRates(proxyUrl) {
+  const rates = {};
+  const missing = [];
+  for (const [currency, cfg] of Object.entries(EUR_FX_SYMBOLS)) {
+    const live = await fetchFxRate(cfg.symbol, { proxyUrl, min: cfg.min, max: cfg.max });
+    if (live != null) {
+      rates[currency] = live;
+    } else {
+      rates[currency] = cfg.fallback;
+      missing.push(currency);
+    }
+  }
+  const source = missing.length === 0 ? 'live'
+    : missing.length === Object.keys(EUR_FX_SYMBOLS).length ? 'fallback'
+    : 'partial';
+  return { rates, source, missing };
+}
+
+module.exports = { fetchRfRate, fetchUsRf, fetchAusRf, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchEurFxRates };

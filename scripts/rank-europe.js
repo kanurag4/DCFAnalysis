@@ -5,7 +5,7 @@
 //   node scripts/rank-europe.js            fetch all tickers, evaluate, rank, write
 //   node scripts/rank-europe.js --rerank   re-rank the LAST run's cached data (no fetch)
 const { runScreen } = require('./lib/run-screen.js');
-const { fetchGbpEurRate } = require('./lib/rf.js');
+const { fetchEurFxRates } = require('./lib/rf.js');
 const blacklistEntries = require('./blacklist-europe.json');
 
 const config = {
@@ -21,7 +21,10 @@ const config = {
   liveKey: 'euRf',
   fetchRf: null,
   rfLabel: 'Europe RF',
-  fetchFx: fetchGbpEurRate, // only used by the paper-portfolio rebalance (fx.js) — never ranking/valuation
+  // Fetches GBP/EUR and USD/EUR (CPG.L and IHG.L are LSE-listed but USD-quoted).
+  // Only used by the paper-portfolio rebalance (fx.js) — never ranking/valuation,
+  // which are currency-agnostic because margin of safety is a ratio.
+  fetchFx: fetchEurFxRates,
   topN: 20,
   maxMargin: 0.8,
   blacklist: blacklistEntries.map(e => e.ticker),
