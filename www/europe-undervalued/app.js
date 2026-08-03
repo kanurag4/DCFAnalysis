@@ -143,7 +143,10 @@
         scales: {
           x: { ticks: { color: tickColor, font: { size: 10 }, maxRotation: 0 }, grid: { display: false } },
           y: {
-            ticks: { color: tickColor, font: { size: 10 }, callback: v => `${v >= 0 ? '+' : ''}${v}%` },
+            // .toFixed(1), not raw v -- Chart.js's own auto-generated ticks can land on
+            // sub-0.1 values (e.g. near a flat 0% line) that print in JS's scientific
+            // notation (1e-7) unrounded.
+            ticks: { color: tickColor, font: { size: 10 }, callback: v => `${v >= 0 ? '+' : ''}${v.toFixed(1)}%` },
             grid: { color: gridColor },
             afterFit: (scale) => { scale.width = 44; },
           },
@@ -200,17 +203,23 @@
       // and the hero card never disagree — history[0].indexPrice can drift from
       // indexSeedPrice if the seed was patched after the fact (see kashvector-lessons.md).
       const indexBaseline = indexSeedPrice || history[0].indexPrice;
+      // Round to 2dp: the live client-side price (bulk /quote) and the persisted seed
+      // (server-side /history) can disagree by a hairline float precision difference for
+      // the exact same index level -- unrounded, that shows up as a ~1e-7% "move" that
+      // renders in scientific notation on the chart and stops the line being flat when
+      // nothing has actually happened. Real moves (>=0.01%) are unaffected.
+      const pct = (v) => Math.round(v * 100) / 100;
       chartPoints = history.map(h => ({
         date: h.date,
-        portfolioPct: (h.portfolioValue - startVal) / startVal * 100,
-        indexPct: (indexBaseline > 0) ? (h.indexPrice - indexBaseline) / indexBaseline * 100 : null,
+        portfolioPct: pct((h.portfolioValue - startVal) / startVal * 100),
+        indexPct: (indexBaseline > 0) ? pct((h.indexPrice - indexBaseline) / indexBaseline * 100) : null,
       }));
       const lastIndexPct = chartPoints[chartPoints.length - 1].indexPct;
       chartPoints.push({
         date: 'Now',
-        portfolioPct: parseFloat(gainPct),
+        portfolioPct: pct(parseFloat(gainPct)),
         indexPct: (liveIndexPrice && indexBaseline > 0)
-          ? (liveIndexPrice - indexBaseline) / indexBaseline * 100
+          ? pct((liveIndexPrice - indexBaseline) / indexBaseline * 100)
           : lastIndexPct,
       });
     }
