@@ -112,7 +112,18 @@ const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the 
 const JPN_RF      = 2.8;   // post-deflation JGB regime (~30-yr high)
 const JPN_ERP     = 6.0;   // developed-market tier (~AUS level)
 const JPN_TGROWTH = 1.5;   // vs the tool's 2.5% default — see the "About the Japan numbers" panel
-let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'other'
+// UK/eurozone: same "no live source" situation as Korea/Japan — no live 10-yr Gilt/Bund
+// yield ticker exists on Yahoo. Mirrors scripts/lib/market.js's .L / eurozone-suffix
+// branches in the DCFAnalysis batch repo (spot-checked against real yields 2026-08-03) —
+// these are two independent hand-synced implementations, same drift warning as Korea/Japan.
+const UK_RF       = 5.0;   // UK Gilt-proxy
+const UK_ERP      = 6.0;   // near-US-tier developed market
+const UK_TGROWTH  = 2.0;
+const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
+const EU_RF       = 3.2;   // eurozone Bund-proxy
+const EU_ERP      = 5.5;
+const EU_TGROWTH  = 1.8;
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -212,7 +223,11 @@ function prefillInputs(data) {
   const isInd = !isAsx && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.NS') || data.ticker.toUpperCase().endsWith('.BO')));
   const isKor = !isAsx && !isInd && !!(data.ticker && data.ticker.toUpperCase().endsWith('.KS'));
   const isJpn = !isAsx && !isInd && !isKor && !!(data.ticker && data.ticker.toUpperCase().endsWith('.T'));
-  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : isJpn ? 'jpn' : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
+  const isUk  = !isAsx && !isInd && !isKor && !isJpn && !!(data.ticker && data.ticker.toUpperCase().endsWith('.L'));
+  const isEurozone = !isAsx && !isInd && !isKor && !isJpn && !isUk
+    && !!(data.ticker && EUROZONE_SUFFIXES.some(sfx => data.ticker.toUpperCase().endsWith(sfx)));
+  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : isJpn ? 'jpn' : isUk ? 'uk' : isEurozone ? 'eu'
+    : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
 
   if (isAsx) {
     els.rfInput.value  = liveAusRfRate;
@@ -238,6 +253,18 @@ function prefillInputs(data) {
     setRfBadge('jpn', JPN_RF);   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Japan has no live rate source to fetch.
+  } else if (isUk) {
+    els.rfInput.value  = UK_RF;
+    els.erpInput.value = UK_ERP;
+    setRfBadge('uk', UK_RF);   // fixed estimate — no live source exists, see setRfBadge's 'uk' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'UK MRP (near-US developed-market tier)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — UK has no live rate source to fetch.
+  } else if (isEurozone) {
+    els.rfInput.value  = EU_RF;
+    els.erpInput.value = EU_ERP;
+    setRfBadge('eu', EU_RF);   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (developed-market tier)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -343,11 +370,14 @@ function prefillInputs(data) {
   const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
   const rePct = +(re * 100).toFixed(2);
 
-  // Terminal growth default is 2.5% for every market except Korea and Japan, which seed
-  // lower (KOR_TGROWTH / JPN_TGROWTH) to reflect structurally lower long-run growth
-  // expectations — see each market's "About the … numbers" panel for the reasoning.
+  // Terminal growth default is 2.5% for every market except Korea, Japan, UK, and eurozone,
+  // which seed lower (KOR_TGROWTH / JPN_TGROWTH / UK_TGROWTH / EU_TGROWTH) to reflect
+  // structurally lower long-run growth expectations — see each market's "About the …
+  // numbers" panel for the reasoning.
   const marketTGrowth = currentMarket === 'kor' ? KOR_TGROWTH
                       : currentMarket === 'jpn' ? JPN_TGROWTH
+                      : currentMarket === 'uk'  ? UK_TGROWTH
+                      : currentMarket === 'eu'  ? EU_TGROWTH
                       : 2.5;
 
   modelSeeds = {
@@ -463,6 +493,32 @@ function japanInfoBlock() {
      </details>`;
 }
 
+// Informational-only panel explaining the UK-specific seeds — same collapsible
+// pattern as the Korea/Japan panels. Shared by both the DCF and DDM breakdown renderers.
+function ukInfoBlock() {
+  if (currentMarket !== 'uk') return '';
+  return `<details class="wacc-franking">
+       <summary>About the UK numbers</summary>
+       <p><strong>Risk-free rate:</strong> fixed at ~5.0% (an approximate UK 10-year Gilt yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Gilt yields, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 6.0%, near-US tier — a mature, liquid developed market.</p>
+       <p><strong>Terminal growth:</strong> 2.0% vs the tool's 2.5% US default, reflecting the UK's somewhat lower long-run nominal growth expectations.</p>
+       <p><strong>Currency:</strong> Yahoo quotes UK-listed prices in <em>pence</em> (GBp), not pounds — a price of "650" means £6.50. Displayed values already account for this.</p>
+     </details>`;
+}
+
+// Informational-only panel explaining the eurozone-specific seeds — same collapsible
+// pattern as the Korea/Japan/UK panels. Shared by both the DCF and DDM breakdown renderers.
+function euInfoBlock() {
+  if (currentMarket !== 'eu') return '';
+  return `<details class="wacc-franking">
+       <summary>About the eurozone numbers</summary>
+       <p><strong>Risk-free rate:</strong> fixed at ~3.2% (an approximate German 10-year Bund yield, used as the eurozone-wide proxy). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Bund yields, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 5.5%, same tier as the US default.</p>
+       <p><strong>Terminal growth:</strong> 1.8% vs the tool's 2.5% US default, reflecting the eurozone's somewhat lower long-run nominal growth expectations.</p>
+       <p><strong>One rate for every eurozone exchange:</strong> Germany, France, Netherlands, Italy, Spain, Belgium, Portugal, Austria, Finland, and Ireland all share this seed — it's a market-wide estimate, not a country-specific one, matching how every other market in this tool gets a single seed regardless of which exchange within it a ticker trades on.</p>
+     </details>`;
+}
+
 function renderDiscountBreakdown() {
   if (valuationModel === 'ddm') {
     if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
@@ -488,6 +544,8 @@ function renderDiscountBreakdown() {
       ${sectorRowDdm}
       ${koreaInfoBlock()}
       ${japanInfoBlock()}
+      ${ukInfoBlock()}
+      ${euInfoBlock()}
     `;
     return;
   }
@@ -610,6 +668,8 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     ${frankingBlock}
     ${koreaInfoBlock()}
     ${japanInfoBlock()}
+    ${ukInfoBlock()}
+    ${euInfoBlock()}
   `;
 }
 
@@ -1048,6 +1108,12 @@ function resetRfErp() {
   } else if (currentMarket === 'jpn') {
     els.rfInput.value  = JPN_RF;
     els.erpInput.value = JPN_ERP;
+  } else if (currentMarket === 'uk') {
+    els.rfInput.value  = UK_RF;
+    els.erpInput.value = UK_ERP;
+  } else if (currentMarket === 'eu') {
+    els.rfInput.value  = EU_RF;
+    els.erpInput.value = EU_ERP;
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -1119,6 +1185,8 @@ function setRfBadge(market, rate) {
     ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond',                  title: 'Indian 10-yr Govt Bond'    },
     kor: { badge: '○ fixed',    note: 'Fixed estimate — no live Korean bond-yield source available', title: 'Korea 10-yr Govt Bond yield (fixed estimate, not live)' },
     jpn: { badge: '○ fixed',    note: 'Fixed estimate — no live Japanese bond-yield source available', title: 'Japan 10-yr Govt Bond (JGB) yield (fixed estimate, not live)' },
+    uk:  { badge: '○ fixed',    note: 'Fixed estimate — no live UK Gilt-yield source available', title: 'UK 10-yr Gilt yield (fixed estimate, not live)' },
+    eu:  { badge: '○ fixed',    note: 'Fixed estimate — no live eurozone Bund-yield source available', title: 'Eurozone 10-yr Bund yield (fixed estimate, not live)' },
     us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX)',           title: 'Live US 10-yr Treasury yield' },
   };
   const lbl = labels[market] || labels.us;
