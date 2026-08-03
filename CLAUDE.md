@@ -61,8 +61,12 @@ the value proposition. Applied identically across ASX/S&P 500/NIFTY/KOSPI/Nikkei
   table, not a legal disclaimer.
 
 Mirrored into `C:\Projects\StockAnalysis\www\dcf\` and pushed there too (both repos'
-`index.html`/`style.css` for all 5 screens must stay in sync — see the xcopy deploy step in
+`index.html`/`style.css` for all screens must stay in sync — see the xcopy deploy step in
 each `refresh-*-undervalued` skill).
+
+**Europe (launched 2026-08-03) was built with this pattern already in place** — year-qualified
+title, question-led meta description, relocated `#as-at`, bottom-of-page disclaimer — not a
+separate retrofit pass. It's the 6th screen but wasn't part of this 2026-07-26 SEO pass itself.
 
 ---
 
@@ -328,6 +332,92 @@ doc `docs/japan-korea-market-research.md`).
 
 ---
 
+## Feature: Most Undervalued Europe screen — ✅ LIVE (2026-08-03)
+
+Sixth sibling screen at **kashvector.com/dcf/europe-undervalued/**. Ranks eurozone + UK
+equities by base-case DCF/DDM margin of safety. Top 20, 80% cap, EUR (+ GBp display rows).
+Built per spec `docs/superpowers/specs/2026-08-02-europe-undervalued-screener-design.md` and
+plan `docs/superpowers/plans/2026-08-02-europe-undervalued-screener.md` (both in the
+`StockAnalysis` repo).
+
+- Batch: `node scripts/rank-europe.js` (~11 min, 200 tickers, same 3.2s throttle + sweep).
+- Universe: eurozone (Austria, Belgium, Finland, France, Germany, Ireland, Italy, Luxembourg,
+  Netherlands, Portugal, Spain) + UK — deliberately excludes Switzerland, Norway, Sweden,
+  Denmark, Poland (all present in the real STOXX Europe Large 200, which this screen doesn't
+  replicate). Named "Europe" (not "EU & UK") for SEO. Tickers: `scripts/europe200.json` (200
+  entries, hand-assembled — **no single canonical index exists at this scale**, unlike every
+  other market here; built from the full FTSE 100 + DAX 40 + CAC 40, backfilled with the
+  largest names from AEX/FTSE MIB/IBEX 35/BEL 20/ISEQ 20/ATX/OMX Helsinki 25/PSI-20 — see
+  `scripts/lib/europe-list.js`'s `normalizeEuropeTickers()` for the 11-suffix validation
+  that catches an out-of-scope ticker slipping in, and `scripts/build-europe.js` to refresh).
+- UK/eurozone RF: **no live source exists** (same "no live source" situation as Korea/Japan).
+  `market.js`'s `.L` branch returns a static **5.0%** (UK Gilt-proxy, 6.0% ERP, 2.0% terminal
+  growth); the eurozone-suffix branch (`.DE .PA .AS .MI .MC .BR .LS .VI .HE .IR`) returns a
+  static **3.2%** (Bund-proxy, 5.5% ERP, 1.8% terminal growth) — values spot-checked against
+  real 10-yr UK Gilt/German Bund yields 2026-08-03, will drift stale over time like any
+  hardcoded macro assumption, re-check periodically. **⚠️ Unlike Korea and Japan, these are
+  NOT currently mirrored into the live tool's `app.js`** — `prefillInputs()` only branches on
+  `isAsx`/`isInd`/`isKor`/`isJpn`; a `.L` or eurozone-suffix ticker falls into the generic
+  `else` bucket (US live rf + 5.5% ERP) instead of the UK/eurozone values above. This breaks
+  the "must match the live DCF tool exactly" engine-parity rule for this one market only —
+  manually valuing a UK/EU stock in the live tool today gives a different fair value than the
+  batch screen computes for the same ticker. Not fixed as part of the Europe launch (the
+  build's scope was the batch/screen infrastructure only, `app.js` was never touched) — if
+  this needs closing, add `isUk`/`isEurozone` detection to `prefillInputs()` mirroring
+  `UK_RF`/`UK_ERP`/`EU_RF`/`EU_ERP` constants, same pattern as `KOR_RF`/`JPN_RF`.
+- **FX-aware paper portfolio — the one genuinely new mechanism, no other screen has this**
+  (`scripts/lib/fx.js`, unit-tested in `tests/fx.test.js`). Ranking (a %) and per-row display
+  (`p` for GBp rows, `€` for eurozone rows) need no conversion — only the pooled €10,000
+  paper portfolio does, since it's the one place GBP and EUR positions get blended into a
+  single number. `fx.js` converts GBp/GBP rows to EUR "shadow" prices immediately before (and
+  only for) the `computeRebalance()` call in `run-screen.js`'s `updatePortfolio()` —
+  `computeRebalance()` itself was never modified, so the other 5 markets have zero risk.
+  Uses **two different rates**, not one: last run's persisted `oldFx` (from the previous
+  `rankings.json`'s `fxRate` field) for old holdings, this run's fresh `newFx` (from
+  `fetchGbpEurRate` in `rf.js`, via the Worker's `/quoteSummary/GBPEUR=X` route) for new ones
+  — captures real GBP/EUR drift between rebalances, not just each stock's own native-currency
+  return. Fails open to a `1.17` fallback (never blocks the batch) if the live fetch fails or
+  returns outside the plausible `0.5`–`2` band; the run log prints `GBP/EUR: X.XXXX` for the
+  weekly review to sanity-check.
+- **Benchmark: `^STOXX`** (STOXX Europe 600 — verified resolving via the Worker's `/history`
+  route 2026-08-03, no crumb/cookie handshake needed, same as every other index benchmark).
+- Gold "New" badge moved to **Europe only** on launch (user decision 2026-08-03, reversing
+  the 2026-07-19 "badge both KOSPI and Nikkei, don't move it" call) — badge now tracks the
+  single newest screen. Applies on **five** pill-row locations: `/dcf/`, `/gordon-growth/`,
+  the hub, plus `/stock/` and `/growth/` — the latter two were discovered missing the pill
+  entirely (not just the badge) during this launch; they'd never been kept in sync with the
+  other three when KOSPI/Nikkei shipped.
+- No blacklist entries at launch (`scripts/blacklist-europe.json` starts empty) — the
+  first few real runs are exactly when genuine exclusion candidates (LICs/REITs/investment
+  trusts whose FCF is structurally misleading for DCF, same failure mode as MFF.AX on ASX)
+  will surface; the admin console's "Exclude & re-run" handles this same as every market.
+- Refresh runbook: **`/refresh-europe-undervalued`** skill (user-level,
+  `~/.claude/skills/refresh-europe-undervalued/SKILL.md`) — standard funnel/top-20 review +
+  approval gate, plus an FX sanity check (confirm the printed rate is in the ~1.10–1.25
+  plausible band, not stuck at the 1.17 fallback). First publish for a brand-new market needs
+  the full page directory copied across (`index.html`/`app.js`/`style.css` + the 5 data
+  files), not just the 5-file routine-refresh pattern the GitHub Actions `publish-screen.yml`
+  workflow automates — confirmed against how every prior market's first launch actually
+  shipped (e.g. commit `0d75cd1` for Nikkei, a single combined "Deploy" commit).
+- First run (2026-08-03): 200 tickers, 0 fetch-failed, 20 qualified (10.0% margin-cap rate —
+  between NIFTY's ~3% and Nikkei's ~14.7%), top 20 shown. GBP/EUR fetched live at 1.1690. Top
+  3: Edenred (`EDEN.PA`) 76%, Fresenius Medical Care (`FME.DE`) 76%, Thales (`HO.PA`) 58%. 6
+  of 20 correctly valued by DDM (BNP Paribas, Hannover Re, AXA, Munich Re, Intesa Sanpaolo,
+  Aviva). `^STOXX` seeded @ 649.19.
+- **Chart precision bug found and fixed same day:** the persisted `indexSeedPrice`
+  (server-side `/history` fetch) and the live client-side index price (bulk `/quote`
+  endpoint) can disagree by a hairline float-precision difference for the "same" STOXX
+  level — unrounded, this showed as a `~1e-7%` "move" in raw JS scientific notation on the
+  portfolio-vs-index chart's y-axis, and kept the line from being flat on day one when
+  nothing had actually happened. Fixed in `drawPortfolioChart()`/`renderHeroCard()`
+  (`www/europe-undervalued/app.js`) by rounding both series to 2dp before charting and
+  formatting y-axis ticks with `.toFixed(1)` as a second layer — **this is shared boilerplate
+  copied into all 6 screens' `app.js`, so the same latent bug likely exists on the other 5**,
+  just masked there by real accumulated market movement; only fix it if it actually surfaces
+  (a market whose portfolio and index are both sitting near-exactly flat).
+
+---
+
 ## Feature: Paper Portfolio Tracker — ✅ LIVE (2026-06-18)
 
 Amber hero card on all three undervalued screens showing what a hypothetical equal-weight,
@@ -561,7 +651,7 @@ monthly data refresh** — see "Automated refresh (admin console)" below.
 
 ## Automated refresh (admin console) — shipped 2026-08-01
 
-The routine monthly snapshot refresh for all 5 markets now runs via
+The routine monthly snapshot refresh for all 6 markets now runs via
 `kashvector.com/admin/` (a Cloudflare Access-gated page in `StockAnalysis`) instead of
 manually invoking the `/refresh-<market>-undervalued` skills. Full design:
 `C:\Users\Anurag\.claude\plans\can-i-put-the-peaceful-frost.md`; architecture summary in
@@ -569,7 +659,7 @@ manually invoking the `/refresh-<market>-undervalued` skills. Full design:
 in `Rules/kashvector-lessons.md`'s "Admin console build" section.
 
 - **`.github/workflows/refresh-screen.yml`** — `workflow_dispatch` (market: asx/sp500/nifty/
-  kospi/nikkei), runs `npm test` then `node scripts/rank-<market>.js` unchanged, commits the 5
+  kospi/nikkei/europe), runs `npm test` then `node scripts/rank-<market>.js` unchanged, commits the 5
   snapshot files to a force-pushed `staging/<market>` branch (nothing touches `master`), then
   `scripts/post-run.js` (testable core in `scripts/lib/post-run.js`) POSTs a review payload to
   the `kv-admin` Worker's `/ingest` endpoint.
