@@ -434,11 +434,16 @@ plan `docs/superpowers/plans/2026-08-02-europe-undervalued-screener.md` (both in
   level — unrounded, this showed as a `~1e-7%` "move" in raw JS scientific notation on the
   portfolio-vs-index chart's y-axis, and kept the line from being flat on day one when
   nothing had actually happened. Fixed in `drawPortfolioChart()`/`renderHeroCard()`
-  (`www/europe-undervalued/app.js`) by rounding both series to 2dp before charting and
-  formatting y-axis ticks with `.toFixed(1)` as a second layer — **this is shared boilerplate
-  copied into all 6 screens' `app.js`, so the same latent bug likely exists on the other 5**,
-  just masked there by real accumulated market movement; only fix it if it actually surfaces
-  (a market whose portfolio and index are both sitting near-exactly flat).
+  by rounding both series to 2dp before charting and formatting y-axis ticks with
+  `.toFixed(1)` as a second layer. **Backported to all 6 screens** (2026-08-03) — this is
+  shared copy-pasted boilerplate, and the same latent bug existed on the other 5, merely
+  masked by real accumulated market movement. The initial instinct to leave them alone
+  ("only fix it if it surfaces") was wrong and reversed after peer review: a 6-line
+  zero-risk change is cheaper than leaving six near-identical files deliberately divergent,
+  because the next person diffing them has to work out whether the difference is meaningful.
+  The rounding only collapses sub-0.01% float noise — verified against every market's real
+  `portfolio-history.json` that genuine moves (ASX +3.35%, S&P −1.25%, NIFTY +4.07%,
+  KOSPI −3.3%, Nikkei −3.7%) are unchanged.
 
 ---
 
