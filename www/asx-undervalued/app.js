@@ -42,7 +42,7 @@
     if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
-    el.innerHTML = `From ${s.tickers} ${s.universe || 'ASX 300'} names, <strong>${s.qualified} qualified</strong> this month` +
+    el.innerHTML = `From ${s.tickers} ${s.universe || 'ASX 300'} names, <strong>${s.qualified} qualified</strong> this week` +
       `${s.shown < s.qualified ? ` (showing the top ${s.shown})` : ''}.${dropText}`;
     el.hidden = false;
   }
@@ -320,7 +320,7 @@
     asAtEl.hidden = false;
     renderScreenSummary({ ...rankings.summary, universe: rankings.universe });
     const rows = rankings.rows || [];
-    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
+    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this week.'; return; }
 
     const tickersForLive = rows.map(r => r.ticker);
     if (portfolioData && portfolioData.indexTicker) tickersForLive.push(portfolioData.indexTicker);

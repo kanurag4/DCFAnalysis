@@ -71,7 +71,7 @@
     if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
-    el.innerHTML = `From ${s.tickers} ${s.universe || 'KOSPI 200'} names, <strong>${s.qualified} qualified</strong> this month` +
+    el.innerHTML = `From ${s.tickers} ${s.universe || 'KOSPI 200'} names, <strong>${s.qualified} qualified</strong> this week` +
       `${s.shown < s.qualified ? ` (showing the top ${s.shown})` : ''}.${dropText}`;
     el.hidden = false;
   }
@@ -283,7 +283,7 @@
       '<div class="portfolio-hero-row">' +
         '<div class="portfolio-hero-col">' +
           '<div class="portfolio-hero-inner">' +
-            '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced monthly</div>' +
+            '<div class="portfolio-hero-label">' + startLabel + ' paper portfolio · equally weighted, rebalanced weekly</div>' +
             '<div class="portfolio-hero-stat">' +
               '<div class="portfolio-hero-left">' +
                 '<span class="portfolio-hero-value">' + sym + Math.round(liveValue).toLocaleString() + '</span>' +
@@ -378,7 +378,7 @@
     asAtEl.hidden = false;
     renderScreenSummary({ ...rankings.summary, universe: rankings.universe });
     const rows = rankings.rows || [];
-    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this month.'; return; }
+    if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this week.'; return; }
 
     const tickersForLive = rows.map(r => r.ticker);
     const live = await fetchLivePrices(tickersForLive);
