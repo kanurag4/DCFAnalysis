@@ -11,6 +11,17 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "ADSK",
+    "slug": "adsk",
+    "name": "Autodesk, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 398.7340713977821,
+    "price": 234.71,
+    "marginOfSafety": 0.6988371667069238,
+    "updated": "2026-08-04"
+  },
+  {
     "ticker": "AVGO",
     "slug": "avgo",
     "name": "Broadcom Inc.",
@@ -19,6 +30,28 @@
     "intrinsic": 128.80906726411516,
     "price": 392.23,
     "marginOfSafety": -0.6715981254261144,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "BBY",
+    "slug": "bby",
+    "name": "Best Buy Co., Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 129.88285235937647,
+    "price": 85.25,
+    "marginOfSafety": 0.523552520344592,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "HPE",
+    "slug": "hpe",
+    "name": "Hewlett Packard Enterprise Company",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 78.12205173078685,
+    "price": 50.24,
+    "marginOfSafety": 0.5549771443229866,
     "updated": "2026-08-04"
   },
   {
@@ -41,6 +74,28 @@
     "intrinsic": 133.03950302695137,
     "price": 590.24,
     "marginOfSafety": -0.7746010046304023,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "MMM",
+    "slug": "mmm",
+    "name": "3M Company",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 304.4767342454384,
+    "price": 177.23,
+    "marginOfSafety": 0.7179751410339019,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "MRK",
+    "slug": "mrk",
+    "name": "Merck & Co., Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 191.20423967785712,
+    "price": 127.77,
+    "marginOfSafety": 0.4964720957803641,
     "updated": "2026-08-04"
   },
   {
