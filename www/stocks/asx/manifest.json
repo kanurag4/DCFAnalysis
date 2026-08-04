@@ -1,5 +1,16 @@
 [
   {
+    "ticker": "AAI.AX",
+    "slug": "aai-ax",
+    "name": "Alcoa Corporation",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 77.7876588202583,
+    "price": 65.46,
+    "marginOfSafety": 0.18832353834797294,
+    "updated": "2026-08-04"
+  },
+  {
     "ticker": "BHP.AX",
     "slug": "bhp-ax",
     "name": "BHP Group Limited",
@@ -8,6 +19,17 @@
     "intrinsic": 44.35883306206096,
     "price": 60.52,
     "marginOfSafety": -0.26703844907367885,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "BPT.AX",
+    "slug": "bpt-ax",
+    "name": "Beach Energy Limited",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 2.0435074264994566,
+    "price": 0.915,
+    "marginOfSafety": 1.233341449726182,
     "updated": "2026-08-04"
   },
   {
@@ -22,6 +44,28 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "EDV.AX",
+    "slug": "edv-ax",
+    "name": "Endeavour Group Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 4.022993765328742,
+    "price": 3.48,
+    "marginOfSafety": 0.15603269118642019,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "FMG.AX",
+    "slug": "fmg-ax",
+    "name": "Fortescue Ltd",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 29.186179332537495,
+    "price": 18.08,
+    "marginOfSafety": 0.6142798303394634,
+    "updated": "2026-08-04"
+  },
+  {
     "ticker": "GMG.AX",
     "slug": "gmg-ax",
     "name": "Goodman Group",
@@ -33,6 +77,28 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "LOV.AX",
+    "slug": "lov-ax",
+    "name": "Lovisa Holdings Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 36.49357404254132,
+    "price": 25.31,
+    "marginOfSafety": 0.4418638499621225,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "MTS.AX",
+    "slug": "mts-ax",
+    "name": "Metcash Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 5.149099910454534,
+    "price": 3.1,
+    "marginOfSafety": 0.6609999711143656,
+    "updated": "2026-08-04"
+  },
+  {
     "ticker": "NAB.AX",
     "slug": "nab-ax",
     "name": "National Australia Bank Limited",
@@ -41,6 +107,39 @@
     "intrinsic": 28.07528009438917,
     "price": 42.85,
     "marginOfSafety": -0.3448009312861337,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "SHL.AX",
+    "slug": "shl-ax",
+    "name": "Sonic Healthcare Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 33.99593580346552,
+    "price": 22.09,
+    "marginOfSafety": 0.5389740064945913,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "TAH.AX",
+    "slug": "tah-ax",
+    "name": "Tabcorp Holdings Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 1.3368106815312497,
+    "price": 0.875,
+    "marginOfSafety": 0.527783636035714,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "TLS.AX",
+    "slug": "tls-ax",
+    "name": "Telstra Group Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 8.097440235232416,
+    "price": 5.08,
+    "marginOfSafety": 0.5939842982740975,
     "updated": "2026-08-04"
   },
   {

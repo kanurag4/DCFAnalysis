@@ -19,15 +19,20 @@ const MARKET_NAMES = {
 function escapeHtml(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
+// ±20% bands — must match the live DCF tool's verdict thresholds (www/dcf/app.js)
+// and generate-ticker-page.js's verdict(), so the dot color and label here never
+// disagree with what the ticker's own page says.
+function verdictLabel(marginOfSafety) {
+  if (marginOfSafety == null) return 'N/A';
+  if (marginOfSafety > 0.2) return 'Undervalued';
+  if (marginOfSafety < -0.2) return 'Overvalued';
+  return 'Fairly Valued';
+}
 function verdictDot(marginOfSafety) {
   if (marginOfSafety == null) return 'var(--kv-muted)';
-  if (marginOfSafety >= 0.05) return 'var(--kv-pass)';
-  if (marginOfSafety <= -0.05) return 'var(--kv-fail)';
+  if (marginOfSafety > 0.2) return 'var(--kv-pass)';
+  if (marginOfSafety < -0.2) return 'var(--kv-fail)';
   return 'var(--kv-warn)';
-}
-function pctSigned(v) {
-  if (v == null) return 'N/A';
-  return (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + '%';
 }
 
 function main() {
@@ -44,11 +49,13 @@ function main() {
     process.exit(1);
   }
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+  const sorted = [...manifest].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
 
-  const rows = manifest.map(e => `
-        <a class="ticker-chip" href="/dcf/stocks/${folder}/${e.slug}/">
+  const rows = sorted.map(e => `
+        <a class="stock-list-item" href="/dcf/stocks/${folder}/${e.slug}/">
           <span class="verdict-dot" style="background:${verdictDot(e.marginOfSafety)}"></span>
-          ${escapeHtml(e.ticker)} <span style="color:var(--kv-muted);font-weight:400;margin-left:4px">${pctSigned(e.marginOfSafety)}</span>
+          <span class="sl-name">${escapeHtml(e.name || e.ticker)}</span>
+          <span class="sl-meta">${escapeHtml(e.ticker)} &middot; ${verdictLabel(e.marginOfSafety)}</span>
         </a>`).join('');
 
   const html = `<!doctype html>
@@ -87,7 +94,7 @@ function main() {
 
     <section class="other-tickers">
       <h2>All ${meta.label} stocks</h2>
-      <div class="ticker-chip-row">${rows}
+      <div class="stock-list">${rows}
       </div>
     </section>
 
