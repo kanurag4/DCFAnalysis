@@ -6,8 +6,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 170.95956872285896,
-    "price": 739.45,
-    "marginOfSafety": -0.768801719219881,
+    "price": 738.95,
+    "marginOfSafety": -0.768645282193844,
     "updated": "2026-08-04"
   },
   {
@@ -16,9 +16,9 @@
     "name": "Tata Consultancy Services Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1757.45764330653,
-    "price": 2452,
-    "marginOfSafety": -0.2832554472648736,
+    "intrinsic": 1757.5158422937488,
+    "price": 2446.4,
+    "marginOfSafety": -0.2815909735555311,
     "updated": "2026-08-04"
   }
 ]

@@ -20,5 +20,49 @@
     "price": 180.72,
     "marginOfSafety": -0.573068146818577,
     "updated": "2026-08-04"
+  },
+  {
+    "ticker": "GMG.AX",
+    "slug": "gmg-ax",
+    "name": "Goodman Group",
+    "sector": "Real Estate",
+    "method": "DCF",
+    "intrinsic": 14.657436388740367,
+    "price": 30.2,
+    "marginOfSafety": -0.5146544242138952,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "NAB.AX",
+    "slug": "nab-ax",
+    "name": "National Australia Bank Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 28.07528009438917,
+    "price": 42.85,
+    "marginOfSafety": -0.3448009312861337,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "WBC.AX",
+    "slug": "wbc-ax",
+    "name": "Westpac Banking Corporation",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 26.676586966676346,
+    "price": 38.82,
+    "marginOfSafety": -0.3128133187357974,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "WES.AX",
+    "slug": "wes-ax",
+    "name": "Wesfarmers Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 42.48052179864955,
+    "price": 90.99,
+    "marginOfSafety": -0.5331297747153583,
+    "updated": "2026-08-04"
   }
 ]

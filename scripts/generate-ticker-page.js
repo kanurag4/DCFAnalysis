@@ -90,10 +90,15 @@ function pctSigned(v, decimals = 1) {
   if (v == null || !isFinite(v)) return 'N/A';
   return (v >= 0 ? '+' : '') + (v * 100).toFixed(decimals) + '%';
 }
+// Thresholds must match the live tool exactly (www/app.js's renderScenarios:
+// mos > 0.2 undervalued, mos < -0.2 overvalued, else fair) — found out of sync
+// during the WBC.AX review (2026-08-04): this used to be a ±5% band, silently
+// mislabeling anything in the ±5%-20% range as Over/Undervalued when the live
+// tool calls it Fairly Valued.
 function verdict(marginOfSafety) {
   if (marginOfSafety == null) return { label: 'N/A', cls: '' };
-  if (marginOfSafety >= 0.05) return { label: '✅ Undervalued', cls: 'undervalued' };
-  if (marginOfSafety <= -0.05) return { label: '❌ Overvalued', cls: 'overvalued' };
+  if (marginOfSafety > 0.2) return { label: '✅ Undervalued', cls: 'undervalued' };
+  if (marginOfSafety < -0.2) return { label: '❌ Overvalued', cls: 'overvalued' };
   return { label: '⚠️ Fairly Valued', cls: '' };
 }
 function escapeHtml(s) {
