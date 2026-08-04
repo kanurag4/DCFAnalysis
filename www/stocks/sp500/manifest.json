@@ -11,6 +11,61 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "AVGO",
+    "slug": "avgo",
+    "name": "Broadcom Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 128.80906726411516,
+    "price": 392.23,
+    "marginOfSafety": -0.6715981254261144,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "LLY",
+    "slug": "lly",
+    "name": "Eli Lilly and Company",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 502.26065362616583,
+    "price": 1121.36,
+    "marginOfSafety": -0.5520968702056737,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "META",
+    "slug": "meta",
+    "name": "Meta Platforms, Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 133.03950302695137,
+    "price": 590.24,
+    "marginOfSafety": -0.7746010046304023,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "MSFT",
+    "slug": "msft",
+    "name": "Microsoft Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 60.281327073277865,
+    "price": 487.65,
+    "marginOfSafety": -0.8763840314297594,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "NVDA",
+    "slug": "nvda",
+    "name": "NVIDIA Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 32.46399628980987,
+    "price": 206.64,
+    "marginOfSafety": -0.8428958754848535,
+    "updated": "2026-08-04"
+  },
+  {
     "ticker": "T",
     "slug": "t",
     "name": "AT&T Inc.",
@@ -19,6 +74,17 @@
     "intrinsic": 35.57956650009022,
     "price": 23.59,
     "marginOfSafety": 0.5082478380708022,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "TSLA",
+    "slug": "tsla",
+    "name": "Tesla, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 21.42639474840483,
+    "price": 322.08,
+    "marginOfSafety": -0.9334749293703277,
     "updated": "2026-08-04"
   }
 ]
