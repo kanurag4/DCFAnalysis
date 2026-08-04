@@ -404,3 +404,93 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 @media (max-width: 640px) {
   .affiliate-promo-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Per-ticker SEO pages (added 2026-08-04, see docs/superpowers/plans/
+   2026-08-04-per-ticker-seo-pages.md) — static pages under /dcf/stocks/<market>/<slug>/.
+   Reuses .app-header/.stats/.stat/.scenario-cards/.disclaimer/.tool-info/.faq-item/
+   .chart-card (base) from above; only the genuinely new elements are declared here. ── */
+.ticker-breadcrumb { max-width: 1200px; margin: 14px auto 0; padding: 0 16px; font-size: 0.78rem; color: var(--kv-muted); }
+.ticker-breadcrumb a { color: var(--kv-muted); }
+.ticker-breadcrumb a:hover { color: var(--kv-accent); }
+.ticker-breadcrumb .sep { margin: 0 6px; opacity: 0.5; }
+.ticker-breadcrumb .current { color: var(--kv-text); font-weight: 600; }
+
+.ticker-freshness { font-size: 0.76rem; color: var(--kv-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+.ticker-freshness .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kv-pass); flex-shrink: 0; }
+
+.synopsis { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; }
+.synopsis h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--kv-muted); margin-bottom: 8px; }
+.synopsis p { font-size: 0.88rem; color: var(--kv-text); line-height: 1.6; }
+.synopsis .src { font-size: 0.7rem; color: var(--kv-muted); margin-top: 8px; }
+
+.pure-maths-note {
+  display: flex; gap: 8px; align-items: flex-start;
+  background: var(--kv-card-2); border: 1px solid var(--kv-border);
+  border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; color: var(--kv-muted);
+  line-height: 1.55; margin-bottom: 20px;
+}
+.pure-maths-note svg { flex: 0 0 auto; margin-top: 2px; }
+
+.assumptions { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 18px 20px; margin: 22px 0; }
+.assumptions h2 { font-size: 1rem; margin-bottom: 4px; }
+.assumptions .assumptions-sub { font-size: 0.78rem; color: var(--kv-muted); margin-bottom: 16px; }
+.assump-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 10px; margin-bottom: 16px; }
+.assump-item { background: var(--kv-card-2); border-radius: 8px; padding: 10px 12px; }
+.assump-item .al { font-size: 0.68rem; color: var(--kv-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; }
+.assump-item .av { font-size: 0.92rem; font-weight: 600; }
+.assump-item .an { font-size: 0.68rem; color: var(--kv-muted); margin-top: 2px; }
+.assump-item .live-badge { font-size: 0.62rem; color: var(--kv-pass); font-weight: 700; margin-left: 4px; }
+.scenario-assump-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.scenario-assump-table th { text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--kv-muted); padding: 6px 10px; border-bottom: 1px solid var(--kv-border); }
+.scenario-assump-table td { padding: 8px 10px; border-bottom: 1px solid var(--kv-border); }
+.scenario-assump-table td:first-child, .scenario-assump-table th:first-child { color: var(--kv-muted); }
+.scenario-assump-table .col-bear { color: var(--kv-fail); font-weight: 600; }
+.scenario-assump-table .col-base { color: #f5a623; font-weight: 600; }
+.scenario-assump-table .col-bull { color: var(--kv-pass); font-weight: 600; }
+.assump-formula { font-size: 0.74rem; color: var(--kv-muted); margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--kv-border); font-family: monospace; }
+
+.bank-metrics { background: rgba(193,122,74,0.08); border: 1px solid rgba(193,122,74,0.35); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+.bank-metrics h3 { font-size: 0.92rem; margin-bottom: 6px; }
+.bank-metrics p { font-size: 0.84rem; color: var(--kv-muted); margin-bottom: 10px; line-height: 1.55; }
+.bank-metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bank-metric-grid .stat { text-align: center; }
+
+.history-charts { margin: 24px 0; }
+.history-charts h2 { font-size: 1rem; margin-bottom: 2px; }
+.history-charts .cadence-note { font-size: 0.76rem; color: var(--kv-muted); margin-bottom: 4px; }
+.history-charts .refresh-note { font-size: 0.74rem; color: var(--kv-pass); margin-bottom: 14px; display: flex; align-items: center; gap: 5px; }
+.history-charts .refresh-note .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--kv-pass); }
+/* .chart-row here is 2 columns (ticker pages: price+EPS+FCF+dividend = 4 cards) —
+   distinct from the DCF tool's own 3-column .charts-section/.chart-card usage above,
+   which this doesn't touch (different container class). */
+.history-charts .chart-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.history-charts .chart-card svg { width: 100%; height: 120px; display: block; overflow: visible; }
+.history-charts .chart-card .chart-latest { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+.history-charts .chart-card .chart-latest .delta { font-size: 0.72rem; font-weight: 600; margin-left: 6px; }
+.delta.up { color: var(--kv-pass); }
+.delta.down { color: var(--kv-fail); }
+.chart-legend { display: inline-flex; align-items: center; gap: 4px; margin-left: 10px; font-size: 0.7rem; font-weight: 500; color: var(--kv-muted); vertical-align: middle; }
+.legend-swatch { display: inline-block; width: 12px; height: 0; margin-right: 2px; border-top: 2px solid; vertical-align: middle; }
+.legend-swatch.stock { border-top-color: var(--kv-pass); border-top-style: solid; }
+.legend-swatch.index { border-top-color: var(--kv-muted); border-top-style: dashed; margin-left: 8px; }
+.point-label { font-size: 0.64rem; fill: var(--kv-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.bar-label { font-size: 0.62rem; fill: var(--kv-muted); }
+.index-end-label { font-size: 0.62rem; fill: var(--kv-muted); font-style: italic; }
+
+.ticker-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--kv-card-2); border: 1px solid var(--kv-accent); border-radius: 10px; padding: 14px 18px; margin: 24px 0; font-size: 0.86rem; flex-wrap: wrap; }
+.ticker-cta a { font-weight: 700; white-space: nowrap; }
+
+.other-tickers { margin: 28px 0; }
+.other-tickers h2 { font-size: 1rem; margin-bottom: 10px; }
+.ticker-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ticker-chip { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 999px; padding: 6px 14px; font-size: 0.82rem; font-weight: 600; color: var(--kv-text); display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.ticker-chip:hover { border-color: var(--kv-accent); color: var(--kv-accent); }
+.ticker-chip .verdict-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.ticker-chip-more { font-size: 0.8rem; color: var(--kv-muted); }
+
+@media (max-width: 800px) {
+  .history-charts .chart-row { grid-template-columns: 1fr; }
+  .bank-metric-grid { grid-template-columns: 1fr; }
+  .ticker-cta { flex-direction: column; align-items: flex-start; }
+  .scenario-assump-table { display: block; overflow-x: auto; }
+}

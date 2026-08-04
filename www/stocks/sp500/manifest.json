@@ -1,0 +1,24 @@
+[
+  {
+    "ticker": "AAPL",
+    "slug": "aapl",
+    "name": "Apple Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 205.58396639389102,
+    "price": 303.42,
+    "marginOfSafety": -0.322444247597749,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "T",
+    "slug": "t",
+    "name": "AT&T Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 35.57956650009022,
+    "price": 23.59,
+    "marginOfSafety": 0.5082478380708022,
+    "updated": "2026-08-04"
+  }
+]

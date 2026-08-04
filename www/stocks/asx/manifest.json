@@ -1,0 +1,24 @@
+[
+  {
+    "ticker": "BHP.AX",
+    "slug": "bhp-ax",
+    "name": "BHP Group Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 44.35883306206096,
+    "price": 60.52,
+    "marginOfSafety": -0.26703844907367885,
+    "updated": "2026-08-04"
+  },
+  {
+    "ticker": "CBA.AX",
+    "slug": "cba-ax",
+    "name": "Commonwealth Bank of Australia",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 77.15512450694676,
+    "price": 180.72,
+    "marginOfSafety": -0.573068146818577,
+    "updated": "2026-08-04"
+  }
+]
