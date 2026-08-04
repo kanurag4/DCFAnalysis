@@ -30,7 +30,7 @@ function main() {
   const cards = live.map(m => {
     const manifest = JSON.parse(fs.readFileSync(path.join(stocksDir, m, 'manifest.json'), 'utf8'));
     return `
-      <a class="tool-line" href="/dcf/stocks/${m}/">
+      <a class="screen-pill" href="/dcf/stocks/${m}/">
         <span class="screen-pill-flag">${MARKET_FLAGS[m]}</span>
         <span class="screen-pill-label">
           <strong>${MARKET_LABELS[m]}</strong>
@@ -74,7 +74,7 @@ function main() {
   <main>
     <section class="other-tickers" style="margin-top:16px">
       <h2>Browse by market</h2>
-      <div class="screens-row" style="flex-direction:column;gap:10px;">${cards}
+      <div class="screens-row">${cards}
       </div>
     </section>
 
