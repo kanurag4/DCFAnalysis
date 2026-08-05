@@ -497,16 +497,37 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 .ticker-chip .verdict-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .ticker-chip-more { font-size: 0.8rem; color: var(--kv-muted); }
 
-.stock-list { display: flex; flex-direction: column; gap: 6px; }
-.stock-list-item { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 8px; padding: 10px 14px; font-size: 0.86rem; font-weight: 600; color: var(--kv-text); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+/* Book-index layout: entries flow top-to-bottom within a column, then wrap
+   to the next column (CSS multi-column, not grid — grid flows left-to-right
+   row by row, which reads nothing like a printed index). break-inside: avoid
+   on both the item and the letter header stops a row (or a lone header)
+   splitting across the column gap. */
+.stock-list { columns: 3; column-gap: 16px; }
+.stock-list-letter { columns: initial; break-after: avoid-column; break-inside: avoid; margin: 14px 0 6px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; color: var(--kv-accent); text-transform: uppercase; }
+.stock-list-letter:first-child { margin-top: 0; }
+.stock-list-item { break-inside: avoid; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; font-size: 0.86rem; font-weight: 600; color: var(--kv-text); display: flex; align-items: center; gap: 8px; text-decoration: none; }
 .stock-list-item:hover { border-color: var(--kv-accent); color: var(--kv-accent); }
 .stock-list-item .verdict-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .stock-list-item .sl-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .stock-list-item .sl-meta { color: var(--kv-muted); font-weight: 400; margin-left: auto; flex-shrink: 0; padding-left: 12px; }
+
+/* A-Z jump nav — only letters with at least one entry are real links; the
+   rest render as plain (non-clickable) muted text, same idea as a printed
+   index's letter tabs where an empty letter is simply skipped. */
+.stock-list-alpha { display: flex; flex-wrap: wrap; gap: 4px; margin: 10px 0 16px; padding: 10px 12px; background: var(--kv-card-2); border: 1px solid var(--kv-border); border-radius: 8px; }
+.stock-list-alpha a, .stock-list-alpha span { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 3px; font-size: 0.74rem; font-weight: 700; border-radius: 4px; }
+.stock-list-alpha a { color: var(--kv-accent); text-decoration: none; }
+.stock-list-alpha a:hover { background: var(--kv-accent); color: var(--kv-bg); }
+.stock-list-alpha span { color: var(--kv-muted); opacity: 0.4; }
 
 @media (max-width: 800px) {
   .history-charts .chart-row { grid-template-columns: 1fr; }
   .bank-metric-grid { grid-template-columns: 1fr; }
   .ticker-cta { flex-direction: column; align-items: flex-start; }
   .scenario-assump-table { display: block; overflow-x: auto; }
+  .stock-list { columns: 2; }
+}
+
+@media (max-width: 520px) {
+  .stock-list { columns: 1; }
 }

@@ -32,12 +32,35 @@ function generateMarketIndex(folder) {
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
   const sorted = [...manifest].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
 
+  // Book-index layout: group alphabetically by first letter of company name
+  // (falling back to ticker for the rare entry with no name), with a letter
+  // header before each group and an A-Z jump nav above the whole list.
+  // Non-letter leaders (a name starting with a digit or symbol) collect under
+  // "#", matching how a printed index handles the same case.
+  const firstLetterOf = (e) => {
+    const c = (e.name || e.ticker || '').trim().charAt(0).toUpperCase();
+    return /[A-Z]/.test(c) ? c : '#';
+  };
+  const ALPHABET = ['#', ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))];
+  const present = new Set(sorted.map(firstLetterOf));
+
+  const alphabetNav = ALPHABET.filter(l => present.has(l)).length
+    ? `<nav class="stock-list-alpha" aria-label="Jump to letter">${ALPHABET.map(l =>
+        present.has(l) ? `<a href="#letter-${l === '#' ? 'sym' : l}">${l}</a>` : `<span>${l}</span>`
+      ).join('')}</nav>`
+    : '';
+
   // Dot colour and label both come from the one shared verdict() — they used to
   // be two separate local functions and had drifted to different bands, so a row
   // could show a green dot next to a "Fairly Valued" label.
+  let currentLetter = null;
   const rows = sorted.map(e => {
     const v = verdict(e.marginOfSafety);
-    return `
+    const letter = firstLetterOf(e);
+    const header = letter !== currentLetter
+      ? (currentLetter = letter, `<h3 class="stock-list-letter" id="letter-${letter === '#' ? 'sym' : letter}">${letter}</h3>`)
+      : '';
+    return `${header}
         <a class="stock-list-item" href="/dcf/stocks/${folder}/${e.slug}/">
           <span class="verdict-dot" style="background:${v.dot}"></span>
           <span class="sl-name">${escapeHtml(e.name || e.ticker)}</span>
@@ -56,6 +79,7 @@ function generateMarketIndex(folder) {
 
     <section class="other-tickers">
       <h2>All ${escapeHtml(meta.label)} stocks</h2>
+      ${alphabetNav}
       <div class="stock-list">${rows}
       </div>
     </section>
