@@ -340,6 +340,31 @@ async function fetchPriceHistory(symbol, proxyUrl) {
   return Object.entries(buckets).map(([k, p]) => ({ y: p.date, v: p.close, k, date: p.date }));
 }
 
+// Given the base-case scenario result (or null) and the raw inputs that fed
+// it, names which specific condition produced a null intrinsic value. There
+// are 4 distinct real causes -- 2 from calculateDCF/calculateDDM returning a
+// literal null (fcf/dividend <= 0; discount rate <= terminal growth), 2 more
+// from calculateDCF returning a non-null OBJECT with intrinsicValue: null
+// (negative equity; missing sharesOutstanding) -- previously collapsed into
+// one generic message that didn't distinguish them. Returns null when
+// baseResult already has a real intrinsicValue (nothing to explain).
+function deriveNullReason({ isBank, baseResult, baseFcf, dividend, discountPct, terminalGrowth }) {
+  if (baseResult?.intrinsicValue != null) return null;
+  if (baseResult == null) {
+    if (isBank) {
+      return (dividend == null || dividend <= 0)
+        ? 'starting dividend <= 0 or unavailable'
+        : `cost of equity (${discountPct}%) <= terminal growth (${(terminalGrowth * 100).toFixed(1)}%)`;
+    }
+    return (baseFcf == null || baseFcf <= 0)
+      ? 'starting free cash flow <= 0'
+      : `WACC (${discountPct}%) <= terminal growth (${(terminalGrowth * 100).toFixed(1)}%)`;
+  }
+  // Non-null result object with intrinsicValue: null -- DCF-only cases.
+  if (baseResult.negativeEquity) return 'net debt exceeds DCF firm value (equity worth zero under these assumptions)';
+  return 'shares outstanding unavailable';
+}
+
 // ── Manifest management ─────────────────────────────────────────────────
 // Reads a market's manifest.json, replaces any existing row for entry.ticker
 // (or appends if new), re-sorts by ticker, and writes the file back. Used by
@@ -387,13 +412,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(t));
 
     const isBank = isBankOrInsurance(data.sector, data.industry);
-    let method, scenarios, waccBreakdown = null, d0 = null;
+    let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false;
 
     if (isBank) {
       const dividend = data.trailingAnnualDividendRate ?? data.dividendRate ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
       d0 = dividend != null ? +(+dividend).toFixed(2) : null;
       const rePct = r2((rf + effectiveBeta * erp) * 100);
+      waccOrRePct = rePct;
       const baseGrowthPct = r1(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100);
       const s = deriveScenarios({ method: 'DDM', baseGrowthPct, waccOrRePct: rePct });
       method = 'DDM';
@@ -420,6 +446,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         return { status: 'skipped', ticker: t, market: market.folder, reason: 'WACC uncomputable (no market cap or debt data)' };
       }
       const waccPct = r2(waccResult.wacc * 100);
+      waccOrRePct = waccPct;
       const baseGrowthPct = r1(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100);
       const s = deriveScenarios({ method: 'DCF', baseGrowthPct, waccOrRePct: waccPct });
       method = 'DCF';
@@ -472,6 +499,21 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const sectorLine = [data.sector, data.industry].filter(Boolean).join(' · ');
     const baseResult = scenarios.find(s => s.key === 'base').result;
     const v = verdict(baseResult?.marginOfSafety);
+    const nullReason = deriveNullReason({ isBank, baseResult, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth });
+    // Raw diagnostic snapshot -- only populated when the base case is null,
+    // so the batch can print exactly which upstream field was the actual
+    // cause (2026-08-05 incident: the same 10 tickers failed identically on
+    // two separate live CI runs, but reproduced cleanly when the identical
+    // code was run locally against the identical Worker -- this snapshot
+    // exists to settle whether that's a CI-environment-specific data
+    // difference, not to guess further).
+    const nullDiagnostics = nullReason ? {
+      isBank, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
+      sharesOutstanding: data.sharesOutstanding, price: data.price,
+      revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
+      marketCap: data.marketCap, totalDebt: data.totalDebt, totalCash: data.totalCash,
+      negativeEquity: baseResult?.negativeEquity ?? null,
+    } : null;
 
     const fcfMethodBadge = fcfInfo && fcfInfo.value != null
       ? (fcfInfo.method === 'proxy' ? ' <span class="stat-warn">⚠ est.</span>'
@@ -699,10 +741,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       updated: today,
     };
 
-    return { status: 'ok', html, entry, market };
+    return { status: 'ok', html, entry, market, nullReason, nullDiagnostics };
   } catch (err) {
     return { status: 'skipped', ticker: t, market: market.folder, reason: `fetch failed: ${err.message}` };
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason };

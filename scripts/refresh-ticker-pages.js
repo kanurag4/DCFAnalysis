@@ -52,10 +52,15 @@ async function refreshMarket(folder, proxyUrl, dryRun) {
       results.push({ status: 'skipped', ticker: oldEntry.ticker, market: folder, reason: outcome.reason });
     } else if (outcome.entry.intrinsic == null) {
       // Batch-only policy layered on top of buildTickerPage's generic contract
-      // (see the file header) -- the base case computed but came back null
-      // (e.g. fcf <= 0). generate-ticker-page.js's own CLI still writes this
-      // as an N/A page; the batch treats it the same as any other skip.
-      results.push({ status: 'skipped', ticker: oldEntry.ticker, market: folder, reason: 'base case null (fcf <= 0, wacc <= terminal growth, or dividend <= 0)' });
+      // (see the file header) -- the base case computed but came back null.
+      // generate-ticker-page.js's own CLI still writes this as an N/A page;
+      // the batch treats it the same as any other skip. The reason now names
+      // the actual cause (deriveNullReason) instead of listing all 4
+      // possibilities; the raw diagnostic snapshot is printed to the log so a
+      // recurrence is diagnosable from the run log alone, without a manual
+      // reproduction (2026-08-05 incident).
+      results.push({ status: 'skipped', ticker: oldEntry.ticker, market: folder, reason: outcome.nullReason || 'base case null' });
+      console.log(`  ! ${oldEntry.ticker} (${folder}) null-base diagnostics: ${JSON.stringify(outcome.nullDiagnostics)}`);
     } else {
       if (!dryRun) {
         const outDir = path.join(STOCKS_DIR, folder, outcome.entry.slug);
