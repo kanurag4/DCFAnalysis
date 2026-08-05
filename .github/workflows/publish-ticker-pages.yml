@@ -87,8 +87,16 @@ jobs:
       - name: Copy exactly the changed files, plus www/style.css unconditionally
         run: |
           while IFS= read -r f; do
-            mkdir -p "kv/www/dcf/$(dirname "$f")"
-            cp "dcf/$f" "kv/www/dcf/$f"
+            # $f is DCFAnalysis-repo-relative, e.g. www/stocks/asx/x/index.html.
+            # DCFAnalysis's www/stocks/ maps to stock-evaluator's www/dcf/stocks/
+            # (the leading "www/" is NOT preserved) -- see CLAUDE.md's per-ticker
+            # SEO pages section. Stripping it here; a prior version appended $f
+            # unstripped, landing files at kv/www/dcf/www/stocks/... instead of
+            # kv/www/dcf/stocks/..., which tripped the "unexpected changes" guard
+            # below on this workflow's first real run (2026-08-05).
+            dest="${f#www/}"
+            mkdir -p "kv/www/dcf/$(dirname "$dest")"
+            cp "dcf/$f" "kv/www/dcf/$dest"
           done < /tmp/changed-files.txt
           # Always copied, even if this run didn't touch it -- prevents shipping
           # pages referencing chart/assumption CSS classes the live stylesheet
