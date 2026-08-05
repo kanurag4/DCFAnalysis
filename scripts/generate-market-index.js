@@ -19,18 +19,15 @@ const MARKET_NAMES = {
   europe: { label: 'Europe', screenUrl: '/dcf/europe-undervalued/', screenName: 'Europe Most Undervalued' },
 };
 
-function main() {
-  const folder = process.argv[2];
+function generateMarketIndex(folder) {
   if (!folder || !MARKET_NAMES[folder]) {
-    console.error('Usage: node scripts/generate-market-index.js <asx|sp500|nifty|kospi|nikkei|europe>');
-    process.exit(1);
+    throw new Error(`Unknown market folder "${folder}" — expected one of ${Object.keys(MARKET_NAMES).join(', ')}`);
   }
   const meta = MARKET_NAMES[folder];
   const dir = path.join(__dirname, '..', 'www', 'stocks', folder);
   const manifestFile = path.join(dir, 'manifest.json');
   if (!fs.existsSync(manifestFile)) {
-    console.error(`No manifest.json in ${dir} — generate at least one ticker first.`);
-    process.exit(1);
+    throw new Error(`No manifest.json in ${dir} — generate at least one ticker first.`);
   }
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
   const sorted = [...manifest].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
@@ -86,4 +83,17 @@ function main() {
   console.log(`Wrote ${outFile} (${manifest.length} tickers)`);
 }
 
-main();
+function main() {
+  const folder = process.argv[2];
+  try {
+    generateMarketIndex(folder);
+  } catch (err) {
+    console.error(err.message);
+    console.error('Usage: node scripts/generate-market-index.js <asx|sp500|nifty|kospi|nikkei|europe>');
+    process.exit(1);
+  }
+}
+
+module.exports = { generateMarketIndex };
+
+if (require.main === module) main();
