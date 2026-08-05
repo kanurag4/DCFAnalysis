@@ -1,0 +1,144 @@
+name: Publish ticker pages
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Commit sha on staging/ticker-pages to publish (must match its current tip)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-ticker-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SHA: ${{ inputs.sha }}
+    steps:
+      - name: Checkout DCFAnalysis (master, full history for cherry-pick)
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          path: dcf
+
+      # Stops you approving run A and shipping run B if a second refresh
+      # started while you were still reviewing the first one -- same guard
+      # publish-screen.yml uses.
+      - name: Assert sha is the current tip of staging/ticker-pages
+        working-directory: dcf
+        run: |
+          git fetch origin staging/ticker-pages
+          TIP=$(git rev-parse origin/staging/ticker-pages)
+          if [ "$TIP" != "$SHA" ]; then
+            echo "::error::staging/ticker-pages has moved -- its tip is $TIP, but the approved commit was $SHA. A newer run must have started since you reviewed this one. Re-review the current run before publishing."
+            exit 1
+          fi
+
+      - name: Cherry-pick the reviewed commit onto master
+        working-directory: dcf
+        id: cherry
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          PARENT_BEFORE=$(git rev-parse HEAD)
+          if git cherry-pick "$SHA"; then
+            echo "Cherry-pick applied cleanly."
+          elif [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+            echo "::error::Cherry-pick hit a real conflict -- not auto-resolving. This can happen if a single-ticket create-ticker-page addition landed on master while this run was staged (see the design spec §7.2) -- re-run the refresh from the current master and re-review."
+            exit 1
+          else
+            echo "Cherry-pick would be empty -- master already has this exact change (likely a prior publish attempt for this SHA got partway through). Skipping."
+            git cherry-pick --skip
+          fi
+          echo "new_head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "parent_before=$PARENT_BEFORE" >> "$GITHUB_OUTPUT"
+          git push origin master
+
+      # Diff-scoped, not a wholesale www/stocks copy: "Approve & publish" must
+      # publish exactly what the review screen showed, not everything
+      # currently sitting on DCFAnalysis master (see the design spec §7.1).
+      - name: Compute the exact files the cherry-picked commit touched
+        working-directory: dcf
+        id: files
+        run: |
+          git diff --name-only "${{ steps.cherry.outputs.parent_before }}" "${{ steps.cherry.outputs.new_head }}" -- www/stocks/ > /tmp/changed-files.txt
+          cat /tmp/changed-files.txt
+          if [ ! -s /tmp/changed-files.txt ]; then
+            echo "::error::No www/stocks/ files changed by this commit -- nothing to publish."
+            exit 1
+          fi
+
+      - name: Checkout stock-evaluator with the cross-repo publish PAT
+        uses: actions/checkout@v4
+        with:
+          repository: kanurag4/stock-evaluator
+          ref: main
+          token: ${{ secrets.KV_PUBLISH_PAT }}
+          path: kv
+
+      - name: Copy exactly the changed files, plus www/style.css unconditionally
+        run: |
+          while IFS= read -r f; do
+            mkdir -p "kv/www/dcf/$(dirname "$f")"
+            cp "dcf/$f" "kv/www/dcf/$f"
+          done < /tmp/changed-files.txt
+          # Always copied, even if this run didn't touch it -- prevents shipping
+          # pages referencing chart/assumption CSS classes the live stylesheet
+          # doesn't have yet (same rule the create-ticker-page skill's manual
+          # Step 4 already documents).
+          cp dcf/www/style.css kv/www/dcf/style.css
+
+      - name: Regenerate the tickers sitemap
+        working-directory: kv
+        run: node scripts/generate-tickers-sitemap.js
+
+      - name: Assert only expected files changed
+        working-directory: kv
+        run: |
+          CHANGED=$(git status --porcelain -- www/dcf/stocks www/dcf/style.css www/sitemap-tickers.xml www/sitemap-index.xml)
+          echo "$CHANGED"
+          UNEXPECTED=$(git status --porcelain | grep -vE '(www/dcf/stocks/|www/dcf/style\.css$|www/sitemap-tickers\.xml$|www/sitemap-index\.xml$)' || true)
+          if [ -n "$UNEXPECTED" ]; then
+            echo "::error::Unexpected changes outside the expected paths -- refusing to publish."
+            echo "$UNEXPECTED"
+            exit 1
+          fi
+          if [ -z "$CHANGED" ]; then
+            echo "::error::No changes at all -- this run produced nothing new to publish."
+            exit 1
+          fi
+
+      - name: Commit and push to stock-evaluator (Cloudflare Pages deploys on push to main)
+        working-directory: kv
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add www/dcf/stocks www/dcf/style.css www/sitemap-tickers.xml www/sitemap-index.xml
+          git commit -m "Deploy: ticker pages refresh $(date -u +%Y-%m-%d)"
+          git push origin main
+
+      - name: Delete the published staging branch (cleanup, non-fatal)
+        working-directory: dcf
+        run: git push origin --delete staging/ticker-pages || true
+
+      - name: Notify admin console
+        env:
+          ADMIN_INGEST_URL: ${{ secrets.ADMIN_INGEST_URL }}
+          RUN_INGEST_SECRET: ${{ secrets.RUN_INGEST_SECRET }}
+        run: |
+          if [ -z "$ADMIN_INGEST_URL" ] || [ -z "$RUN_INGEST_SECRET" ]; then
+            echo "ADMIN_INGEST_URL/RUN_INGEST_SECRET not set -- skipping (the deploy above already succeeded regardless)."
+            exit 0
+          fi
+          curl -sS -f -X POST "$ADMIN_INGEST_URL" \
+            -H "Authorization: Bearer $RUN_INGEST_SECRET" \
+            -H "Content-Type: application/json" \
+            -d "{\"kind\":\"published\",\"market\":\"tickers\",\"sha\":\"$SHA\"}"
