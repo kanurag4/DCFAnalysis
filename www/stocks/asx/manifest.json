@@ -44,6 +44,39 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "COH.AX",
+    "slug": "coh-ax",
+    "name": "Cochlear Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 21.53708014446609,
+    "price": 121.745,
+    "marginOfSafety": -0.8230967995033383,
+    "updated": "2026-08-05"
+  },
+  {
+    "ticker": "COL.AX",
+    "slug": "col-ax",
+    "name": "Coles Group Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 10.063931151616586,
+    "price": 24.33,
+    "marginOfSafety": -0.586357124882179,
+    "updated": "2026-08-05"
+  },
+  {
+    "ticker": "CPU.AX",
+    "slug": "cpu-ax",
+    "name": "Computershare Limited",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 7.776864642627154,
+    "price": 43.27,
+    "marginOfSafety": -0.82027121232662,
+    "updated": "2026-08-05"
+  },
+  {
     "ticker": "EDV.AX",
     "slug": "edv-ax",
     "name": "Endeavour Group Limited",
@@ -77,6 +110,28 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "HVN.AX",
+    "slug": "hvn-ax",
+    "name": "Harvey Norman Holdings Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 17.740610891178925,
+    "price": 4.96,
+    "marginOfSafety": 2.576736066769944,
+    "updated": "2026-08-05"
+  },
+  {
+    "ticker": "JBH.AX",
+    "slug": "jbh-ax",
+    "name": "JB Hi-Fi Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 83.59077773508591,
+    "price": 82.75,
+    "marginOfSafety": 0.010160456013122753,
+    "updated": "2026-08-05"
+  },
+  {
     "ticker": "LOV.AX",
     "slug": "lov-ax",
     "name": "Lovisa Holdings Limited",
@@ -108,6 +163,28 @@
     "price": 42.85,
     "marginOfSafety": -0.3448009312861337,
     "updated": "2026-08-04"
+  },
+  {
+    "ticker": "QBE.AX",
+    "slug": "qbe-ax",
+    "name": "QBE Insurance Group Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 24.561044356115673,
+    "price": 24.7,
+    "marginOfSafety": -0.005625734570215647,
+    "updated": "2026-08-05"
+  },
+  {
+    "ticker": "RMD.AX",
+    "slug": "rmd-ax",
+    "name": "ResMed Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 22.08996436613225,
+    "price": 31.57,
+    "marginOfSafety": -0.3002862094985033,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "SHL.AX",
@@ -163,5 +240,16 @@
     "price": 90.99,
     "marginOfSafety": -0.5331297747153583,
     "updated": "2026-08-04"
+  },
+  {
+    "ticker": "WOW.AX",
+    "slug": "wow-ax",
+    "name": "Woolworths Group Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 18.616238326972805,
+    "price": 40.1,
+    "marginOfSafety": -0.5357546551877106,
+    "updated": "2026-08-05"
   }
 ]
