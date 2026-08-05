@@ -5,10 +5,10 @@
     "name": "HDFC Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 170.95956872285896,
-    "price": 738.95,
-    "marginOfSafety": -0.768645282193844,
-    "updated": "2026-08-04"
+    "intrinsic": 170.959568722859,
+    "price": 735,
+    "marginOfSafety": -0.7674019473158381,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "TCS.NS",
@@ -17,8 +17,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 1761.2717773173215,
-    "price": 2430.9,
-    "marginOfSafety": -0.2754651457002257,
+    "price": 2413,
+    "marginOfSafety": -0.2700904362547362,
     "updated": "2026-08-05"
   }
 ]
