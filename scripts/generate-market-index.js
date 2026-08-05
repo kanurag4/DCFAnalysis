@@ -7,6 +7,9 @@
 const fs = require('fs');
 const path = require('path');
 
+const { verdict } = require('./lib/verdict.js');
+const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./lib/page-shell.js');
+
 const MARKET_NAMES = {
   asx: { label: 'ASX 300', screenUrl: '/dcf/asx-undervalued/', screenName: 'ASX 300 Most Undervalued' },
   sp500: { label: 'S&P 500', screenUrl: '/dcf/sp500-undervalued/', screenName: 'S&P 500 Most Undervalued' },
@@ -15,25 +18,6 @@ const MARKET_NAMES = {
   nikkei: { label: 'Nikkei 225', screenUrl: '/dcf/nikkei-undervalued/', screenName: 'Nikkei 225 Most Undervalued' },
   europe: { label: 'Europe', screenUrl: '/dcf/europe-undervalued/', screenName: 'Europe Most Undervalued' },
 };
-
-function escapeHtml(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
-// ±20% bands — must match the live DCF tool's verdict thresholds (www/dcf/app.js)
-// and generate-ticker-page.js's verdict(), so the dot color and label here never
-// disagree with what the ticker's own page says.
-function verdictLabel(marginOfSafety) {
-  if (marginOfSafety == null) return 'N/A';
-  if (marginOfSafety > 0.2) return 'Undervalued';
-  if (marginOfSafety < -0.2) return 'Overvalued';
-  return 'Fairly Valued';
-}
-function verdictDot(marginOfSafety) {
-  if (marginOfSafety == null) return 'var(--kv-muted)';
-  if (marginOfSafety > 0.2) return 'var(--kv-pass)';
-  if (marginOfSafety < -0.2) return 'var(--kv-fail)';
-  return 'var(--kv-warn)';
-}
 
 function main() {
   const folder = process.argv[2];
@@ -51,49 +35,30 @@ function main() {
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
   const sorted = [...manifest].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
 
-  const rows = sorted.map(e => `
+  // Dot colour and label both come from the one shared verdict() — they used to
+  // be two separate local functions and had drifted to different bands, so a row
+  // could show a green dot next to a "Fairly Valued" label.
+  const rows = sorted.map(e => {
+    const v = verdict(e.marginOfSafety);
+    return `
         <a class="stock-list-item" href="/dcf/stocks/${folder}/${e.slug}/">
-          <span class="verdict-dot" style="background:${verdictDot(e.marginOfSafety)}"></span>
+          <span class="verdict-dot" style="background:${v.dot}"></span>
           <span class="sl-name">${escapeHtml(e.name || e.ticker)}</span>
-          <span class="sl-meta">${escapeHtml(e.ticker)} &middot; ${verdictLabel(e.marginOfSafety)}</span>
-        </a>`).join('');
+          <span class="sl-meta">${escapeHtml(e.ticker)} &middot; ${v.text}</span>
+        </a>`;
+  }).join('');
 
-  const html = `<!doctype html>
-<html lang="en" class="dark tool-dcf">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b1120">
-  <title>${meta.label} Stock Valuations — DCF &amp; DDM Intrinsic Value | KashVector</title>
-  <meta name="description" content="Free DCF/DDM intrinsic value pages for ${meta.label} stocks — ${manifest.length} companies valued so far, updated regularly.">
-  <link rel="canonical" href="https://kashvector.com/dcf/stocks/${folder}/">
-  <script src="/kv-theme.js"></script>
-  <link rel="stylesheet" href="/brand.css">
-  <link rel="stylesheet" href="/kv-shared.css">
-  <link rel="stylesheet" href="/dcf/style.css">
-  <link rel="icon" type="image/svg+xml" href="/dcf-icon.svg">
-</head>
-<body>
-  <header class="app-header">
-    <a href="/" class="home-logo" aria-label="All KashVector tools">
-      <img src="/logo.svg" alt="KashVector" width="32" height="32">
-      <span class="home-logo-label">&larr; All tools</span>
-    </a>
-    <div class="app-header-center">
-      <h1>${meta.label} Stock Valuations</h1>
-      <p>DCF &amp; DDM intrinsic value, one page per stock</p>
-    </div>
-    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
-  </header>
-  <div id="kv-nav-placeholder" style="height:41px"></div>
-  <script src="/kv-nav.js"></script>
-  <nav class="ticker-breadcrumb"><a href="/dcf/">DCF Valuation</a><span class="sep">&rsaquo;</span><span class="current">${meta.label}</span></nav>
+  const canonical = `https://kashvector.com/dcf/stocks/${folder}/`;
+  const crumbs = [
+    { name: 'DCF Valuation', path: '/dcf/', url: 'https://kashvector.com/dcf/' },
+    { name: 'Stocks', path: '/dcf/stocks/', url: 'https://kashvector.com/dcf/stocks/' },
+    { name: meta.label, path: canonical, url: canonical },
+  ];
 
-  <main>
-    <p class="ticker-freshness"><span class="dot"></span>${manifest.length} ${meta.label} stock${manifest.length === 1 ? '' : 's'} valued so far &middot; see the <a href="${meta.screenUrl}">${meta.screenName}</a> ranking screen for the current top 20</p>
+  const mainHtml = `    <p class="ticker-freshness"><span class="dot"></span>${manifest.length} ${escapeHtml(meta.label)} stock${manifest.length === 1 ? '' : 's'} valued so far &middot; see the <a href="${meta.screenUrl}">${escapeHtml(meta.screenName)}</a> ranking screen for the current top 20</p>
 
     <section class="other-tickers">
-      <h2>All ${meta.label} stocks</h2>
+      <h2>All ${escapeHtml(meta.label)} stocks</h2>
       <div class="stock-list">${rows}
       </div>
     </section>
@@ -101,19 +66,20 @@ function main() {
     <section class="tool-info">
       <div class="tool-about">
         <h2>About these pages</h2>
-        <p>Each ${meta.label} stock listed here has its own free DCF or DDM valuation page — intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, all computed mechanically from Yahoo Finance data. Not financial advice.</p>
+        <p>Each ${escapeHtml(meta.label)} stock listed here has its own free DCF or DDM valuation page — intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, all computed mechanically from Yahoo Finance data. Each page is a point-in-time snapshot and shows the date it was computed. Not financial advice.</p>
       </div>
-    </section>
-  </main>
+    </section>`;
 
-  <footer>
-    <p class="disclaimer">General information only, not financial advice. <a href="/privacy-site.html">Privacy Policy</a></p>
-    <p><a href="/">&larr; All KashVector tools</a></p>
-    <p>&copy; 2026 KashVector. All rights reserved.</p>
-  </footer>
-</body>
-</html>
-`;
+  const html = pageShell({
+    title: `${meta.label} Stock Valuations — DCF & DDM Intrinsic Value | KashVector`,
+    description: `Free DCF/DDM intrinsic value pages for ${meta.label} stocks — ${manifest.length} companies valued so far. Free, no sign-up.`,
+    canonical,
+    h1: `${meta.label} Stock Valuations`,
+    subtitle: 'DCF &amp; DDM intrinsic value, one page per stock',
+    jsonLd: [breadcrumbJsonLd(crumbs)],
+    breadcrumbHtml: breadcrumbNav(crumbs),
+    mainHtml,
+  });
 
   const outFile = path.join(dir, 'index.html');
   fs.writeFileSync(outFile, html);

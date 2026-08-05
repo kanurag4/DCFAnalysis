@@ -464,8 +464,17 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
    distinct from the DCF tool's own 3-column .charts-section/.chart-card usage above,
    which this doesn't touch (different container class). */
 .history-charts .chart-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-.history-charts .chart-card svg { width: 100%; height: 120px; display: block; overflow: visible; }
+/* height:auto (not a fixed 120px) so the SVG scales uniformly with its
+   preserveAspectRatio="xMidYMid meet" viewBox. The old fixed height + the
+   generator's preserveAspectRatio="none" stretched every <text> label
+   horizontally at any card width other than the viewBox's own 460px. */
+.history-charts .chart-card svg { width: 100%; height: auto; display: block; overflow: visible; }
 .history-charts .chart-card .chart-latest { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+/* Reporting period for the card's series. A quarterly series headlines ONE
+   quarter's figure, which sits a few hundred pixels below a TTM stat tile for
+   the same metric — without this badge the two read as contradicting each
+   other. */
+.chart-period { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kv-muted); background: var(--kv-card-2); border: 1px solid var(--kv-border); border-radius: 999px; padding: 1px 7px; }
 .history-charts .chart-card .chart-latest .delta { font-size: 0.72rem; font-weight: 600; margin-left: 6px; }
 .delta.up { color: var(--kv-pass); }
 .delta.down { color: var(--kv-fail); }

@@ -14,6 +14,12 @@
 // www/dcf/stocks/<market>/<slug>/ once xcopy'd into StockAnalysis, same
 // publish step every other screen uses. This script only WRITES a local file;
 // it never commits or pushes — that is a separate, explicit step.
+//
+// NOTE ON FRESHNESS: nothing regenerates these pages automatically. The
+// undervalued-screen refresh skills' `xcopy DCFAnalysis\www → StockAnalysis\www\dcf`
+// re-copies them byte-identical, but never re-runs this script — so every number
+// on a page is frozen at the moment it was generated. Page copy must therefore
+// never claim a refresh cadence; it states only "Valuation as at <date>".
 
 const fs = require('fs');
 const path = require('path');
@@ -29,6 +35,8 @@ const {
 const { marketParamsFor } = require('./lib/market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./lib/rf.js');
 const { batchHeaders } = require('./lib/batch-auth.js');
+const { verdict } = require('./lib/verdict.js');
+const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./lib/page-shell.js');
 
 // ── config / IO ─────────────────────────────────────────────────────────
 function readProxyUrl() {
@@ -49,80 +57,94 @@ async function getJSON(url) {
 const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 // Index tickers reused verbatim from each market's rank-<market>.js config —
 // same ones already validated live by the undervalued-screen batches.
+// `currencySymbol` here is only a FALLBACK — the real symbol comes from Yahoo's
+// own `currency` field (see CURRENCY_SYMBOLS below). This matters most for the
+// europe bucket, which spans EUR *and* GBP/GBp (London) and so has no single
+// correct per-market symbol at all.
 function marketMeta(ticker) {
   const t = ticker.toUpperCase();
-  if (t.endsWith('.AX')) return { folder: 'asx', screenName: 'ASX 300 Most Undervalued', screenUrl: '/dcf/asx-undervalued/', currencySymbol: '$', indexTicker: '^AXJO', indexName: 'ASX 200' };
-  if (t.endsWith('.NS') || t.endsWith('.BO')) return { folder: 'nifty', screenName: 'NIFTY 500 Most Undervalued', screenUrl: '/dcf/nifty-undervalued/', currencySymbol: '₹', indexTicker: '^NSEI', indexName: 'NIFTY 50' };
-  if (t.endsWith('.KS')) return { folder: 'kospi', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
-  if (t.endsWith('.T')) return { folder: 'nikkei', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
-  if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'europe', screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
-  if (!t.includes('.')) return { folder: 'sp500', screenName: 'S&P 500 Most Undervalued', screenUrl: '/dcf/sp500-undervalued/', currencySymbol: '$', indexTicker: '^GSPC', indexName: 'S&P 500' };
-  return { folder: 'other', screenName: null, screenUrl: null, currencySymbol: '$', indexTicker: null, indexName: null };
+  if (t.endsWith('.AX')) return { folder: 'asx', label: 'ASX', screenName: 'ASX 300 Most Undervalued', screenUrl: '/dcf/asx-undervalued/', currencySymbol: '$', indexTicker: '^AXJO', indexName: 'ASX 200' };
+  if (t.endsWith('.NS') || t.endsWith('.BO')) return { folder: 'nifty', label: 'NIFTY 500', screenName: 'NIFTY 500 Most Undervalued', screenUrl: '/dcf/nifty-undervalued/', currencySymbol: '₹', indexTicker: '^NSEI', indexName: 'NIFTY 50' };
+  if (t.endsWith('.KS')) return { folder: 'kospi', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
+  if (t.endsWith('.T')) return { folder: 'nikkei', label: 'Nikkei 225', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
+  if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'europe', label: 'Europe', screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
+  if (!t.includes('.')) return { folder: 'sp500', label: 'S&P 500', screenName: 'S&P 500 Most Undervalued', screenUrl: '/dcf/sp500-undervalued/', currencySymbol: '$', indexTicker: '^GSPC', indexName: 'S&P 500' };
+  return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: '$', indexTicker: null, indexName: null };
 }
+
+// Same map the live DCF tool uses (www/app.js) — keyed off Yahoo's own
+// summaryDetail.currency, so a London listing quoted in pence renders 'p' and
+// one quoted in pounds renders '£', rather than inheriting the europe bucket's
+// '€'. mapQuoteSummary() already surfaces `currency` and already converts GBp
+// dividends to pence, so the data is present; it just wasn't being read.
+const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
 
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 
 // ── formatting helpers ─────────────────────────────────────────────────
 function money(v, sym, decimals = 2) {
   if (v == null || !isFinite(v)) return 'N/A';
-  return sym + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const sign = v < 0 ? '-' : '';
+  return sign + sym + Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
 function moneyB(v, sym) {
   if (v == null || !isFinite(v)) return 'N/A';
   const sign = v < 0 ? '-' : '';
   return sign + sym + (Math.abs(v) / 1e9).toFixed(2) + 'B';
 }
-// For values ALREADY scaled to billions (e.g. fcfSeries, pre-divided for chart
-// axis sizing) — moneyB() would divide by 1e9 a second time and silently show
-// ~$0.00 for everything. Real bug hit on HDFCBANK.NS (2026-08-04): raw FCF was
-// genuinely large (₹433B–₹1129B) but the chart showed all zeros from this
-// double-division, not from a real data problem.
-function moneyBAlreadyScaled(v, sym) {
-  if (v == null || !isFinite(v)) return 'N/A';
-  const sign = v < 0 ? '-' : '';
-  return sign + sym + Math.abs(v).toFixed(2) + 'B';
-}
 function pct(v, decimals = 1) {
   if (v == null || !isFinite(v)) return 'N/A';
-  return (v >= 0 ? '' : '') + (v * 100).toFixed(decimals) + '%';
+  return (v * 100).toFixed(decimals) + '%';
 }
 function pctSigned(v, decimals = 1) {
   if (v == null || !isFinite(v)) return 'N/A';
   return (v >= 0 ? '+' : '') + (v * 100).toFixed(decimals) + '%';
 }
-// Thresholds must match the live tool exactly (www/app.js's renderScenarios:
-// mos > 0.2 undervalued, mos < -0.2 overvalued, else fair) — found out of sync
-// during the WBC.AX review (2026-08-04): this used to be a ±5% band, silently
-// mislabeling anything in the ±5%-20% range as Over/Undervalued when the live
-// tool calls it Fairly Valued.
-function verdict(marginOfSafety) {
-  if (marginOfSafety == null) return { label: 'N/A', cls: '' };
-  if (marginOfSafety > 0.2) return { label: '✅ Undervalued', cls: 'undervalued' };
-  if (marginOfSafety < -0.2) return { label: '❌ Overvalued', cls: 'overvalued' };
-  return { label: '⚠️ Fairly Valued', cls: '' };
-}
-function escapeHtml(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
 
 // ── Bear/Bull scenario derivation — mirrors www/dcf/app.js's buildScenarios()
 // exactly (same 0.5x/1.5x growth multipliers, same +-1pp WACC/Re offset,
-// same -5/30 and 0/12 growth clamps). Not currently exported from app.js
-// (browser-only, DOM-coupled) so replicated here as pure math. ──
+// same -5/30 and 0/12 growth clamps, AND the same 1dp/2dp rounding). Not
+// currently exported from app.js (browser-only, DOM-coupled) so replicated
+// here as pure math.
+//
+// The rounding is load-bearing, not cosmetic: the live tool rounds each seed
+// to the precision it displays and then computes from the ROUNDED value
+// (www/app.js:385-395). Skipping that step here made the page's assumptions
+// table print a rounded number while the valuation beside it was computed from
+// the full float — so a reader following the "open the interactive calculator"
+// CTA got a different answer from the one the page had just given them. ──
+const r1 = x => +x.toFixed(1);
+const r2 = x => +x.toFixed(2);
 function deriveScenarios({ method, baseGrowthPct, waccOrRePct }) {
   if (method === 'DDM') {
     return {
-      growth: { bear: Math.max(0, baseGrowthPct * 0.5), base: baseGrowthPct, bull: Math.min(12, baseGrowthPct * 1.5) },
-      discount: { bear: waccOrRePct + 1, base: waccOrRePct, bull: Math.max(1, waccOrRePct - 1) },
+      growth: { bear: r1(Math.max(0, baseGrowthPct * 0.5)), base: baseGrowthPct, bull: r1(Math.min(12, baseGrowthPct * 1.5)) },
+      discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
     };
   }
   return {
-    growth: { bear: Math.max(-5, baseGrowthPct * 0.5), base: baseGrowthPct, bull: Math.min(30, baseGrowthPct * 1.5) },
-    discount: { bear: waccOrRePct + 1, base: waccOrRePct, bull: Math.max(1, waccOrRePct - 1) },
+    growth: { bear: r1(Math.max(-5, baseGrowthPct * 0.5)), base: baseGrowthPct, bull: r1(Math.min(30, baseGrowthPct * 1.5)) },
+    discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
   };
 }
 
 // ── SVG line chart (Node port of the locked artifact prototype's lineChart()) ──
+
+// X positions spaced by DATE, not by array index. Financial series routinely
+// have gaps (a quarter Yahoo has no data for is dropped by toPointSeries), and
+// index-spacing draws a 2-quarter gap the same width as a 1-quarter step —
+// silently misreporting the slope. Falls back to even index spacing only if the
+// series carries no parseable dates.
+function chartXs(series, padL, innerW) {
+  const n = series.length;
+  if (n === 1) return [padL + innerW / 2];
+  const ts = series.map(d => (d.date ? Date.parse(d.date) : NaN));
+  const usable = ts.every(t => isFinite(t)) && ts[n - 1] > ts[0];
+  if (!usable) return series.map((_, i) => padL + (i / (n - 1)) * innerW);
+  const t0 = ts[0], span = ts[n - 1] - t0;
+  return ts.map(t => padL + ((t - t0) / span) * innerW);
+}
+
 function lineChart(series, { w, h, valueKey, labelKey, fmtFn }) {
   const pad = { t: 22, r: 8, b: labelKey ? 18 : 6, l: 8 };
   const vals = series.map(d => d[valueKey]);
@@ -130,7 +152,8 @@ function lineChart(series, { w, h, valueKey, labelKey, fmtFn }) {
   if (max === min) { max += 1; min -= 1; }
   const range = max - min;
   const innerW = w - pad.l - pad.r, innerH = h - pad.t - pad.b;
-  const x = i => pad.l + (i / (series.length - 1)) * innerW;
+  const xs = chartXs(series, pad.l, innerW);
+  const x = i => xs[i];
   const y = v => pad.t + innerH - ((v - min) / range) * innerH;
   const zeroY = y(0);
 
@@ -162,7 +185,9 @@ function lineChart(series, { w, h, valueKey, labelKey, fmtFn }) {
     });
   }
 
-  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+  // preserveAspectRatio must NOT be "none": these SVGs contain <text>, and a
+  // non-uniform scale stretches the glyphs at any container width != w.
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
     <polygon points="${areaPts}" fill="${lineColor}" opacity="0.12"/>
     ${grid}
     <polyline points="${pts}" fill="none" stroke="${lineColor}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
@@ -176,6 +201,12 @@ function lineChart(series, { w, h, valueKey, labelKey, fmtFn }) {
 // Stock: solid line + shaded area underneath, colored by trend (matches the
 // single-series lineChart() style elsewhere on the page). Index: dotted line,
 // no fill — so the two are distinguishable without relying on a legend alone.
+//
+// REQUIRES the two series to be date-aligned and equal-length — call
+// alignByBucket() first. This function used to derive all x positions from the
+// stock series alone and read indexPct[n-1] unguarded, which produced an index
+// line running off the plot (or a NaN endpoint dot) for any stock that listed
+// mid-window or had a trading suspension.
 function dualLineChart(stockSeries, indexSeries, { w, h, fmtFn, indexLabel }) {
   const pad = { t: 22, r: 8, b: 18, l: 8 };
   const stockPct = stockSeries.map(d => ((d.v / stockSeries[0].v) - 1) * 100);
@@ -186,7 +217,8 @@ function dualLineChart(stockSeries, indexSeries, { w, h, fmtFn, indexLabel }) {
   const range = max - min;
   const innerW = w - pad.l - pad.r, innerH = h - pad.t - pad.b;
   const n = stockSeries.length;
-  const x = i => pad.l + (i / (n - 1)) * innerW;
+  const xs = chartXs(stockSeries, pad.l, innerW);
+  const x = i => xs[i];
   const y = v => pad.t + innerH - ((v - min) / range) * innerH;
   const zeroY = y(0);
   const stockColor = stockPct[n - 1] >= stockPct[0] ? 'var(--kv-pass)' : 'var(--kv-fail)';
@@ -206,7 +238,7 @@ function dualLineChart(stockSeries, indexSeries, { w, h, fmtFn, indexLabel }) {
   const stockAreaPts = `${x(0)},${zeroY} ${stockPts} ${x(n - 1)},${zeroY}`;
   const indexPts = indexPct.map((v, i) => `${x(i)},${y(v)}`).join(' ');
 
-  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet">
     <line x1="${pad.l}" y1="${zeroY}" x2="${w - pad.r}" y2="${zeroY}" stroke="var(--kv-border)" stroke-width="1" stroke-dasharray="3,3"/>
     <polygon points="${stockAreaPts}" fill="${stockColor}" opacity="0.12"/>
     <polyline points="${indexPts}" fill="none" stroke="var(--kv-muted)" stroke-width="1.5" stroke-dasharray="4,3" stroke-linejoin="round" stroke-linecap="round"/>
@@ -219,10 +251,30 @@ function dualLineChart(stockSeries, indexSeries, { w, h, fmtFn, indexLabel }) {
   </svg>`;
 }
 
-function deltaSpan(first, last) {
+// Inner-join two monthly-bucketed price series on their bucket key, so month i
+// of one is guaranteed to be month i of the other. Two independent
+// fetchPriceHistory() calls can differ in both length and coverage (a stock
+// that listed mid-window, a suspension, an index with a different holiday
+// calendar) — without this the comparison silently compares different months.
+function alignByBucket(a, b) {
+  const bByKey = new Map(b.map(p => [p.k, p]));
+  const aa = [], bb = [];
+  for (const p of a) {
+    const q = bByKey.get(p.k);
+    if (q) { aa.push(p); bb.push(q); }
+  }
+  return [aa, bb];
+}
+
+// Names the period the comparison starts from rather than saying the vague
+// "vs first period" — each card's series can start at a different period
+// (Yahoo's coverage differs per metric), so an unlabelled delta invites
+// comparing two numbers that aren't measured over the same window.
+function deltaSpan(first, last, firstLabel) {
   if (first == null || last == null || first === 0) return '';
   const p = ((last - first) / Math.abs(first)) * 100;
-  return `<span class="delta ${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '+' : ''}${p.toFixed(0)}% vs first period</span>`;
+  const since = firstLabel ? `vs ${escapeHtml(firstLabel)}` : 'vs first period';
+  return `<span class="delta ${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '+' : ''}${p.toFixed(0)}% ${since}</span>`;
 }
 
 // ── Timeseries: try quarterly first, fall back to annual per the agreed
@@ -244,26 +296,29 @@ async function fetchHistorySeries(symbol, proxyUrl) {
   // returns an empty ARRAY (not undefined) for a type it has no data for, and
   // [] is truthy in JS, so a bare `||` fallback would never reach the annual
   // data. Check length explicitly instead.
+  //
+  // Cadence is returned PER SERIES, not once for the page: a ticker can have
+  // quarterly EPS but annual-only free cash flow, and labelling annual FCF
+  // points "Q3 '24" (from a page-level cadence decided by EPS alone) is simply
+  // wrong.
   const pick = (name) => {
     const q = series[`quarterly${name}`];
-    if (q && q.length > 0) return q;
-    return series[`annual${name}`] || [];
+    if (q && q.length > 0) return { points: q, cadence: 'Quarterly' };
+    return { points: series[`annual${name}`] || [], cadence: 'Annual' };
   };
-  const cadence = (series.quarterlyDilutedEPS && series.quarterlyDilutedEPS.length >= 3) ? 'Quarterly' : 'Annual';
   return {
-    cadence,
     eps: pick('DilutedEPS'),
     fcf: pick('FreeCashFlow'),
     div: pick('CashDividendsPaid'),
     shares: pick('DilutedAverageShares'),
-    // Bank/DDM pages chart ROE instead of FCF (see moneyBAlreadyScaled's comment —
-    // FCF is structurally not meaningful for banks regardless of sign, so showing
-    // it invites the wrong question rather than answering one). Equity is
-    // annual-only on the Worker today (no quarterly type requested) — fine, since
-    // every bank ticker seen so far (CBA.AX, HDFCBANK.NS) is annual-cadence anyway.
-    // Both annual-only and deliberately NOT cadence-matched via pick() — ROE
-    // needs net income and equity from the SAME period; mixing a quarterly net
-    // income with annual-only equity would produce a nonsense ratio.
+    // Bank/DDM pages chart ROE instead of FCF — FCF is structurally not
+    // meaningful for banks regardless of sign, so showing it invites the wrong
+    // question rather than answering one. Equity is annual-only on the Worker
+    // today (no quarterly type requested) — fine, since every bank ticker seen
+    // so far (CBA.AX, HDFCBANK.NS) is annual-cadence anyway. Both annual-only
+    // and deliberately NOT cadence-matched via pick() — ROE needs net income
+    // and equity from the SAME period; mixing a quarterly net income with
+    // annual-only equity would produce a nonsense ratio.
     equity: series.annualStockholdersEquity || [],
     netIncome: series.annualNetIncome || [],
   };
@@ -287,6 +342,11 @@ function fyLabel(dateStr, cadence) {
   return `Q${q} '${String(d.getFullYear()).slice(-2)}`;
 }
 
+// A quarterly series' headline value is ONE quarter — printed a few hundred
+// pixels below a TTM stat tile for the same metric, that reads as a
+// contradiction unless the card says which it is.
+const periodBadge = (cadence) => `<span class="chart-period">${cadence === 'Quarterly' ? 'Per quarter' : 'Per year'}</span>`;
+
 async function fetchPriceHistory(symbol, proxyUrl) {
   const now = Math.floor(Date.now() / 1000);
   const period1 = now - 730 * 24 * 60 * 60;
@@ -298,7 +358,9 @@ async function fetchPriceHistory(symbol, proxyUrl) {
     const d = new Date(p.date);
     buckets[`${d.getFullYear()}-${d.getMonth()}`] = p; // last write per month wins (ascending input)
   }
-  return Object.values(buckets).map(p => ({ y: p.date, v: p.close }));
+  // `k` is the month bucket key, kept so two series can be inner-joined on it
+  // (see alignByBucket); `date` feeds the date-proportional x spacing.
+  return Object.entries(buckets).map(([k, p]) => ({ y: p.date, v: p.close, k, date: p.date }));
 }
 
 // ── main ──────────────────────────────────────────────────────────────
@@ -306,15 +368,22 @@ async function main() {
   const rawTicker = process.argv[2];
   if (!rawTicker) { console.error('Usage: node scripts/generate-ticker-page.js <TICKER>'); process.exit(1); }
   const ticker = rawTicker.trim().toUpperCase();
+  // Validate before the value reaches slugify()/path.join() — slugify only
+  // rewrites '.', so a stray '/' or '..' would build an output path outside
+  // www/stocks/. Also catches ordinary typos before a wasted network round-trip.
+  if (!/^[A-Z0-9][A-Z0-9.\-^]*$/.test(ticker)) {
+    console.error(`Invalid ticker "${rawTicker}" — expected letters, digits, dot, dash or caret only.`);
+    process.exit(1);
+  }
   const proxyUrl = readProxyUrl();
   const market = marketMeta(ticker);
-  const currencySym = market.currencySymbol;
 
   console.log(`Fetching ${ticker}...`);
   const qsUrl = `${proxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(ticker)}?tool=dcf`;
   const rawBody = await getJSON(qsUrl);
   const data = mapQuoteSummary(rawBody, ticker);
   const synopsis = rawBody?.quoteSummary?.result?.[0]?.assetProfile?.longBusinessSummary || null;
+  const currencySym = CURRENCY_SYMBOLS[data.currency] ?? market.currencySymbol;
 
   // RF/ERP/terminalGrowth per market (live-fetch RF where a Yahoo ticker exists)
   let live = {};
@@ -326,17 +395,19 @@ async function main() {
 
   const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(ticker));
-  const round1 = x => +(x * 100).toFixed(1) / 100;
-  const round2 = x => +(x * 100).toFixed(2) / 100;
 
   const isBank = isBankOrInsurance(data.sector, data.industry);
   let method, scenarios, waccBreakdown = null, d0 = null;
+  // Hoisted so the stats block and the assumptions grid can both report the FCF
+  // that was actually valued (and how it was arrived at), rather than the raw
+  // Yahoo field the valuation may never have used.
+  let fcfInfo = null, baseFcf = null, fcfNormalised = false;
 
   if (isBank) {
     const dividend = data.trailingAnnualDividendRate ?? data.dividendRate ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
     d0 = dividend != null ? +(+dividend).toFixed(2) : null;
-    const rePct = round2((rf + effectiveBeta * erp) * 100);
-    const baseGrowthPct = round1(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100);
+    const rePct = r2((rf + effectiveBeta * erp) * 100);
+    const baseGrowthPct = r1(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100);
     const s = deriveScenarios({ method: 'DDM', baseGrowthPct, waccOrRePct: rePct });
     method = 'DDM';
     scenarios = ['bear', 'base', 'bull'].map(key => {
@@ -348,10 +419,10 @@ async function main() {
     });
     waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
   } else {
-    const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
-    let baseFcf = fcfInfo.value;
+    fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+    baseFcf = fcfInfo.value;
     if (baseFcf != null) {
-      if (isFinancialSector(data.sector) && baseFcf > 0) baseFcf = baseFcf * 0.6;
+      if (isFinancialSector(data.sector) && baseFcf > 0) { baseFcf = baseFcf * 0.6; fcfNormalised = true; }
       baseFcf = Math.round(baseFcf);
     }
     const waccResult = calculateWACC({
@@ -359,8 +430,8 @@ async function main() {
       interestExpense: data.interestExpense, taxRate: data.taxRate, riskFreeRate: rf, erp,
     });
     if (!waccResult) { console.error('Could not compute WACC (no market cap or debt data) — aborting.'); process.exit(1); }
-    const waccPct = round2(waccResult.wacc * 100);
-    const baseGrowthPct = round1(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100);
+    const waccPct = r2(waccResult.wacc * 100);
+    const baseGrowthPct = r1(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100);
     const s = deriveScenarios({ method: 'DCF', baseGrowthPct, waccOrRePct: waccPct });
     method = 'DCF';
     scenarios = ['bear', 'base', 'bull'].map(key => {
@@ -376,18 +447,19 @@ async function main() {
 
   console.log(`Method: ${method} | fetching timeseries + price history...`);
   const hist = await fetchHistorySeries(ticker, proxyUrl);
-  const priceSeries = await fetchPriceHistory(ticker, proxyUrl);
-  const indexSeries = market.indexTicker ? await fetchPriceHistory(market.indexTicker, proxyUrl) : [];
+  const priceSeriesRaw = await fetchPriceHistory(ticker, proxyUrl);
+  const indexSeriesRaw = market.indexTicker ? await fetchPriceHistory(market.indexTicker, proxyUrl) : [];
+  const [priceAligned, indexAligned] = alignByBucket(priceSeriesRaw, indexSeriesRaw);
 
-  const epsSeries = toPointSeries(hist.eps, v => v, d => fyLabel(d, hist.cadence));
-  const fcfSeries = toPointSeries(hist.fcf, v => v / 1e9, d => fyLabel(d, hist.cadence));
-  const divRaw = hist.div, sharesRaw = hist.shares;
+  const epsSeries = toPointSeries(hist.eps.points, v => v, d => fyLabel(d, hist.eps.cadence));
+  const fcfSeries = toPointSeries(hist.fcf.points, v => v, d => fyLabel(d, hist.fcf.cadence));
+  const divRaw = hist.div.points, sharesRaw = hist.shares.points;
   const sharesByDate = {}; sharesRaw.forEach(p => { if (p?.value != null) sharesByDate[p.date] = p.value; });
   // Dividend per share isn't a direct Yahoo field — derived as
   // |cashDividendsPaid| / dilutedAverageShares for the same period, matched by date.
   const divPS = divRaw
     .filter(p => p?.value != null && sharesByDate[p.date] != null)
-    .map(p => ({ y: fyLabel(p.date, hist.cadence), v: Math.abs(p.value) / sharesByDate[p.date], date: p.date }))
+    .map(p => ({ y: fyLabel(p.date, hist.div.cadence), v: Math.abs(p.value) / sharesByDate[p.date], date: p.date }))
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(-8);
 
@@ -404,7 +476,19 @@ async function main() {
   const slug = slugify(ticker);
   const name = data.name || ticker;
   const sectorLine = [data.sector, data.industry].filter(Boolean).join(' · ');
-  const v = verdict(scenarios.find(s => s.key === 'base').result?.marginOfSafety);
+  const baseResult = scenarios.find(s => s.key === 'base').result;
+  const v = verdict(baseResult?.marginOfSafety);
+
+  // Which FCF number the DCF actually consumed, and how it was arrived at —
+  // same wording as the live tool's own badges (www/app.js renderSummary).
+  const fcfMethodBadge = fcfInfo && fcfInfo.value != null
+    ? (fcfInfo.method === 'proxy' ? ' <span class="stat-warn">⚠ est.</span>'
+      : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>' : '')
+    : '';
+  const fcfMethodNote = !fcfInfo ? ''
+    : fcfInfo.method === 'reported' ? 'Reported free cash flow (Yahoo)'
+    : fcfInfo.method === 'derived' ? 'Derived: operating cash flow − capital expenditure'
+    : 'Rough estimate: operating cash flow × 0.8';
 
   const stats = isBank
     ? [
@@ -418,7 +502,7 @@ async function main() {
     : [
         ['Price', money(data.price, currencySym)],
         ['Market Cap', moneyB(data.marketCap, currencySym)],
-        ['Free Cash Flow', moneyB(data.freeCashflow, currencySym)],
+        ['Free Cash Flow', moneyB(fcfInfo?.value, currencySym) + fcfMethodBadge],
         ['Beta', effectiveBeta.toFixed(2)],
         ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
         ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
@@ -430,7 +514,7 @@ async function main() {
       <div class="sc-header ${s.key}">${s.key.toUpperCase()}</div>
       <div class="sc-intrinsic">${s.result ? money(s.result.intrinsicValue, currencySym) : 'N/A'}</div>
       <div class="sc-price">vs current ${money(data.price, currencySym)}</div>
-      <div class="sc-mos ${vv.cls}">${s.result?.marginOfSafety != null ? pctSigned(s.result.marginOfSafety) + ' ' : ''}${vv.label}</div>
+      <span class="sc-mos ${vv.cls}">${s.result?.marginOfSafety != null ? pctSigned(s.result.marginOfSafety) + ' ' : ''}${vv.label}</span>
     </div>`;
   }).join('');
 
@@ -449,7 +533,8 @@ async function main() {
        <div class="assump-item"><div class="al">Debt component</div><div class="av">None</div><div class="an">DDM discounts dividends at cost of equity only</div></div>
        <div class="assump-item"><div class="al">Starting dividend (D0)</div><div class="av">${d0 != null ? money(d0, currencySym) : 'N/A'}</div><div class="an">Annual, per share</div></div>
        <div class="assump-item"><div class="al">Projection horizon</div><div class="av">5 years</div><div class="an">+ terminal value beyond</div></div>`
-    : `<div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
+    : `<div class="assump-item"><div class="al">Starting free cash flow</div><div class="av">${moneyB(baseFcf, currencySym)}</div><div class="an">${fcfMethodNote}${fcfNormalised ? ', then ×0.6 — the financial-sector haircut the DCF tool and every screen apply' : ''}</div></div>
+       <div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
        <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(ticker) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
        <div class="assump-item"><div class="al">Equity risk premium</div><div class="av">${pct(erp, 2)}</div><div class="an">Market-specific seed</div></div>
        <div class="assump-item"><div class="al">Cost of debt</div><div class="av">${pct(waccBreakdown.rd, 2)}</div><div class="an">${waccBreakdown.isRdEstimated ? 'Estimated (no debt/interest data)' : 'From income statement'}</div></div>
@@ -472,59 +557,60 @@ async function main() {
       </div>
     </section>` : '';
 
-  const canCompareIndex = indexSeries.length >= 2 && priceSeries.length >= 2;
+  const canCompareIndex = priceAligned.length >= 2;
+  const priceSeries = canCompareIndex ? priceAligned : priceSeriesRaw;
   const priceLast = priceSeries[priceSeries.length - 1]?.v;
+  const priceFirstLabel = priceSeries[0]?.y?.slice(0, 7);
   const priceChartHtml = priceSeries.length >= 2
     ? (canCompareIndex
         ? `<div class="chart-card">
             <h3>Share price · last 2 years</h3>
-            <div class="chart-latest">${money(priceLast, currencySym)} ${deltaSpan(priceSeries[0].v, priceLast)}</div>
-            ${dualLineChart(priceSeries, indexSeries, { w: 460, h: 120, fmtFn: x => money(x, currencySym), indexLabel: market.indexName })}
+            <div class="chart-latest">${money(priceLast, currencySym)} ${deltaSpan(priceSeries[0].v, priceLast, priceFirstLabel)}</div>
+            ${dualLineChart(priceAligned, indexAligned, { w: 460, h: 120, fmtFn: x => money(x, currencySym), indexLabel: market.indexName })}
           </div>`
         : `<div class="chart-card">
             <h3>Share price · last 2 years</h3>
-            <div class="chart-latest">${money(priceLast, currencySym)} ${deltaSpan(priceSeries[0].v, priceLast)}</div>
+            <div class="chart-latest">${money(priceLast, currencySym)} ${deltaSpan(priceSeries[0].v, priceLast, priceFirstLabel)}</div>
             ${lineChart(priceSeries, { w: 460, h: 120, valueKey: 'v', labelKey: 'y', fmtFn: x => money(x, currencySym) })}
           </div>`)
     : '';
   const epsChartHtml = epsSeries.length >= 2
     ? `<div class="chart-card">
-        <h3>Earnings per share (diluted)</h3>
-        <div class="chart-latest">${money(epsSeries[epsSeries.length - 1].v, currencySym)} ${deltaSpan(epsSeries[0].v, epsSeries[epsSeries.length - 1].v)}</div>
+        <h3>Earnings per share (diluted) ${periodBadge(hist.eps.cadence)}</h3>
+        <div class="chart-latest">${money(epsSeries[epsSeries.length - 1].v, currencySym)} ${deltaSpan(epsSeries[0].v, epsSeries[epsSeries.length - 1].v, epsSeries[0].y)}</div>
         ${lineChart(epsSeries, { w: 460, h: 120, valueKey: 'v', labelKey: 'y', fmtFn: x => money(x, currencySym) })}
       </div>` : '';
   const fcfLast = fcfSeries[fcfSeries.length - 1]?.v;
   const roeLast = roeSeries[roeSeries.length - 1]?.v;
   // Banks/insurers get ROE instead of FCF — free cash flow is structurally not
-  // meaningful for them (deposits/reserves distort it regardless of sign; see
-  // the moneyBAlreadyScaled comment above for the HDFCBANK.NS incident that
-  // surfaced this), whereas ROE is the standard bank profitability metric and
-  // ties directly to the DDM assumptions (sustainable ROE ~ sustainable
-  // dividend growth) — already shown as a single current stat in bank-metrics,
-  // this is the same number charted over time.
+  // meaningful for them (deposits/reserves distort it regardless of sign),
+  // whereas ROE is the standard bank profitability metric and ties directly to
+  // the DDM assumptions (sustainable ROE ~ sustainable dividend growth) —
+  // already shown as a single current stat in bank-metrics, this is the same
+  // number charted over time.
   const fourthChartHtml = isBank
     ? (roeSeries.length >= 2
         ? `<div class="chart-card">
-            <h3>Return on equity</h3>
-            <div class="chart-latest">${roeLast.toFixed(1)}% ${deltaSpan(roeSeries[0].v, roeLast)}</div>
+            <h3>Return on equity ${periodBadge('Annual')}</h3>
+            <div class="chart-latest">${roeLast.toFixed(1)}% ${deltaSpan(roeSeries[0].v, roeLast, roeSeries[0].y)}</div>
             ${lineChart(roeSeries, { w: 460, h: 120, valueKey: 'v', labelKey: 'y', fmtFn: x => x.toFixed(1) + '%' })}
           </div>`
         : '<div class="chart-card"><h3>Return on equity</h3><p style="color:var(--kv-muted);font-size:0.82rem">No equity history available.</p></div>')
     : (fcfSeries.length >= 2
         ? `<div class="chart-card">
-            <h3>Free cash flow</h3>
-            <div class="chart-latest">${moneyBAlreadyScaled(fcfLast, currencySym)} ${deltaSpan(fcfSeries[0].v, fcfLast)}</div>
-            ${lineChart(fcfSeries, { w: 460, h: 120, valueKey: 'v', labelKey: 'y', fmtFn: x => moneyBAlreadyScaled(x, currencySym) })}
+            <h3>Free cash flow ${periodBadge(hist.fcf.cadence)}</h3>
+            <div class="chart-latest">${moneyB(fcfLast, currencySym)} ${deltaSpan(fcfSeries[0].v, fcfLast, fcfSeries[0].y)}</div>
+            ${lineChart(fcfSeries, { w: 460, h: 120, valueKey: 'v', labelKey: 'y', fmtFn: x => moneyB(x, currencySym) })}
           </div>` : '');
   const divChartHtml = divPS.length >= 2
     ? `<div class="chart-card">
-        <h3>Dividend per share</h3>
-        <div class="chart-latest">${money(divPS[divPS.length - 1].v, currencySym)} ${deltaSpan(divPS[0].v, divPS[divPS.length - 1].v)}</div>
+        <h3>Dividend per share ${periodBadge(hist.div.cadence)}</h3>
+        <div class="chart-latest">${money(divPS[divPS.length - 1].v, currencySym)} ${deltaSpan(divPS[0].v, divPS[divPS.length - 1].v, divPS[0].y)}</div>
         ${lineChart(divPS, { w: 460, h: 120, valueKey: 'v', labelKey: 'y', fmtFn: x => money(x, currencySym) })}
       </div>` : '<div class="chart-card"><h3>Dividend per share</h3><p style="color:var(--kv-muted);font-size:0.82rem">No dividend history available.</p></div>';
 
-  const cadenceNote = hist.cadence === 'Quarterly'
-    ? 'Quarterly reporting periods — the most granular consistent series Yahoo provides for this market.'
+  const cadenceNote = hist.eps.cadence === 'Quarterly'
+    ? 'Each card is labelled with its own reporting period — quarterly where Yahoo provides it for this market, annual otherwise.'
     : 'Annual reporting periods — this market does not have reliable quarterly data on Yahoo (either it isn’t required, or coverage is incomplete), so annual is the most granular consistent series across free cash flow and dividends.';
 
   const synopsisHtml = synopsis
@@ -535,51 +621,14 @@ async function main() {
       </section>`
     : '';
 
-  const breadcrumbHtml = market.screenUrl
-    ? `<nav class="ticker-breadcrumb"><a href="/dcf/">DCF Valuation</a><span class="sep">›</span><a href="${market.screenUrl}">${market.screenName}</a><span class="sep">›</span><span class="current">${escapeHtml(ticker)}</span></nav>`
-    : `<nav class="ticker-breadcrumb"><a href="/dcf/">DCF Valuation</a><span class="sep">›</span><span class="current">${escapeHtml(ticker)}</span></nav>`;
+  const canonical = `https://kashvector.com/dcf/stocks/${market.folder}/${slug}/`;
+  const crumbs = [{ name: 'DCF Valuation', path: '/dcf/', url: 'https://kashvector.com/dcf/' }];
+  if (market.screenUrl) crumbs.push({ name: market.screenName, path: market.screenUrl, url: `https://kashvector.com${market.screenUrl}` });
+  crumbs.push({ name: ticker, path: canonical, url: canonical });
 
-  const html = `<!doctype html>
-<html lang="en" class="dark tool-dcf">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b1120">
-  <title>${escapeHtml(name)} (${escapeHtml(ticker)}) ${method} Valuation — Is ${escapeHtml(ticker)} Undervalued? | KashVector</title>
-  <meta name="description" content="${escapeHtml(name)} (${escapeHtml(ticker)}) intrinsic value via ${method === 'DCF' ? 'Discounted Cash Flow' : 'Dividend Discount Model'}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs current price ${money(data.price, currencySym)}. Free calculator, updated regularly.">
-  <link rel="canonical" href="https://kashvector.com/dcf/stocks/${market.folder}/${slug}/">
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
-    {"@type":"ListItem","position":1,"name":"DCF Valuation","item":"https://kashvector.com/dcf/"}${market.screenUrl ? `,
-    {"@type":"ListItem","position":2,"name":"${market.screenName}","item":"https://kashvector.com${market.screenUrl}"},
-    {"@type":"ListItem","position":3,"name":"${escapeHtml(ticker)}","item":"https://kashvector.com/dcf/stocks/${market.folder}/${slug}/"}` : `,
-    {"@type":"ListItem","position":2,"name":"${escapeHtml(ticker)}","item":"https://kashvector.com/dcf/stocks/${market.folder}/${slug}/"}`}
-  ]}
-  </script>
-  <script src="/kv-theme.js"></script>
-  <link rel="stylesheet" href="/brand.css">
-  <link rel="stylesheet" href="/kv-shared.css">
-  <link rel="stylesheet" href="/dcf/style.css">
-  <link rel="icon" type="image/svg+xml" href="/dcf-icon.svg">
-</head>
-<body>
-  <header class="app-header">
-    <a href="/" class="home-logo" aria-label="All KashVector tools">
-      <img src="/logo.svg" alt="KashVector" width="32" height="32">
-      <span class="home-logo-label">&larr; All tools</span>
-    </a>
-    <div class="app-header-center">
-      <h1>${escapeHtml(name)} (${escapeHtml(ticker)})</h1>
-      <p>${method} Valuation · ${escapeHtml(sectorLine)}</p>
-    </div>
-    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
-  </header>
-  <div id="kv-nav-placeholder" style="height:41px"></div>
-  <script src="/kv-nav.js"></script>
-  ${breadcrumbHtml}
+  const calcHref = `/dcf/?ticker=${encodeURIComponent(ticker)}${market.folder === 'asx' ? '&amp;asx=1' : ''}${market.folder === 'nifty' ? '&amp;nse=1' : ''}`;
 
-  <main>
-    <p class="ticker-freshness"><span class="dot"></span>Valuation as at ${today}${market.screenUrl ? ` · refreshed with the ${market.screenName} screen` : ''}</p>
+  const mainHtml = `    <p class="ticker-freshness"><span class="dot"></span>Valuation as at ${today}${market.screenUrl ? ` · see also the <a href="${market.screenUrl}">${escapeHtml(market.screenName)}</a> screen` : ''}</p>
 
     ${synopsisHtml}
 
@@ -594,7 +643,7 @@ async function main() {
     <section class="history-charts">
       <h2>${escapeHtml(ticker)}'s price &amp; financial trends</h2>
       <p class="cadence-note">${cadenceNote}</p>
-      <p class="refresh-note"><span class="dot"></span>Data refreshed ${today}</p>
+      <p class="refresh-note"><span class="dot"></span>Data as at ${today}</p>
       <div class="chart-row">${priceChartHtml}${epsChartHtml}${fourthChartHtml}${divChartHtml}</div>
     </section>
 
@@ -621,10 +670,10 @@ async function main() {
       <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : 'dividends'} through the mechanical ${method} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(ticker)}'s competitive position. <a href="/glossary/">What is ${method}?</a></span>
     </p>
 
-    <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : 'dividend growth or cost-of-equity'} assumptions?</span><a href="/dcf/?ticker=${encodeURIComponent(ticker)}${market.folder === 'asx' ? '&asx=1' : ''}${market.folder === 'nifty' ? '&nse=1' : ''}">Open the full interactive calculator, pre-filled with ${escapeHtml(ticker)} &rarr;</a></p>
+    <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : 'dividend growth or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(ticker)} &rarr;</a></p>
 
     <section class="other-tickers">
-      <h2>More ${market.screenName || 'valued'} stocks</h2>
+      <h2>More ${market.label ? escapeHtml(market.label) + ' ' : ''}stocks we've valued</h2>
       <div class="ticker-chip-row">
         <a class="ticker-chip" href="/dcf/stocks/${market.folder}/">Browse every stock we've valued in this market &rarr;</a>
       </div>
@@ -635,25 +684,26 @@ async function main() {
     <section class="tool-info">
       <div class="tool-about">
         <h2>About this valuation</h2>
-        <p>${market.screenUrl ? `Refreshed on the same cycle as the ${market.screenName} screen. ` : ''}Change any assumption yourself in the full interactive tool.</p>
+        <p>Computed on ${today} from Yahoo Finance data, using the same engine as the <a href="/dcf/">full DCF tool</a>${market.screenUrl ? ` and the <a href="${market.screenUrl}">${escapeHtml(market.screenName)}</a> screen` : ''}. Every figure above is a point-in-time snapshot of that date — change any assumption yourself in the interactive tool for a live one.</p>
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
         <details class="faq-item"><summary>Is ${escapeHtml(ticker)} undervalued?</summary>
-          <p>The Base-case ${method} estimates intrinsic value at ${money(scenarios[1].result?.intrinsicValue, currencySym)} vs a current price of ${money(data.price, currencySym)} — a ${pctSigned(scenarios[1].result?.marginOfSafety)} margin, so the Base case reads ${verdict(scenarios[1].result?.marginOfSafety).label.replace(/^\S+\s/, '').toLowerCase()}. This is a mechanical output, not advice.</p>
+          <p>The Base-case ${method} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
         </details>
       </div>
-    </section>
-  </main>
+    </section>`;
 
-  <footer>
-    <p class="disclaimer">General information only, not financial advice. <a href="/privacy-site.html" id="privacy-link">Privacy Policy</a></p>
-    <p><a href="/">&larr; All KashVector tools</a></p>
-    <p>&copy; 2026 KashVector. All rights reserved.</p>
-  </footer>
-</body>
-</html>
-`;
+  const html = pageShell({
+    title: `${name} (${ticker}) ${method} Valuation — Is ${ticker} Undervalued? | KashVector`,
+    description: `${name} (${ticker}) intrinsic value via ${method === 'DCF' ? 'Discounted Cash Flow' : 'Dividend Discount Model'}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
+    canonical,
+    h1: `${name} (${ticker})`,
+    subtitle: `${method} Valuation · ${escapeHtml(sectorLine)}`,
+    jsonLd: [breadcrumbJsonLd(crumbs)],
+    breadcrumbHtml: breadcrumbNav(crumbs),
+    mainHtml,
+  });
 
   const outDir = path.join(__dirname, '..', 'www', 'stocks', market.folder, slug);
   fs.mkdirSync(outDir, { recursive: true });
@@ -670,9 +720,9 @@ async function main() {
   }
   const entry = {
     ticker, slug, name, sector: data.sector, method,
-    intrinsic: scenarios[1].result?.intrinsicValue ?? null,
+    intrinsic: baseResult?.intrinsicValue ?? null,
     price: data.price,
-    marginOfSafety: scenarios[1].result?.marginOfSafety ?? null,
+    marginOfSafety: baseResult?.marginOfSafety ?? null,
     updated: today,
   };
   manifest = manifest.filter(e => e.ticker !== ticker);
@@ -681,7 +731,7 @@ async function main() {
   fs.writeFileSync(manifestFile, JSON.stringify(manifest, null, 2));
 
   console.log(`\nWrote ${outFile}`);
-  console.log(`Method: ${method} | Cadence: ${hist.cadence} | Base verdict: ${v.label}`);
+  console.log(`Method: ${method} | EPS cadence: ${hist.eps.cadence} | Base verdict: ${v.label}`);
   console.log(`Manifest updated: ${manifestFile} (${manifest.length} ticker${manifest.length === 1 ? '' : 's'} in ${market.folder})`);
   console.log(`This file is NOT committed or published — review it locally, then commit/xcopy/deploy explicitly when ready.`);
   console.log(`Run 'node scripts/generate-market-index.js ${market.folder}' to refresh the /dcf/stocks/${market.folder}/ hub page.`);

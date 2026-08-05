@@ -10,6 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./lib/page-shell.js');
+
 const MARKET_ORDER = ['asx', 'sp500', 'nifty', 'kospi', 'nikkei', 'europe'];
 const MARKET_LABELS = {
   asx: 'ASX 300', sp500: 'S&P 500', nifty: 'NIFTY 500',
@@ -33,46 +35,20 @@ function main() {
       <a class="screen-pill" href="/dcf/stocks/${m}/">
         <span class="screen-pill-flag">${MARKET_FLAGS[m]}</span>
         <span class="screen-pill-label">
-          <strong>${MARKET_LABELS[m]}</strong>
+          <strong>${escapeHtml(MARKET_LABELS[m])}</strong>
           <span>${manifest.length} stock${manifest.length === 1 ? '' : 's'} valued</span>
         </span>
         <span class="screen-pill-arrow">&rarr;</span>
       </a>`;
   }).join('');
 
-  const html = `<!doctype html>
-<html lang="en" class="dark tool-dcf">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b1120">
-  <title>Individual Stock Valuations by Market — Free DCF &amp; DDM | KashVector</title>
-  <meta name="description" content="Browse free DCF/DDM intrinsic value pages for individual stocks, organised by market — ASX, S&P 500, NIFTY and more, updated regularly.">
-  <link rel="canonical" href="https://kashvector.com/dcf/stocks/">
-  <script src="/kv-theme.js"></script>
-  <link rel="stylesheet" href="/brand.css">
-  <link rel="stylesheet" href="/kv-shared.css">
-  <link rel="stylesheet" href="/dcf/style.css">
-  <link rel="icon" type="image/svg+xml" href="/dcf-icon.svg">
-</head>
-<body>
-  <header class="app-header">
-    <a href="/" class="home-logo" aria-label="All KashVector tools">
-      <img src="/logo.svg" alt="KashVector" width="32" height="32">
-      <span class="home-logo-label">&larr; All tools</span>
-    </a>
-    <div class="app-header-center">
-      <h1>Individual Stock Valuations</h1>
-      <p>Free DCF &amp; DDM pages, one per stock, organised by market</p>
-    </div>
-    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
-  </header>
-  <div id="kv-nav-placeholder" style="height:41px"></div>
-  <script src="/kv-nav.js"></script>
-  <nav class="ticker-breadcrumb"><a href="/dcf/">DCF Valuation</a><span class="sep">&rsaquo;</span><span class="current">Stocks</span></nav>
+  const canonical = 'https://kashvector.com/dcf/stocks/';
+  const crumbs = [
+    { name: 'DCF Valuation', path: '/dcf/', url: 'https://kashvector.com/dcf/' },
+    { name: 'Stocks', path: canonical, url: canonical },
+  ];
 
-  <main>
-    <section class="other-tickers" style="margin-top:16px">
+  const mainHtml = `    <section class="other-tickers" style="margin-top:16px">
       <h2>Browse by market</h2>
       <div class="screens-row">${cards}
       </div>
@@ -81,19 +57,20 @@ function main() {
     <section class="tool-info">
       <div class="tool-about">
         <h2>About these pages</h2>
-        <p>Each stock has its own free DCF or DDM valuation page &mdash; intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, computed mechanically from Yahoo Finance data. More markets and tickers are added regularly. Not financial advice.</p>
+        <p>Each stock has its own free DCF or DDM valuation page &mdash; intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, computed mechanically from Yahoo Finance data. Each page is a point-in-time snapshot and shows the date it was computed. More markets and tickers are added over time. Not financial advice.</p>
       </div>
-    </section>
-  </main>
+    </section>`;
 
-  <footer>
-    <p class="disclaimer">General information only, not financial advice. <a href="/privacy-site.html">Privacy Policy</a></p>
-    <p><a href="/">&larr; All KashVector tools</a></p>
-    <p>&copy; 2026 KashVector. All rights reserved.</p>
-  </footer>
-</body>
-</html>
-`;
+  const html = pageShell({
+    title: 'Individual Stock Valuations by Market — Free DCF & DDM | KashVector',
+    description: 'Browse free DCF/DDM intrinsic value pages for individual stocks, organised by market — ASX, S&P 500, NIFTY and more. Free, no sign-up.',
+    canonical,
+    h1: 'Individual Stock Valuations',
+    subtitle: 'Free DCF &amp; DDM pages, one per stock, organised by market',
+    jsonLd: [breadcrumbJsonLd(crumbs)],
+    breadcrumbHtml: breadcrumbNav(crumbs),
+    mainHtml,
+  });
 
   const outFile = path.join(stocksDir, 'index.html');
   fs.writeFileSync(outFile, html);

@@ -5,10 +5,10 @@
     "name": "Alcoa Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 77.7876588202583,
-    "price": 65.46,
-    "marginOfSafety": 0.18832353834797294,
-    "updated": "2026-08-04"
+    "intrinsic": 77.51194901849374,
+    "price": 67.435,
+    "marginOfSafety": 0.1494320311187623,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "BHP.AX",
@@ -16,10 +16,10 @@
     "name": "BHP Group Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 44.35883306206096,
-    "price": 60.52,
-    "marginOfSafety": -0.26703844907367885,
-    "updated": "2026-08-04"
+    "intrinsic": 44.14035524553775,
+    "price": 62.49,
+    "marginOfSafety": -0.2936412986791847,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "BPT.AX",
@@ -39,9 +39,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 77.15512450694676,
-    "price": 180.72,
-    "marginOfSafety": -0.573068146818577,
-    "updated": "2026-08-04"
+    "price": 177.8,
+    "marginOfSafety": -0.5660566675649789,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "COH.AX",
