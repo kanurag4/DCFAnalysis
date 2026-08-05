@@ -1,0 +1,52 @@
+name: Refresh ticker pages
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-ticker-pages
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: npm test (abort on failure)
+        run: npm test
+
+      - name: Run the batch
+        env:
+          KV_BATCH_KEY: ${{ secrets.KV_BATCH_KEY }}
+        run: node scripts/refresh-ticker-pages.js 2>&1 | tee run.log
+
+      - name: Commit snapshot to staging branch
+        id: stage
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git checkout -B staging/ticker-pages
+          git add www/stocks
+          git commit -m "data: ticker pages refresh $(date -u +%Y-%m-%d)"
+          git push --force origin staging/ticker-pages
+
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Notify admin console
+        env:
+          ADMIN_INGEST_URL: ${{ secrets.ADMIN_INGEST_URL }}
+          RUN_INGEST_SECRET: ${{ secrets.RUN_INGEST_SECRET }}
+          RUN_LOG_PATH: run.log
+        run: node scripts/notify-ticker-refresh.js "${{ steps.stage.outputs.sha }}"
