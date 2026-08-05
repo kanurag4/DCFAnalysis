@@ -6,12 +6,18 @@
 // docs/superpowers/specs/2026-08-05-ticker-pages-bulk-refresh-design.md (StockAnalysis)
 // for the full design.
 //
-// A ticker that fails to fetch, can't compute WACC, or comes back with a null
-// base case is SKIPPED, not overwritten -- its existing published page and
-// manifest entry are left untouched. This is deliberately different from
-// generate-ticker-page.js's own CLI behaviour (which still writes an N/A page
-// on a null base case) -- in a batch nobody is eyeballing each page before it
-// ships, so this guard is automatic here even though it stays manual there.
+// A ticker that comes back with a null base case (see lib/ticker-retry.js's
+// header for why this happens -- transient Yahoo-side module omission) gets
+// up to 2 retries with backoff before being given up on. A ticker that fails
+// to fetch or can't compute WACC is not retried -- only a null base case is,
+// since that's the specific transient condition observed in production.
+//
+// Whatever is still unresolved after retries is SKIPPED, not overwritten --
+// its existing published page and manifest entry are left untouched. This is
+// deliberately different from generate-ticker-page.js's own CLI behaviour
+// (which still writes an N/A page on a null base case) -- in a batch nobody
+// is eyeballing each page before it ships, so this guard is automatic here
+// even though it stays manual there.
 //
 // Usage:
 //   node scripts/refresh-ticker-pages.js [--dry-run]
@@ -23,6 +29,7 @@ const { buildTickerPage, upsertManifestEntry } = require('./lib/ticker-page.js')
 const { generateMarketIndex } = require('./generate-market-index.js');
 const { generateStocksHub } = require('./generate-stocks-hub.js');
 const { computeRefreshSummary } = require('./lib/refresh-report.js');
+const { withNullBaseCaseRetry } = require('./lib/ticker-retry.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // same throttle scripts/lib/run-screen.js uses between tickers -- a courtesy to Yahoo's own API, not just the Worker's per-IP cap
@@ -46,7 +53,10 @@ async function refreshMarket(folder, proxyUrl, dryRun) {
 
   let done = 0;
   for (const oldEntry of manifest) {
-    const outcome = await buildTickerPage(oldEntry.ticker, { proxyUrl, indexHistoryCache });
+    const outcome = await withNullBaseCaseRetry(
+      () => buildTickerPage(oldEntry.ticker, { proxyUrl, indexHistoryCache }),
+      { onRetry: (attempt) => console.log(`  ↻ ${oldEntry.ticker} (${folder}) null base case, retrying (attempt ${attempt}/2)…`) }
+    );
 
     if (outcome.status === 'skipped') {
       results.push({ status: 'skipped', ticker: oldEntry.ticker, market: folder, reason: outcome.reason });
