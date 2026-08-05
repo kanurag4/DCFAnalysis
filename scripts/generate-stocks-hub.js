@@ -31,14 +31,14 @@ function generateStocksHub() {
   const cards = live.map(m => {
     const manifest = JSON.parse(fs.readFileSync(path.join(stocksDir, m, 'manifest.json'), 'utf8'));
     return `
-        <a class="screen-pill" href="/dcf/stocks/${m}/">
-          <span class="screen-pill-flag">${MARKET_FLAGS[m]}</span>
-          <span class="screen-pill-label">
-            <strong>${escapeHtml(MARKET_LABELS[m])}</strong>
-            <span>${manifest.length} stock${manifest.length === 1 ? '' : 's'} valued</span>
-          </span>
-          <span class="screen-pill-arrow">&rarr;</span>
-        </a>`;
+      <a class="screen-pill" href="/dcf/stocks/${m}/">
+        <span class="screen-pill-flag">${MARKET_FLAGS[m]}</span>
+        <span class="screen-pill-label">
+          <strong>${escapeHtml(MARKET_LABELS[m])}</strong>
+          <span>${manifest.length} stock${manifest.length === 1 ? '' : 's'} valued</span>
+        </span>
+        <span class="screen-pill-arrow">&rarr;</span>
+      </a>`;
   }).join('');
 
   const canonical = 'https://kashvector.com/dcf/stocks/';
@@ -48,17 +48,17 @@ function generateStocksHub() {
   ];
 
   const mainHtml = `    <section class="other-tickers" style="margin-top:16px">
-          <h2>Browse by market</h2>
-          <div class="screens-row">${cards}
-          </div>
-        </section>
+      <h2>Browse by market</h2>
+      <div class="screens-row">${cards}
+      </div>
+    </section>
 
-        <section class="tool-info">
-          <div class="tool-about">
-            <h2>About these pages</h2>
-            <p>Each stock has its own free DCF or DDM valuation page &mdash; intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, computed mechanically from Yahoo Finance data. Each page is a point-in-time snapshot and shows the date it was computed. More markets and tickers are added over time. Not financial advice.</p>
-          </div>
-        </section>`;
+    <section class="tool-info">
+      <div class="tool-about">
+        <h2>About these pages</h2>
+        <p>Each stock has its own free DCF or DDM valuation page &mdash; intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, computed mechanically from Yahoo Finance data. Each page is a point-in-time snapshot and shows the date it was computed. More markets and tickers are added over time. Not financial advice.</p>
+      </div>
+    </section>`;
 
   const html = pageShell({
     title: 'Individual Stock Valuations by Market — Free DCF & DDM | KashVector',
