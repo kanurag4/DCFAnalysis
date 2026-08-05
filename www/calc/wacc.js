@@ -5,8 +5,13 @@ function calculateWACC({
 }) {
   const e = (marketCap > 0) ? marketCap : 0;
   const d = (totalDebt > 0) ? totalDebt : 0;
+  // Equity weight can't be meaningfully computed without a market cap --
+  // defaulting it to 0 (100% debt-financed) is wrong for any real,
+  // exchange-listed company, not a reasonable degradation. Silently
+  // producing that phantom WACC (instead of refusing) hid a real Yahoo
+  // data gap behind a plausible-looking number (2026-08-05 incident).
+  if (e === 0) return null;
   const v = e + d;
-  if (v === 0) return null;
 
   const eWeight = e / v;
   const dWeight = d / v;

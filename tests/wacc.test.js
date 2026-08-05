@@ -50,6 +50,19 @@ test('returns null when total capital is zero', () => {
   assert.strictEqual(r, null);
 });
 
+test('returns null when marketCap is missing but totalDebt is present -- not a phantom 100%-debt WACC', () => {
+  // Real incident, 2026-08-05: several large tickers (BPT.AX, TLS.AX, LLY,
+  // MRK...) came back from Yahoo with marketCap null but totalDebt intact.
+  // The old code treated equity weight as 0 and silently computed a WACC as
+  // if the company were 100% debt-financed -- nonsense for any real,
+  // exchange-listed company. It must refuse (return null) instead.
+  const r = calculateWACC({
+    marketCap: null, totalDebt: 705699968, beta: 0.9,
+    interestExpense: null, taxRate: null,
+  });
+  assert.strictEqual(r, null);
+});
+
 test('uses beta=1.0 fallback when beta is null', () => {
   const r = calculateWACC({
     marketCap: 10e9, totalDebt: 0, beta: null,
