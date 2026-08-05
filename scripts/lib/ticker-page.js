@@ -596,8 +596,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>` : '<div class="chart-card"><h3>Dividend per share</h3><p style="color:var(--kv-muted);font-size:0.82rem">No dividend history available.</p></div>';
 
     const cadenceNote = hist.eps.cadence === 'Quarterly'
-      ? 'Each card is labelled with its own reporting period - quarterly where Yahoo provides it for this market, annual otherwise.'
-      : 'Annual reporting periods - this market does not have reliable quarterly data on Yahoo (either it isn\'t required, or coverage is incomplete), so annual is the most granular consistent series across free cash flow and dividends.';
+      ? "Each card is labelled with its own reporting period — quarterly where Yahoo provides it for this market, annual otherwise."
+      : "Annual reporting periods — this market does not have reliable quarterly data on Yahoo (either it isn't required, or coverage is incomplete), so annual is the most granular consistent series across free cash flow and dividends.";
 
     const synopsisHtml = synopsis
       ? `<section class="synopsis">
