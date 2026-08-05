@@ -6,8 +6,8 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 77.51194901849374,
-    "price": 67.435,
-    "marginOfSafety": 0.1494320311187623,
+    "price": 67.6,
+    "marginOfSafety": 0.14662646477061753,
     "updated": "2026-08-05"
   },
   {
@@ -17,8 +17,8 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 44.14035524553775,
-    "price": 62.49,
-    "marginOfSafety": -0.2936412986791847,
+    "price": 62.54,
+    "marginOfSafety": -0.29420602421589787,
     "updated": "2026-08-05"
   },
   {
@@ -27,10 +27,10 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 2.0435074264994566,
-    "price": 0.915,
-    "marginOfSafety": 1.233341449726182,
-    "updated": "2026-08-04"
+    "intrinsic": 2.052067289130052,
+    "price": 0.89,
+    "marginOfSafety": 1.305693583292193,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "CBA.AX",
@@ -38,9 +38,9 @@
     "name": "Commonwealth Bank of Australia",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 77.15512450694676,
-    "price": 177.8,
-    "marginOfSafety": -0.5660566675649789,
+    "intrinsic": 77.15512450694678,
+    "price": 178.23,
+    "marginOfSafety": -0.567103604853578,
     "updated": "2026-08-05"
   },
   {
@@ -49,9 +49,9 @@
     "name": "Cochlear Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 21.53708014446609,
-    "price": 121.745,
-    "marginOfSafety": -0.8230967995033383,
+    "intrinsic": 21.53874904951264,
+    "price": 122,
+    "marginOfSafety": -0.8234528766433391,
     "updated": "2026-08-05"
   },
   {
@@ -60,9 +60,9 @@
     "name": "Coles Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 10.063931151616586,
-    "price": 24.33,
-    "marginOfSafety": -0.586357124882179,
+    "intrinsic": 10.022483525237034,
+    "price": 24.22,
+    "marginOfSafety": -0.5861897801305931,
     "updated": "2026-08-05"
   },
   {
@@ -71,9 +71,9 @@
     "name": "Computershare Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 7.776864642627154,
-    "price": 43.27,
-    "marginOfSafety": -0.82027121232662,
+    "intrinsic": 7.776401408084982,
+    "price": 43.26,
+    "marginOfSafety": -0.8202403742929963,
     "updated": "2026-08-05"
   },
   {
@@ -82,10 +82,10 @@
     "name": "Endeavour Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 4.022993765328742,
-    "price": 3.48,
-    "marginOfSafety": 0.15603269118642019,
-    "updated": "2026-08-04"
+    "intrinsic": 4.0476552009985625,
+    "price": 3.43,
+    "marginOfSafety": 0.18007440262348753,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "FMG.AX",
@@ -93,10 +93,10 @@
     "name": "Fortescue Ltd",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 29.186179332537495,
-    "price": 18.08,
-    "marginOfSafety": 0.6142798303394634,
-    "updated": "2026-08-04"
+    "intrinsic": 29.24318937098386,
+    "price": 18.19,
+    "marginOfSafety": 0.6076519720167046,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "GMG.AX",
@@ -115,9 +115,9 @@
     "name": "Harvey Norman Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 17.740610891178925,
-    "price": 4.96,
-    "marginOfSafety": 2.576736066769944,
+    "intrinsic": 17.78280853401852,
+    "price": 4.97,
+    "marginOfSafety": 2.578029886120427,
     "updated": "2026-08-05"
   },
   {
@@ -126,9 +126,9 @@
     "name": "JB Hi-Fi Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 83.59077773508591,
-    "price": 82.75,
-    "marginOfSafety": 0.010160456013122753,
+    "intrinsic": 83.41979438018849,
+    "price": 82.22,
+    "marginOfSafety": 0.014592488204676393,
     "updated": "2026-08-05"
   },
   {
@@ -137,10 +137,10 @@
     "name": "Lovisa Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 36.49357404254132,
-    "price": 25.31,
-    "marginOfSafety": 0.4418638499621225,
-    "updated": "2026-08-04"
+    "intrinsic": 36.384030470457326,
+    "price": 26.19,
+    "marginOfSafety": 0.38923369493918764,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "MTS.AX",
@@ -148,10 +148,10 @@
     "name": "Metcash Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 5.149099910454534,
+    "intrinsic": 5.1492745041840235,
     "price": 3.1,
-    "marginOfSafety": 0.6609999711143656,
-    "updated": "2026-08-04"
+    "marginOfSafety": 0.6610562916722657,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "NAB.AX",
@@ -160,9 +160,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 28.07528009438917,
-    "price": 42.85,
-    "marginOfSafety": -0.3448009312861337,
-    "updated": "2026-08-04"
+    "price": 42.53,
+    "marginOfSafety": -0.3398711475572732,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "QBE.AX",
@@ -171,8 +171,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 24.561044356115673,
-    "price": 24.7,
-    "marginOfSafety": -0.005625734570215647,
+    "price": 24.61,
+    "marginOfSafety": -0.001989258183028306,
     "updated": "2026-08-05"
   },
   {
@@ -181,9 +181,9 @@
     "name": "ResMed Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 22.08996436613225,
-    "price": 31.57,
-    "marginOfSafety": -0.3002862094985033,
+    "intrinsic": 22.126993979705997,
+    "price": 31.39,
+    "marginOfSafety": -0.29509417076438366,
     "updated": "2026-08-05"
   },
   {
@@ -192,10 +192,10 @@
     "name": "Sonic Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 33.99593580346552,
-    "price": 22.09,
-    "marginOfSafety": 0.5389740064945913,
-    "updated": "2026-08-04"
+    "intrinsic": 34.057153023577214,
+    "price": 22.25,
+    "marginOfSafety": 0.5306585628574029,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "TAH.AX",
@@ -203,10 +203,10 @@
     "name": "Tabcorp Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 1.3368106815312497,
-    "price": 0.875,
-    "marginOfSafety": 0.527783636035714,
-    "updated": "2026-08-04"
+    "intrinsic": 1.329637881596104,
+    "price": 0.89,
+    "marginOfSafety": 0.49397514786079105,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "TLS.AX",
@@ -214,10 +214,10 @@
     "name": "Telstra Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 8.097440235232416,
-    "price": 5.08,
-    "marginOfSafety": 0.5939842982740975,
-    "updated": "2026-08-04"
+    "intrinsic": 8.14584300983993,
+    "price": 5,
+    "marginOfSafety": 0.6291686019679862,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "WBC.AX",
@@ -225,10 +225,10 @@
     "name": "Westpac Banking Corporation",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 26.676586966676346,
-    "price": 38.82,
-    "marginOfSafety": -0.3128133187357974,
-    "updated": "2026-08-04"
+    "intrinsic": 26.66851395760047,
+    "price": 38.53,
+    "marginOfSafety": -0.30785066292238594,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "WES.AX",
@@ -236,10 +236,10 @@
     "name": "Wesfarmers Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 42.48052179864955,
-    "price": 90.99,
-    "marginOfSafety": -0.5331297747153583,
-    "updated": "2026-08-04"
+    "intrinsic": 42.44928662064289,
+    "price": 91.28,
+    "marginOfSafety": -0.5349552298352006,
+    "updated": "2026-08-05"
   },
   {
     "ticker": "WOW.AX",
@@ -247,9 +247,9 @@
     "name": "Woolworths Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 18.616238326972805,
-    "price": 40.1,
-    "marginOfSafety": -0.5357546551877106,
+    "intrinsic": 18.598894151910805,
+    "price": 40.22,
+    "marginOfSafety": -0.5375710056710391,
     "updated": "2026-08-05"
   }
 ]
