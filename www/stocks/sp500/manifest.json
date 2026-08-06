@@ -77,6 +77,17 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "KO",
+    "slug": "ko",
+    "name": "The Coca-Cola Company",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 43.77963377924965,
+    "price": 86.83,
+    "marginOfSafety": -0.4958006014136859,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "LLY",
     "slug": "lly",
     "name": "Eli Lilly and Company",
@@ -132,6 +143,17 @@
     "updated": "2026-08-06"
   },
   {
+    "ticker": "NFLX",
+    "slug": "nflx",
+    "name": "Netflix, Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 90.6514456095439,
+    "price": 74.2,
+    "marginOfSafety": 0.22171759581595546,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "NVDA",
     "slug": "nvda",
     "name": "NVIDIA Corporation",
@@ -151,6 +173,17 @@
     "intrinsic": 183.89942935775542,
     "price": 147.04,
     "marginOfSafety": 0.2506762061871289,
+    "updated": "2026-08-06"
+  },
+  {
+    "ticker": "PFE",
+    "slug": "pfe",
+    "name": "Pfizer Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 29.95403798018233,
+    "price": 25.81,
+    "marginOfSafety": 0.16055939481527828,
     "updated": "2026-08-06"
   },
   {
