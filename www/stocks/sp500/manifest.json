@@ -5,10 +5,10 @@
     "name": "Apple Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 208.52428784861726,
-    "price": 309.38,
-    "marginOfSafety": -0.3259929929257959,
-    "updated": "2026-08-05"
+    "intrinsic": 208.23814545663302,
+    "price": 311,
+    "marginOfSafety": -0.3304239695928199,
+    "updated": "2026-08-06"
   },
   {
     "ticker": "ADSK",
@@ -53,6 +53,17 @@
     "price": 86.35,
     "marginOfSafety": 0.5214167018585832,
     "updated": "2026-08-05"
+  },
+  {
+    "ticker": "GEV",
+    "slug": "gev",
+    "name": "GE Vernova Inc.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 1941.585825539906,
+    "price": 1017.96,
+    "marginOfSafety": 0.9073301755863746,
+    "updated": "2026-08-06"
   },
   {
     "ticker": "HPE",
