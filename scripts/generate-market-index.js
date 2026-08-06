@@ -10,6 +10,30 @@ const path = require('path');
 const { verdict } = require('./lib/verdict.js');
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./lib/page-shell.js');
 
+// Merges in growth-method tickers (Multi-Stage DCF/EV-Sales, a different
+// repo/template -- see stock-evaluator's growth-ticker-pages-reverse-dcf
+// design spec) so this page is the ONE browsable list per market, not two
+// separate ones -- direct user request, 2026-08-06. Their manifest lives
+// in the stock-evaluator repo, not here, so it's read from wherever it's
+// reachable: a local sibling checkout when this script is run by hand on
+// a dev machine where both repos sit under the same parent folder, or a
+// dedicated read-only checkout the refresh-ticker-pages.yml workflow adds
+// specifically for this (see that file) when running in CI. Returns []
+// (not an error) if neither is present -- a plain DCF-only list is a
+// legitimate degraded state, not a failure.
+function readGrowthManifest(folder) {
+  const candidates = [
+    path.join(__dirname, '..', 'stock-evaluator-growth', 'www', 'growth', 'stocks', folder, 'manifest.json'), // CI checkout
+    path.join(__dirname, '..', '..', 'StockAnalysis', 'www', 'growth', 'stocks', folder, 'manifest.json'), // local sibling checkout
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (_) { return []; }
+    }
+  }
+  return [];
+}
+
 const MARKET_NAMES = {
   asx: { label: 'ASX 300', screenUrl: '/dcf/asx-undervalued/', screenName: 'ASX 300 Most Undervalued' },
   sp500: { label: 'S&P 500', screenUrl: '/dcf/sp500-undervalued/', screenName: 'S&P 500 Most Undervalued' },
@@ -29,8 +53,20 @@ function generateMarketIndex(folder) {
   if (!fs.existsSync(manifestFile)) {
     throw new Error(`No manifest.json in ${dir} — generate at least one ticker first.`);
   }
-  const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
-  const sorted = [...manifest].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
+  const dcfManifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+  const growthManifest = readGrowthManifest(folder);
+
+  // Normalize both manifest shapes down to just what this list's rows need
+  // -- DCF entries carry a single `intrinsic` field, growth entries carry
+  // `intrinsicDcf`/`intrinsicEvSales` instead, but neither is rendered on
+  // this list (only ticker/name/verdict), so no reconciliation needed
+  // beyond the URL prefix, which genuinely differs per template.
+  const combined = [
+    ...dcfManifest.map(e => ({ ticker: e.ticker, name: e.name, slug: e.slug, marginOfSafety: e.marginOfSafety, href: `/dcf/stocks/${folder}/${e.slug}/` })),
+    ...growthManifest.map(e => ({ ticker: e.ticker, name: e.name, slug: e.slug, marginOfSafety: e.marginOfSafety, href: `/growth/stocks/${folder}/${e.slug}/` })),
+  ];
+  const manifest = combined; // downstream code (freshness line, counts) reads `manifest`
+  const sorted = [...combined].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
 
   // Book-index layout: group alphabetically by first letter of company name
   // (falling back to ticker for the rare entry with no name), with a letter
@@ -61,7 +97,7 @@ function generateMarketIndex(folder) {
       ? (currentLetter = letter, `<h3 class="stock-list-letter" id="letter-${letter === '#' ? 'sym' : letter}">${letter}</h3>`)
       : '';
     return `${header}
-        <a class="stock-list-item" href="/dcf/stocks/${folder}/${e.slug}/">
+        <a class="stock-list-item" href="${e.href}">
           <span class="verdict-dot" style="background:${v.dot}"></span>
           <span class="sl-name">${escapeHtml(e.name || e.ticker)}</span>
           <span class="sl-meta">${escapeHtml(e.ticker)} &middot; ${v.text}</span>
@@ -87,13 +123,13 @@ function generateMarketIndex(folder) {
     <section class="tool-info">
       <div class="tool-about">
         <h2>About these pages</h2>
-        <p>Each ${escapeHtml(meta.label)} stock listed here has its own free DCF or DDM valuation page — intrinsic value, margin of safety, bear/base/bull scenarios, and financial trend charts, all computed mechanically from Yahoo Finance data. Each page is a point-in-time snapshot and shows the date it was computed. Not financial advice.</p>
+        <p>Each ${escapeHtml(meta.label)} stock listed here has its own free valuation page, computed mechanically from Yahoo Finance data. Most use DCF or DDM (intrinsic value, margin of safety, bear/base/bull scenarios); genuine negative-cashflow growth companies instead use a Multi-Stage DCF and EV/Sales model that also shows what growth rate the current price already implies. Each page is a point-in-time snapshot and shows the date it was computed. Not financial advice.</p>
       </div>
     </section>`;
 
   const html = pageShell({
     title: `${meta.label} Stock Valuations — DCF & DDM Intrinsic Value | KashVector`,
-    description: `Free DCF/DDM intrinsic value pages for ${meta.label} stocks — ${manifest.length} companies valued so far. Free, no sign-up.`,
+    description: `Free DCF, DDM & growth-stock valuation pages for ${meta.label} stocks — ${manifest.length} companies valued so far. Free, no sign-up.`,
     canonical,
     h1: `${meta.label} Stock Valuations`,
     subtitle: 'DCF &amp; DDM intrinsic value, one page per stock',

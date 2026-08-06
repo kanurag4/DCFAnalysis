@@ -19,6 +19,22 @@ jobs:
         with:
           ref: master
 
+      # Read-only, growth-manifest-only need: generate-market-index.js merges
+      # growth-method tickers (a different repo/template) into the same
+      # per-market list so kashvector.com/dcf/stocks/<market>/ is the one
+      # browsable list, not two -- see that script for why. Without this
+      # checkout, the automated refresh has no access to
+      # www/growth/stocks/<market>/manifest.json at all and would silently
+      # regenerate a DCF-only list, reverting any growth tickers a human
+      # published locally via create-growth-ticker-page.
+      - name: Checkout stock-evaluator (read-only, for growth ticker manifests)
+        uses: actions/checkout@v4
+        with:
+          repository: kanurag4/stock-evaluator
+          ref: main
+          token: ${{ secrets.KV_PUBLISH_PAT }}
+          path: stock-evaluator-growth
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
