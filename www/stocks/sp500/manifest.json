@@ -22,6 +22,17 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "AMD",
+    "slug": "amd",
+    "name": "Advanced Micro Devices, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 69.04905768879252,
+    "price": 482.05,
+    "marginOfSafety": -0.8567595525592936,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "AVGO",
     "slug": "avgo",
     "name": "Broadcom Inc.",
@@ -104,10 +115,10 @@
     "name": "Microsoft Corporation",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 61.28122533599641,
-    "price": 492.81,
-    "marginOfSafety": -0.8756493875205528,
-    "updated": "2026-08-05"
+    "intrinsic": 61.37546212124719,
+    "price": 487.46,
+    "marginOfSafety": -0.8740912851900726,
+    "updated": "2026-08-06"
   },
   {
     "ticker": "NVDA",
