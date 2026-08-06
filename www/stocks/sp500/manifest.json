@@ -121,6 +121,17 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "OKTA",
+    "slug": "okta",
+    "name": "Okta, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 183.89942935775542,
+    "price": 147.04,
+    "marginOfSafety": 0.2506762061871289,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "T",
     "slug": "t",
     "name": "AT&T Inc.",
@@ -141,5 +152,16 @@
     "price": 327.35,
     "marginOfSafety": -0.9340115764138588,
     "updated": "2026-08-05"
+  },
+  {
+    "ticker": "TWLO",
+    "slug": "twlo",
+    "name": "Twilio Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 158.5691886244611,
+    "price": 193.22,
+    "marginOfSafety": -0.1793334612128087,
+    "updated": "2026-08-06"
   }
 ]
