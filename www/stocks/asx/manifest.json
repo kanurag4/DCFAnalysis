@@ -33,6 +33,28 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "BXB.AX",
+    "slug": "bxb-ax",
+    "name": "Brambles Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 13.639649545244897,
+    "price": 20.265,
+    "marginOfSafety": -0.3269356256972664,
+    "updated": "2026-08-06"
+  },
+  {
+    "ticker": "CAR.AX",
+    "slug": "car-ax",
+    "name": "CAR Group Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 16.43863433700444,
+    "price": 27.13,
+    "marginOfSafety": -0.3940790882047755,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "CBA.AX",
     "slug": "cba-ax",
     "name": "Commonwealth Bank of Australia",
@@ -110,6 +132,17 @@
     "updated": "2026-08-04"
   },
   {
+    "ticker": "GQG.AX",
+    "slug": "gqg-ax",
+    "name": "GQG Partners Inc.",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 1.2768221312482897,
+    "price": 1.45,
+    "marginOfSafety": -0.11943301293221398,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "HVN.AX",
     "slug": "hvn-ax",
     "name": "Harvey Norman Holdings Limited",
@@ -165,6 +198,28 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "NEM.AX",
+    "slug": "nem-ax",
+    "name": "Newmont Corporation",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 266.6602959702407,
+    "price": 149.675,
+    "marginOfSafety": 0.7815954298997208,
+    "updated": "2026-08-06"
+  },
+  {
+    "ticker": "NHF.AX",
+    "slug": "nhf-ax",
+    "name": "nib holdings limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 4.497641224559293,
+    "price": 7.55,
+    "marginOfSafety": -0.40428593052194794,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "QBE.AX",
     "slug": "qbe-ax",
     "name": "QBE Insurance Group Limited",
@@ -174,6 +229,28 @@
     "price": 24.61,
     "marginOfSafety": -0.001989258183028306,
     "updated": "2026-08-05"
+  },
+  {
+    "ticker": "REA.AX",
+    "slug": "rea-ax",
+    "name": "REA Group Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 45.52427105695058,
+    "price": 171.45,
+    "marginOfSafety": -0.7344749427999383,
+    "updated": "2026-08-06"
+  },
+  {
+    "ticker": "RHC.AX",
+    "slug": "rhc-ax",
+    "name": "Ramsay Health Care Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 87.7888629096415,
+    "price": 44.485,
+    "marginOfSafety": 0.9734486435796672,
+    "updated": "2026-08-06"
   },
   {
     "ticker": "RMD.AX",
@@ -187,6 +264,17 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "SEK.AX",
+    "slug": "sek-ax",
+    "name": "SEEK Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 11.782791555236262,
+    "price": 15.24,
+    "marginOfSafety": -0.22685094781914295,
+    "updated": "2026-08-06"
+  },
+  {
     "ticker": "SHL.AX",
     "slug": "shl-ax",
     "name": "Sonic Healthcare Limited",
@@ -196,6 +284,28 @@
     "price": 22.25,
     "marginOfSafety": 0.5306585628574029,
     "updated": "2026-08-05"
+  },
+  {
+    "ticker": "SIG.AX",
+    "slug": "sig-ax",
+    "name": "Sigma Healthcare Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 1.5552333353867083,
+    "price": 2.98,
+    "marginOfSafety": -0.4781096189977489,
+    "updated": "2026-08-06"
+  },
+  {
+    "ticker": "STO.AX",
+    "slug": "sto-ax",
+    "name": "Santos Limited",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 0.7512013381165912,
+    "price": 7.56,
+    "marginOfSafety": -0.9006347436353714,
+    "updated": "2026-08-06"
   },
   {
     "ticker": "TAH.AX",
@@ -218,6 +328,17 @@
     "price": 5,
     "marginOfSafety": 0.6291686019679862,
     "updated": "2026-08-05"
+  },
+  {
+    "ticker": "TPG.AX",
+    "slug": "tpg-ax",
+    "name": "TPG Telecom Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 11.913263287147911,
+    "price": 3.58,
+    "marginOfSafety": 2.3277271751809807,
+    "updated": "2026-08-06"
   },
   {
     "ticker": "WBC.AX",
@@ -251,5 +372,27 @@
     "price": 40.22,
     "marginOfSafety": -0.5375710056710391,
     "updated": "2026-08-05"
+  },
+  {
+    "ticker": "WTC.AX",
+    "slug": "wtc-ax",
+    "name": "WiseTech Global Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 20.596560616267617,
+    "price": 39.29,
+    "marginOfSafety": -0.47578109910237676,
+    "updated": "2026-08-06"
+  },
+  {
+    "ticker": "YAL.AX",
+    "slug": "yal-ax",
+    "name": "Yancoal Australia Ltd",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 5.262979150356872,
+    "price": 5.54,
+    "marginOfSafety": -0.05000376347348875,
+    "updated": "2026-08-06"
   }
 ]
