@@ -11,6 +11,50 @@
     "updated": "2026-08-05"
   },
   {
+    "ticker": "HEROMOTOCO.NS",
+    "slug": "heromotoco-ns",
+    "name": "Hero MotoCorp Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 9213.132311931027,
+    "price": 5725,
+    "marginOfSafety": 0.6092807531757253,
+    "updated": "2026-08-07"
+  },
+  {
+    "ticker": "MRF.NS",
+    "slug": "mrf-ns",
+    "name": "MRF Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 165018.15039611974,
+    "price": 134190,
+    "marginOfSafety": 0.22973508008137525,
+    "updated": "2026-08-07"
+  },
+  {
+    "ticker": "RPOWER.NS",
+    "slug": "rpower-ns",
+    "name": "Reliance Power Limited",
+    "sector": "Utilities",
+    "method": "DCF",
+    "intrinsic": 31.00289100989098,
+    "price": 24.34,
+    "marginOfSafety": 0.2737424408336475,
+    "updated": "2026-08-07"
+  },
+  {
+    "ticker": "SIGNATURE.NS",
+    "slug": "signature-ns",
+    "name": "Signatureglobal (India) Limited",
+    "sector": "Real Estate",
+    "method": "DCF",
+    "intrinsic": 1319.7821984179957,
+    "price": 802.3,
+    "marginOfSafety": 0.6449983776866456,
+    "updated": "2026-08-07"
+  },
+  {
     "ticker": "TCS.NS",
     "slug": "tcs-ns",
     "name": "Tata Consultancy Services Limited",
