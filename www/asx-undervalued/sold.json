@@ -100,5 +100,29 @@
     "exitDate": "2026-07-31",
     "exitPrice": 134.97,
     "dollarPnl": 0.82
+  },
+  {
+    "ticker": "BPT.AX",
+    "entryDate": "2026-06-18",
+    "entryPrice": 0.99,
+    "exitDate": "2026-08-07",
+    "exitPrice": 0.865,
+    "dollarPnl": -26.41
+  },
+  {
+    "ticker": "VAU.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 4.4,
+    "exitDate": "2026-08-07",
+    "exitPrice": 5.84,
+    "dollarPnl": 119.82
+  },
+  {
+    "ticker": "ZIM.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 16.32,
+    "exitDate": "2026-08-07",
+    "exitPrice": 15.59,
+    "dollarPnl": 60.66
   }
 ]
