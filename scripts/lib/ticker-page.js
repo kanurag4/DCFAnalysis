@@ -254,6 +254,18 @@ function deltaSpan(first, last, firstLabel) {
   return `<span class="delta ${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '+' : ''}${p.toFixed(0)}% ${since}</span>`;
 }
 
+// Pure: returns the most recent { date, value } entry's value from a Yahoo
+// /timeseries series (already ascending by date), or null if the series is
+// missing, empty, or the last entry's value isn't a finite number. Used for
+// calc-engine inputs (always the latest ANNUAL figure), deliberately
+// separate from fetchHistorySeries's pick() below, which prefers quarterly
+// data where available for the history charts.
+function latestAnnual(series) {
+  if (!Array.isArray(series) || series.length === 0) return null;
+  const v = series[series.length - 1]?.value;
+  return (v != null && isFinite(v)) ? v : null;
+}
+
 // ── Timeseries: try quarterly first, fall back to annual per the agreed
 // per-market cadence rule — implemented as a runtime data-driven fallback
 // (US/India have real quarterly data on Yahoo, ASX/KOSPI/Nikkei/Europe don't),
@@ -283,6 +295,12 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     if (q && q.length > 0) return { points: q, cadence: 'Quarterly' };
     return { points: series[`annual${name}`] || [], cadence: 'Annual' };
   };
+  // fundamentals-timeseries reports interest expense as a positive
+  // magnitude, unlike incomeStatementHistory's negative expense convention
+  // (mapQuoteSummary's data.interestExpense) — negate so both sources share
+  // one sign convention. Same fix already made in www/dcf/data.js.
+  const rawInterestExpense = latestAnnual(series.annualInterestExpense);
+
   return {
     eps: pick('DilutedEPS'),
     fcf: pick('FreeCashFlow'),
@@ -298,6 +316,12 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     // annual-only equity would produce a nonsense ratio.
     equity: series.annualStockholdersEquity || [],
     netIncome: series.annualNetIncome || [],
+    // Calc-engine inputs — deliberately annual-only (not pick() above,
+    // which is for the history charts) to match the cadence the live
+    // tool's own /timeseries merge uses.
+    dilutedSharesOutstanding: latestAnnual(series.annualDilutedAverageShares),
+    ebit: latestAnnual(series.annualOperatingIncome),
+    interestExpense: rawInterestExpense != null ? -rawInterestExpense : null,
   };
 }
 
@@ -747,4 +771,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual };
