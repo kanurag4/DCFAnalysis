@@ -72,3 +72,36 @@ test('uses beta=1.0 fallback when beta is null', () => {
   // Re = 0.045 + 1.0*0.055 = 0.10
   assert.ok(Math.abs(r.re - 0.10) < 0.0001, `re=${r.re}`);
 });
+
+test('uses synthetic rating when EBIT and interest expense are both available', () => {
+  const r = calculateWACC({
+    marketCap: 10e9, totalDebt: 2e9, beta: 1.1,
+    interestExpense: -100e6, taxRate: 0.25, ebit: 1.2e9,
+    riskFreeRate: 0.045, erp: 0.055,
+  });
+  // ICR = 1.2e9 / 100e6 = 12x
+  assert.strictEqual(r.rdMethod, 'synthetic');
+  assert.ok(r.syntheticRating);
+  assert.ok(Math.abs(r.icr - 12) < 1e-9);
+  assert.strictEqual(r.isRdEstimated, false);
+});
+
+test('falls back to book yield when EBIT is unavailable but interest expense and debt are', () => {
+  const r = calculateWACC({
+    marketCap: 10e9, totalDebt: 2e9, beta: 1.1,
+    interestExpense: -100e6, taxRate: 0.25, ebit: null,
+    riskFreeRate: 0.045, erp: 0.055,
+  });
+  assert.strictEqual(r.rdMethod, 'bookYield');
+  assert.strictEqual(r.isRdEstimated, false);
+});
+
+test('a negative or zero EBIT does not use synthetic rating', () => {
+  const r = calculateWACC({
+    marketCap: 10e9, totalDebt: 2e9, beta: 1.1,
+    interestExpense: -100e6, taxRate: 0.25, ebit: -50e6,
+    riskFreeRate: 0.045, erp: 0.055,
+  });
+  assert.strictEqual(r.rdMethod, 'bookYield');
+  assert.strictEqual(r.icr, null);
+});

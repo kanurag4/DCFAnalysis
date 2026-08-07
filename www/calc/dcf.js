@@ -3,6 +3,7 @@ function calculateDCF({
   projectionYears = 5,
   totalDebt = 0, totalCash = 0,
   sharesOutstanding = null, currentPrice = null,
+  midYear = false,
 }) {
   if (!fcf || fcf <= 0) return null;
   if (!wacc || wacc <= terminalGrowth) return null;
@@ -14,13 +15,15 @@ function calculateDCF({
   for (let t = 1; t <= projectionYears; t++) {
     runningFcf = runningFcf * (1 + growthRate);
     forecastedFcfs.push(runningFcf);
-    pvFcfs.push(runningFcf / Math.pow(1 + wacc, t));
+    const exponent = midYear ? t - 0.5 : t;
+    pvFcfs.push(runningFcf / Math.pow(1 + wacc, exponent));
   }
 
   const sumPvFcfs = pvFcfs.reduce((a, b) => a + b, 0);
   const terminalFcf = forecastedFcfs[projectionYears - 1];
   const terminalValue = terminalFcf * (1 + terminalGrowth) / (wacc - terminalGrowth);
-  const pvTerminal = terminalValue / Math.pow(1 + wacc, projectionYears);
+  const terminalExponent = midYear ? projectionYears - 0.5 : projectionYears;
+  const pvTerminal = terminalValue / Math.pow(1 + wacc, terminalExponent);
 
   const firmValue = sumPvFcfs + pvTerminal;
   const terminalValuePct = (pvTerminal / firmValue) * 100;

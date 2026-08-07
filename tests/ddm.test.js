@@ -84,3 +84,17 @@ test('no currentPrice leaves MOS and CAGR null', () => {
   assert.strictEqual(r.cagr1yr, null);
   assert.ok(r.intrinsicValue > 0);
 });
+
+test('midYear defaults to false and matches fiscal-year-end discounting exactly', () => {
+  const base = { dividend: 4, growthRate: 0.04, terminalGrowth: 0.03, costOfEquity: 0.08, projectionYears: 5, currentPrice: 80 };
+  const withoutFlag = calculateDDM(base);
+  const explicitFalse = calculateDDM({ ...base, midYear: false });
+  assert.strictEqual(withoutFlag.intrinsicValue, explicitFalse.intrinsicValue);
+});
+
+test('midYear=true produces a higher intrinsic value than fiscal-year-end', () => {
+  const base = { dividend: 4, growthRate: 0.04, terminalGrowth: 0.03, costOfEquity: 0.08, projectionYears: 5, currentPrice: 80 };
+  const fyEnd = calculateDDM({ ...base, midYear: false });
+  const midYear = calculateDDM({ ...base, midYear: true });
+  assert.ok(midYear.intrinsicValue > fyEnd.intrinsicValue);
+});
