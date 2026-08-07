@@ -143,5 +143,45 @@
     "exitDate": "2026-07-31",
     "exitPrice": 2415,
     "dollarPnl": 147.31
+  },
+  {
+    "ticker": "RPOWER.NS",
+    "entryDate": "2026-07-31",
+    "entryPrice": 23.41,
+    "exitDate": "2026-08-07",
+    "exitPrice": 24.34,
+    "dollarPnl": 527.41
+  },
+  {
+    "ticker": "UPL.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 637.45,
+    "exitDate": "2026-08-07",
+    "exitPrice": 573,
+    "dollarPnl": -687.63
+  },
+  {
+    "ticker": "FSL.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 268,
+    "exitDate": "2026-08-07",
+    "exitPrice": 279.85,
+    "dollarPnl": -978.6
+  },
+  {
+    "ticker": "BLS.NS",
+    "entryDate": "2026-07-11",
+    "entryPrice": 237.15,
+    "exitDate": "2026-08-07",
+    "exitPrice": 254.33,
+    "dollarPnl": 827.95
+  },
+  {
+    "ticker": "NBCC.NS",
+    "entryDate": "2026-07-25",
+    "entryPrice": 93.84,
+    "exitDate": "2026-08-07",
+    "exitPrice": 95.33,
+    "dollarPnl": 74.22
   }
 ]
