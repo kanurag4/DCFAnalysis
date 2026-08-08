@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "ticker": "FME.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 44.45,
+    "exitDate": "2026-08-08",
+    "exitPrice": 42.05,
+    "dollarPnl": -27
+  },
+  {
+    "ticker": "DHL.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 57.76,
+    "exitDate": "2026-08-08",
+    "exitPrice": 55.32,
+    "dollarPnl": -21.12
+  },
+  {
+    "ticker": "DB1.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 262.3,
+    "exitDate": "2026-08-08",
+    "exitPrice": 274.1,
+    "dollarPnl": 22.49
+  },
+  {
+    "ticker": "HEIA.AS",
+    "entryDate": "2026-08-03",
+    "entryPrice": 78.54,
+    "exitDate": "2026-08-08",
+    "exitPrice": 77.14,
+    "dollarPnl": -4.07
+  },
+  {
+    "ticker": "AV.L",
+    "entryDate": "2026-08-03",
+    "entryPrice": 8.0913,
+    "exitDate": "2026-08-08",
+    "exitPrice": 8.3153,
+    "dollarPnl": 13.84
+  }
+]
