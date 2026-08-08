@@ -266,10 +266,33 @@ function latestAnnual(series) {
   return (v != null && isFinite(v)) ? v : null;
 }
 
-// ── Timeseries: try quarterly first, fall back to annual per the agreed
+// Pure: picks quarterly vs. annual for one /timeseries field, per the agreed
 // per-market cadence rule — implemented as a runtime data-driven fallback
 // (US/India have real quarterly data on Yahoo, ASX/KOSPI/Nikkei/Europe don't),
-// not a hardcoded market list, since not all 6 markets have been verified. ──
+// not a hardcoded market list, since not all 6 markets have been verified.
+//
+// NB: `series.quarterlyX || series.annualX` would be broken here — Yahoo
+// returns an empty ARRAY (not undefined) for a type it has no data for, and
+// [] is truthy in JS, so a bare `||` fallback would never reach the annual
+// data. Check length explicitly instead.
+//
+// Quarterly is only preferred when it has >= 2 points — enough to draw a
+// trend at all (toPointSeries requires >= 2 downstream). A single quarterly
+// point is worse than useless: it silently vanishes the whole chart card
+// rather than falling back to a perfectly good multi-year annual series.
+// Confirmed live on FPH.AX (NZ-domiciled, dual-listed ASX): Yahoo reports
+// exactly 1 quarterlyDilutedEPS point but 4 annualDilutedEPS points.
+//
+// Cadence is returned PER SERIES, not once for the page: a ticker can have
+// quarterly EPS but annual-only free cash flow, and labelling annual FCF
+// points "Q3 '24" (from a page-level cadence decided by EPS alone) is simply
+// wrong.
+function pickCadence(series, name) {
+  const q = series[`quarterly${name}`] || [];
+  if (q.length >= 2) return { points: q, cadence: 'Quarterly' };
+  return { points: series[`annual${name}`] || [], cadence: 'Annual' };
+}
+
 async function fetchHistorySeries(symbol, proxyUrl) {
   const now = Math.floor(Date.now() / 1000);
   const period1 = now - 3 * 365 * 24 * 60 * 60;
@@ -281,20 +304,7 @@ async function fetchHistorySeries(symbol, proxyUrl) {
   const url = `${proxyUrl.replace(/\/$/, '')}/timeseries/${encodeURIComponent(symbol)}?period1=${period1}&period2=${period2}`;
   const series = (await getJSON(url)) || {};
 
-  // NB: `series.quarterlyX || series.annualX` would be broken here — Yahoo
-  // returns an empty ARRAY (not undefined) for a type it has no data for, and
-  // [] is truthy in JS, so a bare `||` fallback would never reach the annual
-  // data. Check length explicitly instead.
-  //
-  // Cadence is returned PER SERIES, not once for the page: a ticker can have
-  // quarterly EPS but annual-only free cash flow, and labelling annual FCF
-  // points "Q3 '24" (from a page-level cadence decided by EPS alone) is simply
-  // wrong.
-  const pick = (name) => {
-    const q = series[`quarterly${name}`];
-    if (q && q.length > 0) return { points: q, cadence: 'Quarterly' };
-    return { points: series[`annual${name}`] || [], cadence: 'Annual' };
-  };
+  const pick = (name) => pickCadence(series, name);
   // fundamentals-timeseries reports interest expense as a positive
   // magnitude, unlike incomeStatementHistory's negative expense convention
   // (mapQuoteSummary's data.interestExpense) — negate so both sources share
@@ -808,4 +818,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence };

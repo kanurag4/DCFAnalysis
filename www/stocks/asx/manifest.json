@@ -121,6 +121,17 @@
     "updated": "2026-08-08"
   },
   {
+    "ticker": "FPH.AX",
+    "slug": "fph-ax",
+    "name": "Fisher & Paykel Healthcare Corporation Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 15.23685297675274,
+    "price": 34.94,
+    "marginOfSafety": -0.563913767122131,
+    "updated": "2026-08-08"
+  },
+  {
     "ticker": "GMG.AX",
     "slug": "gmg-ax",
     "name": "Goodman Group",
@@ -162,6 +173,17 @@
     "intrinsic": 82.73780802189671,
     "price": 84.36,
     "marginOfSafety": -0.01922939755930877,
+    "updated": "2026-08-08"
+  },
+  {
+    "ticker": "LNW.AX",
+    "slug": "lnw-ax",
+    "name": "Light & Wonder, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 269.21824267497624,
+    "price": 124.3,
+    "marginOfSafety": 1.165874840506647,
     "updated": "2026-08-08"
   },
   {
@@ -319,6 +341,17 @@
     "updated": "2026-08-08"
   },
   {
+    "ticker": "TLC.AX",
+    "slug": "tlc-ax",
+    "name": "The Lottery Corporation Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 3.3161987715836445,
+    "price": 5.46,
+    "marginOfSafety": -0.39263758762204315,
+    "updated": "2026-08-08"
+  },
+  {
     "ticker": "TLS.AX",
     "slug": "tls-ax",
     "name": "Telstra Group Limited",
@@ -393,6 +426,17 @@
     "intrinsic": 20.514355197420993,
     "price": 40.98,
     "marginOfSafety": -0.4994056808828454,
+    "updated": "2026-08-08"
+  },
+  {
+    "ticker": "XRO.AX",
+    "slug": "xro-ax",
+    "name": "Xero Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 55.29324549870135,
+    "price": 76.56,
+    "marginOfSafety": -0.2777789250430858,
     "updated": "2026-08-08"
   },
   {
