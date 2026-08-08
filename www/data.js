@@ -1,7 +1,11 @@
 // Yahoo Finance fetcher for DCF tool. DOM-free.
 // interestExpense from Yahoo is negative (expense convention) — wacc.js uses Math.abs().
 
-async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProxyUrl = '') {
+// extraHeaders is only ever non-empty from a Node-side caller (the batch key
+// header, see scripts/lib/batch-auth.js / worker-watchlist/batch-auth.js) --
+// the live browser tool always calls this with 5 args, so it stays {}.
+// Mirrors the same param growth/data.js's fetchGrowthData already has.
+async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProxyUrl = '', extraHeaders = {}) {
   if (!yahooProxyUrl) throw new Error('Missing Yahoo proxy URL in config.js');
 
   const raw = ticker.trim().toUpperCase();
@@ -10,7 +14,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   const url = `${base}/quoteSummary/${encodeURIComponent(symbol)}?tool=dcf`;
 
   let res;
-  try { res = await fetch(url); }
+  try { res = await fetch(url, { headers: extraHeaders }); }
   catch (_) { throw new Error("Couldn't reach the data service. Check your internet connection."); }
 
   if (!res.ok) throw new Error(explainStatus(res.status, symbol));
@@ -29,7 +33,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let interestExpenseTs = null;
   let annualFcf = null;
   try {
-    const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`);
+    const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`, { headers: extraHeaders });
     if (tsRes.ok) {
       const tsBody = await tsRes.json();
       if (!tsBody.error) {
