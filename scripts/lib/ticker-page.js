@@ -254,6 +254,18 @@ function deltaSpan(first, last, firstLabel) {
   return `<span class="delta ${p >= 0 ? 'up' : 'down'}">${p >= 0 ? '+' : ''}${p.toFixed(0)}% ${since}</span>`;
 }
 
+// Pure: returns the most recent { date, value } entry's value from a Yahoo
+// /timeseries series (already ascending by date), or null if the series is
+// missing, empty, or the last entry's value isn't a finite number. Used for
+// calc-engine inputs (always the latest ANNUAL figure), deliberately
+// separate from fetchHistorySeries's pick() below, which prefers quarterly
+// data where available for the history charts.
+function latestAnnual(series) {
+  if (!Array.isArray(series) || series.length === 0) return null;
+  const v = series[series.length - 1]?.value;
+  return (v != null && isFinite(v)) ? v : null;
+}
+
 // ── Timeseries: try quarterly first, fall back to annual per the agreed
 // per-market cadence rule — implemented as a runtime data-driven fallback
 // (US/India have real quarterly data on Yahoo, ASX/KOSPI/Nikkei/Europe don't),
@@ -283,6 +295,12 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     if (q && q.length > 0) return { points: q, cadence: 'Quarterly' };
     return { points: series[`annual${name}`] || [], cadence: 'Annual' };
   };
+  // fundamentals-timeseries reports interest expense as a positive
+  // magnitude, unlike incomeStatementHistory's negative expense convention
+  // (mapQuoteSummary's data.interestExpense) — negate so both sources share
+  // one sign convention. Same fix already made in www/dcf/data.js.
+  const rawInterestExpense = latestAnnual(series.annualInterestExpense);
+
   return {
     eps: pick('DilutedEPS'),
     fcf: pick('FreeCashFlow'),
@@ -298,6 +316,12 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     // annual-only equity would produce a nonsense ratio.
     equity: series.annualStockholdersEquity || [],
     netIncome: series.annualNetIncome || [],
+    // Calc-engine inputs — deliberately annual-only (not pick() above,
+    // which is for the history charts) to match the cadence the live
+    // tool's own /timeseries merge uses.
+    dilutedSharesOutstanding: latestAnnual(series.annualDilutedAverageShares),
+    ebit: latestAnnual(series.annualOperatingIncome),
+    interestExpense: rawInterestExpense != null ? -rawInterestExpense : null,
   };
 }
 
@@ -411,6 +435,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
     const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(t));
 
+    // Moved earlier (was after the scenario computation below) so the DCF
+    // branch can use its diluted-shares/EBIT/interest-expense fields.
+    const hist = await fetchHistorySeries(t, proxyUrl);
+
     const isBank = isBankOrInsurance(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false;
@@ -438,9 +466,17 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         if (isFinancialSector(data.sector) && baseFcf > 0) { baseFcf = baseFcf * 0.6; fcfNormalised = true; }
         baseFcf = Math.round(baseFcf);
       }
+      // Prefer /timeseries-sourced diluted shares and interest expense over
+      // the basic share count / incomeStatementHistory's frequently-empty
+      // interestExpense — same precedence as www/dcf/app.js and
+      // www/dcf/data.js in the live tool.
+      const resolvedShares = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0)
+        ? hist.dilutedSharesOutstanding : data.sharesOutstanding;
+      const resolvedInterestExpense = hist.interestExpense != null ? hist.interestExpense : data.interestExpense;
       const waccResult = calculateWACC({
         marketCap: data.marketCap, totalDebt: data.totalDebt, beta: effectiveBeta,
-        interestExpense: data.interestExpense, taxRate: data.taxRate, riskFreeRate: rf, erp,
+        interestExpense: resolvedInterestExpense, taxRate: data.taxRate, ebit: hist.ebit,
+        riskFreeRate: rf, erp,
       });
       if (!waccResult) {
         return { status: 'skipped', ticker: t, market: market.folder, reason: 'WACC uncomputable (no market cap or debt data)' };
@@ -454,14 +490,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         const result = calculateDCF({
           fcf: baseFcf, growthRate: s.growth[key] / 100, terminalGrowth, wacc: s.discount[key] / 100,
           projectionYears: 5, totalDebt: data.totalDebt, totalCash: data.totalCash,
-          sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
+          sharesOutstanding: resolvedShares, currentPrice: data.price,
+          midYear: true,
         });
         return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
       });
       waccBreakdown = { ...waccResult, isBank: false };
     }
 
-    const hist = await fetchHistorySeries(t, proxyUrl);
     const priceSeriesRaw = await fetchPriceHistory(t, proxyUrl);
     let indexSeriesRaw;
     if (market.indexTicker) {
@@ -571,7 +607,11 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
          <div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
          <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(t) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
          <div class="assump-item"><div class="al">Equity risk premium</div><div class="av">${pct(erp, 2)}</div><div class="an">Market-specific seed</div></div>
-         <div class="assump-item"><div class="al">Cost of debt</div><div class="av">${pct(waccBreakdown.rd, 2)}</div><div class="an">${waccBreakdown.isRdEstimated ? 'Estimated (no debt/interest data)' : 'From income statement'}</div></div>
+         <div class="assump-item"><div class="al">Cost of debt</div><div class="av">${pct(waccBreakdown.rd, 2)}</div><div class="an">${
+           waccBreakdown.rdMethod === 'synthetic'
+             ? `Synthetic rating ${waccBreakdown.syntheticRating}, ICR ${waccBreakdown.icr.toFixed(1)}x`
+             : waccBreakdown.isRdEstimated ? 'Estimated (no debt/interest data)' : 'From income statement'
+         }</div></div>
          <div class="assump-item"><div class="al">Tax rate</div><div class="av">${pct(waccBreakdown.tc, 2)}</div><div class="an">${waccBreakdown.isTcEstimated ? 'Estimated default' : 'From income statement'}</div></div>
          <div class="assump-item"><div class="al">Capital structure</div><div class="av">E ${(waccBreakdown.eWeight * 100).toFixed(0)}% / D ${(waccBreakdown.dWeight * 100).toFixed(0)}%</div><div class="an">Market cap vs total debt</div></div>
          <div class="assump-item"><div class="al">Projection horizon</div><div class="av">5 years</div><div class="an">+ terminal value beyond</div></div>`;
@@ -747,4 +787,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual };

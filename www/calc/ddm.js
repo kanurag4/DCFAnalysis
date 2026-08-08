@@ -10,6 +10,7 @@ function calculateDDM({
   dividend, growthRate, terminalGrowth, costOfEquity,
   projectionYears = 5,
   currentPrice = null,
+  midYear = false,
 }) {
   if (!dividend || dividend <= 0) return null;
   if (!costOfEquity || costOfEquity <= terminalGrowth) return null;
@@ -21,13 +22,15 @@ function calculateDDM({
   for (let t = 1; t <= projectionYears; t++) {
     runningDiv = runningDiv * (1 + growthRate);
     dividends.push(runningDiv);
-    pvDividends.push(runningDiv / Math.pow(1 + costOfEquity, t));
+    const exponent = midYear ? t - 0.5 : t;
+    pvDividends.push(runningDiv / Math.pow(1 + costOfEquity, exponent));
   }
 
   const sumPvDividends = pvDividends.reduce((a, b) => a + b, 0);
   const terminalDiv = dividends[projectionYears - 1];
   const terminalValue = terminalDiv * (1 + terminalGrowth) / (costOfEquity - terminalGrowth);
-  const pvTerminal = terminalValue / Math.pow(1 + costOfEquity, projectionYears);
+  const terminalExponent = midYear ? projectionYears - 0.5 : projectionYears;
+  const pvTerminal = terminalValue / Math.pow(1 + costOfEquity, terminalExponent);
 
   // DDM produces a per-share value directly (dividend per share in → value per share out).
   const intrinsicValue = sumPvDividends + pvTerminal;

@@ -76,3 +76,25 @@ test('no per-share value when sharesOutstanding is null', () => {
   assert.strictEqual(r.intrinsicValue, null);
   assert.ok(r.firmValue > 0);
 });
+
+test('midYear defaults to false and matches fiscal-year-end discounting exactly', () => {
+  const base = { fcf: 100e6, growthRate: 0.08, terminalGrowth: 0.03, wacc: 0.10, projectionYears: 5, sharesOutstanding: 100e6, currentPrice: 15 };
+  const withoutFlag = calculateDCF(base);
+  const explicitFalse = calculateDCF({ ...base, midYear: false });
+  assert.strictEqual(withoutFlag.intrinsicValue, explicitFalse.intrinsicValue);
+});
+
+test('midYear=true produces a higher intrinsic value than fiscal-year-end', () => {
+  const base = { fcf: 100e6, growthRate: 0.08, terminalGrowth: 0.03, wacc: 0.10, projectionYears: 5, sharesOutstanding: 100e6, currentPrice: 15 };
+  const fyEnd = calculateDCF({ ...base, midYear: false });
+  const midYear = calculateDCF({ ...base, midYear: true });
+  assert.ok(midYear.intrinsicValue > fyEnd.intrinsicValue);
+});
+
+test('midYear=true discounts the first year at exponent 0.5, not 1', () => {
+  const base = { fcf: 100e6, growthRate: 0.08, terminalGrowth: 0.03, wacc: 0.10, projectionYears: 5, sharesOutstanding: 100e6, currentPrice: 15 };
+  const result = calculateDCF({ ...base, midYear: true });
+  const expectedYear1Fcf = base.fcf * (1 + base.growthRate);
+  const expectedPvYear1 = expectedYear1Fcf / Math.pow(1 + base.wacc, 0.5);
+  near(result.pvFcfs[0], expectedPvYear1, 1e-6);
+});
