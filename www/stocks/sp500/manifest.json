@@ -198,6 +198,17 @@
     "updated": "2026-08-08"
   },
   {
+    "ticker": "TEAM",
+    "slug": "team",
+    "name": "Atlassian Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 190.29600154136824,
+    "price": 149.07,
+    "marginOfSafety": 0.27655464910020966,
+    "updated": "2026-08-08"
+  },
+  {
     "ticker": "TSLA",
     "slug": "tsla",
     "name": "Tesla, Inc.",

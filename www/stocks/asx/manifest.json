@@ -341,6 +341,17 @@
     "updated": "2026-08-08"
   },
   {
+    "ticker": "VAU.AX",
+    "slug": "vau-ax",
+    "name": "VLTMINLTD FPO [VAU]",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 5.744058077987307,
+    "price": 5.84,
+    "marginOfSafety": -0.01642841130354327,
+    "updated": "2026-08-08"
+  },
+  {
     "ticker": "WBC.AX",
     "slug": "wbc-ax",
     "name": "Westpac Banking Corporation",
