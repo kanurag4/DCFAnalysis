@@ -83,6 +83,12 @@ test('buildPayload throws for an unknown market', () => {
   assert.throws(() => buildPayload('mars', { repoRoot: root }), /unknown market/);
 });
 
+test('buildPayload recognises europe (missed when the Europe screen was added, 2026-08-08)', () => {
+  const root = makeFixture({ outDir: 'europe-undervalued', rankings: { asAt: '2026-08-01', summary: {}, rows: [] } });
+  const payload = buildPayload('europe', { repoRoot: root });
+  assert.strictEqual(payload.market, 'europe');
+});
+
 test('buildPayload throws when rankings.json is missing (batch never ran)', () => {
   const root = makeFixture(); // no rankings written
   assert.throws(() => buildPayload('sp500', { repoRoot: root }), /no rankings\.json/);
