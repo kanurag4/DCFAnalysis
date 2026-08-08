@@ -13,6 +13,7 @@ const MARKET_OUT_DIR = {
   nifty: 'nifty-undervalued',
   kospi: 'kospi-undervalued',
   nikkei: 'nikkei-undervalued',
+  europe: 'europe-undervalued',
 };
 
 function readJsonIfExists(p) {
