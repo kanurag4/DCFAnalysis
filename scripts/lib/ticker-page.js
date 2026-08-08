@@ -441,7 +441,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
     const isBank = isBankOrInsurance(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
-    let fcfInfo = null, baseFcf = null, fcfNormalised = false;
+    let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
 
     if (isBank) {
       const dividend = data.trailingAnnualDividendRate ?? data.dividendRate ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
@@ -465,6 +465,17 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       if (baseFcf != null) {
         if (isFinancialSector(data.sector) && baseFcf > 0) { baseFcf = baseFcf * 0.6; fcfNormalised = true; }
         baseFcf = Math.round(baseFcf);
+      }
+      // Revenue-normalised FCF fallback — mirrors www/dcf/app.js's normFcf logic
+      // (shown whenever reported FCF is missing or negative and totalRevenue is
+      // known) so a real, established company with a Yahoo data gap on FCF
+      // doesn't just produce an N/A page. Seed matches the live tool exactly:
+      // profitMargins if positive, else a flat 10% default.
+      if ((baseFcf == null || baseFcf <= 0) && data.totalRevenue > 0) {
+        revenueTargetMarginPct = (data.profitMargins != null && data.profitMargins > 0)
+          ? +(data.profitMargins * 100).toFixed(1) : 10;
+        baseFcf = Math.round(data.totalRevenue * (revenueTargetMarginPct / 100));
+        revenueNormalised = true;
       }
       // Prefer /timeseries-sourced diluted shares and interest expense over
       // the basic share count / incomeStatementHistory's frequently-empty
@@ -491,7 +502,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           fcf: baseFcf, growthRate: s.growth[key] / 100, terminalGrowth, wacc: s.discount[key] / 100,
           projectionYears: 5, totalDebt: data.totalDebt, totalCash: data.totalCash,
           sharesOutstanding: resolvedShares, currentPrice: data.price,
-          midYear: true,
+          // Matches the live tool's current default (2026-08-08: mid-year
+          // discounting shipped as an opt-in toggle, default off) — do not
+          // hardcode true here again without also flipping the live tool's
+          // default, or this drifts out of sync silently like it just did.
         });
         return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
       });
@@ -555,7 +569,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? (fcfInfo.method === 'proxy' ? ' <span class="stat-warn">⚠ est.</span>'
         : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>' : '')
       : '';
-    const fcfMethodNote = !fcfInfo ? ''
+    const fcfMethodNote = revenueNormalised
+      ? `Revenue × ${revenueTargetMarginPct}% target margin — reported FCF unavailable`
+      : !fcfInfo ? ''
       : fcfInfo.method === 'reported' ? 'Reported free cash flow (Yahoo)'
       : fcfInfo.method === 'derived' ? 'Derived: operating cash flow − capital expenditure'
       : 'Rough estimate: operating cash flow × 0.8';
@@ -718,7 +734,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ${bankMetricsHtml}
 
       <section class="scenarios-results">
-        <h3>Intrinsic value estimate · 5-year forecast</h3>
+        <h3>Intrinsic value estimate · 5-year forecast${revenueNormalised ? ' · Revenue-normalised' : ''}</h3>
         <div class="scenario-cards">${scenarioCardsHtml}</div>
       </section>
 
