@@ -305,5 +305,61 @@
     "exitDate": "2026-08-01",
     "exitPrice": 117.64,
     "dollarPnl": 12.72
+  },
+  {
+    "ticker": "FOX",
+    "entryDate": "2026-08-01",
+    "entryPrice": 51.94,
+    "exitDate": "2026-08-07",
+    "exitPrice": 57.03,
+    "dollarPnl": 54.09
+  },
+  {
+    "ticker": "FOXA",
+    "entryDate": "2026-08-01",
+    "entryPrice": 58.23,
+    "exitDate": "2026-08-07",
+    "exitPrice": 64.03,
+    "dollarPnl": 54.97
+  },
+  {
+    "ticker": "VRTX",
+    "entryDate": "2026-06-26",
+    "entryPrice": 480.18,
+    "exitDate": "2026-08-07",
+    "exitPrice": 496.07,
+    "dollarPnl": 21.94
+  },
+  {
+    "ticker": "LYV",
+    "entryDate": "2026-08-01",
+    "entryPrice": 174.13,
+    "exitDate": "2026-08-07",
+    "exitPrice": 180.66,
+    "dollarPnl": 20.7
+  },
+  {
+    "ticker": "J",
+    "entryDate": "2026-06-04",
+    "entryPrice": 121.28,
+    "exitDate": "2026-08-07",
+    "exitPrice": 145.07,
+    "dollarPnl": 41.48
+  },
+  {
+    "ticker": "MRK",
+    "entryDate": "2026-06-26",
+    "entryPrice": 125.45,
+    "exitDate": "2026-08-07",
+    "exitPrice": 128.58,
+    "dollarPnl": -6.87
+  },
+  {
+    "ticker": "CTVA",
+    "entryDate": "2026-08-01",
+    "entryPrice": 78.71,
+    "exitDate": "2026-08-07",
+    "exitPrice": 76.83,
+    "dollarPnl": -13.18
   }
 ]
