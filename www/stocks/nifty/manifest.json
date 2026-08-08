@@ -60,9 +60,31 @@
     "name": "Tata Consultancy Services Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1847.883413466339,
+    "intrinsic": 1755.4554280190657,
     "price": 2452.7,
-    "marginOfSafety": -0.24659215824750713,
+    "marginOfSafety": -0.2842763370901187,
+    "updated": "2026-08-08"
+  },
+  {
+    "ticker": "TECHM.NS",
+    "slug": "techm-ns",
+    "name": "Tech Mahindra Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 1558.1685746649093,
+    "price": 1635,
+    "marginOfSafety": -0.04699169745265484,
+    "updated": "2026-08-08"
+  },
+  {
+    "ticker": "WIPRO.NS",
+    "slug": "wipro-ns",
+    "name": "Wipro Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 162.30637424113215,
+    "price": 187.53,
+    "marginOfSafety": -0.13450448332996243,
     "updated": "2026-08-08"
   }
 ]
