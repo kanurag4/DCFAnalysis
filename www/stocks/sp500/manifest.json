@@ -49,9 +49,9 @@
     "name": "Best Buy Co., Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 137.48676390984255,
+    "intrinsic": 130.3558575338252,
     "price": 82,
-    "marginOfSafety": 0.6766678525590555,
+    "marginOfSafety": 0.5897055796807952,
     "updated": "2026-08-08"
   },
   {
@@ -79,7 +79,7 @@
   {
     "ticker": "KO",
     "slug": "ko",
-    "name": "Coca-Cola Company (The)",
+    "name": "The Coca-Cola Company",
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 42.45997352411974,
@@ -126,10 +126,10 @@
     "name": "Merck & Co., Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 198.5455746764355,
-    "price": 128,
-    "marginOfSafety": 0.5511373021596524,
-    "updated": "2026-08-05"
+    "intrinsic": 167.3764659605014,
+    "price": 128.58,
+    "marginOfSafety": 0.3017301754588691,
+    "updated": "2026-08-08"
   },
   {
     "ticker": "MSFT",
@@ -178,7 +178,7 @@
   {
     "ticker": "PFE",
     "slug": "pfe",
-    "name": "Pfizer, Inc.",
+    "name": "Pfizer Inc.",
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 61.92844162831033,

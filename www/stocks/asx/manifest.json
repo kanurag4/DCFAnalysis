@@ -27,9 +27,9 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 1.9419711146525003,
+    "intrinsic": 1.8690566680564729,
     "price": 0.865,
-    "marginOfSafety": 1.2450533117369946,
+    "marginOfSafety": 1.160759153822512,
     "updated": "2026-08-08"
   },
   {
@@ -93,9 +93,9 @@
     "name": "Computershare Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 8.0491928612153,
+    "intrinsic": 7.60084098322465,
     "price": 42.92,
-    "marginOfSafety": -0.8124605577536043,
+    "marginOfSafety": -0.8229067804467696,
     "updated": "2026-08-08"
   },
   {
@@ -181,15 +181,15 @@
     "name": "Metcash Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 4.9010808705177595,
+    "intrinsic": 4.694056416402811,
     "price": 3.15,
-    "marginOfSafety": 0.555898689053257,
+    "marginOfSafety": 0.49017664012787643,
     "updated": "2026-08-08"
   },
   {
     "ticker": "NAB.AX",
     "slug": "nab-ax",
-    "name": "NAT. BANK FPO [NAB]",
+    "name": "National Australia Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 28.07528009438917,
@@ -222,7 +222,7 @@
   {
     "ticker": "QBE.AX",
     "slug": "qbe-ax",
-    "name": "QBE INSUR. FPO [QBE]",
+    "name": "QBE Insurance Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 24.561044356115673,
@@ -302,9 +302,9 @@
     "name": "Santos Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 0.7288437512988147,
+    "intrinsic": 0.6170924407463592,
     "price": 7.66,
-    "marginOfSafety": -0.904850685209032,
+    "marginOfSafety": -0.9194396291453839,
     "updated": "2026-08-08"
   },
   {
@@ -324,9 +324,9 @@
     "name": "Telstra Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 7.7179128659328855,
+    "intrinsic": 7.4117488068449875,
     "price": 4.98,
-    "marginOfSafety": 0.549781699986523,
+    "marginOfSafety": 0.4883029732620456,
     "updated": "2026-08-08"
   },
   {
@@ -368,9 +368,9 @@
     "name": "Woolworths Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 24.61849097614035,
+    "intrinsic": 23.51389816705362,
     "price": 40.28,
-    "marginOfSafety": -0.3888160135019774,
+    "marginOfSafety": -0.4162388737077056,
     "updated": "2026-08-08"
   },
   {
