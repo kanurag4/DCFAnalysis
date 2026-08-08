@@ -15,6 +15,8 @@ const els = {
   scenarios:    $('scenarios'),
   disclaimer:   $('disclaimer'),
   charts:       $('charts'),
+  sensitivity:      $('sensitivity'),
+  sensitivityGrid:  $('sensitivity-grid'),
   howDcf:       $('how-dcf'),
   fcfInput:     $('fcf-input'),
   fcfSource:    $('fcf-source'),
@@ -22,6 +24,9 @@ const els = {
   fcfNorm:      $('fcf-normalized'),
   yearsSlider:  $('years-slider'),
   yearsDisplay: $('years-display'),
+  midyearToggle: $('midyear-toggle'),
+  multistageToggle: $('multistage-toggle'),
+  multistageRow: $('multistage-row'),
   growthBear:   $('growth-bear'),
   growthBase:   $('growth-base'),
   growthBull:   $('growth-bull'),
@@ -63,26 +68,111 @@ const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥'
 const T = (key, label) => window.kvGlossary ? kvGlossary.term(key, label) : escapeHtml(label);
 
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+const starBtn = document.getElementById('watchlist-star');
+
+// Reflects the star's state for the given resolved ticker/market. Called
+// after every successful analysis (native only) and once up front to hide
+// it while nothing has been analysed yet. tool is hardcoded 'dcf' — the
+// star is DCF-only by scope decision, not derived from any config.
+function updateWatchlistStar(ticker, market) {
+  if (!starBtn || !window.kvWatchlist) return;
+  if (!ticker) { starBtn.hidden = true; return; }
+  starBtn.hidden = false;
+  const watchlisted = window.kvWatchlist.isWatchlisted(ticker, 'dcf');
+  starBtn.textContent = watchlisted ? '★' : '☆';
+  starBtn.classList.toggle('active', watchlisted);
+  starBtn.onclick = () => {
+    if (starBtn.classList.contains('active')) {
+      window.kvWatchlist.remove(ticker, 'dcf').then(() => updateWatchlistStar(ticker, market));
+    } else {
+      window.kvWatchlist.add(ticker, market, 'dcf').then((result) => {
+        if (!result.ok && result.reason === 'cap') {
+          alert('Watchlist full (20/20) — remove one first.');
+          return;
+        }
+        updateWatchlistStar(ticker, market);
+      });
+    }
+  };
+}
+
 if (isNative) {
   const badge = document.getElementById('kv-play-badge');
   if (badge) badge.hidden = true;
+
+  // kv-nav.js unconditionally points .home-logo ("← All tools") at
+  // /app/index.html for every native page. Read location.search here,
+  // synchronously and before kv-ticker-input.js's mount() call below has a
+  // chance to run — its bootstrapFromUrl() rewrites the URL via
+  // history.pushState(buildUrlQuery(...)), which only ever carries
+  // ticker/asx/nse and would silently drop a `from` param if read any
+  // later than this. A ticker opened from the Watchlist screen
+  // (app/watchlist.html's dcfHref()) carries ?from=watchlist so the user
+  // lands back where they came from instead of the app home screen.
+  if (new URLSearchParams(location.search).get('from') === 'watchlist') {
+    const homeLogo = document.querySelector('.home-logo');
+    if (homeLogo) homeLogo.setAttribute('href', '/app/watchlist.html');
+  }
+
+  // The "Individual stocks only" scope-limitation notice is useful web
+  // context but reads as clutter at the top of a focused native tool.
+  const notice = document.querySelector('.notice');
+  if (notice) notice.style.display = 'none';
+
+  // Using .style.display = 'none' rather than .hidden, deliberately: several
+  // of these elements' own CSS class sets an explicit `display` value
+  // (e.g. .screens-row { display: flex }, .affiliate-promo-grid { display:
+  // grid }), which has the same specificity as the browser's default
+  // `[hidden] { display: none }` rule — the author rule wins on source
+  // order, so .hidden silently does nothing for elements shaped like this.
+  // Found 2026-08-07 when the screens-row and affiliate grid stayed visible
+  // despite being "hidden".
+  const affiliateGrid = document.querySelector('.affiliate-promo-grid');
+  if (affiliateGrid) affiliateGrid.style.display = 'none';
+  const affiliateNote = document.querySelector('.affiliate-promo-note');
+  if (affiliateNote) affiliateNote.style.display = 'none';
 
   // In the app, "Privacy Policy" must point at the Android app policy
   // (privacy.html), not the site-wide web policy (privacy-site.html).
   const privacyLink = document.getElementById('privacy-link');
   if (privacyLink) privacyLink.href = '/privacy.html';
 
-  // Undervalued-list links are relative (asx-undervalued/, sp500-undervalued/, ...).
-  // Their bundled copy is frozen at build time and Capacitor's local server mishandles
-  // directory-style paths (redirects to the app's landing page). Open the live,
-  // always-current kashvector.com page in the system browser instead.
-  document.querySelectorAll('.screen-pill').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const url = new URL(link.getAttribute('href'), 'https://kashvector.com/dcf/').href;
-      window.open(url, '_system');
-    });
-  });
+  // The undervalued-screen pill row and "Browse selective stock DCF
+  // valuations" link are cross-links to more web-style browsing content —
+  // out of place in a focused native tool. The app's own "Most Undervalued"
+  // tile (app/index.html -> app/undervalued.html) is the in-app equivalent.
+  const screensRow = document.querySelector('.screens-row');
+  if (screensRow) screensRow.style.display = 'none';
+  const browseLink = document.querySelector('.screens-row + p');
+  if (browseLink) browseLink.style.display = 'none';
+
+  // ASX/NSE checkboxes are redundant once a ticker is picked from
+  // autocomplete (kv-ticker-input.js auto-ticks the right one already) —
+  // hidden here for a cleaner native UI. Left in the DOM (not removed) so
+  // that auto-tick logic and resolveSymbol() keep working unchanged; typing
+  // a bare ticker without picking a suggestion now falls back purely to an
+  // explicit .AX/.NS/.BO suffix (see the reworded hint below and the
+  // "Using another market?" details block).
+  document.querySelectorAll('.asx-toggle').forEach((el) => { el.style.display = 'none'; });
+
+  // The "Using another market?" details block's Australia bullet references
+  // the now-hidden checkbox ("...or tick ASX box") — drop that parenthetical.
+  const auLi = document.querySelector('details.market-hint li');
+  if (auLi) auLi.innerHTML = '<strong>Australia</strong> — <code>.AX</code>';
+
+  // The on-page About/FAQ section is long SEO/web content — out of place in
+  // a focused native tool. Point to the consolidated app/about.html instead
+  // via a small link in the header.
+  const toolInfo = document.querySelector('.tool-info');
+  if (toolInfo) toolInfo.style.display = 'none';
+  const headerCenter = document.querySelector('.app-header-center');
+  if (headerCenter) {
+    const infoLink = document.createElement('a');
+    infoLink.href = '/app/about.html';
+    infoLink.textContent = 'ℹ️ About & FAQ';
+    infoLink.style.cssText = 'display:inline-block;margin-top:8px;font-size:0.78rem;color:var(--kv-accent,var(--accent));text-decoration:none;';
+    headerCenter.appendChild(infoLink);
+  }
 }
 if (!isNative) {
   // Fill each screen pill's "Updated d Mon" line from that screen's rankings.json.
@@ -146,6 +236,8 @@ els.yearsSlider.addEventListener('input', () => {
 
 els.recalcBtn.addEventListener('click', onRecalc);
 if (els.ddmToggle) els.ddmToggle.addEventListener('click', onToggleModel);
+if (els.midyearToggle) els.midyearToggle.addEventListener('change', () => { if (currentData) renderAll(currentData); });
+if (els.multistageToggle) els.multistageToggle.addEventListener('change', () => { if (currentData) renderAll(currentData); });
 
 // Re-derive discount rates live as RF or ERP values change (debounced).
 let _waccTimer = null;
@@ -169,7 +261,9 @@ const ctl = window.kvTickerInput.mount({
   proxyUrl: CONFIG.YAHOO_PROXY_URL,
   minChars: 3,
   hints: {
-    none: 'Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).',
+    none: isNative
+      ? 'Add <code>.AX</code> for Australian tickers (e.g. BHP.AX) or <code>.NS</code> for Indian tickers (e.g. RELIANCE.NS). No suffix defaults to US (e.g. AAPL).'
+      : 'Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).',
     nse:  'Tick <strong>NSE / BSE</strong> for Indian tickers (e.g. RELIANCE, TCS). Adds <code>.NS</code> suffix automatically.',
   },
   onAnalyse: (req) => onAnalyse(req),
@@ -192,6 +286,7 @@ async function onAnalyse(req) {
     prefillInputs(data);
     renderAll(data);
     ctl.recordRecent(data.ticker, { isAsx: isASX, isNse: isNSE });
+    if (isNative) updateWatchlistStar(data.ticker, currentMarket);
   } catch (err) {
     const rawInput = req.raw;
     const isBareSymbol = !rawInput.includes('.');
@@ -272,8 +367,10 @@ function prefillInputs(data) {
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
   }
 
-  // ── FCF (DCF) — reported FCF, else OCF − CapEx, else OCF × 0.8 proxy ──
-  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+  // ── FCF (DCF) — reported FCF, else OCF − CapEx, else OCF × 0.8 proxy, else
+  // latest annual FCF (only when TTM is completely unavailable — see
+  // utils.js's deriveFcf) ──
+  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
   const fcf = fcfInfo.value;
   const isFcfNegative = fcf !== null && fcf <= 0;
 
@@ -288,6 +385,9 @@ function prefillInputs(data) {
       els.fcfSource.className = 'fcf-source confirmed';
     } else if (fcfInfo.method === 'derived') {
       els.fcfSource.textContent = '≈ OCF − CapEx';
+      els.fcfSource.className = 'fcf-source confirmed';
+    } else if (fcfInfo.method === 'annual') {
+      els.fcfSource.textContent = '≈ latest annual (TTM n/a)';
       els.fcfSource.className = 'fcf-source confirmed';
     } else {
       els.fcfSource.textContent = '⚠ rough est. (OCF × 0.8)';
@@ -351,6 +451,7 @@ function prefillInputs(data) {
     beta:            effectiveBeta,
     interestExpense: data.interestExpense,
     taxRate:         data.taxRate,
+    ebit:            data.ebit,
     riskFreeRate:    rf,
     erp,
   });
@@ -426,6 +527,7 @@ function applyModelUI() {
 
   if (els.fcfRow)      els.fcfRow.hidden = ddm;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
+  if (els.multistageRow) els.multistageRow.hidden = ddm;
 
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
@@ -570,6 +672,7 @@ function renderAll(data) {
   renderBreakeven(data, sym);
   renderScenarios(scenarios, data, sym);
   renderCharts(scenarios, data.price, sym);
+  renderSensitivityGrid(buildSensitivityGrid(data), data.price, sym);
   // Show the explainer matching the active model
   if (els.howDcf) els.howDcf.hidden = valuationModel === 'ddm';
   if (els.howDdm) els.howDdm.hidden = valuationModel !== 'ddm';
@@ -601,12 +704,13 @@ function renderGrowthSuggestion(data, isNegativeOrMissingFcf) {
 // ── Key metrics ───────────────────────────────────────────────────────────
 
 function renderSummary(data, sym) {
-  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
   const fcf     = fcfInfo.value;
   const netDebt = (data.totalDebt ?? 0) - (data.totalCash ?? 0);
   const range  = `${fmt(data.fiftyTwoWeekLow, 2, '', sym)} – ${fmt(data.fiftyTwoWeekHigh, 2, '', sym)}`;
   const fcfNote = fcfInfo.method === 'proxy'   ? ' <span class="stat-warn">⚠ est.</span>'
-                : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>' : '';
+                : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>'
+                : fcfInfo.method === 'annual'  ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">latest annual</span>' : '';
 
   els.summary.innerHTML = `
     <h2>${escapeHtml(data.name)} <span class="symbol">(${escapeHtml(data.ticker)})</span></h2>
@@ -659,7 +763,11 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     <div class="wacc-row"><span>Cost of Equity (Re)</span><span class="wacc-val">${pct(w.re)}</span></div>
     <div class="wacc-row"><span class="wacc-src">RF ${pct(w.riskFreeRate)} + Beta ${flooredBeta != null ? flooredBeta.toFixed(2) : w.beta?.toFixed(2) ?? ''} × ERP ${pct(w.erp)}</span></div>
     ${floorNote}
-    <div class="wacc-row"><span>Cost of Debt (Rd) ${w.isRdEstimated ? '<span class="wacc-estimated">(estimated)</span>' : ''}</span><span class="wacc-val">${pct(w.rd)}</span></div>
+    <div class="wacc-row"><span>Cost of Debt (Rd) ${
+      w.rdMethod === 'synthetic'
+        ? `<span class="wacc-estimated">(synthetic rating ${w.syntheticRating}, ICR ${w.icr.toFixed(1)}x)</span>`
+        : w.isRdEstimated ? '<span class="wacc-estimated">(estimated)</span>' : ''
+    }</span><span class="wacc-val">${pct(w.rd)}</span></div>
     <div class="wacc-row"><span>Tax Rate (Tc) ${w.isTcEstimated ? '<span class="wacc-estimated">(estimated)</span>' : ''}</span><span class="wacc-val">${pct(w.tc)}</span></div>
     <div class="wacc-row"><span>Capital Structure</span><span class="wacc-val">E ${(w.eWeight * 100).toFixed(0)}% / D ${(w.dWeight * 100).toFixed(0)}%</span></div>
     <div class="wacc-divider"></div>
@@ -732,6 +840,109 @@ function renderFinancialWarning(data, sym) {
 
 // ── Build scenarios ───────────────────────────────────────────────────────
 
+// Resolves which FCF number a DCF run should use, in the same precedence
+// buildScenarios() and buildSensitivityGrid() both need: the financial-sector
+// normalised-FCF field if shown and filled in, else the main FCF input, plus
+// a revenue-normalised fallback (target margin × revenue) for negative or
+// missing FCF. Shared so the scenario cards and the sensitivity grid can
+// never silently disagree on which FCF was actually run.
+function resolveDcfFcfInputs(data) {
+  const useNormFcf = isFinancialSector(data.sector)
+    && !isBankOrInsurance(data.sector, data.industry)
+    && els.fcfNorm && els.fcfNorm.value;
+  const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
+
+  const targetMarginPct = els.targetMarginInput ? parseFloat(els.targetMarginInput.value) : NaN;
+  const normFcf = (!useNormFcf && !isNaN(targetMarginPct) && targetMarginPct > 0 && data.totalRevenue > 0)
+    ? data.totalRevenue * (targetMarginPct / 100)
+    : null;
+
+  return { fcfRaw, normFcf };
+}
+
+// Sensitivity grid: intrinsic value across a 5×5 discount-rate × terminal-
+// growth grid, holding the Base scenario's growth rate and projection years
+// fixed. Unlike Bear/Base/Bull (which move growth, terminal growth, and
+// discount rate together), this isolates exactly one axis per cell.
+function buildSensitivityGrid(data) {
+  const years = parseInt(els.yearsSlider.value, 10);
+  const ddm = valuationModel === 'ddm';
+
+  const baseDiscount = parseFloat(els.waccBase.value) / 100;
+  const baseTGrowth  = parseFloat(els.tgrowthBase.value) / 100;
+  if (!isFinite(baseDiscount) || !isFinite(baseTGrowth)) return null;
+
+  const discountStep = 0.005;  // 0.5pp
+  const tgrowthStep  = 0.0025; // 0.25pp
+  const discountRates = [-2, -1, 0, 1, 2].map(n => baseDiscount + n * discountStep);
+  const tgrowthRates  = [-2, -1, 0, 1, 2].map(n => baseTGrowth + n * tgrowthStep);
+  const useMidYear = !!(els.midyearToggle && els.midyearToggle.checked);
+
+  if (ddm) {
+    const dividend = els.dividendInput
+      ? parseFloat(String(els.dividendInput.value).replace(/,/g, ''))
+      : NaN;
+    if (!(dividend > 0)) return null;
+    const growthRate = parseFloat(els.growthBase.value) / 100 || 0;
+    const rows = discountRates.map(costOfEquity => tgrowthRates.map(terminalGrowth => {
+      if (costOfEquity <= terminalGrowth) return null;
+      const r = calculateDDM({ dividend, growthRate, terminalGrowth, costOfEquity, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
+      return r ? r.intrinsicValue : null;
+    }));
+    return { rows, discountRates, tgrowthRates, baseDiscount, baseTGrowth };
+  }
+
+  const { fcfRaw, normFcf } = resolveDcfFcfInputs(data);
+  const fcf = (fcfRaw !== null && fcfRaw > 0) ? fcfRaw : normFcf;
+  if (fcf === null) return null;
+  const growthRate = parseFloat(els.growthBase.value) / 100 || 0.05;
+  const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
+    ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+
+  const useMultiStage = !!(els.multistageToggle && els.multistageToggle.checked);
+  const rows = discountRates.map(wacc => tgrowthRates.map(terminalGrowth => {
+    if (wacc <= terminalGrowth) return null;
+    const common = {
+      terminalGrowth, wacc, projectionYears: years,
+      totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
+      sharesOutstanding: resolvedShares, currentPrice: data.price,
+      midYear: useMidYear,
+    };
+    const r = useMultiStage
+      ? calculateFadingGrowthDCF({ ...common, fcf, initialGrowth: growthRate })
+      : calculateDCF({ ...common, fcf, growthRate });
+    return r ? r.intrinsicValue : null;
+  }));
+  return { rows, discountRates, tgrowthRates, baseDiscount, baseTGrowth };
+}
+
+function renderSensitivityGrid(grid, currentPrice, sym) {
+  if (!els.sensitivity || !els.sensitivityGrid) return;
+  if (!grid) { els.sensitivity.hidden = true; return; }
+  const { rows, discountRates, tgrowthRates, baseDiscount, baseTGrowth } = grid;
+  const discountLabel = valuationModel === 'ddm' ? 'Cost of Equity' : 'WACC';
+
+  const colHeaders = tgrowthRates.map(g => `<th>${(g * 100).toFixed(2)}%</th>`).join('');
+  const bodyRows = rows.map((row, i) => {
+    const isBaseRow = Math.abs(discountRates[i] - baseDiscount) < 1e-9;
+    const cells = row.map((val, j) => {
+      const isBaseCol = Math.abs(tgrowthRates[j] - baseTGrowth) < 1e-9;
+      const isBaseCell = isBaseRow && isBaseCol;
+      if (val === null) return `<td class="sens-na${isBaseCell ? ' sens-base' : ''}">—</td>`;
+      const cls = val > (currentPrice ?? 0) ? 'sens-up' : 'sens-down';
+      return `<td class="${cls}${isBaseCell ? ' sens-base' : ''}">${sym}${val.toFixed(2)}</td>`;
+    }).join('');
+    return `<tr><th>${(discountRates[i] * 100).toFixed(2)}%</th>${cells}</tr>`;
+  }).join('');
+
+  els.sensitivityGrid.innerHTML = `
+    <table class="sensitivity-table">
+      <thead><tr><th class="sens-corner">${discountLabel} \\ Terminal Growth</th>${colHeaders}</tr></thead>
+      <tbody>${bodyRows}</tbody>
+    </table>`;
+  els.sensitivity.hidden = false;
+}
+
 function buildScenarios(data) {
   const years   = parseInt(els.yearsSlider.value, 10);
   const configs = [
@@ -755,24 +966,30 @@ function buildScenarios(data) {
       const result = calculateDDM({
         dividend, growthRate, terminalGrowth, costOfEquity,
         projectionYears: years, currentPrice: data.price,
+        midYear: !!(els.midyearToggle && els.midyearToggle.checked),
       });
       return { key, growthRate, terminalGrowth, wacc: costOfEquity, result };
     });
   }
 
   // ── DCF ──
-  // Normalised FCF only applies to non-bank/insurance financials.
-  const useNormFcf = isFinancialSector(data.sector)
-    && !isBankOrInsurance(data.sector, data.industry)
-    && els.fcfNorm && els.fcfNorm.value;
-  const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
+  const { fcfRaw, normFcf } = resolveDcfFcfInputs(data);
+  const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
+    ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+  const useMultiStage = !!(els.multistageToggle && els.multistageToggle.checked);
+  const useMidYear = !!(els.midyearToggle && els.midyearToggle.checked);
 
-  // Revenue-normalised FCF — only for stocks not already using the financial
-  // normalised-FCF field (useNormFcf). Applying both would double-normalise.
-  const targetMarginPct = els.targetMarginInput ? parseFloat(els.targetMarginInput.value) : NaN;
-  const normFcf = (!useNormFcf && !isNaN(targetMarginPct) && targetMarginPct > 0 && data.totalRevenue > 0)
-    ? data.totalRevenue * (targetMarginPct / 100)
-    : null;
+  function runDcf(fcfValue, growthRate, terminalGrowth, wacc) {
+    const common = {
+      terminalGrowth, wacc, projectionYears: years,
+      totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
+      sharesOutstanding: resolvedShares, currentPrice: data.price,
+      midYear: useMidYear,
+    };
+    return useMultiStage
+      ? calculateFadingGrowthDCF({ ...common, fcf: fcfValue, initialGrowth: growthRate })
+      : calculateDCF({ ...common, fcf: fcfValue, growthRate });
+  }
 
   return configs.map(({ key, growthEl, tgEl, waccEl }) => {
     const growthRate     = parseFloat(growthEl.value) / 100 || 0.05;
@@ -780,42 +997,19 @@ function buildScenarios(data) {
     const wacc           = parseFloat(waccEl.value)  / 100 || 0.10;
 
     if (fcfRaw === null) {
-      // Empty FCF input — offer revenue normalisation if available, else prompt user
       if (normFcf !== null) {
-        const result = calculateDCF({
-          fcf: normFcf, growthRate, terminalGrowth, wacc,
-          projectionYears: years,
-          totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
-          sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
-        });
-        return { key, growthRate, terminalGrowth, wacc, result, normalised: true };
+        return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc), normalised: true };
       }
       return { key, growthRate, terminalGrowth, wacc, result: null, fcfMissing: true };
     }
     if (fcfRaw <= 0) {
-      // Negative FCF — offer revenue normalisation if available
       if (normFcf !== null) {
-        const result = calculateDCF({
-          fcf: normFcf, growthRate, terminalGrowth, wacc,
-          projectionYears: years,
-          totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
-          sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
-        });
-        return { key, growthRate, terminalGrowth, wacc, result, normalised: true };
+        return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc), normalised: true };
       }
       return { key, growthRate, terminalGrowth, wacc, result: null, fcfNegative: true };
     }
 
-    const result = calculateDCF({
-      fcf: fcfRaw, growthRate, terminalGrowth, wacc,
-      projectionYears: years,
-      totalDebt:         data.totalDebt ?? 0,
-      totalCash:         data.totalCash ?? 0,
-      sharesOutstanding: data.sharesOutstanding,
-      currentPrice:      data.price,
-    });
-
-    return { key, growthRate, terminalGrowth, wacc, result };
+    return { key, growthRate, terminalGrowth, wacc, result: runDcf(fcfRaw, growthRate, terminalGrowth, wacc) };
   });
 }
 
@@ -857,9 +1051,10 @@ function renderScenarios(scenarios, data, sym) {
       </div>`;
     }
 
-    const mos      = result.marginOfSafety;
-    const mosClass = mos > 0.2 ? 'undervalued' : mos < -0.2 ? 'overvalued' : 'fair';
-    const mosLabel = mos > 0.2 ? '✅ Undervalued' : mos < -0.2 ? '❌ Overvalued' : '⚠️ Fairly Valued';
+    const mos     = result.marginOfSafety;
+    const verdict = deriveVerdict(mos);
+    const mosClass = verdict === 'Undervalued' ? 'undervalued' : verdict === 'Overvalued' ? 'overvalued' : 'fair';
+    const mosLabel = verdict === 'Undervalued' ? '✅ Undervalued' : verdict === 'Overvalued' ? '❌ Overvalued' : '⚠️ Fairly Valued';
     const mosPct   = (mos * 100).toFixed(1);
 
     return `<div class="scenario-card ${key}">
@@ -916,7 +1111,7 @@ function renderBreakeven(data, sym) {
   if (isBankIns || valuationModel === 'ddm' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }
-  const fcf = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures).value;
+  const fcf = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf).value;
   if (fcf !== null && fcf > 0) { els.breakevenCallout.hidden = true; return; }
 
   const targetMarginPct = parseFloat(els.targetMarginInput?.value);
@@ -1062,6 +1257,7 @@ function hideResults() {
   els.status.hidden = true;
   const growthSuggestion = document.getElementById('growthSuggestion');
   if (growthSuggestion) growthSuggestion.innerHTML = '';
+  if (isNative) updateWatchlistStar(null, null);
 }
 
 function show(...nodes) { nodes.forEach(n => { if (n) n.hidden = false; }); }
@@ -1145,6 +1341,7 @@ function recomputeDiscount() {
       beta:            effectiveBeta,
       interestExpense: currentData.interestExpense,
       taxRate:         currentData.taxRate,
+      ebit:            currentData.ebit,
       riskFreeRate:    rf,
       erp,
     });

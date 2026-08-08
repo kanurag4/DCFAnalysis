@@ -6,7 +6,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
 
   const raw = ticker.trim().toUpperCase();
   const symbol = raw.includes('.') ? raw : (isASX ? `${raw}.AX` : raw);
-  const url = `${yahooProxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}?tool=dcf`;
+  const base = yahooProxyUrl.replace(/\/$/, '');
+  const url = `${base}/quoteSummary/${encodeURIComponent(symbol)}?tool=dcf`;
 
   let res;
   try { res = await fetch(url); }
@@ -18,7 +19,54 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   try { body = await res.json(); }
   catch (_) { throw new Error('The data service returned an unreadable response. Please try again.'); }
 
-  return mapQuoteSummary(body, symbol);
+  const data = mapQuoteSummary(body, symbol);
+
+  // Best-effort — /timeseries must never block or fail the DCF. Uses the
+  // same resolved `symbol` as the quoteSummary call above, not the raw
+  // ticker (see the Known Traps note on this exact class of bug).
+  let dilutedSharesOutstanding = null;
+  let ebit = null;
+  let interestExpenseTs = null;
+  let annualFcf = null;
+  try {
+    const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`);
+    if (tsRes.ok) {
+      const tsBody = await tsRes.json();
+      if (!tsBody.error) {
+        dilutedSharesOutstanding = latestSeriesValue(tsBody.annualDilutedAverageShares);
+        ebit = latestSeriesValue(tsBody.annualOperatingIncome);
+        const rawInterestExpense = latestSeriesValue(tsBody.annualInterestExpense);
+        // fundamentals-timeseries reports this as a positive magnitude, unlike
+        // incomeStatementHistory's negative expense convention (see file-top
+        // comment) — negate so both sources share one sign convention.
+        interestExpenseTs = (rawInterestExpense != null) ? -rawInterestExpense : null;
+        // Last-resort FCF fallback — see utils.js's deriveFcf() for why this
+        // tier exists and why it's ordered last (only used when quoteSummary's
+        // TTM-based freeCashflow/operatingCashflow are both unavailable).
+        annualFcf = latestSeriesValue(tsBody.annualFreeCashFlow);
+      }
+    }
+  } catch (_) {
+    // all four stay null — app.js falls back to the basic share count /
+    // incomeStatementHistory's interestExpense / book-yield cost of debt /
+    // "no usable free cash flow" respectively.
+  }
+
+  // incomeStatementHistory's interestExpense is frequently an empty object
+  // for ASX tickers (confirmed BHP.AX, 2026-08-08) even though Yahoo's own
+  // fundamentals-timeseries has it — prefer the /timeseries value when present.
+  const interestExpense = (interestExpenseTs != null) ? interestExpenseTs : data.interestExpense;
+
+  return { ...data, dilutedSharesOutstanding, ebit, interestExpense, annualFcf };
+}
+
+// Pure: returns the most recent { date, value } entry's value from a Yahoo
+// /timeseries series (already ascending by date), or null if the series is
+// missing, empty, or the last entry's value isn't a finite number.
+function latestSeriesValue(series) {
+  if (!Array.isArray(series) || series.length === 0) return null;
+  const v = series[series.length - 1]?.value;
+  return (v != null && isFinite(v)) ? v : null;
 }
 
 // Pure: maps a Yahoo quoteSummary JSON body to the DCF tool's data shape.
@@ -103,4 +151,4 @@ function explainStatus(status, symbol) {
   return `Data service error (HTTP ${status}). Please try again.`;
 }
 
-if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary };
+if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary, latestSeriesValue };
