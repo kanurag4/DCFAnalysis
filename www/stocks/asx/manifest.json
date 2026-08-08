@@ -5,9 +5,9 @@
     "name": "Alcoa Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 82.73919797120932,
+    "intrinsic": 77.4791665361361,
     "price": 68.34,
-    "marginOfSafety": 0.21069941426996366,
+    "marginOfSafety": 0.13373085361627307,
     "updated": "2026-08-08"
   },
   {
@@ -16,9 +16,9 @@
     "name": "BHP Group Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 45.97846984503001,
+    "intrinsic": 43.827526725239395,
     "price": 62.97,
-    "marginOfSafety": -0.26983532086660295,
+    "marginOfSafety": -0.3039935409680896,
     "updated": "2026-08-08"
   },
   {
@@ -38,9 +38,9 @@
     "name": "Brambles Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 13.45448744311814,
+    "intrinsic": 12.910349769594246,
     "price": 20.35,
-    "marginOfSafety": -0.33884582589100054,
+    "marginOfSafety": -0.3655847779069167,
     "updated": "2026-08-08"
   },
   {
@@ -49,9 +49,9 @@
     "name": "CAR Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 16.988703520460934,
+    "intrinsic": 16.13999660276571,
     "price": 27.02,
-    "marginOfSafety": -0.37125449591188253,
+    "marginOfSafety": -0.40266481855049185,
     "updated": "2026-08-08"
   },
   {
@@ -71,9 +71,9 @@
     "name": "Cochlear Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 22.326777935306787,
+    "intrinsic": 21.484231644289203,
     "price": 124.86,
-    "marginOfSafety": -0.8211855042823418,
+    "marginOfSafety": -0.827933432289851,
     "updated": "2026-08-08"
   },
   {
@@ -82,9 +82,9 @@
     "name": "Coles Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 10.353682360954437,
+    "intrinsic": 9.771416271739609,
     "price": 24.19,
-    "marginOfSafety": -0.5719850202168484,
+    "marginOfSafety": -0.5960555489152705,
     "updated": "2026-08-08"
   },
   {
@@ -104,9 +104,9 @@
     "name": "Endeavour Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 2.0284843526646537,
+    "intrinsic": 1.8551164054424971,
     "price": 3.62,
-    "marginOfSafety": -0.4396452064462283,
+    "marginOfSafety": -0.4875369045738958,
     "updated": "2026-08-08"
   },
   {
@@ -115,9 +115,9 @@
     "name": "Fortescue Ltd",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 30.41479695381037,
+    "intrinsic": 29.135774031507115,
     "price": 18.02,
-    "marginOfSafety": 0.687835569023883,
+    "marginOfSafety": 0.6168576044121595,
     "updated": "2026-08-08"
   },
   {
@@ -137,9 +137,9 @@
     "name": "GQG Partners Inc.",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 1.3606158935877475,
+    "intrinsic": 1.3068110689683359,
     "price": 1.435,
-    "marginOfSafety": -0.05183561422456625,
+    "marginOfSafety": -0.0893302655272921,
     "updated": "2026-08-08"
   },
   {
@@ -148,9 +148,9 @@
     "name": "Harvey Norman Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 17.633685496715284,
+    "intrinsic": 16.91977968709478,
     "price": 5.05,
-    "marginOfSafety": 2.4918189102406503,
+    "marginOfSafety": 2.3504514231870854,
     "updated": "2026-08-08"
   },
   {
@@ -159,9 +159,9 @@
     "name": "JB Hi-Fi Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 86.668435002215,
+    "intrinsic": 82.73780802189671,
     "price": 84.36,
-    "marginOfSafety": 0.027364094383772002,
+    "marginOfSafety": -0.01922939755930877,
     "updated": "2026-08-08"
   },
   {
@@ -170,9 +170,9 @@
     "name": "Lovisa Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 37.81883208803118,
+    "intrinsic": 35.767685747943084,
     "price": 27.1,
-    "marginOfSafety": 0.3955288593369438,
+    "marginOfSafety": 0.31984080250712477,
     "updated": "2026-08-08"
   },
   {
@@ -189,7 +189,7 @@
   {
     "ticker": "NAB.AX",
     "slug": "nab-ax",
-    "name": "National Australia Bank Limited",
+    "name": "NAT. BANK FPO [NAB]",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 28.07528009438917,
@@ -203,9 +203,9 @@
     "name": "Newmont Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 262.4983240824893,
+    "intrinsic": 253.08759339904586,
     "price": 152.82,
-    "marginOfSafety": 0.7176961397885704,
+    "marginOfSafety": 0.656115648469087,
     "updated": "2026-08-08"
   },
   {
@@ -222,7 +222,7 @@
   {
     "ticker": "QBE.AX",
     "slug": "qbe-ax",
-    "name": "QBE Insurance Group Limited",
+    "name": "QBE INSUR. FPO [QBE]",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 24.561044356115673,
@@ -236,9 +236,9 @@
     "name": "REA Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 75.91614718720194,
+    "intrinsic": 72.87387785061628,
     "price": 173.51,
-    "marginOfSafety": -0.56246817366606,
+    "marginOfSafety": -0.5800018566617701,
     "updated": "2026-08-08"
   },
   {
@@ -247,9 +247,9 @@
     "name": "Ramsay Health Care Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 53.96268927075377,
+    "intrinsic": 50.46720528510773,
     "price": 44.9,
-    "marginOfSafety": 0.20184163186534015,
+    "marginOfSafety": 0.12399120902244394,
     "updated": "2026-08-08"
   },
   {
@@ -258,9 +258,9 @@
     "name": "ResMed Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 22.77149165742492,
+    "intrinsic": 21.816979684509192,
     "price": 28.87,
-    "marginOfSafety": -0.2112403305360263,
+    "marginOfSafety": -0.2443027473325531,
     "updated": "2026-08-08"
   },
   {
@@ -269,9 +269,9 @@
     "name": "SEEK Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 11.55671348678269,
+    "intrinsic": 10.907847148283915,
     "price": 15.42,
-    "marginOfSafety": -0.25053738736817827,
+    "marginOfSafety": -0.29261691645370197,
     "updated": "2026-08-08"
   },
   {
@@ -280,9 +280,9 @@
     "name": "Sonic Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 34.11077336389412,
+    "intrinsic": 32.615722739142136,
     "price": 22.25,
-    "marginOfSafety": 0.533068465792994,
+    "marginOfSafety": 0.465875179287287,
     "updated": "2026-08-08"
   },
   {
@@ -291,9 +291,9 @@
     "name": "Sigma Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 1.7797317535085175,
+    "intrinsic": 1.7094932773451335,
     "price": 2.98,
-    "marginOfSafety": -0.40277457935955785,
+    "marginOfSafety": -0.4263445378036465,
     "updated": "2026-08-08"
   },
   {
@@ -313,9 +313,9 @@
     "name": "Tabcorp Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 1.0613862362739293,
+    "intrinsic": 1.0127990446382678,
     "price": 0.89,
-    "marginOfSafety": 0.19256880480216768,
+    "marginOfSafety": 0.13797645464973904,
     "updated": "2026-08-08"
   },
   {
@@ -335,9 +335,9 @@
     "name": "TPG Telecom Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 12.122211804834892,
+    "intrinsic": 11.676774311262239,
     "price": 3.62,
-    "marginOfSafety": 2.348677294153285,
+    "marginOfSafety": 2.225628262779624,
     "updated": "2026-08-08"
   },
   {
@@ -357,9 +357,9 @@
     "name": "Wesfarmers Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 44.68187847607035,
+    "intrinsic": 42.33331813856693,
     "price": 90.1,
-    "marginOfSafety": -0.5040856994886753,
+    "marginOfSafety": -0.5301518519581916,
     "updated": "2026-08-08"
   },
   {
@@ -379,9 +379,9 @@
     "name": "WiseTech Global Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 21.855396617811525,
+    "intrinsic": 20.514355197420993,
     "price": 40.98,
-    "marginOfSafety": -0.46668139048776164,
+    "marginOfSafety": -0.4994056808828454,
     "updated": "2026-08-08"
   },
   {
@@ -390,9 +390,9 @@
     "name": "Yancoal Australia Ltd",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 5.453432698813416,
+    "intrinsic": 5.2594665020469815,
     "price": 5.62,
-    "marginOfSafety": -0.02963830981967683,
+    "marginOfSafety": -0.06415186796317057,
     "updated": "2026-08-08"
   }
 ]

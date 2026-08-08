@@ -16,9 +16,9 @@
     "name": "Hero MotoCorp Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 9676.121673377027,
+    "intrinsic": 9197.266972793994,
     "price": 5725,
-    "marginOfSafety": 0.6901522573584327,
+    "marginOfSafety": 0.6065095148985142,
     "updated": "2026-08-08"
   },
   {
@@ -27,9 +27,9 @@
     "name": "MRF Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 171198.58900764654,
+    "intrinsic": 162587.65987147187,
     "price": 134190,
-    "marginOfSafety": 0.2757924510592931,
+    "marginOfSafety": 0.21162277272130464,
     "updated": "2026-08-08"
   },
   {
@@ -49,9 +49,9 @@
     "name": "Signatureglobal (India) Limited",
     "sector": "Real Estate",
     "method": "DCF",
-    "intrinsic": 1464.1104954673795,
+    "intrinsic": 1390.2563875565484,
     "price": 802.3,
-    "marginOfSafety": 0.824891556110407,
+    "marginOfSafety": 0.7328385735467386,
     "updated": "2026-08-08"
   },
   {
@@ -71,9 +71,9 @@
     "name": "Tech Mahindra Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1558.1685746649093,
+    "intrinsic": 1652.984503216074,
     "price": 1635,
-    "marginOfSafety": -0.04699169745265484,
+    "marginOfSafety": 0.010999696156620194,
     "updated": "2026-08-08"
   },
   {
@@ -82,9 +82,9 @@
     "name": "Wipro Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 162.30637424113215,
+    "intrinsic": 162.30637424113212,
     "price": 187.53,
-    "marginOfSafety": -0.13450448332996243,
+    "marginOfSafety": -0.13450448332996257,
     "updated": "2026-08-08"
   }
 ]
