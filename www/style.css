@@ -67,7 +67,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
   font-size: 0.62rem; font-weight: 700; padding: 1px 9px; border-radius: 999px;
   text-transform: uppercase; pointer-events: none;
 }
-html:not(.dark) .screen-pill-new { border-color: rgba(245,166,35,0.65) !important; }
+html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(245,166,35,0.65) !important; }
 .screen-pill-flag { font-size: 1.4rem; line-height: 1; flex: 0 0 auto; }
 .screen-pill-label { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
 .screen-pill-label strong { font-size: 0.9rem; color: var(--kv-pass); white-space: nowrap; }
@@ -366,9 +366,9 @@ footer a { color: var(--kv-accent); }
 }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-html:not(.dark) #ticker-input { background: #fff; border-color: var(--kv-border); }
-html:not(.dark) #ticker-input:focus { border-color: var(--kv-accent); }
-html:not(.dark) .scenario-num { background: var(--kv-card-2); }
+html:not(.dark):not(.prestige):not(.sky) #ticker-input { background: #fff; border-color: var(--kv-border); }
+html:not(.dark):not(.prestige):not(.sky) #ticker-input:focus { border-color: var(--kv-accent); }
+html:not(.dark):not(.prestige):not(.sky) .scenario-num { background: var(--kv-card-2); }
 
 /* ── Responsive ── */
 @media (max-width: 800px) {
@@ -399,7 +399,7 @@ html:not(.dark) .scenario-num { background: var(--kv-card-2); }
 .sharesight-offer, .simplywallst-offer { font-size: 0.82rem; color: var(--kv-accent) !important; line-height: 1.4; margin: 0; }
 .sharesight-cta, .simplywallst-cta { width: 100%; }
 .sharesight-cta a, .simplywallst-cta a { display: inline-block; padding: 8px 16px; background: var(--kv-accent); color: var(--kv-bg); font-weight: 600; font-size: 0.82rem; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: opacity 0.15s; }
-html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: #faf8f4; }
+html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(.prestige):not(.sky) .simplywallst-cta a { color: #faf8f4; }
 .sharesight-cta a:hover, .simplywallst-cta a:hover { opacity: 0.85; }
 @media (max-width: 640px) {
   .affiliate-promo-grid { grid-template-columns: 1fr; }
