@@ -38,8 +38,35 @@ test('deriveFcf: falls back to OCF x 0.8 only when CapEx also missing', () => {
   assert.strictEqual(r.method, 'proxy');
 });
 
-test('deriveFcf: returns null when no cash flow data', () => {
+test('deriveFcf: returns null when no cash flow data and no annual fallback given', () => {
   const r = deriveFcf(null, null, null);
+  assert.strictEqual(r.value, null);
+  assert.strictEqual(r.method, 'none');
+});
+
+// Yahoo's financialData module only ever reports TTM figures. For some
+// tickers (confirmed live: TECHM.NS) Yahoo simply never computes a TTM
+// number — freeCashflow and operatingCashflow both come back as {} (empty,
+// not just a missing key) — even though every individual fiscal year has a
+// real, positive reported FCF via the /timeseries annualFreeCashFlow series.
+// This tier is deliberately last-resort: only used when TTM data (reported
+// AND OCF-derived AND the OCF proxy) is completely unavailable, since a
+// stale full-fiscal-year number is still less current than any TTM-based
+// estimate.
+test('deriveFcf: falls back to latest annual FCF only when TTM is completely unavailable', () => {
+  const r = deriveFcf(null, null, null, 54763e6);
+  assert.strictEqual(r.value, 54763e6);
+  assert.strictEqual(r.method, 'annual');
+});
+
+test('deriveFcf: annual fallback is NOT used when a TTM-based value (even the rough proxy) is available', () => {
+  const r = deriveFcf(null, 1000e6, null, 54763e6);
+  assert.strictEqual(r.value, 800e6);
+  assert.strictEqual(r.method, 'proxy');
+});
+
+test('deriveFcf: still returns null when both TTM and annual data are unavailable', () => {
+  const r = deriveFcf(null, null, null, null);
   assert.strictEqual(r.value, null);
   assert.strictEqual(r.method, 'none');
 });

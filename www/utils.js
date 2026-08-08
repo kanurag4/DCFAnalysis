@@ -28,16 +28,24 @@ function escapeHtml(s) {
 // subset that switches to DDM entirely.
 // Free cash flow to use for valuation, and how it was obtained.
 // Prefer Yahoo's reported FCF (already OCF − CapEx). If missing, derive it as
-// OCF − |CapEx| using actual capital expenditure. Only if CapEx is also missing
+// OCF − |CapEx| using actual capital expenditure. If CapEx is also missing
 // fall back to OCF × 0.8 — a rough proxy (CapEx ≈ 20% of OCF) that overstates
 // FCF for very capital-intensive businesses (miners, energy, utilities, telcos).
-// Returns { value, method } with method 'reported' | 'derived' | 'proxy' | 'none'.
-function deriveFcf(freeCashflow, operatingCashflow, capex) {
+// Only when NO TTM-based figure exists at all (Yahoo's financialData module
+// only ever reports TTM, and some tickers — confirmed live: TECHM.NS — simply
+// have no TTM number computed, even though every individual fiscal year does)
+// fall back to the latest annual FCF (e.g. from /timeseries' annualFreeCashFlow).
+// This tier is deliberately last: a stale full-fiscal-year figure is still
+// less current than any TTM-based estimate, so it only fires when there is
+// no TTM data of any kind to work with.
+// Returns { value, method } with method 'reported' | 'derived' | 'proxy' | 'annual' | 'none'.
+function deriveFcf(freeCashflow, operatingCashflow, capex, annualFcf) {
   if (safe(freeCashflow) !== null) return { value: freeCashflow, method: 'reported' };
   if (safe(operatingCashflow) !== null) {
     if (safe(capex) !== null) return { value: operatingCashflow - Math.abs(capex), method: 'derived' };
     return { value: operatingCashflow * 0.8, method: 'proxy' };
   }
+  if (safe(annualFcf) !== null) return { value: annualFcf, method: 'annual' };
   return { value: null, method: 'none' };
 }
 

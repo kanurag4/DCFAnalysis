@@ -322,6 +322,11 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     dilutedSharesOutstanding: latestAnnual(series.annualDilutedAverageShares),
     ebit: latestAnnual(series.annualOperatingIncome),
     interestExpense: rawInterestExpense != null ? -rawInterestExpense : null,
+    // Last-resort FCF fallback — see www/utils.js's deriveFcf() for why this
+    // tier exists (Yahoo's financialData module only ever reports TTM, and
+    // some tickers, e.g. TECHM.NS, have no TTM figure at all despite every
+    // individual fiscal year having real data) and why it's ordered last.
+    fcfAnnualLatest: latestAnnual(series.annualFreeCashFlow),
   };
 }
 
@@ -460,7 +465,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       });
       waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
     } else {
-      fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+      fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, hist.fcfAnnualLatest);
       baseFcf = fcfInfo.value;
       if (baseFcf != null) {
         if (isFinancialSector(data.sector) && baseFcf > 0) { baseFcf = baseFcf * 0.6; fcfNormalised = true; }
