@@ -61,7 +61,7 @@ const els = {
   breakevenCallout: $('breakeven-callout'),
 };
 
-const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
+const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$', CNY: 'CN¥' };
 
 // Glossary term annotation — degrades to a plain escaped label if
 // kv-glossary.js failed to load, so a missing script never breaks rendering.
@@ -214,7 +214,23 @@ const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI
 const EU_RF       = 3.2;   // eurozone Bund-proxy
 const EU_ERP      = 5.5;
 const EU_TGROWTH  = 1.8;
-let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'other'
+// Hong Kong (.HK): same "no live source" situation as Korea/Japan/UK/eurozone — no live
+// 10-yr HK Exchange Fund Note yield ticker exists on Yahoo — fixed, never fetched.
+// Unlike every other market seed in this tool, the ERP here is NOT backed by a clean,
+// current Damodaran country-risk figure specifically for Hong Kong (checked 2026-08-10) —
+// set at developed-market tier (same as UK/Japan) as a best estimate. Flagged explicitly
+// to the user in hkInfoBlock() rather than presented with false precision.
+const HK_RF       = 3.5;
+const HK_ERP      = 6.0;
+const HK_TGROWTH  = 2.0;
+// China A-shares (.SS Shanghai / .SZ Shenzhen): same "no live source" situation — no live
+// 10-yr China Govt bond yield ticker exists on Yahoo — fixed, never fetched. RF/ERP sourced
+// from Damodaran's country-risk dataset (checked 2026-08-10). Distinct from Hong Kong (.HK)
+// above — different currency (CNY vs HKD) and a different risk profile.
+const CHINA_RF      = 1.7;
+const CHINA_ERP     = 5.2;
+const CHINA_TGROWTH = 2.5;  // kept at the tool's default — see chinaInfoBlock()
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -327,7 +343,12 @@ function prefillInputs(data) {
   const isUk  = !isAsx && !isInd && !isKor && !isJpn && !!(data.ticker && data.ticker.toUpperCase().endsWith('.L'));
   const isEurozone = !isAsx && !isInd && !isKor && !isJpn && !isUk
     && !!(data.ticker && EUROZONE_SUFFIXES.some(sfx => data.ticker.toUpperCase().endsWith(sfx)));
+  const isHk = !isAsx && !isInd && !isKor && !isJpn && !isUk && !isEurozone
+    && !!(data.ticker && data.ticker.toUpperCase().endsWith('.HK'));
+  const isChinaA = !isAsx && !isInd && !isKor && !isJpn && !isUk && !isEurozone && !isHk
+    && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.SS') || data.ticker.toUpperCase().endsWith('.SZ')));
   currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : isJpn ? 'jpn' : isUk ? 'uk' : isEurozone ? 'eu'
+    : isHk ? 'hk' : isChinaA ? 'cn'
     : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
 
   if (isAsx) {
@@ -366,6 +387,18 @@ function prefillInputs(data) {
     setRfBadge('eu', EU_RF);   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
+  } else if (isHk) {
+    els.rfInput.value  = HK_RF;
+    els.erpInput.value = HK_ERP;
+    setRfBadge('hk', HK_RF);   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP — rougher estimate than other markets, see "About the Hong Kong numbers"'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — Hong Kong has no live rate source to fetch.
+  } else if (isChinaA) {
+    els.rfInput.value  = CHINA_RF;
+    els.erpInput.value = CHINA_ERP;
+    setRfBadge('cn', CHINA_RF);   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'China A-share MRP (Damodaran country-risk estimate)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — China has no live rate source to fetch.
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -477,14 +510,17 @@ function prefillInputs(data) {
   const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
   const rePct = +(re * 100).toFixed(2);
 
-  // Terminal growth default is 2.5% for every market except Korea, Japan, UK, and eurozone,
-  // which seed lower (KOR_TGROWTH / JPN_TGROWTH / UK_TGROWTH / EU_TGROWTH) to reflect
-  // structurally lower long-run growth expectations — see each market's "About the …
-  // numbers" panel for the reasoning.
+  // Terminal growth default is 2.5% for every market except Korea, Japan, UK, eurozone, and
+  // Hong Kong, which seed lower (KOR_TGROWTH / JPN_TGROWTH / UK_TGROWTH / EU_TGROWTH /
+  // HK_TGROWTH) to reflect structurally lower long-run growth expectations — see each
+  // market's "About the … numbers" panel for the reasoning. China (CHINA_TGROWTH) is kept
+  // at the 2.5% default despite its own fixed RF/ERP — see chinaInfoBlock().
   const marketTGrowth = currentMarket === 'kor' ? KOR_TGROWTH
                       : currentMarket === 'jpn' ? JPN_TGROWTH
                       : currentMarket === 'uk'  ? UK_TGROWTH
                       : currentMarket === 'eu'  ? EU_TGROWTH
+                      : currentMarket === 'hk'  ? HK_TGROWTH
+                      : currentMarket === 'cn'  ? CHINA_TGROWTH
                       : 2.5;
 
   modelSeeds = {
@@ -627,6 +663,32 @@ function euInfoBlock() {
      </details>`;
 }
 
+// Informational-only panel explaining the Hong Kong-specific seeds — same collapsible
+// pattern as the Korea/Japan/UK/eurozone panels. Shared by both the DCF and DDM breakdown renderers.
+function hkInfoBlock() {
+  if (currentMarket !== 'hk') return '';
+  return `<details class="wacc-franking">
+       <summary>About the Hong Kong numbers</summary>
+       <p><strong>Risk-free rate:</strong> fixed at ~3.5% (an approximate Hong Kong 10-year Exchange Fund Note yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 6.0%, developed-market tier (same as UK/Japan). <strong>Unlike every other market seed in this tool, this figure is not backed by a clean, current Damodaran country-risk number specifically for Hong Kong</strong> — treat it as a rougher estimate than the other market ERPs, and adjust manually if you have a better source.</p>
+       <p><strong>Terminal growth:</strong> 2.0% vs the tool's 2.5% US default, reflecting Hong Kong's slower long-run growth as a mature financial hub.</p>
+       <p><strong>Currency:</strong> Yahoo quotes Hong Kong-listed prices in HKD (HK$), which is pegged to the US dollar — displayed values already account for this.</p>
+     </details>`;
+}
+
+// Informational-only panel explaining the China A-share-specific seeds — same collapsible
+// pattern as the other market panels. Shared by both the DCF and DDM breakdown renderers.
+function chinaInfoBlock() {
+  if (currentMarket !== 'cn') return '';
+  return `<details class="wacc-franking">
+       <summary>About the China numbers</summary>
+       <p><strong>Risk-free rate:</strong> fixed at ~1.7% (an approximate China 10-year Govt bond yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 5.2% (Damodaran country-risk-adjusted estimate for China), reflecting the lower risk-free rate together with China-specific market and political risk.</p>
+       <p><strong>Terminal growth:</strong> kept at the tool's 2.5% default, reflecting China's still-above-developed-market long-run growth expectations despite its slowdown.</p>
+       <p><strong>Currency:</strong> Yahoo quotes Shanghai (.SS) and Shenzhen (.SZ) A-share prices in CNY (renminbi) — displayed values already account for this. A-shares are a distinct market from Hong Kong-listed H-shares (.HK), which use HKD and get their own separate seed above.</p>
+     </details>`;
+}
+
 function renderDiscountBreakdown() {
   if (valuationModel === 'ddm') {
     if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
@@ -654,6 +716,8 @@ function renderDiscountBreakdown() {
       ${japanInfoBlock()}
       ${ukInfoBlock()}
       ${euInfoBlock()}
+      ${hkInfoBlock()}
+      ${chinaInfoBlock()}
     `;
     return;
   }
@@ -784,6 +848,8 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     ${japanInfoBlock()}
     ${ukInfoBlock()}
     ${euInfoBlock()}
+    ${hkInfoBlock()}
+    ${chinaInfoBlock()}
   `;
 }
 
@@ -1389,6 +1455,12 @@ function resetRfErp() {
   } else if (currentMarket === 'eu') {
     els.rfInput.value  = EU_RF;
     els.erpInput.value = EU_ERP;
+  } else if (currentMarket === 'hk') {
+    els.rfInput.value  = HK_RF;
+    els.erpInput.value = HK_ERP;
+  } else if (currentMarket === 'cn') {
+    els.rfInput.value  = CHINA_RF;
+    els.erpInput.value = CHINA_ERP;
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
@@ -1463,6 +1535,8 @@ function setRfBadge(market, rate) {
     jpn: { badge: '○ fixed',    note: 'Fixed estimate — no live Japanese bond-yield source available', title: 'Japan 10-yr Govt Bond (JGB) yield (fixed estimate, not live)' },
     uk:  { badge: '○ fixed',    note: 'Fixed estimate — no live UK Gilt-yield source available', title: 'UK 10-yr Gilt yield (fixed estimate, not live)' },
     eu:  { badge: '○ fixed',    note: 'Fixed estimate — no live eurozone Bund-yield source available', title: 'Eurozone 10-yr Bund yield (fixed estimate, not live)' },
+    hk:  { badge: '○ fixed',    note: 'Fixed estimate — no live Hong Kong bond-yield source available', title: 'Hong Kong 10-yr Exchange Fund Note yield (fixed estimate, not live)' },
+    cn:  { badge: '○ fixed',    note: 'Fixed estimate — no live China Govt bond-yield source available', title: 'China 10-yr Govt Bond yield (fixed estimate, not live)' },
     us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX)',           title: 'Live US 10-yr Treasury yield' },
   };
   const lbl = labels[market] || labels.us;
