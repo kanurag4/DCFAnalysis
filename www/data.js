@@ -155,4 +155,42 @@ function explainStatus(status, symbol) {
   return `Data service error (HTTP ${status}). Please try again.`;
 }
 
-if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary, latestSeriesValue };
+// Maps app.js's `currentMarket` values to the /dcf/stocks/<folder>/ URL
+// segment used by the per-ticker SEO page generator (DCFAnalysis's
+// scripts/generate-market-index.js). 'other' has no folder — no pages
+// are ever generated for it.
+const MARKET_STOCKS_FOLDER = {
+  aus: 'asx', us: 'sp500', ind: 'nifty',
+  kor: 'kospi', jpn: 'nikkei', uk: 'europe', eu: 'europe',
+};
+
+const _tickerPageManifestCache = new Map(); // folder -> array, cached per session
+
+// Best-effort lookup for a published per-ticker SEO page's URL — used so
+// the Share button can link to a page with correct per-ticker canonical/
+// title/description instead of the interactive tool's page (which
+// deliberately uses one static canonical for every ?ticker= variant, so
+// LinkedIn/Facebook silently rewrite a shared tool URL back to the bare
+// /dcf/ page — see docs/superpowers/specs/2026-08-10-dcf-share-ticker-page-url-design.md).
+// Never throws — any failure (unmapped market, missing manifest, network
+// error, ticker not published) resolves to null.
+async function fetchTickerPageUrl(ticker, currentMarket) {
+  const folder = MARKET_STOCKS_FOLDER[currentMarket];
+  if (!folder) return null;
+
+  let manifest = _tickerPageManifestCache.get(folder);
+  if (!manifest) {
+    try {
+      const res = await fetch(`/dcf/stocks/${folder}/manifest.json`);
+      manifest = res.ok ? await res.json() : [];
+    } catch (_) {
+      manifest = [];
+    }
+    _tickerPageManifestCache.set(folder, manifest);
+  }
+
+  const entry = manifest.find(e => e.ticker === ticker);
+  return entry ? `https://kashvector.com/dcf/stocks/${folder}/${entry.slug}/` : null;
+}
+
+if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, MARKET_STOCKS_FOLDER };

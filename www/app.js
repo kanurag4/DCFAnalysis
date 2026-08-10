@@ -1038,7 +1038,15 @@ async function onShareClick() {
   // direction, so "by -31.1%" would read as a confusing double-negative.
   const absMosPct = Math.abs(parseFloat(mosPct)).toFixed(1);
   const text = `${name} (${ticker}) DCF: ${mosLabel} by ${absMosPct}% — Intrinsic Value ${sym}${intrinsicValue.toFixed(2)} vs Price ${sym}${(price ?? 0).toFixed(2)}. Free DCF calculator:`;
-  const url = location.href;
+  // location.href is meaningless inside the app — Capacitor's WebView
+  // origin is https://localhost (Android) / capacitor://localhost (iOS),
+  // not kashvector.com — so a shared fallback URL must be built from the
+  // real domain instead. shareInfo.url (a resolved ticker-page URL) is
+  // already an absolute kashvector.com URL either way, so this only
+  // matters for tickers with no published page.
+  const url = shareInfo.url || (isNative
+    ? 'https://kashvector.com/dcf/' + window.kvTickerInput.buildUrlQuery({ symbol: ticker, isAsx: currentMarket === 'aus', isNse: currentMarket === 'ind' })
+    : location.href);
 
   if (navigator.share) {
     try {
@@ -1110,6 +1118,7 @@ function renderScenarios(scenarios, data, sym) {
         name: data.name, ticker: data.ticker, sym,
         price: data.price, intrinsicValue: result.intrinsicValue,
         mosLabel, mosPct,
+        url: null, // resolved async below, once/if a published ticker page is found
       };
     }
 
@@ -1137,6 +1146,17 @@ function renderScenarios(scenarios, data, sym) {
 
   shareInfo = baseShareInfo;
   updateShareButton();
+
+  // Not awaited — renderScenarios() stays synchronous, and navigator.share()
+  // (called from a later, separate click) must not be preceded by an
+  // awaited fetch or some browsers reject it as no longer gesture-triggered.
+  // The identity check discards a stale resolution if the user has already
+  // re-analysed a different ticker by the time this resolves.
+  if (baseShareInfo) {
+    fetchTickerPageUrl(baseShareInfo.ticker, currentMarket).then(url => {
+      if (url && shareInfo === baseShareInfo) shareInfo.url = url;
+    });
+  }
 }
 
 function fmtCagr(v) {
