@@ -1,0 +1,138 @@
+/*
+ * KashVector design tokens — "Ink & Amber" (dark) / "Paper & Ink" (light)
+ *
+ * Usage in vanilla tools:
+ *   <link rel="stylesheet" href="/brand.css"> (or relative path)
+ *   then reference var(--kv-accent) etc. in your own CSS.
+ *
+ * This is the single source of truth for every migrated tool's color
+ * tokens (consolidated 2026-07-22 — see Kashvector.md's "Ink & Amber
+ * rebrand — rollout status" for the history). Tools no longer redeclare
+ * these values locally; they just import this file before their own
+ * style.css.
+ *
+ * Two historical exceptions, both intentional, do not import this file:
+ *   - www/stock/ (Stock Evaluator) uses unprefixed --bg/--accent/etc.
+ *     names, predating the --kv-* system. Kept local, not consolidated.
+ *   - www/budget/ (Budget Planner, React/Tailwind) doesn't use CSS custom
+ *     properties from this file at all — its own src/index.css declares
+ *     an equivalent --kv-* block for the accent/warn tokens only (its
+ *     base slate palette is deliberately unmigrated, see Kashvector.md).
+ */
+
+:root {
+  /* Backgrounds */
+  --kv-bg:       #0b1120;   /* page background */
+  --kv-card:     #111a30;   /* card / panel background */
+  --kv-card-2:   #182342;   /* nested card, input background */
+
+  /* Text */
+  --kv-text:     #f5f7fc;   /* primary text */
+  --kv-muted:    #93a0bd;   /* secondary / muted text */
+
+  /* Accent (interactive elements — buttons, focus rings, active states) */
+  --kv-accent:   #f5a623;   /* amber — dark mode */
+  --kv-accent-h: #ffb84d;   /* hover / pressed */
+
+  /* Border */
+  --kv-border:   #223052;
+
+  /* Semantic — status colours (keep these regardless of accent changes) */
+  --kv-pass:     #22c55e;   /* green-500 — positive value, pass criterion */
+  --kv-fail:     #ef4444;   /* red-500   — negative value, fail criterion */
+  --kv-warn:     #f97316;   /* caution */
+}
+
+/* ── Per-tool accent distinction (dark mode) — subtle hue shift, same family as base amber ── */
+html.tool-dcf { --kv-accent: #c17a4a; --kv-accent-h: #d1996f; } /* DCF — muted copper (softened 2026-07-24, was rust red-orange #d9481f — sat too close to --kv-fail's hue, read as an error state) */
+html.tool-ggm { --kv-accent: #efe039; --kv-accent-h: #f5ea6b; } /* Gordon Growth Model — lemon */
+html.tool-growth { --kv-accent: #8a9c2e; --kv-accent-h: #adc43b; } /* Growth Stock Evaluator — olive-gold */
+
+/* ── Light mode — "Paper & Ink" ── */
+html:not(.dark):not(.prestige):not(.sky) {
+  --kv-bg:       #faf8f4;
+  --kv-card:     #ffffff;
+  --kv-card-2:   #f1ede4;
+  --kv-text:     #16202b;
+  --kv-muted:    #4d5c6b;
+  --kv-accent:   #1a3a5f;   /* dark navy — inverts with dark mode's amber */
+  --kv-accent-h: #12293f;
+  --kv-border:   #e7e2d8;
+  --kv-warn:     #b45309;
+}
+
+/* ── Per-tool accent distinction (light mode) — dark/saturated so contrast holds on cream bg ── */
+html:not(.dark):not(.prestige):not(.sky).tool-dcf { --kv-accent: #8a4a2a; --kv-accent-h: #6b3720; } /* DCF — soft terracotta (softened 2026-07-24, was burnt sienna #8a2e12) */
+html:not(.dark):not(.prestige):not(.sky).tool-ggm { --kv-accent: #6b5209; --kv-accent-h: #4a3906; } /* Gordon Growth Model — deep bronze-gold */
+html:not(.dark):not(.prestige):not(.sky).tool-growth { --kv-accent: #64721d; --kv-accent-h: #475214; } /* Growth Stock Evaluator — deep moss-olive */
+
+/* ── "Prestige" theme — native app only, see kashvector-native-apps.md.
+   Deliberately placed after every html:not(.dark):not(.prestige):not(.sky)/.tool-* rule above so it
+   wins the cascade regardless of which of those also matches (an element
+   with class "prestige" still lacks "dark", so html:not(.dark):not(.prestige):not(.sky) still
+   technically matches too) — same rule as the mobile theme-toggle cascade
+   trap documented in kashvector-lessons.md. One shared brass accent across
+   all three tools on purpose — no per-tool tint in this theme. ── */
+html.prestige {
+  --kv-bg:       #10100e;
+  --kv-card:     #181612;
+  --kv-card-2:   #201e18;
+  --kv-text:     #c4b89a;
+  --kv-muted:    #a89881;   /* lightened from the original theme-variants.html #6e6352 exploration — that value was only 2.83:1 against --kv-card-2, well below this project's dark-mode contrast-safety standard (kashvector-design.md), found 2026-08-07 via the ticker-input placeholder being unreadable */
+  --kv-accent:   #b8873a;
+  --kv-accent-h: #d4a452;
+  --kv-border:   #2c2820;
+  --kv-pass:     #4e9e68;
+  --kv-fail:     #9e4848;
+  --kv-warn:     #a8672e;   /* not in the original theme-variants.html exploration — extrapolated to stay in the same muted brass/copper family as --kv-accent */
+}
+
+/* ── "Sky" theme — native app only, Android only (iOS uses Prestige — see
+   kashvector-native-apps.md). Placed after html.prestige for the same
+   cascade-order reason (kashvector-lessons.md's cascade-order trap): a
+   sky-classed element still lacks both "dark" and "prestige", so every
+   html:not(.dark):not(.prestige):not(.sky) rule above still technically
+   matches too. One shared blue accent across all three tools on purpose —
+   no per-tool tint, matching Prestige's precedent. ── */
+html.sky {
+  --kv-bg:       #f7f9fc;
+  --kv-card:     #ffffff;
+  --kv-card-2:   #eef2f9;
+  --kv-text:     #131b2e;
+  --kv-muted:    #5b6478;
+  --kv-accent:   #2f6fed;
+  --kv-accent-h: #1d56c9;
+  --kv-border:   #e2e7f0;
+  --kv-pass:     #22c55e;
+  --kv-fail:     #ef4444;
+  --kv-warn:     #d97706;
+}
+
+/* ── Cross-tool next-step suggestion card ── */
+.kv-suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--kv-card-2, var(--card-2));
+  border: 1px solid var(--kv-accent, var(--accent));
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--kv-text, var(--text));
+  font-size: 0.88rem;
+  transition: background 0.15s;
+}
+.kv-suggestion:hover { background: var(--kv-card, var(--card)); }
+.kv-suggestion-arrow { color: var(--kv-accent, var(--accent)); flex-shrink: 0; }
+.kv-suggestion-close {
+  background: none;
+  border: none;
+  color: var(--kv-muted, var(--muted));
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.kv-suggestion-close:hover { color: var(--kv-text, var(--text)); }

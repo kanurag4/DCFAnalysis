@@ -1,0 +1,58 @@
+/* ── KashVector shared chrome CSS ──
+   Canonical .theme-toggle / .home-logo rules, shared across every tool.
+   Var fallback chain: --kv-* (most tools) → unprefixed (Stock Evaluator) → hardcoded.
+   Each tool's own style.css still owns its mobile breakpoint value and the
+   position:static mobile override — breakpoints differ per tool (700/780/800px)
+   and can't be safely unified here. */
+
+.theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--kv-border, var(--border, #223052));
+  background: var(--kv-card, var(--card, #111a30));
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--kv-muted, var(--muted, #93a0bd));
+  font-size: 0.9rem;
+  padding: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.theme-toggle:hover {
+  background: var(--kv-card-2, var(--card-2, #182342));
+  border-color: var(--kv-accent, var(--accent, #f5a623));
+  color: var(--kv-text, var(--text, #f5f7fc));
+}
+
+.home-logo {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+}
+.home-logo img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.9;
+  display: block;
+  transition: opacity 0.15s;
+}
+.home-logo:hover img { opacity: 1; }
+.home-logo-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--kv-muted, var(--muted, #93a0bd));
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+.home-logo:hover .home-logo-label { color: var(--kv-accent, var(--accent, #f5a623)); }

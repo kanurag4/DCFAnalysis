@@ -215,6 +215,18 @@
               <span id="years-display">5</span>
             </div>
           </div>
+          <div class="input-row">
+            <label class="asx-toggle" style="margin:0">
+              <input type="checkbox" id="midyear-toggle">
+              <span>Mid-year discounting <span class="tip" data-tip="Assumes cash flows land through the year rather than all at fiscal year-end — the standard practitioner convention. Slightly increases intrinsic value.">?</span></span>
+            </label>
+          </div>
+          <div class="input-row" id="multistage-row">
+            <label class="asx-toggle" style="margin:0">
+              <input type="checkbox" id="multistage-toggle">
+              <span>Fade growth to terminal rate <span class="tip" data-tip="Instead of holding growth flat for every forecast year then jumping straight to the terminal rate, growth fades linearly from your Bear/Base/Bull rate down to the terminal rate — closer to how growth actually decays for real companies.">?</span></span>
+            </label>
+          </div>
         </div>
 
         <div class="scenarios-inputs">
@@ -287,6 +299,11 @@
             <h3>Intrinsic Value vs Current Price</h3>
             <canvas id="price-chart"></canvas>
           </div>
+        </section>
+        <section id="sensitivity" class="sensitivity-section" hidden>
+          <h3>Sensitivity: Intrinsic Value by Discount Rate × Terminal Growth</h3>
+          <p class="sensitivity-note">Holds the Base scenario's growth rate and projection years fixed, varying only the two inputs the terminal value is most sensitive to. The highlighted cell is your current Base scenario.</p>
+          <div id="sensitivity-grid" class="sensitivity-grid-wrap"></div>
         </section>
         <section id="how-dcf" class="how-dcf" hidden>
           <details>
@@ -437,6 +454,7 @@
   <script src="calc/wacc.js"></script>
   <script src="calc/dcf.js"></script>
   <script src="calc/ddm.js"></script>
+  <script src="calc/fadingGrowthDcf.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
   <script src="/kv-ticker-input.js"></script>

@@ -1,0 +1,82 @@
+/* www/kv-glossary.css — dotted-underline term annotations + popover.
+   var() fallback chain (--kv-* -> unprefixed -> hardcoded) works on both
+   --kv-* tools and Stock Evaluator's unprefixed vars, same pattern as
+   kv-shared.css / kv-ticker-input.css. */
+
+.kv-term {
+  border-bottom: 1px dotted var(--kv-muted, var(--muted, #93a0bd));
+  color: inherit;
+  cursor: help;
+  text-decoration: none;
+  padding: 1px 2px;
+  margin: -1px -2px;
+  border-radius: 3px;
+}
+.kv-term:hover,
+.kv-term:focus-visible {
+  border-bottom-color: var(--kv-accent, var(--accent, #f5a623));
+  outline: none;
+  background: color-mix(in srgb, var(--kv-accent, var(--accent, #f5a623)) 12%, transparent);
+}
+
+.kv-glossary-popover {
+  position: fixed;
+  z-index: 9999;
+  max-width: min(320px, calc(100vw - 16px));
+  background: var(--kv-card, var(--card, #111a30));
+  border: 1px solid var(--kv-border, var(--border, #223052));
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--kv-text, var(--text, #f5f7fc));
+}
+.kv-glossary-popover::before {
+  content: '';
+  position: absolute;
+  left: var(--kv-caret-left, 20px);
+  top: -6px;
+  width: 11px;
+  height: 11px;
+  background: var(--kv-card, var(--card, #111a30));
+  border-left: 1px solid var(--kv-border, var(--border, #223052));
+  border-top: 1px solid var(--kv-border, var(--border, #223052));
+  transform: translateX(-50%) rotate(45deg);
+}
+.kv-glossary-popover.kv-glossary-popover-flip::before {
+  top: auto;
+  bottom: -6px;
+  border-left: none;
+  border-top: none;
+  border-right: 1px solid var(--kv-border, var(--border, #223052));
+  border-bottom: 1px solid var(--kv-border, var(--border, #223052));
+}
+
+.kv-glossary-popover-title {
+  font-weight: 700;
+  color: var(--kv-text, var(--text, #f5f7fc));
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+.kv-glossary-popover-body {
+  color: var(--kv-muted, var(--muted, #93a0bd));
+}
+.kv-glossary-popover-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--kv-accent, var(--accent, #f5a623));
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.kv-glossary-popover-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 800px) {
+  .kv-glossary-popover {
+    font-size: 0.85rem;
+    padding: 12px 14px;
+  }
+}
