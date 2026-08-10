@@ -69,6 +69,7 @@ const T = (key, label) => window.kvGlossary ? kvGlossary.term(key, label) : esca
 
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 const starBtn = document.getElementById('watchlist-star');
+const shareBtn = document.getElementById('share-btn');
 
 // Reflects the star's state for the given resolved ticker/market. Called
 // after every successful analysis (native only) and once up front to hide
@@ -226,6 +227,10 @@ let dividendAvailable = false;
 // Cached discount-rate detail for the breakdown panel (re-rendered on model switch).
 let lastWaccResult = null;
 let lastCapm = null;
+// Populated by renderScenarios() from the base-case scenario card — the
+// data behind the Share button. null whenever there's no valid base-case
+// verdict to share (e.g. WACC < terminal growth, missing FCF/dividend).
+let shareInfo = null;
 
 // ── Init ──────────────────────────────────────────────────────────────────
 
@@ -238,6 +243,7 @@ els.recalcBtn.addEventListener('click', onRecalc);
 if (els.ddmToggle) els.ddmToggle.addEventListener('click', onToggleModel);
 if (els.midyearToggle) els.midyearToggle.addEventListener('change', () => { if (currentData) renderAll(currentData); });
 if (els.multistageToggle) els.multistageToggle.addEventListener('change', () => { if (currentData) renderAll(currentData); });
+if (shareBtn) shareBtn.addEventListener('click', onShareClick);
 
 // Re-derive discount rates live as RF or ERP values change (debounced).
 let _waccTimer = null;
@@ -1015,7 +1021,49 @@ function buildScenarios(data) {
 
 // ── Render scenario cards ─────────────────────────────────────────────────
 
+// Shows/hides the persistent Share button based on whether the base-case
+// scenario currently has a valid verdict to share. Lives here (not with
+// updateWatchlistStar) because shareInfo is only known once renderScenarios
+// has computed the base card's verdict — renderSummary() runs first in
+// renderAll() and doesn't have it yet.
+function updateShareButton() {
+  if (!shareBtn) return;
+  shareBtn.hidden = !shareInfo;
+}
+
+async function onShareClick() {
+  if (!shareInfo) return;
+  const { name, ticker, sym, price, intrinsicValue, mosLabel, mosPct } = shareInfo;
+  // mosPct can be negative (Overvalued cases) — mosLabel already carries the
+  // direction, so "by -31.1%" would read as a confusing double-negative.
+  const absMosPct = Math.abs(parseFloat(mosPct)).toFixed(1);
+  const text = `${name} (${ticker}) DCF: ${mosLabel} by ${absMosPct}% — Intrinsic Value ${sym}${intrinsicValue.toFixed(2)} vs Price ${sym}${(price ?? 0).toFixed(2)}. Free DCF calculator:`;
+  const url = location.href;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'KashVector DCF Valuation', text, url });
+    } catch (err) {
+      // AbortError = user cancelled the OS share sheet, not a real error.
+      // Any other rejection (e.g. no share targets registered) is rare and
+      // swallowed silently — same risk tolerance as the clipboard call
+      // below, which also doesn't handle failure.
+    }
+    return;
+  }
+
+  navigator.clipboard.writeText(`${text}\n${url}`).then(() => {
+    shareBtn.textContent = '✓ Copied!';
+    shareBtn.classList.add('copied');
+    setTimeout(() => {
+      shareBtn.textContent = '🔗 Share';
+      shareBtn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
 function renderScenarios(scenarios, data, sym) {
+  let baseShareInfo = null;
   const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, normalised }) => {
     if (!result) {
       let msg;
@@ -1057,6 +1105,14 @@ function renderScenarios(scenarios, data, sym) {
     const mosLabel = verdict === 'Undervalued' ? '✅ Undervalued' : verdict === 'Overvalued' ? '❌ Overvalued' : '⚠️ Fairly Valued';
     const mosPct   = (mos * 100).toFixed(1);
 
+    if (key === 'base') {
+      baseShareInfo = {
+        name: data.name, ticker: data.ticker, sym,
+        price: data.price, intrinsicValue: result.intrinsicValue,
+        mosLabel, mosPct,
+      };
+    }
+
     return `<div class="scenario-card ${key}">
       <div class="sc-header ${key}">${key.toUpperCase()}</div>
       <div class="sc-intrinsic">${sym}${result.intrinsicValue.toFixed(2)}</div>
@@ -1078,6 +1134,9 @@ function renderScenarios(scenarios, data, sym) {
     : `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`;
   els.scenarios.innerHTML = `<h3>${heading}</h3><div class="scenario-cards">${cards}</div>`;
   show(els.scenarios);
+
+  shareInfo = baseShareInfo;
+  updateShareButton();
 }
 
 function fmtCagr(v) {

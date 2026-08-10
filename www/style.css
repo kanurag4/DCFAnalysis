@@ -229,6 +229,35 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
 .summary h2 { font-size: 1.1rem; margin-bottom: 4px; }
 .symbol { color: var(--kv-muted); font-weight: 400; font-size: 0.9rem; }
 .sector { font-size: 0.8rem; color: var(--kv-muted); margin-bottom: 12px; }
+
+/* ── Share button ── */
+.summary-toolbar { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+.summary-toolbar:has(.share-btn[hidden]) { display: none; }
+.share-btn {
+  background: color-mix(in srgb, var(--kv-accent) 14%, var(--kv-card));
+  border: 1px solid var(--kv-accent);
+  color: var(--kv-accent);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--kv-accent) 25%, transparent);
+  transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.share-btn:hover {
+  background: var(--kv-accent);
+  color: var(--kv-bg);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--kv-accent) 40%, transparent);
+}
+.share-btn.copied {
+  background: color-mix(in srgb, var(--kv-pass) 14%, var(--kv-card));
+  color: var(--kv-pass);
+  border-color: var(--kv-pass);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--kv-pass) 25%, transparent);
+}
+
 .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
 .stat { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 8px; padding: 10px 12px; }
 .stat-label { font-size: 0.72rem; color: var(--kv-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
