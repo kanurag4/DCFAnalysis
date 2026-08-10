@@ -531,3 +531,18 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
 @media (max-width: 520px) {
   .stock-list { columns: 1; }
 }
+
+/* ── Sensitivity grid ── */
+.sensitivity-section { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.sensitivity-section h3 { font-size: 0.9rem; color: var(--kv-muted); margin-bottom: 4px; }
+.sensitivity-note { font-size: 0.76rem; color: var(--kv-muted); margin-bottom: 12px; }
+.sensitivity-grid-wrap { overflow-x: auto; }
+.sensitivity-table { border-collapse: collapse; width: 100%; font-size: 0.78rem; }
+.sensitivity-table th, .sensitivity-table td { padding: 6px 8px; text-align: center; border: 1px solid var(--kv-border); white-space: nowrap; }
+.sensitivity-table thead th { color: var(--kv-muted); font-weight: 600; }
+.sensitivity-table tbody th { color: var(--kv-muted); font-weight: 600; text-align: right; }
+.sens-corner { font-size: 0.68rem; color: var(--kv-muted); }
+.sens-up { color: var(--kv-pass); }
+.sens-down { color: var(--kv-fail); }
+.sens-na { color: var(--kv-muted); }
+.sens-base { outline: 2px solid var(--kv-accent); outline-offset: -2px; font-weight: 700; }
