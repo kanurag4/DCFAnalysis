@@ -66,4 +66,18 @@ function calculateDCF({
   };
 }
 
-if (typeof module !== 'undefined') module.exports = { calculateDCF };
+// Single source of truth for the Undervalued/Fairly Valued/Overvalued
+// threshold (±20% margin of safety) — previously inlined only in app.js's
+// renderScenarios(), which is browser-only with no exports. That meant any
+// other consumer needing the same verdict (the ticker-page generator, and
+// now worker-watchlist) had no way to reuse it and had to reimplement the
+// threshold by hand — the ticker-page generator did exactly that and its
+// copy silently drifted to ±5% before being caught (see CLAUDE.md). This
+// function is the fix: exactly one place the threshold can drift from.
+function deriveVerdict(marginOfSafety) {
+  if (marginOfSafety > 0.2) return 'Undervalued';
+  if (marginOfSafety < -0.2) return 'Overvalued';
+  return 'Fairly Valued';
+}
+
+if (typeof module !== 'undefined') module.exports = { calculateDCF, deriveVerdict };
