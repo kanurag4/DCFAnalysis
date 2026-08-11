@@ -36,15 +36,26 @@ const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI
 // same ones already validated live by the undervalued-screen batches.
 // `currencySymbol` here is only a FALLBACK — the real symbol comes from Yahoo's
 // own `currency` field (see CURRENCY_SYMBOLS below). This matters most for the
-// europe bucket, which spans EUR *and* GBP/GBp (London) and so has no single
-// correct per-market symbol at all.
+// 'other' bucket, which spans EUR *and* GBP/GBp (London) today and will span
+// more currencies as more non-dedicated markets (China A-shares, Hong Kong,
+// etc.) are added — no single correct per-market symbol at all.
+//
+// 'other' is a deliberately shared catch-all folder (renamed from a
+// Europe-only 'europe' folder 2026-08-11), not a dedicated market like
+// asx/nifty/kospi/nikkei/sp500 — it's where any ticker without its own
+// undervalued-screen/index-page infrastructure lands, starting with Europe
+// and growing to include other markets over time. `.L` + the Eurozone
+// suffixes still resolve to the Europe Most Undervalued screen/STOXX index
+// for screenName/screenUrl/indexTicker below — that mapping is or­thogonal to
+// the folder rename, since those tickers genuinely are covered by that
+// screener regardless of which folder their SEO page lives in.
 function marketMeta(ticker) {
   const t = ticker.toUpperCase();
   if (t.endsWith('.AX')) return { folder: 'asx', label: 'ASX', screenName: 'ASX 300 Most Undervalued', screenUrl: '/dcf/asx-undervalued/', currencySymbol: '$', indexTicker: '^AXJO', indexName: 'ASX 200' };
   if (t.endsWith('.NS') || t.endsWith('.BO')) return { folder: 'nifty', label: 'NIFTY 500', screenName: 'NIFTY 500 Most Undervalued', screenUrl: '/dcf/nifty-undervalued/', currencySymbol: '₹', indexTicker: '^NSEI', indexName: 'NIFTY 50' };
   if (t.endsWith('.KS')) return { folder: 'kospi', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
   if (t.endsWith('.T')) return { folder: 'nikkei', label: 'Nikkei 225', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
-  if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'europe', label: 'Europe', screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
+  if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'other', label: null, screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
   if (!t.includes('.')) return { folder: 'sp500', label: 'S&P 500', screenName: 'S&P 500 Most Undervalued', screenUrl: '/dcf/sp500-undervalued/', currencySymbol: '$', indexTicker: '^GSPC', indexName: 'S&P 500' };
   return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: '$', indexTicker: null, indexName: null };
 }
@@ -311,11 +322,42 @@ async function fetchHistorySeries(symbol, proxyUrl) {
   // one sign convention. Same fix already made in www/dcf/data.js.
   const rawInterestExpense = latestAnnual(series.annualInterestExpense);
 
+  // Dividend-per-share needs `div` (CashDividendsPaid) and `shares`
+  // (DilutedAverageShares) at the SAME cadence, joined by exact date,
+  // downstream in the divPS chart computation. Picking each independently via
+  // pick() (as EPS/FCF do) can select cadences that individually cross
+  // pickCadence's >=2-point bar yet share zero or one overlapping date — e.g.
+  // annual-only dividends vs. quarterly share counts, or a sparse "quarterly"
+  // dividend series (real payment dates, not clean quarter-ends) that barely
+  // overlaps a quarter-end share series. Confirmed live 2026-08-11 (Europe
+  // pilot): SHL.DE has annual-cadence dividends but quarterly-cadence shares
+  // with zero matching dates; SAN.PA has the same pattern with exactly 1
+  // matching date; FME.DE's "quarterly" dividend series only overlaps a
+  // quarterly share series at 1 date. All three fully recover (3-4 matching
+  // points) once both series use annual dates instead. Decide cadence at the
+  // JOIN, not per-series — same principle already applied to equity/netIncome
+  // below, just enforced where it actually matters.
+  const overlapCount = (divPts, sharePts) => {
+    const dates = new Set(sharePts.filter(p => p?.value != null).map(p => p.date));
+    return divPts.filter(p => p?.value != null && dates.has(p.date)).length;
+  };
+  const qDiv = series.quarterlyCashDividendsPaid || [];
+  const qShares = series.quarterlyDilutedAverageShares || [];
+  const aDiv = series.annualCashDividendsPaid || [];
+  const aShares = series.annualDilutedAverageShares || [];
+  const useQuarterlyDiv = overlapCount(qDiv, qShares) >= 2;
+  const divPick = useQuarterlyDiv
+    ? { points: qDiv, cadence: 'Quarterly' }
+    : { points: aDiv, cadence: 'Annual' };
+  const sharesPick = useQuarterlyDiv
+    ? { points: qShares, cadence: 'Quarterly' }
+    : { points: aShares, cadence: 'Annual' };
+
   return {
     eps: pick('DilutedEPS'),
     fcf: pick('FreeCashFlow'),
-    div: pick('CashDividendsPaid'),
-    shares: pick('DilutedAverageShares'),
+    div: divPick,
+    shares: sharesPick,
     // Bank/DDM pages chart ROE instead of FCF — FCF is structurally not
     // meaningful for banks regardless of sign, so showing it invites the wrong
     // question rather than answering one. Equity is annual-only on the Worker

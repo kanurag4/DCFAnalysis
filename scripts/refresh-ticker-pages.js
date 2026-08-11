@@ -43,7 +43,7 @@ function readProxyUrl() {
 }
 
 const STOCKS_DIR = path.join(__dirname, '..', 'www', 'stocks');
-const MARKET_FOLDERS = ['asx', 'sp500', 'nifty', 'kospi', 'nikkei', 'europe'];
+const MARKET_FOLDERS = ['asx', 'sp500', 'nifty', 'kospi', 'nikkei', 'other'];
 
 async function refreshMarket(folder, proxyUrl, dryRun) {
   const manifestFile = path.join(STOCKS_DIR, folder, 'manifest.json');

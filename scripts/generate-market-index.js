@@ -40,7 +40,14 @@ const MARKET_NAMES = {
   nifty: { label: 'NIFTY 500', screenUrl: '/dcf/nifty-undervalued/', screenName: 'NIFTY 500 Most Undervalued' },
   kospi: { label: 'KOSPI 200', screenUrl: '/dcf/kospi-undervalued/', screenName: 'KOSPI 200 Most Undervalued' },
   nikkei: { label: 'Nikkei 225', screenUrl: '/dcf/nikkei-undervalued/', screenName: 'Nikkei 225 Most Undervalued' },
-  europe: { label: 'Europe', screenUrl: '/dcf/europe-undervalued/', screenName: 'Europe Most Undervalued' },
+  // Shared catch-all bucket (renamed from Europe-only 2026-08-11) — starts
+  // with Europe tickers, will grow to include other non-dedicated markets
+  // (China A-shares, Hong Kong, etc.) over time. No single screenUrl/
+  // screenName represents the whole bucket once it's not Europe-only, so
+  // this index page doesn't cross-link to a specific undervalued screen —
+  // individual ticker pages still link to the right one per-ticker (see
+  // marketMeta() in lib/ticker-page.js).
+  other: { label: 'Other Markets', screenUrl: null, screenName: null },
 };
 
 function generateMarketIndex(folder) {
@@ -149,7 +156,7 @@ function main() {
     generateMarketIndex(folder);
   } catch (err) {
     console.error(err.message);
-    console.error('Usage: node scripts/generate-market-index.js <asx|sp500|nifty|kospi|nikkei|europe>');
+    console.error('Usage: node scripts/generate-market-index.js <asx|sp500|nifty|kospi|nikkei|other>');
     process.exit(1);
   }
 }

@@ -12,13 +12,13 @@ const path = require('path');
 
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./lib/page-shell.js');
 
-const MARKET_ORDER = ['asx', 'sp500', 'nifty', 'kospi', 'nikkei', 'europe'];
+const MARKET_ORDER = ['asx', 'sp500', 'nifty', 'kospi', 'nikkei', 'other'];
 const MARKET_LABELS = {
   asx: 'ASX 300', sp500: 'S&P 500', nifty: 'NIFTY 500',
-  kospi: 'KOSPI 200', nikkei: 'Nikkei 225', europe: 'Europe',
+  kospi: 'KOSPI 200', nikkei: 'Nikkei 225', other: 'Other Markets',
 };
 const MARKET_FLAGS = {
-  asx: '🇦🇺', sp500: '🇺🇸', nifty: '🇮🇳', kospi: '🇰🇷', nikkei: '🇯🇵', europe: '🇪🇺',
+  asx: '🇦🇺', sp500: '🇺🇸', nifty: '🇮🇳', kospi: '🇰🇷', nikkei: '🇯🇵', other: '🌐',
 };
 
 function generateStocksHub() {

@@ -1,0 +1,79 @@
+[
+  {
+    "ticker": "CAP.PA",
+    "slug": "cap-pa",
+    "name": "Capgemini SE",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 176.85096810100652,
+    "price": 108,
+    "marginOfSafety": 0.6375089638982084,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "CS.PA",
+    "slug": "cs-pa",
+    "name": "AXA SA",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 61.447928479650365,
+    "price": 44.91,
+    "marginOfSafety": 0.3682460137976034,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "EDEN.PA",
+    "slug": "eden-pa",
+    "name": "Edenred SE",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 56.458969405938525,
+    "price": 28.31,
+    "marginOfSafety": 0.9943118829367195,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "FME.DE",
+    "slug": "fme-de",
+    "name": "Fresenius Medical Care AG",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 165.87048274687496,
+    "price": 42.31,
+    "marginOfSafety": 2.9203612088601973,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "SAN.PA",
+    "slug": "san-pa",
+    "name": "Sanofi",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 94.4613088622853,
+    "price": 75.53,
+    "marginOfSafety": 0.250646218221704,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "SAP.DE",
+    "slug": "sap-de",
+    "name": "SAP SE",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 315.2052991870879,
+    "price": 179.3,
+    "marginOfSafety": 0.7579771287623419,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "SHL.DE",
+    "slug": "shl-de",
+    "name": "Siemens Healthineers AG",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 51.228657124707,
+    "price": 39.17,
+    "marginOfSafety": 0.30785440706425826,
+    "updated": "2026-08-11"
+  }
+]
