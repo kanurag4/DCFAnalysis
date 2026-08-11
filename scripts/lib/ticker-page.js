@@ -97,10 +97,17 @@ function pctSigned(v, decimals = 1) {
 }
 
 // ── Bear/Bull scenario derivation — mirrors www/dcf/app.js's buildScenarios()
-// exactly (same 0.5x/1.5x growth multipliers, same +-1pp WACC/Re offset,
-// same -5/30 and 0/12 growth clamps, AND the same 1dp/2dp rounding). Not
-// currently exported from app.js (browser-only, DOM-coupled) so replicated
-// here as pure math.
+// exactly (same +-1pp WACC/Re offset, same 0/12 DDM growth clamp, AND the
+// same 1dp/2dp rounding). Not currently exported from app.js (browser-only,
+// DOM-coupled) so replicated here as pure math.
+//
+// The DCF growth spread (2026-08-11) is a magnitude offset from base
+// (base +/- |base|*0.5), NOT the DDM branch's base*0.5/base*1.5 multiplier
+// form. The multiplier form inverts direction once base is negative: halving
+// a negative number moves it toward zero (an easier bear case, not harsher)
+// and 1.5x-ing it pushes it further negative (a harsher bull case, not
+// easier) -- see www/dcf/app.js's matching comment. Every already-published
+// page for a shrinking company had bear/bull swapped until this fix.
 //
 // The rounding is load-bearing, not cosmetic: the live tool rounds each seed
 // to the precision it displays and then computes from the ROUNDED value
@@ -117,8 +124,13 @@ function deriveScenarios({ method, baseGrowthPct, waccOrRePct }) {
       discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
     };
   }
+  const dcfGrowthOffset = Math.abs(baseGrowthPct) * 0.5;
   return {
-    growth: { bear: r1(Math.max(-5, baseGrowthPct * 0.5)), base: baseGrowthPct, bull: r1(Math.min(30, baseGrowthPct * 1.5)) },
+    growth: {
+      bear: r1(Math.max(-15, baseGrowthPct - dcfGrowthOffset)),
+      base: baseGrowthPct,
+      bull: r1(Math.min(30, baseGrowthPct + dcfGrowthOffset)),
+    },
     discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
   };
 }

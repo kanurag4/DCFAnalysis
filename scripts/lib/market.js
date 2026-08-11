@@ -39,10 +39,13 @@ function marketParamsFor(ticker, live = {}) {
   // China A-shares (Shanghai .SS / Shenzhen .SZ): same "no live source" situation --
   // rf/erp sourced from Damodaran's country-risk dataset (checked 2026-08-10). Distinct
   // from Hong Kong above -- different currency (CNY vs HKD) and risk profile. Terminal
-  // growth kept at the tool's 2.5% default (China's still-above-developed-market
-  // long-run growth despite its slowdown). Backported from www/dcf/app.js's
-  // CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d).
-  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.017, erp: 0.052, terminalGrowth: 0.025 };
+  // growth was 0.025 (the tool's US-tier default) until 2026-08-11 -- that exceeded rf
+  // above it, breaking Damodaran's stable-growth ceiling (terminal growth can't exceed
+  // the risk-free rate proxy for long-run economy growth in perpetuity). Lowered to sit
+  // under rf, matching every other market bucket here. Backported from www/dcf/app.js's
+  // CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d) -- keep these two in sync if the
+  // live tool's seed ever changes.
+  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.017, erp: 0.052, terminalGrowth: 0.015 };
   if (!t.includes('.')) return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 };
   return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
 }

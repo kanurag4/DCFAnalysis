@@ -170,6 +170,7 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
   border-radius: 4px; color: var(--kv-text); font-size: 0.82rem; text-align: center; outline: none;
 }
 .scenario-num:focus { border-color: var(--kv-accent); }
+.tgrowth-warning { display: block; margin: -2px 0 8px; line-height: 1.4; }
 
 /* WACC breakdown */
 .wacc-breakdown { font-size: 0.82rem; color: var(--kv-muted); }

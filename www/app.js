@@ -33,6 +33,7 @@ const els = {
   tgrowthBear:  $('tgrowth-bear'),
   tgrowthBase:  $('tgrowth-base'),
   tgrowthBull:  $('tgrowth-bull'),
+  tgrowthWarning: $('tgrowth-warning'),
   waccBear:     $('wacc-bear'),
   waccBase:     $('wacc-base'),
   waccBull:     $('wacc-bull'),
@@ -229,7 +230,13 @@ const HK_TGROWTH  = 2.0;
 // above — different currency (CNY vs HKD) and a different risk profile.
 const CHINA_RF      = 1.7;
 const CHINA_ERP     = 5.2;
-const CHINA_TGROWTH = 2.5;  // kept at the tool's default — see chinaInfoBlock()
+// Was 2.5 (the tool's US-tier default) until 2026-08-11 — that broke Damodaran's
+// stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for
+// long-run nominal economy growth) against China's own CHINA_RF above it. Lowered to
+// sit under CHINA_RF like every other market's *_TGROWTH does relative to its own
+// *_RF — see chinaInfoBlock() and the new renderTerminalGrowthWarning() check below,
+// which now flags this same violation live for any market/scenario a user edits into.
+const CHINA_TGROWTH = 1.5;
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
@@ -501,6 +508,17 @@ function prefillInputs(data) {
 
   // ── DCF growth seeds ──
   const baseGrowthPct = +(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100).toFixed(1);
+  // Bear/bull spread as a magnitude offset from base, not a base*0.5/base*1.5
+  // multiplier. The multiplier form inverts direction once base is negative:
+  // halving a negative number moves it *toward* zero (an easier bear case,
+  // not harsher) and 1.5x-ing it pushes it *further* negative (a harsher
+  // bull case, not easier). |base| as the offset keeps bear <= base <= bull
+  // regardless of sign. (DDM's growth seed below has the same latent
+  // inversion risk if divGrowthPct ever goes negative, but its Math.max(0, …)
+  // floor has so far kept it from surfacing — left as-is, out of scope here.)
+  const dcfGrowthOffset = Math.abs(baseGrowthPct) * 0.5;
+  const bearGrowthPct = +Math.max(-15, baseGrowthPct - dcfGrowthOffset).toFixed(1);
+  const bullGrowthPct = +Math.min(30,  baseGrowthPct + dcfGrowthOffset).toFixed(1);
 
   // ── DDM seeds — D0 from trailing dividend → indicated rate → price × yield ──
   const dividend = data.trailingAnnualDividendRate
@@ -525,7 +543,7 @@ function prefillInputs(data) {
 
   modelSeeds = {
     dcf: {
-      growth:   { bear: +(Math.max(-5, baseGrowthPct * 0.5)).toFixed(1), base: baseGrowthPct, bull: +(Math.min(30, baseGrowthPct * 1.5)).toFixed(1) },
+      growth:   { bear: bearGrowthPct, base: baseGrowthPct, bull: bullGrowthPct },
       tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
       discount: waccResult
         ? { bear: +(waccResult.wacc * 100 + 1).toFixed(2), base: +(waccResult.wacc * 100).toFixed(2), bull: +(Math.max(1, waccResult.wacc * 100 - 1)).toFixed(2) }
@@ -538,6 +556,15 @@ function prefillInputs(data) {
       discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
     },
   };
+
+  // Growth fades toward the terminal rate instead of holding flat for every
+  // forecast year then jumping straight to it — Damodaran's transition-phase
+  // convention (see CLAUDE.md's DCF growth-rate notes). A flat negative rate
+  // held for the whole horizon is the least realistic path for a shrinking
+  // company, so default the toggle on whenever the base case itself is
+  // negative; leave it off otherwise since a flat rate is a fine default for
+  // a stable/growing company and users can still opt in manually either way.
+  if (els.multistageToggle) els.multistageToggle.checked = baseGrowthPct < 0;
 
   seedInputsForModel(valuationModel);
   applyModelUI();
@@ -684,7 +711,7 @@ function chinaInfoBlock() {
        <summary>About the China numbers</summary>
        <p><strong>Risk-free rate:</strong> fixed at ~1.7% (an approximate China 10-year Govt bond yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
        <p><strong>Equity risk premium:</strong> 5.2% (Damodaran country-risk-adjusted estimate for China), reflecting the lower risk-free rate together with China-specific market and political risk.</p>
-       <p><strong>Terminal growth:</strong> kept at the tool's 2.5% default, reflecting China's still-above-developed-market long-run growth expectations despite its slowdown.</p>
+       <p><strong>Terminal growth:</strong> 1.5% — below the 2.5% US-tier default, kept under China's own 1.7% risk-free rate above per Damodaran's stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for long-run economy growth in perpetuity).</p>
        <p><strong>Currency:</strong> Yahoo quotes Shanghai (.SS) and Shenzhen (.SZ) A-share prices in CNY (renminbi) — displayed values already account for this. A-shares are a distinct market from Hong Kong-listed H-shares (.HK), which use HKD and get their own separate seed above.</p>
      </details>`;
 }
@@ -739,6 +766,7 @@ function renderAll(data) {
   renderSummary(data, sym);
   renderFinancialWarning(data, sym);
   const scenarios = buildScenarios(data);
+  renderTerminalGrowthWarning(scenarios);
   renderBreakeven(data, sym);
   renderScenarios(scenarios, data, sym);
   renderCharts(scenarios, data.price, sym);
@@ -1083,6 +1111,24 @@ function buildScenarios(data) {
 
     return { key, growthRate, terminalGrowth, wacc, result: runDcf(fcfRaw, growthRate, terminalGrowth, wacc) };
   });
+}
+
+// Terminal growth cannot exceed the risk-free rate in perpetuity — Damodaran's
+// stable-growth ceiling ("a firm growing faster than the economy forever
+// eventually becomes the economy"). Flags any scenario whose terminal growth
+// input breaches the current risk-free rate; purely informational, doesn't
+// block calculation — same non-blocking spirit as the >70% terminal-value
+// warning in renderCharts().
+function renderTerminalGrowthWarning(scenarios) {
+  if (!els.tgrowthWarning) return;
+  const rf = parseFloat(els.rfInput.value) / 100;
+  if (!isFinite(rf)) { els.tgrowthWarning.hidden = true; return; }
+  const offenders = scenarios.filter(s => s.terminalGrowth > rf);
+  if (offenders.length === 0) { els.tgrowthWarning.hidden = true; return; }
+  const labels = offenders.map(s => s.key.charAt(0).toUpperCase() + s.key.slice(1)).join('/');
+  els.tgrowthWarning.textContent =
+    `⚠ ${labels} terminal growth exceeds the risk-free rate (${(rf * 100).toFixed(1)}%) — a company can't outgrow the economy forever. Consider lowering it.`;
+  els.tgrowthWarning.hidden = false;
 }
 
 // ── Render scenario cards ─────────────────────────────────────────────────
