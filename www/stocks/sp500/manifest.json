@@ -5,10 +5,10 @@
     "name": "Apple Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 201.43467737181365,
-    "price": 313.33,
-    "marginOfSafety": -0.35711653090411494,
-    "updated": "2026-08-08"
+    "intrinsic": 201.71018725177942,
+    "price": 308.26,
+    "marginOfSafety": -0.3456491687154369,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "ADSK",
@@ -17,9 +17,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 393.52972129388274,
-    "price": 249.08,
-    "marginOfSafety": 0.5799330387581609,
-    "updated": "2026-08-08"
+    "price": 256.07,
+    "marginOfSafety": 0.5368052536176934,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "AMD",
@@ -27,10 +27,10 @@
     "name": "Advanced Micro Devices, Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 83.66752120041313,
-    "price": 483.36,
-    "marginOfSafety": -0.826904333829003,
-    "updated": "2026-08-08"
+    "intrinsic": 83.724859015937,
+    "price": 469.56,
+    "marginOfSafety": -0.8216950783373009,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "AVGO",
@@ -38,10 +38,10 @@
     "name": "Broadcom Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 126.73970982069943,
-    "price": 427.76,
-    "marginOfSafety": -0.7037130404416041,
-    "updated": "2026-08-08"
+    "intrinsic": 126.89124412333976,
+    "price": 422.4,
+    "marginOfSafety": -0.6995945925110327,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "BBY",
@@ -49,10 +49,10 @@
     "name": "Best Buy Co., Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 130.3558575338252,
-    "price": 82,
-    "marginOfSafety": 0.5897055796807952,
-    "updated": "2026-08-08"
+    "intrinsic": 130.54875261254168,
+    "price": 82.43,
+    "marginOfSafety": 0.5837529129266246,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "GEV",
@@ -60,10 +60,10 @@
     "name": "GE Vernova Inc.",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 1863.2151652828675,
-    "price": 990.32,
-    "marginOfSafety": 0.8814273823439569,
-    "updated": "2026-08-08"
+    "intrinsic": 1865.7975063533238,
+    "price": 990.85,
+    "marginOfSafety": 0.8830272052816509,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "HPE",
@@ -71,10 +71,10 @@
     "name": "Hewlett Packard Enterprise Company",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 77.10542823542106,
-    "price": 53.22,
-    "marginOfSafety": 0.44880549108269563,
-    "updated": "2026-08-08"
+    "intrinsic": 76.74329750424012,
+    "price": 54.68,
+    "marginOfSafety": 0.4034984912991975,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "KO",
@@ -82,10 +82,10 @@
     "name": "The Coca-Cola Company",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 42.45997352411974,
-    "price": 87.05,
-    "marginOfSafety": -0.5122346522214849,
-    "updated": "2026-08-08"
+    "intrinsic": 42.591971856206676,
+    "price": 86.87,
+    "marginOfSafety": -0.509704479610836,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "LLY",
@@ -93,10 +93,10 @@
     "name": "Eli Lilly and Company",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 615.1854252216765,
-    "price": 1185.71,
-    "marginOfSafety": -0.4811670431878988,
-    "updated": "2026-08-08"
+    "intrinsic": 615.1861092930934,
+    "price": 1231.94,
+    "marginOfSafety": -0.5006363059133615,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "META",
@@ -105,9 +105,9 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 114.8227085223144,
-    "price": 592.1,
-    "marginOfSafety": -0.8060754796110211,
-    "updated": "2026-08-08"
+    "price": 594.92,
+    "marginOfSafety": -0.8069947076542822,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "MMM",
@@ -115,10 +115,10 @@
     "name": "3M Company",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 288.5677777829308,
-    "price": 182.9,
-    "marginOfSafety": 0.5777352530504691,
-    "updated": "2026-08-08"
+    "intrinsic": 289.00736046015214,
+    "price": 182.04,
+    "marginOfSafety": 0.5876036061313566,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "MRK",
@@ -126,10 +126,10 @@
     "name": "Merck & Co., Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 167.3764659605014,
-    "price": 128.58,
-    "marginOfSafety": 0.3017301754588691,
-    "updated": "2026-08-08"
+    "intrinsic": 210.29447805540005,
+    "price": 130.92,
+    "marginOfSafety": 0.606282294954171,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "MSFT",
@@ -137,10 +137,10 @@
     "name": "Microsoft Corporation",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 61.367109356218236,
-    "price": 499.99,
-    "marginOfSafety": -0.8772633265540946,
-    "updated": "2026-08-08"
+    "intrinsic": 61.46084305477802,
+    "price": 506.06,
+    "marginOfSafety": -0.8785502844429949,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "NFLX",
@@ -148,10 +148,10 @@
     "name": "Netflix, Inc.",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 86.4295902651333,
-    "price": 74.14,
-    "marginOfSafety": 0.165761940452297,
-    "updated": "2026-08-08"
+    "intrinsic": 86.33674155055188,
+    "price": 76.29,
+    "marginOfSafety": 0.13169146088021852,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "NVDA",
@@ -159,10 +159,10 @@
     "name": "NVIDIA Corporation",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 32.25580657218882,
-    "price": 223.96,
-    "marginOfSafety": -0.8559751447928701,
-    "updated": "2026-08-08"
+    "intrinsic": 32.2803212255842,
+    "price": 217.55,
+    "marginOfSafety": -0.8516188406086683,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "OKTA",
@@ -171,9 +171,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 169.32933485395628,
-    "price": 148.32,
-    "marginOfSafety": 0.1416486977747862,
-    "updated": "2026-08-08"
+    "price": 150.77,
+    "marginOfSafety": 0.12309700108745952,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "PFE",
@@ -181,10 +181,10 @@
     "name": "Pfizer Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 61.92844162831033,
-    "price": 26.76,
-    "marginOfSafety": 1.3142168022537493,
-    "updated": "2026-08-08"
+    "intrinsic": 62.153157526859786,
+    "price": 27.05,
+    "marginOfSafety": 1.2977137717877925,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "T",
@@ -193,9 +193,9 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 23.364641622359606,
-    "price": 23.79,
-    "marginOfSafety": -0.017879713225741608,
-    "updated": "2026-08-08"
+    "price": 24.05,
+    "marginOfSafety": -0.028497229839517437,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "TEAM",
@@ -204,9 +204,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 190.29600154136824,
-    "price": 149.07,
-    "marginOfSafety": 0.27655464910020966,
-    "updated": "2026-08-08"
+    "price": 151.87,
+    "marginOfSafety": 0.2530190395823285,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "TSLA",
@@ -214,10 +214,10 @@
     "name": "Tesla, Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 24.122501700974876,
-    "price": 328.58,
-    "marginOfSafety": -0.9265856056334079,
-    "updated": "2026-08-08"
+    "intrinsic": 24.136827337298666,
+    "price": 330.88,
+    "marginOfSafety": -0.9270526253103885,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "TWLO",
@@ -225,9 +225,9 @@
     "name": "Twilio Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 164.86873882054687,
-    "price": 241.28,
-    "marginOfSafety": -0.3166912349944178,
-    "updated": "2026-08-08"
+    "intrinsic": 162.89995921280962,
+    "price": 250.06,
+    "marginOfSafety": -0.3485565095864608,
+    "updated": "2026-08-11"
   }
 ]

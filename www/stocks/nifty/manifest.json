@@ -6,9 +6,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 170.959568722859,
-    "price": 731,
-    "marginOfSafety": -0.7661291809536813,
-    "updated": "2026-08-08"
+    "price": 729,
+    "marginOfSafety": -0.7654875600509479,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "HEROMOTOCO.NS",
@@ -16,10 +16,10 @@
     "name": "Hero MotoCorp Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 5936.228324285442,
-    "price": 5725,
-    "marginOfSafety": 0.036895777167762774,
-    "updated": "2026-08-08"
+    "intrinsic": 5936.243472024915,
+    "price": 5865.5,
+    "marginOfSafety": 0.012060944851234304,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "MRF.NS",
@@ -27,10 +27,10 @@
     "name": "MRF Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 162587.65987147187,
-    "price": 134190,
-    "marginOfSafety": 0.21162277272130464,
-    "updated": "2026-08-08"
+    "intrinsic": 162787.5989127548,
+    "price": 131125,
+    "marginOfSafety": 0.24146881916304896,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "RPOWER.NS",
@@ -38,10 +38,10 @@
     "name": "Reliance Power Limited",
     "sector": "Utilities",
     "method": "DCF",
-    "intrinsic": 1.8804114172513287,
-    "price": 24.34,
-    "marginOfSafety": -0.9227439845007671,
-    "updated": "2026-08-08"
+    "intrinsic": 128.8464121442378,
+    "price": 23.62,
+    "marginOfSafety": 4.454970878248848,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "SIGNATURE.NS",
@@ -49,10 +49,10 @@
     "name": "Signatureglobal (India) Limited",
     "sector": "Real Estate",
     "method": "DCF",
-    "intrinsic": 1390.2563875565484,
-    "price": 802.3,
-    "marginOfSafety": 0.7328385735467386,
-    "updated": "2026-08-08"
+    "intrinsic": 45.94492719683788,
+    "price": 814.9,
+    "marginOfSafety": -0.9436189382785153,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "TCS.NS",
@@ -61,9 +61,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 1755.4554280190657,
-    "price": 2452.7,
-    "marginOfSafety": -0.2842763370901187,
-    "updated": "2026-08-08"
+    "price": 2445.7,
+    "marginOfSafety": -0.28222781697711663,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "TECHM.NS",
@@ -72,9 +72,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 1652.984503216074,
-    "price": 1635,
-    "marginOfSafety": 0.010999696156620194,
-    "updated": "2026-08-08"
+    "price": 1643,
+    "marginOfSafety": 0.006076995262370066,
+    "updated": "2026-08-11"
   },
   {
     "ticker": "WIPRO.NS",
@@ -82,9 +82,9 @@
     "name": "Wipro Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 162.30637424113212,
-    "price": 187.53,
-    "marginOfSafety": -0.13450448332996257,
-    "updated": "2026-08-08"
+    "intrinsic": 162.4823224455331,
+    "price": 184.6,
+    "marginOfSafety": -0.11981407125930062,
+    "updated": "2026-08-11"
   }
 ]
