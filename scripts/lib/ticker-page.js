@@ -56,6 +56,13 @@ function marketMeta(ticker) {
   if (t.endsWith('.KS')) return { folder: 'kospi', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
   if (t.endsWith('.T')) return { folder: 'nikkei', label: 'Nikkei 225', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
   if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'other', label: null, screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
+  // Hong Kong / China A-shares: no dedicated undervalued screen exists (screenName/
+  // screenUrl null, same as the generic fallback), but they get a real currency symbol
+  // and index ticker rather than inheriting the fallback's '$'/null — same principle as
+  // market.js's rf/erp seeds just above, ported from the same source (commit 98dc69d,
+  // 2026-08-10) so this doesn't silently fall into the generic bucket either.
+  if (t.endsWith('.HK')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'HK$', indexTicker: '^HSI', indexName: 'Hang Seng Index' };
+  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'CN¥', indexTicker: '000001.SS', indexName: 'Shanghai Composite' };
   if (!t.includes('.')) return { folder: 'sp500', label: 'S&P 500', screenName: 'S&P 500 Most Undervalued', screenUrl: '/dcf/sp500-undervalued/', currencySymbol: '$', indexTicker: '^GSPC', indexName: 'S&P 500' };
   return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: '$', indexTicker: null, indexName: null };
 }
@@ -65,7 +72,7 @@ function marketMeta(ticker) {
 // one quoted in pounds renders '£', rather than inheriting the europe bucket's
 // '€'. mapQuoteSummary() already surfaces `currency` and already converts GBp
 // dividends to pence, so the data is present; it just wasn't being read.
-const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$' };
+const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$', CNY: 'CN¥' };
 
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 

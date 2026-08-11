@@ -29,6 +29,20 @@ function marketParamsFor(ticker, live = {}) {
   // within that market a ticker is on.
   const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
   if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 };
+  // Hong Kong: same "no live source" situation as Korea/Japan/UK/eurozone -- fixed rf
+  // is an approximate HK Exchange Fund Note yield. Unlike every other market seed here,
+  // erp is NOT backed by a clean current Damodaran country-risk figure specifically for
+  // Hong Kong (checked 2026-08-10) -- set at developed-market tier (same as UK/Japan) as
+  // a best estimate. Backported from www/dcf/app.js's HK_RF/HK_ERP/HK_TGROWTH (commit
+  // 98dc69d) -- keep these two in sync if the live tool's seed ever changes.
+  if (t.endsWith('.HK')) return { rf: 0.035, erp: 0.06, terminalGrowth: 0.02 };
+  // China A-shares (Shanghai .SS / Shenzhen .SZ): same "no live source" situation --
+  // rf/erp sourced from Damodaran's country-risk dataset (checked 2026-08-10). Distinct
+  // from Hong Kong above -- different currency (CNY vs HKD) and risk profile. Terminal
+  // growth kept at the tool's 2.5% default (China's still-above-developed-market
+  // long-run growth despite its slowdown). Backported from www/dcf/app.js's
+  // CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d).
+  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.017, erp: 0.052, terminalGrowth: 0.025 };
   if (!t.includes('.')) return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 };
   return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
 }

@@ -1,5 +1,27 @@
 [
   {
+    "ticker": "0005.HK",
+    "slug": "0005-hk",
+    "name": "HSBC Holdings plc",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 143.96198089904073,
+    "price": 162.1,
+    "marginOfSafety": -0.11189401049327125,
+    "updated": "2026-08-11"
+  },
+  {
+    "ticker": "0700.HK",
+    "slug": "0700-hk",
+    "name": "Tencent Holdings Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 473.0382504628546,
+    "price": 470.2,
+    "marginOfSafety": 0.006036262149839649,
+    "updated": "2026-08-11"
+  },
+  {
     "ticker": "CAP.PA",
     "slug": "cap-pa",
     "name": "Capgemini SE",
