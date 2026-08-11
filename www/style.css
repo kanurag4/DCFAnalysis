@@ -553,6 +553,12 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
   .history-charts .chart-row { grid-template-columns: 1fr; }
   .bank-metric-grid { grid-template-columns: 1fr; }
   .ticker-cta { flex-direction: column; align-items: flex-start; }
+  /* The base rule's white-space: nowrap keeps the CTA link on one line on
+     desktop, but once the card switches to flex-direction: column above,
+     align-items: flex-start no longer stretches the link to the card's
+     width — so its nowrap intrinsic width (the full unwrapped sentence)
+     overflows the card and the viewport instead of wrapping. */
+  .ticker-cta a { white-space: normal; }
   .scenario-assump-table { display: block; overflow-x: auto; }
   .stock-list { columns: 2; }
 }
