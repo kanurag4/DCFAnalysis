@@ -516,6 +516,38 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
 .bar-label { font-size: 0.62rem; fill: var(--kv-muted); }
 .index-end-label { font-size: 0.62rem; fill: var(--kv-muted); font-style: italic; }
 
+/* ── Value investing scale (Buffett/Dalio/Graham gauge) ──
+   Gauge markup/geometry ported verbatim from the live Stock Evaluator's
+   .gauge-section (www/stock/style.css) — only the CSS custom property
+   names differ (--pass/--warn/--fail/--muted there vs --kv-pass/--kv-warn/
+   --kv-fail/--kv-muted here). See scripts/lib/value-scale.js — same block
+   as StockAnalysis's www/growth/style.css, kept in sync by hand since the
+   two ticker-page stylesheets are otherwise unrelated files. */
+.value-scale-block { margin: 24px 0; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 14px 18px; text-align: center; }
+.value-scale-block h2 { font-size: 1rem; margin-bottom: 10px; }
+.value-scale-sub { font-size: 0.8rem; font-weight: 400; color: var(--kv-muted); }
+.value-scale-block .gauge-wrap { max-width: 520px; margin: 0 auto; padding: 0 4px; }
+.value-scale-block .gauge-bar-area { position: relative; padding-top: 34px; }
+.value-scale-block .gauge-zones { display: flex; height: 10px; gap: 3px; }
+.value-scale-block .gauge-z { height: 100%; border-radius: 3px; }
+.value-scale-block .gauge-z.bad  { flex: 40; background: rgba(239,68,68,0.55); }
+.value-scale-block .gauge-z.ok   { flex: 25; background: rgba(249,115,22,0.55); }
+.value-scale-block .gauge-z.good { flex: 35; background: rgba(34,197,94,0.55); }
+.value-scale-block .gauge-marker-area { position: absolute; bottom: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; z-index: 1; pointer-events: none; }
+.value-scale-block .gauge-pill { font-size: 0.7rem; font-weight: 600; padding: 2px 9px; border-radius: 20px; white-space: nowrap; margin-bottom: 4px; }
+.value-scale-block .gauge-marker-area.good .gauge-pill { background: rgba(34,197,94,0.22); color: var(--kv-pass); border: 1px solid rgba(34,197,94,0.55); }
+.value-scale-block .gauge-marker-area.ok   .gauge-pill { background: rgba(249,115,22,0.22); color: var(--kv-warn); border: 1px solid rgba(249,115,22,0.55); }
+.value-scale-block .gauge-marker-area.bad  .gauge-pill { background: rgba(239,68,68,0.22);  color: var(--kv-fail); border: 1px solid rgba(239,68,68,0.55); }
+.value-scale-block .gauge-stem { width: 2px; flex: 1; min-height: 9px; border-radius: 1px; }
+.value-scale-block .gauge-marker-area.good .gauge-stem { background: var(--kv-pass); }
+.value-scale-block .gauge-marker-area.ok   .gauge-stem { background: var(--kv-warn); }
+.value-scale-block .gauge-marker-area.bad  .gauge-stem { background: var(--kv-fail); }
+.value-scale-block .gauge-sub { text-align: center; font-size: 0.7rem; color: var(--kv-muted); margin-top: 6px; }
+.value-scale-gap { text-align: center; font-size: 0.72rem; color: var(--kv-muted); margin-top: 3px; }
+.value-scale-cta { text-align: center; margin: 10px 0 0; font-size: 0.85rem; }
+.value-scale-cta a { color: var(--kv-accent); font-weight: 600; text-decoration: none; }
+.value-scale-cta a:hover { text-decoration: underline; }
+
 .ticker-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--kv-card-2); border: 1px solid var(--kv-accent); border-radius: 10px; padding: 14px 18px; margin: 24px 0; font-size: 0.86rem; flex-wrap: wrap; }
 .ticker-cta a { font-weight: 700; white-space: nowrap; }
 

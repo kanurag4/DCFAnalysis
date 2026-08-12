@@ -18,6 +18,7 @@ const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
 const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
+const { buildValueScaleCard } = require('./value-scale.js');
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./page-shell.js');
 
 // ── validation ───────────────────────────────────────────────────────────
@@ -766,6 +767,18 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>` : '';
 
+    // Best-effort: must never turn a scoring hiccup into a whole-page skip
+    // (this whole function body runs inside one outer try/catch, and a
+    // thrown error here would count against the refresh workflow's 20%
+    // skipped-ticker guard). rawBody is the same quoteSummary response
+    // already fetched above for mapQuoteSummary — no extra network call.
+    let valueScaleHtml = '';
+    try {
+      valueScaleHtml = buildValueScaleCard({ rawBody, symbol: t, market });
+    } catch (_) {
+      valueScaleHtml = '';
+    }
+
     const canCompareIndex = priceAligned.length >= 2;
     const priceSeries = canCompareIndex ? priceAligned : priceSeriesRaw;
     const priceLast = priceSeries[priceSeries.length - 1]?.v;
@@ -849,6 +862,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         <p class="refresh-note"><span class="dot"></span>Data as at ${today}</p>
         <div class="chart-row">${priceChartHtml}${epsChartHtml}${fourthChartHtml}${divChartHtml}</div>
       </section>
+
+      ${valueScaleHtml}
 
       ${bankMetricsHtml}
 
