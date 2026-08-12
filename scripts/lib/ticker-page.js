@@ -784,7 +784,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const canonical = `https://kashvector.com/dcf/stocks/${market.folder}/${slug}/`;
     const crumbs = [{ name: 'DCF Valuation', path: '/dcf/', url: 'https://kashvector.com/dcf/' }];
     if (market.screenUrl) crumbs.push({ name: market.screenName, path: market.screenUrl, url: `https://kashvector.com${market.screenUrl}` });
-    crumbs.push({ name: t, path: canonical, url: canonical });
+    crumbs.push({ name: `${name} (${t})`, path: canonical, url: canonical });
 
     const calcHref = `/dcf/?ticker=${encodeURIComponent(t)}${market.folder === 'asx' ? '&amp;asx=1' : ''}${market.folder === 'nifty' ? '&amp;nse=1' : ''}`;
 
@@ -801,7 +801,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       </section>
 
       <section class="history-charts">
-        <h2>${escapeHtml(t)}'s price &amp; financial trends</h2>
+        <h2>${escapeHtml(name)}'s price &amp; financial trends</h2>
         <p class="cadence-note">${cadenceNote}</p>
         <p class="refresh-note"><span class="dot"></span>Data as at ${today}</p>
         <div class="chart-row">${priceChartHtml}${epsChartHtml}${fourthChartHtml}${divChartHtml}</div>
@@ -848,14 +848,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
         <div class="tool-faq">
           <h2>Frequently asked questions</h2>
-          <details class="faq-item"><summary>Is ${escapeHtml(t)} undervalued?</summary>
+          <details class="faq-item"><summary>Is ${escapeHtml(name)} (${escapeHtml(t)}) undervalued?</summary>
             <p>The Base-case ${method} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
           </details>
         </div>
       </section>`;
 
     const html = pageShell({
-      title: `${name} (${t}) ${method} Valuation — Is ${t} Undervalued? | KashVector`,
+      title: `${name} (${t}) ${method} Valuation — Is ${name} Undervalued? | KashVector`,
       description: `${name} (${t}) intrinsic value via ${method === 'DCF' ? 'Discounted Cash Flow' : 'Dividend Discount Model'}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
