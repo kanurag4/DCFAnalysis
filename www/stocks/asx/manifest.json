@@ -5,9 +5,9 @@
     "name": "Alcoa Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 76.41515934251348,
-    "price": 78.59,
-    "marginOfSafety": -0.027673249236372655,
+    "intrinsic": 112.23100755083021,
+    "price": 78.97,
+    "marginOfSafety": 0.4211853558418414,
     "updated": "2026-08-12"
   },
   {
@@ -16,9 +16,9 @@
     "name": "BHP Group Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 43.827526725239395,
-    "price": 63.66,
-    "marginOfSafety": -0.3115374375551461,
+    "intrinsic": 63.86058884554966,
+    "price": 63.45,
+    "marginOfSafety": 0.006471061395581623,
     "updated": "2026-08-12"
   },
   {
@@ -28,8 +28,8 @@
     "sector": "Energy",
     "method": "DCF",
     "intrinsic": 1.7997402973227874,
-    "price": 0.862,
-    "marginOfSafety": 1.087865774156366,
+    "price": 0.865,
+    "marginOfSafety": 1.080624621182413,
     "updated": "2026-08-12"
   },
   {
@@ -38,9 +38,9 @@
     "name": "Brambles Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 12.9412947034328,
-    "price": 19.93,
-    "marginOfSafety": -0.35066258387191174,
+    "intrinsic": 18.866239102964553,
+    "price": 19.89,
+    "marginOfSafety": -0.05147113610032418,
     "updated": "2026-08-12"
   },
   {
@@ -49,9 +49,9 @@
     "name": "CAR Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 18.369877532202096,
-    "price": 28.295,
-    "marginOfSafety": -0.35077301529591465,
+    "intrinsic": 18.30036429635491,
+    "price": 29,
+    "marginOfSafety": -0.3689529552981065,
     "updated": "2026-08-12"
   },
   {
@@ -61,8 +61,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 77.15512450694678,
-    "price": 172.51,
-    "marginOfSafety": -0.5527498434470652,
+    "price": 172.72,
+    "marginOfSafety": -0.5532936283757134,
     "updated": "2026-08-12"
   },
   {
@@ -72,8 +72,8 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 21.442770423978306,
-    "price": 132.29,
-    "marginOfSafety": -0.83791087441244,
+    "price": 131.68,
+    "marginOfSafety": -0.8371600058932389,
     "updated": "2026-08-12"
   },
   {
@@ -82,9 +82,9 @@
     "name": "Coles Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 9.886827102693742,
-    "price": 23.31,
-    "marginOfSafety": -0.5758546931491316,
+    "intrinsic": 9.848180755088617,
+    "price": 23.44,
+    "marginOfSafety": -0.5798557698341034,
     "updated": "2026-08-12"
   },
   {
@@ -93,9 +93,9 @@
     "name": "Computershare Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 7.634782522482159,
-    "price": 40.62,
-    "marginOfSafety": -0.8120437586784303,
+    "intrinsic": 13.864214749149081,
+    "price": 40.61,
+    "marginOfSafety": -0.6586009665316651,
     "updated": "2026-08-12"
   },
   {
@@ -105,8 +105,8 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 1.8551164054424971,
-    "price": 3.58,
-    "marginOfSafety": -0.48181105993226336,
+    "price": 3.62,
+    "marginOfSafety": -0.4875369045738958,
     "updated": "2026-08-12"
   },
   {
@@ -115,9 +115,9 @@
     "name": "Fortescue Ltd",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 29.18460525766182,
-    "price": 17.925,
-    "marginOfSafety": 0.6281509209295295,
+    "intrinsic": 42.61151859801404,
+    "price": 17.96,
+    "marginOfSafety": 1.372578986526394,
     "updated": "2026-08-12"
   },
   {
@@ -126,9 +126,9 @@
     "name": "Fisher & Paykel Healthcare Corporation Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 15.23685297675274,
-    "price": 35.19,
-    "marginOfSafety": -0.5670118506179954,
+    "intrinsic": 12.660131810432015,
+    "price": 35.28,
+    "marginOfSafety": -0.6411527264616776,
     "updated": "2026-08-12"
   },
   {
@@ -148,9 +148,9 @@
     "name": "GQG Partners Inc.",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 1.3068110689683359,
-    "price": 1.46,
-    "marginOfSafety": -0.10492392536415349,
+    "intrinsic": 1.8564169536185147,
+    "price": 1.47,
+    "marginOfSafety": 0.26286867593096236,
     "updated": "2026-08-12"
   },
   {
@@ -159,9 +159,9 @@
     "name": "Harvey Norman Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 16.992498825661965,
-    "price": 4.92,
-    "marginOfSafety": 2.4537599239150336,
+    "intrinsic": 17.029064971268138,
+    "price": 4.91,
+    "marginOfSafety": 2.468241338343816,
     "updated": "2026-08-12"
   },
   {
@@ -170,9 +170,9 @@
     "name": "JB Hi-Fi Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 82.86258179282252,
-    "price": 82.82,
-    "marginOfSafety": 0.0005141486696755782,
+    "intrinsic": 82.73780802189671,
+    "price": 83.39,
+    "marginOfSafety": -0.007820985467121828,
     "updated": "2026-08-12"
   },
   {
@@ -181,9 +181,9 @@
     "name": "Light & Wonder, Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 268.4827795336343,
-    "price": 127.24,
-    "marginOfSafety": 1.1100501377997036,
+    "intrinsic": 396.3046471108529,
+    "price": 127.59,
+    "marginOfSafety": 2.106079215540817,
     "updated": "2026-08-12"
   },
   {
@@ -193,8 +193,8 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 36.126954444663134,
-    "price": 25.11,
-    "marginOfSafety": 0.4387476879595036,
+    "price": 25.01,
+    "marginOfSafety": 0.44450037763547107,
     "updated": "2026-08-12"
   },
   {
@@ -204,8 +204,8 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 4.709294453397489,
-    "price": 3.105,
-    "marginOfSafety": 0.5166809833808339,
+    "price": 3.12,
+    "marginOfSafety": 0.5093892478838106,
     "updated": "2026-08-12"
   },
   {
@@ -215,8 +215,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 28.07528009438917,
-    "price": 40.905,
-    "marginOfSafety": -0.3136467401445014,
+    "price": 40.93,
+    "marginOfSafety": -0.31406596397778713,
     "updated": "2026-08-12"
   },
   {
@@ -225,9 +225,9 @@
     "name": "Newmont Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 252.58697795754085,
-    "price": 166.875,
-    "marginOfSafety": 0.5136298304571737,
+    "intrinsic": 360.540714195634,
+    "price": 165.53,
+    "marginOfSafety": 1.178098919806887,
     "updated": "2026-08-12"
   },
   {
@@ -237,8 +237,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 4.497641224559293,
-    "price": 7.35,
-    "marginOfSafety": -0.388076023869484,
+    "price": 7.32,
+    "marginOfSafety": -0.3855681387214081,
     "updated": "2026-08-12"
   },
   {
@@ -248,8 +248,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 24.561044356115673,
-    "price": 23.715,
-    "marginOfSafety": 0.03567549467070095,
+    "price": 23.66,
+    "marginOfSafety": 0.03808302434977484,
     "updated": "2026-08-12"
   },
   {
@@ -259,8 +259,8 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 72.9993807675729,
-    "price": 179.65,
-    "marginOfSafety": -0.5936577747421492,
+    "price": 179.31,
+    "marginOfSafety": -0.5928872858871624,
     "updated": "2026-08-12"
   },
   {
@@ -270,8 +270,8 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 50.46720528510773,
-    "price": 44.81,
-    "marginOfSafety": 0.12624872316687633,
+    "price": 44.9,
+    "marginOfSafety": 0.12399120902244394,
     "updated": "2026-08-12"
   },
   {
@@ -280,9 +280,9 @@
     "name": "ResMed Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 11.492553950601566,
-    "price": 31.495,
-    "marginOfSafety": -0.6350990966629128,
+    "intrinsic": 16.34610207938281,
+    "price": 31.45,
+    "marginOfSafety": -0.48025112625173894,
     "updated": "2026-08-12"
   },
   {
@@ -291,9 +291,9 @@
     "name": "SEEK Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 11.063019378607393,
-    "price": 13.875,
-    "marginOfSafety": -0.20266527001027798,
+    "intrinsic": 11.085449105145367,
+    "price": 13.77,
+    "marginOfSafety": -0.19495649200106266,
     "updated": "2026-08-12"
   },
   {
@@ -302,9 +302,9 @@
     "name": "Sonic Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 32.717618345620316,
-    "price": 22.225,
-    "marginOfSafety": 0.4721088119514202,
+    "intrinsic": 32.615722739142136,
+    "price": 22.3,
+    "marginOfSafety": 0.46258846363866074,
     "updated": "2026-08-12"
   },
   {
@@ -314,8 +314,8 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 1.7094932773451335,
-    "price": 2.95,
-    "marginOfSafety": -0.4205107534423277,
+    "price": 2.96,
+    "marginOfSafety": -0.42246848738340087,
     "updated": "2026-08-12"
   },
   {
@@ -324,9 +324,9 @@
     "name": "Santos Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 0.6040665560813434,
-    "price": 8.02,
-    "marginOfSafety": -0.9246799805384859,
+    "intrinsic": 1.0293168145615996,
+    "price": 8.03,
+    "marginOfSafety": -0.8718160878503611,
     "updated": "2026-08-12"
   },
   {
@@ -336,8 +336,8 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 1.0127990446382678,
-    "price": 0.91,
-    "marginOfSafety": 0.11296598311897552,
+    "price": 0.915,
+    "marginOfSafety": 0.10688420179045652,
     "updated": "2026-08-12"
   },
   {
@@ -347,8 +347,8 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 3.3161987715836436,
-    "price": 5.435,
-    "marginOfSafety": -0.3898438322753185,
+    "price": 5.43,
+    "marginOfSafety": -0.389281994183491,
     "updated": "2026-08-12"
   },
   {
@@ -358,8 +358,8 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 7.4117488068449875,
-    "price": 4.985,
-    "marginOfSafety": 0.4868101919448319,
+    "price": 5,
+    "marginOfSafety": 0.4823497613689975,
     "updated": "2026-08-12"
   },
   {
@@ -380,8 +380,8 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 5.737192768811822,
-    "price": 6.14,
-    "marginOfSafety": -0.0656037835811365,
+    "price": 6.1,
+    "marginOfSafety": -0.059476595276750505,
     "updated": "2026-08-12"
   },
   {
@@ -391,8 +391,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 26.66851395760047,
-    "price": 35.24,
-    "marginOfSafety": -0.24323172651531016,
+    "price": 35.37,
+    "marginOfSafety": -0.24601317620581079,
     "updated": "2026-08-12"
   },
   {
@@ -402,8 +402,8 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 42.33331813856693,
-    "price": 89.25,
-    "marginOfSafety": -0.5256771076911269,
+    "price": 89.32,
+    "marginOfSafety": -0.5260488340957575,
     "updated": "2026-08-12"
   },
   {
@@ -413,8 +413,8 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 23.808298467868383,
-    "price": 39.3,
-    "marginOfSafety": -0.39419087868019376,
+    "price": 39.46,
+    "marginOfSafety": -0.39664727653653364,
     "updated": "2026-08-12"
   },
   {
@@ -423,9 +423,9 @@
     "name": "WiseTech Global Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 20.55136381632064,
-    "price": 40.5,
-    "marginOfSafety": -0.4925589181155397,
+    "intrinsic": 31.142357060456963,
+    "price": 40.42,
+    "marginOfSafety": -0.22953099800947646,
     "updated": "2026-08-12"
   },
   {
@@ -434,9 +434,9 @@
     "name": "Xero Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 55.29324549870135,
-    "price": 77.31,
-    "marginOfSafety": -0.2847853382654074,
+    "intrinsic": 45.42690930886086,
+    "price": 77.4,
+    "marginOfSafety": -0.41308902701730166,
     "updated": "2026-08-12"
   },
   {
@@ -446,8 +446,8 @@
     "sector": "Energy",
     "method": "DCF",
     "intrinsic": 5.255170921252231,
-    "price": 5.76,
-    "marginOfSafety": -0.08764393728259881,
+    "price": 5.79,
+    "marginOfSafety": -0.09237117076818124,
     "updated": "2026-08-12"
   }
 ]

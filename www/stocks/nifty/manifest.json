@@ -6,8 +6,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 908.0559769074912,
-    "price": 1355,
-    "marginOfSafety": -0.3298479875221467,
+    "price": 1365.4,
+    "marginOfSafety": -0.3349524118152255,
     "updated": "2026-08-12"
   },
   {
@@ -17,8 +17,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 170.959568722859,
-    "price": 722.65,
-    "marginOfSafety": -0.7634268750808012,
+    "price": 729,
+    "marginOfSafety": -0.7654875600509479,
     "updated": "2026-08-12"
   },
   {
@@ -28,8 +28,8 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 5936.243472024915,
-    "price": 5904,
-    "marginOfSafety": 0.005461292687146817,
+    "price": 5895,
+    "marginOfSafety": 0.006996348095829484,
     "updated": "2026-08-12"
   },
   {
@@ -39,8 +39,8 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 162787.63729570934,
-    "price": 130700,
-    "marginOfSafety": 0.24550602368561086,
+    "price": 130785,
+    "marginOfSafety": 0.24469654238413688,
     "updated": "2026-08-12"
   },
   {
@@ -50,8 +50,8 @@
     "sector": "Utilities",
     "method": "DCF",
     "intrinsic": 128.8464121442378,
-    "price": 23.4,
-    "marginOfSafety": 4.506256929240932,
+    "price": 23.38,
+    "marginOfSafety": 4.510967157580745,
     "updated": "2026-08-12"
   },
   {
@@ -61,8 +61,8 @@
     "sector": "Real Estate",
     "method": "DCF",
     "intrinsic": 46.09008350134957,
-    "price": 805.25,
-    "marginOfSafety": -0.9427630133482153,
+    "price": 807.95,
+    "marginOfSafety": -0.9429542873923515,
     "updated": "2026-08-12"
   },
   {
@@ -72,8 +72,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 1757.389838732355,
-    "price": 2346.5,
-    "marginOfSafety": -0.25105909280530364,
+    "price": 2349.7,
+    "marginOfSafety": -0.2520790574403732,
     "updated": "2026-08-12"
   },
   {
@@ -83,8 +83,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 1652.984503216074,
-    "price": 1632.6,
-    "marginOfSafety": 0.012485914012050783,
+    "price": 1625,
+    "marginOfSafety": 0.01722123274835324,
     "updated": "2026-08-12"
   },
   {
@@ -94,8 +94,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 162.4823224455331,
-    "price": 182.54,
-    "marginOfSafety": -0.10988099898360301,
+    "price": 183.94,
+    "marginOfSafety": -0.11665585274799879,
     "updated": "2026-08-12"
   }
 ]

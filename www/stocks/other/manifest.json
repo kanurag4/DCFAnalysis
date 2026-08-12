@@ -6,8 +6,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 143.96198089904073,
-    "price": 161.3,
-    "marginOfSafety": -0.10748926906980338,
+    "price": 161.4,
+    "marginOfSafety": -0.10804224969615416,
     "updated": "2026-08-12"
   },
   {
@@ -16,9 +16,9 @@
     "name": "Tencent Holdings Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 473.9247547445723,
-    "price": 458.6,
-    "marginOfSafety": 0.033416386272508196,
+    "intrinsic": 556.8648955993341,
+    "price": 461.6,
+    "marginOfSafety": 0.20637975649769078,
     "updated": "2026-08-12"
   },
   {
@@ -38,9 +38,9 @@
     "name": "Capgemini SE",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 176.25211371783703,
-    "price": 109.5,
-    "marginOfSafety": 0.6096083444551327,
+    "intrinsic": 177.45314417073564,
+    "price": 106.9,
+    "marginOfSafety": 0.6599919941135232,
     "updated": "2026-08-12"
   },
   {
@@ -50,8 +50,8 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 61.447928479650365,
-    "price": 44.83,
-    "marginOfSafety": 0.3706876752096892,
+    "price": 44.63,
+    "marginOfSafety": 0.3768301250201739,
     "updated": "2026-08-12"
   },
   {
@@ -61,8 +61,8 @@
     "sector": "Financial Services",
     "method": "DCF",
     "intrinsic": 54.18885400611378,
-    "price": 28.06,
-    "marginOfSafety": 0.9311779759840977,
+    "price": 27.92,
+    "marginOfSafety": 0.9408615331702642,
     "updated": "2026-08-12"
   },
   {
@@ -71,9 +71,9 @@
     "name": "Fresenius Medical Care AG",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 165.87048274687498,
-    "price": 41.81,
-    "marginOfSafety": 2.9672442656511593,
+    "intrinsic": 166.39798595176848,
+    "price": 41.61,
+    "marginOfSafety": 2.9989902896363487,
     "updated": "2026-08-12"
   },
   {
@@ -83,8 +83,8 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 94.4613088622853,
-    "price": 75.4,
-    "marginOfSafety": 0.25280250480484484,
+    "price": 75.52,
+    "marginOfSafety": 0.25081182285865083,
     "updated": "2026-08-12"
   },
   {
@@ -94,8 +94,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 315.2052991870879,
-    "price": 180.7,
-    "marginOfSafety": 0.7443569407143771,
+    "price": 179.16,
+    "marginOfSafety": 0.759350855029515,
     "updated": "2026-08-12"
   },
   {
@@ -105,8 +105,8 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 51.228657124707,
-    "price": 39.59,
-    "marginOfSafety": 0.29397972025023983,
+    "price": 39.32,
+    "marginOfSafety": 0.30286513541981175,
     "updated": "2026-08-12"
   }
 ]
