@@ -1,5 +1,16 @@
 [
   {
+    "ticker": "HCLTECH.NS",
+    "slug": "hcltech-ns",
+    "name": "HCL Technologies Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 908.0559769074912,
+    "price": 1355,
+    "marginOfSafety": -0.3298479875221467,
+    "updated": "2026-08-12"
+  },
+  {
     "ticker": "HDFCBANK.NS",
     "slug": "hdfcbank-ns",
     "name": "HDFC Bank Limited",
