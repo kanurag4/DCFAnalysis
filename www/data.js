@@ -61,7 +61,90 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   // fundamentals-timeseries has it — prefer the /timeseries value when present.
   const interestExpense = (interestExpenseTs != null) ? interestExpenseTs : data.interestExpense;
 
-  return { ...data, dilutedSharesOutstanding, ebit, interestExpense, annualFcf };
+  // Currency guard: Yahoo can report financial-statement figures (FCF,
+  // revenue, debt, EBIT...) in a different currency than the listing trades
+  // in — confirmed live 2026-08-12: SONY (financials JPY, price USD) came
+  // back with a base-case intrinsic value of $83,000.91 vs a $23.61 price,
+  // roughly the JPY/USD scale. calc/dcf.js and calc/wacc.js are pure and
+  // currency-agnostic — they just need every dollar-figure input already in
+  // the same currency as `price`/`marketCap`/`sharesOutstanding`. Convert
+  // every financial-currency-denominated field using a live FX rate; if the
+  // rate can't be fetched, null those fields (not leave them unconverted) so
+  // calculateDCF/calculateWACC correctly treat the ticker as uncomputable
+  // instead of silently mixing currencies.
+  let fxConversionFailed = false;
+  let freeCashflow = data.freeCashflow;
+  let operatingCashflow = data.operatingCashflow;
+  let capitalExpenditures = data.capitalExpenditures;
+  let totalCash = data.totalCash;
+  let totalDebt = data.totalDebt;
+  let totalRevenue = data.totalRevenue;
+  let ebitConverted = ebit;
+  let interestExpenseConverted = interestExpense;
+  let annualFcfConverted = annualFcf;
+
+  if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
+    const rate = await fetchFxRate(data.financialCurrency, data.currency, base, extraHeaders);
+    if (rate != null) {
+      const c = v => (v != null ? v * rate : v);
+      freeCashflow = c(freeCashflow);
+      operatingCashflow = c(operatingCashflow);
+      capitalExpenditures = c(capitalExpenditures);
+      totalCash = c(totalCash);
+      totalDebt = c(totalDebt);
+      totalRevenue = c(totalRevenue);
+      ebitConverted = c(ebitConverted);
+      interestExpenseConverted = c(interestExpenseConverted);
+      annualFcfConverted = c(annualFcfConverted);
+    } else {
+      fxConversionFailed = true;
+      freeCashflow = null;
+      operatingCashflow = null;
+      capitalExpenditures = null;
+      totalCash = null;
+      totalDebt = null;
+      totalRevenue = null;
+      ebitConverted = null;
+      interestExpenseConverted = null;
+      annualFcfConverted = null;
+    }
+  }
+
+  return {
+    ...data,
+    freeCashflow, operatingCashflow, capitalExpenditures, totalCash, totalDebt, totalRevenue,
+    dilutedSharesOutstanding,
+    ebit: ebitConverted,
+    interestExpense: interestExpenseConverted,
+    annualFcf: annualFcfConverted,
+    fxConversionFailed,
+  };
+}
+
+// Fetches a live FX rate to convert amounts from `fromCcy` into `toCcy`.
+// Yahoo's quoteSummary endpoint accepts FX pair tickers directly (e.g.
+// "JPYUSD=X") via the same Worker route already used for every other
+// lookup — no new Worker endpoint needed. `regularMarketPrice` is preferred
+// but frequently absent for FX pairs (confirmed live 2026-08-12, even for
+// the already-shipped AUDUSD=X used by Gordon Growth Model's dividend
+// conversion — this fetch is more defensive than that one on purpose),
+// so falls back to the two flavors of previous-close. Returns null (never
+// throws) on any failure — callers must fail closed: null the affected
+// fields rather than use an unconverted value.
+async function fetchFxRate(fromCcy, toCcy, base, extraHeaders) {
+  if (!fromCcy || !toCcy) return null;
+  if (fromCcy === toCcy) return 1;
+  try {
+    const pair = `${fromCcy}${toCcy}=X`;
+    const res = await fetch(`${base}/quoteSummary/${encodeURIComponent(pair)}`, { headers: extraHeaders });
+    if (!res.ok) return null;
+    const body = await res.json();
+    const sd = body?.quoteSummary?.result?.[0]?.summaryDetail;
+    const rate = rawVal(sd?.regularMarketPrice) ?? rawVal(sd?.previousClose) ?? rawVal(sd?.regularMarketPreviousClose);
+    return (rate != null && rate > 0) ? rate : null;
+  } catch (_) {
+    return null;
+  }
 }
 
 // Pure: returns the most recent { date, value } entry's value from a Yahoo
@@ -101,6 +184,12 @@ function mapQuoteSummary(body, symbol) {
     price:             rawVal(result.financialData?.currentPrice),
     marketCap:         rawVal(result.summaryDetail?.marketCap),
     currency:          result.summaryDetail?.currency ?? null,
+    // The currency financial-statement figures (FCF, revenue, debt...) are
+    // reported in -- can legitimately differ from `currency` above (the
+    // trading/listing currency) for ADRs and foreign private issuers, e.g.
+    // SONY: currency USD, financialCurrency JPY. See fetchDCFData()'s
+    // currency-conversion step, which uses this field.
+    financialCurrency: result.financialData?.financialCurrency ?? null,
     sector:            result.assetProfile?.sector ?? null,
     industry:          result.assetProfile?.industry ?? null,
     // DCF core inputs
@@ -193,4 +282,4 @@ async function fetchTickerPageUrl(ticker, currentMarket) {
   return entry ? `https://kashvector.com/dcf/stocks/${folder}/${entry.slug}/` : null;
 }
 
-if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, MARKET_STOCKS_FOLDER };
+if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER };

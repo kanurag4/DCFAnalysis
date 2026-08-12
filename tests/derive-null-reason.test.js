@@ -10,6 +10,15 @@ test('returns null when the base result already has a real intrinsicValue', () =
   assert.equal(r, null);
 });
 
+test('fxConversionFailed takes precedence -- names the currency mismatch, not a generic FCF/dividend cause', () => {
+  const r = deriveNullReason({
+    isBank: false, baseResult: null,
+    baseFcf: null, dividend: null, discountPct: 6.75, terminalGrowth: 0.025,
+    fxConversionFailed: true,
+  });
+  assert.match(r, /different currency than the trading price/);
+});
+
 test('DCF, literal null result, fcf <= 0 -- names starting FCF as the cause', () => {
   const r = deriveNullReason({
     isBank: false, baseResult: null,

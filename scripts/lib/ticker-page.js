@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { mapQuoteSummary } = require('../../www/data.js');
+const { mapQuoteSummary, fetchFxRate } = require('../../www/data.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
@@ -448,8 +448,9 @@ async function fetchPriceHistory(symbol, proxyUrl) {
 // (negative equity; missing sharesOutstanding) -- previously collapsed into
 // one generic message that didn't distinguish them. Returns null when
 // baseResult already has a real intrinsicValue (nothing to explain).
-function deriveNullReason({ isBank, baseResult, baseFcf, dividend, discountPct, terminalGrowth }) {
+function deriveNullReason({ isBank, baseResult, baseFcf, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
   if (baseResult?.intrinsicValue != null) return null;
+  if (fxConversionFailed) return 'financial statements are reported in a different currency than the trading price, and the live conversion rate could not be fetched';
   if (baseResult == null) {
     if (isBank) {
       return (dividend == null || dividend <= 0)
@@ -514,6 +515,42 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // Moved earlier (was after the scenario computation below) so the DCF
     // branch can use its diluted-shares/EBIT/interest-expense fields.
     const hist = await fetchHistorySeries(t, proxyUrl);
+
+    // Currency guard: see www/data.js's fetchDCFData() for the full
+    // rationale (SONY confirmed live 2026-08-12: base-case intrinsic value
+    // came back $83,000.91 vs a $23.61 price — financials in JPY, price in
+    // USD). This generator doesn't call fetchDCFData() -- it reimplements
+    // its own fetch/merge around the shared mapQuoteSummary() -- so the
+    // same guard needs its own copy here. Mutates data/hist in place since
+    // every downstream reference in this function reads from them by
+    // property access.
+    let fxConversionFailed = false;
+    if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
+      const rate = await fetchFxRate(data.financialCurrency, data.currency, proxyUrl.replace(/\/$/, ''), batchHeaders());
+      if (rate != null) {
+        const c = v => (v != null ? v * rate : v);
+        data.freeCashflow = c(data.freeCashflow);
+        data.operatingCashflow = c(data.operatingCashflow);
+        data.capitalExpenditures = c(data.capitalExpenditures);
+        data.totalCash = c(data.totalCash);
+        data.totalDebt = c(data.totalDebt);
+        data.totalRevenue = c(data.totalRevenue);
+        hist.ebit = c(hist.ebit);
+        hist.interestExpense = c(hist.interestExpense);
+        hist.fcfAnnualLatest = c(hist.fcfAnnualLatest);
+      } else {
+        fxConversionFailed = true;
+        data.freeCashflow = null;
+        data.operatingCashflow = null;
+        data.capitalExpenditures = null;
+        data.totalCash = null;
+        data.totalDebt = null;
+        data.totalRevenue = null;
+        hist.ebit = null;
+        hist.interestExpense = null;
+        hist.fcfAnnualLatest = null;
+      }
+    }
 
     const isBank = isBankOrInsurance(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
@@ -625,7 +662,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const sectorLine = [data.sector, data.industry].filter(Boolean).join(' · ');
     const baseResult = scenarios.find(s => s.key === 'base').result;
     const v = verdict(baseResult?.marginOfSafety);
-    const nullReason = deriveNullReason({ isBank, baseResult, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth });
+    const nullReason = deriveNullReason({ isBank, baseResult, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
     // Raw diagnostic snapshot -- only populated when the base case is null,
     // so the batch can print exactly which upstream field was the actual
     // cause (2026-08-05 incident: the same 10 tickers failed identically on
@@ -639,6 +676,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
       marketCap: data.marketCap, totalDebt: data.totalDebt, totalCash: data.totalCash,
       negativeEquity: baseResult?.negativeEquity ?? null,
+      fxConversionFailed, financialCurrency: data.financialCurrency,
     } : null;
 
     const fcfMethodBadge = fcfInfo && fcfInfo.value != null
