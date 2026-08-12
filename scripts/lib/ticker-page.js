@@ -54,7 +54,12 @@ function marketMeta(ticker) {
   if (t.endsWith('.AX')) return { folder: 'asx', label: 'ASX', screenName: 'ASX 300 Most Undervalued', screenUrl: '/dcf/asx-undervalued/', currencySymbol: '$', indexTicker: '^AXJO', indexName: 'ASX 200' };
   if (t.endsWith('.NS') || t.endsWith('.BO')) return { folder: 'nifty', label: 'NIFTY 500', screenName: 'NIFTY 500 Most Undervalued', screenUrl: '/dcf/nifty-undervalued/', currencySymbol: '₹', indexTicker: '^NSEI', indexName: 'NIFTY 50' };
   if (t.endsWith('.KS')) return { folder: 'kospi', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
-  if (t.endsWith('.T')) return { folder: 'nikkei', label: 'Nikkei 225', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
+  // folder: 'other', not 'nikkei' -- same pattern as the Europe-suffix rule
+  // below (folder 'other' + a real screen affiliation): the ticker-pages
+  // system files Japanese stocks under Other Markets even though the
+  // separate Nikkei 225 ranking screen (its own batch/universe/refresh
+  // pipeline) still exists and this page still cross-links to it.
+  if (t.endsWith('.T')) return { folder: 'other', label: 'Nikkei 225', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
   if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'other', label: null, screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
   // Hong Kong / China A-shares: no dedicated undervalued screen exists (screenName/
   // screenUrl null, same as the generic fallback), but they get a real currency symbol

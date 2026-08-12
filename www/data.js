@@ -246,11 +246,18 @@ function explainStatus(status, symbol) {
 
 // Maps app.js's `currentMarket` values to the /dcf/stocks/<folder>/ URL
 // segment used by the per-ticker SEO page generator (DCFAnalysis's
-// scripts/generate-market-index.js). 'other' has no folder — no pages
-// are ever generated for it.
+// scripts/lib/ticker-page.js's marketMeta()). Japanese (.T) and European
+// (.L/eurozone) tickers file under 'other' — they keep their own currency/
+// index/screen affiliation on the page itself, but there is no dedicated
+// 'nikkei' or 'europe' folder on disk (confirmed 2026-08-12: only asx/
+// sp500/nifty/other actually exist under www/stocks/). Keep this in sync
+// with marketMeta()'s folder assignments — a stale mapping here fails
+// closed (fetchTickerPageUrl returns null, no crash), which is exactly
+// what silently broke the Share button for jpn/uk/eu tickers before this
+// fix, undetected because the failure is invisible rather than an error.
 const MARKET_STOCKS_FOLDER = {
   aus: 'asx', us: 'sp500', ind: 'nifty',
-  kor: 'kospi', jpn: 'nikkei', uk: 'europe', eu: 'europe',
+  kor: 'kospi', jpn: 'other', uk: 'other', eu: 'other',
 };
 
 const _tickerPageManifestCache = new Map(); // folder -> array, cached per session
