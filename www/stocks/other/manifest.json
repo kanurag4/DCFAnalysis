@@ -6,9 +6,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 143.96198089904073,
-    "price": 161.7,
-    "marginOfSafety": -0.10969708782287733,
-    "updated": "2026-08-11"
+    "price": 161.3,
+    "marginOfSafety": -0.10748926906980338,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "0700.HK",
@@ -16,10 +16,10 @@
     "name": "Tencent Holdings Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 473.0382504628546,
-    "price": 470.8,
-    "marginOfSafety": 0.0047541428692748095,
-    "updated": "2026-08-11"
+    "intrinsic": 473.9247547445723,
+    "price": 458.6,
+    "marginOfSafety": 0.033416386272508196,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "CAP.PA",
@@ -27,10 +27,10 @@
     "name": "Capgemini SE",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 178.0586696822548,
-    "price": 106.75,
-    "marginOfSafety": 0.6679969056885694,
-    "updated": "2026-08-11"
+    "intrinsic": 176.25211371783703,
+    "price": 109.5,
+    "marginOfSafety": 0.6096083444551327,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "CS.PA",
@@ -39,9 +39,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 61.447928479650365,
-    "price": 44.68,
-    "marginOfSafety": 0.37528935719897866,
-    "updated": "2026-08-11"
+    "price": 44.83,
+    "marginOfSafety": 0.3706876752096892,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "EDEN.PA",
@@ -49,10 +49,10 @@
     "name": "Edenred SE",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 54.005839994282574,
-    "price": 28.25,
-    "marginOfSafety": 0.9117111502400911,
-    "updated": "2026-08-11"
+    "intrinsic": 54.18885400611378,
+    "price": 28.06,
+    "marginOfSafety": 0.9311779759840977,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "FME.DE",
@@ -60,10 +60,10 @@
     "name": "Fresenius Medical Care AG",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 164.8237216711111,
-    "price": 42.61,
-    "marginOfSafety": 2.8681934210540034,
-    "updated": "2026-08-11"
+    "intrinsic": 165.87048274687498,
+    "price": 41.81,
+    "marginOfSafety": 2.9672442656511593,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "SAN.PA",
@@ -72,9 +72,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 94.4613088622853,
-    "price": 75.71,
-    "marginOfSafety": 0.24767281551030662,
-    "updated": "2026-08-11"
+    "price": 75.4,
+    "marginOfSafety": 0.25280250480484484,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "SAP.DE",
@@ -83,9 +83,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 315.2052991870879,
-    "price": 181.36,
-    "marginOfSafety": 0.738008928027613,
-    "updated": "2026-08-11"
+    "price": 180.7,
+    "marginOfSafety": 0.7443569407143771,
+    "updated": "2026-08-12"
   },
   {
     "ticker": "SHL.DE",
@@ -94,8 +94,8 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 51.228657124707,
-    "price": 39.38,
-    "marginOfSafety": 0.3008800691901218,
-    "updated": "2026-08-11"
+    "price": 39.59,
+    "marginOfSafety": 0.29397972025023983,
+    "updated": "2026-08-12"
   }
 ]
