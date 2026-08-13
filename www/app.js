@@ -71,6 +71,7 @@ const T = (key, label) => window.kvGlossary ? kvGlossary.term(key, label) : esca
 const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
 const starBtn = document.getElementById('watchlist-star');
 const shareBtn = document.getElementById('share-btn');
+const shareBtnLabel = shareBtn ? shareBtn.querySelector('.share-btn-label') : null;
 
 // Reflects the star's state for the given resolved ticker/market. Called
 // after every successful analysis (native only) and once up front to hide
@@ -101,6 +102,13 @@ function updateWatchlistStar(ticker, market) {
 if (isNative) {
   const badge = document.getElementById('kv-play-badge');
   if (badge) badge.hidden = true;
+
+  // Icon-only in the app — the text label is nice-to-have on web but just
+  // adds width to an already-compact native header row.
+  if (shareBtn) {
+    shareBtn.classList.add('icon-only');
+    if (shareBtnLabel) shareBtnLabel.style.display = 'none';
+  }
 
   // kv-nav.js unconditionally points .home-logo ("← All tools") at
   // /app/index.html for every native page. Read location.search here,
@@ -1067,6 +1075,24 @@ async function onShareClick() {
     ? 'https://kashvector.com/dcf/' + window.kvTickerInput.buildUrlQuery({ symbol: ticker, isAsx: currentMarket === 'aus', isNse: currentMarket === 'ind' })
     : location.href);
 
+  // Inside the Capacitor app, navigator.share() is not reliably wired to
+  // the native OS share sheet — the embedded Android/iOS WebView doesn't
+  // bridge the Web Share API to a native share intent the way the actual
+  // Chrome/Safari browser app does. Use the real @capacitor/share plugin
+  // instead when running natively; it's the one Capacitor plugin built
+  // specifically to solve this. window.Capacitor.Plugins.<Name> is the
+  // same no-bundler global-access pattern kv-watchlist.js already uses
+  // for PushNotifications.
+  const NativeShare = isNative && window.Capacitor.Plugins && window.Capacitor.Plugins.Share;
+  if (NativeShare) {
+    try {
+      await NativeShare.share({ title: 'KashVector DCF Valuation', text, url, dialogTitle: 'Share this valuation' });
+    } catch (err) {
+      // User cancelled the native share sheet — not a real error.
+    }
+    return;
+  }
+
   if (navigator.share) {
     try {
       await navigator.share({ title: 'KashVector DCF Valuation', text, url });
@@ -1080,10 +1106,10 @@ async function onShareClick() {
   }
 
   navigator.clipboard.writeText(`${text}\n${url}`).then(() => {
-    shareBtn.textContent = '✓ Copied!';
+    shareBtnLabel.textContent = '✓ Copied!';
     shareBtn.classList.add('copied');
     setTimeout(() => {
-      shareBtn.textContent = '🔗 Share';
+      shareBtnLabel.textContent = 'Share';
       shareBtn.classList.remove('copied');
     }, 2000);
   });

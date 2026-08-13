@@ -43,6 +43,30 @@ function detectMarket(ticker) {
   return t.includes('.') ? 'other' : 'us';
 }
 
+// Bear/bull growth spread as a magnitude offset from a base value — used
+// both when seeding fresh assumptions from live data (below) and when the
+// native shell's assumptions bottom sheet rebuilds bear/bull after the
+// user hand-edits Base. Single source of truth for both call sites, so a
+// future formula change (see the 2026-08-11 bear/bull inversion fix in
+// CLAUDE.md's Known Traps) can't drift between the two.
+function growthOffsetSpread(baseGrowthPct) {
+  const offset = Math.abs(baseGrowthPct) * 0.5;
+  return {
+    bear: +Math.max(-15, baseGrowthPct - offset).toFixed(1),
+    bull: +Math.min(30, baseGrowthPct + offset).toFixed(1),
+  };
+}
+
+// Discount-rate (WACC/cost-of-equity) spread — bear is 1pp higher, bull is
+// 1pp lower (floored at 1%), same ±1pp band used when seeding from a live
+// WACC/CAPM result.
+function discountRateSpread(baseDiscountPct) {
+  return {
+    bear: +(baseDiscountPct + 1).toFixed(2),
+    bull: +(Math.max(1, baseDiscountPct - 1)).toFixed(2),
+  };
+}
+
 // Pure equivalent of app.js's prefillInputs() + its modelSeeds block.
 // Returns everything needed to seed and run Bear/Base/Bull without
 // touching any DOM element.
@@ -68,9 +92,9 @@ function deriveDcfAssumptions(data) {
   // multiplier — the multiplier form inverts direction once base is
   // negative (2026-08-11 fix, see CLAUDE.md's Known Traps). |base| as the
   // offset keeps bear <= base <= bull regardless of sign.
-  const dcfGrowthOffset = Math.abs(baseGrowthPct) * 0.5;
-  const bearGrowthPct = +Math.max(-15, baseGrowthPct - dcfGrowthOffset).toFixed(1);
-  const bullGrowthPct = +Math.min(30,  baseGrowthPct + dcfGrowthOffset).toFixed(1);
+  const dcfGrowthSpread = growthOffsetSpread(baseGrowthPct);
+  const bearGrowthPct = dcfGrowthSpread.bear;
+  const bullGrowthPct = dcfGrowthSpread.bull;
 
   const marketTGrowth = MARKET_TGROWTH[currentMarket] ?? MARKET_TGROWTH_DEFAULT;
 
@@ -165,5 +189,5 @@ function computeScenarios(data, valuationModel, seeds, options) {
   });
 }
 
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios };
-if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; }
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, discountRateSpread };
+if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.discountRateSpread = discountRateSpread; }

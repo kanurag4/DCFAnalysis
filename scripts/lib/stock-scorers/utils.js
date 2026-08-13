@@ -50,6 +50,19 @@ function combinedVerdict(combinedScore, maxCombined) {
   return { verdict, cls };
 }
 
+// Per-framework RAG class from its own score/max ratio (Buffett/Dalio/
+// Graham each individually) — >=66% good (green), >=33% ok (amber),
+// else bad (red). Same ratio-based thresholds as the Scorer Contract's
+// verdict bands (CLAUDE.md), just expressed as a CSS class instead of a
+// verdict string, since app.js/the native shell renderers both need to
+// color a per-framework card by this same rule.
+function cardClass(score, max) {
+  var ratio = max > 0 ? score / max : 0;
+  if (ratio >= 0.66) return 'good';
+  if (ratio >= 0.33) return 'ok';
+  return 'bad';
+}
+
 if (typeof module !== 'undefined') {
-  module.exports = { safe, fmt, isFinancialSector, tally, formatUpdatedDate, combinedVerdict };
+  module.exports = { safe, fmt, isFinancialSector, tally, formatUpdatedDate, combinedVerdict, cardClass };
 }
