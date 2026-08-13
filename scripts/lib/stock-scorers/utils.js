@@ -37,3 +37,19 @@ function formatUpdatedDate(asAt, now = new Date()) {
   if (year !== now.getFullYear()) label += ` ${year}`;
   return label;
 }
+
+// Combined Buffett+Dalio+Graham gauge verdict. Deliberately ABSOLUTE
+// thresholds (13/8 points), not ratio-based — matches the live tool and
+// the "Value investing scale" card on per-ticker SEO pages (see
+// Kashvector.md), which both rely on the score always meaning the same
+// point value whether or not D/E was skipped for a financial-sector
+// ticker (max 17 instead of 20).
+function combinedVerdict(combinedScore, maxCombined) {
+  const cls = combinedScore >= 13 ? 'good' : combinedScore >= 8 ? 'ok' : 'bad';
+  const verdict = combinedScore >= 13 ? 'Strong Fit' : combinedScore >= 8 ? 'Partial Fit' : 'Poor Fit';
+  return { verdict, cls };
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = { safe, fmt, isFinancialSector, tally, formatUpdatedDate, combinedVerdict };
+}
