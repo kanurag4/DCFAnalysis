@@ -339,68 +339,63 @@ function onRecalc() {
 // ── Pre-fill inputs ───────────────────────────────────────────────────────
 
 function prefillInputs(data) {
-  const isBankIns = isBankOrInsurance(data.sector, data.industry);
-  valuationModel = isBankIns ? 'ddm' : 'dcf';
+  // Market detection, RF/ERP/beta-floor/WACC, DCF growth seeding, terminal
+  // growth defaults, and DDM dividend seeding are now computed by the pure
+  // deriveDcfAssumptions() (www/dcf/calc/assumptions.js) — the exact same
+  // function the native shell's Card Dashboard calls, so the website and
+  // the app can never silently compute different numbers for the same
+  // ticker. This function's remaining job is purely writing those values
+  // into the DOM (input fields, badges, notes).
+  const assumptions = deriveDcfAssumptions(data);
+  const isBankIns = assumptions.isBankIns;
+  valuationModel = assumptions.valuationModel;
+  currentMarket = assumptions.currentMarket;
 
-  // ── Market detection — ASX gets Australian RF rate + MRP ──────────────────
-  const isAsx = isAsxTicker(data.ticker);
-  const isInd = !isAsx && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.NS') || data.ticker.toUpperCase().endsWith('.BO')));
-  const isKor = !isAsx && !isInd && !!(data.ticker && data.ticker.toUpperCase().endsWith('.KS'));
-  const isJpn = !isAsx && !isInd && !isKor && !!(data.ticker && data.ticker.toUpperCase().endsWith('.T'));
-  const isUk  = !isAsx && !isInd && !isKor && !isJpn && !!(data.ticker && data.ticker.toUpperCase().endsWith('.L'));
-  const isEurozone = !isAsx && !isInd && !isKor && !isJpn && !isUk
-    && !!(data.ticker && EUROZONE_SUFFIXES.some(sfx => data.ticker.toUpperCase().endsWith(sfx)));
-  const isHk = !isAsx && !isInd && !isKor && !isJpn && !isUk && !isEurozone
-    && !!(data.ticker && data.ticker.toUpperCase().endsWith('.HK'));
-  const isChinaA = !isAsx && !isInd && !isKor && !isJpn && !isUk && !isEurozone && !isHk
-    && !!(data.ticker && (data.ticker.toUpperCase().endsWith('.SS') || data.ticker.toUpperCase().endsWith('.SZ')));
-  currentMarket = isAsx ? 'aus' : isInd ? 'ind' : isKor ? 'kor' : isJpn ? 'jpn' : isUk ? 'uk' : isEurozone ? 'eu'
-    : isHk ? 'hk' : isChinaA ? 'cn'
-    : (data.ticker && !data.ticker.includes('.') ? 'us' : 'other');
-
-  if (isAsx) {
+  // ── Market detection — still drives the RF/ERP input values and the
+  // "About the X numbers" panel, both DOM-only concerns that stay here ──
+  if (currentMarket === 'aus') {
     els.rfInput.value  = liveAusRfRate;
     els.erpInput.value = 6.0;
     setRfBadge('aus', liveAusRfRate);   // immediate — async fetch may refine the value
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Australian MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
     fetchAndSetAustralianRfRate();
-  } else if (isInd) {
+  } else if (currentMarket === 'ind') {
     els.rfInput.value  = liveIndRfRate;
     els.erpInput.value = 7.5;
     setRfBadge('ind', liveIndRfRate);   // immediate — async fetch may refine the value
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP (7.0–9.0%)'; els.erpMarketNote.hidden = false; }
     fetchAndSetIndianRfRate();
-  } else if (isKor) {
+  } else if (currentMarket === 'kor') {
     els.rfInput.value  = KOR_RF;
     els.erpInput.value = KOR_ERP;
     setRfBadge('kor', KOR_RF);   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP incl. governance-risk premium (7.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Korea has no live rate source to fetch.
-  } else if (isJpn) {
+  } else if (currentMarket === 'jpn') {
     els.rfInput.value  = JPN_RF;
     els.erpInput.value = JPN_ERP;
     setRfBadge('jpn', JPN_RF);   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Japan has no live rate source to fetch.
-  } else if (isUk) {
+  } else if (currentMarket === 'uk') {
     els.rfInput.value  = UK_RF;
     els.erpInput.value = UK_ERP;
     setRfBadge('uk', UK_RF);   // fixed estimate — no live source exists, see setRfBadge's 'uk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'UK MRP (near-US developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — UK has no live rate source to fetch.
-  } else if (isEurozone) {
+  } else if (currentMarket === 'eu') {
     els.rfInput.value  = EU_RF;
     els.erpInput.value = EU_ERP;
     setRfBadge('eu', EU_RF);   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
-  } else if (isHk) {
+  } else if (currentMarket === 'hk') {
     els.rfInput.value  = HK_RF;
     els.erpInput.value = HK_ERP;
     setRfBadge('hk', HK_RF);   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP — rougher estimate than other markets, see "About the Hong Kong numbers"'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Hong Kong has no live rate source to fetch.
-  } else if (isChinaA) {
+  } else if (currentMarket === 'cn') {
     els.rfInput.value  = CHINA_RF;
     els.erpInput.value = CHINA_ERP;
     setRfBadge('cn', CHINA_RF);   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
@@ -413,10 +408,8 @@ function prefillInputs(data) {
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
   }
 
-  // ── FCF (DCF) — reported FCF, else OCF − CapEx, else OCF × 0.8 proxy, else
-  // latest annual FCF (only when TTM is completely unavailable — see
-  // utils.js's deriveFcf) ──
-  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
+  // ── FCF (DCF) — DOM display only; the value itself came from assumptions.fcfInfo ──
+  const fcfInfo = assumptions.fcfInfo;
   const fcf = fcfInfo.value;
   const isFcfNegative = fcf !== null && fcf <= 0;
 
@@ -479,83 +472,21 @@ function prefillInputs(data) {
   }
 
   // ── WACC (also gives the CAPM cost of equity Re used to seed DDM) ──
-  const rf  = parseFloat(els.rfInput.value)  / 100 || 0.045;
-  const erp = parseFloat(els.erpInput.value) / 100 || 0.055;
+  const rf = assumptions.rf;
+  const erp = assumptions.erp;
   const beta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
-
-  // Apply market-specific beta floor before seeding both WACC and DDM.
-  // Yahoo betas for non-US stocks are measured vs S&P 500 and understate
-  // domestic systematic risk. The floor affects the initial seed only —
-  // the user can override all inputs directly.
-  const betaFloor = getMarketBetaFloor(data.ticker);
-  const effectiveBeta = Math.max(beta, betaFloor);
-  const betaWasFloored = effectiveBeta > beta;
-
-  const waccResult = calculateWACC({
-    marketCap:       data.marketCap,
-    totalDebt:       data.totalDebt,
-    beta:            effectiveBeta,
-    interestExpense: data.interestExpense,
-    taxRate:         data.taxRate,
-    ebit:            data.ebit,
-    riskFreeRate:    rf,
-    erp,
-  });
+  const effectiveBeta = assumptions.effectiveBeta;
+  const betaWasFloored = assumptions.betaWasFloored;
+  const waccResult = assumptions.waccResult;
 
   const re = rf + effectiveBeta * erp;
   lastWaccResult = waccResult;
   lastCapm = { re, rf, erp, beta: effectiveBeta, rawBeta: beta, betaWasFloored };
 
-  // ── DCF growth seeds ──
-  const baseGrowthPct = +(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100).toFixed(1);
-  // Bear/bull spread as a magnitude offset from base, not a base*0.5/base*1.5
-  // multiplier. The multiplier form inverts direction once base is negative:
-  // halving a negative number moves it *toward* zero (an easier bear case,
-  // not harsher) and 1.5x-ing it pushes it *further* negative (a harsher
-  // bull case, not easier). |base| as the offset keeps bear <= base <= bull
-  // regardless of sign. (DDM's growth seed below has the same latent
-  // inversion risk if divGrowthPct ever goes negative, but its Math.max(0, …)
-  // floor has so far kept it from surfacing — left as-is, out of scope here.)
-  const dcfGrowthOffset = Math.abs(baseGrowthPct) * 0.5;
-  const bearGrowthPct = +Math.max(-15, baseGrowthPct - dcfGrowthOffset).toFixed(1);
-  const bullGrowthPct = +Math.min(30,  baseGrowthPct + dcfGrowthOffset).toFixed(1);
-
-  // ── DDM seeds — D0 from trailing dividend → indicated rate → price × yield ──
-  const dividend = data.trailingAnnualDividendRate
-    ?? data.dividendRate
-    ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
+  const dividend = assumptions.modelSeeds.ddm.dividend;
   dividendAvailable = dividend != null && dividend > 0;
-  const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
-  const rePct = +(re * 100).toFixed(2);
 
-  // Terminal growth default is 2.5% for every market except Korea, Japan, UK, eurozone, and
-  // Hong Kong, which seed lower (KOR_TGROWTH / JPN_TGROWTH / UK_TGROWTH / EU_TGROWTH /
-  // HK_TGROWTH) to reflect structurally lower long-run growth expectations — see each
-  // market's "About the … numbers" panel for the reasoning. China (CHINA_TGROWTH) is kept
-  // at the 2.5% default despite its own fixed RF/ERP — see chinaInfoBlock().
-  const marketTGrowth = currentMarket === 'kor' ? KOR_TGROWTH
-                      : currentMarket === 'jpn' ? JPN_TGROWTH
-                      : currentMarket === 'uk'  ? UK_TGROWTH
-                      : currentMarket === 'eu'  ? EU_TGROWTH
-                      : currentMarket === 'hk'  ? HK_TGROWTH
-                      : currentMarket === 'cn'  ? CHINA_TGROWTH
-                      : 2.5;
-
-  modelSeeds = {
-    dcf: {
-      growth:   { bear: bearGrowthPct, base: baseGrowthPct, bull: bullGrowthPct },
-      tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
-      discount: waccResult
-        ? { bear: +(waccResult.wacc * 100 + 1).toFixed(2), base: +(waccResult.wacc * 100).toFixed(2), bull: +(Math.max(1, waccResult.wacc * 100 - 1)).toFixed(2) }
-        : { bear: 11, base: 10, bull: 9 },
-    },
-    ddm: {
-      dividend,
-      growth:   { bear: +(Math.max(0, divGrowthPct * 0.5)).toFixed(1), base: divGrowthPct, bull: +(Math.min(12, divGrowthPct * 1.5)).toFixed(1) },
-      tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
-      discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
-    },
-  };
+  modelSeeds = assumptions.modelSeeds;
 
   // Growth fades toward the terminal rate instead of holding flat for every
   // forecast year then jumping straight to it — Damodaran's transition-phase
@@ -564,7 +495,7 @@ function prefillInputs(data) {
   // company, so default the toggle on whenever the base case itself is
   // negative; leave it off otherwise since a flat rate is a fine default for
   // a stable/growing company and users can still opt in manually either way.
-  if (els.multistageToggle) els.multistageToggle.checked = baseGrowthPct < 0;
+  if (els.multistageToggle) els.multistageToggle.checked = assumptions.useMultiStage;
 
   seedInputsForModel(valuationModel);
   applyModelUI();
@@ -1043,73 +974,44 @@ function renderSensitivityGrid(grid, currentPrice, sym) {
   els.sensitivity.hidden = false;
 }
 
+// Reads the shared scenario <input> elements into a plain seed object and
+// delegates the actual DCF/DDM math to the pure computeScenarios()
+// (www/dcf/calc/assumptions.js) — the exact same function the native
+// shell's Card Dashboard calls. Preserves the original per-field fallback
+// defaults exactly: parseFloat(el.value) || fallbackPct, where
+// fallbackPct is the pre-refactor fraction default × 100 (e.g. DCF growth
+// used `parseFloat(v)/100 || 0.05`, which is mathematically identical to
+// `parseFloat(v) || 5` since dividing then multiplying by the same
+// nonzero constant never changes which branch of `||` fires).
 function buildScenarios(data) {
-  const years   = parseInt(els.yearsSlider.value, 10);
-  const configs = [
-    { key: 'bear', growthEl: els.growthBear, tgEl: els.tgrowthBear, waccEl: els.waccBear },
-    { key: 'base', growthEl: els.growthBase, tgEl: els.tgrowthBase, waccEl: els.waccBase },
-    { key: 'bull', growthEl: els.growthBull, tgEl: els.tgrowthBull, waccEl: els.waccBull },
-  ];
+  const years = parseInt(els.yearsSlider.value, 10);
 
   // ── DDM (banks/insurance, or user-toggled) ──
   if (valuationModel === 'ddm') {
     const dividend = els.dividendInput
       ? parseFloat(String(els.dividendInput.value).replace(/,/g, ''))
       : NaN;
-    return configs.map(({ key, growthEl, tgEl, waccEl }) => {
-      const growthRate     = parseFloat(growthEl.value) / 100 || 0; // 0% is a valid DDM case (flat dividend perpetuity)
-      const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
-      const costOfEquity   = parseFloat(waccEl.value)  / 100 || 0.09;
-      if (!(dividend > 0)) {
-        return { key, growthRate, terminalGrowth, wacc: costOfEquity, result: null, noDividend: true };
-      }
-      const result = calculateDDM({
-        dividend, growthRate, terminalGrowth, costOfEquity,
-        projectionYears: years, currentPrice: data.price,
-        midYear: !!(els.midyearToggle && els.midyearToggle.checked),
-      });
-      return { key, growthRate, terminalGrowth, wacc: costOfEquity, result };
-    });
+    const seeds = {
+      dividend,
+      growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // 0% is a valid DDM case (flat dividend perpetuity)
+      tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
+      discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
+    };
+    return computeScenarios(data, 'ddm', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
   }
 
   // ── DCF ──
   const { fcfRaw, normFcf } = resolveDcfFcfInputs(data);
-  const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
-    ? data.dilutedSharesOutstanding : data.sharesOutstanding;
-  const useMultiStage = !!(els.multistageToggle && els.multistageToggle.checked);
-  const useMidYear = !!(els.midyearToggle && els.midyearToggle.checked);
-
-  function runDcf(fcfValue, growthRate, terminalGrowth, wacc) {
-    const common = {
-      terminalGrowth, wacc, projectionYears: years,
-      totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
-      sharesOutstanding: resolvedShares, currentPrice: data.price,
-      midYear: useMidYear,
-    };
-    return useMultiStage
-      ? calculateFadingGrowthDCF({ ...common, fcf: fcfValue, initialGrowth: growthRate })
-      : calculateDCF({ ...common, fcf: fcfValue, growthRate });
-  }
-
-  return configs.map(({ key, growthEl, tgEl, waccEl }) => {
-    const growthRate     = parseFloat(growthEl.value) / 100 || 0.05;
-    const terminalGrowth = parseFloat(tgEl.value)    / 100 || 0.025;
-    const wacc           = parseFloat(waccEl.value)  / 100 || 0.10;
-
-    if (fcfRaw === null) {
-      if (normFcf !== null) {
-        return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc), normalised: true };
-      }
-      return { key, growthRate, terminalGrowth, wacc, result: null, fcfMissing: true };
-    }
-    if (fcfRaw <= 0) {
-      if (normFcf !== null) {
-        return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc), normalised: true };
-      }
-      return { key, growthRate, terminalGrowth, wacc, result: null, fcfNegative: true };
-    }
-
-    return { key, growthRate, terminalGrowth, wacc, result: runDcf(fcfRaw, growthRate, terminalGrowth, wacc) };
+  const seeds = {
+    growth:   { bear: parseFloat(els.growthBear.value) || 5, base: parseFloat(els.growthBase.value) || 5, bull: parseFloat(els.growthBull.value) || 5 },
+    tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
+    discount: { bear: parseFloat(els.waccBear.value) || 10, base: parseFloat(els.waccBase.value) || 10, bull: parseFloat(els.waccBull.value) || 10 },
+  };
+  return computeScenarios(data, 'dcf', seeds, {
+    years,
+    useMultiStage: !!(els.multistageToggle && els.multistageToggle.checked),
+    useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
+    fcfRaw, normFcf,
   });
 }
 
