@@ -11,6 +11,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "ANZ.AX",
+    "slug": "anz-ax",
+    "name": "ANZ Group Holdings Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 27.42568910877323,
+    "price": 38.04,
+    "marginOfSafety": -0.27903025476411064,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "BHP.AX",
     "slug": "bhp-ax",
     "name": "BHP Group Limited",
@@ -99,6 +110,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "CSL.AX",
+    "slug": "csl-ax",
+    "name": "CSL Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 70.36458751172056,
+    "price": 137.52,
+    "marginOfSafety": -0.48833196981006,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "EDV.AX",
     "slug": "edv-ax",
     "name": "Endeavour Group Limited",
@@ -163,6 +185,17 @@
     "price": 4.91,
     "marginOfSafety": 2.468241338343816,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "IAG.AX",
+    "slug": "iag-ax",
+    "name": "Insurance Australia Group Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 3.444012201000409,
+    "price": 7.81,
+    "marginOfSafety": -0.559025326376388,
+    "updated": "2026-08-13"
   },
   {
     "ticker": "JBH.AX",
@@ -328,6 +361,17 @@
     "price": 8.03,
     "marginOfSafety": -0.8718160878503611,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "SUN.AX",
+    "slug": "sun-ax",
+    "name": "Suncorp Group Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 5.881530832116,
+    "price": 19.81,
+    "marginOfSafety": -0.703102936288945,
+    "updated": "2026-08-13"
   },
   {
     "ticker": "TAH.AX",

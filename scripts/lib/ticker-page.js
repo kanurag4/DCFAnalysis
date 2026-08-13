@@ -9,6 +9,7 @@ const path = require('path');
 const { mapQuoteSummary, fetchFxRate } = require('../../www/data.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
+const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
@@ -616,16 +617,30 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       const baseGrowthPct = r1(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100);
       const s = deriveScenarios({ method: 'DCF', baseGrowthPct, waccOrRePct: waccPct });
       method = 'DCF';
+      // Fade growth toward the terminal rate instead of holding one flat
+      // rate for the whole horizon whenever the base case itself is
+      // negative — same auto-enable rule as the live tool's prefillInputs()
+      // (see www/calc/assumptions.js's useMultiStage and CLAUDE.md's
+      // 2026-08-11 Known Traps entry, Damodaran's transition-phase
+      // convention). This was missing here entirely until now: a flat
+      // negative rate held for 5 years understates intrinsic value for a
+      // shrinking company, so every negative-base-growth DCF ticker page
+      // generated before this fix has a Base case that's too pessimistic
+      // versus the live tool.
+      const useMultiStage = baseGrowthPct < 0;
       scenarios = ['bear', 'base', 'bull'].map(key => {
-        const result = calculateDCF({
-          fcf: baseFcf, growthRate: s.growth[key] / 100, terminalGrowth, wacc: s.discount[key] / 100,
-          projectionYears: 5, totalDebt: data.totalDebt, totalCash: data.totalCash,
+        const common = {
+          terminalGrowth, wacc: s.discount[key] / 100, projectionYears: 5,
+          totalDebt: data.totalDebt, totalCash: data.totalCash,
           sharesOutstanding: resolvedShares, currentPrice: data.price,
           // Matches the live tool's current default (2026-08-08: mid-year
           // discounting shipped as an opt-in toggle, default off) — do not
           // hardcode true here again without also flipping the live tool's
           // default, or this drifts out of sync silently like it just did.
-        });
+        };
+        const result = useMultiStage
+          ? calculateFadingGrowthDCF({ ...common, fcf: baseFcf, initialGrowth: s.growth[key] / 100 })
+          : calculateDCF({ ...common, fcf: baseFcf, growthRate: s.growth[key] / 100 });
         return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
       });
       waccBreakdown = { ...waccResult, isBank: false };
