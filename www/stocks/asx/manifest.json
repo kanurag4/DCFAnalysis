@@ -418,6 +418,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "TPW.AX",
+    "slug": "tpw-ax",
+    "name": "Temple & Webster Group Ltd",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 2.889899002219076,
+    "price": 5.24,
+    "marginOfSafety": -0.44849255682842065,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "VAU.AX",
     "slug": "vau-ax",
     "name": "VLTMINLTD FPO [VAU]",
