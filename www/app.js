@@ -211,7 +211,12 @@ const JPN_TGROWTH = 1.5;   // vs the tool's 2.5% default — see the "About the 
 const UK_RF       = 5.0;   // UK Gilt-proxy
 const UK_ERP      = 6.0;   // near-US-tier developed market
 const UK_TGROWTH  = 2.0;
-const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
+// EUROZONE_SUFFIXES moved to calc/assumptions.js's detectMarket() — this
+// file's own market-detection chain (which used to reference it here) was
+// replaced by deriveDcfAssumptions() in the 2026-08-13 pure-extraction
+// refactor. A duplicate const of the same name in both <script>-loaded
+// files is a fatal SyntaxError (classic scripts share one top-level
+// lexical scope), not just dead-code duplication — don't re-add this here.
 const EU_RF       = 3.2;   // eurozone Bund-proxy
 const EU_ERP      = 5.5;
 const EU_TGROWTH  = 1.8;
