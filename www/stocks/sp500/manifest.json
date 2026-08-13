@@ -11,6 +11,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "ADM",
+    "slug": "adm",
+    "name": "Archer-Daniels-Midland Company",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 100.86925639402604,
+    "price": 79.73,
+    "marginOfSafety": 0.2651355373639287,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "ADSK",
     "slug": "adsk",
     "name": "Autodesk, Inc.",
@@ -44,6 +55,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "AVY",
+    "slug": "avy",
+    "name": "Avery Dennison Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 290.0016516331613,
+    "price": 181.03,
+    "marginOfSafety": 0.6019535526330515,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "BBY",
     "slug": "bby",
     "name": "Best Buy Co., Inc.",
@@ -53,6 +75,50 @@
     "price": 83.28,
     "marginOfSafety": 0.5560662741346337,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "BF-B",
+    "slug": "bf-b",
+    "name": "Brown-Forman Corporation",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 32.27832777635406,
+    "price": 27.92,
+    "marginOfSafety": 0.15610056505566114,
+    "updated": "2026-08-13"
+  },
+  {
+    "ticker": "BKNG",
+    "slug": "bkng",
+    "name": "Booking Holdings Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 317.33996068093984,
+    "price": 212.26,
+    "marginOfSafety": 0.49505305135654315,
+    "updated": "2026-08-13"
+  },
+  {
+    "ticker": "EA",
+    "slug": "ea",
+    "name": "Electronic Arts Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 309.82909800848637,
+    "price": 209.7,
+    "marginOfSafety": 0.4774873534024148,
+    "updated": "2026-08-13"
+  },
+  {
+    "ticker": "GD",
+    "slug": "gd",
+    "name": "General Dynamics Corporation",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 612.2075151197663,
+    "price": 394.21,
+    "marginOfSafety": 0.5529984402216238,
+    "updated": "2026-08-13"
   },
   {
     "ticker": "GEV",
@@ -99,6 +165,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "MDLZ",
+    "slug": "mdlz",
+    "name": "Mondelez International, Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 102.10010507144808,
+    "price": 62.18,
+    "marginOfSafety": 0.6420087660252185,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "META",
     "slug": "meta",
     "name": "Meta Platforms, Inc.",
@@ -119,6 +196,17 @@
     "price": 183.13,
     "marginOfSafety": 0.568591863081734,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "MO",
+    "slug": "mo",
+    "name": "Altria Group, Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 105.42097510364673,
+    "price": 64.38,
+    "marginOfSafety": 0.6374801973228756,
+    "updated": "2026-08-13"
   },
   {
     "ticker": "MRK",
@@ -187,6 +275,39 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "REGN",
+    "slug": "regn",
+    "name": "Regeneron Pharmaceuticals, Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 1126.3613354822842,
+    "price": 797.99,
+    "marginOfSafety": 0.41149805822414337,
+    "updated": "2026-08-13"
+  },
+  {
+    "ticker": "RL",
+    "slug": "rl",
+    "name": "Ralph Lauren Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 285.873320308289,
+    "price": 396.35,
+    "marginOfSafety": -0.27873515754184686,
+    "updated": "2026-08-13"
+  },
+  {
+    "ticker": "SNDK",
+    "slug": "sndk",
+    "name": "Sandisk Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 1768.8728478361472,
+    "price": 1344.29,
+    "marginOfSafety": 0.31584170665269196,
+    "updated": "2026-08-13"
+  },
+  {
     "ticker": "T",
     "slug": "t",
     "name": "AT&T Inc.",
@@ -229,5 +350,16 @@
     "price": 255.95,
     "marginOfSafety": -0.36631594637593473,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "VZ",
+    "slug": "vz",
+    "name": "Verizon Communications Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 78.301821842246,
+    "price": 46.98,
+    "marginOfSafety": 0.6667054457693913,
+    "updated": "2026-08-13"
   }
 ]
