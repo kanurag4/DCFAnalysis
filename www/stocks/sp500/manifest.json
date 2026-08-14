@@ -11,6 +11,28 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "ACN",
+    "slug": "acn",
+    "name": "Accenture plc",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 317.1524487846503,
+    "price": 178.49,
+    "marginOfSafety": 0.7768639631612431,
+    "updated": "2026-08-14"
+  },
+  {
+    "ticker": "ADBE",
+    "slug": "adbe",
+    "name": "Adobe Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 320.8571274721135,
+    "price": 270.49,
+    "marginOfSafety": 0.18620698536771602,
+    "updated": "2026-08-14"
+  },
+  {
     "ticker": "ADM",
     "slug": "adm",
     "name": "Archer-Daniels-Midland Company",
@@ -143,6 +165,39 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "IBM",
+    "slug": "ibm",
+    "name": "International Business Machines Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 178.32574059254114,
+    "price": 237.14,
+    "marginOfSafety": -0.24801492539199987,
+    "updated": "2026-08-14"
+  },
+  {
+    "ticker": "INTU",
+    "slug": "intu",
+    "name": "Intuit Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 374.54573986109284,
+    "price": 358.29,
+    "marginOfSafety": 0.04537034207232359,
+    "updated": "2026-08-14"
+  },
+  {
+    "ticker": "JNJ",
+    "slug": "jnj",
+    "name": "Johnson & Johnson",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 207.56412060710053,
+    "price": 262.08,
+    "marginOfSafety": -0.2080123603208923,
+    "updated": "2026-08-14"
+  },
+  {
     "ticker": "KO",
     "slug": "ko",
     "name": "The Coca-Cola Company",
@@ -163,6 +218,17 @@
     "price": 1215.02,
     "marginOfSafety": -0.4973143789527324,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "MA",
+    "slug": "ma",
+    "name": "Mastercard Incorporated",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 351.75767076662993,
+    "price": 567.04,
+    "marginOfSafety": -0.37965986391325135,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "MDLZ",
@@ -273,6 +339,17 @@
     "price": 26.62,
     "marginOfSafety": 1.3096632805951551,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "PG",
+    "slug": "pg",
+    "name": "The Procter & Gamble Company",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 107.16152658736252,
+    "price": 144.26,
+    "marginOfSafety": -0.25716396376429695,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "REGN",
