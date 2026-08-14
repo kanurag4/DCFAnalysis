@@ -11,6 +11,39 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "AGL.AX",
+    "slug": "agl-ax",
+    "name": "AGL Energy Limited",
+    "sector": "Utilities",
+    "method": "DCF",
+    "intrinsic": 4.604640027538888,
+    "price": 8.835,
+    "marginOfSafety": -0.47881833304596627,
+    "updated": "2026-08-14"
+  },
+  {
+    "ticker": "AIA.AX",
+    "slug": "aia-ax",
+    "name": "Auckland International Airport Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 2.6494895609692017,
+    "price": 7.22,
+    "marginOfSafety": -0.633034686846371,
+    "updated": "2026-08-14"
+  },
+  {
+    "ticker": "ALL.AX",
+    "slug": "all-ax",
+    "name": "Aristocrat Leisure Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 22.28739931903209,
+    "price": 64.125,
+    "marginOfSafety": -0.652438217247063,
+    "updated": "2026-08-14"
+  },
+  {
     "ticker": "ANZ.AX",
     "slug": "anz-ax",
     "name": "ANZ Group Holdings Limited",
@@ -20,6 +53,17 @@
     "price": 38.04,
     "marginOfSafety": -0.27903025476411064,
     "updated": "2026-08-13"
+  },
+  {
+    "ticker": "BEN.AX",
+    "slug": "ben-ax",
+    "name": "Bendigo and Adelaide Bank Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 9.954788486070631,
+    "price": 11.13,
+    "marginOfSafety": -0.10558953404576543,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "BHP.AX",
@@ -132,6 +176,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "FLT.AX",
+    "slug": "flt-ax",
+    "name": "Flight Centre Travel Group Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 23.139831470506135,
+    "price": 13.06,
+    "marginOfSafety": 0.7718094540969475,
+    "updated": "2026-08-14"
+  },
+  {
     "ticker": "FMG.AX",
     "slug": "fmg-ax",
     "name": "Fortescue Ltd",
@@ -231,6 +286,17 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "MPL.AX",
+    "slug": "mpl-ax",
+    "name": "Medibank Private Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 2.940765416058,
+    "price": 5.09,
+    "marginOfSafety": -0.42224648014577604,
+    "updated": "2026-08-14"
+  },
+  {
     "ticker": "MTS.AX",
     "slug": "mts-ax",
     "name": "Metcash Limited",
@@ -275,6 +341,28 @@
     "updated": "2026-08-12"
   },
   {
+    "ticker": "ORI.AX",
+    "slug": "ori-ax",
+    "name": "Orica Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 23.820035208470163,
+    "price": 21.95,
+    "marginOfSafety": 0.08519522589841291,
+    "updated": "2026-08-14"
+  },
+  {
+    "ticker": "PLS.AX",
+    "slug": "pls-ax",
+    "name": "PLS Group Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 1.2700269147622603,
+    "price": 4.885,
+    "marginOfSafety": -0.740014961154092,
+    "updated": "2026-08-14"
+  },
+  {
     "ticker": "QBE.AX",
     "slug": "qbe-ax",
     "name": "QBE Insurance Group Limited",
@@ -284,6 +372,17 @@
     "price": 23.66,
     "marginOfSafety": 0.03808302434977484,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "QUB.AX",
+    "slug": "qub-ax",
+    "name": "Qube Holdings Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 5.9433837931524165,
+    "price": 5.11,
+    "marginOfSafety": 0.16308880492219494,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "REA.AX",
@@ -317,6 +416,17 @@
     "price": 31.45,
     "marginOfSafety": -0.48025112625173894,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "S32.AX",
+    "slug": "s32-ax",
+    "name": "South32 Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 2.6800951928955454,
+    "price": 4.7,
+    "marginOfSafety": -0.4297669802349904,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "SEK.AX",
@@ -449,6 +559,17 @@
     "price": 35.37,
     "marginOfSafety": -0.24601317620581079,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "WDS.AX",
+    "slug": "wds-ax",
+    "name": "Woodside Energy Group Ltd",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 20.03641938343807,
+    "price": 32.71,
+    "marginOfSafety": -0.3874527855873412,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "WES.AX",
