@@ -5,10 +5,10 @@
     "name": "HCL Technologies Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 908.0559769074912,
-    "price": 1365.4,
-    "marginOfSafety": -0.3349524118152255,
-    "updated": "2026-08-12"
+    "intrinsic": 908.1035564680978,
+    "price": 1354,
+    "marginOfSafety": -0.3293179051195732,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "HDFCBANK.NS",
@@ -17,9 +17,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 170.959568722859,
-    "price": 729,
-    "marginOfSafety": -0.7654875600509479,
-    "updated": "2026-08-12"
+    "price": 726.7,
+    "marginOfSafety": -0.7647453299534072,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "HEROMOTOCO.NS",
@@ -28,9 +28,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 5936.243472024915,
-    "price": 5895,
-    "marginOfSafety": 0.006996348095829484,
-    "updated": "2026-08-12"
+    "price": 5786.5,
+    "marginOfSafety": 0.025878073451121544,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "MRF.NS",
@@ -38,10 +38,10 @@
     "name": "MRF Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 162787.63729570934,
-    "price": 130785,
-    "marginOfSafety": 0.24469654238413688,
-    "updated": "2026-08-12"
+    "intrinsic": 99240.28482631003,
+    "price": 131350,
+    "marginOfSafety": -0.24445919431815735,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "RPOWER.NS",
@@ -60,10 +60,10 @@
     "name": "Signatureglobal (India) Limited",
     "sector": "Real Estate",
     "method": "DCF",
-    "intrinsic": 46.09008350134957,
-    "price": 807.95,
-    "marginOfSafety": -0.9429542873923515,
-    "updated": "2026-08-12"
+    "intrinsic": 56.18307117104548,
+    "price": 805.7,
+    "marginOfSafety": -0.9302680015253252,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "TCS.NS",
@@ -83,9 +83,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 1652.984503216074,
-    "price": 1625,
-    "marginOfSafety": 0.01722123274835324,
-    "updated": "2026-08-12"
+    "price": 1619,
+    "marginOfSafety": 0.02099104584068809,
+    "updated": "2026-08-14"
   },
   {
     "ticker": "WIPRO.NS",
@@ -94,8 +94,8 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 162.4823224455331,
-    "price": 183.94,
-    "marginOfSafety": -0.11665585274799879,
-    "updated": "2026-08-12"
+    "price": 183.69,
+    "marginOfSafety": -0.11545363141415917,
+    "updated": "2026-08-14"
   }
 ]
