@@ -928,7 +928,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       </section>`;
 
     const html = pageShell({
-      title: `${name} (${t}) ${method} Valuation — Is ${name} Undervalued? | KashVector`,
+      title: `${name} (${t}) — Is It Undervalued? | ${method} Valuation | KashVector`,
       description: `${name} (${t}) intrinsic value via ${method === 'DCF' ? 'Discounted Cash Flow' : 'Dividend Discount Model'}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
