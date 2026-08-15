@@ -758,8 +758,10 @@ function renderAll(data) {
   renderScenarios(scenarios, data, sym);
   renderCharts(scenarios, data.price, sym);
   renderSensitivityGrid(buildSensitivityGrid(data), data.price, sym);
-  // Show the explainer matching the active model
-  if (els.howDcf) els.howDcf.hidden = valuationModel === 'ddm';
+  // Show the explainer matching the active model. Excess Return has no
+  // explainer section of its own yet (out of scope this pass) -- hide both
+  // rather than show DCF's or DDM's, which would describe the wrong method.
+  if (els.howDcf) els.howDcf.hidden = valuationModel !== 'dcf';
   if (els.howDdm) els.howDdm.hidden = valuationModel !== 'ddm';
   show(els.layout, els.disclaimer);
 }
@@ -882,6 +884,12 @@ function renderFinancialWarning(data, sym) {
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
   if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
     const kind = /insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank';
+    const usingExcessReturn = valuationModel === 'excess-return';
+    const modelLabel = usingExcessReturn
+      ? T('excess-return-model', 'Excess Return Model')
+      : T('ddm', 'Dividend Discount Model');
+    const modelName = usingExcessReturn ? 'Excess Return Model' : 'Dividend Discount Model (DDM)';
+    const noDataNote = usingExcessReturn ? '' : (dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown');
     const reason = kind === 'Bank'
       ? 'deposits are a raw material rather than funding, so there is no clean free cash flow and WACC cannot be derived the usual way'
       : 'free cash flow is dominated by investment-portfolio and reserve movements, not owner earnings';
@@ -890,8 +898,8 @@ function renderFinancialWarning(data, sym) {
     const roe = data.returnOnEquity !== null ? fmt(data.returnOnEquity * 100, 1, '%') : 'N/A';
     const div = data.dividendYield  !== null ? fmt(data.dividendYield  * 100, 2, '%') : 'N/A';
     els.finWarning.innerHTML = `
-      <h3>🏦 ${kind} — ${T('ddm', 'Dividend Discount Model')}</h3>
-      <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>Dividend Discount Model (DDM)</strong> instead${dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown'}.</p>
+      <h3>🏦 ${kind} — ${modelLabel}</h3>
+      <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>${modelName}</strong> instead${noDataNote}.</p>${usingExcessReturn ? '<p style="font-size:0.78rem;color:var(--kv-muted)">Low payout ratio relative to ROE and growth makes DDM understate value here — Excess Return Model captures value from reinvested earnings instead.</p>' : ''}
       <p style="font-size:0.78rem;color:var(--kv-muted)">Key ${kind.toLowerCase()} valuation metrics:</p>
       <div class="alt-multiples">
         <div class="alt-multiple"><div class="am-label">P/B</div><div class="am-value">${pb}</div><div class="am-note">&lt;1 = below book</div></div>
@@ -1334,60 +1342,77 @@ function renderBreakeven(data, sym) {
 
 function renderCharts(scenarios, currentPrice, sym) {
   const labels = ['Bear', 'Base', 'Bull'];
+  const excessReturn = valuationModel === 'excess-return';
 
-  // Terminal value warning
-  const withResult = scenarios.filter(s => s.result);
-  const maxTVPct = withResult.length ? Math.max(...withResult.map(s => s.result.terminalValuePct)) : 0;
-  els.tvWarning.hidden = maxTVPct <= 70;
+  // Terminal value warning — meaningless for Excess Return Model, which has
+  // no terminal value component at all (see calc/excessReturn.js).
+  if (excessReturn) {
+    els.tvWarning.hidden = true;
+  } else {
+    const withResult = scenarios.filter(s => s.result);
+    const maxTVPct = withResult.length ? Math.max(...withResult.map(s => s.result.terminalValuePct)) : 0;
+    els.tvWarning.hidden = maxTVPct <= 70;
+  }
 
   const ddm = valuationModel === 'ddm';
+  const breakdownCard = $('breakdown-chart') ? $('breakdown-chart').closest('.chart-card') : null;
 
   // Chart 1: Stacked bar — near-term PV (green) + PV Terminal Value (orange).
-  // DCF works in $B of firm value; DDM works in per-share currency units.
-  const stackNear = ddm
-    ? scenarios.map(s => s.result ? +s.result.pvDividends.reduce((a, b) => a + b, 0).toFixed(2) : 0)
-    : scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
-  const stackTerminal = ddm
-    ? scenarios.map(s => s.result ? +s.result.pvTerminal.toFixed(2) : 0)
-    : scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
+  // Skipped for Excess Return Model — its result shape has no pvFcfs/pvDividends/
+  // pvTerminal fields to stack (no terminal value at all in this model; the
+  // near-term component is a single sum of PV excess returns, not a per-year
+  // series worth its own chart).
+  if (excessReturn) {
+    if (breakdownChart) { breakdownChart.destroy(); breakdownChart = null; }
+    if (breakdownCard) breakdownCard.hidden = true;
+  } else {
+    if (breakdownCard) breakdownCard.hidden = false;
+    // DCF works in $B of firm value; DDM works in per-share currency units.
+    const stackNear = ddm
+      ? scenarios.map(s => s.result ? +s.result.pvDividends.reduce((a, b) => a + b, 0).toFixed(2) : 0)
+      : scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
+    const stackTerminal = ddm
+      ? scenarios.map(s => s.result ? +s.result.pvTerminal.toFixed(2) : 0)
+      : scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
 
-  const fmtBar    = ddm ? (v => `${sym}${v.toFixed(2)}`) : (v => `${sym}${v.toFixed(1)}B`);
-  const labelMin  = ddm ? 0.01 : 0.5;
-  const nearLabel = ddm ? 'PV of Dividends (forecast years)' : 'PV of FCFs (forecast years)';
+    const fmtBar    = ddm ? (v => `${sym}${v.toFixed(2)}`) : (v => `${sym}${v.toFixed(1)}B`);
+    const labelMin  = ddm ? 0.01 : 0.5;
+    const nearLabel = ddm ? 'PV of Dividends (forecast years)' : 'PV of FCFs (forecast years)';
 
-  if (breakdownChart) breakdownChart.destroy();
-  breakdownChart = new Chart($('breakdown-chart'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        { label: nearLabel,               data: stackNear,     backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
-        { label: 'PV of Terminal Value',  data: stackTerminal, backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
-      ],
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#93a0bd', font: { size: 11 } } },
-        datalabels: {
-          color: '#fff',
-          font: { size: 10, weight: 'bold' },
-          formatter: (value) => value >= labelMin ? fmtBar(value) : '',
-          anchor: 'center',
-          align: 'center',
+    if (breakdownChart) breakdownChart.destroy();
+    breakdownChart = new Chart($('breakdown-chart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: nearLabel,               data: stackNear,     backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
+          { label: 'PV of Terminal Value',  data: stackTerminal, backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#93a0bd', font: { size: 11 } } },
+          datalabels: {
+            color: '#fff',
+            font: { size: 10, weight: 'bold' },
+            formatter: (value) => value >= labelMin ? fmtBar(value) : '',
+            anchor: 'center',
+            align: 'center',
+          },
+        },
+        scales: {
+          x: { stacked: true, ticks: { color: '#93a0bd' }, grid: { color: 'rgba(34,48,82,0.5)' } },
+          y: {
+            stacked: true,
+            ticks: { color: '#93a0bd', callback: v => fmtBar(v) },
+            grid: { color: 'rgba(34,48,82,0.5)' },
+            afterFit: scale => { scale.width = 72; },
+          },
         },
       },
-      scales: {
-        x: { stacked: true, ticks: { color: '#93a0bd' }, grid: { color: 'rgba(34,48,82,0.5)' } },
-        y: {
-          stacked: true,
-          ticks: { color: '#93a0bd', callback: v => fmtBar(v) },
-          grid: { color: 'rgba(34,48,82,0.5)' },
-          afterFit: scale => { scale.width = 72; },
-        },
-      },
-    },
-  });
+    });
+  }
 
   // Chart 2: Horizontal bar — current price vs intrinsic values
   const intrinsics  = scenarios.map(s => s.result?.intrinsicValue ?? 0);

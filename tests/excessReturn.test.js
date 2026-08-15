@@ -51,3 +51,15 @@ test('respects a custom projectionYears', () => {
   const r3 = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity: 0.10, growthRate: 0.05, projectionYears: 3, currentPrice: 100 });
   assert.strictEqual(r3.excessReturns.length, 3);
 });
+
+test('computes cagr1yr/3yr/5yr from intrinsicValue when currentPrice is given, null when omitted', () => {
+  const withPrice = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity: 0.10, growthRate: 0.05, currentPrice: 100 });
+  const iv = withPrice.intrinsicValue;
+  near(withPrice.cagr1yr, (iv / 100) - 1, 1e-9);
+  near(withPrice.cagr3yr, Math.pow(iv / 100, 1 / 3) - 1, 1e-9);
+  near(withPrice.cagr5yr, Math.pow(iv / 100, 1 / 5) - 1, 1e-9);
+  const noPrice = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity: 0.10, growthRate: 0.05 });
+  assert.strictEqual(noPrice.cagr1yr, null);
+  assert.strictEqual(noPrice.cagr3yr, null);
+  assert.strictEqual(noPrice.cagr5yr, null);
+});

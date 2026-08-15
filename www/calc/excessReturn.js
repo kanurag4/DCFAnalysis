@@ -38,12 +38,21 @@ function calculateExcessReturn({
   const sumPvExcessReturns = pvExcessReturns.reduce((a, b) => a + b, 0);
   const intrinsicValue = bookValue + sumPvExcessReturns;
 
-  let marginOfSafety = null;
+  // Same model-agnostic CAGR-to-fair-value formula as calc/dcf.js and calc/ddm.js
+  // (assumes price converges to intrinsicValue over N years) -- kept here rather
+  // than in a shared helper since dcf.js/ddm.js each inline it identically too.
+  let marginOfSafety = null, cagr1yr = null, cagr3yr = null, cagr5yr = null;
   if (currentPrice !== null && currentPrice > 0) {
     marginOfSafety = (intrinsicValue - currentPrice) / currentPrice;
+    cagr1yr = (intrinsicValue / currentPrice) - 1;
+    cagr3yr = Math.pow(intrinsicValue / currentPrice, 1 / 3) - 1;
+    cagr5yr = Math.pow(intrinsicValue / currentPrice, 1 / 5) - 1;
   }
 
-  return { intrinsicValue, excessReturns, pvExcessReturns, bookValues, marginOfSafety };
+  return {
+    intrinsicValue, excessReturns, pvExcessReturns, bookValues, marginOfSafety,
+    cagr1yr, cagr3yr, cagr5yr,
+  };
 }
 
 if (typeof module !== 'undefined') module.exports = { calculateExcessReturn };
