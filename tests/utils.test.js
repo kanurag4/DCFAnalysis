@@ -3,7 +3,7 @@ const { test } = require('node:test');
 const {
   safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector,
   isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
-  deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
+  deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor, chooseFinancialModel,
 } = require('../www/utils.js');
 
 // ── deriveFcf ────────────────────────────────────────────────────────────────
@@ -250,6 +250,46 @@ test('isBankOrInsurance: omitting ticker entirely keeps pre-2026-08-15 behaviour
 
 test('isBankOrInsurance: an Indian ticker with a genuinely different industry is unaffected', () => {
   assert.ok(!isBankOrInsurance('Technology', 'Software - Infrastructure', 'OFSS.NS'));
+});
+
+// ── chooseFinancialModel ─────────────────────────────────────────────────────
+// Decides DDM vs Excess Return Model WITHIN the population isBankOrInsurance()
+// already routed away from DCF. `growth` is always the already-capped rate from
+// deriveDividendGrowth() (max 6%), never raw earnings growth.
+
+test('chooseFinancialModel: normal payout ratio stays on DDM', () => {
+  // roe=0.15, growth=0.06 -> sustainablePayout = 1 - 0.06/0.15 = 0.60
+  // actualPayout = 5/10 = 0.50, which is NOT below 0.60*0.5=0.30 -> stays DDM
+  const m = chooseFinancialModel({ roe: 0.15, dividend: 5, trailingEps: 10, growth: 0.06 });
+  assert.strictEqual(m, 'ddm');
+});
+
+test('chooseFinancialModel: low payout ratio (Muthoot-style) switches to Excess Return', () => {
+  // roe=0.317, growth=0.06 -> sustainablePayout = 1 - 0.06/0.317 = 0.8107
+  // actualPayout = 30/279.94 = 0.1072, well below 0.8107*0.5=0.4054 -> excess-return
+  const m = chooseFinancialModel({ roe: 0.317, dividend: 30, trailingEps: 279.94, growth: 0.06 });
+  assert.strictEqual(m, 'excess-return');
+});
+
+test('chooseFinancialModel: roe missing falls back to DDM', () => {
+  assert.strictEqual(chooseFinancialModel({ roe: null, dividend: 5, trailingEps: 10, growth: 0.06 }), 'ddm');
+});
+
+test('chooseFinancialModel: roe <= 0 falls back to DDM', () => {
+  assert.strictEqual(chooseFinancialModel({ roe: -0.02, dividend: 5, trailingEps: 10, growth: 0.06 }), 'ddm');
+});
+
+test('chooseFinancialModel: roe <= growth (capped growth exceeds ROE) treats sustainable payout as 0, real payout still clears it -> DDM', () => {
+  // roe=0.04, growth=0.06 -> roe <= growth -> sustainablePayout defined as 0
+  // actualPayout = 5/10 = 0.50, which is not < 0*0.5=0 -> stays DDM
+  const m = chooseFinancialModel({ roe: 0.04, dividend: 5, trailingEps: 10, growth: 0.06 });
+  assert.strictEqual(m, 'ddm');
+});
+
+test('chooseFinancialModel: no dividend/EPS data treats actualPayout as 0 -- routes to Excess Return if sustainable payout is positive', () => {
+  // roe=0.317, growth=0.06 -> sustainablePayout=0.8107; actualPayout=0 (no dividend) is below 0.5*0.8107
+  const m = chooseFinancialModel({ roe: 0.317, dividend: null, trailingEps: 279.94, growth: 0.06 });
+  assert.strictEqual(m, 'excess-return');
 });
 
 // ── deriveDividendGrowth ─────────────────────────────────────────────────────

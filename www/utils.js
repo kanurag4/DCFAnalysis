@@ -90,6 +90,23 @@ function isBankOrInsurance(sector, industry, ticker) {
   return false;
 }
 
+// Decides DDM vs Excess Return Model WITHIN the population isBankOrInsurance()
+// already routed away from DCF -- this function is never called for a DCF-valued
+// company. DDM only "sees" the dividend actually paid out; a company retaining most
+// of its earnings for growth at a high ROE creates real value DDM can't capture, so
+// it's compared against the payout ratio that would be sustainable given its ROE
+// and growth. `growth` must be the already-capped rate from deriveDividendGrowth()
+// (max 6%), not raw earnings growth -- using the capped rate is what keeps the
+// roe<=growth edge case rare for viable financial companies. Threshold is 0.5x
+// sustainable payout, confirmed with user 2026-08-15. See
+// docs/superpowers/specs/2026-08-15-excess-return-model-financials-design.md.
+function chooseFinancialModel({ roe, dividend, trailingEps, growth }) {
+  if (roe == null || roe <= 0) return 'ddm';
+  const sustainablePayout = roe > growth ? (1 - growth / roe) : 0;
+  const actualPayout = (dividend != null && trailingEps > 0) ? dividend / trailingEps : 0;
+  return actualPayout < sustainablePayout * 0.5 ? 'excess-return' : 'ddm';
+}
+
 // Sustainable dividend growth seed. Dividends grow slower and steadier than
 // earnings, so we use earningsGrowth (then revenueGrowth) but clamp tighter
 // than deriveBaseGrowth. Falls back to 0.04.
@@ -189,7 +206,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isBankOrInsurance,
+  isFinancialSector, isRealEstateSector, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
