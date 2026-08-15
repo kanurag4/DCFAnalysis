@@ -124,5 +124,29 @@
     "exitDate": "2026-08-07",
     "exitPrice": 15.59,
     "dollarPnl": 60.66
+  },
+  {
+    "ticker": "TLS.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 5.15,
+    "exitDate": "2026-08-15",
+    "exitPrice": 4.78,
+    "dollarPnl": -22.42
+  },
+  {
+    "ticker": "ORA.AX",
+    "entryDate": "2026-07-17",
+    "entryPrice": 1.44,
+    "exitDate": "2026-08-15",
+    "exitPrice": 1.505,
+    "dollarPnl": -9.12
+  },
+  {
+    "ticker": "MGH.AX",
+    "entryDate": "2026-07-31",
+    "entryPrice": 4.96,
+    "exitDate": "2026-08-15",
+    "exitPrice": 5.61,
+    "dollarPnl": 11.17
   }
 ]
