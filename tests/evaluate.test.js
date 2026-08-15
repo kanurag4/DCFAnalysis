@@ -44,6 +44,35 @@ test('flags proxy FCF so rank can drop it', () => {
   assert.strictEqual(r.fcfMethod, 'proxy');
 });
 
+// ── /timeseries enrichment wiring (2026-08-15: the batch never fetched
+// /timeseries at all, so a ticker whose TTM freeCashflow/operatingCashflow
+// come back empty — a real, non-trivial share of NSE tickers, confirmed on
+// TECHM.NS — fell straight to excluded:true instead of using the annual-FCF
+// fallback the live DCF tool already has via fetchDCFData(). ──
+test('uses the annualFcf (/timeseries) fallback when quoteSummary FCF is entirely unavailable — does not exclude the stock', () => {
+  const r = evaluateStock({ ...dcfStock, freeCashflow: null, operatingCashflow: null, capitalExpenditures: null, annualFcf: 5e7 }, params);
+  assert.strictEqual(r.excluded, undefined);
+  assert.strictEqual(r.fcfMethod, 'annual');
+  assert.ok(typeof r.intrinsic === 'number');
+});
+
+test('without annualFcf, the same empty-quoteSummary-FCF stock is excluded (proves the fallback, not something else, is what rescues it)', () => {
+  const r = evaluateStock({ ...dcfStock, freeCashflow: null, operatingCashflow: null, capitalExpenditures: null }, params);
+  assert.strictEqual(r.excluded, true);
+});
+
+test('passes ebit through to calculateWACC (changes the computed WACC vs. omitting it, given a real interest expense)', () => {
+  const withEbit = evaluateStock({ ...dcfStock, interestExpense: -5e6, ebit: 2e7 }, params);
+  const withoutEbit = evaluateStock({ ...dcfStock, interestExpense: -5e6, ebit: null }, params);
+  assert.notStrictEqual(withEbit.wacc, withoutEbit.wacc);
+});
+
+test('prefers dilutedSharesOutstanding over sharesOutstanding for the DCF per-share value when both are present', () => {
+  const diluted = evaluateStock({ ...dcfStock, sharesOutstanding: 1e8, dilutedSharesOutstanding: 1.2e8 }, params);
+  const basicOnly = evaluateStock({ ...dcfStock, sharesOutstanding: 1e8, dilutedSharesOutstanding: null }, params);
+  assert.notStrictEqual(diluted.intrinsic, basicOnly.intrinsic);
+});
+
 test('excludes a bank with no dividend', () => {
   const r = evaluateStock({ ...dcfStock, ticker: 'CCC.AX', sector: 'Financial Services', industry: 'Banks', trailingAnnualDividendRate: null, dividendRate: null, dividendYield: null }, params);
   assert.strictEqual(r.excluded, true);

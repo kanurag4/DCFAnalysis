@@ -58,7 +58,7 @@ function evaluateStock(data, params) {
   }
 
   // Everyone else → DCF.
-  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures);
+  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
 
   // Non-bank financial-sector stocks (exchanges, asset managers, card networks):
   // the live DCF tool seeds a normalised FCF of fcf × 0.6, because reported FCF
@@ -75,11 +75,19 @@ function evaluateStock(data, params) {
 
   const waccResult = calculateWACC({
     marketCap: data.marketCap, totalDebt: data.totalDebt, beta: effectiveBeta,
-    interestExpense: data.interestExpense, taxRate: data.taxRate,
+    interestExpense: data.interestExpense, taxRate: data.taxRate, ebit: data.ebit,
     riskFreeRate: rf, erp,
   });
   if (!waccResult) return { ...base, excluded: true, reason: 'no-wacc' };
   const waccUsed = round2pct(waccResult.wacc);
+
+  // Prefer the /timeseries-sourced diluted share count over the basic
+  // defaultKeyStatistics count when available — same precedence app.js's
+  // prefillInputs() uses (see kashvector-lessons.md's deriveFcf/WACC-parity
+  // entry for why a partial port of this enrichment previously produced a
+  // materially wrong intrinsic value in worker-watchlist).
+  const sharesForDcf = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
+    ? data.dilutedSharesOutstanding : data.sharesOutstanding;
 
   // Flag extreme leverage: when debt > 65% of total capital, WACC is weighted almost
   // entirely by cost of debt and understates equity risk — fair value needs extra caution.
@@ -95,7 +103,7 @@ function evaluateStock(data, params) {
     wacc: waccUsed,
     projectionYears: PROJECTION_YEARS,
     totalDebt: data.totalDebt, totalCash: data.totalCash,
-    sharesOutstanding: data.sharesOutstanding, currentPrice: data.price,
+    sharesOutstanding: sharesForDcf, currentPrice: data.price,
   });
   if (!result || result.intrinsicValue == null || result.marginOfSafety == null) {
     return { ...base, excluded: true, reason: 'dcf-unavailable' };
