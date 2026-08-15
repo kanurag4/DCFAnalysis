@@ -197,7 +197,7 @@ function computeScenarios(data, valuationModel, seeds, options) {
       const roe          = seeds.growth[key] / 100;   // "growth" slot holds ROE for this model
       const costOfEquity = seeds.discount[key] / 100;
       if (!(bookValue > 0)) return { key, roe, wacc: costOfEquity, result: null, noBookValue: true };
-      const result = calculateExcessReturn({ bookValue, roe, costOfEquity, growthRate: (seeds.growth.base ?? 0) / 100, projectionYears: years, currentPrice: data.price });
+      const result = calculateExcessReturn({ bookValue, roe, costOfEquity, growthRate: (seeds.growth.base ?? 0) / 100, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
       return { key, roe, wacc: costOfEquity, result };
     });
   }

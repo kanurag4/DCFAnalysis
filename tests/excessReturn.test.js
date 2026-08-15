@@ -63,3 +63,22 @@ test('computes cagr1yr/3yr/5yr from intrinsicValue when currentPrice is given, n
   assert.strictEqual(noPrice.cagr3yr, null);
   assert.strictEqual(noPrice.cagr5yr, null);
 });
+
+test('midYear discounting shifts every PV by (1+costOfEquity)^0.5, same convention as calc/ddm.js', () => {
+  const costOfEquity = 0.10;
+  const yearEnd = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity, growthRate: 0.05, currentPrice: 100 });
+  const midYear = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity, growthRate: 0.05, currentPrice: 100, midYear: true });
+  assert.ok(yearEnd);
+  assert.ok(midYear);
+  const shift = Math.sqrt(1 + costOfEquity);
+  midYear.pvExcessReturns.forEach((pv, i) => near(pv, yearEnd.pvExcessReturns[i] * shift, 1e-9));
+  // ROE > Ke here, so every excess return is positive -- discounting each one
+  // less (mid-year) must strictly raise the intrinsic value.
+  assert.ok(midYear.intrinsicValue > yearEnd.intrinsicValue);
+});
+
+test('midYear defaults to false when omitted', () => {
+  const withDefault    = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity: 0.10, growthRate: 0.05, currentPrice: 100 });
+  const explicitFalse  = calculateExcessReturn({ bookValue: 100, roe: 0.20, costOfEquity: 0.10, growthRate: 0.05, currentPrice: 100, midYear: false });
+  assert.strictEqual(withDefault.intrinsicValue, explicitFalse.intrinsicValue);
+});

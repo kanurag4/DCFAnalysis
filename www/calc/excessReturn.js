@@ -17,6 +17,7 @@ function calculateExcessReturn({
   bookValue, roe, costOfEquity, growthRate,
   projectionYears = 5,
   currentPrice = null,
+  midYear = false,
 }) {
   if (!bookValue || bookValue <= 0) return null;
   if (!roe || roe <= 0) return null;
@@ -30,7 +31,11 @@ function calculateExcessReturn({
   for (let t = 1; t <= projectionYears; t++) {
     const excessReturn = (roe - costOfEquity) * runningBve;
     excessReturns.push(excessReturn);
-    pvExcessReturns.push(excessReturn / Math.pow(1 + costOfEquity, t));
+    // Same mid-year convention as calc/ddm.js -- each year's excess return is an
+    // economic-profit measure generated continuously through the fiscal year, not
+    // a lump sum at year-end, so the same t-0.5 exponent applies equally here.
+    const exponent = midYear ? t - 0.5 : t;
+    pvExcessReturns.push(excessReturn / Math.pow(1 + costOfEquity, exponent));
     runningBve = runningBve * (1 + growthRate);
     bookValues.push(runningBve);
   }

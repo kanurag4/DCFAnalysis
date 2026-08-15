@@ -1081,7 +1081,7 @@ function buildScenarios(data) {
       growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // "growth" slot holds ROE
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
     };
-    return computeScenarios(data, 'excess-return', seeds, { years });
+    return computeScenarios(data, 'excess-return', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
   }
 
   // ── DCF ──
