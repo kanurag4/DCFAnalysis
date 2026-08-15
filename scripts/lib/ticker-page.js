@@ -559,7 +559,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       }
     }
 
-    const isBank = isBankOrInsurance(data.sector, data.industry);
+    const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
 

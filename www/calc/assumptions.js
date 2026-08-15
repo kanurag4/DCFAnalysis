@@ -80,7 +80,7 @@ function discountRateSpread(baseDiscountPct) {
 // Returns everything needed to seed and run Bear/Base/Bull without
 // touching any DOM element.
 function deriveDcfAssumptions(data) {
-  const isBankIns = isBankOrInsurance(data.sector, data.industry);
+  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   const currentMarket = detectMarket(data.ticker);
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;

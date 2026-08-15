@@ -555,7 +555,7 @@ function seedInputsForModel(model) {
 // Relabel shared inputs, swap input rows, and refresh the toggle + breakdown for the active model.
 function applyModelUI() {
   const ddm = valuationModel === 'ddm';
-  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry);
+  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
 
   if (els.fcfRow)      els.fcfRow.hidden = ddm;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
@@ -856,7 +856,7 @@ function renderFinancialWarning(data, sym) {
     return;
   }
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
-  if (isBankOrInsurance(data.sector, data.industry)) {
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
     const kind = /insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank';
     const reason = kind === 'Bank'
       ? 'deposits are a raw material rather than funding, so there is no clean free cash flow and WACC cannot be derived the usual way'
@@ -911,7 +911,7 @@ function renderFinancialWarning(data, sym) {
 // never silently disagree on which FCF was actually run.
 function resolveDcfFcfInputs(data) {
   const useNormFcf = isFinancialSector(data.sector)
-    && !isBankOrInsurance(data.sector, data.industry)
+    && !isBankOrInsurance(data.sector, data.industry, data.ticker)
     && els.fcfNorm && els.fcfNorm.value;
   const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
 
@@ -1250,7 +1250,7 @@ function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, y
 
 function renderBreakeven(data, sym) {
   if (!els.breakevenCallout) return;
-  const isBankIns = isBankOrInsurance(data.sector, data.industry);
+  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   if (isBankIns || valuationModel === 'ddm' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }

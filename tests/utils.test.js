@@ -222,6 +222,36 @@ test('isBankOrInsurance: handles null sector and industry', () => {
   assert.ok(!isBankOrInsurance(null, null));
 });
 
+// ── isBankOrInsurance: Indian NBFC scoping (2026-08-15) ──
+// "Credit Services" is Yahoo's tag for BOTH payment networks (Visa, Mastercard --
+// real FCF, near-zero leverage) and NBFC lenders (Muthoot, Shriram, SBI Cards --
+// no usable FCF, structurally similar to a bank). Ticker-suffix-scoped to .NS/.BO
+// so the Visa/Mastercard case above stays untouched.
+test('isBankOrInsurance: matches Credit Services for an Indian (.NS) ticker (NBFC)', () => {
+  assert.ok(isBankOrInsurance('Financial Services', 'Credit Services', 'MUTHOOTFIN.NS'));
+});
+
+test('isBankOrInsurance: matches Credit Services for an Indian (.BO) ticker too', () => {
+  assert.ok(isBankOrInsurance('Financial Services', 'Credit Services', 'MUTHOOTFIN.BO'));
+});
+
+test('isBankOrInsurance: matches Mortgage Finance for an Indian ticker', () => {
+  assert.ok(isBankOrInsurance('Financial Services', 'Mortgage Finance', 'PNBHOUSING.NS'));
+});
+
+test('isBankOrInsurance: does NOT match Credit Services for a non-Indian ticker (Visa/Mastercard stay on DCF)', () => {
+  assert.ok(!isBankOrInsurance('Financial Services', 'Credit Services', 'V'));
+  assert.ok(!isBankOrInsurance('Financial Services', 'Credit Services', 'MA'));
+});
+
+test('isBankOrInsurance: omitting ticker entirely keeps pre-2026-08-15 behaviour (no NBFC match)', () => {
+  assert.ok(!isBankOrInsurance('Financial Services', 'Credit Services'));
+});
+
+test('isBankOrInsurance: an Indian ticker with a genuinely different industry is unaffected', () => {
+  assert.ok(!isBankOrInsurance('Technology', 'Software - Infrastructure', 'OFSS.NS'));
+});
+
 // ── deriveDividendGrowth ─────────────────────────────────────────────────────
 
 test('deriveDividendGrowth: caps at 6% regardless of earnings spike', () => {

@@ -32,7 +32,7 @@ function evaluateStock(data, params) {
   };
 
   // Banks/insurers → DDM (FCF-based DCF is structurally broken for them).
-  if (isBankOrInsurance(data.sector, data.industry)) {
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
     const dividend = data.trailingAnnualDividendRate
       ?? data.dividendRate
       ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
