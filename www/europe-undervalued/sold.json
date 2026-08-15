@@ -38,5 +38,45 @@
     "exitDate": "2026-08-08",
     "exitPrice": 8.3153,
     "dollarPnl": 13.84
+  },
+  {
+    "ticker": "EDEN.PA",
+    "entryDate": "2026-08-03",
+    "entryPrice": 28.52,
+    "exitDate": "2026-08-15",
+    "exitPrice": 28.58,
+    "dollarPnl": -6
+  },
+  {
+    "ticker": "HEN3.DE",
+    "entryDate": "2026-08-08",
+    "entryPrice": 79.8,
+    "exitDate": "2026-08-15",
+    "exitPrice": 76.32,
+    "dollarPnl": -22.24
+  },
+  {
+    "ticker": "BNP.PA",
+    "entryDate": "2026-08-03",
+    "entryPrice": 109.66,
+    "exitDate": "2026-08-15",
+    "exitPrice": 112.1,
+    "dollarPnl": -1.54
+  },
+  {
+    "ticker": "DTE.DE",
+    "entryDate": "2026-08-08",
+    "entryPrice": 29.04,
+    "exitDate": "2026-08-15",
+    "exitPrice": 28.67,
+    "dollarPnl": -6.5
+  },
+  {
+    "ticker": "BAS.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 50.4,
+    "exitDate": "2026-08-15",
+    "exitPrice": 51.15,
+    "dollarPnl": -3.47
   }
 ]

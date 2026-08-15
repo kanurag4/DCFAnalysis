@@ -68,8 +68,8 @@
     "firstPrice": 57.76
   },
   "DB1.DE": {
-    "firstSeen": "2026-08-03",
-    "firstPrice": 262.3
+    "firstSeen": "2026-08-15",
+    "firstPrice": 272.9
   },
   "HEIA.AS": {
     "firstSeen": "2026-08-03",
@@ -98,5 +98,21 @@
   "DTE.DE": {
     "firstSeen": "2026-08-08",
     "firstPrice": 29.04
+  },
+  "FRE.DE": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 47.08
+  },
+  "PUB.PA": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 101.8
+  },
+  "URW.PA": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 103.5
+  },
+  "ACA.PA": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 20.2
   }
 }
