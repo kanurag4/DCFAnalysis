@@ -11,9 +11,10 @@ const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
+const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -81,6 +82,13 @@ function marketMeta(ticker) {
 // dividends to pence, so the data is present; it just wasn't being read.
 const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$', CNY: 'CN¥' };
 
+// Display form for the internal `method` identifier ('DCF'/'DDM'/'ExcessReturn')
+// wherever it's interpolated directly into page copy. DCF/DDM are already valid
+// short-form abbreviations and pass through unchanged; ExcessReturn's internal
+// identifier has no spaces and reads badly inline (e.g. "ExcessReturn Valuation",
+// "mechanical ExcessReturn formula") -- fixed 2026-08-15, peer review finding.
+const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return' };
+
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 
 // ── formatting helpers ─────────────────────────────────────────────────
@@ -128,6 +136,29 @@ function deriveScenarios({ method, baseGrowthPct, waccOrRePct }) {
   if (method === 'DDM') {
     return {
       growth: { bear: r1(Math.max(0, baseGrowthPct * 0.5)), base: baseGrowthPct, bull: r1(Math.min(12, baseGrowthPct * 1.5)) },
+      discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
+    };
+  }
+  if (method === 'ExcessReturn') {
+    // "growth" slot holds ROE for this model -- same magnitude-offset shape as DCF's
+    // growth spread (not DDM's x0.5/x1.5 multiplier, which inverts direction for
+    // negative bases), but matching calc/assumptions.js's roeOffsetSpread() bounds
+    // (floor 0, ceiling 60), NOT growthOffsetSpread()'s (-15/30). growthOffsetSpread's
+    // 30% ceiling is far too low for a high-ROE financial -- a real NBFC checked while
+    // building this sits at ~31.7% ROE, which that ceiling clamps *below* base,
+    // inverting bull < base (fixed here 2026-08-15, peer review finding -- this file
+    // had reintroduced the exact bug roeOffsetSpread() was built to fix, despite a
+    // comment here previously claiming the two already matched). Kept as a separate,
+    // from-scratch Node reimplementation rather than importing that browser-loaded
+    // file -- same established pattern this generator already uses for DCF/DDM, see
+    // CLAUDE.md's note on this exact drift risk.
+    const roeOffset = Math.abs(baseGrowthPct) * 0.5;
+    return {
+      growth: {
+        bear: r1(Math.max(0, baseGrowthPct - roeOffset)),
+        base: baseGrowthPct,
+        bull: r1(Math.min(60, baseGrowthPct + roeOffset)),
+      },
       discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
     };
   }
@@ -559,7 +590,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       }
     }
 
-    const isBank = isBankOrInsurance(data.sector, data.industry);
+    const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
 
@@ -568,17 +599,41 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       d0 = dividend != null ? +(+dividend).toFixed(2) : null;
       const rePct = r2((rf + effectiveBeta * erp) * 100);
       waccOrRePct = rePct;
-      const baseGrowthPct = r1(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100);
-      const s = deriveScenarios({ method: 'DDM', baseGrowthPct, waccOrRePct: rePct });
-      method = 'DDM';
-      scenarios = ['bear', 'base', 'bull'].map(key => {
-        const result = calculateDDM({
-          dividend: d0, growthRate: s.growth[key] / 100, terminalGrowth, costOfEquity: s.discount[key] / 100,
-          projectionYears: 5, currentPrice: data.price,
+      const growth = deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth);
+
+      const roe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+        ? data.returnOnEquity
+        : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
+            ? data.trailingEps / (data.price / data.priceToBook)
+            : null);
+      const financialModel = chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth });
+
+      if (financialModel === 'excess-return') {
+        const roePct = r1(roe * 100);
+        const s = deriveScenarios({ method: 'ExcessReturn', baseGrowthPct: roePct, waccOrRePct: rePct });
+        method = 'ExcessReturn';
+        const bookValue = data.price / data.priceToBook;
+        scenarios = ['bear', 'base', 'bull'].map(key => {
+          const result = calculateExcessReturn({
+            bookValue, roe: s.growth[key] / 100, costOfEquity: s.discount[key] / 100, growthRate: growth,
+            projectionYears: 5, currentPrice: data.price,
+          });
+          return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
         });
-        return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
-      });
-      waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
+        waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
+      } else {
+        const baseGrowthPct = r1(growth * 100);
+        const s = deriveScenarios({ method: 'DDM', baseGrowthPct, waccOrRePct: rePct });
+        method = 'DDM';
+        scenarios = ['bear', 'base', 'bull'].map(key => {
+          const result = calculateDDM({
+            dividend: d0, growthRate: s.growth[key] / 100, terminalGrowth, costOfEquity: s.discount[key] / 100,
+            projectionYears: 5, currentPrice: data.price,
+          });
+          return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
+        });
+        waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
+      }
     } else {
       fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, hist.fcfAnnualLatest);
       baseFcf = fcfInfo.value;
@@ -771,7 +826,16 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
       : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · WACC = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
 
-    const bankMetricsHtml = isBank ? `
+    const bankMetricsHtml = isBank ? (method === 'ExcessReturn' ? `
+      <section class="bank-metrics">
+        <h3>🏦 Bank/Insurer/NBFC — valued with the Excess Return Model</h3>
+        <p>DCF is not used for bank/insurer/NBFC stocks: deposits, reserves, or loan origination are a raw material rather than funding, so there's no clean free cash flow. This company also retains most of its earnings for growth instead of paying them out, so the Dividend Discount Model would understate its value -- the Excess Return Model is used instead, valuing (ROE − Cost of Equity) × Book Value each year on top of the existing book value.</p>
+        <div class="bank-metric-grid">
+          <div class="stat"><div class="stat-label">P/B</div><div class="stat-value">${data.priceToBook != null ? data.priceToBook.toFixed(2) + 'x' : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
+          <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
+        </div>
+      </section>` : `
       <section class="bank-metrics">
         <h3>🏦 Bank/Insurer — valued with the Dividend Discount Model</h3>
         <p>DCF is not used for bank/insurer stocks: deposits or reserves are a raw material rather than funding, so there's no clean free cash flow. This valuation uses the Dividend Discount Model (DDM) instead.</p>
@@ -780,7 +844,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
-      </section>` : '';
+      </section>`) : '';
 
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
@@ -900,10 +964,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       <p class="pure-maths-note">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : 'dividends'} through the mechanical ${method} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${method}?</a></span>
+        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
       </p>
 
-      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : 'dividend growth or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
+      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
 
       <section class="other-tickers">
         <h2>More ${market.label ? escapeHtml(market.label) + ' ' : ''}stocks we've valued</h2>
@@ -912,7 +976,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>
 
-      <p class="disclaimer"><strong>Not financial advice.</strong> ${method} valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
+      <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
 
       <section class="tool-info">
         <div class="tool-about">
@@ -922,17 +986,18 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         <div class="tool-faq">
           <h2>Frequently asked questions</h2>
           <details class="faq-item"><summary>Is ${escapeHtml(name)} (${escapeHtml(t)}) undervalued?</summary>
-            <p>The Base-case ${method} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
+            <p>The Base-case ${METHOD_SHORT[method]} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
           </details>
         </div>
       </section>`;
 
+    const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model' };
     const html = pageShell({
-      title: `${name} (${t}) — Is It Undervalued? | ${method} Valuation | KashVector`,
-      description: `${name} (${t}) intrinsic value via ${method === 'DCF' ? 'Discounted Cash Flow' : 'Dividend Discount Model'}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
+      title: `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
+      description: `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
-      subtitle: `${method} Valuation · ${escapeHtml(sectorLine)}`,
+      subtitle: `${METHOD_SHORT[method]} Valuation · ${escapeHtml(sectorLine)}`,
       jsonLd: [breadcrumbJsonLd(crumbs)],
       breadcrumbHtml: breadcrumbNav(crumbs),
       mainHtml,
@@ -952,4 +1017,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios };

@@ -33,6 +33,51 @@ test('routes a bank to DDM', () => {
   assert.ok(r.intrinsic > 0);
 });
 
+// ── Excess Return Model (low-payout financials, 2026-08-15) ──
+
+test('routes a low-payout financial (Muthoot-style) to Excess Return Model instead of DDM', () => {
+  const nbfc = {
+    ...dcfStock, ticker: 'MUTHOOTFIN.NS', sector: 'Financial Services', industry: 'Credit Services',
+    price: 2842, priceToBook: 2.91585, returnOnEquity: 0.31735,
+    trailingEps: 279.94, trailingAnnualDividendRate: null, dividendRate: 30, dividendYield: 0.0104,
+    earningsGrowth: 0.388, revenueGrowth: 0.353,
+  };
+  const r = evaluateStock(nbfc, params);
+  assert.strictEqual(r.method, 'ExcessReturn');
+  assert.strictEqual(r.excluded, undefined);
+  assert.ok(typeof r.intrinsic === 'number');
+});
+
+test('a bank/insurer with a normal payout ratio still gets DDM, unaffected by this feature (regression)', () => {
+  const bank = { ...dcfStock, ticker: 'CCC.AX', sector: 'Financial Services', industry: 'Banks—Diversified',
+    trailingAnnualDividendRate: 0.8, dividendYield: 0.08, returnOnEquity: 0.15, trailingEps: 1.6,
+    earningsGrowth: 0.05, revenueGrowth: 0.03 };
+  const r = evaluateStock(bank, params);
+  assert.strictEqual(r.method, 'DDM');
+});
+
+test('Excess Return Model result includes no terminalValuePct field (no terminal value by design)', () => {
+  const nbfc = {
+    ...dcfStock, ticker: 'MUTHOOTFIN.NS', sector: 'Financial Services', industry: 'Credit Services',
+    price: 2842, priceToBook: 2.91585, returnOnEquity: 0.31735,
+    trailingEps: 279.94, trailingAnnualDividendRate: null, dividendRate: 30, dividendYield: 0.0104,
+    earningsGrowth: 0.388, revenueGrowth: 0.353,
+  };
+  const r = evaluateStock(nbfc, params);
+  assert.strictEqual(r.terminalValuePct, undefined);
+});
+
+test('Excess Return Model falls back to DDM when ROE is unavailable and cannot be derived', () => {
+  const nbfc = {
+    ...dcfStock, ticker: 'DDD.NS', sector: 'Financial Services', industry: 'Credit Services',
+    price: 2842, priceToBook: null, returnOnEquity: null, trailingEps: null,
+    trailingAnnualDividendRate: null, dividendRate: 30, dividendYield: 0.0104,
+    earningsGrowth: 0.388, revenueGrowth: 0.353,
+  };
+  const r = evaluateStock(nbfc, params);
+  assert.strictEqual(r.method, 'DDM');
+});
+
 test('excludes a stock with non-positive FCF', () => {
   const r = evaluateStock({ ...dcfStock, freeCashflow: null, operatingCashflow: -1e7, capitalExpenditures: null }, params);
   // OCF<0 → proxy gives negative fcf → calculateDCF returns null

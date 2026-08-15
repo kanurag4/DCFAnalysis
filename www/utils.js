@@ -57,15 +57,54 @@ function isRealEstateSector(sector) {
   return !!(sector && /real estate/i.test(sector));
 }
 
-// Narrow check: only banks and insurers where FCF-based DCF is structurally
-// broken — defaults them to DDM. Intentionally excludes asset managers, payment
+// Narrow check: banks and insurers where FCF-based DCF is structurally broken
+// -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
-// Contrast with isFinancialSector, which is broader and gates the normalised-FCF
-// panel rather than the full model switch.
-function isBankOrInsurance(sector, industry) {
+// Contrast with isFinancialSector, which is broader and gates the
+// normalised-FCF panel rather than the full model switch.
+//
+// `ticker` (optional, 3rd param, added 2026-08-15) additionally routes Indian
+// (.NS/.BO) NBFCs/mortgage financiers ("Credit Services"/"Mortgage Finance")
+// to DDM too -- loan origination shows up as an operating cash *outflow* for
+// any lender, the same distortion that already breaks DCF for banks. Found
+// after confirming ~13% of NIFTY's "unvaluable" exclusions were large, real
+// NBFCs (MUTHOOTFIN, SHRIRAMFIN, SBICARD, PFC, RECLTD, TATACAP, ...) hitting
+// exactly this, not a data gap. Deliberately scoped to .NS/.BO tickers only,
+// NOT global, because "Credit Services" is Yahoo's tag for payment networks
+// too -- Visa and Mastercard are BOTH tagged Financial Services/Credit
+// Services (confirmed live), with real, substantial FCF and near-zero
+// leverage (debt/marketCap ~0.04-0.05, vs 0.7-8× for the NIFTY NBFCs above) --
+// a US-listed "Credit Services" ticker with no .NS/.BO suffix is far more
+// likely to be a Visa/Mastercard-style network than a lender, so a global
+// match would wrongly force healthy, DCF-appropriate businesses into DDM.
+// India doesn't have an equivalent domestically-listed payment-network company
+// under this tag, which is what makes the ticker-suffix scope safe there.
+// `ticker` is optional and defaults to not matching NBFC industries at all --
+// every existing call site that omits it keeps today's behaviour unchanged.
+function isBankOrInsurance(sector, industry, ticker) {
   const s = sector || '';
   const i = industry || '';
-  return /bank|insurance/i.test(i) || /bank|insurance/i.test(s);
+  if (/bank|insurance/i.test(i) || /bank|insurance/i.test(s)) return true;
+  const t = (ticker || '').toUpperCase();
+  if ((t.endsWith('.NS') || t.endsWith('.BO')) && /credit services|mortgage finance/i.test(i)) return true;
+  return false;
+}
+
+// Decides DDM vs Excess Return Model WITHIN the population isBankOrInsurance()
+// already routed away from DCF -- this function is never called for a DCF-valued
+// company. DDM only "sees" the dividend actually paid out; a company retaining most
+// of its earnings for growth at a high ROE creates real value DDM can't capture, so
+// it's compared against the payout ratio that would be sustainable given its ROE
+// and growth. `growth` must be the already-capped rate from deriveDividendGrowth()
+// (max 6%), not raw earnings growth -- using the capped rate is what keeps the
+// roe<=growth edge case rare for viable financial companies. Threshold is 0.5x
+// sustainable payout, confirmed with user 2026-08-15. See
+// docs/superpowers/specs/2026-08-15-excess-return-model-financials-design.md.
+function chooseFinancialModel({ roe, dividend, trailingEps, growth }) {
+  if (roe == null || roe <= 0) return 'ddm';
+  const sustainablePayout = roe > growth ? (1 - growth / roe) : 0;
+  const actualPayout = (dividend != null && trailingEps > 0) ? dividend / trailingEps : 0;
+  return actualPayout < sustainablePayout * 0.5 ? 'excess-return' : 'ddm';
 }
 
 // Sustainable dividend growth seed. Dividends grow slower and steadier than
@@ -167,7 +206,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isBankOrInsurance,
+  isFinancialSector, isRealEstateSector, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,

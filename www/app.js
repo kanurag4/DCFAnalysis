@@ -49,6 +49,9 @@ const els = {
   fcfRow:         $('fcf-row'),
   dividendRow:    $('dividend-row'),
   dividendInput:  $('dividend-input'),
+  bookvalueRow:   $('bookvalue-row'),
+  bookvalueInput: $('bookvalue-input'),
+  tgrowthRow:     $('tgrowth-row'),
   growthLabel:    $('growth-label'),
   discountLabel:  $('discount-label'),
   discountTip:    $('discount-tip'),
@@ -536,13 +539,20 @@ function prefillInputs(data) {
 // Write a model's seed values into the shared scenario inputs.
 function seedInputsForModel(model) {
   if (!modelSeeds) return;
-  const s = modelSeeds[model];
+  // modelSeeds' key is camelCase (excessReturn) but model/valuationModel is
+  // hyphenated ('excess-return') everywhere else in this file -- translate here
+  // rather than renaming the seeds key, since 'dcf'/'ddm' need no translation.
+  const s = modelSeeds[model === 'excess-return' ? 'excessReturn' : model];
   els.growthBear.value  = s.growth.bear;
   els.growthBase.value  = s.growth.base;
   els.growthBull.value  = s.growth.bull;
-  els.tgrowthBear.value = s.tgrowth.bear;
-  els.tgrowthBase.value = s.tgrowth.base;
-  els.tgrowthBull.value = s.tgrowth.bull;
+  // excess-return seeds have no tgrowth (no terminal value in this model) --
+  // leave the (hidden) terminal-growth inputs at whatever they last held.
+  if (s.tgrowth) {
+    els.tgrowthBear.value = s.tgrowth.bear;
+    els.tgrowthBase.value = s.tgrowth.base;
+    els.tgrowthBull.value = s.tgrowth.bull;
+  }
   els.waccBear.value    = s.discount.bear;
   els.waccBase.value    = s.discount.base;
   els.waccBull.value    = s.discount.bull;
@@ -550,27 +560,36 @@ function seedInputsForModel(model) {
     els.dividendInput.value = s.dividend != null ? (+s.dividend).toFixed(2) : '';
     els.dividendInput.placeholder = s.dividend != null ? '' : 'Enter annual dividend / share';
   }
+  if (model === 'excess-return' && els.bookvalueInput) {
+    els.bookvalueInput.value = s.bookValue != null ? (+s.bookValue).toFixed(2) : '';
+    els.bookvalueInput.placeholder = s.bookValue != null ? '' : 'Enter book value / share';
+  }
 }
 
 // Relabel shared inputs, swap input rows, and refresh the toggle + breakdown for the active model.
 function applyModelUI() {
   const ddm = valuationModel === 'ddm';
-  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry);
+  const excessReturn = valuationModel === 'excess-return';
+  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
 
-  if (els.fcfRow)      els.fcfRow.hidden = ddm;
+  if (els.fcfRow)      els.fcfRow.hidden = ddm || excessReturn;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
-  if (els.multistageRow) els.multistageRow.hidden = ddm;
+  if (els.bookvalueRow) els.bookvalueRow.hidden = !excessReturn;
+  if (els.multistageRow) els.multistageRow.hidden = ddm || excessReturn;
+  if (els.tgrowthRow) els.tgrowthRow.hidden = excessReturn; // no terminal value for this model
 
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
-  if (els.growthLabel) els.growthLabel.innerHTML = T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %');
+  if (els.growthLabel) els.growthLabel.innerHTML = excessReturn
+    ? T('roe', 'ROE %')
+    : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %');
   const discountLabelText = $('discount-label-text');
-  if (discountLabelText) discountLabelText.innerHTML = T(ddm ? 'cost-of-equity' : 'wacc', ddm ? 'Cost of Equity %' : 'WACC %');
-  if (els.discountTip) els.discountTip.setAttribute('data-tip', ddm
+  if (discountLabelText) discountLabelText.innerHTML = T((ddm || excessReturn) ? 'cost-of-equity' : 'wacc', (ddm || excessReturn) ? 'Cost of Equity %' : 'WACC %');
+  if (els.discountTip) els.discountTip.setAttribute('data-tip', (ddm || excessReturn)
     ? 'Higher cost of equity = lower valuation.'
     : 'Higher WACC = lower valuation.');
-  if (els.waccSummary)    els.waccSummary.textContent    = ddm ? 'How cost of equity is calculated' : 'How WACC is calculated';
-  if (els.breakdownTitle) els.breakdownTitle.textContent = ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown';
+  if (els.waccSummary)    els.waccSummary.textContent    = (ddm || excessReturn) ? 'How cost of equity is calculated' : 'How WACC is calculated';
+  if (els.breakdownTitle) els.breakdownTitle.textContent = excessReturn ? 'Excess Return Value Breakdown' : (ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown');
 
   renderDiscountBreakdown();
   updateModelToggle(isBankIns);
@@ -579,9 +598,13 @@ function applyModelUI() {
 function updateModelToggle(isBankIns) {
   if (!els.modelToggleRow) return;
   if (isBankIns) {
-    // Banks/insurance are locked to DDM — show a static notice, no toggle.
+    // Banks/insurance/NBFCs are locked to DDM or Excess Return Model (never DCF) --
+    // show a static notice, no toggle. Which of the two is a computed fact about the
+    // company (payout ratio vs. sustainable payout), not a user preference.
     els.modelToggleRow.hidden = false;
-    els.modelLabel.textContent = '🏦 Dividend Discount Model — DCF is unreliable for banks & insurers.';
+    els.modelLabel.textContent = valuationModel === 'excess-return'
+      ? '🏦 Excess Return Model — payout ratio too low for DDM to be reliable.'
+      : '🏦 Dividend Discount Model — DCF is unreliable for banks & insurers.';
     if (els.ddmToggle) els.ddmToggle.hidden = true;
     return;
   }
@@ -680,7 +703,7 @@ function chinaInfoBlock() {
 }
 
 function renderDiscountBreakdown() {
-  if (valuationModel === 'ddm') {
+  if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
     if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
     const pct = v => (v * 100).toFixed(2) + '%';
     const floorNote = lastCapm.betaWasFloored
@@ -695,12 +718,15 @@ function renderDiscountBreakdown() {
       ? `<div class="wacc-divider"></div>
          <div class="wacc-row"><span class="wacc-src">${ddmMarketLabel} sector reference: <strong>${ddmSectorRef.range}</strong> (${ddmSectorRef.label})</span></div>`
       : '';
+    const modelNote = valuationModel === 'excess-return'
+      ? `<div class="wacc-row"><span class="wacc-src">No dividend/growth-rate component — Excess Return Model values (ROE − Cost of Equity) × Book Value each year, no terminal value beyond the explicit projection.</span></div>`
+      : `<div class="wacc-row"><span class="wacc-src">No debt component — DDM discounts dividends at the cost of equity only.</span></div>`;
     els.waccContent.innerHTML = `
       <div class="wacc-row"><span>Cost of Equity (Re)</span><span class="wacc-val">${pct(lastCapm.re)}</span></div>
       <div class="wacc-row"><span class="wacc-src">CAPM: RF ${pct(lastCapm.rf)} + Beta ${lastCapm.beta.toFixed(2)} × ERP ${pct(lastCapm.erp)}</span></div>
       ${floorNote}
       <div class="wacc-divider"></div>
-      <div class="wacc-row"><span class="wacc-src">No debt component — DDM discounts dividends at the cost of equity only.</span></div>
+      ${modelNote}
       ${sectorRowDdm}
       ${koreaInfoBlock()}
       ${japanInfoBlock()}
@@ -734,8 +760,10 @@ function renderAll(data) {
   renderScenarios(scenarios, data, sym);
   renderCharts(scenarios, data.price, sym);
   renderSensitivityGrid(buildSensitivityGrid(data), data.price, sym);
-  // Show the explainer matching the active model
-  if (els.howDcf) els.howDcf.hidden = valuationModel === 'ddm';
+  // Show the explainer matching the active model. Excess Return has no
+  // explainer section of its own yet (out of scope this pass) -- hide both
+  // rather than show DCF's or DDM's, which would describe the wrong method.
+  if (els.howDcf) els.howDcf.hidden = valuationModel !== 'dcf';
   if (els.howDdm) els.howDdm.hidden = valuationModel !== 'ddm';
   show(els.layout, els.disclaimer);
 }
@@ -856,8 +884,14 @@ function renderFinancialWarning(data, sym) {
     return;
   }
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
-  if (isBankOrInsurance(data.sector, data.industry)) {
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
     const kind = /insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank';
+    const usingExcessReturn = valuationModel === 'excess-return';
+    const modelLabel = usingExcessReturn
+      ? T('excess-return-model', 'Excess Return Model')
+      : T('ddm', 'Dividend Discount Model');
+    const modelName = usingExcessReturn ? 'Excess Return Model' : 'Dividend Discount Model (DDM)';
+    const noDataNote = usingExcessReturn ? '' : (dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown');
     const reason = kind === 'Bank'
       ? 'deposits are a raw material rather than funding, so there is no clean free cash flow and WACC cannot be derived the usual way'
       : 'free cash flow is dominated by investment-portfolio and reserve movements, not owner earnings';
@@ -866,8 +900,8 @@ function renderFinancialWarning(data, sym) {
     const roe = data.returnOnEquity !== null ? fmt(data.returnOnEquity * 100, 1, '%') : 'N/A';
     const div = data.dividendYield  !== null ? fmt(data.dividendYield  * 100, 2, '%') : 'N/A';
     els.finWarning.innerHTML = `
-      <h3>🏦 ${kind} — ${T('ddm', 'Dividend Discount Model')}</h3>
-      <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>Dividend Discount Model (DDM)</strong> instead${dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown'}.</p>
+      <h3>🏦 ${kind} — ${modelLabel}</h3>
+      <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>${modelName}</strong> instead${noDataNote}.</p>${usingExcessReturn ? '<p style="font-size:0.78rem;color:var(--kv-muted)">Low payout ratio relative to ROE and growth makes DDM understate value here — Excess Return Model captures value from reinvested earnings instead.</p>' : ''}
       <p style="font-size:0.78rem;color:var(--kv-muted)">Key ${kind.toLowerCase()} valuation metrics:</p>
       <div class="alt-multiples">
         <div class="alt-multiple"><div class="am-label">P/B</div><div class="am-value">${pb}</div><div class="am-note">&lt;1 = below book</div></div>
@@ -911,7 +945,7 @@ function renderFinancialWarning(data, sym) {
 // never silently disagree on which FCF was actually run.
 function resolveDcfFcfInputs(data) {
   const useNormFcf = isFinancialSector(data.sector)
-    && !isBankOrInsurance(data.sector, data.industry)
+    && !isBankOrInsurance(data.sector, data.industry, data.ticker)
     && els.fcfNorm && els.fcfNorm.value;
   const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
 
@@ -928,6 +962,13 @@ function resolveDcfFcfInputs(data) {
 // fixed. Unlike Bear/Base/Bull (which move growth, terminal growth, and
 // discount rate together), this isolates exactly one axis per cell.
 function buildSensitivityGrid(data) {
+  // Excess Return Model has no terminal-growth axis (see the design's "no terminal
+  // value" decision) -- there's nothing for this discount-rate × terminal-growth
+  // grid to vary on the second axis, so the section is hidden entirely rather than
+  // reusing DDM's dividend-based math (which would read stale/hidden dividend-input
+  // state left over from a previously-viewed ticker and silently show wrong numbers).
+  if (valuationModel === 'excess-return') return null;
+
   const years = parseInt(els.yearsSlider.value, 10);
   const ddm = valuationModel === 'ddm';
 
@@ -1030,6 +1071,23 @@ function buildScenarios(data) {
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
     };
     return computeScenarios(data, 'ddm', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
+  }
+
+  // ── Excess Return Model (low-payout banks/insurers/NBFCs) ──
+  if (valuationModel === 'excess-return') {
+    const bookValue = els.bookvalueInput
+      ? parseFloat(String(els.bookvalueInput.value).replace(/,/g, ''))
+      : NaN;
+    const seeds = {
+      bookValue,
+      growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // "growth" slot holds ROE
+      discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
+      // Book value compounding rate -- not user-editable (no UI field for it),
+      // so re-derived from the same source data assumptions.js seeds it from.
+      // NOT the ROE inputs above (fixed 2026-08-15, see calc/assumptions.js).
+      bookValueGrowthPct: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100,
+    };
+    return computeScenarios(data, 'excess-return', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
   }
 
   // ── DCF ──
@@ -1136,17 +1194,23 @@ async function onShareClick() {
 
 function renderScenarios(scenarios, data, sym) {
   let baseShareInfo = null;
-  const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, normalised }) => {
+  const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, noBookValue, normalised }) => {
     if (!result) {
       let msg;
       if (fcfMissing) {
         msg = 'Enter a Free Cash Flow value in the inputs panel to run the DCF.';
       } else if (noDividend) {
         msg = 'No dividend data available — the Dividend Discount Model needs a dividend. Enter an annual dividend per share in the inputs panel, or use the metrics above.';
+      } else if (noBookValue) {
+        msg = 'Enter a Book Value / Share in the inputs panel to run the Excess Return Model.';
       } else if (fcfNegative) {
         msg = isFinancialSector(currentData?.sector)
           ? 'Reported FCF is negative. Enter a positive Normalised FCF in the inputs panel to run the DCF.'
           : 'FCF is negative — DCF requires positive free cash flow. This company may not be suitable for DCF valuation.';
+      } else if (valuationModel === 'excess-return') {
+        // No terminal-growth concept in this model -- ROE/Cost of Equity must both be
+        // positive for calculateExcessReturn() to return a value (see calc/excessReturn.js).
+        msg = 'ROE and Cost of Equity must both be positive to run the Excess Return Model.';
       } else {
         msg = valuationModel === 'ddm'
           ? 'Cost of equity must exceed the terminal growth rate.'
@@ -1250,7 +1314,7 @@ function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, y
 
 function renderBreakeven(data, sym) {
   if (!els.breakevenCallout) return;
-  const isBankIns = isBankOrInsurance(data.sector, data.industry);
+  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   if (isBankIns || valuationModel === 'ddm' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }
@@ -1284,60 +1348,77 @@ function renderBreakeven(data, sym) {
 
 function renderCharts(scenarios, currentPrice, sym) {
   const labels = ['Bear', 'Base', 'Bull'];
+  const excessReturn = valuationModel === 'excess-return';
 
-  // Terminal value warning
-  const withResult = scenarios.filter(s => s.result);
-  const maxTVPct = withResult.length ? Math.max(...withResult.map(s => s.result.terminalValuePct)) : 0;
-  els.tvWarning.hidden = maxTVPct <= 70;
+  // Terminal value warning — meaningless for Excess Return Model, which has
+  // no terminal value component at all (see calc/excessReturn.js).
+  if (excessReturn) {
+    els.tvWarning.hidden = true;
+  } else {
+    const withResult = scenarios.filter(s => s.result);
+    const maxTVPct = withResult.length ? Math.max(...withResult.map(s => s.result.terminalValuePct)) : 0;
+    els.tvWarning.hidden = maxTVPct <= 70;
+  }
 
   const ddm = valuationModel === 'ddm';
+  const breakdownCard = $('breakdown-chart') ? $('breakdown-chart').closest('.chart-card') : null;
 
   // Chart 1: Stacked bar — near-term PV (green) + PV Terminal Value (orange).
-  // DCF works in $B of firm value; DDM works in per-share currency units.
-  const stackNear = ddm
-    ? scenarios.map(s => s.result ? +s.result.pvDividends.reduce((a, b) => a + b, 0).toFixed(2) : 0)
-    : scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
-  const stackTerminal = ddm
-    ? scenarios.map(s => s.result ? +s.result.pvTerminal.toFixed(2) : 0)
-    : scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
+  // Skipped for Excess Return Model — its result shape has no pvFcfs/pvDividends/
+  // pvTerminal fields to stack (no terminal value at all in this model; the
+  // near-term component is a single sum of PV excess returns, not a per-year
+  // series worth its own chart).
+  if (excessReturn) {
+    if (breakdownChart) { breakdownChart.destroy(); breakdownChart = null; }
+    if (breakdownCard) breakdownCard.hidden = true;
+  } else {
+    if (breakdownCard) breakdownCard.hidden = false;
+    // DCF works in $B of firm value; DDM works in per-share currency units.
+    const stackNear = ddm
+      ? scenarios.map(s => s.result ? +s.result.pvDividends.reduce((a, b) => a + b, 0).toFixed(2) : 0)
+      : scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
+    const stackTerminal = ddm
+      ? scenarios.map(s => s.result ? +s.result.pvTerminal.toFixed(2) : 0)
+      : scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
 
-  const fmtBar    = ddm ? (v => `${sym}${v.toFixed(2)}`) : (v => `${sym}${v.toFixed(1)}B`);
-  const labelMin  = ddm ? 0.01 : 0.5;
-  const nearLabel = ddm ? 'PV of Dividends (forecast years)' : 'PV of FCFs (forecast years)';
+    const fmtBar    = ddm ? (v => `${sym}${v.toFixed(2)}`) : (v => `${sym}${v.toFixed(1)}B`);
+    const labelMin  = ddm ? 0.01 : 0.5;
+    const nearLabel = ddm ? 'PV of Dividends (forecast years)' : 'PV of FCFs (forecast years)';
 
-  if (breakdownChart) breakdownChart.destroy();
-  breakdownChart = new Chart($('breakdown-chart'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        { label: nearLabel,               data: stackNear,     backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
-        { label: 'PV of Terminal Value',  data: stackTerminal, backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
-      ],
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#93a0bd', font: { size: 11 } } },
-        datalabels: {
-          color: '#fff',
-          font: { size: 10, weight: 'bold' },
-          formatter: (value) => value >= labelMin ? fmtBar(value) : '',
-          anchor: 'center',
-          align: 'center',
+    if (breakdownChart) breakdownChart.destroy();
+    breakdownChart = new Chart($('breakdown-chart'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: nearLabel,               data: stackNear,     backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
+          { label: 'PV of Terminal Value',  data: stackTerminal, backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
+        ],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#93a0bd', font: { size: 11 } } },
+          datalabels: {
+            color: '#fff',
+            font: { size: 10, weight: 'bold' },
+            formatter: (value) => value >= labelMin ? fmtBar(value) : '',
+            anchor: 'center',
+            align: 'center',
+          },
+        },
+        scales: {
+          x: { stacked: true, ticks: { color: '#93a0bd' }, grid: { color: 'rgba(34,48,82,0.5)' } },
+          y: {
+            stacked: true,
+            ticks: { color: '#93a0bd', callback: v => fmtBar(v) },
+            grid: { color: 'rgba(34,48,82,0.5)' },
+            afterFit: scale => { scale.width = 72; },
+          },
         },
       },
-      scales: {
-        x: { stacked: true, ticks: { color: '#93a0bd' }, grid: { color: 'rgba(34,48,82,0.5)' } },
-        y: {
-          stacked: true,
-          ticks: { color: '#93a0bd', callback: v => fmtBar(v) },
-          grid: { color: 'rgba(34,48,82,0.5)' },
-          afterFit: scale => { scale.width = 72; },
-        },
-      },
-    },
-  });
+    });
+  }
 
   // Chart 2: Horizontal bar — current price vs intrinsic values
   const intrinsics  = scenarios.map(s => s.result?.intrinsicValue ?? 0);
@@ -1476,7 +1557,7 @@ function recomputeDiscount() {
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(currentData.ticker));
   const betaWasFloored = effectiveBeta > rawBeta;
 
-  if (valuationModel === 'ddm') {
+  if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
     const re    = rf + effectiveBeta * erp;
     const rePct = +(re * 100).toFixed(2);
     els.waccBase.value = rePct;
