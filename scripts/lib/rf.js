@@ -37,7 +37,25 @@ async function fetchRfRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FET
 
 const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',         0.045, { proxyUrl });
 const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.048, { proxyUrl });
-const fetchIndRf = (proxyUrl) => fetchRfRate('^INBMKG10.NS', 0.07,  { proxyUrl });
+
+// India's ^INBMKG10.NS is the raw 10-yr G-Sec yield, which double-counts country risk
+// the same way the batch's static market.js fallback used to (erp already carries
+// India's country risk premium) — see the 2026-08-15 rf/terminal-growth fix. Fixed here
+// too, separately, because this live fetch OVERRIDES market.js's spread-adjusted static
+// fallback whenever it succeeds (marketParamsFor's `live.indRf ?? 0.049` only falls
+// through to the static value when live.indRf is null/undefined) -- missed in the
+// original pass, which only touched market.js's fallback and the live DCF tool's
+// app.js, not this batch-only live-fetch path. Pass `null` as fetchRfRate's own
+// fallback so a failed/out-of-band fetch is distinguishable from a real value: on
+// failure, return the already-spread-adjusted static default directly (0.049) rather
+// than subtracting the spread from it a second time.
+const IND_DEFAULT_SPREAD = 0.0187; // Damodaran Jan 2026, Baa3 rating -- keep in sync with
+                                    // www/app.js's IND_DEFAULT_SPREAD_PCT (percentage units there)
+async function fetchIndRf(proxyUrl, opts = {}) {
+  const raw = await fetchRfRate('^INBMKG10.NS', null, { proxyUrl, ...opts });
+  if (raw == null) return 0.049; // fetch failed or out of plausible band
+  return Math.max(0.01, raw - IND_DEFAULT_SPREAD);
+}
 
 // Fetch a raw equity index level (points, not a rate — no ÷100, no clamping).
 //
