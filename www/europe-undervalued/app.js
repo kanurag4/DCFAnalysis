@@ -60,7 +60,7 @@
     // USD-quoted, and labelling those '€' states a falsehood about the price.
     const sym = PRICE_SYMBOLS[r.currency] || (r.currency ? r.currency + ' ' : '€');
     const fs = firstSeen ? `${firstSeen.firstSeen} @ ${sym}${Number(firstSeen.firstPrice).toFixed(2)}` : '—';
-    const tag = r.method === 'DDM' ? 'ddm' : 'dcf';
+    const tag = r.method === 'DDM' ? 'ddm' : r.method === 'ExcessReturn' ? 'excessreturn' : 'dcf';
     // Market cap is NOT in the same unit as price for GBp names: Yahoo quotes UK
     // prices in pence but reports marketCap in POUNDS (verified — III.L's
     // marketCap/price implies 10M shares, marketCap/(price/100) implies the real

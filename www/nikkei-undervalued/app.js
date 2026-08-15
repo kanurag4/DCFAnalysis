@@ -81,7 +81,7 @@
     const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
     const sym = currencySymbol(r.currency);
     const fs = firstSeen ? `${firstSeen.firstSeen} @ ${sym}${Number(firstSeen.firstPrice).toFixed(2)}` : '—';
-    const tag = r.method === 'DDM' ? 'ddm' : 'dcf';
+    const tag = r.method === 'DDM' ? 'ddm' : r.method === 'ExcessReturn' ? 'excessreturn' : 'dcf';
     const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, sym);
     const target = (r.analystTarget == null) ? '—' : `${sym}${r.analystTarget.toFixed(2)}`;
     const opMargin = (r.operatingMargin == null) ? '—' : `${(r.operatingMargin * 100).toFixed(1)}%`;
