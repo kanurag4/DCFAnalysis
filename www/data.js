@@ -222,6 +222,10 @@ function mapQuoteSummary(body, symbol) {
     // GBp stocks: Yahoo returns these in GBP (pounds) while price is in pence → multiply by 100.
     dividendRate:               rawMul(result.summaryDetail?.dividendRate, gbpToPence),
     trailingAnnualDividendRate: rawMul(result.defaultKeyStatistics?.trailingAnnualDividendRate, gbpToPence),
+    // Excess Return Model's ROE fallback (trailingEps / bookValue) when Yahoo omits
+    // returnOnEquity directly -- same GBp scaling as the dividend fields above,
+    // since price is in pence for these tickers too.
+    trailingEps:                rawMul(result.defaultKeyStatistics?.trailingEps, gbpToPence),
   };
 }
 

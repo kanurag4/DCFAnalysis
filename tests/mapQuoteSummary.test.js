@@ -32,3 +32,41 @@ test('maps core DCF fields from a quoteSummary payload', () => {
 test('throws a clear error when result is empty', () => {
   assert.throws(() => mapQuoteSummary({ quoteSummary: { result: [] } }, 'XYZ.AX'), /No data/);
 });
+
+// ── trailingEps (added for Excess Return Model's ROE fallback derivation) ──
+
+test('maps trailingEps from defaultKeyStatistics', () => {
+  const body = { quoteSummary: { result: [{
+    quoteType: { longName: 'Test Co' },
+    financialData: { currentPrice: { raw: 40 } },
+    summaryDetail: { currency: 'AUD' },
+    defaultKeyStatistics: { trailingEps: { raw: 5.25 } },
+    assetProfile: {},
+  }] } };
+  const d = mapQuoteSummary(body, 'TEST.AX');
+  assert.strictEqual(d.trailingEps, 5.25);
+});
+
+test('trailingEps is null when missing', () => {
+  const body = { quoteSummary: { result: [{
+    quoteType: { longName: 'Test Co' },
+    financialData: { currentPrice: { raw: 40 } },
+    summaryDetail: { currency: 'AUD' },
+    defaultKeyStatistics: {},
+    assetProfile: {},
+  }] } };
+  const d = mapQuoteSummary(body, 'TEST.AX');
+  assert.strictEqual(d.trailingEps, null);
+});
+
+test('trailingEps is scaled x100 for GBp (pence) tickers, matching dividendRate', () => {
+  const body = { quoteSummary: { result: [{
+    quoteType: { longName: 'UK Bank' },
+    financialData: { currentPrice: { raw: 650 } },
+    summaryDetail: { currency: 'GBp' },
+    defaultKeyStatistics: { trailingEps: { raw: 0.42 } }, // Yahoo reports EPS in GBP even when price is GBp
+    assetProfile: {},
+  }] } };
+  const d = mapQuoteSummary(body, 'HSBA.L');
+  assert.strictEqual(d.trailingEps, 42); // 0.42 * 100
+});
