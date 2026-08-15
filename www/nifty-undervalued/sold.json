@@ -183,5 +183,45 @@
     "exitDate": "2026-08-07",
     "exitPrice": 95.33,
     "dollarPnl": 74.22
+  },
+  {
+    "ticker": "SIGNATURE.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 812.55,
+    "exitDate": "2026-08-15",
+    "exitPrice": 809.25,
+    "dollarPnl": 153.98
+  },
+  {
+    "ticker": "HEROMOTOCO.NS",
+    "entryDate": "2026-07-31",
+    "entryPrice": 5386,
+    "exitDate": "2026-08-15",
+    "exitPrice": 5790,
+    "dollarPnl": 201.82
+  },
+  {
+    "ticker": "BHARTIARTL.NS",
+    "entryDate": "2026-08-07",
+    "entryPrice": 1959.9,
+    "exitDate": "2026-08-15",
+    "exitPrice": 1992.1,
+    "dollarPnl": 292.05
+  },
+  {
+    "ticker": "MRF.NS",
+    "entryDate": "2026-06-05",
+    "entryPrice": 123505,
+    "exitDate": "2026-08-15",
+    "exitPrice": 133490,
+    "dollarPnl": -92.73
+  },
+  {
+    "ticker": "LUPIN.NS",
+    "entryDate": "2026-08-07",
+    "entryPrice": 2363.5,
+    "exitDate": "2026-08-15",
+    "exitPrice": 2235,
+    "dollarPnl": -966.45
   }
 ]
