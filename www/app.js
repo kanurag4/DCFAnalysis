@@ -204,14 +204,24 @@ let liveAusRfRate = 4.8;   // updated when Australian 10-yr bond is fetched; 4.8
 let liveIndRfRate = 4.9;   // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 4.9% default
 // Korea: no live 10-yr KTB yield ticker exists on Yahoo (see docs/japan-korea-market-research.md
 // in the source repo) — these are fixed, never overwritten by a fetch.
-const KOR_RF      = 4.3;
+// rf corrected 2026-08-15: 4.3 was the raw KTB yield, which double-counts country risk
+// the same way India's raw G-Sec yield did (erp already carries it). Korea is Aa2-rated,
+// 0.42% default spread (Damodaran, Jan 2026) -> 4.29% spot (Aug 2026) - 0.42% ~= 3.9.
+// TGROWTH unchanged: 1.75 against the corrected 3.9 rf is a ~45% ratio, already in the
+// same ~40-57% band every other market here uses.
+const KOR_RF      = 3.9;
 const KOR_ERP     = 7.5;
 const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the Korea numbers" panel
 // Japan: same situation as Korea — no live 10-yr JGB yield ticker exists on Yahoo
 // (see docs/japan-korea-market-research.md in the source repo) — fixed, never fetched.
-const JPN_RF      = 2.8;   // post-deflation JGB regime (~30-yr high)
+// rf corrected 2026-08-15: 2.8 was the raw JGB yield -- Japan is A1-rated, 0.60% default
+// spread (Damodaran, Jan 2026) -> 2.84 spot (Aug 2026) - 0.60 ~= 2.2. TGROWTH lowered
+// 1.5->1.2 too: against the old 2.8 rf, 1.5 was a 54% ratio (in-band); against the
+// corrected 2.2 it would drift to 68%, out of the ~40-57% band -- 1.2 restores ~55%.
+// Not a ceiling violation either way (1.5 < 2.2), just internal-consistency.
+const JPN_RF      = 2.2;   // post-deflation JGB regime, spread-adjusted (was 2.8 raw)
 const JPN_ERP     = 6.0;   // developed-market tier (~AUS level)
-const JPN_TGROWTH = 1.5;   // vs the tool's 2.5% default — see the "About the Japan numbers" panel
+const JPN_TGROWTH = 1.2;   // vs the tool's 2.5% default — see the "About the Japan numbers" panel
 // UK/eurozone: same "no live source" situation as Korea/Japan — no live 10-yr Gilt/Bund
 // yield ticker exists on Yahoo. Mirrors scripts/lib/market.js's .L / eurozone-suffix
 // branches in the DCFAnalysis batch repo (spot-checked against real yields 2026-08-03) —
@@ -241,7 +251,11 @@ const HK_TGROWTH  = 2.0;
 // 10-yr China Govt bond yield ticker exists on Yahoo — fixed, never fetched. RF/ERP sourced
 // from Damodaran's country-risk dataset (checked 2026-08-10). Distinct from Hong Kong (.HK)
 // above — different currency (CNY vs HKD) and a different risk profile.
-const CHINA_RF      = 1.7;
+// rf corrected 2026-08-15: 1.7 was the raw CNY govt bond yield -- same double-counting
+// issue as India/Japan/Korea, and proportionally the largest of the four, since China's
+// default spread (A1-rated, 0.60%, Damodaran Jan 2026) is a big chunk of its already-tiny
+// base yield: 1.70 spot (Aug 2026) - 0.60 ~= 1.1.
+const CHINA_RF      = 1.1;
 const CHINA_ERP     = 5.2;
 // Was 2.5 (the tool's US-tier default) until 2026-08-11 — that broke Damodaran's
 // stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for
@@ -249,7 +263,12 @@ const CHINA_ERP     = 5.2;
 // sit under CHINA_RF like every other market's *_TGROWTH does relative to its own
 // *_RF — see chinaInfoBlock() and the new renderTerminalGrowthWarning() check below,
 // which now flags this same violation live for any market/scenario a user edits into.
-const CHINA_TGROWTH = 1.5;
+// Lowered AGAIN 2026-08-15, forced by the CHINA_RF correction above: the old 1.5 now
+// exceeds the new 1.1 rf outright (a fresh ceiling violation the moment rf moved under
+// it), and picking a value that just barely clears the new ceiling would leave China as
+// an outlier again -- 0.6 is a ~55% ratio to the new rf, back in the ~40-57% band every
+// other market here uses.
+const CHINA_TGROWTH = 0.6;
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
 let breakdownChart = null;
 let priceChart    = null;
@@ -590,7 +609,7 @@ function koreaInfoBlock() {
   return `<details class="wacc-franking">
        <summary>About the Korea numbers</summary>
        <p><strong>Governance risk premium:</strong> Korea's equity risk premium is set to 7.5% (vs 5.5% for the US), partly reflecting a premium institutional investors typically add for Korean equities given historically weaker minority-shareholder protections.</p>
-       <p><strong>Static risk-free rate:</strong> fixed at ~4.3% (Korea's approximate 10-year government bond yield). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
+       <p><strong>Static risk-free rate:</strong> fixed at ~3.9% — Korea's approximate 10-year government bond yield (~4.3%), minus Korea's ~0.42% sovereign default spread (Damodaran convention: the raw bond yield already prices in Korea's own default risk, which the equity risk premium above separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
        <p><strong>Lower terminal growth assumption:</strong> 1.75% vs the tool's 2.5% default, reflecting Korea's structurally lower long-run growth expectations.</p>
      </details>`;
 }
@@ -601,8 +620,8 @@ function japanInfoBlock() {
   if (currentMarket !== 'jpn') return '';
   return `<details class="wacc-franking">
        <summary>About the Japan numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~2.8% (Japan's approximate 10-year government bond yield — a 30-year high as the BOJ exits deflation-era policy). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
-       <p><strong>Lower terminal growth assumption:</strong> 1.5% vs the tool's 2.5% default. The old deflation-era convention of 0–0.5% is outdated, but Japan's demographic-constrained long-run growth still warrants a below-default cap.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~2.2% — Japan's approximate 10-year government bond yield (~2.8%, a 30-year high as the BOJ exits deflation-era policy), minus Japan's ~0.60% sovereign default spread (Damodaran convention: the raw bond yield already prices in Japan's own default risk, which the equity risk premium above separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
+       <p><strong>Lower terminal growth assumption:</strong> 1.2% vs the tool's 2.5% default. The old deflation-era convention of 0–0.5% is outdated, but Japan's demographic-constrained long-run growth still warrants a below-default cap.</p>
        <p><strong>Beta floor:</strong> historically low Japanese betas (0.5–0.7) partly reflect deflation-era price stagnation and are likely understated as volatility returns — floored at 0.6.</p>
        <p><strong>Cross-shareholding caveat:</strong> some Japanese companies are unwinding historic cross-shareholdings (keiretsu stakes) under the revised Corporate Governance Code. Sale proceeds can inflate reported cash flow — treat unusually high FCF with care.</p>
      </details>`;
@@ -653,9 +672,9 @@ function chinaInfoBlock() {
   if (currentMarket !== 'cn') return '';
   return `<details class="wacc-franking">
        <summary>About the China numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~1.7% (an approximate China 10-year Govt bond yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~1.1% — an approximate China 10-year Govt bond yield (~1.7%), minus China's ~0.60% sovereign default spread (Damodaran convention: the raw bond yield already prices in China's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
        <p><strong>Equity risk premium:</strong> 5.2% (Damodaran country-risk-adjusted estimate for China), reflecting the lower risk-free rate together with China-specific market and political risk.</p>
-       <p><strong>Terminal growth:</strong> 1.5% — below the 2.5% US-tier default, kept under China's own 1.7% risk-free rate above per Damodaran's stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for long-run economy growth in perpetuity).</p>
+       <p><strong>Terminal growth:</strong> 0.6% — below the 2.5% US-tier default, kept under China's own 1.1% risk-free rate above per Damodaran's stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for long-run economy growth in perpetuity).</p>
        <p><strong>Currency:</strong> Yahoo quotes Shanghai (.SS) and Shenzhen (.SZ) A-share prices in CNY (renminbi) — displayed values already account for this. A-shares are a distinct market from Hong Kong-listed H-shares (.HK), which use HKD and get their own separate seed above.</p>
      </details>`;
 }

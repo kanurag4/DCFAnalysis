@@ -19,15 +19,24 @@ function marketParamsFor(ticker, live = {}) {
   if (t.endsWith('.NS') || t.endsWith('.BO')) return { rf: live.indRf ?? 0.049, erp: 0.075, terminalGrowth: 0.025 };
   // Korea: no live 10-yr KTB yield ticker exists on Yahoo (confirmed via exhaustive search —
   // see docs/japan-korea-market-research.md) so rf is a fixed static value, never live-fetched.
-  // erp is elevated to reflect a governance-risk premium (weak minority-shareholder protections);
-  // terminalGrowth is lower to reflect Korea's structurally lower long-run growth expectations.
-  if (t.endsWith('.KS')) return { rf: 0.043, erp: 0.075, terminalGrowth: 0.0175 };
+  // rf corrected 2026-08-15: was the raw ~4.3% KTB yield, which double-counts country risk
+  // the same way India's did -- Korea is Aa2-rated with a 0.42% default spread (Damodaran,
+  // Jan 2026), so 4.29% (spot, Aug 2026) - 0.42% ~= 3.9%. terminalGrowth is UNCHANGED --
+  // 1.75% against the corrected 3.9% rf is a ~45% ratio, already in the same ~40-57% band
+  // every other market bucket here uses, so no reason to touch it. erp is elevated to
+  // reflect a governance-risk premium (weak minority-shareholder protections) -- left as-is,
+  // not re-verified against Damodaran's Korea-specific figure in this pass.
+  if (t.endsWith('.KS')) return { rf: 0.039, erp: 0.075, terminalGrowth: 0.0175 };
   // Japan: same "no live RF ticker" situation as Korea (10-yr JGB has no Yahoo symbol —
-  // see docs/japan-korea-market-research.md). rf reflects the post-deflation JGB regime
-  // (~2.8%, a 30-yr high); erp is developed-market tier (~AUS level); terminalGrowth is
-  // capped at 1.5% per the deflation-exit research (old 0–0.5% convention is outdated,
-  // but 2.5% would overstate Japan's demographic-constrained long-run growth).
-  if (t.endsWith('.T')) return { rf: 0.028, erp: 0.06, terminalGrowth: 0.015 };
+  // see docs/japan-korea-market-research.md). rf corrected 2026-08-15: was the raw ~2.8%
+  // JGB yield -- Japan is A1-rated with a 0.60% default spread (Damodaran, Jan 2026), so
+  // 2.84% (spot, Aug 2026) - 0.60% ~= 2.2%. terminalGrowth lowered 1.5%->1.2% too: against
+  // the OLD 2.8% rf, 1.5% was a 54% ratio (in-band); against the corrected 2.2% rf it would
+  // become 68%, drifting out of the ~40-57% band every other market uses -- 1.2% restores
+  // ~55%. Not a ceiling violation either way (1.5% < 2.2%), just an internal-consistency
+  // nudge, same reasoning as India's "why touch/not touch terminalGrowth" note above. erp
+  // is developed-market tier (~AUS level) -- left as-is.
+  if (t.endsWith('.T')) return { rf: 0.022, erp: 0.06, terminalGrowth: 0.012 };
   // UK: no live 10-yr Gilt yield ticker on Yahoo (same "no live source" situation as
   // Korea/Japan) -- fixed rf reflects the ~5.0% Gilt regime (spot-checked 2026-08-03).
   // erp/terminalGrowth are near-US-tier (mature, liquid developed market).
@@ -49,14 +58,21 @@ function marketParamsFor(ticker, live = {}) {
   if (t.endsWith('.HK')) return { rf: 0.035, erp: 0.06, terminalGrowth: 0.02 };
   // China A-shares (Shanghai .SS / Shenzhen .SZ): same "no live source" situation --
   // rf/erp sourced from Damodaran's country-risk dataset (checked 2026-08-10). Distinct
-  // from Hong Kong above -- different currency (CNY vs HKD) and risk profile. Terminal
-  // growth was 0.025 (the tool's US-tier default) until 2026-08-11 -- that exceeded rf
-  // above it, breaking Damodaran's stable-growth ceiling (terminal growth can't exceed
-  // the risk-free rate proxy for long-run economy growth in perpetuity). Lowered to sit
-  // under rf, matching every other market bucket here. Backported from www/dcf/app.js's
-  // CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d) -- keep these two in sync if the
-  // live tool's seed ever changes.
-  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.017, erp: 0.052, terminalGrowth: 0.015 };
+  // from Hong Kong above -- different currency (CNY vs HKD) and risk profile.
+  // rf corrected 2026-08-15: 0.017 was the raw ~1.7% CNY govt bond yield -- same
+  // double-counting issue India/Japan/Korea had, and here it's proportionally the
+  // largest of the four, since China's default spread (A1-rated, 0.60%, Damodaran
+  // Jan 2026) is a big chunk of its already-tiny base yield: 1.70% (spot, Aug 2026) -
+  // 0.60% ~= 1.1%. terminalGrowth MUST also drop as a direct consequence -- the old
+  // 0.015 (set 2026-08-11 specifically to sit under the old 0.017 rf) now exceeds the
+  // corrected 0.011 rf outright, which would violate Damodaran's stable-growth ceiling
+  // (terminal growth can't exceed the risk-free rate proxy for long-run economy growth
+  // in perpetuity) the moment rf changed under it. Lowered to 0.006 -- a ~55% ratio to
+  // the new rf, back in the same ~40-57% band every other market bucket here uses,
+  // rather than picking another value that just barely clears the new lower ceiling.
+  // Backported from www/dcf/app.js's CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d)
+  // -- keep these two in sync if the live tool's seed ever changes.
+  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.011, erp: 0.052, terminalGrowth: 0.006 };
   if (!t.includes('.')) return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 };
   return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
 }

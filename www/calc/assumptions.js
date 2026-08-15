@@ -20,14 +20,19 @@
 // Native shell Card Dashboards use these fallbacks permanently (no live
 // rate fetch in the native renderer) — a documented simplification, not
 // a bug; see the DCF Card Dashboard task's note.
-// ind: corrected 2026-08-15 from the raw ~7% G-Sec yield -- Damodaran's convention is
-// riskfree rate = govt bond rate minus that country's default spread (India: Baa3,
-// 1.87% spread, Jan 2026), since erp already carries India's country risk premium.
+// ind/kor/jpn/cn: corrected 2026-08-15 from each market's raw govt bond yield --
+// Damodaran's convention is riskfree rate = govt bond rate minus that country's default
+// spread (India Baa3/1.87%, Korea Aa2/0.42%, Japan A1/0.60%, China A1/0.60% -- Jan 2026),
+// since erp already carries each country's country risk premium; using the raw yield on
+// top double-counts it. jpn/cn's MARKET_TGROWTH also lowered in the same pass -- China's
+// old value literally exceeded its new, lower rf (a fresh ceiling violation); Japan's
+// didn't violate the ceiling but drifted out of the ~40-57% ratio band every other market
+// here sits in. kor's TGROWTH unchanged -- already ~45% against the corrected rf.
 // See scripts/lib/market.js in DCFAnalysis for the full reasoning (kept in sync here).
-const FALLBACK_RF = { us: 0.045, aus: 0.048, ind: 0.049, kor: 0.043, jpn: 0.028, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.017 };
+const FALLBACK_RF = { us: 0.045, aus: 0.048, ind: 0.049, kor: 0.039, jpn: 0.022, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.011 };
 const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
-const MARKET_TGROWTH = { kor: 1.75, jpn: 1.5, uk: 2.0, eu: 1.8, hk: 2.0, cn: 1.5 };
+const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6 };
 const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 
 // Same suffix-priority order as app.js's prefillInputs() (ASX, then
