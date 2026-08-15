@@ -1,6 +1,27 @@
 [
-  { "ticker": "MFF.AX", "reason": "LIC (MFF Capital Investments) — FCF inflated by investment flows", "addedAt": "2026-07-10" },
-  { "ticker": "WPR.AX", "reason": "REIT (Waypoint REIT) — same DCF-on-investment-flows issue", "addedAt": "2026-07-10" },
-  { "ticker": "GOZ.AX", "reason": "REIT (Growthpoint Properties Australia) — rental FCF not DCF-representative", "addedAt": "2026-07-10" },
-  { "ticker": "RGN.AX", "reason": "REIT (Region Group) — same REIT FCF issue", "addedAt": "2026-07-10" }
+  {
+    "ticker": "MFF.AX",
+    "reason": "LIC (MFF Capital Investments) — FCF inflated by investment flows",
+    "addedAt": "2026-07-10"
+  },
+  {
+    "ticker": "WPR.AX",
+    "reason": "REIT (Waypoint REIT) — same DCF-on-investment-flows issue",
+    "addedAt": "2026-07-10"
+  },
+  {
+    "ticker": "GOZ.AX",
+    "reason": "REIT (Growthpoint Properties Australia) — rental FCF not DCF-representative",
+    "addedAt": "2026-07-10"
+  },
+  {
+    "ticker": "RGN.AX",
+    "reason": "REIT (Region Group) — same REIT FCF issue",
+    "addedAt": "2026-07-10"
+  },
+  {
+    "ticker": "HDN.AX",
+    "reason": "Excluded via admin console review, run 31852662305",
+    "addedAt": "2026-08-15"
+  }
 ]
