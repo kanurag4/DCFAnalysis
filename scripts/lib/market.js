@@ -5,7 +5,18 @@
 function marketParamsFor(ticker, live = {}) {
   const t = (ticker || '').toUpperCase();
   if (t.endsWith('.AX')) return { rf: live.ausRf ?? 0.048, erp: 0.06, terminalGrowth: 0.025 };
-  if (t.endsWith('.NS') || t.endsWith('.BO')) return { rf: live.indRf ?? 0.07, erp: 0.075, terminalGrowth: 0.025 };
+  // India (.NS/.BO): rf was the raw 10-yr G-Sec yield (~6.8-7%) until 2026-08-15 --
+  // that double-counts country risk, since erp already carries India's country risk
+  // premium (Damodaran's ~7.1-7.3% total ERP for India). Damodaran's own convention:
+  // riskfree rate = government bond rate minus that country's default spread. India is
+  // Baa3-rated with a 1.87% default spread (Damodaran, Jan 2026) -- 6.8% G-Sec yield -
+  // 1.87% ≈ 4.9%. erp is left unchanged (already close to Damodaran's figure). terminalGrowth
+  // is ALSO left at 0.025 -- that's a 51% ratio to the corrected 4.9% rf, right in the
+  // ~40-57% band every other market bucket in this file already uses (ASX 52%, US 56%,
+  // UK 40%, eurozone 56%, HK 57%) -- Damodaran's own rule is only a ceiling ("stable
+  // growth should not exceed the riskfree rate"), no specific numeric gap below it, so
+  // there's no reason to push India toward China's 88%-of-rf outlier ratio instead.
+  if (t.endsWith('.NS') || t.endsWith('.BO')) return { rf: live.indRf ?? 0.049, erp: 0.075, terminalGrowth: 0.025 };
   // Korea: no live 10-yr KTB yield ticker exists on Yahoo (confirmed via exhaustive search —
   // see docs/japan-korea-market-research.md) so rf is a fixed static value, never live-fetched.
   // erp is elevated to reflect a governance-risk premium (weak minority-shareholder protections);

@@ -201,7 +201,7 @@ if (!isNative) {
 let currentData   = null;
 let liveRfRate    = 4.5;   // updated when US 10-yr Treasury is fetched
 let liveAusRfRate = 4.8;   // updated when Australian 10-yr bond is fetched; 4.8% default
-let liveIndRfRate = 7.0;   // updated when Indian 10-yr Govt bond is fetched; 7.0% default
+let liveIndRfRate = 4.9;   // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 4.9% default
 // Korea: no live 10-yr KTB yield ticker exists on Yahoo (see docs/japan-korea-market-research.md
 // in the source repo) — these are fixed, never overwritten by a fetch.
 const KOR_RF      = 4.3;
@@ -1509,7 +1509,7 @@ function setRfBadge(market, rate) {
   }
   const labels = {
     aus: { badge: '● live AUS', note: 'Australian 10-yr Govt Bond (^GSBG10.AX)', title: 'Australian 10-yr Govt Bond' },
-    ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond',                  title: 'Indian 10-yr Govt Bond'    },
+    ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond, minus India’s sovereign default spread', title: 'Indian 10-yr Govt Bond yield, adjusted for India’s sovereign default spread (Damodaran convention)' },
     kor: { badge: '○ fixed',    note: 'Fixed estimate — no live Korean bond-yield source available', title: 'Korea 10-yr Govt Bond yield (fixed estimate, not live)' },
     jpn: { badge: '○ fixed',    note: 'Fixed estimate — no live Japanese bond-yield source available', title: 'Japan 10-yr Govt Bond (JGB) yield (fixed estimate, not live)' },
     uk:  { badge: '○ fixed',    note: 'Fixed estimate — no live UK Gilt-yield source available', title: 'UK 10-yr Gilt yield (fixed estimate, not live)' },
@@ -1583,6 +1583,15 @@ async function fetchAndSetAustralianRfRate() {
   }
 }
 
+// India (Baa3-rated) government bonds aren't riskfree the way US/AUS/UK govt bonds are --
+// their yield already embeds India's own default risk. Damodaran's convention: riskfree
+// rate = govt bond rate minus that country's default spread, since erp separately already
+// carries India's country risk premium; using the raw yield double-counts it. 1.87% is
+// Damodaran's Jan 2026 default spread for a Baa3 sovereign rating -- update this if that
+// rating (or Damodaran's published spread for it) changes. Keep in sync with
+// FALLBACK_RF.ind in calc/assumptions.js (same 6.8% G-Sec − 1.87% ≈ 4.9% math).
+const IND_DEFAULT_SPREAD_PCT = 1.87;
+
 async function fetchAndSetIndianRfRate() {
   let fetchSucceeded = false;
   try {
@@ -1596,11 +1605,13 @@ async function fetchAndSetIndianRfRate() {
       result?.summaryDetail?.regularMarketPrice?.raw ??
       result?.financialData?.currentPrice?.raw;
     if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
-      liveIndRfRate = +raw.toFixed(2);
+      // Floor at 1% -- a sanity guard, not an expected case (India's G-Sec yield would
+      // need to fall by ~6pp from today's ~6.8% for this to bind).
+      liveIndRfRate = +Math.max(1, raw - IND_DEFAULT_SPREAD_PCT).toFixed(2);
       fetchSucceeded = true;
     }
   } catch (_) {
-    // silently fall back to 7.0% default
+    // silently fall back to 4.9% default
   }
   if (currentMarket === 'ind') {
     els.rfInput.value = liveIndRfRate;

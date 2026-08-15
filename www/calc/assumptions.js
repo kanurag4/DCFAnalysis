@@ -20,7 +20,11 @@
 // Native shell Card Dashboards use these fallbacks permanently (no live
 // rate fetch in the native renderer) — a documented simplification, not
 // a bug; see the DCF Card Dashboard task's note.
-const FALLBACK_RF = { us: 0.045, aus: 0.048, ind: 0.070, kor: 0.043, jpn: 0.028, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.017 };
+// ind: corrected 2026-08-15 from the raw ~7% G-Sec yield -- Damodaran's convention is
+// riskfree rate = govt bond rate minus that country's default spread (India: Baa3,
+// 1.87% spread, Jan 2026), since erp already carries India's country risk premium.
+// See scripts/lib/market.js in DCFAnalysis for the full reasoning (kept in sync here).
+const FALLBACK_RF = { us: 0.045, aus: 0.048, ind: 0.049, kor: 0.043, jpn: 0.028, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.017 };
 const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
 const MARKET_TGROWTH = { kor: 1.75, jpn: 1.5, uk: 2.0, eu: 1.8, hk: 2.0, cn: 1.5 };
