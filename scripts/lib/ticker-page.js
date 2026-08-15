@@ -11,9 +11,10 @@ const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
+const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -128,6 +129,24 @@ function deriveScenarios({ method, baseGrowthPct, waccOrRePct }) {
   if (method === 'DDM') {
     return {
       growth: { bear: r1(Math.max(0, baseGrowthPct * 0.5)), base: baseGrowthPct, bull: r1(Math.min(12, baseGrowthPct * 1.5)) },
+      discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
+    };
+  }
+  if (method === 'ExcessReturn') {
+    // "growth" slot holds ROE for this model -- same magnitude-offset shape as DCF's
+    // growth spread (not DDM's x0.5/x1.5 multiplier, which inverts direction for
+    // negative bases and caps too low for a high-ROE financial), matching
+    // calc/assumptions.js's growthOffsetSpread() applied to ROE. Kept as a separate,
+    // from-scratch Node reimplementation rather than importing that browser-loaded
+    // file -- same established pattern this generator already uses for DCF/DDM, see
+    // CLAUDE.md's note on this exact drift risk.
+    const roeOffset = Math.abs(baseGrowthPct) * 0.5;
+    return {
+      growth: {
+        bear: r1(Math.max(-15, baseGrowthPct - roeOffset)),
+        base: baseGrowthPct,
+        bull: r1(Math.min(30, baseGrowthPct + roeOffset)),
+      },
       discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
     };
   }
@@ -568,17 +587,41 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       d0 = dividend != null ? +(+dividend).toFixed(2) : null;
       const rePct = r2((rf + effectiveBeta * erp) * 100);
       waccOrRePct = rePct;
-      const baseGrowthPct = r1(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100);
-      const s = deriveScenarios({ method: 'DDM', baseGrowthPct, waccOrRePct: rePct });
-      method = 'DDM';
-      scenarios = ['bear', 'base', 'bull'].map(key => {
-        const result = calculateDDM({
-          dividend: d0, growthRate: s.growth[key] / 100, terminalGrowth, costOfEquity: s.discount[key] / 100,
-          projectionYears: 5, currentPrice: data.price,
+      const growth = deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth);
+
+      const roe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+        ? data.returnOnEquity
+        : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
+            ? data.trailingEps / (data.price / data.priceToBook)
+            : null);
+      const financialModel = chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth });
+
+      if (financialModel === 'excess-return') {
+        const roePct = r1(roe * 100);
+        const s = deriveScenarios({ method: 'ExcessReturn', baseGrowthPct: roePct, waccOrRePct: rePct });
+        method = 'ExcessReturn';
+        const bookValue = data.price / data.priceToBook;
+        scenarios = ['bear', 'base', 'bull'].map(key => {
+          const result = calculateExcessReturn({
+            bookValue, roe: s.growth[key] / 100, costOfEquity: s.discount[key] / 100, growthRate: growth,
+            projectionYears: 5, currentPrice: data.price,
+          });
+          return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
         });
-        return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
-      });
-      waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
+        waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
+      } else {
+        const baseGrowthPct = r1(growth * 100);
+        const s = deriveScenarios({ method: 'DDM', baseGrowthPct, waccOrRePct: rePct });
+        method = 'DDM';
+        scenarios = ['bear', 'base', 'bull'].map(key => {
+          const result = calculateDDM({
+            dividend: d0, growthRate: s.growth[key] / 100, terminalGrowth, costOfEquity: s.discount[key] / 100,
+            projectionYears: 5, currentPrice: data.price,
+          });
+          return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
+        });
+        waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: true };
+      }
     } else {
       fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, hist.fcfAnnualLatest);
       baseFcf = fcfInfo.value;
@@ -771,7 +814,16 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
       : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · WACC = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
 
-    const bankMetricsHtml = isBank ? `
+    const bankMetricsHtml = isBank ? (method === 'ExcessReturn' ? `
+      <section class="bank-metrics">
+        <h3>🏦 Bank/Insurer/NBFC — valued with the Excess Return Model</h3>
+        <p>DCF is not used for bank/insurer/NBFC stocks: deposits, reserves, or loan origination are a raw material rather than funding, so there's no clean free cash flow. This company also retains most of its earnings for growth instead of paying them out, so the Dividend Discount Model would understate its value -- the Excess Return Model is used instead, valuing (ROE − Cost of Equity) × Book Value each year on top of the existing book value.</p>
+        <div class="bank-metric-grid">
+          <div class="stat"><div class="stat-label">P/B</div><div class="stat-value">${data.priceToBook != null ? data.priceToBook.toFixed(2) + 'x' : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
+          <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
+        </div>
+      </section>` : `
       <section class="bank-metrics">
         <h3>🏦 Bank/Insurer — valued with the Dividend Discount Model</h3>
         <p>DCF is not used for bank/insurer stocks: deposits or reserves are a raw material rather than funding, so there's no clean free cash flow. This valuation uses the Dividend Discount Model (DDM) instead.</p>
@@ -780,7 +832,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
-      </section>` : '';
+      </section>`) : '';
 
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
