@@ -4,10 +4,55 @@
 // Optional retries with linear backoff handle transient failures (429 rate-limit,
 // Yahoo 5xx, network blips) — the Worker caps at 20 req/60s, so the batch also
 // throttles between calls; retries catch the occasional straggler.
-const { mapQuoteSummary } = require('../www/data.js');
+const { mapQuoteSummary, latestSeriesValue } = require('../www/data.js');
 const { batchHeaders } = require('./lib/batch-auth.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+// Best-effort /timeseries enrichment — mirrors www/data.js's fetchDCFData()
+// exactly (annualFcf fallback, diluted share count, EBIT/interestExpense
+// preferred over incomeStatementHistory's frequently-empty values) so the
+// batch doesn't silently drop the WACC/FCF accuracy the live DCF tool already
+// has. Deliberately calls fetchImpl directly rather than importing
+// fetchDCFData() itself, since that function isn't fetchImpl-injectable and
+// this keeps fetch-yahoo.js's existing test harness (stub fetchImpl, no real
+// network) working unchanged for both calls. Never throws — a /timeseries
+// failure must not block the quoteSummary result that's already in hand.
+async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
+  try {
+    const url = `${proxyUrl.replace(/\/$/, '')}/timeseries/${encodeURIComponent(symbol)}`;
+    const res = await fetchImpl(url, { headers: batchHeaders() });
+    if (!res || !res.ok) return mapped;
+    const body = await res.json();
+    if (!body || body.error) return mapped;
+
+    const dilutedSharesOutstanding = latestSeriesValue(body.annualDilutedAverageShares);
+    const ebit = latestSeriesValue(body.annualOperatingIncome);
+    const rawInterestExpense = latestSeriesValue(body.annualInterestExpense);
+    // fundamentals-timeseries reports this as a positive magnitude, unlike
+    // incomeStatementHistory's negative expense convention — negate so both
+    // sources share one sign convention (same as fetchDCFData()).
+    const interestExpenseTs = (rawInterestExpense != null) ? -rawInterestExpense : null;
+    // Last-resort FCF fallback — see utils.js's deriveFcf() for why this tier
+    // exists and why it's ordered last (only used when quoteSummary's
+    // TTM-based freeCashflow/operatingCashflow are both unavailable, which
+    // Yahoo does for a real, non-trivial share of NSE tickers — confirmed
+    // live on TECHM.NS, 2026-08-15).
+    const annualFcf = latestSeriesValue(body.annualFreeCashFlow);
+
+    return {
+      ...mapped,
+      dilutedSharesOutstanding,
+      ebit,
+      // incomeStatementHistory's interestExpense is frequently an empty
+      // object for non-US tickers — prefer the /timeseries value when present.
+      interestExpense: (interestExpenseTs != null) ? interestExpenseTs : mapped.interestExpense,
+      annualFcf,
+    };
+  } catch (_) {
+    return mapped; // all four stay absent — evaluate.js's existing fallbacks apply
+  }
+}
 
 async function fetchSymbol(symbol, {
   fetchImpl = fetch, proxyUrl, retries = 0, backoffMs = 3000, sleepImpl = sleep,
@@ -22,7 +67,9 @@ async function fetchSymbol(symbol, {
       let body = null;
       try { body = await res.json(); } catch (_) { body = null; }
       if (body) {
-        try { return mapQuoteSummary(body, symbol); } catch (_) { /* unmappable — treat as miss */ }
+        let mapped = null;
+        try { mapped = mapQuoteSummary(body, symbol); } catch (_) { /* unmappable — treat as miss */ }
+        if (mapped) return enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl });
       }
     }
     if (attempt >= retries) {
