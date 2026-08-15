@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { fetchRfRate, fetchIndexPrice, fetchFxRate, fetchEurFxRates } = require('../scripts/lib/rf.js');
+const { fetchRfRate, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchEurFxRates } = require('../scripts/lib/rf.js');
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `expected ~${b}, got ${a}`);
 // Minimal raw quoteSummary body with one summaryDetail field populated.
@@ -33,6 +33,26 @@ test('falls back when out of the plausible band', async () => {
 
 test('falls back when the fetch throws', async () => {
   near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => { throw new Error('boom'); } }), 0.045);
+});
+
+// fetchIndRf — corrected 2026-08-15: subtracts India's Damodaran default spread from
+// the raw ^INBMKG10.NS G-Sec yield (erp already carries India's country risk premium,
+// so the raw yield alone double-counts it). This is the batch's actual live rf source
+// for NIFTY -- it overrides market.js's static fallback whenever it succeeds, which is
+// why market.js's own fallback fix alone didn't change the batch's real output.
+test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.80% -> ~4.93%)', async () => {
+  const r = await fetchIndRf('x', { fetchImpl: async () => detail('previousClose', 6.80) });
+  near(r, 0.0493);
+});
+
+test('fetchIndRf falls back to the already-spread-adjusted static default (0.049) when the live fetch fails, not raw-0.07-minus-spread', async () => {
+  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.049);
+  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.049);
+});
+
+test('fetchIndRf floors at 1% even if the live yield were implausibly close to the spread', async () => {
+  const r = await fetchIndRf('x', { fetchImpl: async () => detail('previousClose', 2.0) });
+  near(r, 0.01); // 2.0% - 1.87% = 0.13%, floored to 1%
 });
 
 // fetchIndexPrice — switched 2026-07-31 to read /history (last daily close)
