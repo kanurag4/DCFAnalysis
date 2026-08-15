@@ -8,7 +8,7 @@ function rankRows(rows, { topN = 10, maxMargin = 1.5 } = {}) {
     r.marginOfSafety != null &&
     r.marginOfSafety > 0 &&            // undervalued only
     r.marginOfSafety <= maxMargin &&   // drop implausible (likely one-off-inflated FCF)
-    (r.method === 'DDM' || r.fcfMethod === 'reported' || r.fcfMethod === 'derived') // drop rough proxy FCF
+    (r.method === 'DDM' || r.method === 'ExcessReturn' || r.fcfMethod === 'reported' || r.fcfMethod === 'derived') // drop rough proxy FCF
   );
   kept.sort((a, b) => b.marginOfSafety - a.marginOfSafety);
   return kept.slice(0, topN).map((r, i) => ({ ...r, rank: i + 1 }));
@@ -23,7 +23,7 @@ function rankFunnel(rows, { maxMargin = 1.5 } = {}) {
     if (r.excluded || r.intrinsic == null || r.marginOfSafety == null) { unvaluable++; continue; }
     if (r.marginOfSafety <= 0) { overvalued++; continue; }            // not undervalued
     if (r.marginOfSafety > maxMargin) { capped++; continue; }         // implausible margin
-    const realFcf = (r.method === 'DDM' || r.fcfMethod === 'reported' || r.fcfMethod === 'derived');
+    const realFcf = (r.method === 'DDM' || r.method === 'ExcessReturn' || r.fcfMethod === 'reported' || r.fcfMethod === 'derived');
     if (!realFcf) { proxyDropped++; continue; }                       // rough proxy FCF
     kept++;
   }

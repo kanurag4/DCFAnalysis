@@ -82,6 +82,13 @@ function marketMeta(ticker) {
 // dividends to pence, so the data is present; it just wasn't being read.
 const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥', GBP: '£', GBp: 'p', EUR: '€', HKD: 'HK$', SGD: 'S$', CNY: 'CN¥' };
 
+// Display form for the internal `method` identifier ('DCF'/'DDM'/'ExcessReturn')
+// wherever it's interpolated directly into page copy. DCF/DDM are already valid
+// short-form abbreviations and pass through unchanged; ExcessReturn's internal
+// identifier has no spaces and reads badly inline (e.g. "ExcessReturn Valuation",
+// "mechanical ExcessReturn formula") -- fixed 2026-08-15, peer review finding.
+const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return' };
+
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 
 // ── formatting helpers ─────────────────────────────────────────────────
@@ -135,17 +142,22 @@ function deriveScenarios({ method, baseGrowthPct, waccOrRePct }) {
   if (method === 'ExcessReturn') {
     // "growth" slot holds ROE for this model -- same magnitude-offset shape as DCF's
     // growth spread (not DDM's x0.5/x1.5 multiplier, which inverts direction for
-    // negative bases and caps too low for a high-ROE financial), matching
-    // calc/assumptions.js's growthOffsetSpread() applied to ROE. Kept as a separate,
+    // negative bases), but matching calc/assumptions.js's roeOffsetSpread() bounds
+    // (floor 0, ceiling 60), NOT growthOffsetSpread()'s (-15/30). growthOffsetSpread's
+    // 30% ceiling is far too low for a high-ROE financial -- a real NBFC checked while
+    // building this sits at ~31.7% ROE, which that ceiling clamps *below* base,
+    // inverting bull < base (fixed here 2026-08-15, peer review finding -- this file
+    // had reintroduced the exact bug roeOffsetSpread() was built to fix, despite a
+    // comment here previously claiming the two already matched). Kept as a separate,
     // from-scratch Node reimplementation rather than importing that browser-loaded
     // file -- same established pattern this generator already uses for DCF/DDM, see
     // CLAUDE.md's note on this exact drift risk.
     const roeOffset = Math.abs(baseGrowthPct) * 0.5;
     return {
       growth: {
-        bear: r1(Math.max(-15, baseGrowthPct - roeOffset)),
+        bear: r1(Math.max(0, baseGrowthPct - roeOffset)),
         base: baseGrowthPct,
-        bull: r1(Math.min(30, baseGrowthPct + roeOffset)),
+        bull: r1(Math.min(60, baseGrowthPct + roeOffset)),
       },
       discount: { bear: r2(waccOrRePct + 1), base: waccOrRePct, bull: r2(Math.max(1, waccOrRePct - 1)) },
     };
@@ -952,10 +964,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       <p class="pure-maths-note">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : 'dividends'} through the mechanical ${method} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${method}?</a></span>
+        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
       </p>
 
-      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : 'dividend growth or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
+      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
 
       <section class="other-tickers">
         <h2>More ${market.label ? escapeHtml(market.label) + ' ' : ''}stocks we've valued</h2>
@@ -964,7 +976,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>
 
-      <p class="disclaimer"><strong>Not financial advice.</strong> ${method} valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
+      <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
 
       <section class="tool-info">
         <div class="tool-about">
@@ -974,17 +986,18 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         <div class="tool-faq">
           <h2>Frequently asked questions</h2>
           <details class="faq-item"><summary>Is ${escapeHtml(name)} (${escapeHtml(t)}) undervalued?</summary>
-            <p>The Base-case ${method} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
+            <p>The Base-case ${METHOD_SHORT[method]} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
           </details>
         </div>
       </section>`;
 
+    const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model' };
     const html = pageShell({
-      title: `${name} (${t}) — Is It Undervalued? | ${method} Valuation | KashVector`,
-      description: `${name} (${t}) intrinsic value via ${method === 'DCF' ? 'Discounted Cash Flow' : 'Dividend Discount Model'}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
+      title: `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
+      description: `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
-      subtitle: `${method} Valuation · ${escapeHtml(sectorLine)}`,
+      subtitle: `${METHOD_SHORT[method]} Valuation · ${escapeHtml(sectorLine)}`,
       jsonLd: [breadcrumbJsonLd(crumbs)],
       breadcrumbHtml: breadcrumbNav(crumbs),
       mainHtml,
@@ -1004,4 +1017,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios };

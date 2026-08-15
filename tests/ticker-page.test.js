@@ -1,6 +1,26 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios } = require('../scripts/lib/ticker-page.js');
+
+// Regression test for a real bug (found by peer review, fixed 2026-08-15):
+// this file's ExcessReturn branch clamped the ROE spread to growthOffsetSpread's
+// [-15, 30] bounds instead of roeOffsetSpread's [0, 60] bounds that
+// www/calc/assumptions.js specifically introduced because 30% is far too low a
+// ceiling for a high-ROE financial -- a real NBFC checked while building this
+// sits at ~31.7% ROE, which the growth-rate ceiling clamps *below* base,
+// inverting bull < base. A comment in this file claimed the two already matched;
+// they didn't.
+test('deriveScenarios (ExcessReturn) keeps bull >= base even when base ROE exceeds 30%', () => {
+  const s = deriveScenarios({ method: 'ExcessReturn', baseGrowthPct: 31.7, waccOrRePct: 13.15 });
+  assert.ok(s.growth.bull >= s.growth.base, `bull ROE (${s.growth.bull}) must be >= base ROE (${s.growth.base})`);
+  assert.ok(s.growth.bear <= s.growth.base, `bear ROE (${s.growth.bear}) must be <= base ROE (${s.growth.base})`);
+  assert.strictEqual(s.growth.bull, 47.5); // 31.7 + |31.7|*0.5 = 47.55, rounded to 1dp
+});
+
+test('deriveScenarios (ExcessReturn) never lets bear ROE go negative', () => {
+  const s = deriveScenarios({ method: 'ExcessReturn', baseGrowthPct: 1, waccOrRePct: 10 });
+  assert.ok(s.growth.bear >= 0, `bear ROE must never go negative, got ${s.growth.bear}`);
+});
 
 test('latestAnnual returns null for a missing or empty series', () => {
   assert.strictEqual(latestAnnual(undefined), null);
