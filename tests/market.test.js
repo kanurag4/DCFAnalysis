@@ -10,6 +10,17 @@ test('ASX ticker uses provided live rf when given', () => {
   assert.deepStrictEqual(marketParamsFor('BHP.AX', { ausRf: 0.041 }), { rf: 0.041, erp: 0.06, terminalGrowth: 0.025 });
 });
 
+// India rf corrected 2026-08-15: raw G-Sec yield double-counted country risk (erp already
+// carries it) -- see market.js's inline comment for the Damodaran default-spread math.
+test('Indian (.NS/.BO) ticker gets the spread-adjusted rf (not the raw G-Sec yield), unchanged erp/terminalGrowth', () => {
+  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.049, erp: 0.075, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.049, erp: 0.075, terminalGrowth: 0.025 });
+});
+
+test('Indian ticker uses provided live rf when given (same override mechanism as ASX)', () => {
+  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS', { indRf: 0.052 }), { rf: 0.052, erp: 0.075, terminalGrowth: 0.025 });
+});
+
 test('US ticker (no suffix) gets US defaults', () => {
   assert.deepStrictEqual(marketParamsFor('AAPL'), { rf: 0.045, erp: 0.055, terminalGrowth: 0.025 });
 });
