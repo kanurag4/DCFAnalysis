@@ -475,8 +475,14 @@
   <script src="calc/excessReturn.js"></script>
   <script src="calc/fadingGrowthDcf.js"></script>
   <script src="calc/assumptions.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2/dist/chartjs-plugin-datalabels.min.js"></script>
+  <!-- Self-hosted, not CDN (chart.umd.min.js@4.5.1 / chartjs-plugin-datalabels@2.2.0) --
+       a CDN dependency here meant the Android app's first-ever DCF chart render on a
+       fresh Play Store install had to make an extra live network round-trip before
+       Chart became defined, producing a silent ~20-30s window where every ticker threw
+       "Chart is not defined" (confirmed live 2026-08-15). Vendoring removes that cold-
+       start entirely, since these ship bundled in the APK like every other local script. -->
+  <script src="chart.umd.min.js"></script>
+  <script src="chartjs-plugin-datalabels.min.js"></script>
   <script src="/kv-ticker-input.js"></script>
   <script src="/kv-glossary-data.js"></script>
   <script src="/kv-glossary.js"></script>
