@@ -66,6 +66,24 @@ function growthOffsetSpread(baseGrowthPct) {
   };
 }
 
+// ROE spread mirrors growthOffsetSpread's magnitude-offset shape, but with
+// bounds appropriate to ROE rather than a revenue/earnings growth rate --
+// growthOffsetSpread's 30% ceiling is far too low for high-ROE financials
+// (a real NBFC checked while building this can sit at ~31.7% ROE, which the
+// growth-rate ceiling clamps *below* base, inverting bull < base -- the same
+// class of ordering bug as the 2026-08-11 bear/bull inversion in CLAUDE.md's
+// Known Traps, just triggered by a clamp instead of a sign flip). Floored at
+// 0 instead of -15 since a negative bear-case ROE makes calculateExcessReturn
+// return null for that scenario by design (matches DDM's noDividend-style
+// graceful degradation) and isn't a meaningful bear case for a going concern.
+function roeOffsetSpread(baseRoePct) {
+  const offset = Math.abs(baseRoePct) * 0.5;
+  return {
+    bear: +Math.max(0, baseRoePct - offset).toFixed(1),
+    bull: +Math.min(60, baseRoePct + offset).toFixed(1),
+  };
+}
+
 // Discount-rate (WACC/cost-of-equity) spread — bear is 1pp higher, bull is
 // 1pp lower (floored at 1%), same ±1pp band used when seeding from a live
 // WACC/CAPM result.
@@ -110,8 +128,22 @@ function deriveDcfAssumptions(data) {
   const dividend = data.trailingAnnualDividendRate
     ?? data.dividendRate
     ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
-  const divGrowthPct = +(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100).toFixed(1);
+  const growth = deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth); // fraction, not *100 yet
+  const divGrowthPct = +(growth * 100).toFixed(1);
   const rePct = +(re * 100).toFixed(2);
+
+  // Excess Return Model inputs -- only meaningful when isBankIns, but computed
+  // unconditionally (cheap, no network call) so financialModel below can decide.
+  const roe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+    ? data.returnOnEquity
+    : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
+        ? data.trailingEps / (data.price / data.priceToBook)
+        : null);
+  const financialModel = isBankIns ? chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth }) : null;
+  const roePct = roe != null ? +(roe * 100).toFixed(1) : null;
+  const bookValue = (data.price != null && data.priceToBook != null && data.priceToBook > 0)
+    ? data.price / data.priceToBook : null;
+  const roeSpread = roePct != null ? roeOffsetSpread(roePct) : { bear: null, bull: null };
 
   const modelSeeds = {
     dcf: {
@@ -127,14 +159,21 @@ function deriveDcfAssumptions(data) {
       tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
       discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
     },
+    excessReturn: {
+      bookValue,
+      growth:   { bear: roeSpread.bear, base: roePct, bull: roeSpread.bull }, // "growth" slot holds ROE for this model
+      discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
+    },
   };
 
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
 
+  const valuationModel = !isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm');
+
   return {
     isBankIns, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
     waccResult, modelSeeds, fcfInfo,
-    valuationModel: isBankIns ? 'ddm' : 'dcf',
+    valuationModel,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
   };
 }
@@ -151,6 +190,17 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const useMultiStage = !!options.useMultiStage;
   const useMidYear = !!options.useMidYear;
   const configs = ['bear', 'base', 'bull'];
+
+  if (valuationModel === 'excess-return') {
+    const bookValue = seeds.bookValue;
+    return configs.map((key) => {
+      const roe          = seeds.growth[key] / 100;   // "growth" slot holds ROE for this model
+      const costOfEquity = seeds.discount[key] / 100;
+      if (!(bookValue > 0)) return { key, roe, wacc: costOfEquity, result: null, noBookValue: true };
+      const result = calculateExcessReturn({ bookValue, roe, costOfEquity, growthRate: (seeds.growth.base ?? 0) / 100, projectionYears: years, currentPrice: data.price });
+      return { key, roe, wacc: costOfEquity, result };
+    });
+  }
 
   if (valuationModel === 'ddm') {
     const dividend = seeds.dividend;
@@ -198,5 +248,5 @@ function computeScenarios(data, valuationModel, seeds, options) {
   });
 }
 
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, discountRateSpread };
-if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.discountRateSpread = discountRateSpread; }
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread };
+if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.roeOffsetSpread = roeOffsetSpread; window.discountRateSpread = discountRateSpread; }

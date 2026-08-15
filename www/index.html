@@ -209,6 +209,12 @@
             </label>
             <input type="text" id="dividend-input" inputmode="decimal" placeholder="e.g. 4.65">
           </div>
+          <div class="input-row" id="bookvalue-row" hidden>
+            <label for="bookvalue-input">Book Value / Share
+              <span class="tip" data-tip="Shareholders' equity per share. The starting point for the Excess Return Model — grows each year by the ROE-driven retention rate. Seeded from Yahoo's price ÷ price-to-book.">?</span>
+            </label>
+            <input type="text" id="bookvalue-input" inputmode="decimal" placeholder="e.g. 974.68">
+          </div>
           <div class="input-row">
             <label>Projection Years</label>
             <div class="slider-row">
@@ -243,7 +249,7 @@
             <input type="number" id="growth-base" class="scenario-num" step="0.5" min="-5" max="30">
             <input type="number" id="growth-bull" class="scenario-num" step="0.5" min="-5" max="30">
           </div>
-          <div class="scenario-input-row">
+          <div class="scenario-input-row" id="tgrowth-row">
             <label><span class="kv-term" data-term="terminal-growth" tabindex="0" role="button" aria-expanded="false">Terminal %</span></label>
             <input type="number" id="tgrowth-bear" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
             <input type="number" id="tgrowth-base" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
