@@ -3,11 +3,12 @@
 // Returns a ranked-row object, or { excluded: true, reason } when un-rankable.
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
 } = require('../../www/utils.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
+const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -31,15 +32,44 @@ function evaluateStock(data, params) {
     marketCap: data.marketCap, operatingMargin: data.operatingMargins, analystTarget: data.targetMeanPrice,
   };
 
-  // Banks/insurers → DDM (FCF-based DCF is structurally broken for them).
+  // Banks/insurers/NBFCs → DDM or Excess Return Model (FCF-based DCF is
+  // structurally broken for lenders). Which of the two depends on payout ratio
+  // vs. sustainable payout -- see chooseFinancialModel().
   if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
     const dividend = data.trailingAnnualDividendRate
       ?? data.dividendRate
       ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
+    const growth = deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth);
     const re = round2pct(rf + effectiveBeta * erp);
+
+    const roe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+      ? data.returnOnEquity
+      : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
+          ? data.trailingEps / (data.price / data.priceToBook)
+          : null);
+
+    const model = chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth });
+
+    if (model === 'excess-return') {
+      const bookValue = data.price / data.priceToBook;
+      const result = calculateExcessReturn({
+        bookValue, roe, costOfEquity: re, growthRate: growth,
+        projectionYears: PROJECTION_YEARS, currentPrice: data.price,
+      });
+      if (!result || result.intrinsicValue == null || result.marginOfSafety == null) {
+        return { ...base, excluded: true, reason: 'excess-return-unavailable' };
+      }
+      return {
+        ...base, method: 'ExcessReturn',
+        intrinsic: result.intrinsicValue,
+        marginOfSafety: result.marginOfSafety,
+        wacc: re,
+      };
+    }
+
     const result = calculateDDM({
       dividend: dividend != null ? +(+dividend).toFixed(2) : dividend,
-      growthRate: round1pct(deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth)),
+      growthRate: round1pct(growth),
       terminalGrowth,
       costOfEquity: re,
       projectionYears: PROJECTION_YEARS,
