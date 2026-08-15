@@ -580,7 +580,9 @@ function applyModelUI() {
 
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
-  if (els.growthLabel) els.growthLabel.innerHTML = T('growth-rate', excessReturn ? 'ROE %' : (ddm ? 'Div Growth %' : '5yr Growth %'));
+  if (els.growthLabel) els.growthLabel.innerHTML = excessReturn
+    ? T('roe', 'ROE %')
+    : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %');
   const discountLabelText = $('discount-label-text');
   if (discountLabelText) discountLabelText.innerHTML = T((ddm || excessReturn) ? 'cost-of-equity' : 'wacc', (ddm || excessReturn) ? 'Cost of Equity %' : 'WACC %');
   if (els.discountTip) els.discountTip.setAttribute('data-tip', (ddm || excessReturn)
