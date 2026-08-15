@@ -163,6 +163,14 @@ function deriveDcfAssumptions(data) {
       bookValue,
       growth:   { bear: roeSpread.bear, base: roePct, bull: roeSpread.bull }, // "growth" slot holds ROE for this model
       discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
+      // Book value compounds at the same dividend/earnings-derived growth rate
+      // evaluate.js/ticker-page.js/worker-watchlist all use for this model --
+      // NOT ROE (fixed 2026-08-15, peer review finding: computeScenarios() was
+      // passing base ROE itself as the compounding rate, silently overstating
+      // book-value growth versus every other consumer of this calc engine).
+      // Pinned across bear/base/bull -- see the comment on computeScenarios()'s
+      // excess-return branch for why this doesn't vary with the scenario.
+      bookValueGrowthPct: divGrowthPct,
     },
   };
 
@@ -193,11 +201,17 @@ function computeScenarios(data, valuationModel, seeds, options) {
 
   if (valuationModel === 'excess-return') {
     const bookValue = seeds.bookValue;
+    // Book value compounding rate is deliberately a single value pinned across
+    // bear/base/bull (like DDM's terminal growth), not derived from seeds.growth
+    // (which holds ROE for this model, not a growth rate -- see the field's own
+    // comment on modelSeeds.excessReturn). Bear/bull vary ROE and cost of equity
+    // only, avoiding a second independent lever.
+    const bookValueGrowthRate = (seeds.bookValueGrowthPct ?? 0) / 100;
     return configs.map((key) => {
       const roe          = seeds.growth[key] / 100;   // "growth" slot holds ROE for this model
       const costOfEquity = seeds.discount[key] / 100;
       if (!(bookValue > 0)) return { key, roe, wacc: costOfEquity, result: null, noBookValue: true };
-      const result = calculateExcessReturn({ bookValue, roe, costOfEquity, growthRate: (seeds.growth.base ?? 0) / 100, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
+      const result = calculateExcessReturn({ bookValue, roe, costOfEquity, growthRate: bookValueGrowthRate, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
       return { key, roe, wacc: costOfEquity, result };
     });
   }

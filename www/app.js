@@ -1082,6 +1082,10 @@ function buildScenarios(data) {
       bookValue,
       growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // "growth" slot holds ROE
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
+      // Book value compounding rate -- not user-editable (no UI field for it),
+      // so re-derived from the same source data assumptions.js seeds it from.
+      // NOT the ROE inputs above (fixed 2026-08-15, see calc/assumptions.js).
+      bookValueGrowthPct: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100,
     };
     return computeScenarios(data, 'excess-return', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
   }
