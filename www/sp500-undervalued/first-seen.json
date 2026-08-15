@@ -40,8 +40,8 @@
     "firstPrice": 228.52
   },
   "FOX": {
-    "firstSeen": "2026-08-01",
-    "firstPrice": 51.94
+    "firstSeen": "2026-08-15",
+    "firstPrice": 61.41
   },
   "FRT": {
     "firstSeen": "2026-06-04",
@@ -148,8 +148,8 @@
     "firstPrice": 480.18
   },
   "MRK": {
-    "firstSeen": "2026-06-26",
-    "firstPrice": 125.45
+    "firstSeen": "2026-08-15",
+    "firstPrice": 135.84
   },
   "BKNG": {
     "firstSeen": "2026-07-08",
@@ -234,5 +234,21 @@
   "MO": {
     "firstSeen": "2026-08-07",
     "firstPrice": 68.35
+  },
+  "WBD": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 27.99
+  },
+  "TKO": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 201.28
+  },
+  "HST": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 22.9
+  },
+  "HAL": {
+    "firstSeen": "2026-08-15",
+    "firstPrice": 34.42
   }
 }

@@ -361,5 +361,53 @@
     "exitDate": "2026-08-07",
     "exitPrice": 76.83,
     "dollarPnl": -13.18
+  },
+  {
+    "ticker": "ON",
+    "entryDate": "2026-08-07",
+    "entryPrice": 81.17,
+    "exitDate": "2026-08-15",
+    "exitPrice": 82.66,
+    "dollarPnl": 10.54
+  },
+  {
+    "ticker": "RL",
+    "entryDate": "2026-08-07",
+    "entryPrice": 395.53,
+    "exitDate": "2026-08-15",
+    "exitPrice": 388.92,
+    "dollarPnl": -9.59
+  },
+  {
+    "ticker": "BBY",
+    "entryDate": "2026-06-26",
+    "entryPrice": 76.89,
+    "exitDate": "2026-08-15",
+    "exitPrice": 86.42,
+    "dollarPnl": 30.95
+  },
+  {
+    "ticker": "CSGP",
+    "entryDate": "2026-08-01",
+    "entryPrice": 28.76,
+    "exitDate": "2026-08-15",
+    "exitPrice": 32.38,
+    "dollarPnl": 40.63
+  },
+  {
+    "ticker": "HPE",
+    "entryDate": "2026-07-10",
+    "entryPrice": 48.54,
+    "exitDate": "2026-08-15",
+    "exitPrice": 58.71,
+    "dollarPnl": 59.23
+  },
+  {
+    "ticker": "SNDK",
+    "entryDate": "2026-08-07",
+    "entryPrice": 1212.21,
+    "exitDate": "2026-08-15",
+    "exitPrice": 1641.11,
+    "dollarPnl": 203.14
   }
 ]
