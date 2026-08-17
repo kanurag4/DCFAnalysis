@@ -171,8 +171,9 @@
     "sector": "Financial Services",
     "method": "DCF",
     "intrinsic": 13.8152626474278,
-    "price": 40.3,
-    "marginOfSafety": -0.6571895124707742,
+    "price": 40.47,
+    "marginOfSafety": -0.6586295367574054,
+    "marketCap": 23407325184,
     "updated": "2026-08-17"
   },
   {
@@ -266,12 +267,13 @@
   {
     "ticker": "IAG.AX",
     "slug": "iag-ax",
-    "name": "INSUR.AUST FPO [IAG]",
+    "name": "Insurance Australia Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 3.5551093687746156,
-    "price": 8.05,
-    "marginOfSafety": -0.5583715069845198,
+    "price": 8.13,
+    "marginOfSafety": -0.5627171748124704,
+    "marketCap": 19007557632,
     "updated": "2026-08-17"
   },
   {
@@ -387,12 +389,13 @@
   {
     "ticker": "QBE.AX",
     "slug": "qbe-ax",
-    "name": "QBE INSUR. FPO [QBE]",
+    "name": "QBE Insurance Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 22.715379242168094,
-    "price": 22.77,
-    "marginOfSafety": -0.002398803593847412,
+    "price": 22.67,
+    "marginOfSafety": 0.002001731017560313,
+    "marketCap": 33869535232,
     "updated": "2026-08-17"
   },
   {
@@ -512,8 +515,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 19.847900888563878,
-    "price": 18.695,
-    "marginOfSafety": 0.06166894295607796,
+    "price": 18.7,
+    "marginOfSafety": 0.061385074254752856,
+    "marketCap": 19822962688,
     "updated": "2026-08-17"
   },
   {
