@@ -13,26 +13,10 @@ const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./li
 // Merges in growth-method tickers (Multi-Stage DCF/EV-Sales, a different
 // repo/template -- see stock-evaluator's growth-ticker-pages-reverse-dcf
 // design spec) so this page is the ONE browsable list per market, not two
-// separate ones -- direct user request, 2026-08-06. Their manifest lives
-// in the stock-evaluator repo, not here, so it's read from wherever it's
-// reachable: a local sibling checkout when this script is run by hand on
-// a dev machine where both repos sit under the same parent folder, or a
-// dedicated read-only checkout the refresh-ticker-pages.yml workflow adds
-// specifically for this (see that file) when running in CI. Returns []
-// (not an error) if neither is present -- a plain DCF-only list is a
-// legitimate degraded state, not a failure.
-function readGrowthManifest(folder) {
-  const candidates = [
-    path.join(__dirname, '..', 'stock-evaluator-growth', 'www', 'growth', 'stocks', folder, 'manifest.json'), // CI checkout
-    path.join(__dirname, '..', '..', 'StockAnalysis', 'www', 'growth', 'stocks', folder, 'manifest.json'), // local sibling checkout
-  ];
-  for (const p of candidates) {
-    if (fs.existsSync(p)) {
-      try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (_) { return []; }
-    }
-  }
-  return [];
-}
+// separate ones -- direct user request, 2026-08-06. Extracted 2026-08-17
+// into lib/growth-manifest-reader.js so the related-stocks pool builder in
+// ticker-page.js can share the same resolution order.
+const { readGrowthManifest } = require('./lib/growth-manifest-reader.js');
 
 const MARKET_NAMES = {
   asx: { label: 'ASX 300', screenUrl: '/dcf/asx-undervalued/', screenName: 'ASX 300 Most Undervalued' },
