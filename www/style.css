@@ -614,3 +614,16 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
 .sens-down { color: var(--kv-fail); }
 .sens-na { color: var(--kv-muted); }
 .sens-base { outline: 2px solid var(--kv-accent); outline-offset: -2px; font-weight: 700; }
+
+/* ── Explore more valuations — related-stock cards ── */
+.related-stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 12px 0; }
+.related-stock-card { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--kv-text); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.related-stock-card:hover { border-color: var(--kv-accent); }
+.rsc-top { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kv-muted); }
+.rsc-name { align-self: stretch; font-weight: 600; font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rsc-ticker { font-size: 0.76rem; color: var(--kv-muted); }
+.rsc-verdict-pill { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.rsc-verdict-pill.rsc-good { background: rgba(34,197,94,0.22); color: var(--kv-pass); border: 1px solid rgba(34,197,94,0.55); }
+.rsc-verdict-pill.rsc-ok { background: rgba(249,115,22,0.22); color: var(--kv-warn); border: 1px solid rgba(249,115,22,0.55); }
+.rsc-verdict-pill.rsc-bad { background: rgba(239,68,68,0.22); color: var(--kv-fail); border: 1px solid rgba(239,68,68,0.55); }
+.related-stocks-sub { color: var(--kv-muted); font-size: 0.85rem; margin: 2px 0 0; }
