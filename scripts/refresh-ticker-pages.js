@@ -6,11 +6,14 @@
 // docs/superpowers/specs/2026-08-05-ticker-pages-bulk-refresh-design.md (StockAnalysis)
 // for the full design.
 //
-// A ticker that comes back with a null base case (see lib/ticker-retry.js's
-// header for why this happens -- transient Yahoo-side module omission) gets
-// up to 2 retries with backoff before being given up on. A ticker that fails
-// to fetch or can't compute WACC is not retried -- only a null base case is,
-// since that's the specific transient condition observed in production.
+// A ticker that comes back with a null base case, or is skipped specifically
+// with "WACC uncomputable (no market cap or debt data)" (see lib/ticker-retry.js's
+// header for why both happen -- transient Yahoo-side module omission, confirmed
+// for the WACC-uncomputable case 2026-08-17), gets up to 2 retries with backoff
+// before being given up on. A ticker that fails to fetch, or is skipped for any
+// other reason (invalid ticker format, etc.), is not retried -- there's no
+// evidence yet those are the same transient condition rather than a real,
+// permanent failure.
 //
 // Whatever is still unresolved after retries is SKIPPED, not overwritten --
 // its existing published page and manifest entry are left untouched. This is
@@ -55,7 +58,12 @@ async function refreshMarket(folder, proxyUrl, dryRun) {
   for (const oldEntry of manifest) {
     const outcome = await withNullBaseCaseRetry(
       () => buildTickerPage(oldEntry.ticker, { proxyUrl, indexHistoryCache }),
-      { onRetry: (attempt) => console.log(`  ↻ ${oldEntry.ticker} (${folder}) null base case, retrying (attempt ${attempt}/2)…`) }
+      {
+        onRetry: (attempt, prevOutcome) => {
+          const why = prevOutcome.status === 'skipped' ? prevOutcome.reason : 'null base case';
+          console.log(`  ↻ ${oldEntry.ticker} (${folder}) ${why}, retrying (attempt ${attempt}/2)…`);
+        }
+      }
     );
 
     if (outcome.status === 'skipped') {

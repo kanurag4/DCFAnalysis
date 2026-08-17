@@ -14,7 +14,26 @@ test('returns the first outcome unretried when intrinsic is non-null', async () 
   assert.equal(calls, 1);
 });
 
-test('returns a skipped outcome unretried -- not the transient condition this exists for', async () => {
+test('returns a skipped outcome unretried when the reason is not a known-transient one', async () => {
+  let calls = 0;
+  const attemptFn = () => { calls++; return Promise.resolve(skipped('invalid ticker format "XYZ"')); };
+  const result = await withNullBaseCaseRetry(attemptFn, { sleepImpl: noSleep });
+  assert.deepEqual(result, skipped('invalid ticker format "XYZ"'));
+  assert.equal(calls, 1);
+});
+
+test('retries a skipped outcome whose reason is exactly the confirmed-transient WACC-uncomputable one', async () => {
+  let calls = 0;
+  const attemptFn = () => {
+    calls++;
+    return Promise.resolve(calls === 1 ? skipped('WACC uncomputable (no market cap or debt data)') : ok(11.4));
+  };
+  const result = await withNullBaseCaseRetry(attemptFn, { sleepImpl: noSleep });
+  assert.deepEqual(result, ok(11.4));
+  assert.equal(calls, 2);
+});
+
+test('does not retry a WACC-uncomputable reason that does not exactly match the confirmed-transient string', async () => {
   let calls = 0;
   const attemptFn = () => { calls++; return Promise.resolve(skipped('WACC uncomputable')); };
   const result = await withNullBaseCaseRetry(attemptFn, { sleepImpl: noSleep });
