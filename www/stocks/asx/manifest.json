@@ -93,10 +93,10 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 1.7997402973227874,
-    "price": 0.865,
-    "marginOfSafety": 1.080624621182413,
-    "updated": "2026-08-12"
+    "intrinsic": 2.152441140749852,
+    "price": 0.877,
+    "marginOfSafety": 1.4543228514821571,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "BVS.AX",
@@ -170,10 +170,10 @@
     "name": "Computershare Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 13.864214749149081,
-    "price": 40.61,
-    "marginOfSafety": -0.6586009665316651,
-    "updated": "2026-08-12"
+    "intrinsic": 13.8152626474278,
+    "price": 40.3,
+    "marginOfSafety": -0.6571895124707742,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "CSL.AX",
@@ -181,10 +181,10 @@
     "name": "CSL Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 70.36458751172056,
-    "price": 137.52,
-    "marginOfSafety": -0.48833196981006,
-    "updated": "2026-08-13"
+    "intrinsic": 70.13595355773684,
+    "price": 136.24,
+    "marginOfSafety": -0.4852029245615323,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "EDV.AX",
@@ -324,10 +324,10 @@
     "name": "Metcash Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 4.709294453397489,
-    "price": 3.12,
-    "marginOfSafety": 0.5093892478838106,
-    "updated": "2026-08-12"
+    "intrinsic": 5.329646857945379,
+    "price": 3.085,
+    "marginOfSafety": 0.7276002781022298,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "NAB.AX",
@@ -368,10 +368,10 @@
     "name": "Orica Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 23.820035208470163,
-    "price": 21.95,
-    "marginOfSafety": 0.08519522589841291,
-    "updated": "2026-08-14"
+    "intrinsic": 23.711780596378443,
+    "price": 22.43,
+    "marginOfSafety": 0.05714581348098274,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "PLS.AX",
@@ -500,10 +500,10 @@
     "name": "Santos Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 1.0293168145615996,
-    "price": 8.03,
-    "marginOfSafety": -0.8718160878503611,
-    "updated": "2026-08-12"
+    "intrinsic": 1.6141423768076273,
+    "price": 8.065,
+    "marginOfSafety": -0.7998583537746278,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "SUN.AX",
@@ -544,10 +544,10 @@
     "name": "Telstra Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 7.4117488068449875,
-    "price": 5,
-    "marginOfSafety": 0.4823497613689975,
-    "updated": "2026-08-12"
+    "intrinsic": 4.816858081173558,
+    "price": 4.835,
+    "marginOfSafety": -0.0037522065825111813,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "TPG.AX",
@@ -621,10 +621,10 @@
     "name": "Woolworths Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 23.808298467868383,
-    "price": 39.46,
-    "marginOfSafety": -0.39664727653653364,
-    "updated": "2026-08-12"
+    "intrinsic": 30.284379858847217,
+    "price": 40.31,
+    "marginOfSafety": -0.24871297794970937,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "WTC.AX",
