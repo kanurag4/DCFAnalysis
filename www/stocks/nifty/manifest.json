@@ -5,10 +5,10 @@
     "name": "HCL Technologies Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 908.1035564680978,
-    "price": 1354,
-    "marginOfSafety": -0.3293179051195732,
-    "updated": "2026-08-14"
+    "intrinsic": 1168.7933921534989,
+    "price": 1360,
+    "marginOfSafety": -0.14059309400478023,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "HDFCBANK.NS",
@@ -16,10 +16,10 @@
     "name": "HDFC Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 170.959568722859,
-    "price": 726.7,
-    "marginOfSafety": -0.7647453299534072,
-    "updated": "2026-08-14"
+    "intrinsic": 224.1002783909753,
+    "price": 727,
+    "marginOfSafety": -0.6917465221582183,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "HEROMOTOCO.NS",
@@ -27,10 +27,10 @@
     "name": "Hero MotoCorp Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 5936.243472024915,
-    "price": 5786.5,
-    "marginOfSafety": 0.025878073451121544,
-    "updated": "2026-08-14"
+    "intrinsic": 7627.776439827639,
+    "price": 5790,
+    "marginOfSafety": 0.317405257310473,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "MRF.NS",
@@ -38,10 +38,10 @@
     "name": "MRF Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 99240.28482631003,
-    "price": 131350,
-    "marginOfSafety": -0.24445919431815735,
-    "updated": "2026-08-14"
+    "intrinsic": 129059.17705787864,
+    "price": 133235,
+    "marginOfSafety": -0.03134178663355246,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "RPOWER.NS",
@@ -60,10 +60,10 @@
     "name": "Signatureglobal (India) Limited",
     "sector": "Real Estate",
     "method": "DCF",
-    "intrinsic": 56.18307117104548,
-    "price": 805.7,
-    "marginOfSafety": -0.9302680015253252,
-    "updated": "2026-08-14"
+    "intrinsic": 74.48887086928593,
+    "price": 805,
+    "marginOfSafety": -0.9074672411561665,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "TCS.NS",
@@ -82,10 +82,10 @@
     "name": "Tech Mahindra Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1652.984503216074,
-    "price": 1619,
-    "marginOfSafety": 0.02099104584068809,
-    "updated": "2026-08-14"
+    "intrinsic": 2187.0473929101504,
+    "price": 1632.8,
+    "marginOfSafety": 0.3394459780194454,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "WIPRO.NS",
@@ -93,9 +93,9 @@
     "name": "Wipro Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 162.4823224455331,
-    "price": 183.69,
-    "marginOfSafety": -0.11545363141415917,
-    "updated": "2026-08-14"
+    "intrinsic": 209.99588465444276,
+    "price": 184,
+    "marginOfSafety": 0.1412819818176237,
+    "updated": "2026-08-17"
   }
 ]
