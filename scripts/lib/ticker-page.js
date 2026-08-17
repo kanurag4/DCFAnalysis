@@ -21,6 +21,8 @@ const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
 const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
 const { buildValueScaleCard } = require('./value-scale.js');
+const { selectRelatedStocks, buildRelatedStocksHtml } = require('./related-stocks.js');
+const { readGrowthManifest, listGrowthMarketFolders } = require('./growth-manifest-reader.js');
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./page-shell.js');
 
 // ── validation ───────────────────────────────────────────────────────────
@@ -521,6 +523,50 @@ function upsertManifestEntry(manifestPath, entry) {
   return manifest;
 }
 
+function readManifestSafe(manifestPath) {
+  if (!fs.existsSync(manifestPath)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  } catch (_) {
+    return [];
+  }
+}
+
+function listMarketFolders(baseDir) {
+  if (!fs.existsSync(baseDir)) return [];
+  return fs.readdirSync(baseDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+}
+
+// Builds the cross-market, cross-tool candidate pool for the "Explore more
+// DCF valuations" cards. DCF markets are read locally (this repo owns
+// them); growth markets are read via growth-manifest-reader.js's
+// CI-checkout/local-sibling resolution, since growth pages are generated in
+// a different repo (StockAnalysis). See
+// docs/superpowers/specs/2026-08-17-related-stocks-cards-design.md.
+function buildRelatedStocksPool() {
+  const pool = [];
+  const dcfBase = path.join(__dirname, '..', '..', 'www', 'stocks');
+  for (const folder of listMarketFolders(dcfBase)) {
+    for (const e of readManifestSafe(path.join(dcfBase, folder, 'manifest.json'))) {
+      pool.push({
+        ticker: e.ticker, name: e.name, sector: e.sector, market: folder,
+        method: e.method, marginOfSafety: e.marginOfSafety, marketCap: e.marketCap,
+        url: `/dcf/stocks/${folder}/${e.slug}/`,
+      });
+    }
+  }
+  for (const folder of listGrowthMarketFolders()) {
+    for (const e of readGrowthManifest(folder)) {
+      pool.push({
+        ticker: e.ticker, name: e.name, sector: e.sector, market: folder,
+        method: 'Growth Model', marginOfSafety: e.marginOfSafety, marketCap: e.marketCap,
+        url: `/growth/stocks/${folder}/${e.slug}/`,
+      });
+    }
+  }
+  return pool;
+}
+
 // ── Core page building ──────────────────────────────────────────────────
 // Generates a single static ticker page. Accepts a ticker string and options
 // (proxyUrl, optional indexHistoryCache Map). Returns:
@@ -858,6 +904,32 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       valueScaleHtml = '';
     }
 
+    let relatedStocksSectionHtml = '';
+    try {
+      const relatedPool = buildRelatedStocksPool();
+      const relatedCandidates = selectRelatedStocks(
+        { ticker: t, sector: data.sector, marketCap: data.marketCap },
+        relatedPool
+      );
+      const relatedHeading = relatedCandidates.length
+        ? 'Explore more DCF valuations'
+        : `More ${market.label ? escapeHtml(market.label) + ' ' : ''}stocks we've valued`;
+      const relatedInner = buildRelatedStocksHtml(relatedCandidates, {
+        browseHref: `/dcf/stocks/${market.folder}/`,
+        browseLabel: `Browse every stock we've valued in this market &rarr;`,
+      });
+      relatedStocksSectionHtml = `<section class="other-tickers related-stocks">
+        <h2>${relatedHeading}</h2>${relatedInner}
+      </section>`;
+    } catch (_) {
+      relatedStocksSectionHtml = `<section class="other-tickers">
+        <h2>More ${market.label ? escapeHtml(market.label) + ' ' : ''}stocks we've valued</h2>
+        <div class="ticker-chip-row">
+          <a class="ticker-chip" href="/dcf/stocks/${market.folder}/">Browse every stock we've valued in this market &rarr;</a>
+        </div>
+      </section>`;
+    }
+
     const canCompareIndex = priceAligned.length >= 2;
     const priceSeries = canCompareIndex ? priceAligned : priceSeriesRaw;
     const priceLast = priceSeries[priceSeries.length - 1]?.v;
@@ -969,12 +1041,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
 
-      <section class="other-tickers">
-        <h2>More ${market.label ? escapeHtml(market.label) + ' ' : ''}stocks we've valued</h2>
-        <div class="ticker-chip-row">
-          <a class="ticker-chip" href="/dcf/stocks/${market.folder}/">Browse every stock we've valued in this market &rarr;</a>
-        </div>
-      </section>
+      ${relatedStocksSectionHtml}
 
       <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
 
@@ -1008,6 +1075,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       intrinsic: baseResult?.intrinsicValue ?? null,
       price: data.price,
       marginOfSafety: baseResult?.marginOfSafety ?? null,
+      marketCap: data.marketCap ?? null,
       updated: today,
     };
 
