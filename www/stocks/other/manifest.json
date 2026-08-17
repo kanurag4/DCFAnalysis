@@ -32,7 +32,7 @@
     "intrinsic": 29019.50423235211,
     "price": 3780,
     "marginOfSafety": 6.677117521786272,
-    "marketCap": 22126497103872,
+    "marketCap": 22127386296320,
     "updated": "2026-08-17"
   },
   {
@@ -42,9 +42,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 214.80243968915914,
-    "price": 107.5,
-    "marginOfSafety": 0.9981622296665967,
-    "marketCap": 17845237760,
+    "price": 107.35,
+    "marginOfSafety": 1.000954258865013,
+    "marketCap": 17820336128,
     "updated": "2026-08-17"
   },
   {
@@ -54,9 +54,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 61.447928479650365,
-    "price": 44.83,
-    "marginOfSafety": 0.3706876752096892,
-    "marketCap": 93735133184,
+    "price": 44.78,
+    "marginOfSafety": 0.3722181438063949,
+    "marketCap": 93630578688,
     "updated": "2026-08-17"
   },
   {
@@ -65,22 +65,22 @@
     "name": "Edenred SE",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 60.14028450240722,
-    "price": 28.34,
-    "marginOfSafety": 1.1220989591533952,
-    "marketCap": 6514683904,
+    "intrinsic": 62.87206130198723,
+    "price": 28.33,
+    "marginOfSafety": 1.2192750194841946,
+    "marketCap": 6512385024,
     "updated": "2026-08-17"
   },
   {
     "ticker": "FME.DE",
     "slug": "fme-de",
-    "name": "Fresenius Medical Care AG",
+    "name": "Fresenius Medical Care AG     I",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 167.4613464756648,
-    "price": 40.75,
-    "marginOfSafety": 3.109480895108339,
-    "marketCap": 10944009216,
+    "intrinsic": 167.99724799737015,
+    "price": 40.77,
+    "marginOfSafety": 3.1206094676813865,
+    "marketCap": 10849291264,
     "updated": "2026-08-17"
   },
   {
@@ -90,9 +90,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 112.73998313537078,
-    "price": 75.96,
-    "marginOfSafety": 0.4842019896704948,
-    "marketCap": 91005296640,
+    "price": 76,
+    "marginOfSafety": 0.48342083072856284,
+    "marketCap": 91053228032,
     "updated": "2026-08-17"
   },
   {
@@ -102,9 +102,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 315.2052991870879,
-    "price": 178.68,
-    "marginOfSafety": 0.7640771165608233,
-    "marketCap": 206233206784,
+    "price": 178.64,
+    "marginOfSafety": 0.7644721181543213,
+    "marketCap": 206187053056,
     "updated": "2026-08-17"
   },
   {
@@ -114,9 +114,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 51.362152533665345,
-    "price": 39.13,
-    "marginOfSafety": 0.31260292700396985,
-    "marketCap": 43794255872,
+    "price": 39.11,
+    "marginOfSafety": 0.31327416347904236,
+    "marketCap": 43771871232,
     "updated": "2026-08-17"
   }
 ]

@@ -44,7 +44,7 @@
     "intrinsic": 101.83545871310321,
     "price": 80.45,
     "marginOfSafety": 0.2658229796532406,
-    "marketCap": 38773399552,
+    "marketCap": 38773645312,
     "updated": "2026-08-17"
   },
   {
@@ -92,7 +92,7 @@
     "intrinsic": 293.09116230968596,
     "price": 178.93,
     "marginOfSafety": 0.6380213620392664,
-    "marketCap": 13686423552,
+    "marketCap": 13560771584,
     "updated": "2026-08-17"
   },
   {
@@ -125,10 +125,10 @@
     "name": "Booking Holdings Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 319.25370965701336,
+    "intrinsic": 320.2185269336506,
     "price": 212.06,
-    "marginOfSafety": 0.5054876433887265,
-    "marketCap": 164320722944,
+    "marginOfSafety": 0.5100373806170452,
+    "marketCap": 159337742336,
     "updated": "2026-08-17"
   },
   {
@@ -218,7 +218,7 @@
   {
     "ticker": "KO",
     "slug": "ko",
-    "name": "The Coca-Cola Company",
+    "name": "Coca-Cola Company (The)",
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 42.85806746103869,
@@ -236,7 +236,7 @@
     "intrinsic": 619.6551810850862,
     "price": 1180.16,
     "marginOfSafety": -0.4749396852248118,
-    "marketCap": 1051943960576,
+    "marketCap": 1052397535232,
     "updated": "2026-08-17"
   },
   {
@@ -257,10 +257,10 @@
     "name": "Mondelez International, Inc.",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 103.06990804899775,
+    "intrinsic": 103.3965730617766,
     "price": 63.61,
-    "marginOfSafety": 0.6203412678666522,
-    "marketCap": 81652965376,
+    "marginOfSafety": 0.6254767027476279,
+    "marketCap": 81185955840,
     "updated": "2026-08-17"
   },
   {
@@ -302,7 +302,7 @@
   {
     "ticker": "MRK",
     "slug": "mrk",
-    "name": "Merck & Co., Inc.",
+    "name": "Merck & Company, Inc.",
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 211.0524459672015,
@@ -353,16 +353,16 @@
     "name": "Okta, Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 169.85832613130097,
+    "intrinsic": 170.12409887885897,
     "price": 147.43,
-    "marginOfSafety": 0.1521286449928845,
-    "marketCap": 25851326464,
+    "marginOfSafety": 0.15393134964972505,
+    "marketCap": 25624418304,
     "updated": "2026-08-17"
   },
   {
     "ticker": "PFE",
     "slug": "pfe",
-    "name": "Pfizer Inc.",
+    "name": "Pfizer, Inc.",
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 62.60688332635845,
@@ -374,13 +374,13 @@
   {
     "ticker": "PG",
     "slug": "pg",
-    "name": "The Procter & Gamble Company",
+    "name": "Procter & Gamble Company (The)",
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 108.34355841667704,
     "price": 144.55,
     "marginOfSafety": -0.25047693935194026,
-    "marketCap": 336598990848,
+    "marketCap": 335996813312,
     "updated": "2026-08-17"
   },
   {

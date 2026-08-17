@@ -62,13 +62,13 @@
   {
     "ticker": "ANZ.AX",
     "slug": "anz-ax",
-    "name": "ANZ Group Holdings Limited",
+    "name": "ANZ GROUP FPO [ANZ]",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 27.425689108773227,
     "price": 37.88,
     "marginOfSafety": -0.27598497600915456,
-    "marketCap": 114057830400,
+    "marketCap": null,
     "updated": "2026-08-17"
   },
   {
@@ -176,7 +176,7 @@
     "intrinsic": 83.8400053756489,
     "price": 165,
     "marginOfSafety": -0.4918787552990976,
-    "marketCap": 275900432384,
+    "marketCap": 275852066816,
     "updated": "2026-08-17"
   },
   {
@@ -313,13 +313,13 @@
   {
     "ticker": "IAG.AX",
     "slug": "iag-ax",
-    "name": "Insurance Australia Group Limited",
+    "name": "INSUR.AUST FPO [IAG]",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 3.5551093687746156,
     "price": 8.13,
     "marginOfSafety": -0.5627171748124704,
-    "marketCap": 19007557632,
+    "marketCap": null,
     "updated": "2026-08-17"
   },
   {
@@ -328,9 +328,9 @@
     "name": "JB Hi-Fi Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 83.61884048979313,
+    "intrinsic": 61.61070047647636,
     "price": 71.65,
-    "marginOfSafety": 0.16704592449118105,
+    "marginOfSafety": -0.14011583424317717,
     "marketCap": 7833780224,
     "updated": "2026-08-17"
   },
@@ -385,13 +385,13 @@
   {
     "ticker": "NAB.AX",
     "slug": "nab-ax",
-    "name": "National Australia Bank Limited",
+    "name": "NAT. BANK FPO [NAB]",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 28.07528009438917,
     "price": 39.46,
     "marginOfSafety": -0.288512922088465,
-    "marketCap": 120800280576,
+    "marketCap": null,
     "updated": "2026-08-17"
   },
   {
@@ -445,13 +445,13 @@
   {
     "ticker": "QBE.AX",
     "slug": "qbe-ax",
-    "name": "QBE Insurance Group Limited",
+    "name": "QBE INSUR. FPO [QBE]",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 22.715379242168094,
     "price": 22.67,
     "marginOfSafety": 0.002001731017560313,
-    "marketCap": 33869535232,
+    "marketCap": null,
     "updated": "2026-08-17"
   },
   {
@@ -463,7 +463,7 @@
     "intrinsic": 5.943383793152417,
     "price": 5.11,
     "marginOfSafety": 0.1630888049221951,
-    "marketCap": 9046805504,
+    "marketCap": 9116711936,
     "updated": "2026-08-17"
   },
   {
@@ -727,7 +727,7 @@
     "intrinsic": 45.14019542162878,
     "price": 82.11,
     "marginOfSafety": -0.4502472850855099,
-    "marketCap": 14231823360,
+    "marketCap": 14409703424,
     "updated": "2026-08-17"
   },
   {
