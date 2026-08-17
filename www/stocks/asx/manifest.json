@@ -55,6 +55,17 @@
     "updated": "2026-08-14"
   },
   {
+    "ticker": "AVH.AX",
+    "slug": "avh-ax",
+    "name": "AVITA Medical, Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 0.7807589731549417,
+    "price": 2.2,
+    "marginOfSafety": -0.6451095576568447,
+    "updated": "2026-08-17"
+  },
+  {
     "ticker": "BEN.AX",
     "slug": "ben-ax",
     "name": "Bendigo and Adelaide Bank Limited",
@@ -86,6 +97,17 @@
     "price": 0.865,
     "marginOfSafety": 1.080624621182413,
     "updated": "2026-08-12"
+  },
+  {
+    "ticker": "BVS.AX",
+    "slug": "bvs-ax",
+    "name": "Bravura Solutions Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 4.510867996314125,
+    "price": 3.44,
+    "marginOfSafety": 0.311298836137827,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "BXB.AX",
@@ -438,6 +460,17 @@
     "price": 15.005,
     "marginOfSafety": -0.591564377600716,
     "updated": "2026-08-14"
+  },
+  {
+    "ticker": "SGH.AX",
+    "slug": "sgh-ax",
+    "name": "SGH Limited",
+    "sector": null,
+    "method": "DCF",
+    "intrinsic": 21.84119632170773,
+    "price": 41.61,
+    "marginOfSafety": -0.4750974207712634,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "SHL.AX",
