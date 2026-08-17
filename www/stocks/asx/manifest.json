@@ -1,5 +1,17 @@
 [
   {
+    "ticker": "A2M.AX",
+    "slug": "a2m-ax",
+    "name": "The a2 Milk Company Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 3.9179443414890955,
+    "price": 6.53,
+    "marginOfSafety": -0.4000085235085612,
+    "marketCap": 4737033216,
+    "updated": "2026-08-17"
+  },
+  {
     "ticker": "AAI.AX",
     "slug": "aai-ax",
     "name": "Alcoa Corporation",
@@ -69,6 +81,18 @@
     "price": 2.19,
     "marginOfSafety": -0.6430101343426289,
     "marketCap": 338648992,
+    "updated": "2026-08-17"
+  },
+  {
+    "ticker": "BBN.AX",
+    "slug": "bbn-ax",
+    "name": "Baby Bunting Group Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 7.146483554277169,
+    "price": 1.3,
+    "marginOfSafety": 4.497295041751668,
+    "marketCap": 177897072,
     "updated": "2026-08-17"
   },
   {
