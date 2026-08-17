@@ -5,9 +5,10 @@
     "name": "HCL Technologies Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1168.7933921534989,
-    "price": 1360,
-    "marginOfSafety": -0.14059309400478023,
+    "intrinsic": 1170.4265896232507,
+    "price": 1325,
+    "marginOfSafety": -0.11665917764282964,
+    "marketCap": 3585140850688,
     "updated": "2026-08-17"
   },
   {
@@ -17,8 +18,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 224.1002783909753,
-    "price": 727,
-    "marginOfSafety": -0.6917465221582183,
+    "price": 731.35,
+    "marginOfSafety": -0.6935799844247279,
+    "marketCap": 11270835142656,
     "updated": "2026-08-17"
   },
   {
@@ -28,8 +30,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 7627.776439827639,
-    "price": 5790,
-    "marginOfSafety": 0.317405257310473,
+    "price": 5745,
+    "marginOfSafety": 0.3277243585426699,
+    "marketCap": 1149811163136,
     "updated": "2026-08-17"
   },
   {
@@ -39,8 +42,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 129059.17705787864,
-    "price": 133235,
-    "marginOfSafety": -0.03134178663355246,
+    "price": 133015,
+    "marginOfSafety": -0.029739675541264984,
+    "marketCap": 564135657472,
     "updated": "2026-08-17"
   },
   {
@@ -49,10 +53,11 @@
     "name": "Reliance Power Limited",
     "sector": "Utilities",
     "method": "DCF",
-    "intrinsic": 128.8464121442378,
-    "price": 23.38,
-    "marginOfSafety": 4.510967157580745,
-    "updated": "2026-08-12"
+    "intrinsic": 168.7380855213835,
+    "price": 22.72,
+    "marginOfSafety": 6.426852355694697,
+    "marketCap": 93964713984,
+    "updated": "2026-08-17"
   },
   {
     "ticker": "SIGNATURE.NS",
@@ -61,8 +66,9 @@
     "sector": "Real Estate",
     "method": "DCF",
     "intrinsic": 74.48887086928593,
-    "price": 805,
-    "marginOfSafety": -0.9074672411561665,
+    "price": 805.05,
+    "marginOfSafety": -0.9074729881755345,
+    "marketCap": 113259290624,
     "updated": "2026-08-17"
   },
   {
@@ -72,8 +78,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 2286.73858380572,
-    "price": 2361,
-    "marginOfSafety": -0.03145337407635755,
+    "price": 2313.2,
+    "marginOfSafety": -0.01143931185988241,
+    "marketCap": 8369359814656,
     "updated": "2026-08-17"
   },
   {
@@ -83,8 +90,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 2187.0473929101504,
-    "price": 1632.8,
-    "marginOfSafety": 0.3394459780194454,
+    "price": 1610,
+    "marginOfSafety": 0.35841452975785737,
+    "marketCap": 1426217107456,
     "updated": "2026-08-17"
   },
   {
@@ -93,9 +101,10 @@
     "name": "Wipro Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 209.99588465444276,
-    "price": 184,
-    "marginOfSafety": 0.1412819818176237,
+    "intrinsic": 210.30426894369333,
+    "price": 181.9,
+    "marginOfSafety": 0.15615321024570272,
+    "marketCap": 1799469662208,
     "updated": "2026-08-17"
   }
 ]

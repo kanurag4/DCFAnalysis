@@ -6,8 +6,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 143.96198089904073,
-    "price": 163.3,
-    "marginOfSafety": -0.1184202027003018,
+    "price": 163.5,
+    "marginOfSafety": -0.11949858777345122,
+    "marketCap": 2803019546624,
     "updated": "2026-08-17"
   },
   {
@@ -17,8 +18,9 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 374.3223750901028,
-    "price": 446.2,
-    "marginOfSafety": -0.1610883570369726,
+    "price": 446.4,
+    "marginOfSafety": -0.16146421350783416,
+    "marketCap": 4023047946240,
     "updated": "2026-08-17"
   },
   {
@@ -28,8 +30,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 29019.50423235211,
-    "price": 3812,
-    "marginOfSafety": 6.612671624436545,
+    "price": 3780,
+    "marginOfSafety": 6.677117521786272,
+    "marketCap": 22126497103872,
     "updated": "2026-08-17"
   },
   {
@@ -38,9 +41,10 @@
     "name": "Capgemini SE",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 214.086571205938,
-    "price": 108.3,
-    "marginOfSafety": 0.9767919778941643,
+    "intrinsic": 214.80243968915914,
+    "price": 107.5,
+    "marginOfSafety": 0.9981622296665967,
+    "marketCap": 17845237760,
     "updated": "2026-08-17"
   },
   {
@@ -50,8 +54,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 61.447928479650365,
-    "price": 45.05,
-    "marginOfSafety": 0.36399397291121793,
+    "price": 44.83,
+    "marginOfSafety": 0.3706876752096892,
+    "marketCap": 93735133184,
     "updated": "2026-08-17"
   },
   {
@@ -60,20 +65,22 @@
     "name": "Edenred SE",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 62.66078967282333,
-    "price": 28.58,
-    "marginOfSafety": 1.1924698975795427,
+    "intrinsic": 60.14028450240722,
+    "price": 28.34,
+    "marginOfSafety": 1.1220989591533952,
+    "marketCap": 6514683904,
     "updated": "2026-08-17"
   },
   {
     "ticker": "FME.DE",
     "slug": "fme-de",
-    "name": "Fresenius Medical Care AG     I",
+    "name": "Fresenius Medical Care AG",
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 167.4613464756648,
-    "price": 41.04,
-    "marginOfSafety": 3.080442165586375,
+    "price": 40.75,
+    "marginOfSafety": 3.109480895108339,
+    "marketCap": 10944009216,
     "updated": "2026-08-17"
   },
   {
@@ -83,8 +90,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 112.73998313537078,
-    "price": 75.52,
-    "marginOfSafety": 0.49284935295776994,
+    "price": 75.96,
+    "marginOfSafety": 0.4842019896704948,
+    "marketCap": 91005296640,
     "updated": "2026-08-17"
   },
   {
@@ -94,8 +102,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 315.2052991870879,
-    "price": 180.14,
-    "marginOfSafety": 0.7497796113416673,
+    "price": 178.68,
+    "marginOfSafety": 0.7640771165608233,
+    "marketCap": 206233206784,
     "updated": "2026-08-17"
   },
   {
@@ -104,9 +113,10 @@
     "name": "Siemens Healthineers AG",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 51.228657124707,
-    "price": 39.31,
-    "marginOfSafety": 0.3031965689317475,
+    "intrinsic": 51.362152533665345,
+    "price": 39.13,
+    "marginOfSafety": 0.31260292700396985,
+    "marketCap": 43794255872,
     "updated": "2026-08-17"
   }
 ]

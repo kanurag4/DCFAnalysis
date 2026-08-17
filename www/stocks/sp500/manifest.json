@@ -8,6 +8,7 @@
     "intrinsic": 202.2633007051475,
     "price": 305.93,
     "marginOfSafety": -0.3388575794948273,
+    "marketCap": 4464797286400,
     "updated": "2026-08-17"
   },
   {
@@ -19,6 +20,7 @@
     "intrinsic": 319.27960510863625,
     "price": 176.89,
     "marginOfSafety": 0.8049613042491733,
+    "marketCap": 108246433792,
     "updated": "2026-08-17"
   },
   {
@@ -30,6 +32,7 @@
     "intrinsic": 323.0447055387964,
     "price": 264.02,
     "marginOfSafety": 0.22356149359441108,
+    "marketCap": 104947949568,
     "updated": "2026-08-17"
   },
   {
@@ -41,6 +44,7 @@
     "intrinsic": 101.83545871310321,
     "price": 80.45,
     "marginOfSafety": 0.2658229796532406,
+    "marketCap": 38773399552,
     "updated": "2026-08-17"
   },
   {
@@ -52,6 +56,7 @@
     "intrinsic": 394.5038193715205,
     "price": 251.66,
     "marginOfSafety": 0.5676063711814372,
+    "marketCap": 53136814080,
     "updated": "2026-08-17"
   },
   {
@@ -63,6 +68,7 @@
     "intrinsic": 83.78227223948517,
     "price": 514.39,
     "marginOfSafety": -0.8371230540261568,
+    "marketCap": 839728824320,
     "updated": "2026-08-17"
   },
   {
@@ -74,6 +80,7 @@
     "intrinsic": 127.50048084043293,
     "price": 392.99,
     "marginOfSafety": -0.6755630401780378,
+    "marketCap": 1869681393664,
     "updated": "2026-08-17"
   },
   {
@@ -85,6 +92,7 @@
     "intrinsic": 293.09116230968596,
     "price": 178.93,
     "marginOfSafety": 0.6380213620392664,
+    "marketCap": 13686423552,
     "updated": "2026-08-17"
   },
   {
@@ -96,6 +104,7 @@
     "intrinsic": 129.7801292907446,
     "price": 86.42,
     "marginOfSafety": 0.5017372054008865,
+    "marketCap": 18214494208,
     "updated": "2026-08-17"
   },
   {
@@ -107,6 +116,7 @@
     "intrinsic": 32.58565789978612,
     "price": 28.42,
     "marginOfSafety": 0.14657487332111607,
+    "marketCap": 13040922624,
     "updated": "2026-08-17"
   },
   {
@@ -115,9 +125,10 @@
     "name": "Booking Holdings Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 320.2185269336506,
+    "intrinsic": 319.25370965701336,
     "price": 212.06,
-    "marginOfSafety": 0.5100373806170452,
+    "marginOfSafety": 0.5054876433887265,
+    "marketCap": 164320722944,
     "updated": "2026-08-17"
   },
   {
@@ -129,6 +140,7 @@
     "intrinsic": 312.21256379574925,
     "price": 209.7,
     "marginOfSafety": 0.48885342773366364,
+    "marketCap": 52925640704,
     "updated": "2026-08-17"
   },
   {
@@ -140,6 +152,7 @@
     "intrinsic": 619.1103587741766,
     "price": 395.78,
     "marginOfSafety": 0.5642790408160508,
+    "marketCap": 107081121792,
     "updated": "2026-08-17"
   },
   {
@@ -151,6 +164,7 @@
     "intrinsic": 1868.386602586871,
     "price": 1063.25,
     "marginOfSafety": 0.7572411028327026,
+    "marketCap": 283179188224,
     "updated": "2026-08-17"
   },
   {
@@ -162,6 +176,7 @@
     "intrinsic": 75.6730333493386,
     "price": 58.71,
     "marginOfSafety": 0.2889292002953261,
+    "marketCap": 77743988736,
     "updated": "2026-08-17"
   },
   {
@@ -173,6 +188,7 @@
     "intrinsic": 180.20217856610194,
     "price": 234.32,
     "marginOfSafety": -0.2309569026711252,
+    "marketCap": 220760932352,
     "updated": "2026-08-17"
   },
   {
@@ -184,6 +200,7 @@
     "intrinsic": 377.3191561091352,
     "price": 345.66,
     "marginOfSafety": 0.09159045336207589,
+    "marketCap": 94550794240,
     "updated": "2026-08-17"
   },
   {
@@ -195,17 +212,19 @@
     "intrinsic": 210.2484749601832,
     "price": 260.35,
     "marginOfSafety": -0.19243912056776197,
+    "marketCap": 627417088000,
     "updated": "2026-08-17"
   },
   {
     "ticker": "KO",
     "slug": "ko",
-    "name": "Coca-Cola Company (The)",
+    "name": "The Coca-Cola Company",
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 42.85806746103869,
     "price": 87.71,
     "marginOfSafety": -0.5113662357651501,
+    "marketCap": 377376571392,
     "updated": "2026-08-17"
   },
   {
@@ -217,6 +236,7 @@
     "intrinsic": 619.6551810850862,
     "price": 1180.16,
     "marginOfSafety": -0.4749396852248118,
+    "marketCap": 1051943960576,
     "updated": "2026-08-17"
   },
   {
@@ -228,6 +248,7 @@
     "intrinsic": 354.35539466929043,
     "price": 569.29,
     "marginOfSafety": -0.37754853471993105,
+    "marketCap": 498703663104,
     "updated": "2026-08-17"
   },
   {
@@ -236,9 +257,10 @@
     "name": "Mondelez International, Inc.",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 103.3965730617766,
+    "intrinsic": 103.06990804899775,
     "price": 63.61,
-    "marginOfSafety": 0.6254767027476279,
+    "marginOfSafety": 0.6203412678666522,
+    "marketCap": 81652965376,
     "updated": "2026-08-17"
   },
   {
@@ -250,6 +272,7 @@
     "intrinsic": 115.27242125484523,
     "price": 589.85,
     "marginOfSafety": -0.8045733300757053,
+    "marketCap": 1502646501376,
     "updated": "2026-08-17"
   },
   {
@@ -261,6 +284,7 @@
     "intrinsic": 289.89015437161714,
     "price": 182.65,
     "marginOfSafety": 0.5871347077559109,
+    "marketCap": 94196695040,
     "updated": "2026-08-17"
   },
   {
@@ -272,17 +296,19 @@
     "intrinsic": 106.2537591642397,
     "price": 65.7,
     "marginOfSafety": 0.6172566082837092,
+    "marketCap": 109702168576,
     "updated": "2026-08-17"
   },
   {
     "ticker": "MRK",
     "slug": "mrk",
-    "name": "Merck & Company, Inc.",
+    "name": "Merck & Co., Inc.",
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 211.0524459672015,
     "price": 135.84,
     "marginOfSafety": 0.553684083975276,
+    "marketCap": 335140585472,
     "updated": "2026-08-17"
   },
   {
@@ -294,6 +320,7 @@
     "intrinsic": 61.64902606111266,
     "price": 495.4,
     "marginOfSafety": -0.8755570729489046,
+    "marketCap": 3678615371776,
     "updated": "2026-08-17"
   },
   {
@@ -305,6 +332,7 @@
     "intrinsic": 86.4295902651333,
     "price": 78.16,
     "marginOfSafety": 0.10580335549044656,
+    "marketCap": 325453545472,
     "updated": "2026-08-17"
   },
   {
@@ -316,6 +344,7 @@
     "intrinsic": 32.32945673161396,
     "price": 225.16,
     "marginOfSafety": -0.8564156300781046,
+    "marketCap": 5453600260096,
     "updated": "2026-08-17"
   },
   {
@@ -324,31 +353,34 @@
     "name": "Okta, Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 170.12409887885897,
+    "intrinsic": 169.85832613130097,
     "price": 147.43,
-    "marginOfSafety": 0.15393134964972505,
+    "marginOfSafety": 0.1521286449928845,
+    "marketCap": 25851326464,
     "updated": "2026-08-17"
   },
   {
     "ticker": "PFE",
     "slug": "pfe",
-    "name": "Pfizer, Inc.",
+    "name": "Pfizer Inc.",
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 62.60688332635845,
     "price": 26.79,
     "marginOfSafety": 1.3369497322268926,
+    "marketCap": 152694259712,
     "updated": "2026-08-17"
   },
   {
     "ticker": "PG",
     "slug": "pg",
-    "name": "Procter & Gamble Company (The)",
+    "name": "The Procter & Gamble Company",
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 108.34355841667704,
     "price": 144.55,
     "marginOfSafety": -0.25047693935194026,
+    "marketCap": 336598990848,
     "updated": "2026-08-17"
   },
   {
@@ -360,6 +392,7 @@
     "intrinsic": 1140.3025393072905,
     "price": 803.48,
     "marginOfSafety": 0.4192046339763162,
+    "marketCap": 82722275328,
     "updated": "2026-08-17"
   },
   {
@@ -371,6 +404,7 @@
     "intrinsic": 288.1140022114659,
     "price": 388.92,
     "marginOfSafety": -0.2591946873098172,
+    "marketCap": 23172724736,
     "updated": "2026-08-17"
   },
   {
@@ -382,6 +416,7 @@
     "intrinsic": 1778.8030395036315,
     "price": 1641.11,
     "marginOfSafety": 0.08390238284065758,
+    "marketCap": 239602057216,
     "updated": "2026-08-17"
   },
   {
@@ -393,6 +428,7 @@
     "intrinsic": 23.488895123483395,
     "price": 24.89,
     "marginOfSafety": -0.05629187932971495,
+    "marketCap": 170555883520,
     "updated": "2026-08-17"
   },
   {
@@ -404,6 +440,7 @@
     "intrinsic": 208.92501956315886,
     "price": 162.22,
     "marginOfSafety": 0.2879115988358948,
+    "marketCap": 41166221312,
     "updated": "2026-08-17"
   },
   {
@@ -415,6 +452,7 @@
     "intrinsic": 24.165550714470065,
     "price": 342.27,
     "marginOfSafety": -0.9293962348015601,
+    "marketCap": 1351811596288,
     "updated": "2026-08-17"
   },
   {
@@ -426,6 +464,7 @@
     "intrinsic": 163.43533269756,
     "price": 238.2,
     "marginOfSafety": -0.3138734983309823,
+    "marketCap": 36581617664,
     "updated": "2026-08-17"
   },
   {
@@ -437,6 +476,7 @@
     "intrinsic": 79.17130414870988,
     "price": 48.48,
     "marginOfSafety": 0.6330714552126626,
+    "marketCap": 201423503360,
     "updated": "2026-08-17"
   }
 ]

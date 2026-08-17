@@ -6,8 +6,9 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 113.18665403683156,
-    "price": 71.41,
-    "marginOfSafety": 0.5850252630840437,
+    "price": 71.75,
+    "marginOfSafety": 0.5775143419767464,
+    "marketCap": 18935502848,
     "updated": "2026-08-17"
   },
   {
@@ -17,8 +18,9 @@
     "sector": "Utilities",
     "method": "DCF",
     "intrinsic": 6.855685683948601,
-    "price": 8.815,
-    "marginOfSafety": -0.222270483953647,
+    "price": 8.8,
+    "marginOfSafety": -0.22094480864220448,
+    "marketCap": 5920176128,
     "updated": "2026-08-17"
   },
   {
@@ -28,8 +30,9 @@
     "sector": "Industrials",
     "method": "DCF",
     "intrinsic": 2.6587658149880604,
-    "price": 7.32,
-    "marginOfSafety": -0.6367806263677513,
+    "price": 7.25,
+    "marginOfSafety": -0.6332736806913021,
+    "marketCap": 12289689600,
     "updated": "2026-08-17"
   },
   {
@@ -39,19 +42,21 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 22.28739931903209,
-    "price": 64.34,
-    "marginOfSafety": -0.6535996375655566,
+    "price": 64.5,
+    "marginOfSafety": -0.6544589252863242,
+    "marketCap": 38664802304,
     "updated": "2026-08-17"
   },
   {
     "ticker": "ANZ.AX",
     "slug": "anz-ax",
-    "name": "ANZ GROUP FPO [ANZ]",
+    "name": "ANZ Group Holdings Limited",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 27.425689108773227,
-    "price": 37.92,
-    "marginOfSafety": -0.27674870493741494,
+    "price": 37.88,
+    "marginOfSafety": -0.27598497600915456,
+    "marketCap": 114057830400,
     "updated": "2026-08-17"
   },
   {
@@ -60,9 +65,10 @@
     "name": "AVITA Medical, Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 0.7807589731549417,
-    "price": 2.2,
-    "marginOfSafety": -0.6451095576568447,
+    "intrinsic": 0.7818078057896427,
+    "price": 2.19,
+    "marginOfSafety": -0.6430101343426289,
+    "marketCap": 338648992,
     "updated": "2026-08-17"
   },
   {
@@ -72,8 +78,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 9.95478848607063,
-    "price": 11.17,
-    "marginOfSafety": -0.10879243634103583,
+    "price": 11.15,
+    "marginOfSafety": -0.10719385775151306,
+    "marketCap": 6287115264,
     "updated": "2026-08-17"
   },
   {
@@ -83,8 +90,9 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 63.74325881157346,
-    "price": 61.96,
-    "marginOfSafety": 0.02878080715902939,
+    "price": 62.2,
+    "marginOfSafety": 0.024811234912756573,
+    "marketCap": 316018917376,
     "updated": "2026-08-17"
   },
   {
@@ -94,8 +102,9 @@
     "sector": "Energy",
     "method": "DCF",
     "intrinsic": 2.152441140749852,
-    "price": 0.877,
-    "marginOfSafety": 1.4543228514821571,
+    "price": 0.875,
+    "marginOfSafety": 1.4599327322855449,
+    "marketCap": 1996167040,
     "updated": "2026-08-17"
   },
   {
@@ -105,8 +114,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 4.510867996314125,
-    "price": 3.43,
-    "marginOfSafety": 0.3151218648146136,
+    "price": 3.44,
+    "marginOfSafety": 0.311298836137827,
+    "marketCap": 1542151936,
     "updated": "2026-08-17"
   },
   {
@@ -116,8 +126,9 @@
     "sector": "Industrials",
     "method": "DCF",
     "intrinsic": 18.845687843905004,
-    "price": 19.57,
-    "marginOfSafety": -0.0370113518699538,
+    "price": 19.6,
+    "marginOfSafety": -0.038485314086479434,
+    "marketCap": 26179713024,
     "updated": "2026-08-17"
   },
   {
@@ -127,8 +138,9 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 18.265770322821894,
-    "price": 29.36,
-    "marginOfSafety": -0.37786885821451316,
+    "price": 29.59,
+    "marginOfSafety": -0.38270461903271735,
+    "marketCap": 11210642432,
     "updated": "2026-08-17"
   },
   {
@@ -138,8 +150,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 83.8400053756489,
-    "price": 167.37,
-    "marginOfSafety": -0.4990738759894312,
+    "price": 165,
+    "marginOfSafety": -0.4918787552990976,
+    "marketCap": 275900432384,
     "updated": "2026-08-17"
   },
   {
@@ -149,8 +162,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 25.369237667108766,
-    "price": 133.415,
-    "marginOfSafety": -0.809847186095201,
+    "price": 131.25,
+    "marginOfSafety": -0.8067105701553619,
+    "marketCap": 8583607808,
     "updated": "2026-08-17"
   },
   {
@@ -160,8 +174,9 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 12.74979218048396,
-    "price": 23.385,
-    "marginOfSafety": -0.4547875911702391,
+    "price": 23.44,
+    "marginOfSafety": -0.4560668864981246,
+    "marketCap": 31483283456,
     "updated": "2026-08-17"
   },
   {
@@ -182,9 +197,10 @@
     "name": "CSL Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 70.13595355773684,
-    "price": 136.24,
-    "marginOfSafety": -0.4852029245615323,
+    "intrinsic": 70.3488525645427,
+    "price": 134.6,
+    "marginOfSafety": -0.47734879223965304,
+    "marketCap": 64461553664,
     "updated": "2026-08-17"
   },
   {
@@ -194,8 +210,9 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 2.6873551619999287,
-    "price": 3.54,
-    "marginOfSafety": -0.2408601237288337,
+    "price": 3.52,
+    "marginOfSafety": -0.23654682897729298,
+    "marketCap": 6320954368,
     "updated": "2026-08-17"
   },
   {
@@ -205,8 +222,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 23.19530343000412,
-    "price": 12.915,
-    "marginOfSafety": 0.7959971684091461,
+    "price": 12.89,
+    "marginOfSafety": 0.799480483320723,
+    "marketCap": 2639695872,
     "updated": "2026-08-17"
   },
   {
@@ -216,8 +234,9 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 42.46106481574604,
-    "price": 17.82,
-    "marginOfSafety": 1.382775803352752,
+    "price": 17.75,
+    "marginOfSafety": 1.3921726656758333,
+    "marketCap": 54651629568,
     "updated": "2026-08-17"
   },
   {
@@ -227,8 +246,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 12.647958607121616,
-    "price": 35.385,
-    "marginOfSafety": -0.6425615767381202,
+    "price": 35.17,
+    "marginOfSafety": -0.6403764968120098,
+    "marketCap": 20654954496,
     "updated": "2026-08-17"
   },
   {
@@ -249,8 +269,9 @@
     "sector": "Financial Services",
     "method": "DCF",
     "intrinsic": 1.8498622696792761,
-    "price": 1.437,
-    "marginOfSafety": 0.2873084688095171,
+    "price": 1.45,
+    "marginOfSafety": 0.2757670825374319,
+    "marketCap": 4341873664,
     "updated": "2026-08-17"
   },
   {
@@ -260,8 +281,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 17.251403602366416,
-    "price": 4.62,
-    "marginOfSafety": 2.7340700438022543,
+    "price": 4.6,
+    "marginOfSafety": 2.7503051309492212,
+    "marketCap": 5731630592,
     "updated": "2026-08-17"
   },
   {
@@ -282,9 +304,10 @@
     "name": "JB Hi-Fi Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 83.49188282333536,
-    "price": 72.755,
-    "marginOfSafety": 0.1475758755183199,
+    "intrinsic": 83.61884048979313,
+    "price": 71.65,
+    "marginOfSafety": 0.16704592449118105,
+    "marketCap": 7833780224,
     "updated": "2026-08-17"
   },
   {
@@ -294,8 +317,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 390.5223228138281,
-    "price": 138.17,
-    "marginOfSafety": 1.8263901195181889,
+    "price": 137.9,
+    "marginOfSafety": 1.8319240233054974,
+    "marketCap": 10535353344,
     "updated": "2026-08-17"
   },
   {
@@ -304,9 +328,10 @@
     "name": "Lovisa Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 36.23075568661897,
-    "price": 24.48,
-    "marginOfSafety": 0.4800145296821474,
+    "intrinsic": 36.28285086789355,
+    "price": 24.18,
+    "marginOfSafety": 0.5005314668276902,
+    "marketCap": 2677656832,
     "updated": "2026-08-17"
   },
   {
@@ -316,8 +341,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 2.940765416058,
-    "price": 5.055,
-    "marginOfSafety": -0.4182462084949555,
+    "price": 5.05,
+    "marginOfSafety": -0.4176702146419802,
+    "marketCap": 13907717120,
     "updated": "2026-08-17"
   },
   {
@@ -327,19 +353,21 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 5.329646857945379,
-    "price": 3.085,
-    "marginOfSafety": 0.7276002781022298,
+    "price": 3.08,
+    "marginOfSafety": 0.7304048240082399,
+    "marketCap": 3387156736,
     "updated": "2026-08-17"
   },
   {
     "ticker": "NAB.AX",
     "slug": "nab-ax",
-    "name": "NAT. BANK FPO [NAB]",
+    "name": "National Australia Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 28.07528009438917,
-    "price": 39.37,
-    "marginOfSafety": -0.2868864593754338,
+    "price": 39.46,
+    "marginOfSafety": -0.288512922088465,
+    "marketCap": 120800280576,
     "updated": "2026-08-17"
   },
   {
@@ -349,8 +377,9 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 359.267708365185,
-    "price": 167.94,
-    "marginOfSafety": 1.1392622863235977,
+    "price": 167.52,
+    "marginOfSafety": 1.1446257662678185,
+    "marketCap": 176514531328,
     "updated": "2026-08-17"
   },
   {
@@ -362,6 +391,7 @@
     "intrinsic": 4.497641224559293,
     "price": 7.44,
     "marginOfSafety": -0.39547833003235316,
+    "marketCap": 3637511168,
     "updated": "2026-08-17"
   },
   {
@@ -370,9 +400,10 @@
     "name": "Orica Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 23.711780596378443,
-    "price": 22.43,
-    "marginOfSafety": 0.05714581348098274,
+    "intrinsic": 23.76580581042315,
+    "price": 22.32,
+    "marginOfSafety": 0.06477624598670023,
+    "marketCap": 10346268672,
     "updated": "2026-08-17"
   },
   {
@@ -382,8 +413,9 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 1.2700269147622603,
-    "price": 5.13,
-    "marginOfSafety": -0.7524314006311383,
+    "price": 5.09,
+    "marginOfSafety": -0.7504858713630137,
+    "marketCap": 16408235008,
     "updated": "2026-08-17"
   },
   {
@@ -407,6 +439,7 @@
     "intrinsic": 5.943383793152417,
     "price": 5.11,
     "marginOfSafety": 0.1630888049221951,
+    "marketCap": 9046805504,
     "updated": "2026-08-17"
   },
   {
@@ -416,8 +449,9 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 72.9993807675729,
-    "price": 176.465,
-    "marginOfSafety": -0.5863237425689349,
+    "price": 177.38,
+    "marginOfSafety": -0.5884576571903659,
+    "marketCap": 23211913216,
     "updated": "2026-08-17"
   },
   {
@@ -427,8 +461,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 50.46720528510773,
-    "price": 44.935,
-    "marginOfSafety": 0.12311572905547409,
+    "price": 44.81,
+    "marginOfSafety": 0.12624872316687633,
+    "marketCap": 10343484416,
     "updated": "2026-08-17"
   },
   {
@@ -438,8 +473,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 16.354890653118726,
-    "price": 31.665,
-    "marginOfSafety": -0.4835025847743967,
+    "price": 31.63,
+    "marginOfSafety": -0.48293105744170955,
+    "marketCap": 45627002880,
     "updated": "2026-08-17"
   },
   {
@@ -448,9 +484,10 @@
     "name": "South32 Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 2.665046830041213,
-    "price": 4.855,
-    "marginOfSafety": -0.45107171368873067,
+    "intrinsic": 2.660419526925023,
+    "price": 4.92,
+    "marginOfSafety": -0.45926432379572707,
+    "marketCap": 22048137216,
     "updated": "2026-08-17"
   },
   {
@@ -459,9 +496,10 @@
     "name": "SEEK Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 6.128576514101256,
-    "price": 14.9,
-    "marginOfSafety": -0.5886861399932043,
+    "intrinsic": 6.114895862642646,
+    "price": 15.09,
+    "marginOfSafety": -0.5947716459481348,
+    "marketCap": 5401769984,
     "updated": "2026-08-17"
   },
   {
@@ -471,8 +509,9 @@
     "sector": null,
     "method": "DCF",
     "intrinsic": 21.84119632170773,
-    "price": 41.5,
-    "marginOfSafety": -0.4737061127299342,
+    "price": 41.83,
+    "marginOfSafety": -0.47785808458743173,
+    "marketCap": 17024734208,
     "updated": "2026-08-17"
   },
   {
@@ -481,9 +520,10 @@
     "name": "Sonic Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 32.31277807452925,
-    "price": 23,
-    "marginOfSafety": 0.40490339454474994,
+    "intrinsic": 32.41330567831465,
+    "price": 22.81,
+    "marginOfSafety": 0.42101296266175586,
+    "marketCap": 11273567232,
     "updated": "2026-08-17"
   },
   {
@@ -493,8 +533,9 @@
     "sector": "Healthcare",
     "method": "DCF",
     "intrinsic": 1.7094932773451335,
-    "price": 2.945,
-    "marginOfSafety": -0.4195269007317034,
+    "price": 2.95,
+    "marginOfSafety": -0.4205107534423277,
+    "marketCap": 34053922816,
     "updated": "2026-08-17"
   },
   {
@@ -504,8 +545,9 @@
     "sector": "Energy",
     "method": "DCF",
     "intrinsic": 1.6141423768076273,
-    "price": 8.065,
-    "marginOfSafety": -0.7998583537746278,
+    "price": 8.05,
+    "marginOfSafety": -0.7994854190301085,
+    "marketCap": 26144573440,
     "updated": "2026-08-17"
   },
   {
@@ -527,8 +569,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 1.2404563351384295,
-    "price": 0.897,
-    "marginOfSafety": 0.38289446503726804,
+    "price": 0.9,
+    "marginOfSafety": 0.37828481682047715,
+    "marketCap": 2063379840,
     "updated": "2026-08-17"
   },
   {
@@ -538,8 +581,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 3.3161987715836436,
-    "price": 5.375,
-    "marginOfSafety": -0.3830327866821128,
+    "price": 5.36,
+    "marginOfSafety": -0.3813061993314098,
+    "marketCap": 11930136576,
     "updated": "2026-08-17"
   },
   {
@@ -549,8 +593,9 @@
     "sector": "Communication Services",
     "method": "DCF",
     "intrinsic": 4.816858081173558,
-    "price": 4.835,
-    "marginOfSafety": -0.0037522065825111813,
+    "price": 4.81,
+    "marginOfSafety": 0.0014257965017793752,
+    "marketCap": 53579247616,
     "updated": "2026-08-17"
   },
   {
@@ -562,6 +607,7 @@
     "intrinsic": 11.71140132382359,
     "price": 3.6,
     "marginOfSafety": 2.253167034395442,
+    "marketCap": 7066905600,
     "updated": "2026-08-17"
   },
   {
@@ -571,8 +617,9 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 2.8915852820936156,
-    "price": 5.145,
-    "marginOfSafety": -0.43798148064264025,
+    "price": 5.14,
+    "marginOfSafety": -0.4374347700206973,
+    "marketCap": 599050176,
     "updated": "2026-08-17"
   },
   {
@@ -582,8 +629,9 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 5.737192768811822,
-    "price": 6.055,
-    "marginOfSafety": -0.05248674338367929,
+    "price": 6.13,
+    "marginOfSafety": -0.06407948306495567,
+    "marketCap": 6341889024,
     "updated": "2026-08-17"
   },
   {
@@ -593,8 +641,9 @@
     "sector": "Financial Services",
     "method": "DDM",
     "intrinsic": 26.66851395760047,
-    "price": 35.21,
-    "marginOfSafety": -0.24258693673386908,
+    "price": 35.07,
+    "marginOfSafety": -0.23956333169089047,
+    "marketCap": 119760797696,
     "updated": "2026-08-17"
   },
   {
@@ -603,9 +652,10 @@
     "name": "Woodside Energy Group Ltd",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 19.882832304437084,
-    "price": 32.99,
-    "marginOfSafety": -0.3973072960158508,
+    "intrinsic": 19.920673279907437,
+    "price": 32.85,
+    "marginOfSafety": -0.3935868103528939,
+    "marketCap": 62451138560,
     "updated": "2026-08-17"
   },
   {
@@ -614,9 +664,10 @@
     "name": "Wesfarmers Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 42.49730327719344,
-    "price": 85.98,
-    "marginOfSafety": -0.5057303643034027,
+    "intrinsic": 42.57967214265913,
+    "price": 84.84,
+    "marginOfSafety": -0.49811796154338606,
+    "marketCap": 96317382656,
     "updated": "2026-08-17"
   },
   {
@@ -626,8 +677,9 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 30.284379858847217,
-    "price": 40.31,
-    "marginOfSafety": -0.24871297794970937,
+    "price": 40.21,
+    "marginOfSafety": -0.2468445695387412,
+    "marketCap": 49120505856,
     "updated": "2026-08-17"
   },
   {
@@ -636,9 +688,10 @@
     "name": "WiseTech Global Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 30.689011984309598,
-    "price": 42.525,
-    "marginOfSafety": -0.2783301120679694,
+    "intrinsic": 30.745855854748573,
+    "price": 42.27,
+    "marginOfSafety": -0.2726317517211126,
+    "marketCap": 14215515136,
     "updated": "2026-08-17"
   },
   {
@@ -648,8 +701,9 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 45.14019542162878,
-    "price": 81.81,
-    "marginOfSafety": -0.4482313235346684,
+    "price": 82.11,
+    "marginOfSafety": -0.4502472850855099,
+    "marketCap": 14231823360,
     "updated": "2026-08-17"
   },
   {
@@ -661,6 +715,7 @@
     "intrinsic": 5.847599894590066,
     "price": 5.89,
     "marginOfSafety": -0.007198659662127994,
+    "marketCap": 7777388032,
     "updated": "2026-08-17"
   }
 ]
