@@ -69,31 +69,98 @@ function generateMarketIndex(folder) {
     return /[A-Z]/.test(c) ? c : '#';
   };
   const ALPHABET = ['#', ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i))];
-  const present = new Set(sorted.map(firstLetterOf));
 
-  const alphabetNav = ALPHABET.filter(l => present.has(l)).length
-    ? `<nav class="stock-list-alpha" aria-label="Jump to letter">${ALPHABET.map(l =>
-        present.has(l) ? `<a href="#letter-${l === '#' ? 'sym' : l}">${l}</a>` : `<span>${l}</span>`
-      ).join('')}</nav>`
-    : '';
+  // For the "other" bucket, detect each ticker's home market from its suffix
+  // and render grouped sections instead of one flat alphabetical list.
+  const SUB_MARKETS = [
+    { id: 'europe', label: 'Europe', match: t => /\.(PA|DE|AS|CO|MI|MC|L|SW|BR|VI|HE|ST|OL|WA|LS|IR)$/i.test(t) },
+    { id: 'hk',     label: 'Hong Kong', match: t => /\.HK$/i.test(t) || /^\d{4}\.HK$/i.test(t) },
+    { id: 'japan',  label: 'Japan',  match: t => /\.T$/i.test(t) },
+    { id: 'kospi',  label: 'South Korea', match: t => /\.KS$/i.test(t) },
+    { id: 'china',  label: 'China',  match: t => /\.(SS|SZ)$/i.test(t) },
+  ];
+  function detectSubMarket(ticker) {
+    for (const sm of SUB_MARKETS) {
+      if (sm.match(ticker)) return sm;
+    }
+    return null;
+  }
 
-  // Dot colour and label both come from the one shared verdict() — they used to
-  // be two separate local functions and had drifted to different bands, so a row
-  // could show a green dot next to a "Fairly Valued" label.
-  let currentLetter = null;
-  const rows = sorted.map(e => {
+  function renderStockRow(e) {
     const v = verdict(e.marginOfSafety);
-    const letter = firstLetterOf(e);
-    const header = letter !== currentLetter
-      ? (currentLetter = letter, `<h3 class="stock-list-letter" id="letter-${letter === '#' ? 'sym' : letter}">${letter}</h3>`)
-      : '';
-    return `${header}
+    return `
         <a class="stock-list-item" href="${e.href}">
           <span class="verdict-dot" style="background:${v.dot}"></span>
           <span class="sl-name">${escapeHtml(e.name || e.ticker)}</span>
           <span class="sl-meta">${escapeHtml(e.ticker)} &middot; ${v.text}</span>
         </a>`;
-  }).join('');
+  }
+
+  function renderAlphabeticalList(entries) {
+    const listSorted = [...entries].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
+    const present = new Set(listSorted.map(firstLetterOf));
+    const alphabetNav = ALPHABET.filter(l => present.has(l)).length
+      ? `<nav class="stock-list-alpha" aria-label="Jump to letter">${ALPHABET.map(l =>
+          present.has(l) ? `<a href="#letter-${l === '#' ? 'sym' : l}">${l}</a>` : `<span>${l}</span>`
+        ).join('')}</nav>`
+      : '';
+    let currentLetter = null;
+    const rows = listSorted.map(e => {
+      const letter = firstLetterOf(e);
+      const header = letter !== currentLetter
+        ? (currentLetter = letter, `<h3 class="stock-list-letter" id="letter-${letter === '#' ? 'sym' : letter}">${letter}</h3>`)
+        : '';
+      return `${header}${renderStockRow(e)}`;
+    }).join('');
+    return { alphabetNav, rows };
+  }
+
+  let alphabetNav, rows;
+  if (folder === 'other') {
+    // Group by sub-market, each group alphabetically sorted
+    const groups = new Map();
+    const ungrouped = [];
+    for (const e of sorted) {
+      const sm = detectSubMarket(e.ticker);
+      if (sm) {
+        if (!groups.has(sm.id)) groups.set(sm.id, { label: sm.label, entries: [] });
+        groups.get(sm.id).entries.push(e);
+      } else {
+        ungrouped.push(e);
+      }
+    }
+    alphabetNav = '';
+    const groupOrder = SUB_MARKETS.map(sm => sm.id);
+    const sections = [];
+    for (const id of groupOrder) {
+      const g = groups.get(id);
+      if (!g || g.entries.length === 0) continue;
+      const gSorted = [...g.entries].sort((a, b) => (a.name || a.ticker).localeCompare(b.name || b.ticker));
+      const gRows = gSorted.map(e => renderStockRow(e)).join('');
+      sections.push(`<h3 class="market-group-header" id="group-${id}">${escapeHtml(g.label)} <span class="market-group-count">(${g.entries.length})</span></h3>\n      <div class="stock-list">${gRows}\n      </div>`);
+    }
+    if (ungrouped.length > 0) {
+      const uRows = ungrouped.map(e => renderStockRow(e)).join('');
+      sections.push(`<h3 class="market-group-header" id="group-other">Other <span class="market-group-count">(${ungrouped.length})</span></h3>\n      <div class="stock-list">${uRows}\n      </div>`);
+    }
+    // Build a jump nav for the groups
+    const jumpEntries = [];
+    for (const id of groupOrder) {
+      const g = groups.get(id);
+      if (g && g.entries.length > 0) jumpEntries.push({ id, label: g.label });
+    }
+    if (ungrouped.length > 0) jumpEntries.push({ id: 'other', label: 'Other' });
+    if (jumpEntries.length > 1) {
+      alphabetNav = `<nav class="stock-list-alpha" aria-label="Jump to market">${jumpEntries.map(j =>
+        `<a href="#group-${j.id}">${escapeHtml(j.label)}</a>`
+      ).join('')}</nav>`;
+    }
+    rows = sections.join('\n');
+  } else {
+    const result = renderAlphabeticalList(sorted);
+    alphabetNav = result.alphabetNav;
+    rows = result.rows;
+  }
 
   const canonical = `https://kashvector.com/dcf/stocks/${folder}/`;
   const crumbs = [
@@ -102,13 +169,19 @@ function generateMarketIndex(folder) {
     { name: meta.label, path: canonical, url: canonical },
   ];
 
-  const mainHtml = `    <p class="ticker-freshness"><span class="dot"></span>${manifest.length} ${escapeHtml(meta.label)} stock${manifest.length === 1 ? '' : 's'} valued so far &middot; see the <a href="${meta.screenUrl}">${escapeHtml(meta.screenName)}</a> ranking screen for the current top 20</p>
+  const freshnessExtra = meta.screenUrl
+    ? ` &middot; see the <a href="${meta.screenUrl}">${escapeHtml(meta.screenName)}</a> ranking screen for the current top 20`
+    : '';
+  const stockListBlock = folder === 'other'
+    ? rows
+    : `<div class="stock-list">${rows}\n      </div>`;
+
+  const mainHtml = `    <p class="ticker-freshness"><span class="dot"></span>${manifest.length} ${escapeHtml(meta.label)} stock${manifest.length === 1 ? '' : 's'} valued so far${freshnessExtra}</p>
 
     <section class="other-tickers">
       <h2>All ${escapeHtml(meta.label)} stocks</h2>
       ${alphabetNav}
-      <div class="stock-list">${rows}
-      </div>
+      ${stockListBlock}
     </section>
 
     <section class="tool-info">

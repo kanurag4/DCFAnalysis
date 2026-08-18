@@ -582,6 +582,13 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
 .stock-list-alpha a:hover { background: var(--kv-accent); color: var(--kv-bg); }
 .stock-list-alpha span { color: var(--kv-muted); opacity: 0.4; }
 
+/* Market-group headers ("Other Markets" page — grouped by home exchange
+   instead of alphabetically). Bigger and more prominent than a plain letter
+   header since it's introducing a whole sub-market, not one letter. */
+.market-group-header { columns: initial; break-after: avoid-column; break-inside: avoid; margin: 24px 0 10px; font-size: 1rem; font-weight: 700; color: var(--kv-text); padding-bottom: 6px; border-bottom: 1px solid var(--kv-border); }
+.market-group-header:first-child { margin-top: 0; }
+.market-group-count { font-weight: 400; color: var(--kv-muted); font-size: 0.85rem; }
+
 @media (max-width: 800px) {
   .history-charts .chart-row { grid-template-columns: 1fr; }
   .bank-metric-grid { grid-template-columns: 1fr; }
