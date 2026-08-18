@@ -132,6 +132,18 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "COST",
+    "slug": "cost",
+    "name": "Costco Wholesale Corporation",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 582.1241551203263,
+    "price": 953.5,
+    "marginOfSafety": -0.3894869899105125,
+    "marketCap": 422857048064,
+    "updated": "2026-08-18"
+  },
+  {
     "ticker": "EA",
     "slug": "ea",
     "name": "Electronic Arts Inc",
@@ -406,6 +418,18 @@
     "marginOfSafety": -0.2591946873098172,
     "marketCap": 23172724736,
     "updated": "2026-08-17"
+  },
+  {
+    "ticker": "SBUX",
+    "slug": "sbux",
+    "name": "Starbucks Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 85.86656068641206,
+    "price": 107.92,
+    "marginOfSafety": -0.20434988244614477,
+    "marketCap": 123028799488,
+    "updated": "2026-08-18"
   },
   {
     "ticker": "SNDK",
