@@ -12,6 +12,138 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "000660.KS",
+    "slug": "000660-ks",
+    "name": "SK hynix Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 1707702.3747185322,
+    "price": 1662000,
+    "marginOfSafety": 0.027498420408262454,
+    "marketCap": 1179778929393664,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "005850.KS",
+    "slug": "005850-ks",
+    "name": "SL Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 98992.80090278249,
+    "price": 58300,
+    "marginOfSafety": 0.6979897238899226,
+    "marketCap": 2685033512960,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "005930.KS",
+    "slug": "005930-ks",
+    "name": "Samsung Electronics Co., Ltd.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 172852.1491235616,
+    "price": 268500,
+    "marginOfSafety": -0.35623035708170725,
+    "marketCap": 1763122192842752,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "006400.KS",
+    "slug": "006400-ks",
+    "name": "Samsung SDI Co., Ltd.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 186130.64654451667,
+    "price": 488000,
+    "marginOfSafety": -0.6185847406874658,
+    "marketCap": 38402493775872,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "011210.KS",
+    "slug": "011210-ks",
+    "name": "Hyundai Wia Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 119582.4429811589,
+    "price": 63900,
+    "marginOfSafety": 0.8713997336644587,
+    "marketCap": 1699595812864,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "011780.KS",
+    "slug": "011780-ks",
+    "name": "Kumho Petro Chemical Co.,Ltd",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 192392.38699851837,
+    "price": 126500,
+    "marginOfSafety": 0.5208884347708962,
+    "marketCap": 3287006314496,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "035250.KS",
+    "slug": "035250-ks",
+    "name": "Kangwon Land, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 14793.540734830904,
+    "price": 14450,
+    "marginOfSafety": 0.02377444531701755,
+    "marketCap": 2863900655616,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "035420.KS",
+    "slug": "035420-ks",
+    "name": "NAVER Corporation",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 109964.24867082362,
+    "price": 217000,
+    "marginOfSafety": -0.49325231027270217,
+    "marketCap": 32458810589184,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "051600.KS",
+    "slug": "051600-ks",
+    "name": "KEPCO Plant Service & Engineering Co.,Ltd.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 52753.67967246145,
+    "price": 44950,
+    "marginOfSafety": 0.17360800161204554,
+    "marketCap": 2022750027776,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "051910.KS",
+    "slug": "051910-ks",
+    "name": "LG Chem, Ltd.",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 228533.01236708226,
+    "price": 270500,
+    "marginOfSafety": -0.15514598015866077,
+    "marketCap": 21173414920192,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "064400.KS",
+    "slug": "064400-ks",
+    "name": "LG CNS",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 128411.72349167643,
+    "price": 73900,
+    "marginOfSafety": 0.7376417251918326,
+    "marketCap": 7159871963136,
+    "updated": "2026-08-18"
+  },
+  {
     "ticker": "0700.HK",
     "slug": "0700-hk",
     "name": "Tencent Holdings Limited",
@@ -24,6 +156,30 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "071970.KS",
+    "slug": "071970-ks",
+    "name": "HD-Hyundai Marine Engine Co., Ltd.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 90142.11466570762,
+    "price": 55200,
+    "marginOfSafety": 0.6330093236541235,
+    "marketCap": 1872465231872,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "112610.KS",
+    "slug": "112610-ks",
+    "name": "CS Wind Corporation",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 78136.69681870696,
+    "price": 45700,
+    "marginOfSafety": 0.7097745474552944,
+    "marketCap": 1893747654656,
+    "updated": "2026-08-18"
+  },
+  {
     "ticker": "1211.HK",
     "slug": "1211-hk",
     "name": "BYD Company Limited",
@@ -33,6 +189,18 @@
     "price": 90,
     "marginOfSafety": -0.16686762278057315,
     "marketCap": 820547747840,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "185750.KS",
+    "slug": "185750-ks",
+    "name": "Chong Kun Dang Pharmaceutical Corp.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 109559.50407283008,
+    "price": 66700,
+    "marginOfSafety": 0.6425712754547238,
+    "marketCap": 878843723776,
     "updated": "2026-08-18"
   },
   {
