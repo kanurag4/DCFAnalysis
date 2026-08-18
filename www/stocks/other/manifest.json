@@ -24,6 +24,30 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "1211.HK",
+    "slug": "1211-hk",
+    "name": "BYD Company Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 74.98191394974842,
+    "price": 90,
+    "marginOfSafety": -0.16686762278057315,
+    "marketCap": 820547747840,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "2318.HK",
+    "slug": "2318-hk",
+    "name": "Ping An Insurance (Group) Company of China, Ltd.",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 77.33687150439624,
+    "price": 53.9,
+    "marginOfSafety": 0.4348213637179266,
+    "marketCap": 976001892352,
+    "updated": "2026-08-18"
+  },
+  {
     "ticker": "6758.T",
     "slug": "6758-t",
     "name": "Sony Group Corporation",
@@ -34,6 +58,66 @@
     "marginOfSafety": 6.677117521786272,
     "marketCap": 22127386296320,
     "updated": "2026-08-17"
+  },
+  {
+    "ticker": "9999.HK",
+    "slug": "9999-hk",
+    "name": "NetEase, Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 284.54821479319344,
+    "price": 193.8,
+    "marginOfSafety": 0.46825704227653986,
+    "marketCap": 620402442240,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "ADYEN.AS",
+    "slug": "adyen-as",
+    "name": "Adyen N.V.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 482.17913373443116,
+    "price": 1044.8,
+    "marginOfSafety": -0.5384962349402458,
+    "marketCap": 32980865024,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "AIR.PA",
+    "slug": "air-pa",
+    "name": "Airbus SE",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 174.56172220976214,
+    "price": 212.85,
+    "marginOfSafety": -0.17988385149277827,
+    "marketCap": 168466628608,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "ASML.AS",
+    "slug": "asml-as",
+    "name": "ASML Holding N.V.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 627.7581376327587,
+    "price": 1564.2,
+    "marginOfSafety": -0.5986714373911529,
+    "marketCap": 600809209856,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "BAS.DE",
+    "slug": "bas-de",
+    "name": "BASF SE",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 47.54907011595605,
+    "price": 50.8,
+    "marginOfSafety": -0.06399468275677064,
+    "marketCap": 44923723776,
+    "updated": "2026-08-18"
   },
   {
     "ticker": "CAP.PA",
@@ -84,6 +168,30 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "MC.PA",
+    "slug": "mc-pa",
+    "name": "LVMH Moët Hennessy - Louis Vuitton, Société Européenne",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 364.6924072055139,
+    "price": 448.4,
+    "marginOfSafety": -0.1866806262142865,
+    "marketCap": 221045604352,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "NOVO-B.CO",
+    "slug": "novo-b-co",
+    "name": "Novo Nordisk A/S",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 142.99609246773335,
+    "price": 291,
+    "marginOfSafety": -0.5086044932380297,
+    "marketCap": 1286823739392,
+    "updated": "2026-08-18"
+  },
+  {
     "ticker": "SAN.PA",
     "slug": "san-pa",
     "name": "Sanofi",
@@ -118,5 +226,29 @@
     "marginOfSafety": 0.31327416347904236,
     "marketCap": 43771871232,
     "updated": "2026-08-17"
+  },
+  {
+    "ticker": "SIE.DE",
+    "slug": "sie-de",
+    "name": "Siemens Aktiengesellschaft",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 115.8618449801108,
+    "price": 278.4,
+    "marginOfSafety": -0.5838295798128204,
+    "marketCap": 212347748352,
+    "updated": "2026-08-18"
+  },
+  {
+    "ticker": "TTE.PA",
+    "slug": "tte-pa",
+    "name": "TotalEnergies SE",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 392.81940008374715,
+    "price": 76.92,
+    "marginOfSafety": 4.106856475347727,
+    "marketCap": 170544431104,
+    "updated": "2026-08-18"
   }
 ]
