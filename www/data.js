@@ -82,6 +82,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let ebitConverted = ebit;
   let interestExpenseConverted = interestExpense;
   let annualFcfConverted = annualFcf;
+  let netIncomeConverted = data.netIncome;
+  let depreciationConverted = data.depreciationAndAmortization;
 
   if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
     const rate = await fetchFxRate(data.financialCurrency, data.currency, base, extraHeaders);
@@ -96,6 +98,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       ebitConverted = c(ebitConverted);
       interestExpenseConverted = c(interestExpenseConverted);
       annualFcfConverted = c(annualFcfConverted);
+      netIncomeConverted = c(netIncomeConverted);
+      depreciationConverted = c(depreciationConverted);
     } else {
       fxConversionFailed = true;
       freeCashflow = null;
@@ -107,6 +111,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       ebitConverted = null;
       interestExpenseConverted = null;
       annualFcfConverted = null;
+      netIncomeConverted = null;
+      depreciationConverted = null;
     }
   }
 
@@ -117,6 +123,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     ebit: ebitConverted,
     interestExpense: interestExpenseConverted,
     annualFcf: annualFcfConverted,
+    netIncome: netIncomeConverted,
+    depreciationAndAmortization: depreciationConverted,
     fxConversionFailed,
   };
 }
@@ -196,6 +204,11 @@ function mapQuoteSummary(body, symbol) {
     freeCashflow:      rawVal(result.financialData?.freeCashflow),
     operatingCashflow: rawVal(result.financialData?.operatingCashflow),
     capitalExpenditures: rawVal(cf?.capitalExpenditures),  // negative in Yahoo (outflow); used for FCF = OCF − |CapEx|
+    // REIT FFO/AFFO inputs (see calc/reit.js) -- GAAP net income and D&A,
+    // both already fetched by the Worker's incomeStatementHistory/
+    // cashflowStatementHistory modules but never previously extracted here.
+    netIncome:                  rawVal(inc?.netIncome),
+    depreciationAndAmortization: rawVal(cf?.depreciation),
     totalCash:         rawVal(result.financialData?.totalCash),
     totalDebt:         rawVal(result.financialData?.totalDebt),
     sharesOutstanding: rawVal(result.defaultKeyStatistics?.sharesOutstanding),
