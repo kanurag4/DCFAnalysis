@@ -216,6 +216,30 @@
     "updated": "2026-08-18"
   },
   {
+    "ticker": "5253.T",
+    "slug": "5253-t",
+    "name": "COVER Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 1212.8254282048451,
+    "price": 1508,
+    "marginOfSafety": -0.1957391059649568,
+    "marketCap": 96165634048,
+    "updated": "2026-08-19"
+  },
+  {
+    "ticker": "6525.T",
+    "slug": "6525-t",
+    "name": "KOKUSAI ELECTRIC CORPORATION",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 5488.715996560167,
+    "price": 8195,
+    "marginOfSafety": -0.3302359979792353,
+    "marketCap": 1912580603904,
+    "updated": "2026-08-19"
+  },
+  {
     "ticker": "6758.T",
     "slug": "6758-t",
     "name": "Sony Group Corporation",

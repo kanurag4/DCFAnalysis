@@ -228,6 +228,18 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "JOYY",
+    "slug": "joyy",
+    "name": "JOYY Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 73.98680759093557,
+    "price": 73.74,
+    "marginOfSafety": 0.0033469974360669204,
+    "marketCap": 3715152384,
+    "updated": "2026-08-19"
+  },
+  {
     "ticker": "KO",
     "slug": "ko",
     "name": "Coca-Cola Company (The)",
