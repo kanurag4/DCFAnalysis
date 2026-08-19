@@ -192,6 +192,30 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "CIP.AX",
+    "slug": "cip-ax",
+    "name": "Centuria Industrial REIT",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 4.546755474216884,
+    "price": 3,
+    "marginOfSafety": 0.5155851580722945,
+    "marketCap": 1873164288,
+    "updated": "2026-08-19"
+  },
+  {
+    "ticker": "COF.AX",
+    "slug": "cof-ax",
+    "name": "Centuria Office REIT",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 0.9239508016412845,
+    "price": 0.845,
+    "marginOfSafety": 0.09343290135063259,
+    "marketCap": 504749792,
+    "updated": "2026-08-19"
+  },
+  {
     "ticker": "COH.AX",
     "slug": "coh-ax",
     "name": "Cochlear Limited",
@@ -226,6 +250,18 @@
     "marginOfSafety": -0.6586295367574054,
     "marketCap": 23407325184,
     "updated": "2026-08-17"
+  },
+  {
+    "ticker": "CQR.AX",
+    "slug": "cqr-ax",
+    "name": "Charter Hall Retail REIT",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 8.709910529938059,
+    "price": 4,
+    "marginOfSafety": 1.1774776324845146,
+    "marketCap": 2324918528,
+    "updated": "2026-08-19"
   },
   {
     "ticker": "CSL.AX",
@@ -299,6 +335,18 @@
     "updated": "2026-08-11"
   },
   {
+    "ticker": "GPT.AX",
+    "slug": "gpt-ax",
+    "name": "The GPT Group",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 4.754124034245145,
+    "price": 4.7,
+    "marginOfSafety": 0.011515751967052176,
+    "marketCap": 9003213824,
+    "updated": "2026-08-19"
+  },
+  {
     "ticker": "GQG.AX",
     "slug": "gqg-ax",
     "name": "GQG Partners Inc.",
@@ -309,6 +357,18 @@
     "marginOfSafety": 0.2757670825374319,
     "marketCap": 4341873664,
     "updated": "2026-08-17"
+  },
+  {
+    "ticker": "HDN.AX",
+    "slug": "hdn-ax",
+    "name": "HomeCo Daily Needs REIT",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 1.562264031286502,
+    "price": 1.15,
+    "marginOfSafety": 0.3584904619882627,
+    "marketCap": 2404310528,
+    "updated": "2026-08-19"
   },
   {
     "ticker": "HVN.AX",
@@ -681,6 +741,18 @@
     "marginOfSafety": -0.06407948306495567,
     "marketCap": 6341889024,
     "updated": "2026-08-17"
+  },
+  {
+    "ticker": "VCX.AX",
+    "slug": "vcx-ax",
+    "name": "Vicinity Centres",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 2.8587000000569125,
+    "price": 2.53,
+    "marginOfSafety": 0.12992094863909592,
+    "marketCap": 11740050432,
+    "updated": "2026-08-19"
   },
   {
     "ticker": "WBC.AX",
