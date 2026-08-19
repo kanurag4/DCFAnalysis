@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { test } = require('node:test');
 const {
-  safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector,
+  safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector, isReit,
   isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor, chooseFinancialModel,
 } = require('../www/utils.js');
@@ -376,4 +376,40 @@ test('deriveBaseGrowth: uses single valid value when other is null', () => {
 
 test('deriveBaseGrowth: returns 0.05 default when both null', () => {
   assert.strictEqual(deriveBaseGrowth(null, null), 0.05);
+});
+
+// ── isReit / isBankOrInsurance (REIT-Mortgage routing) ─────────────────────
+
+test('isReit matches every property REIT sub-sector tag', () => {
+  const industries = [
+    'REIT - Retail', 'REIT - Residential', 'REIT - Industrial', 'REIT - Office',
+    'REIT - Healthcare Facilities', 'REIT - Diversified', 'REIT - Hotel & Motel',
+    'REIT - Specialty',
+  ];
+  for (const industry of industries) {
+    assert.strictEqual(isReit('Real Estate', industry), true, `expected ${industry} to match`);
+  }
+});
+
+test('isReit does NOT match REIT - Mortgage', () => {
+  assert.strictEqual(isReit('Real Estate', 'REIT - Mortgage'), false);
+});
+
+test('isReit does NOT match non-REIT real estate companies', () => {
+  assert.strictEqual(isReit('Real Estate', 'Real Estate Services'), false);
+  assert.strictEqual(isReit('Real Estate', 'Real Estate—Development'), false);
+});
+
+test('isReit handles null/undefined sector or industry', () => {
+  assert.strictEqual(isReit(null, null), false);
+  assert.strictEqual(isReit(undefined, undefined), false);
+  assert.strictEqual(isReit('Real Estate', null), false);
+});
+
+test('isBankOrInsurance now routes REIT - Mortgage to DDM/Excess-Return', () => {
+  assert.strictEqual(isBankOrInsurance('Real Estate', 'REIT - Mortgage'), true);
+});
+
+test('isBankOrInsurance still does not match property REITs', () => {
+  assert.strictEqual(isBankOrInsurance('Real Estate', 'REIT - Retail'), false);
 });

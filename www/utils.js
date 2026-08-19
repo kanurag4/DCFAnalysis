@@ -57,6 +57,21 @@ function isRealEstateSector(sector) {
   return !!(sector && /real estate/i.test(sector));
 }
 
+// Property REITs — where FFO/AFFO-based valuation replaces standard FCF-based
+// DCF (GAAP depreciation artificially depresses net income/FCF for real estate
+// even though the underlying property often appreciates). Matches Yahoo's
+// "REIT - <type>" industry tags, EXCLUDING "REIT - Mortgage" (mortgage REITs
+// hold loans/securities, not property — FFO/AFFO doesn't describe their
+// economics; they route to isBankOrInsurance() -> DDM/Excess-Return instead,
+// see that function below). Does NOT match generic real-estate industry tags
+// ("Real Estate Services", "Real Estate—Development") — those stay on
+// standard DCF, same as any other non-REIT company.
+function isReit(sector, industry) {
+  const i = industry || '';
+  if (/^REIT\s*-\s*Mortgage/i.test(i)) return false;
+  return /^REIT\b/i.test(i);
+}
+
 // Narrow check: banks and insurers where FCF-based DCF is structurally broken
 // -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
@@ -85,6 +100,7 @@ function isBankOrInsurance(sector, industry, ticker) {
   const s = sector || '';
   const i = industry || '';
   if (/bank|insurance/i.test(i) || /bank|insurance/i.test(s)) return true;
+  if (/^REIT\s*-\s*Mortgage/i.test(i)) return true; // mortgage REITs -- loan-book economics, not property
   const t = (ticker || '').toUpperCase();
   if ((t.endsWith('.NS') || t.endsWith('.BO')) && /credit services|mortgage finance/i.test(i)) return true;
   return false;
@@ -206,7 +222,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isBankOrInsurance, chooseFinancialModel,
+  isFinancialSector, isRealEstateSector, isReit, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
