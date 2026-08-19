@@ -72,6 +72,18 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "APX.AX",
+    "slug": "apx-ax",
+    "name": "Appen Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 1.2030851981017074,
+    "price": 1.377,
+    "marginOfSafety": -0.12629978351364746,
+    "marketCap": 369427360,
+    "updated": "2026-08-19"
+  },
+  {
     "ticker": "AVH.AX",
     "slug": "avh-ax",
     "name": "AVITA Medical, Inc.",
