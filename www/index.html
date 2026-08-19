@@ -215,6 +215,12 @@
             </label>
             <input type="text" id="bookvalue-input" inputmode="decimal" placeholder="e.g. 974.68">
           </div>
+          <div class="input-row" id="affo-row" hidden>
+            <label for="affo-input">AFFO / Share
+              <span class="tip" data-tip="Adjusted Funds From Operations per share — Net Income + Depreciation & Amortization − Capital Expenditure, divided by shares outstanding. The REIT-specific cash-flow measure this model values, since GAAP depreciation distorts standard Net Income/FCF for real estate. Seeded from Yahoo's financial statements.">?</span>
+            </label>
+            <input type="text" id="affo-input" inputmode="decimal" placeholder="e.g. 0.35">
+          </div>
           <div class="input-row">
             <label>Projection Years</label>
             <div class="slider-row">
@@ -256,7 +262,7 @@
             <input type="number" id="tgrowth-bull" class="scenario-num" step="0.1" min="0" max="5" value="2.5">
           </div>
           <div id="tgrowth-warning" class="tv-warning tgrowth-warning" hidden></div>
-          <div class="scenario-input-row">
+          <div class="scenario-input-row" id="discount-scenario-row">
             <label id="discount-label"><span id="discount-label-text">WACC %</span>
               <span id="discount-tip" class="tip" data-tip="Higher WACC = lower valuation.">?</span>
             </label>
