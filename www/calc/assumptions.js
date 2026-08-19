@@ -7,10 +7,11 @@
 // bug and the WACC null-marketCap bug).
 //
 // Depends on the already-pure helpers in utils.js, calc/wacc.js,
-// calc/dcf.js, calc/ddm.js, calc/fadingGrowthDcf.js — all loaded as plain
-// globals via <script> tags (same convention as the rest of this tool's
-// calc layer), so this file reads them as bare identifiers, not imports.
-// Zero document/window access.
+// calc/dcf.js, calc/ddm.js, calc/fadingGrowthDcf.js, calc/excessReturn.js,
+// calc/reit.js, and config.js's REIT_SECTOR_MULTIPLES -- all loaded as
+// plain globals via <script> tags (same convention as the rest of this
+// tool's calc layer), so this file reads them as bare identifiers, not
+// imports. Zero document/window access.
 
 // Market-specific fallback risk-free rates and equity risk premiums. The
 // website's interactive tool refines liveRfRate/liveAusRfRate/
@@ -99,6 +100,7 @@ function discountRateSpread(baseDiscountPct) {
 // touching any DOM element.
 function deriveDcfAssumptions(data) {
   const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
+  const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
   const currentMarket = detectMarket(data.ticker);
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;
@@ -145,6 +147,18 @@ function deriveDcfAssumptions(data) {
     ? data.price / data.priceToBook : null;
   const roeSpread = roePct != null ? roeOffsetSpread(roePct) : { bear: null, bull: null };
 
+  // REIT FFO/AFFO -- computed unconditionally (cheap, no network call), same
+  // pattern as the roe/financialModel computation above, so modelSeeds.reit
+  // is always populated even when this ticker isn't a REIT.
+  const ffoInfo = deriveFfo({ netIncome: data.netIncome, depreciationAndAmortization: data.depreciationAndAmortization });
+  const affoInfo = deriveAffo({ ffo: ffoInfo.value, capex: data.capitalExpenditures });
+  const resolvedSharesForReit = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
+    ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+  const affoPerShare = (affoInfo.value != null && resolvedSharesForReit > 0)
+    ? affoInfo.value / resolvedSharesForReit : null;
+  const reitIndustryKey = (data.industry && REIT_SECTOR_MULTIPLES[data.industry] != null) ? data.industry : 'DEFAULT';
+  const reitBaseMultiple = REIT_SECTOR_MULTIPLES[reitIndustryKey];
+
   const modelSeeds = {
     dcf: {
       growth:   { bear: bearGrowthPct, base: baseGrowthPct, bull: bullGrowthPct },
@@ -172,14 +186,23 @@ function deriveDcfAssumptions(data) {
       // excess-return branch for why this doesn't vary with the scenario.
       bookValueGrowthPct: divGrowthPct,
     },
+    reit: {
+      affoPerShare,
+      ffoPerShare: (ffoInfo.value != null && resolvedSharesForReit > 0) ? ffoInfo.value / resolvedSharesForReit : null,
+      netIncome: data.netIncome,
+      depreciationAndAmortization: data.depreciationAndAmortization,
+      capitalExpenditures: data.capitalExpenditures,
+      reitIndustryKey,
+      multiple: { bear: +(reitBaseMultiple * 0.8).toFixed(1), base: reitBaseMultiple, bull: +(reitBaseMultiple * 1.2).toFixed(1) },
+    },
   };
 
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
 
-  const valuationModel = !isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm');
+  const valuationModel = isReitFlag ? 'reit' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'));
 
   return {
-    isBankIns, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
+    isBankIns, isReit: isReitFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
     waccResult, modelSeeds, fcfInfo,
     valuationModel,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
@@ -198,6 +221,16 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const useMultiStage = !!options.useMultiStage;
   const useMidYear = !!options.useMidYear;
   const configs = ['bear', 'base', 'bull'];
+
+  if (valuationModel === 'reit') {
+    const affoPerShare = seeds.affoPerShare;
+    return configs.map((key) => {
+      const multiple = seeds.multiple[key];
+      if (!(affoPerShare > 0)) return { key, multiple, result: null, noAffo: true };
+      const result = calculateReitValue({ affoPerShare, multiple, currentPrice: data.price });
+      return { key, multiple, result };
+    });
+  }
 
   if (valuationModel === 'excess-return') {
     const bookValue = seeds.bookValue;
