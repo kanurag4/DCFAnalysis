@@ -12,9 +12,11 @@ const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
+const { deriveFfo, deriveAffo, calculateReitValue } = require('../../www/calc/reit.js');
+const { REIT_SECTOR_MULTIPLES } = require('../../www/config.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -94,7 +96,7 @@ const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥'
 // short-form abbreviations and pass through unchanged; ExcessReturn's internal
 // identifier has no spaces and reads badly inline (e.g. "ExcessReturn Valuation",
 // "mechanical ExcessReturn formula") -- fixed 2026-08-15, peer review finding.
-const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return' };
+const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return', REIT: 'FFO/AFFO' };
 
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 
@@ -493,10 +495,15 @@ async function fetchPriceHistory(symbol, proxyUrl) {
 // (negative equity; missing sharesOutstanding) -- previously collapsed into
 // one generic message that didn't distinguish them. Returns null when
 // baseResult already has a real intrinsicValue (nothing to explain).
-function deriveNullReason({ isBank, baseResult, baseFcf, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
+function deriveNullReason({ isBank, isReitTicker, baseResult, baseFcf, affoPerShare, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
   if (baseResult?.intrinsicValue != null) return null;
   if (fxConversionFailed) return 'financial statements are reported in a different currency than the trading price, and the live conversion rate could not be fetched';
   if (baseResult == null) {
+    if (isReitTicker) {
+      return (affoPerShare == null || affoPerShare <= 0)
+        ? 'AFFO/share <= 0 or unavailable'
+        : 'P/AFFO multiple <= 0';
+    }
     if (isBank) {
       return (dividend == null || dividend <= 0)
         ? 'starting dividend <= 0 or unavailable'
@@ -642,10 +649,27 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     }
 
     const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
+    const isReitTicker = !isBank && isReit(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
+    let affoPerShare = null, reitMultiples = null, reitIndustryKey = null;
 
-    if (isBank) {
+    if (isReitTicker) {
+      const ffoInfo = deriveFfo({ netIncome: data.netIncome, depreciationAndAmortization: data.depreciationAndAmortization });
+      const affoInfo = deriveAffo({ ffo: ffoInfo.value, capex: data.capitalExpenditures });
+      const resolvedSharesForReit = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0)
+        ? hist.dilutedSharesOutstanding : data.sharesOutstanding;
+      affoPerShare = (affoInfo.value != null && resolvedSharesForReit > 0) ? affoInfo.value / resolvedSharesForReit : null;
+      reitIndustryKey = (data.industry && REIT_SECTOR_MULTIPLES[data.industry] != null) ? data.industry : 'DEFAULT';
+      const reitBaseMultiple = REIT_SECTOR_MULTIPLES[reitIndustryKey];
+      reitMultiples = { bear: +(reitBaseMultiple * 0.8).toFixed(1), base: reitBaseMultiple, bull: +(reitBaseMultiple * 1.2).toFixed(1) };
+      method = 'REIT';
+      scenarios = ['bear', 'base', 'bull'].map(key => {
+        const result = calculateReitValue({ affoPerShare, multiple: reitMultiples[key], currentPrice: data.price });
+        return { key, multiplePct: reitMultiples[key], result };
+      });
+      waccBreakdown = null; // no discount rate for this model at all
+    } else if (isBank) {
       const dividend = data.trailingAnnualDividendRate ?? data.dividendRate ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
       d0 = dividend != null ? +(+dividend).toFixed(2) : null;
       const rePct = r2((rf + effectiveBeta * erp) * 100);
@@ -789,7 +813,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const sectorLine = [data.sector, data.industry].filter(Boolean).join(' · ');
     const baseResult = scenarios.find(s => s.key === 'base').result;
     const v = verdict(baseResult?.marginOfSafety);
-    const nullReason = deriveNullReason({ isBank, baseResult, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
+    const nullReason = deriveNullReason({ isBank, isReitTicker, baseResult, baseFcf, affoPerShare, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
     // Raw diagnostic snapshot -- only populated when the base case is null,
     // so the batch can print exactly which upstream field was the actual
     // cause (2026-08-05 incident: the same 10 tickers failed identically on
@@ -798,7 +822,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // exists to settle whether that's a CI-environment-specific data
     // difference, not to guess further).
     const nullDiagnostics = nullReason ? {
-      isBank, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
+      isBank, isReitTicker, affoPerShare, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
       sharesOutstanding: data.sharesOutstanding, price: data.price,
       revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
       marketCap: data.marketCap, totalDebt: data.totalDebt, totalCash: data.totalCash,
@@ -817,7 +841,16 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       : fcfInfo.method === 'derived' ? 'Derived: operating cash flow − capital expenditure'
       : 'Rough estimate: operating cash flow × 0.8';
 
-    const stats = isBank
+    const stats = isReitTicker
+      ? [
+          ['Price', money(data.price, currencySym)],
+          ['Market Cap', moneyB(data.marketCap, currencySym)],
+          ['AFFO / Share', affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'],
+          ['Beta', effectiveBeta.toFixed(2)],
+          ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
+          ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
+        ]
+      : isBank
       ? [
           ['Price', money(data.price, currencySym)],
           ['Market Cap', moneyB(data.marketCap, currencySym)],
@@ -845,7 +878,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       </div>`;
     }).join('');
 
-    const assumptionRows = isBank
+    const assumptionRows = isReitTicker
+      ? `<tr><td>P/AFFO Multiple</td><td class="col-bear">${scenarios[0].multiplePct.toFixed(1)}x</td><td class="col-base">${scenarios[1].multiplePct.toFixed(1)}x</td><td class="col-bull">${scenarios[2].multiplePct.toFixed(1)}x</td></tr>`
+      : isBank
       ? `<tr><td>Dividend growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
          <tr><td>Terminal growth</td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
          <tr><td>Cost of equity</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`
@@ -853,7 +888,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
          <tr><td>Terminal growth</td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
          <tr><td>WACC (discount rate)</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`;
 
-    const assumptionTiles = isBank
+    const assumptionTiles = isReitTicker
+      ? `<div class="assump-item"><div class="al">Net income</div><div class="av">${data.netIncome != null ? moneyB(data.netIncome, currencySym) : 'N/A'}</div><div class="an">GAAP, from income statement</div></div>
+         <div class="assump-item"><div class="al">+ Depreciation &amp; Amortization</div><div class="av">${data.depreciationAndAmortization != null ? moneyB(data.depreciationAndAmortization, currencySym) : 'N/A'}</div><div class="an">= FFO (gains on sale omitted — not broken out by Yahoo)</div></div>
+         <div class="assump-item"><div class="al">− Capital Expenditure</div><div class="av">${data.capitalExpenditures != null ? moneyB(Math.abs(data.capitalExpenditures), currencySym) : 'N/A'}</div><div class="an">= AFFO (total reported capex, a conservative proxy for "recurring")</div></div>
+         <div class="assump-item"><div class="al">AFFO / Share</div><div class="av">${affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'}</div><div class="an">AFFO ÷ diluted shares outstanding</div></div>
+         <div class="assump-item"><div class="al">Sector P/AFFO multiple</div><div class="av">${reitMultiples.base}x</div><div class="an">${reitIndustryKey === 'DEFAULT' ? 'Default (no sector-specific seed)' : escapeHtml(reitIndustryKey)}</div></div>
+         <div class="assump-item"><div class="al">Model</div><div class="av">FFO/AFFO</div><div class="an">Not a discounted model — no discount rate or terminal value</div></div>`
+      : isBank
       ? `<div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
          <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(t) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
          <div class="assump-item"><div class="al">Equity risk premium</div><div class="av">${pct(erp, 2)}</div><div class="an">Market-specific seed</div></div>
@@ -873,11 +915,32 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
          <div class="assump-item"><div class="al">Capital structure</div><div class="av">E ${(waccBreakdown.eWeight * 100).toFixed(0)}% / D ${(waccBreakdown.dWeight * 100).toFixed(0)}%</div><div class="an">Market cap vs total debt</div></div>
          <div class="assump-item"><div class="al">Projection horizon</div><div class="av">5 years</div><div class="an">+ terminal value beyond</div></div>`;
 
-    const formulaLine = isBank
+    const formulaLine = isReitTicker
+      ? `Intrinsic Value = AFFO / Share × P/AFFO Multiple = ${affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'} × ${reitMultiples.base}x`
+      : isBank
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
       : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · WACC = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
 
-    const bankMetricsHtml = isBank ? (method === 'ExcessReturn' ? `
+    const reitAffoPayoutRatio = (() => {
+      if (!isReitTicker || affoPerShare == null || affoPerShare <= 0) return null;
+      const dividendPerShare = data.trailingAnnualDividendRate ?? data.dividendRate ?? null;
+      return dividendPerShare != null ? dividendPerShare / affoPerShare : null;
+    })();
+    const reitDebtToEbitda = (() => {
+      if (!isReitTicker) return null;
+      const ebitda = (hist.ebit != null && data.depreciationAndAmortization != null) ? hist.ebit + data.depreciationAndAmortization : null;
+      return (data.totalDebt != null && ebitda != null && ebitda > 0) ? data.totalDebt / ebitda : null;
+    })();
+    const bankMetricsHtml = isReitTicker ? `
+      <section class="bank-metrics">
+        <h3>🏢 REIT — valued with the FFO/AFFO Model</h3>
+        <p>Standard FCF-based DCF is not used for REITs: GAAP depreciation artificially depresses net income and reported FCF, even though real property often appreciates. This valuation uses Adjusted Funds From Operations (AFFO) instead, priced at a sector-typical P/AFFO multiple — the same way a P/E multiple values earnings.</p>
+        <div class="bank-metric-grid">
+          <div class="stat"><div class="stat-label">AFFO Payout Ratio</div><div class="stat-value">${reitAffoPayoutRatio != null ? pct(reitAffoPayoutRatio) : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">Debt / EBITDA</div><div class="stat-value">${reitDebtToEbitda != null ? reitDebtToEbitda.toFixed(1) + 'x' : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
+        </div>
+      </section>` : (isBank ? (method === 'ExcessReturn' ? `
       <section class="bank-metrics">
         <h3>🏦 Bank/Insurer/NBFC — valued with the Excess Return Model</h3>
         <p>DCF is not used for bank/insurer/NBFC stocks: deposits, reserves, or loan origination are a raw material rather than funding, so there's no clean free cash flow. This company also retains most of its earnings for growth instead of paying them out, so the Dividend Discount Model would understate its value -- the Excess Return Model is used instead, valuing (ROE − Cost of Equity) × Book Value each year on top of the existing book value.</p>
@@ -895,7 +958,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
-      </section>`) : '';
+      </section>`) : '');
 
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
@@ -1041,14 +1104,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       <p class="pure-maths-note">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
+        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : method === 'REIT' ? 'AFFO' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
       </p>
 
-      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
+      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : method === 'REIT' ? 'P/AFFO multiple' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
 
       ${relatedStocksSectionHtml}
 
-      <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
+      <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in ${method === 'REIT' ? 'the P/AFFO multiple' : 'growth rate or discount rate'} produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
 
       <section class="tool-info">
         <div class="tool-about">
@@ -1063,7 +1126,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>`;
 
-    const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model' };
+    const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model', REIT: 'FFO/AFFO Valuation' };
     const html = pageShell({
       title: `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
       description: `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
