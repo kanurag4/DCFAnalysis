@@ -58,12 +58,17 @@ function marketMeta(ticker) {
   const t = ticker.toUpperCase();
   if (t.endsWith('.AX')) return { folder: 'asx', label: 'ASX', screenName: 'ASX 300 Most Undervalued', screenUrl: '/dcf/asx-undervalued/', currencySymbol: '$', indexTicker: '^AXJO', indexName: 'ASX 200' };
   if (t.endsWith('.NS') || t.endsWith('.BO')) return { folder: 'nifty', label: 'NIFTY 500', screenName: 'NIFTY 500 Most Undervalued', screenUrl: '/dcf/nifty-undervalued/', currencySymbol: '₹', indexTicker: '^NSEI', indexName: 'NIFTY 50' };
-  if (t.endsWith('.KS')) return { folder: 'kospi', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
-  // folder: 'other', not 'nikkei' -- same pattern as the Europe-suffix rule
-  // below (folder 'other' + a real screen affiliation): the ticker-pages
-  // system files Japanese stocks under Other Markets even though the
-  // separate Nikkei 225 ranking screen (its own batch/universe/refresh
-  // pipeline) still exists and this page still cross-links to it.
+  // folder: 'other', not 'kospi'/'nikkei' -- same pattern as the Europe-suffix
+  // rule below (folder 'other' + a real screen affiliation): the ticker-pages
+  // system files Korean and Japanese stocks under Other Markets (grouped by
+  // sub-market on that index page, see the 2026-08-18 "Group Other Markets
+  // index page by sub-market" commit) even though the separate KOSPI/Nikkei
+  // 225 ranking screens (their own batch/universe/refresh pipelines) still
+  // exist and this page still cross-links to them. There has never been a
+  // dedicated top-level 'kospi' folder in production -- this rule regressed
+  // to one briefly on 2026-08-19 (stale code predating the sub-market
+  // consolidation) and was caught before publishing; don't reintroduce it.
+  if (t.endsWith('.KS')) return { folder: 'other', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
   if (t.endsWith('.T')) return { folder: 'other', label: 'Nikkei 225', screenName: 'Nikkei 225 Most Undervalued', screenUrl: '/dcf/nikkei-undervalued/', currencySymbol: '¥', indexTicker: '^N225', indexName: 'Nikkei 225' };
   if (t.endsWith('.L') || EUROZONE_SUFFIXES.some(s => t.endsWith(s))) return { folder: 'other', label: null, screenName: 'Europe Most Undervalued', screenUrl: '/dcf/europe-undervalued/', currencySymbol: '€', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
   // Hong Kong / China A-shares: no dedicated undervalued screen exists (screenName/
