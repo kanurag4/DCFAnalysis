@@ -51,6 +51,9 @@ const els = {
   dividendInput:  $('dividend-input'),
   bookvalueRow:   $('bookvalue-row'),
   bookvalueInput: $('bookvalue-input'),
+  affoRow:        $('affo-row'),
+  affoInput:      $('affo-input'),
+  discountScenarioRow: $('discount-scenario-row'),
   tgrowthRow:     $('tgrowth-row'),
   growthLabel:    $('growth-label'),
   discountLabel:  $('discount-label'),
@@ -383,6 +386,7 @@ function prefillInputs(data) {
   // into the DOM (input fields, badges, notes).
   const assumptions = deriveDcfAssumptions(data);
   const isBankIns = assumptions.isBankIns;
+  const isReitTicker = assumptions.isReit;
   valuationModel = assumptions.valuationModel;
   currentMarket = assumptions.currentMarket;
 
@@ -478,7 +482,7 @@ function prefillInputs(data) {
   renderGrowthSuggestion(data, fcf === null || fcf < 0);
 
   // Target FCF margin (revenue normalisation) — shown for negative/null FCF non-bank stocks
-  const showTargetMargin = !isBankIns && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
+  const showTargetMargin = !isBankIns && !isReitTicker && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
   if (els.targetMarginRow) {
     els.targetMarginRow.hidden = !showTargetMargin;
     if (showTargetMargin && els.targetMarginInput && !els.targetMarginInput.value) {
@@ -541,8 +545,25 @@ function seedInputsForModel(model) {
   if (!modelSeeds) return;
   // modelSeeds' key is camelCase (excessReturn) but model/valuationModel is
   // hyphenated ('excess-return') everywhere else in this file -- translate here
-  // rather than renaming the seeds key, since 'dcf'/'ddm' need no translation.
+  // rather than renaming the seeds key, since 'dcf'/'ddm'/'reit' need no translation.
   const s = modelSeeds[model === 'excess-return' ? 'excessReturn' : model];
+
+  // REIT has no discount rate, no terminal growth, and its "growth" row is
+  // actually the P/AFFO multiple -- entirely different shape from every
+  // other model, so it gets its own branch rather than falling through the
+  // growth/tgrowth/discount writes below (which would throw on
+  // s.discount.bear -- modelSeeds.reit has no discount key at all).
+  if (model === 'reit') {
+    els.growthBear.value = s.multiple.bear;
+    els.growthBase.value = s.multiple.base;
+    els.growthBull.value = s.multiple.bull;
+    if (els.affoInput) {
+      els.affoInput.value = s.affoPerShare != null ? (+s.affoPerShare).toFixed(2) : '';
+      els.affoInput.placeholder = s.affoPerShare != null ? '' : 'Enter AFFO / share';
+    }
+    return;
+  }
+
   els.growthBear.value  = s.growth.bear;
   els.growthBase.value  = s.growth.base;
   els.growthBull.value  = s.growth.bull;
@@ -570,33 +591,47 @@ function seedInputsForModel(model) {
 function applyModelUI() {
   const ddm = valuationModel === 'ddm';
   const excessReturn = valuationModel === 'excess-return';
+  const reit = valuationModel === 'reit';
   const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
+  const isReitTicker = currentData && isReit(currentData.sector, currentData.industry);
 
-  if (els.fcfRow)      els.fcfRow.hidden = ddm || excessReturn;
+  if (els.fcfRow)      els.fcfRow.hidden = ddm || excessReturn || reit;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
   if (els.bookvalueRow) els.bookvalueRow.hidden = !excessReturn;
-  if (els.multistageRow) els.multistageRow.hidden = ddm || excessReturn;
-  if (els.tgrowthRow) els.tgrowthRow.hidden = excessReturn; // no terminal value for this model
+  if (els.affoRow) els.affoRow.hidden = !reit;
+  if (els.multistageRow) els.multistageRow.hidden = ddm || excessReturn || reit;
+  if (els.tgrowthRow) els.tgrowthRow.hidden = excessReturn || reit; // no terminal value for these models
+  if (els.discountScenarioRow) els.discountScenarioRow.hidden = reit; // REIT has no discount rate at all
 
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
-  if (els.growthLabel) els.growthLabel.innerHTML = excessReturn
-    ? T('roe', 'ROE %')
-    : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %');
+  if (els.growthLabel) els.growthLabel.innerHTML = reit
+    ? 'P/AFFO Multiple'
+    : (excessReturn ? T('roe', 'ROE %') : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %'));
   const discountLabelText = $('discount-label-text');
   if (discountLabelText) discountLabelText.innerHTML = T((ddm || excessReturn) ? 'cost-of-equity' : 'wacc', (ddm || excessReturn) ? 'Cost of Equity %' : 'WACC %');
   if (els.discountTip) els.discountTip.setAttribute('data-tip', (ddm || excessReturn)
     ? 'Higher cost of equity = lower valuation.'
     : 'Higher WACC = lower valuation.');
   if (els.waccSummary)    els.waccSummary.textContent    = (ddm || excessReturn) ? 'How cost of equity is calculated' : 'How WACC is calculated';
-  if (els.breakdownTitle) els.breakdownTitle.textContent = excessReturn ? 'Excess Return Value Breakdown' : (ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown');
+  if (els.breakdownTitle) els.breakdownTitle.textContent = reit ? 'REIT Value Breakdown' : (excessReturn ? 'Excess Return Value Breakdown' : (ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown'));
 
   renderDiscountBreakdown();
-  updateModelToggle(isBankIns);
+  updateModelToggle(isBankIns, isReitTicker);
 }
 
-function updateModelToggle(isBankIns) {
+function updateModelToggle(isBankIns, isReitTicker) {
   if (!els.modelToggleRow) return;
+  if (isReitTicker) {
+    // REITs are locked to the FFO/AFFO model, same no-toggle pattern as
+    // banks/insurers below -- standard FCF-based DCF is structurally
+    // unreliable here (GAAP depreciation distorts net income/FCF for real
+    // estate), so there's no "value with DCF instead" option to offer.
+    els.modelToggleRow.hidden = false;
+    els.modelLabel.textContent = '🏢 FFO/AFFO Model — standard DCF is unreliable for REITs (depreciation distorts net income).';
+    if (els.ddmToggle) els.ddmToggle.hidden = true;
+    return;
+  }
   if (isBankIns) {
     // Banks/insurance/NBFCs are locked to DDM or Excess Return Model (never DCF) --
     // show a static notice, no toggle. Which of the two is a computed fact about the
@@ -703,6 +738,10 @@ function chinaInfoBlock() {
 }
 
 function renderDiscountBreakdown() {
+  if (valuationModel === 'reit') {
+    els.waccContent.innerHTML = '<div class="wacc-row"><span class="wacc-src">No discount rate — this model applies a P/AFFO multiple directly to AFFO/share, the same way a P/E multiple values earnings.</span></div>';
+    return;
+  }
   if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
     if (!lastCapm) { els.waccContent.innerHTML = ''; return; }
     const pct = v => (v * 100).toFixed(2) + '%';
@@ -801,6 +840,25 @@ function renderSummary(data, sym) {
                 : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>'
                 : fcfInfo.method === 'annual'  ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">latest annual</span>' : '';
 
+  // REIT health metrics -- AFFO payout ratio and Debt-to-EBITDA, using data
+  // already fetched for every ticker (dividend, debt, ebit/D&A). Cheap,
+  // directly answers "is the dividend sustainable" per the design spec's
+  // "UI additions" section, without needing any new data source.
+  let reitStatsHtml = '';
+  if (valuationModel === 'reit' && modelSeeds && modelSeeds.reit) {
+    const affoPerShare = modelSeeds.reit.affoPerShare;
+    const dividendPerShare = data.trailingAnnualDividendRate ?? data.dividendRate ?? null;
+    const affoPayoutRatio = (affoPerShare != null && affoPerShare > 0 && dividendPerShare != null)
+      ? dividendPerShare / affoPerShare : null;
+    const ebitda = (data.ebit != null && modelSeeds.reit.depreciationAndAmortization != null)
+      ? data.ebit + modelSeeds.reit.depreciationAndAmortization : null;
+    const debtToEbitda = (data.totalDebt != null && ebitda != null && ebitda > 0)
+      ? data.totalDebt / ebitda : null;
+    reitStatsHtml = `
+      <div class="stat"><div class="stat-label">AFFO Payout Ratio</div><div class="stat-value">${affoPayoutRatio != null ? fmt(affoPayoutRatio * 100, 1, '%') : 'N/A'}</div></div>
+      <div class="stat"><div class="stat-label">Debt / EBITDA</div><div class="stat-value">${fmt(debtToEbitda, 1, 'x')}</div></div>`;
+  }
+
   els.summary.innerHTML = `
     <h2>${escapeHtml(data.name)} <span class="symbol">(${escapeHtml(data.ticker)})</span></h2>
     ${data.sector ? `<div class="sector">${escapeHtml(data.sector)}${data.industry ? ' · ' + escapeHtml(data.industry) : ''}</div>` : ''}
@@ -814,7 +872,7 @@ function renderSummary(data, sym) {
       <div class="stat"><div class="stat-label">${T('net-debt', 'Net Debt')}</div><div class="stat-value ${netDebt > 0 ? 'stat-down' : 'stat-up'}">${formatMarketCap(netDebt, sym)}</div></div>
       <div class="stat"><div class="stat-label">${T('beta', 'Beta')}</div><div class="stat-value">${fmt(data.beta, 2)}</div></div>
       <div class="stat"><div class="stat-label">${T('pe-ratio', 'PE (TTM)')}</div><div class="stat-value">${fmt(data.trailingPE, 1, 'x')}</div></div>
-      <div class="stat"><div class="stat-label">${T('52-week-range', '52-Week Range')}</div><div class="stat-value">${range}</div></div>
+      <div class="stat"><div class="stat-label">${T('52-week-range', '52-Week Range')}</div><div class="stat-value">${range}</div></div>${reitStatsHtml}
     </div>
   `;
   show(els.summary);
@@ -967,7 +1025,7 @@ function buildSensitivityGrid(data) {
   // grid to vary on the second axis, so the section is hidden entirely rather than
   // reusing DDM's dividend-based math (which would read stale/hidden dividend-input
   // state left over from a previously-viewed ticker and silently show wrong numbers).
-  if (valuationModel === 'excess-return') return null;
+  if (valuationModel === 'excess-return' || valuationModel === 'reit') return null;
 
   const years = parseInt(els.yearsSlider.value, 10);
   const ddm = valuationModel === 'ddm';
@@ -1058,6 +1116,18 @@ function renderSensitivityGrid(grid, currentPrice, sym) {
 // nonzero constant never changes which branch of `||` fires).
 function buildScenarios(data) {
   const years = parseInt(els.yearsSlider.value, 10);
+
+  // ── REIT (property REITs, locked model) ──
+  if (valuationModel === 'reit') {
+    const affoPerShare = els.affoInput
+      ? parseFloat(String(els.affoInput.value).replace(/,/g, ''))
+      : NaN;
+    const seeds = {
+      affoPerShare: isFinite(affoPerShare) ? affoPerShare : null,
+      multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // reuses the growth-bear/base/bull inputs, relabeled "P/AFFO Multiple" in applyModelUI()
+    };
+    return computeScenarios(data, 'reit', seeds, {});
+  }
 
   // ── DDM (banks/insurance, or user-toggled) ──
   if (valuationModel === 'ddm') {
@@ -1194,7 +1264,7 @@ async function onShareClick() {
 
 function renderScenarios(scenarios, data, sym) {
   let baseShareInfo = null;
-  const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, noBookValue, normalised }) => {
+  const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, noBookValue, noAffo, normalised }) => {
     if (!result) {
       let msg;
       if (fcfMissing) {
@@ -1203,6 +1273,8 @@ function renderScenarios(scenarios, data, sym) {
         msg = 'No dividend data available — the Dividend Discount Model needs a dividend. Enter an annual dividend per share in the inputs panel, or use the metrics above.';
       } else if (noBookValue) {
         msg = 'Enter a Book Value / Share in the inputs panel to run the Excess Return Model.';
+      } else if (noAffo) {
+        msg = 'Enter a positive AFFO / Share in the inputs panel to run the REIT model.';
       } else if (fcfNegative) {
         msg = isFinancialSector(currentData?.sector)
           ? 'Reported FCF is negative. Enter a positive Normalised FCF in the inputs panel to run the DCF.'
@@ -1211,6 +1283,8 @@ function renderScenarios(scenarios, data, sym) {
         // No terminal-growth concept in this model -- ROE/Cost of Equity must both be
         // positive for calculateExcessReturn() to return a value (see calc/excessReturn.js).
         msg = 'ROE and Cost of Equity must both be positive to run the Excess Return Model.';
+      } else if (valuationModel === 'reit') {
+        msg = 'Enter a positive P/AFFO Multiple in the inputs panel to run this model.';
       } else {
         msg = valuationModel === 'ddm'
           ? 'Cost of equity must exceed the terminal growth rate.'
@@ -1315,7 +1389,7 @@ function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, y
 function renderBreakeven(data, sym) {
   if (!els.breakevenCallout) return;
   const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
-  if (isBankIns || valuationModel === 'ddm' || !data.totalRevenue) {
+  if (isBankIns || valuationModel === 'ddm' || valuationModel === 'reit' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }
   const fcf = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf).value;
@@ -1349,10 +1423,12 @@ function renderBreakeven(data, sym) {
 function renderCharts(scenarios, currentPrice, sym) {
   const labels = ['Bear', 'Base', 'Bull'];
   const excessReturn = valuationModel === 'excess-return';
+  const noProjectionModel = excessReturn || valuationModel === 'reit'; // neither has a per-year PV series or a terminal value
 
-  // Terminal value warning — meaningless for Excess Return Model, which has
-  // no terminal value component at all (see calc/excessReturn.js).
-  if (excessReturn) {
+  // Terminal value warning — meaningless for Excess Return / REIT, neither
+  // of which has a terminal value component (see calc/excessReturn.js,
+  // calc/reit.js).
+  if (noProjectionModel) {
     els.tvWarning.hidden = true;
   } else {
     const withResult = scenarios.filter(s => s.result);
@@ -1364,11 +1440,9 @@ function renderCharts(scenarios, currentPrice, sym) {
   const breakdownCard = $('breakdown-chart') ? $('breakdown-chart').closest('.chart-card') : null;
 
   // Chart 1: Stacked bar — near-term PV (green) + PV Terminal Value (orange).
-  // Skipped for Excess Return Model — its result shape has no pvFcfs/pvDividends/
-  // pvTerminal fields to stack (no terminal value at all in this model; the
-  // near-term component is a single sum of PV excess returns, not a per-year
-  // series worth its own chart).
-  if (excessReturn) {
+  // Skipped for Excess Return Model and REIT — neither's result shape has
+  // pvFcfs/pvDividends/pvTerminal fields to stack (see the comment above).
+  if (noProjectionModel) {
     if (breakdownChart) { breakdownChart.destroy(); breakdownChart = null; }
     if (breakdownCard) breakdownCard.hidden = true;
   } else {
