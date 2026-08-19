@@ -933,10 +933,23 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
 // ── Financial sector warning ──────────────────────────────────────────────
 
 function renderFinancialWarning(data, sym) {
-  if (isRealEstateSector(data.sector)) {
+  // Property REITs (isReit() true) already switched away from DCF entirely
+  // -- they're valued with the FFO/AFFO model (see updateModelToggle()'s own
+  // locked-model notice, which already explains this). Showing this banner
+  // too would contradict that: it says "DCF results should be treated with
+  // caution" for a ticker that isn't using DCF at all anymore.
+  if (isRealEstateSector(data.sector) && !isReit(data.sector, data.industry)) {
+    // Real estate sector, but NOT a REIT (e.g. LIC.AX -- a residential
+    // land-lease developer/operator, "Real Estate - Diversified" not
+    // "REIT - Diversified") -- standard DCF still runs for these, since the
+    // FFO/AFFO model is scoped to genuine REIT industry tags only (see
+    // isReit()'s own doc comment). Real estate companies broadly still tend
+    // to carry depreciation-heavy balance sheets, so a lighter caution is
+    // still warranted -- just not the REIT-specific FFO claim, which would
+    // be factually wrong for a company that isn't a REIT.
     els.finWarning.innerHTML = `
-      <h3>⚠️ REIT Detected</h3>
-      <p>Real Estate Investment Trusts are better valued using Funds from Operations (FFO), not Free Cash Flow. DCF results for REITs should be treated with significant caution.</p>
+      <h3>⚠️ Real Estate Company</h3>
+      <p>This is a real estate company, but not a REIT (Real Estate Investment Trust) — its Yahoo industry tag doesn't carry a "REIT" designation. Standard DCF still applies, but real estate companies often carry depreciation-heavy balance sheets that can distort free cash flow, so treat the result with some caution.</p>
     `;
     show(els.finWarning);
     return;
