@@ -634,6 +634,13 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.ebit = c(hist.ebit);
         hist.interestExpense = c(hist.interestExpense);
         hist.fcfAnnualLatest = c(hist.fcfAnnualLatest);
+        // REIT FFO/AFFO inputs (see calc/reit.js) -- missed in the original
+        // REIT wiring pass, same currency-mixing bug class as the SONY
+        // incident above (net income/D&A left unconverted while capex above
+        // was already converted, silently mixing two currencies/scales into
+        // one FFO/AFFO figure). Caught in peer review, 2026-08-19.
+        data.netIncome = c(data.netIncome);
+        data.depreciationAndAmortization = c(data.depreciationAndAmortization);
       } else {
         fxConversionFailed = true;
         data.freeCashflow = null;
@@ -645,6 +652,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.ebit = null;
         hist.interestExpense = null;
         hist.fcfAnnualLatest = null;
+        data.netIncome = null;
+        data.depreciationAndAmortization = null;
       }
     }
 

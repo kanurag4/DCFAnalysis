@@ -956,24 +956,41 @@ function renderFinancialWarning(data, sym) {
   }
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
   if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
-    const kind = /insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank';
+    // Mortgage REITs route through isBankOrInsurance() too (loan-book
+    // economics, see that function's own comment) but aren't a "Bank" --
+    // they don't take deposits, they hold levered mortgage/MBS portfolios
+    // funded by repo/warehouse debt. Falling into the generic Bank branch
+    // gave mortgage REITs a factually wrong "deposits are a raw material"
+    // explanation (caught in peer review, 2026-08-19) -- give them their
+    // own kind with correct reasoning instead.
+    const isMortgageReit = /^REIT\s*-\s*Mortgage/i.test(data.industry || '');
+    const kind = isMortgageReit
+      ? 'Mortgage REIT'
+      : (/insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank');
+    const icon = isMortgageReit ? '🏢' : '🏦';
     const usingExcessReturn = valuationModel === 'excess-return';
     const modelLabel = usingExcessReturn
       ? T('excess-return-model', 'Excess Return Model')
       : T('ddm', 'Dividend Discount Model');
     const modelName = usingExcessReturn ? 'Excess Return Model' : 'Dividend Discount Model (DDM)';
     const noDataNote = usingExcessReturn ? '' : (dividendAvailable ? '' : ' — but no dividend data is available, so no intrinsic value can be shown');
-    const reason = kind === 'Bank'
+    const reason = isMortgageReit
+      ? "a mortgage REIT's cash flow is dominated by interest-rate-sensitive portfolio and leverage movements, not owner earnings from operations"
+      : kind === 'Bank'
       ? 'deposits are a raw material rather than funding, so there is no clean free cash flow and WACC cannot be derived the usual way'
       : 'free cash flow is dominated by investment-portfolio and reserve movements, not owner earnings';
+    // "mortgage reit stocks" (kind.toLowerCase() lowercasing REIT too) reads
+    // wrong -- REIT stays capitalized in prose the same way it does in the
+    // property-REIT card's own copy.
+    const kindLower = isMortgageReit ? 'mortgage REIT' : kind.toLowerCase();
     const pe  = fmt(data.trailingPE, 1, 'x');
     const pb  = fmt(data.priceToBook, 2, 'x');
     const roe = data.returnOnEquity !== null ? fmt(data.returnOnEquity * 100, 1, '%') : 'N/A';
     const div = data.dividendYield  !== null ? fmt(data.dividendYield  * 100, 2, '%') : 'N/A';
     els.finWarning.innerHTML = `
-      <h3>🏦 ${kind} — ${modelLabel}</h3>
-      <p>DCF is not used for ${kind.toLowerCase()} stocks: ${reason}. This valuation uses the <strong>${modelName}</strong> instead${noDataNote}.</p>${usingExcessReturn ? '<p style="font-size:0.78rem;color:var(--kv-muted)">Low payout ratio relative to ROE and growth makes DDM understate value here — Excess Return Model captures value from reinvested earnings instead.</p>' : ''}
-      <p style="font-size:0.78rem;color:var(--kv-muted)">Key ${kind.toLowerCase()} valuation metrics:</p>
+      <h3>${icon} ${kind} — ${modelLabel}</h3>
+      <p>DCF is not used for ${kindLower} stocks: ${reason}. This valuation uses the <strong>${modelName}</strong> instead${noDataNote}.</p>${usingExcessReturn ? '<p style="font-size:0.78rem;color:var(--kv-muted)">Low payout ratio relative to ROE and growth makes DDM understate value here — Excess Return Model captures value from reinvested earnings instead.</p>' : ''}
+      <p style="font-size:0.78rem;color:var(--kv-muted)">Key ${kindLower} valuation metrics:</p>
       <div class="alt-multiples">
         <div class="alt-multiple"><div class="am-label">P/B</div><div class="am-value">${pb}</div><div class="am-note">&lt;1 = below book</div></div>
         <div class="alt-multiple"><div class="am-label">ROE</div><div class="am-value">${roe}</div><div class="am-note">Return on equity</div></div>
