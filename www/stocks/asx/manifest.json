@@ -551,6 +551,18 @@
     "updated": "2026-08-17"
   },
   {
+    "ticker": "SGP.AX",
+    "slug": "sgp-ax",
+    "name": "Stockland",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 5.778677966836273,
+    "price": 4.495,
+    "marginOfSafety": 0.28557908049750236,
+    "marketCap": 10930240512,
+    "updated": "2026-08-19"
+  },
+  {
     "ticker": "SHL.AX",
     "slug": "shl-ax",
     "name": "Sonic Healthcare Limited",
