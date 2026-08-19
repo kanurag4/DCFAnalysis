@@ -769,6 +769,15 @@ Intrinsic Value = Σ PV(D) + PV(TV)        ← per share directly (no net debt s
   Japan (1.5%), the only two that override it. Any future market-specific terminal-growth seed
   should follow the same `params.terminalGrowth ?? DEFAULT_TERMINAL_GROWTH` pattern, not a new
   hardcoded constant.
+- **Ticker-page `marketMeta()`'s `.KS`/`.T` routing is hand-synced across two repos, not shared
+  code** (`scripts/lib/ticker-page.js` here, `StockAnalysis/scripts/lib/growth-ticker-page.js` for
+  growth pages) — same drift-prone pattern as the RF/ERP/terminal-growth duplication above. Both
+  route KOSPI/Nikkei tickers to `folder: 'other'`, grouped by sub-market on that index page
+  (2026-08-18 consolidation) — **there has never been a dedicated top-level `kospi`/`nikkei`
+  folder in production.** Both copies briefly regressed to dedicated folders on 2026-08-19 (stale
+  code predating the consolidation, caught before publish) — see `kashvector-lessons.md`'s dated
+  entry. If a future market gets a folder-routing change, update and verify both files, not just
+  the one you're editing.
 
 ---
 
