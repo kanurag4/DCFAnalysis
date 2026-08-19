@@ -606,7 +606,7 @@ function applyModelUI() {
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
   if (els.growthLabel) els.growthLabel.innerHTML = reit
-    ? 'P/AFFO Multiple'
+    ? T('p-affo-multiple', 'P/AFFO Multiple')
     : (excessReturn ? T('roe', 'ROE %') : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %'));
   const discountLabelText = $('discount-label-text');
   if (discountLabelText) discountLabelText.innerHTML = T((ddm || excessReturn) ? 'cost-of-equity' : 'wacc', (ddm || excessReturn) ? 'Cost of Equity %' : 'WACC %');
@@ -855,7 +855,7 @@ function renderSummary(data, sym) {
     const debtToEbitda = (data.totalDebt != null && ebitda != null && ebitda > 0)
       ? data.totalDebt / ebitda : null;
     reitStatsHtml = `
-      <div class="stat"><div class="stat-label">AFFO Payout Ratio</div><div class="stat-value">${affoPayoutRatio != null ? fmt(affoPayoutRatio * 100, 1, '%') : 'N/A'}</div></div>
+      <div class="stat"><div class="stat-label">${T('affo', 'AFFO Payout Ratio')}</div><div class="stat-value">${affoPayoutRatio != null ? fmt(affoPayoutRatio * 100, 1, '%') : 'N/A'}</div></div>
       <div class="stat"><div class="stat-label">Debt / EBITDA</div><div class="stat-value">${fmt(debtToEbitda, 1, 'x')}</div></div>`;
   }
 
