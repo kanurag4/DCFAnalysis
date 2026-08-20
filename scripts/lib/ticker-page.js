@@ -13,10 +13,11 @@ const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js'
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const { deriveFfo, deriveAffo, calculateReitValue } = require('../../www/calc/reit.js');
-const { REIT_SECTOR_MULTIPLES } = require('../../www/config.js');
+const { calculateAirlineValue } = require('../../www/calc/airline.js');
+const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE } = require('../../www/config.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -96,7 +97,7 @@ const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥'
 // short-form abbreviations and pass through unchanged; ExcessReturn's internal
 // identifier has no spaces and reads badly inline (e.g. "ExcessReturn Valuation",
 // "mechanical ExcessReturn formula") -- fixed 2026-08-15, peer review finding.
-const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return', REIT: 'FFO/AFFO' };
+const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return', REIT: 'FFO/AFFO', Airline: 'EV/EBITDA' };
 
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 
@@ -495,7 +496,7 @@ async function fetchPriceHistory(symbol, proxyUrl) {
 // (negative equity; missing sharesOutstanding) -- previously collapsed into
 // one generic message that didn't distinguish them. Returns null when
 // baseResult already has a real intrinsicValue (nothing to explain).
-function deriveNullReason({ isBank, isReitTicker, baseResult, baseFcf, affoPerShare, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
+function deriveNullReason({ isBank, isReitTicker, isAirlineTicker, baseResult, baseFcf, affoPerShare, ebitda, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
   if (baseResult?.intrinsicValue != null) return null;
   if (fxConversionFailed) return 'financial statements are reported in a different currency than the trading price, and the live conversion rate could not be fetched';
   if (baseResult == null) {
@@ -503,6 +504,11 @@ function deriveNullReason({ isBank, isReitTicker, baseResult, baseFcf, affoPerSh
       return (affoPerShare == null || affoPerShare <= 0)
         ? 'AFFO/share <= 0 or unavailable'
         : 'P/AFFO multiple <= 0';
+    }
+    if (isAirlineTicker) {
+      return (ebitda == null || ebitda <= 0)
+        ? 'EBITDA <= 0 or unavailable'
+        : 'EV/EBITDA multiple <= 0';
     }
     if (isBank) {
       return (dividend == null || dividend <= 0)
@@ -641,6 +647,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         // one FFO/AFFO figure). Caught in peer review, 2026-08-19.
         data.netIncome = c(data.netIncome);
         data.depreciationAndAmortization = c(data.depreciationAndAmortization);
+        data.ebitda = c(data.ebitda);
       } else {
         fxConversionFailed = true;
         data.freeCashflow = null;
@@ -654,16 +661,37 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.fcfAnnualLatest = null;
         data.netIncome = null;
         data.depreciationAndAmortization = null;
+        data.ebitda = null;
       }
     }
 
     const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
     const isReitTicker = !isBank && isReit(data.sector, data.industry);
+    const isAirlineTicker = !isBank && !isReitTicker && isAirline(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
     let affoPerShare = null, reitMultiples = null, reitIndustryKey = null;
+    let airlineMultiples = null;
 
-    if (isReitTicker) {
+    if (isAirlineTicker) {
+      const resolvedSharesForAirline = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0)
+        ? hist.dilutedSharesOutstanding : data.sharesOutstanding;
+      airlineMultiples = {
+        bear: +(AIRLINE_EV_EBITDA_MULTIPLE * 0.8).toFixed(1),
+        base: AIRLINE_EV_EBITDA_MULTIPLE,
+        bull: +(AIRLINE_EV_EBITDA_MULTIPLE * 1.2).toFixed(1),
+      };
+      method = 'Airline';
+      scenarios = ['bear', 'base', 'bull'].map(key => {
+        const result = calculateAirlineValue({
+          ebitda: data.ebitda, multiple: airlineMultiples[key],
+          totalDebt: data.totalDebt, totalCash: data.totalCash,
+          sharesOutstanding: resolvedSharesForAirline, currentPrice: data.price,
+        });
+        return { key, multiplePct: airlineMultiples[key], result };
+      });
+      waccBreakdown = null; // no discount rate for this model at all
+    } else if (isReitTicker) {
       const ffoInfo = deriveFfo({ netIncome: data.netIncome, depreciationAndAmortization: data.depreciationAndAmortization });
       const affoInfo = deriveAffo({ ffo: ffoInfo.value, capex: data.capitalExpenditures });
       const resolvedSharesForReit = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0)
@@ -822,7 +850,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const sectorLine = [data.sector, data.industry].filter(Boolean).join(' · ');
     const baseResult = scenarios.find(s => s.key === 'base').result;
     const v = verdict(baseResult?.marginOfSafety);
-    const nullReason = deriveNullReason({ isBank, isReitTicker, baseResult, baseFcf, affoPerShare, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
+    const nullReason = deriveNullReason({ isBank, isReitTicker, isAirlineTicker, baseResult, baseFcf, affoPerShare, ebitda: data.ebitda, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
     // Raw diagnostic snapshot -- only populated when the base case is null,
     // so the batch can print exactly which upstream field was the actual
     // cause (2026-08-05 incident: the same 10 tickers failed identically on
@@ -831,7 +859,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // exists to settle whether that's a CI-environment-specific data
     // difference, not to guess further).
     const nullDiagnostics = nullReason ? {
-      isBank, isReitTicker, affoPerShare, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
+      isBank, isReitTicker, isAirlineTicker, affoPerShare, ebitda: data.ebitda, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
       sharesOutstanding: data.sharesOutstanding, price: data.price,
       revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
       marketCap: data.marketCap, totalDebt: data.totalDebt, totalCash: data.totalCash,
@@ -855,6 +883,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           ['Price', money(data.price, currencySym)],
           ['Market Cap', moneyB(data.marketCap, currencySym)],
           ['AFFO / Share', affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'],
+          ['Beta', effectiveBeta.toFixed(2)],
+          ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
+          ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
+        ]
+      : isAirlineTicker
+      ? [
+          ['Price', money(data.price, currencySym)],
+          ['Market Cap', moneyB(data.marketCap, currencySym)],
+          ['EBITDA', data.ebitda != null ? moneyB(data.ebitda, currencySym) : 'N/A'],
           ['Beta', effectiveBeta.toFixed(2)],
           ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
           ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
@@ -889,6 +926,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
     const assumptionRows = isReitTicker
       ? `<tr><td>P/AFFO Multiple</td><td class="col-bear">${scenarios[0].multiplePct.toFixed(1)}x</td><td class="col-base">${scenarios[1].multiplePct.toFixed(1)}x</td><td class="col-bull">${scenarios[2].multiplePct.toFixed(1)}x</td></tr>`
+      : isAirlineTicker
+      ? `<tr><td>EV/EBITDA Multiple</td><td class="col-bear">${scenarios[0].multiplePct.toFixed(1)}x</td><td class="col-base">${scenarios[1].multiplePct.toFixed(1)}x</td><td class="col-bull">${scenarios[2].multiplePct.toFixed(1)}x</td></tr>`
       : isBank
       ? `<tr><td>Dividend growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
          <tr><td>Terminal growth</td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
@@ -904,6 +943,12 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
          <div class="assump-item"><div class="al">AFFO / Share</div><div class="av">${affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'}</div><div class="an">AFFO ÷ diluted shares outstanding</div></div>
          <div class="assump-item"><div class="al">Sector P/AFFO multiple</div><div class="av">${reitMultiples.base}x</div><div class="an">${reitIndustryKey === 'DEFAULT' ? 'Default (no sector-specific seed)' : escapeHtml(reitIndustryKey)}</div></div>
          <div class="assump-item"><div class="al">Model</div><div class="av">FFO/AFFO</div><div class="an">Not a discounted model — no discount rate or terminal value</div></div>`
+      : isAirlineTicker
+      ? `<div class="assump-item"><div class="al">EBITDA</div><div class="av">${data.ebitda != null ? moneyB(data.ebitda, currencySym) : 'N/A'}</div><div class="an">Earnings before interest, tax, depreciation &amp; amortization</div></div>
+         <div class="assump-item"><div class="al">Enterprise Value</div><div class="av">${scenarios[1].result?.ev != null ? moneyB(scenarios[1].result.ev, currencySym) : 'N/A'}</div><div class="an">= EBITDA × multiple</div></div>
+         <div class="assump-item"><div class="al">Net Debt</div><div class="av">${scenarios[1].result?.netDebt != null ? moneyB(scenarios[1].result.netDebt, currencySym) : 'N/A'}</div><div class="an">Total debt − total cash</div></div>
+         <div class="assump-item"><div class="al">EV/EBITDA multiple</div><div class="av">${airlineMultiples.base}x</div><div class="an">Mid-cycle placeholder — airlines have historically traded ~4x–8x+</div></div>
+         <div class="assump-item"><div class="al">Model</div><div class="av">EV/EBITDA</div><div class="an">Not a discounted model — no discount rate or terminal value. Standard FCF-based DCF is unreliable for airlines (extreme cyclicality, high leverage).</div></div>`
       : isBank
       ? `<div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
          <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(t) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
@@ -926,6 +971,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
     const formulaLine = isReitTicker
       ? `Intrinsic Value = AFFO / Share × P/AFFO Multiple = ${affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'} × ${reitMultiples.base}x`
+      : isAirlineTicker
+      ? `Enterprise Value = EBITDA × Multiple = ${data.ebitda != null ? moneyB(data.ebitda, currencySym) : 'N/A'} × ${airlineMultiples.base}x — Equity Value = EV − Net Debt, ÷ shares outstanding`
       : isBank
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
       : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · WACC = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
@@ -940,6 +987,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       const ebitda = (hist.ebit != null && data.depreciationAndAmortization != null) ? hist.ebit + data.depreciationAndAmortization : null;
       return (data.totalDebt != null && ebitda != null && ebitda > 0) ? data.totalDebt / ebitda : null;
     })();
+    const airlineImpliedMultiple = (() => {
+      if (!isAirlineTicker || data.ebitda == null || data.ebitda <= 0) return null;
+      const resolvedShares = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0)
+        ? hist.dilutedSharesOutstanding : data.sharesOutstanding;
+      if (!(resolvedShares > 0) || data.price == null) return null;
+      const impliedEv = data.price * resolvedShares + (data.totalDebt || 0) - (data.totalCash || 0);
+      return impliedEv / data.ebitda;
+    })();
     const bankMetricsHtml = isReitTicker ? `
       <section class="bank-metrics">
         <h3>🏢 REIT — valued with the FFO/AFFO Model</h3>
@@ -947,6 +1002,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         <div class="bank-metric-grid">
           <div class="stat"><div class="stat-label">AFFO Payout Ratio</div><div class="stat-value">${reitAffoPayoutRatio != null ? pct(reitAffoPayoutRatio) : 'N/A'}</div></div>
           <div class="stat"><div class="stat-label">Debt / EBITDA</div><div class="stat-value">${reitDebtToEbitda != null ? reitDebtToEbitda.toFixed(1) + 'x' : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
+        </div>
+      </section>` : (isAirlineTicker ? `
+      <section class="bank-metrics">
+        <h3>✈️ Airline — valued with the EV/EBITDA Model</h3>
+        <p>Standard FCF-based DCF is not used for airlines: extreme cyclicality and high operating/financial leverage make a single trailing-year FCF/growth snapshot unreliable. This valuation applies an EV/EBITDA multiple instead, the standard airline-industry convention.</p>
+        <div class="bank-metric-grid">
+          <div class="stat"><div class="stat-label">Market-Implied EV/EBITDA</div><div class="stat-value">${airlineImpliedMultiple != null ? airlineImpliedMultiple.toFixed(1) + 'x' : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">Model EV/EBITDA</div><div class="stat-value">${airlineMultiples.base}x</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
       </section>` : (isBank ? (method === 'ExcessReturn' ? `
@@ -967,7 +1031,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
-      </section>`) : '');
+      </section>`) : ''));
 
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
@@ -1113,14 +1177,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       <p class="pure-maths-note">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : method === 'REIT' ? 'AFFO' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
+        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : method === 'REIT' ? 'AFFO' : method === 'Airline' ? 'EBITDA' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
       </p>
 
-      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : method === 'REIT' ? 'P/AFFO multiple' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
+      <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : method === 'REIT' ? 'P/AFFO multiple' : method === 'Airline' ? 'EV/EBITDA multiple' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
 
       ${relatedStocksSectionHtml}
 
-      <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in ${method === 'REIT' ? 'the P/AFFO multiple' : 'growth rate or discount rate'} produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
+      <p class="disclaimer"><strong>Not financial advice.</strong> ${METHOD_SHORT[method]} valuations are highly sensitive to assumptions — small changes in ${method === 'REIT' ? 'the P/AFFO multiple' : method === 'Airline' ? 'the EV/EBITDA multiple' : 'growth rate or discount rate'} produce large swings in output. This is a mechanical calculation, not a recommendation to buy, hold, or sell.</p>
 
       <section class="tool-info">
         <div class="tool-about">
@@ -1135,7 +1199,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>`;
 
-    const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model', REIT: 'FFO/AFFO Valuation' };
+    const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model', REIT: 'FFO/AFFO Valuation', Airline: 'EV/EBITDA Valuation' };
     const html = pageShell({
       title: `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
       description: `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
