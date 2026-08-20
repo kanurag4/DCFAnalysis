@@ -1218,6 +1218,11 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       marginOfSafety: baseResult?.marginOfSafety ?? null,
       marketCap: data.marketCap ?? null,
       updated: today,
+      // Full-precision timestamp for recency sorting (e.g. the hub's "Latest
+      // valuations" strip) — `updated` alone is date-only, so same-day writes
+      // are indistinguishable by date and fall back to manifest array order
+      // (alphabetical, see upsertManifestEntry) instead of true recency.
+      updatedAt: new Date().toISOString(),
     };
 
     return { status: 'ok', html, entry, market, nullReason, nullDiagnostics };
