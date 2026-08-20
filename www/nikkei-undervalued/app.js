@@ -116,10 +116,10 @@
     if (!history || history.length < 1 || typeof Chart === 'undefined') return;
     const isDark = document.documentElement.classList.contains('dark');
     const gridColor = isDark ? 'rgba(147,160,189,0.15)' : 'rgba(11,17,32,0.1)';
-    const tickColor = isDark ? '#93a0bd' : '#4d5c6b';
-    // Amber (#f5a623) is the dark-mode accent — too close to the portfolio green's warm
+    const tickColor = isDark ? '#7b8eaa' : '#4d5c6b';
+    // Amber (#fbbf24) is the dark-mode accent — too close to the portfolio green's warm
     // tone for real separation. Use navy-ink (kv-accent light-mode token) in light mode.
-    const indexColor = isDark ? '#f5a623' : '#1a3a5f';
+    const indexColor = isDark ? '#fbbf24' : '#12335e';
     const labels = history.map(h => {
       const [y, m, d] = h.date.split('-');
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
