@@ -34,7 +34,7 @@ function pageShell({ title, description, canonical, h1, subtitle, jsonLd = [], b
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b1120">
+  <meta name="theme-color" content="#f8fafc">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${escapeHtml(canonical)}">
@@ -46,19 +46,14 @@ ${ld}
   <link rel="icon" type="image/svg+xml" href="/dcf-icon.svg">
 </head>
 <body>
-  <header class="app-header">
-    <a href="/" class="home-logo" aria-label="All KashVector tools">
-      <img src="/logo.svg" alt="KashVector" width="32" height="32">
-      <span class="home-logo-label">&larr; All tools</span>
-    </a>
-    <div class="app-header-center">
-      <h1>${escapeHtml(h1)}</h1>
-      <p>${subtitle}</p>
-    </div>
-    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
-  </header>
   <div id="kv-nav-placeholder" style="height:41px"></div>
   <script src="/kv-nav.js"></script>
+  <script src="/kv-footer.js"></script>
+
+  <header class="app-header">
+    <h1>${escapeHtml(h1)}</h1>
+    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
+  </header>
   ${breadcrumbHtml}
 
   <main>
