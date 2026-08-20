@@ -288,6 +288,18 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "EVN.AX",
+    "slug": "evn-ax",
+    "name": "Evolution Mining Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 11.981252013063116,
+    "price": 15.07,
+    "marginOfSafety": -0.2049600522187713,
+    "marketCap": 30608533504,
+    "updated": "2026-08-20"
+  },
+  {
     "ticker": "FLT.AX",
     "slug": "flt-ax",
     "name": "Flight Centre Travel Group Limited",
@@ -492,6 +504,18 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "ORG.AX",
+    "slug": "org-ax",
+    "name": "Origin Energy Limited",
+    "sector": "Utilities",
+    "method": "DCF",
+    "intrinsic": 24.072316918935748,
+    "price": 12.04,
+    "marginOfSafety": 0.9993618703435008,
+    "marketCap": 20741881856,
+    "updated": "2026-08-20"
+  },
+  {
     "ticker": "ORI.AX",
     "slug": "ori-ax",
     "name": "Orica Limited",
@@ -645,6 +669,18 @@
     "price": 2.895,
     "marginOfSafety": -0.4095014586027173,
     "marketCap": 33419018240,
+    "updated": "2026-08-20"
+  },
+  {
+    "ticker": "SOL.AX",
+    "slug": "sol-ax",
+    "name": "WHSP Holdings Limited",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 106.17506127475163,
+    "price": 44.35,
+    "marginOfSafety": 1.3940261843235993,
+    "marketCap": 16849437696,
     "updated": "2026-08-20"
   },
   {
