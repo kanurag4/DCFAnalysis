@@ -360,6 +360,18 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "NKE",
+    "slug": "nke",
+    "name": "NIKE, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 42.72244369192925,
+    "price": 41.05,
+    "marginOfSafety": 0.04074162465113893,
+    "marketCap": 60790411264,
+    "updated": "2026-08-20"
+  },
+  {
     "ticker": "NVDA",
     "slug": "nvda",
     "name": "NVIDIA Corporation",
