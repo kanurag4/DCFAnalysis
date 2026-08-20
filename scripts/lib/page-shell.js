@@ -30,7 +30,7 @@ function breadcrumbNav(items) {
 function pageShell({ title, description, canonical, h1, subtitle, jsonLd = [], breadcrumbHtml = '', mainHtml }) {
   const ld = jsonLd.map(block => `  <script type="application/ld+json">\n  ${block}\n  </script>`).join('\n');
   return `<!doctype html>
-<html lang="en" class="dark tool-dcf">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
