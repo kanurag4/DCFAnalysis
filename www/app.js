@@ -481,7 +481,13 @@ function prefillInputs(data) {
 
   // Strictly <0 (not <=0 like isFcfNegative above) to match the same
   // negative-FCF threshold Stock Evaluator and GGM use for this suggestion.
-  renderGrowthSuggestion(data, fcf === null || fcf < 0);
+  // Gated to valuationModel === 'dcf': REIT/Airline/DDM/Excess-Return tickers
+  // already got routed to a model built for their negative-or-distorted FCF
+  // (e.g. airlines use EV/EBITDA precisely because trailing FCF is unreliable
+  // for them) — pointing those to the Growth tool on top of that is wrong,
+  // not a fallback (seen live on QAN.AX after the 2026-08-20 Airline model
+  // shipped, since this check never looked at which model was selected).
+  renderGrowthSuggestion(data, valuationModel === 'dcf' && (fcf === null || fcf < 0));
 
   // Target FCF margin (revenue normalisation) — shown for negative/null FCF non-bank stocks
   const showTargetMargin = !isBankIns && !isReitTicker && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
@@ -891,7 +897,7 @@ function renderSummary(data, sym) {
       ? data.totalDebt / ebitda : null;
     reitStatsHtml = `
       <div class="stat"><div class="stat-label">${T('affo', 'AFFO Payout Ratio')}</div><div class="stat-value">${affoPayoutRatio != null ? fmt(affoPayoutRatio * 100, 1, '%') : 'N/A'}</div></div>
-      <div class="stat"><div class="stat-label">Debt / EBITDA</div><div class="stat-value">${fmt(debtToEbitda, 1, 'x')}</div></div>`;
+      <div class="stat"><div class="stat-label">${T('debt-to-ebitda', 'Debt / EBITDA')}</div><div class="stat-value">${fmt(debtToEbitda, 1, 'x')}</div></div>`;
   }
 
   // Airline health metric -- implied EV/EBITDA at the current market price,
@@ -903,7 +909,7 @@ function renderSummary(data, sym) {
     const impliedEv = (data.price != null && shares > 0 ? data.price * shares : 0) + (data.totalDebt || 0) - (data.totalCash || 0);
     const impliedMultiple = impliedEv / data.ebitda;
     airlineStatsHtml = `
-      <div class="stat"><div class="stat-label">Market-Implied EV/EBITDA</div><div class="stat-value">${fmt(impliedMultiple, 1, 'x')}</div></div>`;
+      <div class="stat"><div class="stat-label">Market-Implied ${T('ev-ebitda-multiple', 'EV/EBITDA')}</div><div class="stat-value">${fmt(impliedMultiple, 1, 'x')}</div></div>`;
   }
 
   els.summary.innerHTML = `
