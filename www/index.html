@@ -207,6 +207,12 @@
             </label>
             <input type="text" id="affo-input" inputmode="decimal" placeholder="e.g. 0.35">
           </div>
+          <div class="input-row" id="ebitda-row" hidden>
+            <label for="ebitda-input">EBITDA
+              <span class="tip" data-tip="Earnings before interest, tax, depreciation and amortization — the figure this model applies an EV/EBITDA multiple to. Airlines are valued this way instead of standard DCF, since extreme cyclicality and high leverage make a single trailing-year FCF/growth snapshot unreliable. Seeded from Yahoo's financial data.">?</span>
+            </label>
+            <input type="text" id="ebitda-input" inputmode="decimal" placeholder="e.g. 7500000000">
+          </div>
           <div class="input-row">
             <label>Projection Years</label>
             <div class="slider-row">
@@ -466,6 +472,7 @@
   <script src="calc/ddm.js"></script>
   <script src="calc/excessReturn.js"></script>
   <script src="calc/reit.js"></script>
+  <script src="calc/airline.js"></script>
   <script src="calc/fadingGrowthDcf.js"></script>
   <script src="calc/assumptions.js"></script>
   <!-- Self-hosted, not CDN (chart.umd.min.js@4.5.1 / chartjs-plugin-datalabels@2.2.0) --

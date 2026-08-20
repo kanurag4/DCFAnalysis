@@ -53,6 +53,8 @@ const els = {
   bookvalueInput: $('bookvalue-input'),
   affoRow:        $('affo-row'),
   affoInput:      $('affo-input'),
+  ebitdaRow:      $('ebitda-row'),
+  ebitdaInput:    $('ebitda-input'),
   discountScenarioRow: $('discount-scenario-row'),
   tgrowthRow:     $('tgrowth-row'),
   growthLabel:    $('growth-label'),
@@ -564,6 +566,21 @@ function seedInputsForModel(model) {
     return;
   }
 
+  // Airline model reuses growthBear/Base/Bull for the multiple (relabeled
+  // "EV/EBITDA Multiple" in applyModelUI(), same trick REIT uses for
+  // "P/AFFO Multiple") and needs its own EBITDA input, same shape as REIT's
+  // affoInput.
+  if (model === 'airline') {
+    els.growthBear.value = s.multiple.bear;
+    els.growthBase.value = s.multiple.base;
+    els.growthBull.value = s.multiple.bull;
+    if (els.ebitdaInput) {
+      els.ebitdaInput.value = s.ebitda != null ? Math.round(s.ebitda) : '';
+      els.ebitdaInput.placeholder = s.ebitda != null ? '' : 'Enter EBITDA';
+    }
+    return;
+  }
+
   els.growthBear.value  = s.growth.bear;
   els.growthBase.value  = s.growth.base;
   els.growthBull.value  = s.growth.bull;
@@ -592,35 +609,39 @@ function applyModelUI() {
   const ddm = valuationModel === 'ddm';
   const excessReturn = valuationModel === 'excess-return';
   const reit = valuationModel === 'reit';
+  const airline = valuationModel === 'airline';
   const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
   const isReitTicker = currentData && isReit(currentData.sector, currentData.industry);
+  const isAirlineTicker = currentData && isAirline(currentData.sector, currentData.industry);
 
-  if (els.fcfRow)      els.fcfRow.hidden = ddm || excessReturn || reit;
+  if (els.fcfRow)      els.fcfRow.hidden = ddm || excessReturn || reit || airline;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
   if (els.bookvalueRow) els.bookvalueRow.hidden = !excessReturn;
   if (els.affoRow) els.affoRow.hidden = !reit;
-  if (els.multistageRow) els.multistageRow.hidden = ddm || excessReturn || reit;
-  if (els.tgrowthRow) els.tgrowthRow.hidden = excessReturn || reit; // no terminal value for these models
-  if (els.discountScenarioRow) els.discountScenarioRow.hidden = reit; // REIT has no discount rate at all
+  if (els.ebitdaRow) els.ebitdaRow.hidden = !airline;
+  if (els.multistageRow) els.multistageRow.hidden = ddm || excessReturn || reit || airline;
+  if (els.tgrowthRow) els.tgrowthRow.hidden = excessReturn || reit || airline; // no terminal value for these models
+  if (els.discountScenarioRow) els.discountScenarioRow.hidden = reit || airline; // no discount rate at all
 
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
   if (els.growthLabel) els.growthLabel.innerHTML = reit
     ? T('p-affo-multiple', 'P/AFFO Multiple')
-    : (excessReturn ? T('roe', 'ROE %') : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %'));
+    : (airline ? T('ev-ebitda-multiple', 'EV/EBITDA Multiple')
+    : (excessReturn ? T('roe', 'ROE %') : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %')));
   const discountLabelText = $('discount-label-text');
   if (discountLabelText) discountLabelText.innerHTML = T((ddm || excessReturn) ? 'cost-of-equity' : 'wacc', (ddm || excessReturn) ? 'Cost of Equity %' : 'WACC %');
   if (els.discountTip) els.discountTip.setAttribute('data-tip', (ddm || excessReturn)
     ? 'Higher cost of equity = lower valuation.'
     : 'Higher WACC = lower valuation.');
   if (els.waccSummary)    els.waccSummary.textContent    = (ddm || excessReturn) ? 'How cost of equity is calculated' : 'How WACC is calculated';
-  if (els.breakdownTitle) els.breakdownTitle.textContent = reit ? 'REIT Value Breakdown' : (excessReturn ? 'Excess Return Value Breakdown' : (ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown'));
+  if (els.breakdownTitle) els.breakdownTitle.textContent = reit ? 'REIT Value Breakdown' : (airline ? 'Airline Value Breakdown' : (excessReturn ? 'Excess Return Value Breakdown' : (ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown')));
 
   renderDiscountBreakdown();
-  updateModelToggle(isBankIns, isReitTicker);
+  updateModelToggle(isBankIns, isReitTicker, isAirlineTicker);
 }
 
-function updateModelToggle(isBankIns, isReitTicker) {
+function updateModelToggle(isBankIns, isReitTicker, isAirlineTicker) {
   if (!els.modelToggleRow) return;
   if (isReitTicker) {
     // REITs are locked to the FFO/AFFO model, same no-toggle pattern as
@@ -629,6 +650,16 @@ function updateModelToggle(isBankIns, isReitTicker) {
     // estate), so there's no "value with DCF instead" option to offer.
     els.modelToggleRow.hidden = false;
     els.modelLabel.textContent = '🏢 FFO/AFFO Model — standard DCF is unreliable for REITs (depreciation distorts net income).';
+    if (els.ddmToggle) els.ddmToggle.hidden = true;
+    return;
+  }
+  if (isAirlineTicker) {
+    // Airlines are locked to the EV/EBITDA model, same no-toggle pattern as
+    // REITs/banks above -- extreme cyclicality and high operating/financial
+    // leverage make standard FCF-based DCF unreliable (see calc/airline.js's
+    // file-header comment for the confirmed live examples).
+    els.modelToggleRow.hidden = false;
+    els.modelLabel.textContent = '✈️ EV/EBITDA Model — standard DCF is unreliable for airlines (cyclicality and leverage distort FCF/growth).';
     if (els.ddmToggle) els.ddmToggle.hidden = true;
     return;
   }
@@ -740,6 +771,10 @@ function chinaInfoBlock() {
 function renderDiscountBreakdown() {
   if (valuationModel === 'reit') {
     els.waccContent.innerHTML = '<div class="wacc-row"><span class="wacc-src">No discount rate — this model applies a P/AFFO multiple directly to AFFO/share, the same way a P/E multiple values earnings.</span></div>';
+    return;
+  }
+  if (valuationModel === 'airline') {
+    els.waccContent.innerHTML = '<div class="wacc-row"><span class="wacc-src">No discount rate — this model applies an EV/EBITDA multiple directly, the same way a P/E multiple values earnings.</span></div>';
     return;
   }
   if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
@@ -859,6 +894,18 @@ function renderSummary(data, sym) {
       <div class="stat"><div class="stat-label">Debt / EBITDA</div><div class="stat-value">${fmt(debtToEbitda, 1, 'x')}</div></div>`;
   }
 
+  // Airline health metric -- implied EV/EBITDA at the current market price,
+  // for a direct "is the market pricing this richer or cheaper than our
+  // multiple" comparison. Uses data already fetched for every ticker.
+  let airlineStatsHtml = '';
+  if (valuationModel === 'airline' && data.ebitda > 0) {
+    const shares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0) ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+    const impliedEv = (data.price != null && shares > 0 ? data.price * shares : 0) + (data.totalDebt || 0) - (data.totalCash || 0);
+    const impliedMultiple = impliedEv / data.ebitda;
+    airlineStatsHtml = `
+      <div class="stat"><div class="stat-label">Market-Implied EV/EBITDA</div><div class="stat-value">${fmt(impliedMultiple, 1, 'x')}</div></div>`;
+  }
+
   els.summary.innerHTML = `
     <h2>${escapeHtml(data.name)} <span class="symbol">(${escapeHtml(data.ticker)})</span></h2>
     ${data.sector ? `<div class="sector">${escapeHtml(data.sector)}${data.industry ? ' · ' + escapeHtml(data.industry) : ''}</div>` : ''}
@@ -872,7 +919,7 @@ function renderSummary(data, sym) {
       <div class="stat"><div class="stat-label">${T('net-debt', 'Net Debt')}</div><div class="stat-value ${netDebt > 0 ? 'stat-down' : 'stat-up'}">${formatMarketCap(netDebt, sym)}</div></div>
       <div class="stat"><div class="stat-label">${T('beta', 'Beta')}</div><div class="stat-value">${fmt(data.beta, 2)}</div></div>
       <div class="stat"><div class="stat-label">${T('pe-ratio', 'PE (TTM)')}</div><div class="stat-value">${fmt(data.trailingPE, 1, 'x')}</div></div>
-      <div class="stat"><div class="stat-label">${T('52-week-range', '52-Week Range')}</div><div class="stat-value">${range}</div></div>${reitStatsHtml}
+      <div class="stat"><div class="stat-label">${T('52-week-range', '52-Week Range')}</div><div class="stat-value">${range}</div></div>${reitStatsHtml}${airlineStatsHtml}
     </div>
   `;
   show(els.summary);
@@ -1055,7 +1102,7 @@ function buildSensitivityGrid(data) {
   // grid to vary on the second axis, so the section is hidden entirely rather than
   // reusing DDM's dividend-based math (which would read stale/hidden dividend-input
   // state left over from a previously-viewed ticker and silently show wrong numbers).
-  if (valuationModel === 'excess-return' || valuationModel === 'reit') return null;
+  if (valuationModel === 'excess-return' || valuationModel === 'reit' || valuationModel === 'airline') return null;
 
   const years = parseInt(els.yearsSlider.value, 10);
   const ddm = valuationModel === 'ddm';
@@ -1157,6 +1204,18 @@ function buildScenarios(data) {
       multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // reuses the growth-bear/base/bull inputs, relabeled "P/AFFO Multiple" in applyModelUI()
     };
     return computeScenarios(data, 'reit', seeds, {});
+  }
+
+  // ── Airline (EV/EBITDA, locked model) ──
+  if (valuationModel === 'airline') {
+    const ebitda = els.ebitdaInput
+      ? parseFloat(String(els.ebitdaInput.value).replace(/,/g, ''))
+      : NaN;
+    const seeds = {
+      ebitda: isFinite(ebitda) ? ebitda : null,
+      multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 },
+    };
+    return computeScenarios(data, 'airline', seeds, {});
   }
 
   // ── DDM (banks/insurance, or user-toggled) ──
@@ -1315,6 +1374,8 @@ function renderScenarios(scenarios, data, sym) {
         msg = 'ROE and Cost of Equity must both be positive to run the Excess Return Model.';
       } else if (valuationModel === 'reit') {
         msg = 'Enter a positive P/AFFO Multiple in the inputs panel to run this model.';
+      } else if (valuationModel === 'airline') {
+        msg = 'Enter a positive EBITDA in the inputs panel to run this model.';
       } else {
         msg = valuationModel === 'ddm'
           ? 'Cost of equity must exceed the terminal growth rate.'
@@ -1419,7 +1480,7 @@ function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, y
 function renderBreakeven(data, sym) {
   if (!els.breakevenCallout) return;
   const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
-  if (isBankIns || valuationModel === 'ddm' || valuationModel === 'reit' || !data.totalRevenue) {
+  if (isBankIns || valuationModel === 'ddm' || valuationModel === 'reit' || valuationModel === 'airline' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }
   const fcf = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf).value;
@@ -1453,7 +1514,7 @@ function renderBreakeven(data, sym) {
 function renderCharts(scenarios, currentPrice, sym) {
   const labels = ['Bear', 'Base', 'Bull'];
   const excessReturn = valuationModel === 'excess-return';
-  const noProjectionModel = excessReturn || valuationModel === 'reit'; // neither has a per-year PV series or a terminal value
+  const noProjectionModel = excessReturn || valuationModel === 'reit' || valuationModel === 'airline'; // none of these have a per-year PV series or a terminal value
 
   // Terminal value warning — meaningless for Excess Return / REIT, neither
   // of which has a terminal value component (see calc/excessReturn.js,

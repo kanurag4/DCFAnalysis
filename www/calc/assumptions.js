@@ -101,6 +101,7 @@ function discountRateSpread(baseDiscountPct) {
 function deriveDcfAssumptions(data) {
   const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
+  const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
   const currentMarket = detectMarket(data.ticker);
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;
@@ -195,14 +196,22 @@ function deriveDcfAssumptions(data) {
       reitIndustryKey,
       multiple: { bear: +(reitBaseMultiple * 0.8).toFixed(1), base: reitBaseMultiple, bull: +(reitBaseMultiple * 1.2).toFixed(1) },
     },
+    airline: {
+      ebitda: data.ebitda,
+      multiple: {
+        bear: +(AIRLINE_EV_EBITDA_MULTIPLE * 0.8).toFixed(1),
+        base: AIRLINE_EV_EBITDA_MULTIPLE,
+        bull: +(AIRLINE_EV_EBITDA_MULTIPLE * 1.2).toFixed(1),
+      },
+    },
   };
 
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
 
-  const valuationModel = isReitFlag ? 'reit' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'));
+  const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm')));
 
   return {
-    isBankIns, isReit: isReitFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
+    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
     waccResult, modelSeeds, fcfInfo,
     valuationModel,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
@@ -228,6 +237,18 @@ function computeScenarios(data, valuationModel, seeds, options) {
       const multiple = seeds.multiple[key];
       if (!(affoPerShare > 0)) return { key, multiple, result: null, noAffo: true };
       const result = calculateReitValue({ affoPerShare, multiple, currentPrice: data.price });
+      return { key, multiple, result };
+    });
+  }
+
+  if (valuationModel === 'airline') {
+    const ebitda = seeds.ebitda;
+    const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
+      ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+    return configs.map((key) => {
+      const multiple = seeds.multiple[key];
+      if (!(ebitda > 0)) return { key, multiple, result: null, noEbitda: true };
+      const result = calculateAirlineValue({ ebitda, multiple, totalDebt: data.totalDebt, totalCash: data.totalCash, sharesOutstanding: resolvedShares, currentPrice: data.price });
       return { key, multiple, result };
     });
   }

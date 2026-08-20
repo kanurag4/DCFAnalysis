@@ -72,6 +72,16 @@ function isReit(sector, industry) {
   return /^REIT\b/i.test(i);
 }
 
+// Airlines: extreme cyclicality + high operating/financial leverage make a
+// single trailing-year FCF/growth DCF unreliable (confirmed live 2026-08-20:
+// QAN.AX returns no DCF value at all despite positive EBITDA; DAL's DCF
+// shows a materially different margin of safety than an EV/EBITDA read).
+// Routed to calc/airline.js's multiple-based model instead — same shape as
+// isReit()'s REIT carve-out.
+function isAirline(sector, industry) {
+  return /^airlines$/i.test(industry || '');
+}
+
 // Narrow check: banks and insurers where FCF-based DCF is structurally broken
 // -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
@@ -222,7 +232,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isReit, isBankOrInsurance, chooseFinancialModel,
+  isFinancialSector, isRealEstateSector, isReit, isAirline, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,

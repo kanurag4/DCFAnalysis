@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { test } = require('node:test');
 const {
-  safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector, isReit,
+  safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector, isReit, isAirline,
   isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor, chooseFinancialModel,
 } = require('../www/utils.js');
@@ -412,4 +412,25 @@ test('isBankOrInsurance now routes REIT - Mortgage to DDM/Excess-Return', () => 
 
 test('isBankOrInsurance still does not match property REITs', () => {
   assert.strictEqual(isBankOrInsurance('Real Estate', 'REIT - Retail'), false);
+});
+
+// ── isAirline ────────────────────────────────────────────────────────────
+
+test('isAirline matches the Airlines industry tag', () => {
+  assert.strictEqual(isAirline('Industrials', 'Airlines'), true);
+});
+
+test('isAirline is case-insensitive', () => {
+  assert.strictEqual(isAirline('Industrials', 'airlines'), true);
+});
+
+test('isAirline does NOT match other Industrials sub-sectors', () => {
+  assert.strictEqual(isAirline('Industrials', 'Aerospace & Defense'), false);
+  assert.strictEqual(isAirline('Industrials', 'Railroads'), false);
+});
+
+test('isAirline handles null/undefined sector or industry', () => {
+  assert.strictEqual(isAirline(null, null), false);
+  assert.strictEqual(isAirline(undefined, undefined), false);
+  assert.strictEqual(isAirline('Industrials', null), false);
 });

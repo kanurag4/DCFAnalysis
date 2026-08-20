@@ -84,6 +84,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let annualFcfConverted = annualFcf;
   let netIncomeConverted = data.netIncome;
   let depreciationConverted = data.depreciationAndAmortization;
+  let ebitdaConverted = data.ebitda;
 
   if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
     const rate = await fetchFxRate(data.financialCurrency, data.currency, base, extraHeaders);
@@ -100,6 +101,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       annualFcfConverted = c(annualFcfConverted);
       netIncomeConverted = c(netIncomeConverted);
       depreciationConverted = c(depreciationConverted);
+      ebitdaConverted = c(ebitdaConverted);
     } else {
       fxConversionFailed = true;
       freeCashflow = null;
@@ -113,6 +115,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       annualFcfConverted = null;
       netIncomeConverted = null;
       depreciationConverted = null;
+      ebitdaConverted = null;
     }
   }
 
@@ -125,6 +128,7 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     annualFcf: annualFcfConverted,
     netIncome: netIncomeConverted,
     depreciationAndAmortization: depreciationConverted,
+    ebitda: ebitdaConverted,
     fxConversionFailed,
   };
 }
@@ -229,6 +233,7 @@ function mapQuoteSummary(body, symbol) {
     fiftyTwoWeekLow:   rawVal(result.summaryDetail?.fiftyTwoWeekLow),
     // Financial sector alternative multiples
     returnOnEquity:    rawVal(result.financialData?.returnOnEquity),
+    ebitda:            rawVal(result.financialData?.ebitda),
     dividendYield:     rawVal(result.summaryDetail?.dividendYield),
     priceToBook:       rawVal(result.defaultKeyStatistics?.priceToBook),
     // DDM inputs (banks/insurance) — annual dividend per share.

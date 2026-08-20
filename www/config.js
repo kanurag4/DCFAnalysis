@@ -26,5 +26,18 @@ const REIT_SECTOR_MULTIPLES = {
   DEFAULT: 14,
 };
 
-if (typeof module !== 'undefined') module.exports = { CONFIG, REIT_SECTOR_MULTIPLES };
-if (typeof window !== 'undefined') { window.CONFIG = CONFIG; window.REIT_SECTOR_MULTIPLES = REIT_SECTOR_MULTIPLES; }
+// Flat EV/EBITDA multiple for airlines -- not a sub-industry table like
+// REIT_SECTOR_MULTIPLES, since Yahoo tags every airline with the same
+// single 'Airlines' industry string (no sub-classification to key off).
+// 6x is a mid-cycle placeholder from general market knowledge (airlines
+// have historically traded ~4x in downturns to ~8x+ in strong
+// post-consolidation years) -- not independently calibrated against
+// current pricing. Validated against QAN.AX/DAL on 2026-08-20: QAN.AX
+// moved from no-DCF-value to a real +36.4% margin; DAL moved from -65.1%
+// to -47.5% (still overvalued at 6x, which may mean this placeholder is
+// conservative for Delta specifically -- a real calibration candidate,
+// not evidence the approach is wrong).
+const AIRLINE_EV_EBITDA_MULTIPLE = 6;
+
+if (typeof module !== 'undefined') module.exports = { CONFIG, REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE };
+if (typeof window !== 'undefined') { window.CONFIG = CONFIG; window.REIT_SECTOR_MULTIPLES = REIT_SECTOR_MULTIPLES; window.AIRLINE_EV_EBITDA_MULTIPLE = AIRLINE_EV_EBITDA_MULTIPLE; }
