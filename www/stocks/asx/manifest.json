@@ -84,6 +84,19 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "ASX.AX",
+    "slug": "asx-ax",
+    "name": "ASX Limited",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 67.81542587170652,
+    "price": 56.28,
+    "marginOfSafety": 0.20496492309357714,
+    "marketCap": 10997666816,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:02:08.499Z"
+  },
+  {
     "ticker": "AVH.AX",
     "slug": "avh-ax",
     "name": "AVITA Medical, Inc.",
@@ -276,6 +289,19 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "DMP.AX",
+    "slug": "dmp-ax",
+    "name": "Domino's Pizza Enterprises Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 7.362180320274602,
+    "price": 18.93,
+    "marginOfSafety": -0.611083976741965,
+    "marketCap": 1793558144,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:02:25.085Z"
+  },
+  {
     "ticker": "EDV.AX",
     "slug": "edv-ax",
     "name": "Endeavour Group Limited",
@@ -286,6 +312,19 @@
     "marginOfSafety": -0.22554606282422807,
     "marketCap": 6231168000,
     "updated": "2026-08-20"
+  },
+  {
+    "ticker": "ELD.AX",
+    "slug": "eld-ax",
+    "name": "Elders Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 7.791920417859809,
+    "price": 5.73,
+    "marginOfSafety": 0.3598464952634919,
+    "marketCap": 1234235264,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:02:32.104Z"
   },
   {
     "ticker": "EVN.AX",
@@ -384,6 +423,19 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "HGH.AX",
+    "slug": "hgh-ax",
+    "name": "Heartland Group Holdings Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 1.041986309520734,
+    "price": 1.06,
+    "marginOfSafety": -0.016994047621949095,
+    "marketCap": 1092075520,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:02:38.899Z"
+  },
+  {
     "ticker": "HVN.AX",
     "slug": "hvn-ax",
     "name": "Harvey Norman Holdings Limited",
@@ -406,6 +458,19 @@
     "marginOfSafety": -0.5448003369046587,
     "marketCap": 18259412992,
     "updated": "2026-08-20"
+  },
+  {
+    "ticker": "ING.AX",
+    "slug": "ing-ax",
+    "name": "Inghams Group Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 4.915868581306654,
+    "price": 2.06,
+    "marginOfSafety": 1.3863439715080845,
+    "marketCap": 765659968,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:03:08.528Z"
   },
   {
     "ticker": "JBH.AX",
@@ -502,6 +567,19 @@
     "marginOfSafety": -0.363841410953424,
     "marketCap": 3456613632,
     "updated": "2026-08-20"
+  },
+  {
+    "ticker": "NXL.AX",
+    "slug": "nxl-ax",
+    "name": "Nuix Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 1.7422215397082657,
+    "price": 1.425,
+    "marginOfSafety": 0.22261160681281797,
+    "marketCap": 484416320,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:03:14.555Z"
   },
   {
     "ticker": "ORG.AX",
@@ -623,6 +701,19 @@
     "marginOfSafety": -0.4590699027090653,
     "marketCap": 21913696256,
     "updated": "2026-08-20"
+  },
+  {
+    "ticker": "SDF.AX",
+    "slug": "sdf-ax",
+    "name": "Steadfast Group Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 4.506613643323975,
+    "price": 5.65,
+    "marginOfSafety": -0.20236926666832303,
+    "marketCap": 6282753024,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:03:19.893Z"
   },
   {
     "ticker": "SEK.AX",
@@ -757,6 +848,19 @@
     "updated": "2026-08-20"
   },
   {
+    "ticker": "TLX.AX",
+    "slug": "tlx-ax",
+    "name": "Telix Pharmaceuticals Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 12.120758607296612,
+    "price": 15.62,
+    "marginOfSafety": -0.22402313653670858,
+    "marketCap": 5291697664,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:03:27.220Z"
+  },
+  {
     "ticker": "TPG.AX",
     "slug": "tpg-ax",
     "name": "TPG Telecom Limited",
@@ -779,6 +883,19 @@
     "marginOfSafety": -0.34714922372492435,
     "marketCap": 518632928,
     "updated": "2026-08-20"
+  },
+  {
+    "ticker": "TWE.AX",
+    "slug": "twe-ax",
+    "name": "Treasury Wine Estates Limited",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 3.4245170675423733,
+    "price": 5.65,
+    "marginOfSafety": -0.3938907845057747,
+    "marketCap": 4570495488,
+    "updated": "2026-08-21",
+    "updatedAt": "2026-08-21T10:03:33.522Z"
   },
   {
     "ticker": "VAU.AX",
