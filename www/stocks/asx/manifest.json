@@ -546,6 +546,19 @@
     "updatedAt": "2026-08-22T00:00:53.994Z"
   },
   {
+    "ticker": "MGH.AX",
+    "slug": "mgh-ax",
+    "name": "MAAS Group Holdings Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 6.3873585511174875,
+    "price": 5.82,
+    "marginOfSafety": 0.09748428713358886,
+    "marketCap": 2102959744,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:23:20.712Z"
+  },
+  {
     "ticker": "MPL.AX",
     "slug": "mpl-ax",
     "name": "Medibank Private Limited",
@@ -868,6 +881,19 @@
     "marketCap": 19218731008,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:03:01.698Z"
+  },
+  {
+    "ticker": "SXE.AX",
+    "slug": "sxe-ax",
+    "name": "Southern Cross Electrical Engineering Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 6.02541391731578,
+    "price": 4.71,
+    "marginOfSafety": 0.27928108647893424,
+    "marketCap": 1429738240,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:23:40.343Z"
   },
   {
     "ticker": "TAH.AX",

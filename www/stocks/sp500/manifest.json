@@ -650,6 +650,19 @@
     "updatedAt": "2026-08-22T00:07:42.904Z"
   },
   {
+    "ticker": "STNG",
+    "slug": "stng",
+    "name": "Scorpio Tankers Inc.",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 228.78162361207063,
+    "price": 78.49,
+    "marginOfSafety": 1.9147868978477594,
+    "marketCap": 3930885120,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:23:29.091Z"
+  },
+  {
     "ticker": "T",
     "slug": "t",
     "name": "AT&T Inc.",
