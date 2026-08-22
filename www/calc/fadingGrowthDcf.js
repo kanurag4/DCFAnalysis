@@ -17,8 +17,10 @@
 // which of the two functions produced a given scenario's result.
 //
 // Kept as a separate function from calculateDCF (not a mode flag on it) so
-// the existing single-stage path -- used by every "Most Undervalued" screen
-// and every published per-ticker page in DCFAnalysis -- is untouched.
+// the existing single-stage path is untouched for positive-base-growth
+// tickers. Wired into every "Most Undervalued" screen's evaluate.js as of
+// 2026-08-22 (previously only the live tool + per-ticker pages had it --
+// see kashvector-lessons.md for the TLC.AX incident that surfaced the gap).
 
 function calculateFadingGrowthDCF({
   fcf, initialGrowth, terminalGrowth, wacc,

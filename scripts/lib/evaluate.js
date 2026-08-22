@@ -7,6 +7,7 @@ const {
 } = require('../../www/utils.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
+const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 
@@ -126,15 +127,26 @@ function evaluateStock(data, params) {
   const capitalBase = totalDebtVal + mktCapVal;
   const highLeverage = capitalBase > 0 && (totalDebtVal / capitalBase) > 0.65;
 
-  const result = calculateDCF({
-    fcf: baseFcf,
-    growthRate: round1pct(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth)),
-    terminalGrowth,
-    wacc: waccUsed,
-    projectionYears: PROJECTION_YEARS,
+  // Fade growth toward the terminal rate instead of holding one flat rate
+  // for the whole horizon whenever the base case itself is negative — same
+  // auto-enable rule as the live tool's prefillInputs()/ticker-page.js (see
+  // www/calc/assumptions.js's useMultiStage and CLAUDE.md's 2026-08-11 Known
+  // Traps entry, Damodaran's transition-phase convention). Ported here
+  // 2026-08-22 after TLC.AX (base growth -5.0%) surfaced the gap live: the
+  // screen's flat-negative-growth DCF understated its margin (69.1%) enough
+  // to duck under the screen's own 80% "inflated FCF" cap, when the correct
+  // fading-growth value (102.3%, matching the live tool/ticker page exactly)
+  // should have excluded it from qualifying at all.
+  const baseGrowthPct = round1pct(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth));
+  const useMultiStage = baseGrowthPct < 0;
+  const dcfCommon = {
+    terminalGrowth, wacc: waccUsed, projectionYears: PROJECTION_YEARS,
     totalDebt: data.totalDebt, totalCash: data.totalCash,
     sharesOutstanding: sharesForDcf, currentPrice: data.price,
-  });
+  };
+  const result = useMultiStage
+    ? calculateFadingGrowthDCF({ ...dcfCommon, fcf: baseFcf, initialGrowth: baseGrowthPct })
+    : calculateDCF({ ...dcfCommon, fcf: baseFcf, growthRate: baseGrowthPct });
   if (!result || result.intrinsicValue == null || result.marginOfSafety == null) {
     return { ...base, excluded: true, reason: 'dcf-unavailable' };
   }
