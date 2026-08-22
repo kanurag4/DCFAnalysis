@@ -14,6 +14,19 @@ const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
 
+// `== null` doesn't catch NaN (NaN == null is false in JS) -- a calc engine
+// returning { intrinsicValue: NaN, marginOfSafety: NaN } under some edge
+// case (seen live, KOSPI 200, 2026-08-22) silently passed every "is this
+// result usable" guard below as if it were a valid number. rankRows()
+// (scripts/lib/rank.js) then correctly dropped the row via its `> 0` check
+// (NaN > 0 is also false), but rankFunnel()'s bucket comparisons have the
+// same NaN-blindness and miscounted it as "qualified" -- so the funnel's
+// displayed count (and the live page's "N qualified" copy) overstated the
+// real number, even though the actual ranked/published list was unaffected.
+// Fix it at the source: a row is only usable if both fields are finite.
+const isUsableResult = (result) =>
+  !!result && Number.isFinite(result.intrinsicValue) && Number.isFinite(result.marginOfSafety);
+
 // The live tool runs its DCF/DDM off the values shown in the input boxes, which
 // are rounded for display: growth/dividend-growth to 1 dp, WACC/Re to 2 dp, and
 // the FCF/dividend inputs to integer / 2 dp respectively. To reproduce the
@@ -57,7 +70,7 @@ function evaluateStock(data, params) {
         bookValue, roe, costOfEquity: re, growthRate: growth,
         projectionYears: PROJECTION_YEARS, currentPrice: data.price,
       });
-      if (!result || result.intrinsicValue == null || result.marginOfSafety == null) {
+      if (!isUsableResult(result)) {
         return { ...base, excluded: true, reason: 'excess-return-unavailable' };
       }
       return {
@@ -76,7 +89,7 @@ function evaluateStock(data, params) {
       projectionYears: PROJECTION_YEARS,
       currentPrice: data.price,
     });
-    if (!result || result.intrinsicValue == null || result.marginOfSafety == null) {
+    if (!isUsableResult(result)) {
       return { ...base, excluded: true, reason: 'ddm-unavailable' };
     }
     return {
@@ -147,7 +160,7 @@ function evaluateStock(data, params) {
   const result = useMultiStage
     ? calculateFadingGrowthDCF({ ...dcfCommon, fcf: baseFcf, initialGrowth: baseGrowthPct })
     : calculateDCF({ ...dcfCommon, fcf: baseFcf, growthRate: baseGrowthPct });
-  if (!result || result.intrinsicValue == null || result.marginOfSafety == null) {
+  if (!isUsableResult(result)) {
     return { ...base, excluded: true, reason: 'dcf-unavailable' };
   }
   return {
