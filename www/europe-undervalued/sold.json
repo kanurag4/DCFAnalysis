@@ -78,5 +78,53 @@
     "exitDate": "2026-08-15",
     "exitPrice": 51.15,
     "dollarPnl": -3.47
+  },
+  {
+    "ticker": "FRE.DE",
+    "entryDate": "2026-08-15",
+    "entryPrice": 47.08,
+    "exitDate": "2026-08-22",
+    "exitPrice": 46.6,
+    "dollarPnl": -5.15
+  },
+  {
+    "ticker": "PUB.PA",
+    "entryDate": "2026-08-15",
+    "entryPrice": 101.8,
+    "exitDate": "2026-08-22",
+    "exitPrice": 102.35,
+    "dollarPnl": 2.73
+  },
+  {
+    "ticker": "BNR.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 61.14,
+    "exitDate": "2026-08-22",
+    "exitPrice": 60.48,
+    "dollarPnl": -7.41
+  },
+  {
+    "ticker": "CAP.PA",
+    "entryDate": "2026-08-08",
+    "entryPrice": 109.25,
+    "exitDate": "2026-08-22",
+    "exitPrice": 111.15,
+    "dollarPnl": 13.3
+  },
+  {
+    "ticker": "RI.PA",
+    "entryDate": "2026-08-03",
+    "entryPrice": 67.82,
+    "exitDate": "2026-08-22",
+    "exitPrice": 68.42,
+    "dollarPnl": -5.41
+  },
+  {
+    "ticker": "HO.PA",
+    "entryDate": "2026-08-03",
+    "entryPrice": 245.9,
+    "exitDate": "2026-08-22",
+    "exitPrice": 253.1,
+    "dollarPnl": -32.34
   }
 ]
