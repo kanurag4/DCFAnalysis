@@ -86,5 +86,29 @@
     "exitDate": "2026-08-15",
     "exitPrice": 53400,
     "dollarPnl": 1608.63
+  },
+  {
+    "ticker": "011210.KS",
+    "entryDate": "2026-08-08",
+    "entryPrice": 62500,
+    "exitDate": "2026-08-22",
+    "exitPrice": 59400,
+    "dollarPnl": -149220.66
+  },
+  {
+    "ticker": "005850.KS",
+    "entryDate": "2026-08-08",
+    "entryPrice": 55200,
+    "exitDate": "2026-08-22",
+    "exitPrice": 52400,
+    "dollarPnl": -179881.5
+  },
+  {
+    "ticker": "071970.KS",
+    "entryDate": "2026-07-18",
+    "entryPrice": 57600,
+    "exitDate": "2026-08-22",
+    "exitPrice": 49700,
+    "dollarPnl": -175903.84
   }
 ]
