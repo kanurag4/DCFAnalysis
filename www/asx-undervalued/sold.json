@@ -148,5 +148,85 @@
     "exitDate": "2026-08-15",
     "exitPrice": 5.61,
     "dollarPnl": 11.17
+  },
+  {
+    "ticker": "WGX.AX",
+    "entryDate": "2026-08-07",
+    "entryPrice": 5.67,
+    "exitDate": "2026-08-22",
+    "exitPrice": 6.29,
+    "dollarPnl": 62.92
+  },
+  {
+    "ticker": "MTS.AX",
+    "entryDate": "2026-07-05",
+    "entryPrice": 3,
+    "exitDate": "2026-08-22",
+    "exitPrice": 2.98,
+    "dollarPnl": -19.77
+  },
+  {
+    "ticker": "FMG.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 22.34,
+    "exitDate": "2026-08-22",
+    "exitPrice": 17.75,
+    "dollarPnl": 3.46
+  },
+  {
+    "ticker": "SHL.AX",
+    "entryDate": "2026-06-19",
+    "entryPrice": 20.05,
+    "exitDate": "2026-08-22",
+    "exitPrice": 21.08,
+    "dollarPnl": -32.03
+  },
+  {
+    "ticker": "SUL.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 11.44,
+    "exitDate": "2026-08-22",
+    "exitPrice": 13.35,
+    "dollarPnl": 3.77
+  },
+  {
+    "ticker": "NWS.AX",
+    "entryDate": "2026-08-07",
+    "entryPrice": 47.85,
+    "exitDate": "2026-08-22",
+    "exitPrice": 47.34,
+    "dollarPnl": 9.79
+  },
+  {
+    "ticker": "EDV.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 2.84,
+    "exitDate": "2026-08-22",
+    "exitPrice": 3.39,
+    "dollarPnl": -28.01
+  },
+  {
+    "ticker": "ZIM.AX",
+    "entryDate": "2026-08-15",
+    "entryPrice": 14.89,
+    "exitDate": "2026-08-22",
+    "exitPrice": 15.5,
+    "dollarPnl": 22.76
+  },
+  {
+    "ticker": "BGA.AX",
+    "entryDate": "2026-08-15",
+    "entryPrice": 6.06,
+    "exitDate": "2026-08-22",
+    "exitPrice": 6.49,
+    "dollarPnl": 39.41
+  },
+  {
+    "ticker": "QBE.AX",
+    "entryDate": "2026-08-15",
+    "entryPrice": 23.09,
+    "exitDate": "2026-08-22",
+    "exitPrice": 22.4,
+    "dollarPnl": -16.6
   }
 ]

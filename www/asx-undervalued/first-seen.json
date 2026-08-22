@@ -144,8 +144,8 @@
     "firstPrice": 20.05
   },
   "GMD.AX": {
-    "firstSeen": "2026-06-25",
-    "firstPrice": 5.32
+    "firstSeen": "2026-08-22",
+    "firstPrice": 8.32
   },
   "MTS.AX": {
     "firstSeen": "2026-07-05",
@@ -166,5 +166,41 @@
   "NWS.AX": {
     "firstSeen": "2026-08-07",
     "firstPrice": 47.85
+  },
+  "AZJ.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 3.65
+  },
+  "DRR.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 4.37
+  },
+  "WAF.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 3.78
+  },
+  "SLC.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 3.06
+  },
+  "NWH.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 8.2
+  },
+  "A2M.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 6.84
+  },
+  "MAH.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 1.03
+  },
+  "JDO.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 0.98
+  },
+  "RHC.AX": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 45
   }
 }
