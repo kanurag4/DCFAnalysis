@@ -140,8 +140,8 @@
     "firstPrice": 80.52
   },
   "BAX": {
-    "firstSeen": "2026-06-26",
-    "firstPrice": 21.55
+    "firstSeen": "2026-08-22",
+    "firstPrice": 26.34
   },
   "VRTX": {
     "firstSeen": "2026-06-26",
@@ -250,5 +250,29 @@
   "HAL": {
     "firstSeen": "2026-08-15",
     "firstPrice": 34.42
+  },
+  "ACN": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 185.28
+  },
+  "MGM": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 43.74
+  },
+  "MNST": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 47.79
+  },
+  "TMUS": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 183.04
+  },
+  "ALL": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 253.83
+  },
+  "MCK": {
+    "firstSeen": "2026-08-22",
+    "firstPrice": 858.9
   }
 }

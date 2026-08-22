@@ -409,5 +409,61 @@
     "exitDate": "2026-08-15",
     "exitPrice": 1641.11,
     "dollarPnl": 203.14
+  },
+  {
+    "ticker": "TKO",
+    "entryDate": "2026-08-15",
+    "entryPrice": 201.28,
+    "exitDate": "2026-08-22",
+    "exitPrice": 193.14,
+    "dollarPnl": -24.12
+  },
+  {
+    "ticker": "MRK",
+    "entryDate": "2026-08-15",
+    "entryPrice": 135.84,
+    "exitDate": "2026-08-22",
+    "exitPrice": 152.55,
+    "dollarPnl": 73.38
+  },
+  {
+    "ticker": "BF-B",
+    "entryDate": "2026-06-19",
+    "entryPrice": 26.64,
+    "exitDate": "2026-08-22",
+    "exitPrice": 28.44,
+    "dollarPnl": 0.42
+  },
+  {
+    "ticker": "REGN",
+    "entryDate": "2026-07-18",
+    "entryPrice": 676.69,
+    "exitDate": "2026-08-22",
+    "exitPrice": 834.04,
+    "dollarPnl": 23.39
+  },
+  {
+    "ticker": "FOX",
+    "entryDate": "2026-08-15",
+    "entryPrice": 61.41,
+    "exitDate": "2026-08-22",
+    "exitPrice": 61.05,
+    "dollarPnl": -3.5
+  },
+  {
+    "ticker": "ADM",
+    "entryDate": "2026-08-07",
+    "entryPrice": 76.59,
+    "exitDate": "2026-08-22",
+    "exitPrice": 80.3,
+    "dollarPnl": 2.74
+  },
+  {
+    "ticker": "T",
+    "entryDate": "2026-07-25",
+    "entryPrice": 24.13,
+    "exitDate": "2026-08-22",
+    "exitPrice": 25.29,
+    "dollarPnl": 9.59
   }
 ]
