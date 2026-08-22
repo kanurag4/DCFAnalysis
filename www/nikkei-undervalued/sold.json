@@ -190,5 +190,21 @@
     "exitDate": "2026-08-15",
     "exitPrice": 2767,
     "dollarPnl": 1240.16
+  },
+  {
+    "ticker": "4452.T",
+    "entryDate": "2026-08-08",
+    "entryPrice": 3654,
+    "exitDate": "2026-08-22",
+    "exitPrice": 3556,
+    "dollarPnl": 528.51
+  },
+  {
+    "ticker": "7272.T",
+    "entryDate": "2026-08-08",
+    "entryPrice": 1842.5,
+    "exitDate": "2026-08-22",
+    "exitPrice": 1940,
+    "dollarPnl": -374.89
   }
 ]
