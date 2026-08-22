@@ -117,6 +117,19 @@
     "updatedAt": "2026-08-21T23:58:16.266Z"
   },
   {
+    "ticker": "AZJ.AX",
+    "slug": "azj-ax",
+    "name": "Aurizon Holdings Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 6.454793642412948,
+    "price": 3.65,
+    "marginOfSafety": 0.7684366143597119,
+    "marketCap": 6144071680,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:31:58.595Z"
+  },
+  {
     "ticker": "BBN.AX",
     "slug": "bbn-ax",
     "name": "Baby Bunting Group Limited",
@@ -141,6 +154,19 @@
     "marketCap": 5914963456,
     "updated": "2026-08-21",
     "updatedAt": "2026-08-21T23:58:23.648Z"
+  },
+  {
+    "ticker": "BFL.AX",
+    "slug": "bfl-ax",
+    "name": "BSP Financial Group Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 11.717195472642336,
+    "price": 8.07,
+    "marginOfSafety": 0.45194491606472564,
+    "marketCap": 3768689920,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:38.488Z"
   },
   {
     "ticker": "BHP.AX",
@@ -325,6 +351,19 @@
     "updatedAt": "2026-08-21T23:59:49.803Z"
   },
   {
+    "ticker": "DRR.AX",
+    "slug": "drr-ax",
+    "name": "Deterra Royalties Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 7.515941009799014,
+    "price": 4.37,
+    "marginOfSafety": 0.7198949679173944,
+    "marketCap": 2313724928,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:05.259Z"
+  },
+  {
     "ticker": "EDV.AX",
     "slug": "edv-ax",
     "name": "Endeavour Group Limited",
@@ -401,6 +440,19 @@
     "marketCap": 21324466176,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:00:12.612Z"
+  },
+  {
+    "ticker": "GMD.AX",
+    "slug": "gmd-ax",
+    "name": "Genesis Minerals Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 10.187363038871094,
+    "price": 8.32,
+    "marginOfSafety": 0.22444267294123726,
+    "marketCap": 9763858432,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:40:34.235Z"
   },
   {
     "ticker": "GMG.AX",
@@ -520,6 +572,19 @@
     "updatedAt": "2026-08-22T00:00:46.482Z"
   },
   {
+    "ticker": "JDO.AX",
+    "slug": "jdo-ax",
+    "name": "Judo Capital Holdings Limited",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 1.1771834655376756,
+    "price": 0.98,
+    "marginOfSafety": 0.2012076178955874,
+    "marketCap": 1099906560,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:14.410Z"
+  },
+  {
     "ticker": "LNW.AX",
     "slug": "lnw-ax",
     "name": "Light & Wonder, Inc.",
@@ -544,6 +609,19 @@
     "marketCap": 2558059264,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:00:53.994Z"
+  },
+  {
+    "ticker": "MAH.AX",
+    "slug": "mah-ax",
+    "name": "Macmahon Holdings Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 1.3477194609630976,
+    "price": 1.035,
+    "marginOfSafety": 0.3021444067276306,
+    "marketCap": 2230410240,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:51.563Z"
   },
   {
     "ticker": "MGH.AX",
@@ -624,6 +702,19 @@
     "updatedAt": "2026-08-22T00:01:23.960Z"
   },
   {
+    "ticker": "NWH.AX",
+    "slug": "nwh-ax",
+    "name": "NRW Holdings Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 12.903783079442848,
+    "price": 8.2,
+    "marginOfSafety": 0.573632082858884,
+    "marketCap": 3767628800,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:24.662Z"
+  },
+  {
     "ticker": "NXL.AX",
     "slug": "nxl-ax",
     "name": "Nuix Limited",
@@ -674,6 +765,19 @@
     "marketCap": 16343761920,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:01:49.866Z"
+  },
+  {
+    "ticker": "PRN.AX",
+    "slug": "prn-ax",
+    "name": "Perenti Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 3.1162017305954666,
+    "price": 2.44,
+    "marginOfSafety": 0.2771318568014208,
+    "marketCap": 2280912896,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:40:19.703Z"
   },
   {
     "ticker": "QAN.AX",
@@ -845,6 +949,19 @@
     "updatedAt": "2026-08-22T00:02:39.220Z"
   },
   {
+    "ticker": "SLC.AX",
+    "slug": "slc-ax",
+    "name": "Superloop Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 4.865875465618609,
+    "price": 3.06,
+    "marginOfSafety": 0.5901553809211142,
+    "marketCap": 1575024512,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:18.027Z"
+  },
+  {
     "ticker": "SOL.AX",
     "slug": "sol-ax",
     "name": "WHSP Holdings Limited",
@@ -856,6 +973,19 @@
     "marketCap": 16860835840,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:02:42.937Z"
+  },
+  {
+    "ticker": "SRG.AX",
+    "slug": "srg-ax",
+    "name": "SRG Global Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 6.099067483047442,
+    "price": 3.9,
+    "marginOfSafety": 0.5638634571916518,
+    "marketCap": 2443709696,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:32.261Z"
   },
   {
     "ticker": "STO.AX",
@@ -1013,6 +1143,32 @@
     "updatedAt": "2026-08-22T00:03:46.287Z"
   },
   {
+    "ticker": "VNT.AX",
+    "slug": "vnt-ax",
+    "name": "Ventia Services Group Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 6.803532726867322,
+    "price": 5.57,
+    "marginOfSafety": 0.22146009459018334,
+    "marketCap": 4555281920,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:07.624Z"
+  },
+  {
+    "ticker": "WAF.AX",
+    "slug": "waf-ax",
+    "name": "West African Resources Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 6.364014190392321,
+    "price": 3.78,
+    "marginOfSafety": 0.6836016376699262,
+    "marketCap": 4323386368,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:12.466Z"
+  },
+  {
     "ticker": "WBC.AX",
     "slug": "wbc-ax",
     "name": "Westpac Banking Corporation",
@@ -1050,6 +1206,19 @@
     "marketCap": 93513236480,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:03:57.711Z"
+  },
+  {
+    "ticker": "WOR.AX",
+    "slug": "wor-ax",
+    "name": "Worley Limited",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 15.676346529045638,
+    "price": 10.9,
+    "marginOfSafety": 0.43819692927024195,
+    "marketCap": 5518922240,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:32:44.483Z"
   },
   {
     "ticker": "WOW.AX",

@@ -78,6 +78,19 @@
     "updatedAt": "2026-08-22T00:04:46.667Z"
   },
   {
+    "ticker": "ALL",
+    "slug": "all",
+    "name": "The Allstate Corporation",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 366.5535226874796,
+    "price": 253.83,
+    "marginOfSafety": 0.4440906224145277,
+    "marketCap": 64182935552,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:41:18.098Z"
+  },
+  {
     "ticker": "AMD",
     "slug": "amd",
     "name": "Advanced Micro Devices, Inc.",
@@ -115,6 +128,19 @@
     "marketCap": 13923040256,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:04:57.824Z"
+  },
+  {
+    "ticker": "BAX",
+    "slug": "bax",
+    "name": "Baxter International Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 45.44970387813232,
+    "price": 26.34,
+    "marginOfSafety": 0.7255012861857373,
+    "marketCap": 13617674240,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:20.095Z"
   },
   {
     "ticker": "BBY",
@@ -195,6 +221,19 @@
     "updatedAt": "2026-08-22T00:05:31.499Z"
   },
   {
+    "ticker": "DRI",
+    "slug": "dri",
+    "name": "Darden Restaurants, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 321.07566051734716,
+    "price": 221.6,
+    "marginOfSafety": 0.4488973850060793,
+    "marketCap": 25160855552,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:55.297Z"
+  },
+  {
     "ticker": "EA",
     "slug": "ea",
     "name": "Electronic Arts Inc",
@@ -260,6 +299,19 @@
     "updatedAt": "2026-08-22T00:05:50.266Z"
   },
   {
+    "ticker": "HAL",
+    "slug": "hal",
+    "name": "Halliburton Company",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 56.16747391089275,
+    "price": 35.34,
+    "marginOfSafety": 0.58934561151366,
+    "marketCap": 29522956288,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:41:03.095Z"
+  },
+  {
     "ticker": "HON",
     "slug": "hon",
     "name": "Honeywell International Inc.",
@@ -284,6 +336,19 @@
     "marketCap": 70778675200,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:05:57.859Z"
+  },
+  {
+    "ticker": "HST",
+    "slug": "hst",
+    "name": "Host Hotels & Resorts, Inc.",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 12.123613312202853,
+    "price": 23.21,
+    "marginOfSafety": -0.4776556091252541,
+    "marketCap": 16124600320,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:37.133Z"
   },
   {
     "ticker": "IBM",
@@ -375,6 +440,19 @@
     "marketCap": 508637642752,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:06:24.253Z"
+  },
+  {
+    "ticker": "MCK",
+    "slug": "mck",
+    "name": "McKesson Corporation",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 1240.255173753894,
+    "price": 858.9,
+    "marginOfSafety": 0.444004160849801,
+    "marketCap": 100139466752,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:06.474Z"
   },
   {
     "ticker": "MDLZ",
@@ -689,6 +767,19 @@
     "updatedAt": "2026-08-22T00:07:50.305Z"
   },
   {
+    "ticker": "TMUS",
+    "slug": "tmus",
+    "name": "T-Mobile US, Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 277.5430465534417,
+    "price": 183.04,
+    "marginOfSafety": 0.5162972386005338,
+    "marketCap": 196341809152,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:44.065Z"
+  },
+  {
     "ticker": "TSLA",
     "slug": "tsla",
     "name": "Tesla, Inc.",
@@ -739,6 +830,19 @@
     "marketCap": 205453639680,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:08:05.219Z"
+  },
+  {
+    "ticker": "WBD",
+    "slug": "wbd",
+    "name": "Warner Bros. Discovery, Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 42.118397632512234,
+    "price": 28.55,
+    "marginOfSafety": 0.4752503549041063,
+    "marketCap": 71578755072,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:33:49.602Z"
   },
   {
     "ticker": "YUM",

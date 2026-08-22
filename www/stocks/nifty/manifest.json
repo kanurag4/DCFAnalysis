@@ -26,6 +26,32 @@
     "updatedAt": "2026-08-22T00:08:16.759Z"
   },
   {
+    "ticker": "BANKBARODA.NS",
+    "slug": "bankbaroda-ns",
+    "name": "Bank of Baroda Limited",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 349.8262815379988,
+    "price": 247,
+    "marginOfSafety": 0.41630073497165504,
+    "marketCap": 1277326524416,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:42:02.452Z"
+  },
+  {
+    "ticker": "BANKINDIA.NS",
+    "slug": "bankindia-ns",
+    "name": "Bank of India Limited",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 224.3399270224907,
+    "price": 142.79,
+    "marginOfSafety": 0.5711179145772864,
+    "marketCap": 650075373568,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:17.375Z"
+  },
+  {
     "ticker": "BHARTIARTL.NS",
     "slug": "bhartiartl-ns",
     "name": "Bharti Airtel Limited",
@@ -37,6 +63,58 @@
     "marketCap": 12140428656640,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:08:20.526Z"
+  },
+  {
+    "ticker": "CANBK.NS",
+    "slug": "canbk-ns",
+    "name": "Canara Bank",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 171.56417687809926,
+    "price": 129.96,
+    "marginOfSafety": 0.3201306315643217,
+    "marketCap": 1178821853184,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:59.814Z"
+  },
+  {
+    "ticker": "CASTROLIND.NS",
+    "slug": "castrolind-ns",
+    "name": "Castrol India Limited",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 269.29851860635205,
+    "price": 187.77,
+    "marginOfSafety": 0.4341935272213454,
+    "marketCap": 185727516672,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:36.611Z"
+  },
+  {
+    "ticker": "CENTRALBK.NS",
+    "slug": "centralbk-ns",
+    "name": "Central Bank of India",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 49.2230764119914,
+    "price": 31.29,
+    "marginOfSafety": 0.5731248453816363,
+    "marketCap": 283218345984,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:23.336Z"
+  },
+  {
+    "ticker": "GICRE.NS",
+    "slug": "gicre-ns",
+    "name": "General Insurance Corporation of India",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 518.7470383437808,
+    "price": 355.75,
+    "marginOfSafety": 0.45817860391786586,
+    "marketCap": 624127770624,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:29.968Z"
   },
   {
     "ticker": "HCLTECH.NS",
@@ -169,6 +247,19 @@
     "updatedAt": "2026-08-22T00:08:58.368Z"
   },
   {
+    "ticker": "LTM.NS",
+    "slug": "ltm-ns",
+    "name": "LTM Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 5265.92750400167,
+    "price": 4487.8,
+    "marginOfSafety": 0.17338729533438876,
+    "marketCap": 1330458525696,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:35:09.653Z"
+  },
+  {
     "ticker": "MARUTI.NS",
     "slug": "maruti-ns",
     "name": "Maruti Suzuki India Limited",
@@ -193,6 +284,58 @@
     "marketCap": 562651267072,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:09:05.770Z"
+  },
+  {
+    "ticker": "OFSS.NS",
+    "slug": "ofss-ns",
+    "name": "Oracle Financial Services Software Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 13452.73544690599,
+    "price": 11724,
+    "marginOfSafety": 0.14745269932667948,
+    "marketCap": 1020873277440,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:42:16.141Z"
+  },
+  {
+    "ticker": "PFC.NS",
+    "slug": "pfc-ns",
+    "name": "Power Finance Corporation Limited",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 579.4242409112917,
+    "price": 363,
+    "marginOfSafety": 0.5962100300586548,
+    "marketCap": 1197936869376,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:41:32.539Z"
+  },
+  {
+    "ticker": "PNB.NS",
+    "slug": "pnb-ns",
+    "name": "Punjab National Bank",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 166.41763528920626,
+    "price": 116.55,
+    "marginOfSafety": 0.4278647386461284,
+    "marketCap": 1339502493696,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:41:47.491Z"
+  },
+  {
+    "ticker": "RECLTD.NS",
+    "slug": "recltd-ns",
+    "name": "REC Limited",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 436.7510572586939,
+    "price": 326.65,
+    "marginOfSafety": 0.33706124983527913,
+    "marketCap": 860142567424,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:34:53.760Z"
   },
   {
     "ticker": "RELIANCE.NS",
@@ -284,6 +427,19 @@
     "marketCap": 1403262599168,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:10:04.899Z"
+  },
+  {
+    "ticker": "UNIONBANK.NS",
+    "slug": "unionbank-ns",
+    "name": "Union Bank of India",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 212.78625090997485,
+    "price": 183.45,
+    "marginOfSafety": 0.15991415050408758,
+    "marketCap": 1400384913408,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T08:35:16.285Z"
   },
   {
     "ticker": "WIPRO.NS",
