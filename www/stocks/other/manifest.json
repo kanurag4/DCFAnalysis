@@ -486,11 +486,12 @@
     "name": "Siemens Aktiengesellschaft",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 116.10160302831741,
-    "price": 276.65,
-    "marginOfSafety": -0.580330370401889,
-    "marketCap": 211012943872,
-    "updated": "2026-08-20"
+    "intrinsic": 115.8618449801108,
+    "price": 280.35,
+    "marginOfSafety": -0.5867242911356848,
+    "marketCap": 213835104256,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:56.418Z"
   },
   {
     "ticker": "TTE.PA",

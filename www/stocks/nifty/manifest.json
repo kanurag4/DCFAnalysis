@@ -201,10 +201,11 @@
     "sector": "Energy",
     "method": "DCF",
     "intrinsic": 808.4224907114078,
-    "price": 1311.6,
-    "marginOfSafety": -0.383636405374041,
-    "marketCap": 17749189328896,
-    "updated": "2026-08-20"
+    "price": 1316,
+    "marginOfSafety": -0.38569719550804876,
+    "marketCap": 17808733765632,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:47.715Z"
   },
   {
     "ticker": "RPOWER.NS",
@@ -212,11 +213,12 @@
     "name": "Reliance Power Limited",
     "sector": "Utilities",
     "method": "DCF",
-    "intrinsic": 169.0118662927082,
-    "price": 22.37,
-    "marginOfSafety": 6.555291296053115,
-    "marketCap": 92517195776,
-    "updated": "2026-08-20"
+    "intrinsic": 168.7380855213835,
+    "price": 23.45,
+    "marginOfSafety": 6.195653966796739,
+    "marketCap": 96983826432,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:51.244Z"
   },
   {
     "ticker": "SBILIFE.NS",
@@ -264,10 +266,11 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 2286.73858380572,
-    "price": 2293,
-    "marginOfSafety": -0.0027306655884344407,
-    "marketCap": 8296274591744,
-    "updated": "2026-08-20"
+    "price": 2302,
+    "marginOfSafety": -0.00662963344668991,
+    "marketCap": 8328837070848,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:53.509Z"
   },
   {
     "ticker": "TECHM.NS",

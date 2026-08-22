@@ -161,11 +161,12 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 2.1473001709735393,
-    "price": 0.895,
-    "marginOfSafety": 1.3992180681268596,
-    "marketCap": 2041793664,
-    "updated": "2026-08-20"
+    "intrinsic": 2.1421819382319387,
+    "price": 0.905,
+    "marginOfSafety": 1.367051865449656,
+    "marketCap": 2064606976,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:17.896Z"
   },
   {
     "ticker": "BVS.AX",
@@ -277,11 +278,12 @@
     "name": "Computershare Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 13.755980526791538,
-    "price": 39.26,
-    "marginOfSafety": -0.6496184277434656,
-    "marketCap": 22707476480,
-    "updated": "2026-08-20"
+    "intrinsic": 13.804528064286094,
+    "price": 39.18,
+    "marginOfSafety": -0.6476639085174555,
+    "marketCap": 22661206016,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:22.050Z"
   },
   {
     "ticker": "CQR.AX",
@@ -302,11 +304,12 @@
     "name": "CSL Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 52.5069947128513,
-    "price": 171.99,
-    "marginOfSafety": -0.6947090254500186,
-    "marketCap": 82368069632,
-    "updated": "2026-08-20"
+    "intrinsic": 108.65206727822368,
+    "price": 168.3,
+    "marginOfSafety": -0.3544143358394315,
+    "marketCap": 80600883200,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:25.958Z"
   },
   {
     "ticker": "DMP.AX",
@@ -565,7 +568,8 @@
     "price": 2.98,
     "marginOfSafety": 0.8057032157172453,
     "marketCap": 3277184000,
-    "updated": "2026-08-20"
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:28.453Z"
   },
   {
     "ticker": "NAB.AX",
@@ -638,11 +642,12 @@
     "name": "Orica Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 23.820035208470163,
-    "price": 22.03,
-    "marginOfSafety": 0.08125443524603547,
-    "marketCap": 10211842048,
-    "updated": "2026-08-20"
+    "intrinsic": 23.76580581042315,
+    "price": 22.16,
+    "marginOfSafety": 0.07246416112017821,
+    "marketCap": 10272102400,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:31.355Z"
   },
   {
     "ticker": "PLS.AX",
@@ -896,11 +901,12 @@
     "name": "Telstra Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 4.845390247953718,
-    "price": 4.69,
-    "marginOfSafety": 0.03313224903064343,
-    "marketCap": 52242550784,
-    "updated": "2026-08-20"
+    "intrinsic": 4.831092111810614,
+    "price": 4.73,
+    "marginOfSafety": 0.021372539494844314,
+    "marketCap": 52688117760,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:39.123Z"
   },
   {
     "ticker": "TLX.AX",
@@ -1025,11 +1031,12 @@
     "name": "Woolworths Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 30.64046583760265,
-    "price": 39.19,
-    "marginOfSafety": -0.21815601332986342,
-    "marketCap": 47874473984,
-    "updated": "2026-08-20"
+    "intrinsic": 30.88115254503899,
+    "price": 38.86,
+    "marginOfSafety": -0.2053228887020332,
+    "marketCap": 47471345664,
+    "updated": "2026-08-22",
+    "updatedAt": "2026-08-22T00:24:41.291Z"
   },
   {
     "ticker": "WTC.AX",
