@@ -1,8 +1,6 @@
 // www/europe-undervalued/app.js — DOM-only. Pure helpers live in ../utils.js.
 (function () {
   const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
-  if (isNative) { const b = document.getElementById('kv-play-badge'); if (b) b.hidden = true; }
-
   // Per-row price symbols. GBp is pence (Yahoo quotes UK prices in pence, not
   // pounds) so it renders a bare 'p' suffix-style marker; everything else is a
   // conventional prefix symbol.

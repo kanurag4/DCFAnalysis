@@ -261,18 +261,3 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 .activity-table .pos { color: var(--kv-pass); }
 .activity-table .neg { color: var(--kv-fail); }
 
-/* ── Play Store badge (web only) ── */
-#kv-play-badge {
-  text-align: center;
-  padding: 0 16px 4px;
-  margin-bottom: 12px;
-}
-#kv-play-badge .play-badge-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--kv-muted);
-  margin: 0 0 2px;
-}
-#kv-play-badge img { display: inline-block; }

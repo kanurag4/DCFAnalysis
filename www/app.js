@@ -108,9 +108,6 @@ function updateWatchlistStar(ticker, market) {
 }
 
 if (isNative) {
-  const badge = document.getElementById('kv-play-badge');
-  if (badge) badge.hidden = true;
-
   // Icon-only in the app — the text label is nice-to-have on web but just
   // adds width to an already-compact native header row.
   if (shareBtn) {

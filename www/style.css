@@ -93,13 +93,6 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
   .screen-pill-arrow { font-size: 0.75rem; }
 }
 
-/* ── Play Store badge (web only) ── */
-#kv-play-badge {
-  text-align: center;
-  padding: 12px 16px 4px;
-}
-#kv-play-badge img { display: inline-block; }
-
 /* ── Search bar, autocomplete, market checkboxes, hint, recents ──
    Now in /kv-ticker-input.css (shared across all 4 stock tools). ── */
 
