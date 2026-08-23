@@ -316,5 +316,11 @@ function computeScenarios(data, valuationModel, seeds, options) {
   });
 }
 
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread };
+// FALLBACK_RF/MARKET_ERP/MARKET_TGROWTH exported (2026-08-23) so worker-watchlist's
+// market-params.js can derive its rates directly from this table instead of
+// maintaining its own copy -- a second copy is exactly what went stale after the
+// 2026-08-15 Damodaran rf fix and caused a real live valuation mismatch (see
+// kashvector-native-apps.md / the Watchlist bug investigation). Single source of
+// truth now; a future rate change here flows to Watchlist automatically.
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, FALLBACK_RF, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
 if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.roeOffsetSpread = roeOffsetSpread; window.discountRateSpread = discountRateSpread; }
