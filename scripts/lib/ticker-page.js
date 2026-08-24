@@ -15,10 +15,11 @@ const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const { deriveFfo, deriveAffo, calculateReitValue } = require('../../www/calc/reit.js');
 const { calculateAirlineValue } = require('../../www/calc/airline.js');
 const { normalizeCyclicalFcf } = require('../../www/calc/cyclicalNormalization.js');
-const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE } = require('../../www/config.js');
+const { applyHoldcoDiscountToScenarios } = require('../../www/calc/holdcoDiscount.js');
+const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE, HOLDCO_DISCOUNT } = require('../../www/config.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility, isCyclical,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility, isCyclical, isConglomerate,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -877,6 +878,19 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       waccBreakdown = { ...waccResult, isBank: false };
     }
 
+    // Holdco/conglomerate discount is independent of the model dispatch
+    // above (isReitTicker/isAirlineTicker/isUtilityTicker/isBank all decide
+    // WHICH model runs; a conglomerate can be any of them, almost always
+    // plain DCF) -- applied uniformly to whatever scenarios came out of
+    // whichever branch ran, same pattern the live tool's
+    // computeScenarios()/applyHoldcoDiscountToScenarios() uses. NOT a real
+    // segment-level sum-of-the-parts valuation -- Yahoo exposes no
+    // per-segment financials -- see calc/holdcoDiscount.js.
+    const isHoldcoTicker = isConglomerate(data.sector, data.industry, data.ticker);
+    if (isHoldcoTicker) {
+      scenarios = applyHoldcoDiscountToScenarios(scenarios, HOLDCO_DISCOUNT, data.price);
+    }
+
     const priceSeriesRaw = await fetchPriceHistory(t, proxyUrl);
     let indexSeriesRaw;
     if (market.indexTicker) {
@@ -1155,6 +1169,13 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>`) : '')));
 
+    // Independent of bankMetricsHtml above (a conglomerate can stack with
+    // any model) -- same 15% flat-discount wording the live tool's
+    // #holdco-note uses.
+    const holdcoNoteHtml = isHoldcoTicker
+      ? `<p class="holdco-note">🏛️ Holding company / conglomerate — a ${(HOLDCO_DISCOUNT * 100).toFixed(0)}% discount has been applied to the intrinsic values below, reflecting typically less efficient capital allocation and reduced transparency across diversified business lines (not a per-segment valuation — Yahoo doesn't expose segment-level financials).</p>`
+      : '';
+
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
     // thrown error here would count against the refresh workflow's 20%
@@ -1280,6 +1301,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ${valueScaleHtml}
 
       ${bankMetricsHtml}
+
+      ${holdcoNoteHtml}
 
       <section class="scenarios-results">
         <h3>Intrinsic value estimate · 5-year forecast${revenueNormalised ? ' · Revenue-normalised' : ''}</h3>
