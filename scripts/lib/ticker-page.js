@@ -1169,6 +1169,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>
       </section>`) : '')));
 
+    // Promoted from the FCF assumption tile's own inline note (still present
+    // there too) to a standalone paragraph, matching holdcoNoteHtml's
+    // visibility -- user-requested 2026-08-24 after confirming the live
+    // asymmetry (Utility/Holdco got a prominent standalone note, Cyclical's
+    // was only visible by scrolling to the assumptions table).
+    const cyclicalNoteHtml = (fcfInfo && fcfInfo.method === 'normalized')
+      ? `<p class="cyclical-note">📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.</p>`
+      : '';
+
     // Independent of bankMetricsHtml above (a conglomerate can stack with
     // any model) -- same 15% flat-discount wording the live tool's
     // #holdco-note uses.
@@ -1301,6 +1310,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ${valueScaleHtml}
 
       ${bankMetricsHtml}
+
+      ${cyclicalNoteHtml}
 
       ${holdcoNoteHtml}
 
