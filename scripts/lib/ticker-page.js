@@ -17,7 +17,7 @@ const { calculateAirlineValue } = require('../../www/calc/airline.js');
 const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE } = require('../../www/config.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -496,7 +496,7 @@ async function fetchPriceHistory(symbol, proxyUrl) {
 // (negative equity; missing sharesOutstanding) -- previously collapsed into
 // one generic message that didn't distinguish them. Returns null when
 // baseResult already has a real intrinsicValue (nothing to explain).
-function deriveNullReason({ isBank, isReitTicker, isAirlineTicker, baseResult, baseFcf, affoPerShare, ebitda, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
+function deriveNullReason({ isBank, isReitTicker, isAirlineTicker, isUtilityTicker, baseResult, baseFcf, affoPerShare, ebitda, bookValue, dividend, discountPct, terminalGrowth, fxConversionFailed }) {
   if (baseResult?.intrinsicValue != null) return null;
   if (fxConversionFailed) return 'financial statements are reported in a different currency than the trading price, and the live conversion rate could not be fetched';
   if (baseResult == null) {
@@ -509,6 +509,11 @@ function deriveNullReason({ isBank, isReitTicker, isAirlineTicker, baseResult, b
       return (ebitda == null || ebitda <= 0)
         ? 'EBITDA <= 0 or unavailable'
         : 'EV/EBITDA multiple <= 0';
+    }
+    if (isUtilityTicker) {
+      return (bookValue == null || bookValue <= 0)
+        ? 'book value per share <= 0 or unavailable (price/priceToBook)'
+        : 'return on equity <= 0 or unavailable';
     }
     if (isBank) {
       return (dividend == null || dividend <= 0)
@@ -668,10 +673,12 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
     const isReitTicker = !isBank && isReit(data.sector, data.industry);
     const isAirlineTicker = !isBank && !isReitTicker && isAirline(data.sector, data.industry);
+    const isUtilityTicker = !isBank && !isReitTicker && !isAirlineTicker && isUtility(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
     let affoPerShare = null, reitMultiples = null, reitIndustryKey = null;
     let airlineMultiples = null;
+    let utilityBookValue = null, utilityRoePct = null;
 
     if (isAirlineTicker) {
       const resolvedSharesForAirline = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0)
@@ -706,6 +713,34 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         return { key, multiplePct: reitMultiples[key], result };
       });
       waccBreakdown = null; // no discount rate for this model at all
+    } else if (isUtilityTicker) {
+      // Regulated utilities always use Excess Return (rate-base-and-allowed-
+      // return economics -- see www/dcf/calc/assumptions.js's isUtility()
+      // dispatch), unlike banks where chooseFinancialModel() decides between
+      // DDM and Excess Return based on payout ratio. Reused code shape from
+      // the isBank branch's excess-return sub-case below, minus the
+      // dividend/chooseFinancialModel machinery this model never needs.
+      const rePct = r2((rf + effectiveBeta * erp) * 100);
+      waccOrRePct = rePct;
+      const roe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+        ? data.returnOnEquity
+        : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
+            ? data.trailingEps / (data.price / data.priceToBook)
+            : null);
+      utilityRoePct = roe != null ? r1(roe * 100) : null;
+      const s = deriveScenarios({ method: 'ExcessReturn', baseGrowthPct: utilityRoePct ?? 0, waccOrRePct: rePct });
+      method = 'ExcessReturn';
+      utilityBookValue = (data.price != null && data.priceToBook != null && data.priceToBook > 0) ? data.price / data.priceToBook : null;
+      scenarios = ['bear', 'base', 'bull'].map(key => {
+        if (!(utilityBookValue > 0) || roe == null) return { key, growthPct: s.growth[key], discountPct: s.discount[key], result: null };
+        const result = calculateExcessReturn({
+          bookValue: utilityBookValue, roe: s.growth[key] / 100, costOfEquity: s.discount[key] / 100,
+          growthRate: 0, // no separate book-value growth lever in the batch/ticker-page context -- matches the live tool's own bookValueGrowthPct default of 0 when unset
+          projectionYears: 5, currentPrice: data.price,
+        });
+        return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
+      });
+      waccBreakdown = { re: rf + effectiveBeta * erp, rf, beta: effectiveBeta, erp, isBank: false, isUtility: true };
     } else if (isBank) {
       const dividend = data.trailingAnnualDividendRate ?? data.dividendRate ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
       d0 = dividend != null ? +(+dividend).toFixed(2) : null;
@@ -850,7 +885,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const sectorLine = [data.sector, data.industry].filter(Boolean).join(' · ');
     const baseResult = scenarios.find(s => s.key === 'base').result;
     const v = verdict(baseResult?.marginOfSafety);
-    const nullReason = deriveNullReason({ isBank, isReitTicker, isAirlineTicker, baseResult, baseFcf, affoPerShare, ebitda: data.ebitda, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
+    const nullReason = deriveNullReason({ isBank, isReitTicker, isAirlineTicker, isUtilityTicker, baseResult, baseFcf, affoPerShare, ebitda: data.ebitda, bookValue: utilityBookValue, dividend: d0, discountPct: waccOrRePct, terminalGrowth, fxConversionFailed });
     // Raw diagnostic snapshot -- only populated when the base case is null,
     // so the batch can print exactly which upstream field was the actual
     // cause (2026-08-05 incident: the same 10 tickers failed identically on
@@ -859,7 +894,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // exists to settle whether that's a CI-environment-specific data
     // difference, not to guess further).
     const nullDiagnostics = nullReason ? {
-      isBank, isReitTicker, isAirlineTicker, affoPerShare, ebitda: data.ebitda, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
+      isBank, isReitTicker, isAirlineTicker, isUtilityTicker, affoPerShare, ebitda: data.ebitda, bookValue: utilityBookValue, method, baseFcf, dividend: d0, discountPct: waccOrRePct, terminalGrowth,
       sharesOutstanding: data.sharesOutstanding, price: data.price,
       revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
       marketCap: data.marketCap, totalDebt: data.totalDebt, totalCash: data.totalCash,
@@ -905,6 +940,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
           ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
         ]
+      : isUtilityTicker
+      ? [
+          ['Price', money(data.price, currencySym)],
+          ['Market Cap', moneyB(data.marketCap, currencySym)],
+          ['Book Value / Share', utilityBookValue != null ? money(utilityBookValue, currencySym) : 'N/A'],
+          ['Beta', effectiveBeta.toFixed(2)],
+          ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
+          ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
+        ]
       : [
           ['Price', money(data.price, currencySym)],
           ['Market Cap', moneyB(data.marketCap, currencySym)],
@@ -928,6 +972,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? `<tr><td>P/AFFO Multiple</td><td class="col-bear">${scenarios[0].multiplePct.toFixed(1)}x</td><td class="col-base">${scenarios[1].multiplePct.toFixed(1)}x</td><td class="col-bull">${scenarios[2].multiplePct.toFixed(1)}x</td></tr>`
       : isAirlineTicker
       ? `<tr><td>EV/EBITDA Multiple</td><td class="col-bear">${scenarios[0].multiplePct.toFixed(1)}x</td><td class="col-base">${scenarios[1].multiplePct.toFixed(1)}x</td><td class="col-bull">${scenarios[2].multiplePct.toFixed(1)}x</td></tr>`
+      : method === 'ExcessReturn'
+      // Excess Return has no terminal value (see calc/excessReturn.js) and its
+      // "growth" slot holds ROE, not dividend growth -- was previously
+      // conflated with DDM's row shape below (a pre-existing mislabeling bug,
+      // fixed while wiring in the Utility model, which also uses this method
+      // and would otherwise have inherited it).
+      ? `<tr><td>ROE</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
+         <tr><td>Cost of equity</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`
       : isBank
       ? `<tr><td>Dividend growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
          <tr><td>Terminal growth</td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
@@ -949,6 +1001,16 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
          <div class="assump-item"><div class="al">Net Debt</div><div class="av">${scenarios[1].result?.netDebt != null ? moneyB(scenarios[1].result.netDebt, currencySym) : 'N/A'}</div><div class="an">Total debt − total cash</div></div>
          <div class="assump-item"><div class="al">EV/EBITDA multiple</div><div class="av">${airlineMultiples.base}x</div><div class="an">Mid-cycle placeholder — airlines have historically traded ~4x–8x+</div></div>
          <div class="assump-item"><div class="al">Model</div><div class="av">EV/EBITDA</div><div class="an">Not a discounted model — no discount rate or terminal value. Standard FCF-based DCF is unreliable for airlines (extreme cyclicality, high leverage).</div></div>`
+      : method === 'ExcessReturn'
+      // Same mislabeling fix as assumptionRows above -- ExcessReturn has no
+      // dividend/D0 concept and no terminal value; shows book value + ROE
+      // instead. Shared by bank/insurer/NBFC ExcessReturn tickers and
+      // regulated utilities alike.
+      ? `<div class="assump-item"><div class="al">Book value / share</div><div class="av">${utilityBookValue != null ? money(utilityBookValue, currencySym) : (data.priceToBook != null && data.priceToBook > 0 ? money(data.price / data.priceToBook, currencySym) : 'N/A')}</div><div class="an">Price ÷ price-to-book</div></div>
+         <div class="assump-item"><div class="al">Return on equity</div><div class="av">${data.returnOnEquity != null ? pct(data.returnOnEquity) : 'N/A'}</div><div class="an">Trailing reported ROE${isUtilityTicker ? ' (proxy for regulator-allowed ROE — Yahoo has no field for the latter)' : ''}</div></div>
+         <div class="assump-item"><div class="al">Cost of equity</div><div class="av">${pct(rf + effectiveBeta * erp, 2)}</div><div class="an">CAPM: risk-free rate + beta × ERP</div></div>
+         <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(t) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
+         <div class="assump-item"><div class="al">Model</div><div class="av">Excess Return</div><div class="an">Not a discounted model in the terminal-value sense — no terminal growth rate; value = book value + PV of (ROE − cost of equity) × book value each year</div></div>`
       : isBank
       ? `<div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
          <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(t) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
@@ -973,7 +1035,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? `Intrinsic Value = AFFO / Share × P/AFFO Multiple = ${affoPerShare != null ? money(affoPerShare, currencySym) : 'N/A'} × ${reitMultiples.base}x`
       : isAirlineTicker
       ? `Enterprise Value = EBITDA × Multiple = ${data.ebitda != null ? moneyB(data.ebitda, currencySym) : 'N/A'} × ${airlineMultiples.base}x — Equity Value = EV − Net Debt, ÷ shares outstanding`
-      : isBank
+      : (isBank || isUtilityTicker)
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
       : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · WACC = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
 
@@ -1013,6 +1075,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           <div class="stat"><div class="stat-label">Model EV/EBITDA</div><div class="stat-value">${airlineMultiples.base}x</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
+      </section>` : (isUtilityTicker ? `
+      <section class="bank-metrics">
+        <h3>⚡ Regulated Utility — valued with the Excess Return Model</h3>
+        <p>Standard FCF-based DCF is not used for regulated utilities: a regulator sets how much the utility can earn on its asset base (its "rate base"), so value tracks book equity plus the spread between realized and required return, not free cash flow — the same underlying shape a bank's excess-return economics have. Reported ROE is used as a proxy for the regulator's allowed ROE, since Yahoo has no field for the latter.</p>
+        <div class="bank-metric-grid">
+          <div class="stat"><div class="stat-label">P/B</div><div class="stat-value">${data.priceToBook != null ? data.priceToBook.toFixed(2) + 'x' : 'N/A'}</div></div>
+          <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
+          <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
+        </div>
       </section>` : (isBank ? (method === 'ExcessReturn' ? `
       <section class="bank-metrics">
         <h3>🏦 Bank/Insurer/NBFC — valued with the Excess Return Model</h3>
@@ -1031,7 +1102,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           <div class="stat"><div class="stat-label">ROE</div><div class="stat-value">${pct(data.returnOnEquity)}</div></div>
           <div class="stat"><div class="stat-label">Div Yield</div><div class="stat-value">${pct(data.dividendYield)}</div></div>
         </div>
-      </section>`) : ''));
+      </section>`) : '')));
 
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
@@ -1096,7 +1167,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         </div>` : '';
     const fcfLast = fcfSeries[fcfSeries.length - 1]?.v;
     const roeLast = roeSeries[roeSeries.length - 1]?.v;
-    const fourthChartHtml = isBank
+    const fourthChartHtml = (isBank || isUtilityTicker)
       ? (roeSeries.length >= 2
           ? `<div class="chart-card">
               <h3>Return on equity ${periodBadge('Annual')}</h3>
