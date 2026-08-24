@@ -102,6 +102,7 @@ function deriveDcfAssumptions(data) {
   const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
   const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
+  const isUtilityFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isUtility(data.sector, data.industry);
   const currentMarket = detectMarket(data.ticker);
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;
@@ -208,10 +209,10 @@ function deriveDcfAssumptions(data) {
 
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
 
-  const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm')));
+  const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));
 
   return {
-    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
+    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, isUtility: isUtilityFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
     waccResult, modelSeeds, fcfInfo,
     valuationModel,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()

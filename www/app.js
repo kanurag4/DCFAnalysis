@@ -616,6 +616,7 @@ function applyModelUI() {
   const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
   const isReitTicker = currentData && isReit(currentData.sector, currentData.industry);
   const isAirlineTicker = currentData && isAirline(currentData.sector, currentData.industry);
+  const isUtilityTicker = currentData && isUtility(currentData.sector, currentData.industry);
 
   if (els.fcfRow)      els.fcfRow.hidden = ddm || excessReturn || reit || airline;
   if (els.dividendRow) els.dividendRow.hidden = !ddm;
@@ -641,10 +642,10 @@ function applyModelUI() {
   if (els.breakdownTitle) els.breakdownTitle.textContent = reit ? 'REIT Value Breakdown' : (airline ? 'Airline Value Breakdown' : (excessReturn ? 'Excess Return Value Breakdown' : (ddm ? 'DDM Value Breakdown' : 'DCF Value Breakdown')));
 
   renderDiscountBreakdown();
-  updateModelToggle(isBankIns, isReitTicker, isAirlineTicker);
+  updateModelToggle(isBankIns, isReitTicker, isAirlineTicker, isUtilityTicker);
 }
 
-function updateModelToggle(isBankIns, isReitTicker, isAirlineTicker) {
+function updateModelToggle(isBankIns, isReitTicker, isAirlineTicker, isUtilityTicker) {
   if (!els.modelToggleRow) return;
   if (isReitTicker) {
     // REITs are locked to the FFO/AFFO model, same no-toggle pattern as
@@ -663,6 +664,19 @@ function updateModelToggle(isBankIns, isReitTicker, isAirlineTicker) {
     // file-header comment for the confirmed live examples).
     els.modelToggleRow.hidden = false;
     els.modelLabel.textContent = '✈️ EV/EBITDA Model — standard DCF is unreliable for airlines (cyclicality and leverage distort FCF/growth).';
+    if (els.ddmToggle) els.ddmToggle.hidden = true;
+    return;
+  }
+  if (isUtilityTicker) {
+    // Regulated utilities are locked to the Excess Return model (never
+    // DCF/DDM) -- rate-base-and-allowed-return economics mean value tracks
+    // book equity plus the spread between realized and required return, not
+    // free cash flow (same underlying shape as a bank's excess-return
+    // economics -- see calc/assumptions.js's isUtility() dispatch branch).
+    // Reported ROE is used as a proxy for the regulator's allowed ROE --
+    // Yahoo has no field for the latter -- surfaced here rather than hidden.
+    els.modelToggleRow.hidden = false;
+    els.modelLabel.textContent = '⚡ Excess Return Model — regulated utilities are valued on book equity + ROE spread, not free cash flow (reported ROE used as a proxy for the regulator-allowed ROE).';
     if (els.ddmToggle) els.ddmToggle.hidden = true;
     return;
   }

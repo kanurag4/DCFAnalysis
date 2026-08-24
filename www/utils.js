@@ -82,6 +82,21 @@ function isAirline(sector, industry) {
   return /^airlines$/i.test(industry || '');
 }
 
+// Regulated utilities: rate-base-and-allowed-return economics (a regulator
+// sets how much the utility can earn on its asset base) produce the same
+// "value = book equity + PV of excess returns" shape as a bank -- routed
+// to calc/excessReturn.js, same engine banks already use, via a new
+// deriveDcfAssumptions() dispatch branch (see calc/assumptions.js). Only
+// matches the regulated sub-industries -- "Utilities - Independent Power
+// Producers" and "Utilities - Renewable" are merchant/unregulated
+// generation, genuinely DCF-appropriate, so explicitly excluded (confirmed
+// live 2026-08-23: AGL.AX is tagged "Utilities - Independent Power
+// Producers"). Yahoo tags real regulated examples: NEE, DUK both
+// "Utilities - Regulated Electric" (confirmed live).
+function isUtility(sector, industry) {
+  return /^Utilities\s*-\s*(Regulated (Electric|Gas|Water)|Diversified)$/i.test(industry || '');
+}
+
 // Narrow check: banks and insurers where FCF-based DCF is structurally broken
 // -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
@@ -232,7 +247,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isReit, isAirline, isBankOrInsurance, chooseFinancialModel,
+  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
