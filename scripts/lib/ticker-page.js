@@ -40,6 +40,18 @@ async function getJSON(url) {
   return res.json();
 }
 
+// A single buildTickerPage() call fires 4-6 Worker requests in sequence
+// (quoteSummary, rf-rate, timeseries, FX rate, price history, index price
+// history) -- callers only throttle BETWEEN tickers (3200ms, same
+// convention as scripts/lib/run-screen.js), so with no spacing here that
+// burst alone can blow past the Worker's per-isolate rate limit even
+// before the next ticker starts. Confirmed live 2026-08-24: a bulk
+// regeneration run hit HTTP 429 on 46/47 tickers with only inter-ticker
+// throttling in place. Same 3200ms figure used everywhere else in this
+// codebase for exactly this reason -- not a tunable, a known-safe pace.
+const FETCH_SPACING_MS = 3200;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 // ── market → folder/screen mapping (mirrors market.js's suffix logic) ────
 const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 // Index tickers reused verbatim from each market's rank-<market>.js config —
@@ -619,9 +631,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     const currencySym = CURRENCY_SYMBOLS[data.currency] ?? market.currencySymbol;
 
     let live = {};
-    if (t.endsWith('.AX')) live.ausRf = await fetchAusRf(proxyUrl);
-    else if (t.endsWith('.NS') || t.endsWith('.BO')) live.indRf = await fetchIndRf(proxyUrl);
-    else if (!t.includes('.')) live.usRf = await fetchUsRf(proxyUrl);
+    if (t.endsWith('.AX')) { await sleep(FETCH_SPACING_MS); live.ausRf = await fetchAusRf(proxyUrl); }
+    else if (t.endsWith('.NS') || t.endsWith('.BO')) { await sleep(FETCH_SPACING_MS); live.indRf = await fetchIndRf(proxyUrl); }
+    else if (!t.includes('.')) { await sleep(FETCH_SPACING_MS); live.usRf = await fetchUsRf(proxyUrl); }
     const { rf, erp, terminalGrowth } = marketParamsFor(t, live);
     const isRfLive = !!(live.ausRf || live.indRf || live.usRf);
 
@@ -630,6 +642,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
     // Moved earlier (was after the scenario computation below) so the DCF
     // branch can use its diluted-shares/EBIT/interest-expense fields.
+    await sleep(FETCH_SPACING_MS);
     const hist = await fetchHistorySeries(t, proxyUrl);
 
     // Currency guard: see www/data.js's fetchDCFData() for the full
@@ -642,6 +655,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // property access.
     let fxConversionFailed = false;
     if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
+      await sleep(FETCH_SPACING_MS);
       const rate = await fetchFxRate(data.financialCurrency, data.currency, proxyUrl.replace(/\/$/, ''), batchHeaders());
       if (rate != null) {
         const c = v => (v != null ? v * rate : v);
@@ -891,12 +905,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       scenarios = applyHoldcoDiscountToScenarios(scenarios, HOLDCO_DISCOUNT, data.price);
     }
 
+    await sleep(FETCH_SPACING_MS);
     const priceSeriesRaw = await fetchPriceHistory(t, proxyUrl);
     let indexSeriesRaw;
     if (market.indexTicker) {
       if (indexHistoryCache && indexHistoryCache.has(market.indexTicker)) {
         indexSeriesRaw = indexHistoryCache.get(market.indexTicker);
       } else {
+        await sleep(FETCH_SPACING_MS);
         indexSeriesRaw = await fetchPriceHistory(market.indexTicker, proxyUrl);
         if (indexHistoryCache) indexHistoryCache.set(market.indexTicker, indexSeriesRaw);
       }
