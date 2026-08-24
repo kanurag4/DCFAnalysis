@@ -119,6 +119,42 @@ test('fetchSymbol still returns the mapped quoteSummary result when /timeseries 
   assert.strictEqual(d.annualFcf, undefined);
 });
 
+test('fetchSymbol carries the full annualFcfHistory/annualRevenueHistory arrays for cyclical normalization, not just the latest entry', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'BHP Group' },
+    financialData: { currentPrice: { raw: 42 } }, summaryDetail: { currency: 'AUD' },
+    defaultKeyStatistics: {}, assetProfile: { sector: 'Basic Materials', industry: 'Other Industrial Metals & Mining' } }] } };
+  const tsBody = {
+    annualFreeCashFlow: [
+      { date: '2023-06-30', value: 11968000000 },
+      { date: '2026-06-30', value: 11929000000 },
+    ],
+    annualTotalRevenue: [
+      { date: '2023-06-30', value: 53817000000 },
+      { date: '2026-06-30', value: 58760000000 },
+    ],
+  };
+  const fakeFetch = async (url) => (url.includes('/timeseries/')
+    ? { ok: true, status: 200, json: async () => tsBody }
+    : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('BHP.AX', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.strictEqual(d.annualFcfHistory.length, 2);
+  assert.strictEqual(d.annualRevenueHistory.length, 2);
+  assert.strictEqual(d.annualFcfHistory[0].value, 11968000000);
+  assert.strictEqual(d.annualRevenueHistory[1].value, 58760000000);
+});
+
+test('fetchSymbol defaults annualFcfHistory/annualRevenueHistory to empty arrays when /timeseries fails', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'Solo Co' },
+    financialData: { currentPrice: { raw: 5 } },
+    summaryDetail: { currency: 'USD' }, defaultKeyStatistics: {}, assetProfile: {} }] } };
+  const fakeFetch = async (url) => (url.includes('/timeseries/')
+    ? { ok: false, status: 500, json: async () => ({}) }
+    : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('SOLO', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.deepStrictEqual(d.annualFcfHistory, []);
+  assert.deepStrictEqual(d.annualRevenueHistory, []);
+});
+
 test('fetchSymbol sends no batch-key header when KV_BATCH_KEY is unset (dev-machine runs stay unauthenticated)', async () => {
   let capturedHeaders = 'not-called';
   const fakeFetch = async (url, opts) => {

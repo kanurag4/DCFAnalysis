@@ -4,12 +4,16 @@
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
   getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
+  isUtility, isCyclical, isConglomerate,
 } = require('../../www/utils.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
+const { normalizeCyclicalFcf } = require('../../www/calc/cyclicalNormalization.js');
+const { applyHoldcoDiscount } = require('../../www/calc/holdcoDiscount.js');
+const { HOLDCO_DISCOUNT } = require('../../www/config.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -35,7 +39,7 @@ const isUsableResult = (result) =>
 const round1pct = (x) => +(x * 100).toFixed(1) / 100;  // 1 dp as a percent (growth)
 const round2pct = (x) => +(x * 100).toFixed(2) / 100;  // 2 dp as a percent (WACC / Re)
 
-function evaluateStock(data, params) {
+function evaluateStockCore(data, params) {
   const { rf, erp, terminalGrowth = DEFAULT_TERMINAL_GROWTH } = params;
   const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(data.ticker));
@@ -46,10 +50,20 @@ function evaluateStock(data, params) {
     marketCap: data.marketCap, operatingMargin: data.operatingMargins, analystTarget: data.targetMeanPrice,
   };
 
-  // Banks/insurers/NBFCs → DDM or Excess Return Model (FCF-based DCF is
-  // structurally broken for lenders). Which of the two depends on payout ratio
-  // vs. sustainable payout -- see chooseFinancialModel().
-  if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
+  // Regulated utilities always use Excess Return (rate-base-and-allowed-return
+  // economics -- see www/dcf/calc/assumptions.js's isUtility() dispatch and
+  // its own comment for why), unlike banks/insurers where chooseFinancialModel()
+  // decides DDM vs Excess Return based on payout ratio. isUtility() already
+  // excludes merchant/unregulated generation (Independent Power Producers),
+  // so no separate guard is needed here.
+  const isUtilityTicker = isUtility(data.sector, data.industry);
+
+  // Banks/insurers/NBFCs/regulated utilities → DDM or Excess Return Model
+  // (FCF-based DCF is structurally broken for lenders and rate-regulated
+  // utilities alike). Which of the two depends on payout ratio vs.
+  // sustainable payout for banks -- see chooseFinancialModel() -- but is
+  // unconditional (always Excess Return) for utilities.
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker) || isUtilityTicker) {
     const dividend = data.trailingAnnualDividendRate
       ?? data.dividendRate
       ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
@@ -62,7 +76,7 @@ function evaluateStock(data, params) {
           ? data.trailingEps / (data.price / data.priceToBook)
           : null);
 
-    const model = chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth });
+    const model = isUtilityTicker ? 'excess-return' : chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth });
 
     if (model === 'excess-return') {
       const bookValue = data.price / data.priceToBook;
@@ -102,7 +116,23 @@ function evaluateStock(data, params) {
   }
 
   // Everyone else → DCF.
-  const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
+  let fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
+
+  // Cyclical/commodity companies get a normalized base-year FCF (average FCF
+  // margin across whatever real multi-year /timeseries history is available,
+  // applied to trailing revenue) instead of the trailing figure above, same
+  // as www/dcf/calc/assumptions.js's isCyclical dispatch -- falls back to the
+  // standard fcfInfo untouched when there's too little history.
+  if (isCyclical(data.sector, data.industry)) {
+    const normalized = normalizeCyclicalFcf({
+      fcfHistory: data.annualFcfHistory,
+      revenueHistory: data.annualRevenueHistory,
+      trailingRevenue: data.totalRevenue,
+    });
+    if (normalized.value !== null) {
+      fcfInfo = { value: normalized.value, method: 'normalized', marginUsed: normalized.marginUsed, yearsUsed: normalized.yearsUsed };
+    }
+  }
 
   // Non-bank financial-sector stocks (exchanges, asset managers, card networks):
   // the live DCF tool seeds a normalised FCF of fcf × 0.6, because reported FCF
@@ -171,6 +201,24 @@ function evaluateStock(data, params) {
     terminalValuePct: result.terminalValuePct,
     ...(highLeverage ? { highLeverage: true } : {}),
   };
+}
+
+// Holdco/conglomerate discount is independent of which model above produced
+// the result (almost always DCF, but a bank- or utility-tagged conglomerate
+// is possible) -- applied as a final post-processing step, same pattern as
+// the live tool's computeScenarios()/applyHoldcoDiscountToScenarios(). Only
+// wraps a successful (non-excluded) result; reuses calc/holdcoDiscount.js's
+// single-scenario function directly rather than reimplementing the discount
+// math a third time.
+function evaluateStock(data, params) {
+  const result = evaluateStockCore(data, params);
+  if (result.excluded) return result;
+  if (!isConglomerate(data.sector, data.industry, data.ticker)) return result;
+  const discounted = applyHoldcoDiscount(
+    { result: { intrinsicValue: result.intrinsic, marginOfSafety: result.marginOfSafety } },
+    HOLDCO_DISCOUNT, data.price,
+  );
+  return { ...result, intrinsic: discounted.result.intrinsicValue, marginOfSafety: discounted.result.marginOfSafety };
 }
 
 module.exports = { evaluateStock };

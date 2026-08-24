@@ -19,12 +19,17 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 // network) working unchanged for both calls. Never throws — a /timeseries
 // failure must not block the quoteSummary result that's already in hand.
 async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
+  // Defaulted here (not just on the success path) so callers always get real
+  // arrays regardless of /timeseries success/failure — mirrors www/data.js's
+  // fetchDCFData(), and lets scripts/lib/evaluate.js's isCyclical branch
+  // check .length without a null guard.
+  const withHistoryDefaults = { ...mapped, annualFcfHistory: [], annualRevenueHistory: [] };
   try {
     const url = `${proxyUrl.replace(/\/$/, '')}/timeseries/${encodeURIComponent(symbol)}`;
     const res = await fetchImpl(url, { headers: batchHeaders() });
-    if (!res || !res.ok) return mapped;
+    if (!res || !res.ok) return withHistoryDefaults;
     const body = await res.json();
-    if (!body || body.error) return mapped;
+    if (!body || body.error) return withHistoryDefaults;
 
     const dilutedSharesOutstanding = latestSeriesValue(body.annualDilutedAverageShares);
     const ebit = latestSeriesValue(body.annualOperatingIncome);
@@ -39,6 +44,13 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     // Yahoo does for a real, non-trivial share of NSE tickers — confirmed
     // live on TECHM.NS, 2026-08-15).
     const annualFcf = latestSeriesValue(body.annualFreeCashFlow);
+    // Full multi-year series (not just the latest entry) — used by
+    // scripts/lib/evaluate.js's isCyclical branch to average the FCF margin
+    // across a real fiscal-year history instead of anchoring the batch's
+    // base case to whichever single year happens to be a cycle peak or
+    // trough. Same source www/dcf/data.js's fetchDCFData() uses.
+    const annualFcfHistory = Array.isArray(body.annualFreeCashFlow) ? body.annualFreeCashFlow : [];
+    const annualRevenueHistory = Array.isArray(body.annualTotalRevenue) ? body.annualTotalRevenue : [];
 
     return {
       ...mapped,
@@ -48,9 +60,11 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
       // object for non-US tickers — prefer the /timeseries value when present.
       interestExpense: (interestExpenseTs != null) ? interestExpenseTs : mapped.interestExpense,
       annualFcf,
+      annualFcfHistory,
+      annualRevenueHistory,
     };
   } catch (_) {
-    return mapped; // all four stay absent — evaluate.js's existing fallbacks apply
+    return withHistoryDefaults; // enrichment fields stay absent/empty — evaluate.js's existing fallbacks apply
   }
 }
 

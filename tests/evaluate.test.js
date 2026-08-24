@@ -178,3 +178,89 @@ test('DCF runs off rounded display inputs (1dp growth, 2dp WACC) — matches the
   assert.ok(Math.abs(r.intrinsic - expected.intrinsicValue) < 1e-9,
     `evaluateStock should match the calculator's rounded-input DCF; got ${r.intrinsic}, expected ${expected.intrinsicValue}`);
 });
+
+// ── Regulated Utility -> Excess Return Model (unconditional, not payout-gated) ──
+
+test('routes a regulated utility to Excess Return Model regardless of payout ratio', () => {
+  const utility = {
+    ...dcfStock, ticker: 'NEE', sector: 'Utilities', industry: 'Utilities - Regulated Electric',
+    price: 72.50, priceToBook: 3.0542574, returnOnEquity: 0.11677,
+    trailingEps: null, trailingAnnualDividendRate: 2.0, dividendYield: 0.0276, // high payout -- would get DDM if this were a bank
+    earningsGrowth: 0.07, revenueGrowth: 0.08,
+  };
+  const r = evaluateStock(utility, params);
+  assert.strictEqual(r.method, 'ExcessReturn');
+  assert.strictEqual(r.excluded, undefined);
+  assert.ok(typeof r.intrinsic === 'number');
+});
+
+test('does NOT route Independent Power Producers to Excess Return (merchant generation stays DCF)', () => {
+  const merchant = { ...dcfStock, ticker: 'AGL.AX', sector: 'Utilities', industry: 'Utilities - Independent Power Producers' };
+  const r = evaluateStock(merchant, params);
+  assert.strictEqual(r.method, 'DCF');
+});
+
+// ── Cyclical/Commodity FCF-margin normalization ──────────────────────────
+
+const cyclicalFcfHistory = [
+  { date: '2023-06-30', value: 11968000000 },
+  { date: '2024-06-30', value: 11849000000 },
+  { date: '2025-06-30', value: 9294000000 },
+  { date: '2026-06-30', value: 11929000000 },
+];
+const cyclicalRevenueHistory = [
+  { date: '2023-06-30', value: 53817000000 },
+  { date: '2024-06-30', value: 55658000000 },
+  { date: '2025-06-30', value: 51262000000 },
+  { date: '2026-06-30', value: 58760000000 },
+];
+
+test('normalizes a cyclical ticker\'s FCF using the multi-year margin average instead of trailing FCF', () => {
+  const cyclical = {
+    ...dcfStock, ticker: 'BHP.AX', sector: 'Basic Materials', industry: 'Other Industrial Metals & Mining',
+    totalRevenue: 58760000000, freeCashflow: 11929000000, operatingCashflow: null, capitalExpenditures: null,
+    annualFcfHistory: cyclicalFcfHistory, annualRevenueHistory: cyclicalRevenueHistory,
+  };
+  const r = evaluateStock(cyclical, params);
+  assert.strictEqual(r.method, 'DCF');
+  assert.strictEqual(r.fcfMethod, 'normalized');
+  assert.notStrictEqual(r.intrinsic, undefined);
+});
+
+test('falls back to standard trailing FCF when a cyclical ticker has too little history', () => {
+  const cyclical = {
+    ...dcfStock, ticker: 'NEWMINE.AX', sector: 'Basic Materials', industry: 'Steel',
+    totalRevenue: 0.5e9, freeCashflow: 0.05e9,
+    annualFcfHistory: [{ date: '2026-06-30', value: 0.05e9 }],
+    annualRevenueHistory: [{ date: '2026-06-30', value: 0.5e9 }],
+  };
+  const r = evaluateStock(cyclical, params);
+  assert.strictEqual(r.fcfMethod, 'reported'); // deriveFcf's own tier, unchanged
+});
+
+test('a non-cyclical ticker is not normalized even with history fields present', () => {
+  const r = evaluateStock({ ...dcfStock, annualFcfHistory: cyclicalFcfHistory, annualRevenueHistory: cyclicalRevenueHistory }, params);
+  assert.strictEqual(r.fcfMethod, 'reported');
+});
+
+// ── Holdco/Conglomerate discount ─────────────────────────────────────────
+
+test('applies the holdco discount to a conglomerate\'s DCF result', () => {
+  const baseline = evaluateStock(dcfStock, params);
+  const holdco = evaluateStock({ ...dcfStock, ticker: 'HON', industry: 'Conglomerates' }, params);
+  assert.strictEqual(holdco.method, 'DCF');
+  assert.ok(Math.abs(holdco.intrinsic - baseline.intrinsic * 0.85) < 1e-6);
+});
+
+test('applies the holdco discount on top of a bank-model conglomerate too (discount is model-agnostic)', () => {
+  // sector: 'Insurance' alone satisfies isBankOrInsurance() (checks sector OR
+  // industry for /bank|insurance/i); industry: 'Conglomerates' independently
+  // satisfies isConglomerate() (industry-only check) -- lets one fixture
+  // genuinely exercise both dispatches at once without needing the (empty in
+  // production) ticker allowlist.
+  const bank = { ...dcfStock, ticker: 'BBB.AX', sector: 'Insurance', industry: 'Insurance—Diversified', trailingAnnualDividendRate: 0.8, dividendYield: 0.08 };
+  const baseline = evaluateStock(bank, params);
+  const holdcoBank = evaluateStock({ ...bank, ticker: 'HOLDCOBANK', industry: 'Conglomerates' }, params);
+  assert.strictEqual(holdcoBank.method, 'DDM');
+  assert.ok(Math.abs(holdcoBank.intrinsic - baseline.intrinsic * 0.85) < 1e-6);
+});
