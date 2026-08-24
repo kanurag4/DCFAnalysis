@@ -96,12 +96,12 @@
     "name": "Advanced Micro Devices, Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 83.49595875930552,
+    "intrinsic": 48.18870097667625,
     "price": 473.25,
-    "marginOfSafety": -0.8235690253369139,
+    "marginOfSafety": -0.8981749583165848,
     "marketCap": 772568776704,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:04:50.373Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:27:42.820Z"
   },
   {
     "ticker": "AVGO",
@@ -109,12 +109,12 @@
     "name": "Broadcom Inc.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 127.0430874431748,
+    "intrinsic": 159.08423625063472,
     "price": 368.45,
-    "marginOfSafety": -0.6551958544085363,
+    "marginOfSafety": -0.5682338546596968,
     "marketCap": 1752930451456,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:04:54.110Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:28:01.465Z"
   },
   {
     "ticker": "AVY",
@@ -304,12 +304,12 @@
     "name": "Halliburton Company",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 56.16747391089275,
+    "intrinsic": 50.126833151979724,
     "price": 35.34,
-    "marginOfSafety": 0.58934561151366,
+    "marginOfSafety": 0.4184163314085942,
     "marketCap": 29522956288,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:41:03.095Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:28:20.168Z"
   },
   {
     "ticker": "HON",
@@ -317,12 +317,12 @@
     "name": "Honeywell International Inc.",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 300.76891955183856,
+    "intrinsic": 255.65358161906278,
     "price": 215.9,
-    "marginOfSafety": 0.3930936523938794,
+    "marginOfSafety": 0.18412960453479746,
     "marketCap": 68427345920,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:05:54.128Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:28:38.876Z"
   },
   {
     "ticker": "HPE",
@@ -499,12 +499,12 @@
     "name": "3M Company",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 288.1293980536923,
+    "intrinsic": 244.90998834563848,
     "price": 178.96,
-    "marginOfSafety": 0.6100212229196037,
+    "marginOfSafety": 0.36851803948166334,
     "marketCap": 92293693440,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:06:39.247Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:28:57.830Z"
   },
   {
     "ticker": "MNST",
@@ -603,12 +603,12 @@
     "name": "NVIDIA Corporation",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 32.182474116497545,
+    "intrinsic": 64.23879007790876,
     "price": 214.72,
-    "marginOfSafety": -0.8501188798598288,
+    "marginOfSafety": -0.7008253070142103,
     "marketCap": 5200733011968,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:07:09.307Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:29:16.440Z"
   },
   {
     "ticker": "NXPI",
@@ -616,12 +616,12 @@
     "name": "NXP Semiconductors N.V.",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 289.05218948201616,
+    "intrinsic": 185.2242093969569,
     "price": 225.56,
-    "marginOfSafety": 0.2814869191435368,
+    "marginOfSafety": -0.17882510464197157,
     "marketCap": 56878149632,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:07:13.061Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:29:35.160Z"
   },
   {
     "ticker": "OKTA",
@@ -642,12 +642,12 @@
     "name": "ON Semiconductor Corporation",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 74.39652276347316,
+    "intrinsic": 44.62033593776414,
     "price": 74.21,
-    "marginOfSafety": 0.0025134451350648686,
+    "marginOfSafety": -0.3987287974967775,
     "marketCap": 28890822656,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:07:20.561Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:29:54.727Z"
   },
   {
     "ticker": "PFE",
@@ -785,12 +785,12 @@
     "name": "Tesla, Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 24.07966828563389,
+    "intrinsic": 28.732121847993174,
     "price": 362.86,
-    "marginOfSafety": -0.9336392319747729,
+    "marginOfSafety": -0.9208176105164714,
     "marketCap": 1433132728320,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:07:54.018Z"
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:30:13.504Z"
   },
   {
     "ticker": "TWLO",

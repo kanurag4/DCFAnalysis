@@ -175,11 +175,11 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 52.15122622940951,
-    "price": 67.42,
-    "marginOfSafety": -0.2264724676741396,
-    "marketCap": 342504603648,
+    "price": 67.32,
+    "marginOfSafety": -0.22532343687745818,
+    "marketCap": 341996601344,
     "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T04:48:49.727Z"
+    "updatedAt": "2026-08-24T05:21:26.261Z"
   },
   {
     "ticker": "BPT.AX",
@@ -187,12 +187,12 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 2.1421819382319387,
-    "price": 0.905,
-    "marginOfSafety": 1.367051865449656,
-    "marketCap": 2064606976,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:24:17.896Z"
+    "intrinsic": 2.1473001709735393,
+    "price": 0.887,
+    "marginOfSafety": 1.420857013498917,
+    "marketCap": 2023543040,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:21:44.599Z"
   },
   {
     "ticker": "BVS.AX",
@@ -356,12 +356,12 @@
     "name": "Deterra Royalties Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 7.515941009799014,
-    "price": 4.37,
-    "marginOfSafety": 0.7198949679173944,
-    "marketCap": 2313724928,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:32:05.259Z"
+    "intrinsic": 4.672767415736419,
+    "price": 4.4,
+    "marginOfSafety": 0.061992594485549675,
+    "marketCap": 2329608704,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:22:02.906Z"
   },
   {
     "ticker": "EDV.AX",
@@ -392,15 +392,15 @@
   {
     "ticker": "EVN.AX",
     "slug": "evn-ax",
-    "name": "EVOLUTION FPO [EVN]",
+    "name": "Evolution Mining Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 10.793121404510138,
-    "price": 15.35,
-    "marginOfSafety": -0.2968650550807727,
-    "marketCap": 31341991936,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:00:01.002Z"
+    "intrinsic": 1.9640429077229762,
+    "price": 15.61,
+    "marginOfSafety": -0.8741804671541975,
+    "marketCap": 31872864256,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:22:21.265Z"
   },
   {
     "ticker": "FLT.AX",
@@ -421,12 +421,12 @@
     "name": "Fortescue Ltd",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 19.748341800949067,
-    "price": 17.75,
-    "marginOfSafety": 0.11258263667318687,
-    "marketCap": 54651629568,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:00:08.685Z"
+    "intrinsic": 25.537897862067624,
+    "price": 17.885,
+    "marginOfSafety": 0.4278947644432553,
+    "marketCap": 55067287552,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:22:44.822Z"
   },
   {
     "ticker": "FPH.AX",
@@ -447,12 +447,12 @@
     "name": "Genesis Minerals Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 10.187363038871094,
-    "price": 8.32,
-    "marginOfSafety": 0.22444267294123726,
-    "marketCap": 9763858432,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:40:34.235Z"
+    "intrinsic": 13.946969290318776,
+    "price": 8.59,
+    "marginOfSafety": 0.623628555333967,
+    "marketCap": 10080714752,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:23:03.147Z"
   },
   {
     "ticker": "GMG.AX",
@@ -616,12 +616,12 @@
     "name": "Macmahon Holdings Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 1.3477194609630976,
-    "price": 1.035,
-    "marginOfSafety": 0.3021444067276306,
-    "marketCap": 2230410240,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:32:51.563Z"
+    "intrinsic": 1.2751302199335146,
+    "price": 1.057,
+    "marginOfSafety": 0.2063672847053119,
+    "marketCap": 2277819904,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:23:21.702Z"
   },
   {
     "ticker": "MGH.AX",
@@ -681,12 +681,12 @@
     "name": "Newmont Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 357.2317065457096,
-    "price": 179.85,
-    "marginOfSafety": 0.9862758217720856,
-    "marketCap": 189506568192,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:01:20.202Z"
+    "intrinsic": 152.2899172378771,
+    "price": 184.82,
+    "marginOfSafety": -0.1760095377238551,
+    "marketCap": 194743418880,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:23:44.035Z"
   },
   {
     "ticker": "NHF.AX",
@@ -707,12 +707,12 @@
     "name": "NRW Holdings Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 12.903783079442848,
-    "price": 8.2,
-    "marginOfSafety": 0.573632082858884,
-    "marketCap": 3767628800,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:32:24.662Z"
+    "intrinsic": 10.983228880372083,
+    "price": 8.08,
+    "marginOfSafety": 0.35931050499654493,
+    "marketCap": 3712492800,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:24:03.210Z"
   },
   {
     "ticker": "NXL.AX",
@@ -732,13 +732,13 @@
     "slug": "org-ax",
     "name": "Origin Energy Limited",
     "sector": "Utilities",
-    "method": "DCF",
-    "intrinsic": 24.132823648565044,
-    "price": 11.89,
-    "marginOfSafety": 1.0296739822174132,
-    "marketCap": 20483469312,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:01:31.488Z"
+    "method": "ExcessReturn",
+    "intrinsic": 7.44948279269715,
+    "price": 11.75,
+    "marginOfSafety": -0.3660014644513064,
+    "marketCap": 20242284544,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:24:21.840Z"
   },
   {
     "ticker": "ORI.AX",
@@ -746,12 +746,12 @@
     "name": "Orica Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 23.76580581042315,
-    "price": 22.16,
-    "marginOfSafety": 0.07246416112017821,
-    "marketCap": 10272102400,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:24:31.355Z"
+    "intrinsic": 7.359886359393042,
+    "price": 22.135,
+    "marginOfSafety": -0.6675000515295667,
+    "marketCap": 10260513792,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:24:40.771Z"
   },
   {
     "ticker": "PLS.AX",
@@ -760,11 +760,11 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 1.2700269147622603,
-    "price": 5.07,
-    "marginOfSafety": -0.7495015947214477,
-    "marketCap": 16343761920,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:01:49.866Z"
+    "price": 5.48,
+    "marginOfSafety": -0.7682432637295146,
+    "marketCap": 17665445888,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:24:59.350Z"
   },
   {
     "ticker": "PRN.AX",
@@ -772,12 +772,12 @@
     "name": "Perenti Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 3.1162017305954666,
-    "price": 2.44,
-    "marginOfSafety": 0.2771318568014208,
-    "marketCap": 2280912896,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:40:19.703Z"
+    "intrinsic": 0.7186710267293545,
+    "price": 2.325,
+    "marginOfSafety": -0.6908941820518907,
+    "marketCap": 2173410816,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:25:17.998Z"
   },
   {
     "ticker": "QAN.AX",
@@ -863,12 +863,12 @@
     "name": "South32 Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 2.650615697640722,
-    "price": 4.89,
-    "marginOfSafety": -0.45795180007347197,
-    "marketCap": 21913696256,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:02:16.526Z"
+    "intrinsic": 4.451491432605348,
+    "price": 5.045,
+    "marginOfSafety": -0.11764292713471795,
+    "marketCap": 22608304128,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:25:40.911Z"
   },
   {
     "ticker": "SDF.AX",
@@ -993,11 +993,12 @@
     "name": "Santos Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 1.5747980647287503,
-    "price": 8.43,
-    "marginOfSafety": -0.8131912141484282,
-    "marketCap": 27378726912,
-    "updated": "2026-08-20"
+    "intrinsic": 2.4261393993904408,
+    "price": 8.215,
+    "marginOfSafety": -0.7046695801107193,
+    "marketCap": 26680455168,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:26:03.949Z"
   },
   {
     "ticker": "SUN.AX",
@@ -1122,12 +1123,12 @@
     "name": "VLTMINLTD FPO [VAU]",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 12.362729242531369,
-    "price": 6.78,
-    "marginOfSafety": 0.8234113927037416,
-    "marketCap": 7014356992,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:03:42.605Z"
+    "intrinsic": 8.534204222497989,
+    "price": 6.94,
+    "marginOfSafety": 0.2297124239910646,
+    "marketCap": 7179887104,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:26:22.570Z"
   },
   {
     "ticker": "VCX.AX",
@@ -1161,12 +1162,12 @@
     "name": "West African Resources Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 6.364014190392321,
-    "price": 3.78,
-    "marginOfSafety": 0.6836016376699262,
-    "marketCap": 4323386368,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:32:12.466Z"
+    "intrinsic": 12.586401046105578,
+    "price": 3.895,
+    "marginOfSafety": 2.23142517229925,
+    "marketCap": 4454917632,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:26:41.468Z"
   },
   {
     "ticker": "WBC.AX",
@@ -1187,12 +1188,12 @@
     "name": "Woodside Energy Group Ltd",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 19.697128725751615,
-    "price": 33.78,
-    "marginOfSafety": -0.4168996824821902,
-    "marketCap": 64219160576,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:03:53.991Z"
+    "intrinsic": 6.68749939573654,
+    "price": 33.375,
+    "marginOfSafety": -0.7996254862700661,
+    "marketCap": 63449219072,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:27:04.412Z"
   },
   {
     "ticker": "WES.AX",
@@ -1213,12 +1214,12 @@
     "name": "Worley Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 15.676346529045638,
-    "price": 10.9,
-    "marginOfSafety": 0.43819692927024195,
-    "marketCap": 5518922240,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T08:32:44.483Z"
+    "intrinsic": 12.857910956471185,
+    "price": 10.85,
+    "marginOfSafety": 0.18506091764711388,
+    "marketCap": 5493606400,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T05:27:23.941Z"
   },
   {
     "ticker": "WOW.AX",
