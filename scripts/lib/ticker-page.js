@@ -14,10 +14,11 @@ const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const { deriveFfo, deriveAffo, calculateReitValue } = require('../../www/calc/reit.js');
 const { calculateAirlineValue } = require('../../www/calc/airline.js');
+const { normalizeCyclicalFcf } = require('../../www/calc/cyclicalNormalization.js');
 const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE } = require('../../www/config.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility, isCyclical,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -446,6 +447,13 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     // some tickers, e.g. TECHM.NS, have no TTM figure at all despite every
     // individual fiscal year having real data) and why it's ordered last.
     fcfAnnualLatest: latestAnnual(series.annualFreeCashFlow),
+    // Full multi-year series (not just the latest entry) — used by the
+    // isCyclical branch below to average the FCF margin across a real
+    // fiscal-year history instead of anchoring the DCF to whichever single
+    // year happens to be a cycle peak or trough. Same source www/dcf/data.js's
+    // fetchDCFData() uses for the live tool.
+    annualFcfHistory: Array.isArray(series.annualFreeCashFlow) ? series.annualFreeCashFlow : [],
+    annualRevenueHistory: Array.isArray(series.annualTotalRevenue) ? series.annualTotalRevenue : [],
   };
 }
 
@@ -645,6 +653,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.ebit = c(hist.ebit);
         hist.interestExpense = c(hist.interestExpense);
         hist.fcfAnnualLatest = c(hist.fcfAnnualLatest);
+        hist.annualFcfHistory = hist.annualFcfHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualRevenueHistory = hist.annualRevenueHistory.map(e => ({ date: e.date, value: c(e.value) }));
         // REIT FFO/AFFO inputs (see calc/reit.js) -- missed in the original
         // REIT wiring pass, same currency-mixing bug class as the SONY
         // incident above (net income/D&A left unconverted while capex above
@@ -664,6 +674,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.ebit = null;
         hist.interestExpense = null;
         hist.fcfAnnualLatest = null;
+        hist.annualFcfHistory = [];
+        hist.annualRevenueHistory = [];
         data.netIncome = null;
         data.depreciationAndAmortization = null;
         data.ebitda = null;
@@ -783,6 +795,23 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       }
     } else {
       fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, hist.fcfAnnualLatest);
+      // Cyclical/commodity companies get a normalized base-year FCF (average
+      // FCF margin across whatever real multi-year /timeseries history is
+      // available, applied to trailing revenue) instead of the trailing
+      // figure above, same as www/dcf/calc/assumptions.js's isCyclical
+      // dispatch -- falls back to the standard fcfInfo untouched when
+      // there's too little history.
+      const isCyclicalTicker = isCyclical(data.sector, data.industry);
+      if (isCyclicalTicker) {
+        const normalized = normalizeCyclicalFcf({
+          fcfHistory: hist.annualFcfHistory,
+          revenueHistory: hist.annualRevenueHistory,
+          trailingRevenue: data.totalRevenue,
+        });
+        if (normalized.value !== null) {
+          fcfInfo = { value: normalized.value, method: 'normalized', marginUsed: normalized.marginUsed, yearsUsed: normalized.yearsUsed };
+        }
+      }
       baseFcf = fcfInfo.value;
       if (baseFcf != null) {
         if (isFinancialSector(data.sector) && baseFcf > 0) { baseFcf = baseFcf * 0.6; fcfNormalised = true; }
@@ -902,15 +931,30 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       fxConversionFailed, financialCurrency: data.financialCurrency,
     } : null;
 
-    const fcfMethodBadge = fcfInfo && fcfInfo.value != null
+    // revenueNormalised checked first, same priority fcfMethodNote below
+    // already uses -- fcfInfo.method can go stale (still 'normalized' or
+    // 'derived' from before the fallback ran) when the revenue-normalisation
+    // fallback overrides baseFcf after fcfInfo's own value came back <= 0
+    // (e.g. a cyclical ticker whose multi-year average margin is itself
+    // negative -- confirmed live on TM, 2026-08-24). Without this check the
+    // badge would show a stale "Nyr avg margin"/"OCF−CapEx" tag next to a
+    // value that's actually revenue-normalised.
+    const fcfMethodBadge = revenueNormalised ? ''
+      : fcfInfo && fcfInfo.value != null
       ? (fcfInfo.method === 'proxy' ? ' <span class="stat-warn">⚠ est.</span>'
-        : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>' : '')
+        : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>'
+        : fcfInfo.method === 'normalized' ? ` <span style="font-size:0.7rem;color:var(--kv-muted)">${fcfInfo.yearsUsed}yr avg margin</span>` : '')
       : '';
     const fcfMethodNote = revenueNormalised
       ? `Revenue × ${revenueTargetMarginPct}% target margin — reported FCF unavailable`
       : !fcfInfo ? ''
       : fcfInfo.method === 'reported' ? 'Reported free cash flow (Yahoo)'
       : fcfInfo.method === 'derived' ? 'Derived: operating cash flow − capital expenditure'
+      // Cyclical/commodity company -- see calc/cyclicalNormalization.js.
+      // Yahoo's /timeseries typically covers ~4 fiscal years, shorter than a
+      // full commodity cycle (5-10yr) -- a real data-availability limitation
+      // surfaced here, not hidden.
+      : fcfInfo.method === 'normalized' ? `Cyclical company — average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue), not the latest year alone, to avoid over/under-valuing at a cycle extreme`
       : 'Rough estimate: operating cash flow × 0.8';
 
     const stats = isReitTicker
@@ -952,7 +996,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       : [
           ['Price', money(data.price, currencySym)],
           ['Market Cap', moneyB(data.marketCap, currencySym)],
-          ['Free Cash Flow', moneyB(fcfInfo?.value, currencySym) + fcfMethodBadge],
+          // baseFcf, not fcfInfo?.value -- when the revenue-normalisation
+          // fallback overrides baseFcf (fcfInfo's own value came back <= 0),
+          // fcfInfo.value stays stale at the original, unused figure; baseFcf
+          // is always the actual number the DCF calc below runs on. Same
+          // staleness class as fcfMethodBadge above, pre-existing (not
+          // specific to Cyclical) but only surfaced live via TM's cyclical
+          // normalization producing a negative multi-year average margin.
+          ['Free Cash Flow', moneyB(baseFcf, currencySym) + fcfMethodBadge],
           ['Beta', effectiveBeta.toFixed(2)],
           ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
           ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
