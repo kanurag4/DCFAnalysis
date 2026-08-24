@@ -144,6 +144,12 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
   margin-top: 6px;
   line-height: 1.4;
 }
+.holdco-note {
+  font-size: 0.8rem;
+  color: var(--kv-accent, var(--accent));
+  margin: 8px 0;
+  line-height: 1.4;
+}
 
 /* Slider */
 .slider-row { display: flex; align-items: center; gap: 10px; }

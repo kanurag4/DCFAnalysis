@@ -39,5 +39,15 @@ const REIT_SECTOR_MULTIPLES = {
 // not evidence the approach is wrong).
 const AIRLINE_EV_EBITDA_MULTIPLE = 6;
 
-if (typeof module !== 'undefined') module.exports = { CONFIG, REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE };
-if (typeof window !== 'undefined') { window.CONFIG = CONFIG; window.REIT_SECTOR_MULTIPLES = REIT_SECTOR_MULTIPLES; window.AIRLINE_EV_EBITDA_MULTIPLE = AIRLINE_EV_EBITDA_MULTIPLE; }
+// Flat holding-company discount for conglomerates (see calc/holdcoDiscount.js
+// and calc/assumptions.js's isConglomerate dispatch) -- NOT a real
+// segment-level sum-of-the-parts valuation (Yahoo exposes no per-segment
+// financials, confirmed 2026-08-23). 15% is a general market estimate
+// (Damodaran cites typically-observed conglomerate discounts in the
+// 10-20% range) -- not independently calibrated against this site's actual
+// conglomerate tickers' trading multiples, same "documented placeholder,
+// not a silent guess" posture AIRLINE_EV_EBITDA_MULTIPLE already uses.
+const HOLDCO_DISCOUNT = 0.15;
+
+if (typeof module !== 'undefined') module.exports = { CONFIG, REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE, HOLDCO_DISCOUNT };
+if (typeof window !== 'undefined') { window.CONFIG = CONFIG; window.REIT_SECTOR_MULTIPLES = REIT_SECTOR_MULTIPLES; window.AIRLINE_EV_EBITDA_MULTIPLE = AIRLINE_EV_EBITDA_MULTIPLE; window.HOLDCO_DISCOUNT = HOLDCO_DISCOUNT; }

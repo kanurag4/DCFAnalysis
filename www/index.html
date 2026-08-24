@@ -163,6 +163,8 @@
           <button id="ddm-toggle" class="model-toggle-btn" type="button"></button>
         </div>
 
+        <div id="holdco-note" class="holdco-note" hidden></div>
+
         <div class="input-section">
           <div class="input-row" id="fcf-row">
             <label for="fcf-input"><span class="kv-term" data-term="free-cash-flow" tabindex="0" role="button" aria-expanded="false">Free Cash Flow</span>
@@ -473,6 +475,7 @@
   <script src="calc/airline.js"></script>
   <script src="calc/fadingGrowthDcf.js"></script>
   <script src="calc/cyclicalNormalization.js"></script>
+  <script src="calc/holdcoDiscount.js"></script>
   <script src="calc/assumptions.js"></script>
   <!-- Self-hosted, not CDN (chart.umd.min.js@4.5.1 / chartjs-plugin-datalabels@2.2.0) --
        a CDN dependency here meant the Android app's first-ever DCF chart render on a

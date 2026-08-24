@@ -104,6 +104,12 @@ function deriveDcfAssumptions(data) {
   const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
   const isUtilityFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isUtility(data.sector, data.industry);
   const isCyclicalFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isCyclical(data.sector, data.industry);
+  // Independent of the model dispatch above -- a conglomerate can be any
+  // underlying model (almost always plain DCF, but a bank- or REIT-tagged
+  // conglomerate is possible); the discount stacks on top of whichever
+  // model runs rather than competing to select one. See
+  // calc/holdcoDiscount.js.
+  const isHoldcoFlag = isConglomerate(data.sector, data.industry, data.ticker);
   const currentMarket = detectMarket(data.ticker);
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;
@@ -230,9 +236,10 @@ function deriveDcfAssumptions(data) {
   const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));
 
   return {
-    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, isUtility: isUtilityFlag, isCyclical: isCyclicalFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
+    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, isUtility: isUtilityFlag, isCyclical: isCyclicalFlag, isHoldco: isHoldcoFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
     waccResult, modelSeeds, fcfInfo: finalFcfInfo,
     valuationModel,
+    holdcoDiscount: isHoldcoFlag ? HOLDCO_DISCOUNT : null,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
   };
 }
@@ -252,24 +259,26 @@ function computeScenarios(data, valuationModel, seeds, options) {
 
   if (valuationModel === 'reit') {
     const affoPerShare = seeds.affoPerShare;
-    return configs.map((key) => {
+    const scenarios = configs.map((key) => {
       const multiple = seeds.multiple[key];
       if (!(affoPerShare > 0)) return { key, multiple, result: null, noAffo: true };
       const result = calculateReitValue({ affoPerShare, multiple, currentPrice: data.price });
       return { key, multiple, result };
     });
+    return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
   }
 
   if (valuationModel === 'airline') {
     const ebitda = seeds.ebitda;
     const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
       ? data.dilutedSharesOutstanding : data.sharesOutstanding;
-    return configs.map((key) => {
+    const scenarios = configs.map((key) => {
       const multiple = seeds.multiple[key];
       if (!(ebitda > 0)) return { key, multiple, result: null, noEbitda: true };
       const result = calculateAirlineValue({ ebitda, multiple, totalDebt: data.totalDebt, totalCash: data.totalCash, sharesOutstanding: resolvedShares, currentPrice: data.price });
       return { key, multiple, result };
     });
+    return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
   }
 
   if (valuationModel === 'excess-return') {
@@ -280,18 +289,19 @@ function computeScenarios(data, valuationModel, seeds, options) {
     // comment on modelSeeds.excessReturn). Bear/bull vary ROE and cost of equity
     // only, avoiding a second independent lever.
     const bookValueGrowthRate = (seeds.bookValueGrowthPct ?? 0) / 100;
-    return configs.map((key) => {
+    const scenarios = configs.map((key) => {
       const roe          = seeds.growth[key] / 100;   // "growth" slot holds ROE for this model
       const costOfEquity = seeds.discount[key] / 100;
       if (!(bookValue > 0)) return { key, roe, wacc: costOfEquity, result: null, noBookValue: true };
       const result = calculateExcessReturn({ bookValue, roe, costOfEquity, growthRate: bookValueGrowthRate, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
       return { key, roe, wacc: costOfEquity, result };
     });
+    return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
   }
 
   if (valuationModel === 'ddm') {
     const dividend = seeds.dividend;
-    return configs.map((key) => {
+    const scenarios = configs.map((key) => {
       const growthRate     = seeds.growth[key] / 100;
       const terminalGrowth = seeds.tgrowth[key] / 100;
       const costOfEquity   = seeds.discount[key] / 100;
@@ -299,6 +309,7 @@ function computeScenarios(data, valuationModel, seeds, options) {
       const result = calculateDDM({ dividend, growthRate, terminalGrowth, costOfEquity, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
       return { key, growthRate, terminalGrowth, wacc: costOfEquity, result };
     });
+    return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
   }
 
   const fcfRaw = options.fcfRaw === undefined ? null : options.fcfRaw;
@@ -318,7 +329,7 @@ function computeScenarios(data, valuationModel, seeds, options) {
       : calculateDCF({ ...common, fcf: fcfValue, growthRate });
   }
 
-  return configs.map((key) => {
+  const scenarios = configs.map((key) => {
     const growthRate     = seeds.growth[key] / 100;
     const terminalGrowth = seeds.tgrowth[key] / 100;
     const wacc            = seeds.discount[key] / 100;
@@ -333,6 +344,7 @@ function computeScenarios(data, valuationModel, seeds, options) {
     }
     return { key, growthRate, terminalGrowth, wacc, result: runDcf(fcfRaw, growthRate, terminalGrowth, wacc) };
   });
+  return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
 }
 
 // FALLBACK_RF/MARKET_ERP/MARKET_TGROWTH exported (2026-08-23) so worker-watchlist's

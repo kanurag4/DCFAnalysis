@@ -112,6 +112,25 @@ function isCyclical(sector, industry) {
   return CYCLICAL_INDUSTRIES.test(industry || '');
 }
 
+// Manual ticker allowlist for known cross-holding/conglomerate structures
+// this site's users report -- starts empty (per the design spec), grows
+// over time. Kept separate from the industry-tag check below so a ticker
+// that trades as a conglomerate in practice but isn't tagged that way by
+// Yahoo can still be routed here.
+const HOLDCO_TICKER_ALLOWLIST = new Set([]);
+
+// Conglomerates: a documented holding-company discount (see
+// calc/holdcoDiscount.js) applied on top of whatever model the ticker
+// would normally get -- NOT a real segment-level sum-of-the-parts
+// valuation, which Yahoo's API doesn't support (no per-segment financials
+// available, confirmed 2026-08-23 -- see the design spec's Model 2
+// section). Confirmed live: HON and MMM are both tagged Industrials /
+// "Conglomerates" by Yahoo.
+function isConglomerate(sector, industry, ticker) {
+  if (/^Conglomerates$/i.test(industry || '')) return true;
+  return HOLDCO_TICKER_ALLOWLIST.has((ticker || '').toUpperCase());
+}
+
 // Narrow check: banks and insurers where FCF-based DCF is structurally broken
 // -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
@@ -262,7 +281,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isCyclical, isBankOrInsurance, chooseFinancialModel,
+  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isCyclical, isConglomerate, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,

@@ -23,6 +23,7 @@ const els = {
   fcfNormRow:   $('fcf-normalized-row'),
   fcfNorm:      $('fcf-normalized'),
   cyclicalNote: $('cyclical-note'),
+  holdcoNote: $('holdco-note'),
   yearsSlider:  $('years-slider'),
   yearsDisplay: $('years-display'),
   midyearToggle: $('midyear-toggle'),
@@ -276,6 +277,7 @@ const CHINA_ERP     = 5.2;
 // other market here uses.
 const CHINA_TGROWTH = 0.6;
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
+let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDiscount, read by buildScenarios()
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -389,6 +391,16 @@ function prefillInputs(data) {
   const isReitTicker = assumptions.isReit;
   valuationModel = assumptions.valuationModel;
   currentMarket = assumptions.currentMarket;
+  holdcoDiscount = assumptions.holdcoDiscount;
+
+  if (els.holdcoNote) {
+    if (assumptions.isHoldco) {
+      els.holdcoNote.hidden = false;
+      els.holdcoNote.textContent = `🏛️ Holding company / conglomerate — a ${(holdcoDiscount * 100).toFixed(0)}% discount has been applied to the intrinsic values below, reflecting typically less efficient capital allocation and reduced transparency across diversified business lines (not a per-segment valuation — see the tool's methodology notes).`;
+    } else {
+      els.holdcoNote.hidden = true;
+    }
+  }
 
   // ── Market detection — still drives the RF/ERP input values and the
   // "About the X numbers" panel, both DOM-only concerns that stay here ──
@@ -1233,7 +1245,7 @@ function buildScenarios(data) {
       affoPerShare: isFinite(affoPerShare) ? affoPerShare : null,
       multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // reuses the growth-bear/base/bull inputs, relabeled "P/AFFO Multiple" in applyModelUI()
     };
-    return computeScenarios(data, 'reit', seeds, {});
+    return computeScenarios(data, 'reit', seeds, { holdcoDiscount });
   }
 
   // ── Airline (EV/EBITDA, locked model) ──
@@ -1245,7 +1257,7 @@ function buildScenarios(data) {
       ebitda: isFinite(ebitda) ? ebitda : null,
       multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 },
     };
-    return computeScenarios(data, 'airline', seeds, {});
+    return computeScenarios(data, 'airline', seeds, { holdcoDiscount });
   }
 
   // ── DDM (banks/insurance, or user-toggled) ──
@@ -1259,7 +1271,7 @@ function buildScenarios(data) {
       tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
     };
-    return computeScenarios(data, 'ddm', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
+    return computeScenarios(data, 'ddm', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount });
   }
 
   // ── Excess Return Model (low-payout banks/insurers/NBFCs) ──
@@ -1276,7 +1288,7 @@ function buildScenarios(data) {
       // NOT the ROE inputs above (fixed 2026-08-15, see calc/assumptions.js).
       bookValueGrowthPct: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100,
     };
-    return computeScenarios(data, 'excess-return', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked) });
+    return computeScenarios(data, 'excess-return', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount });
   }
 
   // ── DCF ──
@@ -1290,7 +1302,7 @@ function buildScenarios(data) {
     years,
     useMultiStage: !!(els.multistageToggle && els.multistageToggle.checked),
     useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
-    fcfRaw, normFcf,
+    fcfRaw, normFcf, holdcoDiscount,
   });
 }
 
