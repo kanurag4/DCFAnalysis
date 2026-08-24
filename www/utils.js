@@ -107,7 +107,13 @@ function isUtility(sector, industry) {
 // normalized FCF input. Confirmed live 2026-08-23: BHP.AX/RIO.AX =
 // "Other Industrial Metals & Mining", WDS.AX = "Oil & Gas E&P",
 // TM = "Auto Manufacturers", CLF = "Steel".
-const CYCLICAL_INDUSTRIES = /^(Gold|Silver|Copper|Steel|Coking Coal|Other Industrial Metals & Mining|Oil & Gas E&P|Oil & Gas Integrated|Oil & Gas Equipment & Services|Auto Manufacturers|Auto Parts|Chemicals|Specialty Chemicals|Marine Shipping|Semiconductors)$/i;
+// Oil & Gas Refining & Marketing/Thermal Coal/Aluminum added 2026-08-24 --
+// found missing while auditing refineries specifically: RELIANCE.NS,
+// CASTROLIND.NS and 096770.KS (all "Oil & Gas Refining & Marketing"),
+// YAL.AX ("Thermal Coal", only "Coking Coal" was covered) and AAI.AX
+// ("Aluminum") were all already-published tickers silently falling through
+// to plain trailing-year DCF with no cycle normalization.
+const CYCLICAL_INDUSTRIES = /^(Gold|Silver|Copper|Steel|Coking Coal|Thermal Coal|Aluminum|Other Industrial Metals & Mining|Oil & Gas E&P|Oil & Gas Integrated|Oil & Gas Equipment & Services|Oil & Gas Refining & Marketing|Auto Manufacturers|Auto Parts|Chemicals|Specialty Chemicals|Marine Shipping|Semiconductors)$/i;
 function isCyclical(sector, industry) {
   return CYCLICAL_INDUSTRIES.test(industry || '');
 }

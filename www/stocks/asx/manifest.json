@@ -18,12 +18,12 @@
     "name": "Alcoa Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 112.76955339668568,
-    "price": 71.69,
-    "marginOfSafety": 0.5730165071374764,
-    "marketCap": 18919667712,
-    "updated": "2026-08-21",
-    "updatedAt": "2026-08-21T23:57:49.715Z"
+    "intrinsic": 9.101849995162553,
+    "price": 72.4,
+    "marginOfSafety": -0.8742838398458211,
+    "marketCap": 19107043328,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T10:17:48.574Z"
   },
   {
     "ticker": "AGL.AX",
@@ -1266,11 +1266,11 @@
     "name": "Yancoal Australia Ltd",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 5.171905239912467,
-    "price": 5.75,
-    "marginOfSafety": -0.10053821914565785,
-    "marketCap": 7592526848,
-    "updated": "2026-08-22",
-    "updatedAt": "2026-08-22T00:04:23.845Z"
+    "intrinsic": 13.425210045934914,
+    "price": 5.96,
+    "marginOfSafety": 1.2525520211300192,
+    "marketCap": 7869818880,
+    "updated": "2026-08-24",
+    "updatedAt": "2026-08-24T10:17:24.055Z"
   }
 ]
