@@ -138,6 +138,12 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
 .fcf-source.estimated { background: rgba(249,115,22,0.15); border: 1px solid var(--kv-warn); color: var(--kv-warn); }
 .fcf-source.confirmed  { background: rgba(34,197,94,0.10); border: 1px solid var(--kv-pass); color: var(--kv-pass); }
 .normalized-row { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--kv-border); }
+.cyclical-note {
+  font-size: 0.8rem;
+  color: var(--kv-accent, var(--accent));
+  margin-top: 6px;
+  line-height: 1.4;
+}
 
 /* Slider */
 .slider-row { display: flex; align-items: center; gap: 10px; }

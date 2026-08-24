@@ -176,6 +176,7 @@
               <input type="text" id="fcf-normalized" inputmode="numeric">
             </div>
           </div>
+          <div id="cyclical-note" class="cyclical-note" hidden></div>
           <div class="input-row" id="target-margin-row" hidden>
             <label for="target-margin-input">Target FCF Margin %
               <span class="tip" data-tip="What FCF margin do you expect this business to earn at maturity? Applied to current revenue to estimate a normalised FCF for the DCF. E.g. 15% for tech, 20% for SaaS, 8% for retail. Seeded from Yahoo's reported profit margin if available.">?</span>
@@ -471,6 +472,7 @@
   <script src="calc/reit.js"></script>
   <script src="calc/airline.js"></script>
   <script src="calc/fadingGrowthDcf.js"></script>
+  <script src="calc/cyclicalNormalization.js"></script>
   <script src="calc/assumptions.js"></script>
   <!-- Self-hosted, not CDN (chart.umd.min.js@4.5.1 / chartjs-plugin-datalabels@2.2.0) --
        a CDN dependency here meant the Android app's first-ever DCF chart render on a

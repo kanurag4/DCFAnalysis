@@ -22,6 +22,7 @@ const els = {
   fcfSource:    $('fcf-source'),
   fcfNormRow:   $('fcf-normalized-row'),
   fcfNorm:      $('fcf-normalized'),
+  cyclicalNote: $('cyclical-note'),
   yearsSlider:  $('years-slider'),
   yearsDisplay: $('years-display'),
   midyearToggle: $('midyear-toggle'),
@@ -466,6 +467,9 @@ function prefillInputs(data) {
     } else if (fcfInfo.method === 'annual') {
       els.fcfSource.textContent = '≈ latest annual (TTM n/a)';
       els.fcfSource.className = 'fcf-source confirmed';
+    } else if (fcfInfo.method === 'normalized') {
+      els.fcfSource.textContent = `≈ ${fcfInfo.yearsUsed}yr normalized margin`;
+      els.fcfSource.className = 'fcf-source confirmed';
     } else {
       els.fcfSource.textContent = '⚠ rough est. (OCF × 0.8)';
       els.fcfSource.className = 'fcf-source estimated';
@@ -474,6 +478,15 @@ function prefillInputs(data) {
     els.fcfInput.value = '';
     els.fcfSource.textContent = '⚠ unavailable';
     els.fcfSource.className = 'fcf-source estimated';
+  }
+
+  if (els.cyclicalNote) {
+    if (fcfInfo.method === 'normalized') {
+      els.cyclicalNote.hidden = false;
+      els.cyclicalNote.textContent = `📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.`;
+    } else {
+      els.cyclicalNote.hidden = true;
+    }
   }
 
   // Strictly <0 (not <=0 like isFcfNegative above) to match the same

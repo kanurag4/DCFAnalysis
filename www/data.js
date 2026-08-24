@@ -32,6 +32,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let ebit = null;
   let interestExpenseTs = null;
   let annualFcf = null;
+  let annualFcfHistory = [];
+  let annualRevenueHistory = [];
   try {
     const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`, { headers: extraHeaders });
     if (tsRes.ok) {
@@ -48,12 +50,22 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
         // tier exists and why it's ordered last (only used when quoteSummary's
         // TTM-based freeCashflow/operatingCashflow are both unavailable).
         annualFcf = latestSeriesValue(tsBody.annualFreeCashFlow);
+        // Full multi-year series (not just the latest entry) -- used by
+        // calc/cyclicalNormalization.js to average the FCF margin across a
+        // real fiscal-year history instead of anchoring a DCF to whichever
+        // single year happens to be a cycle peak or trough. Confirmed live
+        // 2026-08-23: Yahoo's cashflowStatementHistory module only ever
+        // returns {maxAge, endDate, netIncome} per year -- no capex, no
+        // operating cash flow -- on every ticker checked; /timeseries is the
+        // only source with real per-year FCF/revenue data.
+        annualFcfHistory = Array.isArray(tsBody.annualFreeCashFlow) ? tsBody.annualFreeCashFlow : [];
+        annualRevenueHistory = Array.isArray(tsBody.annualTotalRevenue) ? tsBody.annualTotalRevenue : [];
       }
     }
   } catch (_) {
-    // all four stay null — app.js falls back to the basic share count /
-    // incomeStatementHistory's interestExpense / book-yield cost of debt /
-    // "no usable free cash flow" respectively.
+    // all stay at their initialized defaults (null/[]) -- app.js falls back
+    // to the basic share count / incomeStatementHistory's interestExpense /
+    // book-yield cost of debt / standard trailing-FCF DCF respectively.
   }
 
   // incomeStatementHistory's interestExpense is frequently an empty object
@@ -82,6 +94,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let ebitConverted = ebit;
   let interestExpenseConverted = interestExpense;
   let annualFcfConverted = annualFcf;
+  let annualFcfHistoryConverted = annualFcfHistory;
+  let annualRevenueHistoryConverted = annualRevenueHistory;
   let netIncomeConverted = data.netIncome;
   let depreciationConverted = data.depreciationAndAmortization;
   let ebitdaConverted = data.ebitda;
@@ -99,6 +113,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       ebitConverted = c(ebitConverted);
       interestExpenseConverted = c(interestExpenseConverted);
       annualFcfConverted = c(annualFcfConverted);
+      annualFcfHistoryConverted = annualFcfHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualRevenueHistoryConverted = annualRevenueHistory.map(e => ({ date: e.date, value: c(e.value) }));
       netIncomeConverted = c(netIncomeConverted);
       depreciationConverted = c(depreciationConverted);
       ebitdaConverted = c(ebitdaConverted);
@@ -113,6 +129,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       ebitConverted = null;
       interestExpenseConverted = null;
       annualFcfConverted = null;
+      annualFcfHistoryConverted = [];
+      annualRevenueHistoryConverted = [];
       netIncomeConverted = null;
       depreciationConverted = null;
       ebitdaConverted = null;
@@ -126,6 +144,8 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     ebit: ebitConverted,
     interestExpense: interestExpenseConverted,
     annualFcf: annualFcfConverted,
+    annualFcfHistory: annualFcfHistoryConverted,
+    annualRevenueHistory: annualRevenueHistoryConverted,
     netIncome: netIncomeConverted,
     depreciationAndAmortization: depreciationConverted,
     ebitda: ebitdaConverted,

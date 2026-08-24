@@ -103,6 +103,7 @@ function deriveDcfAssumptions(data) {
   const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
   const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
   const isUtilityFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isUtility(data.sector, data.industry);
+  const isCyclicalFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isCyclical(data.sector, data.industry);
   const currentMarket = detectMarket(data.ticker);
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;
@@ -209,11 +210,28 @@ function deriveDcfAssumptions(data) {
 
   const fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, data.annualFcf);
 
+  // Cyclical companies get a normalized base-year FCF instead of the
+  // trailing figure above, when enough real multi-year history exists --
+  // see calc/cyclicalNormalization.js. Falls back to the standard fcfInfo
+  // (untouched) when there's too little history, same graceful-degradation
+  // posture deriveFcf() itself already uses for its own tiers.
+  let finalFcfInfo = fcfInfo;
+  if (isCyclicalFlag) {
+    const normalized = normalizeCyclicalFcf({
+      fcfHistory: data.annualFcfHistory,
+      revenueHistory: data.annualRevenueHistory,
+      trailingRevenue: data.totalRevenue,
+    });
+    if (normalized.value !== null) {
+      finalFcfInfo = { value: normalized.value, method: 'normalized', marginUsed: normalized.marginUsed, yearsUsed: normalized.yearsUsed };
+    }
+  }
+
   const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));
 
   return {
-    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, isUtility: isUtilityFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
-    waccResult, modelSeeds, fcfInfo,
+    isBankIns, isReit: isReitFlag, isAirline: isAirlineFlag, isUtility: isUtilityFlag, isCyclical: isCyclicalFlag, currentMarket, rf, erp, effectiveBeta, betaWasFloored: effectiveBeta > rawBeta,
+    waccResult, modelSeeds, fcfInfo: finalFcfInfo,
     valuationModel,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
   };

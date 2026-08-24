@@ -97,6 +97,21 @@ function isUtility(sector, industry) {
   return /^Utilities\s*-\s*(Regulated (Electric|Gas|Water)|Diversified)$/i.test(industry || '');
 }
 
+// Cyclical/commodity companies: a single trailing-year FCF is unreliable as
+// a DCF base year because it can sit at a cycle peak or trough (Damodaran's
+// rule for cyclicals -- normalize margins across a full cycle, don't
+// project off wherever the cycle happens to be right now). Routed to
+// calc/cyclicalNormalization.js's base-year adjustment via
+// calc/assumptions.js -- unlike isReit()/isAirline()/isUtility(), this does
+// NOT change valuationModel; cyclicals stay on plain DCF, just with a
+// normalized FCF input. Confirmed live 2026-08-23: BHP.AX/RIO.AX =
+// "Other Industrial Metals & Mining", WDS.AX = "Oil & Gas E&P",
+// TM = "Auto Manufacturers", CLF = "Steel".
+const CYCLICAL_INDUSTRIES = /^(Gold|Silver|Copper|Steel|Coking Coal|Other Industrial Metals & Mining|Oil & Gas E&P|Oil & Gas Integrated|Oil & Gas Equipment & Services|Auto Manufacturers|Auto Parts|Chemicals|Specialty Chemicals|Marine Shipping|Semiconductors)$/i;
+function isCyclical(sector, industry) {
+  return CYCLICAL_INDUSTRIES.test(industry || '');
+}
+
 // Narrow check: banks and insurers where FCF-based DCF is structurally broken
 // -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
@@ -247,7 +262,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isBankOrInsurance, chooseFinancialModel,
+  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isCyclical, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
