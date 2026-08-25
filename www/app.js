@@ -206,6 +206,7 @@ if (!isNative) {
 }
 
 let currentData   = null;
+let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best-effort
 let liveRfRate    = 4.5;   // updated when US 10-yr Treasury is fetched
 let liveAusRfRate = 4.8;   // updated when Australian 10-yr bond is fetched; 4.8% default
 let liveIndRfRate = 4.9;   // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 4.9% default
@@ -322,6 +323,7 @@ if (els.rfErpResetBtn) els.rfErpResetBtn.addEventListener('click', resetRfErp);
 if (els.fcfNorm) els.fcfNorm.addEventListener('input', () => formatMoneyInput(els.fcfNorm));
 
 fetchAndSetRiskFreeRate();
+fetchSectorMarginLookup();
 
 // Ticker input, autocomplete, recents, market checkboxes, and ?ticker= URL
 // read/write are all owned by the shared kv-ticker-input.js module.
@@ -386,7 +388,7 @@ function prefillInputs(data) {
   // the app can never silently compute different numbers for the same
   // ticker. This function's remaining job is purely writing those values
   // into the DOM (input fields, badges, notes).
-  const assumptions = deriveDcfAssumptions(data);
+  const assumptions = deriveDcfAssumptions(data, { sectorMarginLookup });
   const isBankIns = assumptions.isBankIns;
   const isReitTicker = assumptions.isReit;
   valuationModel = assumptions.valuationModel;
@@ -1839,6 +1841,18 @@ function setRfBadge(market, rate) {
     note.textContent = lbl.note;
   }
   els.rfInput.title = `${lbl.title}: ${rate}%`;
+}
+
+async function fetchSectorMarginLookup() {
+  try {
+    const resp = await fetch('/dcf/sector-margins.json');
+    if (!resp.ok) return;
+    sectorMarginLookup = await resp.json();
+  } catch (_) {
+    // silently keep the {} default -- same graceful-degradation posture as
+    // every other consumer of this file (see the design spec's Error
+    // handling section)
+  }
 }
 
 async function fetchAndSetRiskFreeRate() {
