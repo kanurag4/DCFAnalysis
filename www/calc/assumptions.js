@@ -8,7 +8,8 @@
 //
 // Depends on the already-pure helpers in utils.js, calc/wacc.js,
 // calc/dcf.js, calc/ddm.js, calc/fadingGrowthDcf.js, calc/excessReturn.js,
-// calc/reit.js, and config.js's REIT_SECTOR_MULTIPLES -- all loaded as
+// calc/reit.js, calc/cyclicalNormalization.js's resolveCyclicalMargin, and
+// config.js's REIT_SECTOR_MULTIPLES -- all loaded as
 // plain globals via <script> tags (same convention as the rest of this
 // tool's calc layer), so this file reads them as bare identifiers, not
 // imports. Zero document/window access.
@@ -98,7 +99,12 @@ function discountRateSpread(baseDiscountPct) {
 // Pure equivalent of app.js's prefillInputs() + its modelSeeds block.
 // Returns everything needed to seed and run Bear/Base/Bull without
 // touching any DOM element.
-function deriveDcfAssumptions(data) {
+//
+// opts.sectorMarginLookup: the precomputed { industry: { avgMargin, peerCount
+// } } lookup (scripts/lib/sector-margin-tally.js, DCFAnalysis) -- optional,
+// omit or pass undefined for identical behavior to before this parameter
+// existed.
+function deriveDcfAssumptions(data, opts) {
   const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
   const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
@@ -229,7 +235,21 @@ function deriveDcfAssumptions(data) {
       trailingRevenue: data.totalRevenue,
     });
     if (normalized.value !== null) {
-      finalFcfInfo = { value: normalized.value, method: 'normalized', marginUsed: normalized.marginUsed, yearsUsed: normalized.yearsUsed };
+      const resolved = resolveCyclicalMargin({
+        ownMargin: normalized.marginUsed,
+        sectorLookup: opts && opts.sectorMarginLookup,
+        industry: data.industry,
+      });
+      if (resolved.marginUsed !== null) {
+        finalFcfInfo = {
+          value: resolved.marginUsed * data.totalRevenue,
+          method: 'normalized',
+          marginUsed: resolved.marginUsed,
+          yearsUsed: normalized.yearsUsed,
+          source: resolved.source,
+          peerCount: resolved.peerCount,
+        };
+      }
     }
   }
 

@@ -15,7 +15,7 @@ function loadAssumptionsContext(repoRoot) {
   const files = [
     'www/utils.js', 'www/calc/wacc.js', 'www/calc/dcf.js', 'www/calc/ddm.js',
     'www/calc/fadingGrowthDcf.js', 'www/calc/excessReturn.js', 'www/calc/reit.js',
-    'www/calc/holdcoDiscount.js',
+    'www/calc/holdcoDiscount.js', 'www/calc/cyclicalNormalization.js',
     'www/config.js', 'www/calc/assumptions.js',
   ];
   for (const f of files) {
