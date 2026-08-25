@@ -41,5 +41,30 @@ function normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue, min
   return { value: marginUsed * trailingRevenue, marginUsed, yearsUsed: margins.length };
 }
 
-if (typeof module !== 'undefined') module.exports = { normalizeCyclicalFcf };
-if (typeof window !== 'undefined') { window.normalizeCyclicalFcf = normalizeCyclicalFcf; }
+// Damodaran's "sector average" normalization technique (Ups and Downs:
+// Valuing Cyclical and Commodity Companies, p.14-15) -- when a company's
+// own historical margin average is unreliable ("limited history or a
+// history of operating changes"), use the sector/peer average instead.
+// Here specifically: the own multi-year average (normalizeCyclicalFcf's
+// marginUsed) came out NEGATIVE -- a real, non-null number, just one a
+// single company's lumpy capex timing can produce even for a genuinely
+// healthy cyclical business. sectorLookup is the precomputed, static
+// {industry: {avgMargin, peerCount}} lookup from
+// scripts/lib/sector-margin-tally.js (DCFAnalysis) -- nothing here fetches
+// or computes anything on the fly. A negative sector average is used as-is,
+// not further overridden -- a genuinely negative whole-industry average is
+// real information (the sector's in a trough), not noise to normalize away
+// again. See docs/superpowers/specs/2026-08-24-sector-average-cyclical-
+// margin-design.md.
+function resolveCyclicalMargin({ ownMargin, sectorLookup, industry, minPeers = 3 }) {
+  if (ownMargin == null) return { marginUsed: null, source: null, peerCount: null };
+  if (ownMargin >= 0) return { marginUsed: ownMargin, source: 'own', peerCount: null };
+  const sector = sectorLookup && industry ? sectorLookup[industry] : null;
+  if (sector && typeof sector.avgMargin === 'number' && typeof sector.peerCount === 'number' && sector.peerCount >= minPeers) {
+    return { marginUsed: sector.avgMargin, source: 'sector', peerCount: sector.peerCount };
+  }
+  return { marginUsed: null, source: null, peerCount: null };
+}
+
+if (typeof module !== 'undefined') module.exports = { normalizeCyclicalFcf, resolveCyclicalMargin };
+if (typeof window !== 'undefined') { window.normalizeCyclicalFcf = normalizeCyclicalFcf; window.resolveCyclicalMargin = resolveCyclicalMargin; }
