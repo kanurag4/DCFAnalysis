@@ -11,7 +11,8 @@ const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
-const { normalizeCyclicalFcf } = require('../../www/calc/cyclicalNormalization.js');
+const { normalizeCyclicalFcf, resolveCyclicalMargin } = require('../../www/calc/cyclicalNormalization.js');
+const sectorMarginLookup = require('../../www/sector-margins.json');
 const { applyHoldcoDiscount } = require('../../www/calc/holdcoDiscount.js');
 const { HOLDCO_DISCOUNT } = require('../../www/config.js');
 
@@ -130,7 +131,21 @@ function evaluateStockCore(data, params) {
       trailingRevenue: data.totalRevenue,
     });
     if (normalized.value !== null) {
-      fcfInfo = { value: normalized.value, method: 'normalized', marginUsed: normalized.marginUsed, yearsUsed: normalized.yearsUsed };
+      const resolved = resolveCyclicalMargin({
+        ownMargin: normalized.marginUsed,
+        sectorLookup: sectorMarginLookup,
+        industry: data.industry,
+      });
+      if (resolved.marginUsed !== null) {
+        fcfInfo = {
+          value: resolved.marginUsed * data.totalRevenue,
+          method: 'normalized',
+          marginUsed: resolved.marginUsed,
+          yearsUsed: normalized.yearsUsed,
+          source: resolved.source,
+          peerCount: resolved.peerCount,
+        };
+      }
     }
   }
 

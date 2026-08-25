@@ -1,5 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
 const { evaluateStock } = require('../scripts/lib/evaluate.js');
 const { calculateWACC } = require('../www/calc/wacc.js');
 const { calculateDCF } = require('../www/calc/dcf.js');
@@ -263,4 +264,56 @@ test('applies the holdco discount on top of a bank-model conglomerate too (disco
   const holdcoBank = evaluateStock({ ...bank, ticker: 'HOLDCOBANK', industry: 'Conglomerates' }, params);
   assert.strictEqual(holdcoBank.method, 'DDM');
   assert.ok(Math.abs(holdcoBank.intrinsic - baseline.intrinsic * 0.85) < 1e-6);
+});
+
+// ── Sector-average cyclical margin fallback (2026-08-25) ──
+
+const cyclicalStockNegativeMargin = {
+  ticker: 'TESTCOAL.AX', name: 'Test Coal', sector: 'Energy', industry: 'Thermal Coal',
+  price: 5.0, marketCap: 1e9, totalDebt: 2e8, totalCash: 1e8,
+  sharesOutstanding: 200e6, beta: 1.3, interestExpense: -1e7, taxRate: 0.3,
+  revenueGrowth: 0.03, earningsGrowth: 0.02, trailingPE: 8,
+  totalRevenue: 1.1e9,
+  freeCashflow: -0.04e9, operatingCashflow: -0.01e9, capitalExpenditures: -0.03e9,
+  annualFcfHistory: [
+    { date: '2024-06-30', value: -0.05e9 },
+    { date: '2025-06-30', value: -0.08e9 },
+    { date: '2026-06-30', value: -0.04e9 },
+  ],
+  annualRevenueHistory: [
+    { date: '2024-06-30', value: 1.0e9 },
+    { date: '2025-06-30', value: 1.05e9 },
+    { date: '2026-06-30', value: 1.1e9 },
+  ],
+};
+
+test('evaluateStock excludes a cyclical ticker whose own margin is negative and no sector data exists (pre-fix baseline, unchanged)', () => {
+  const r = evaluateStock(cyclicalStockNegativeMargin, params);
+  assert.strictEqual(r.excluded, true);
+  assert.strictEqual(r.reason, 'dcf-unavailable');
+});
+
+test('evaluateStock substitutes the sector-average margin for a cyclical ticker whose own margin is negative', () => {
+  // evaluate.js reads ../../www/sector-margins.json at module load time --
+  // seed that file's real content, force a fresh require of both it and
+  // evaluate.js, then restore the seed file afterward so this test doesn't
+  // leave the repo's real (still-{} at this point in the plan)
+  // sector-margins.json mutated.
+  const sectorPath = require.resolve('../www/sector-margins.json');
+  const original = fs.readFileSync(sectorPath, 'utf8');
+  fs.writeFileSync(sectorPath, JSON.stringify({ 'Thermal Coal': { avgMargin: 0.18, peerCount: 5 } }));
+  delete require.cache[sectorPath];
+  delete require.cache[require.resolve('../scripts/lib/evaluate.js')];
+  const { evaluateStock: evaluateStockFresh } = require('../scripts/lib/evaluate.js');
+
+  try {
+    const r = evaluateStockFresh(cyclicalStockNegativeMargin, params);
+    assert.strictEqual(r.excluded, undefined);
+    assert.strictEqual(r.fcfMethod, 'normalized');
+    assert.ok(r.intrinsic > 0); // now computable, using the 18% sector-average margin instead of the negative own one
+  } finally {
+    fs.writeFileSync(sectorPath, original);
+    delete require.cache[sectorPath];
+    delete require.cache[require.resolve('../scripts/lib/evaluate.js')];
+  }
 });
