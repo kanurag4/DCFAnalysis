@@ -17,6 +17,7 @@ const { marketParamsFor } = require('./market.js');
 const { evaluateStock } = require('./evaluate.js');
 const { rankRows, rankFunnel } = require('./rank.js');
 const { mergeFirstSeen } = require('./firstSeen.js');
+const { tallyTickerMargin, updateSectorMarginLookup } = require('./sector-margin-tally.js');
 const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require('./portfolio.js');
 const { prepareEurRebalanceInputs } = require('./fx.js');
 
@@ -39,6 +40,9 @@ async function gather(config) {
   const proxyUrl = readProxyUrl();
   const tickers = JSON.parse(fs.readFileSync(path.join(__dirname, '..', config.tickersFile), 'utf8'));
   const asAt = new Date().toISOString().slice(0, 10);
+  // Overridable only so tests don't have to pay the real per-ticker delay --
+  // every real screen config omits this and gets the standard 3200ms.
+  const throttleMs = config.throttleMs ?? THROTTLE_MS;
 
   // Korea has no live RF source (see market.js) — config.fetchRf is absent, so rf
   // stays null and marketParamsFor's static fallback applies for every ticker.
@@ -64,13 +68,19 @@ async function gather(config) {
   const evaluated = [];
   const raw = [];           // keep the mapped data for instant --reeval (no re-fetch)
   const failed = [];
+  const marginTallies = []; // byproduct: every evaluated ticker's own multi-year margin, for
+                             // scripts/lib/sector-margin-tally.js's cross-market lookup
   let done = 0;
   for (const ticker of tickers) {
     const data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
-    if (data) { raw.push(data); evaluated.push(evaluateStock(data, marketParamsFor(ticker, live))); }
+    if (data) {
+      raw.push(data);
+      evaluated.push(evaluateStock(data, marketParamsFor(ticker, live)));
+      marginTallies.push(tallyTickerMargin(data));
+    }
     else failed.push(ticker);
     if (++done % 25 === 0) console.log(`  …${done}/${tickers.length}  (failed so far: ${failed.length})`);
-    await sleep(THROTTLE_MS);
+    await sleep(throttleMs);
   }
 
   // Final sweep: any stragglers get one more pass after a cooldown that clears
@@ -81,9 +91,13 @@ async function gather(config) {
     const stillFailed = [];
     for (const ticker of failed) {
       const data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
-      if (data) { raw.push(data); evaluated.push(evaluateStock(data, marketParamsFor(ticker, live))); }
+      if (data) {
+        raw.push(data);
+        evaluated.push(evaluateStock(data, marketParamsFor(ticker, live)));
+        marginTallies.push(tallyTickerMargin(data));
+      }
       else stillFailed.push(ticker);
-      await sleep(THROTTLE_MS);
+      await sleep(throttleMs);
     }
     console.log(`Sweep recovered ${failed.length - stillFailed.length}; ${stillFailed.length} unrecoverable: ${stillFailed.join(', ') || '—'}`);
   }
@@ -103,6 +117,10 @@ async function gather(config) {
     fs.writeFileSync(path.join(__dirname, '..', config.rawFile),
       JSON.stringify({ asAt, tickerCount: tickers.length, rf, fx, liveKey: config.liveKey, raw }) + '\n');
   }
+  // Byproduct of this full-fetch run: refresh this market's slice of the
+  // cross-market sector-average FCF-margin lookup. Not run on --rerank/
+  // --reeval (no fresh fetch happened, nothing new to tally).
+  updateSectorMarginLookup(config.outDir, marginTallies);
   return out;
 }
 
@@ -378,4 +396,4 @@ async function runScreen(config, argv = process.argv) {
   }
 }
 
-module.exports = { runScreen, readProxyUrl };
+module.exports = { runScreen, readProxyUrl, gather };
