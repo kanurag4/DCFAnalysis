@@ -18,12 +18,12 @@
     "name": "Alcoa Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 9.101849995162553,
-    "price": 72.4,
-    "marginOfSafety": -0.8742838398458211,
-    "marketCap": 19107043328,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T10:17:48.574Z"
+    "intrinsic": 9.21876489658601,
+    "price": 69.25,
+    "marginOfSafety": -0.8668770412045341,
+    "marketCap": 18275729408,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:22:52.445Z"
   },
   {
     "ticker": "AGL.AX",
@@ -357,11 +357,11 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 4.672767415736419,
-    "price": 4.4,
-    "marginOfSafety": 0.061992594485549675,
-    "marketCap": 2329608704,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:22:02.906Z"
+    "price": 4.275,
+    "marginOfSafety": 0.0930450095289868,
+    "marketCap": 2263638528,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:23:07.489Z"
   },
   {
     "ticker": "EDV.AX",
@@ -396,11 +396,11 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 1.9640429077229762,
-    "price": 15.61,
-    "marginOfSafety": -0.8741804671541975,
-    "marketCap": 31872864256,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:22:21.265Z"
+    "price": 15.87,
+    "marginOfSafety": -0.8762417827521753,
+    "marketCap": 32403738624,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:24:27.286Z"
   },
   {
     "ticker": "FLT.AX",
@@ -421,12 +421,12 @@
     "name": "Fortescue Ltd",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 25.537897862067624,
-    "price": 17.885,
-    "marginOfSafety": 0.4278947644432553,
-    "marketCap": 55067287552,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:22:44.822Z"
+    "intrinsic": 25.620349106936793,
+    "price": 17.77,
+    "marginOfSafety": 0.4417754140088235,
+    "marketCap": 54713208832,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:25:06.198Z"
   },
   {
     "ticker": "FPH.AX",
@@ -440,19 +440,6 @@
     "marketCap": 21324466176,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:00:12.612Z"
-  },
-  {
-    "ticker": "GMD.AX",
-    "slug": "gmd-ax",
-    "name": "Genesis Minerals Limited",
-    "sector": "Basic Materials",
-    "method": "DCF",
-    "intrinsic": null,
-    "price": 8.605,
-    "marginOfSafety": null,
-    "marketCap": 10098317312,
-    "updated": "2026-08-25",
-    "updatedAt": "2026-08-25T04:46:06.816Z"
   },
   {
     "ticker": "GMG.AX",
@@ -617,11 +604,11 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 1.2751302199335146,
-    "price": 1.057,
-    "marginOfSafety": 0.2063672847053119,
-    "marketCap": 2277819904,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:23:21.702Z"
+    "price": 1.052,
+    "marginOfSafety": 0.21210096951854995,
+    "marketCap": 2267045120,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:23:22.282Z"
   },
   {
     "ticker": "MGH.AX",
@@ -747,24 +734,11 @@
     "sector": "Basic Materials",
     "method": "DCF",
     "intrinsic": 7.359886359393042,
-    "price": 22.135,
-    "marginOfSafety": -0.6675000515295667,
-    "marketCap": 10260513792,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:24:40.771Z"
-  },
-  {
-    "ticker": "PLS.AX",
-    "slug": "pls-ax",
-    "name": "PLS Group Limited",
-    "sector": "Basic Materials",
-    "method": "DCF",
-    "intrinsic": null,
-    "price": 5.145,
-    "marginOfSafety": null,
-    "marketCap": 16585533440,
+    "price": 22.245,
+    "marginOfSafety": -0.6691442409803083,
+    "marketCap": 10311503872,
     "updated": "2026-08-25",
-    "updatedAt": "2026-08-25T04:46:26.950Z"
+    "updatedAt": "2026-08-25T05:23:36.862Z"
   },
   {
     "ticker": "PRN.AX",
@@ -772,12 +746,12 @@
     "name": "Perenti Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 0.7186710267293545,
-    "price": 2.325,
-    "marginOfSafety": -0.6908941820518907,
-    "marketCap": 2173410816,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:25:17.998Z"
+    "intrinsic": 0.42512363731688957,
+    "price": 2.4,
+    "marginOfSafety": -0.8228651511179627,
+    "marketCap": 2243521024,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:23:53.200Z"
   },
   {
     "ticker": "QAN.AX",
@@ -863,12 +837,12 @@
     "name": "South32 Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 4.451491432605348,
-    "price": 5.045,
-    "marginOfSafety": -0.11764292713471795,
-    "marketCap": 22608304128,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:25:40.911Z"
+    "intrinsic": 4.458143432440699,
+    "price": 5.125,
+    "marginOfSafety": -0.13011835464571728,
+    "marketCap": 22966808576,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:24:11.323Z"
   },
   {
     "ticker": "SDF.AX",
@@ -1118,19 +1092,6 @@
     "updatedAt": "2026-08-22T00:03:38.924Z"
   },
   {
-    "ticker": "VAU.AX",
-    "slug": "vau-ax",
-    "name": "Vault Minerals Limited",
-    "sector": "Basic Materials",
-    "method": "DCF",
-    "intrinsic": null,
-    "price": 6.97,
-    "marginOfSafety": null,
-    "marketCap": 7210924032,
-    "updated": "2026-08-25",
-    "updatedAt": "2026-08-25T04:46:48.805Z"
-  },
-  {
     "ticker": "VCX.AX",
     "slug": "vcx-ax",
     "name": "Vicinity Centres",
@@ -1155,19 +1116,6 @@
     "marketCap": 4555281920,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T08:33:07.624Z"
-  },
-  {
-    "ticker": "WAF.AX",
-    "slug": "waf-ax",
-    "name": "West African Resources Limited",
-    "sector": "Basic Materials",
-    "method": "DCF",
-    "intrinsic": null,
-    "price": 3.855,
-    "marginOfSafety": null,
-    "marketCap": 4409167872,
-    "updated": "2026-08-25",
-    "updatedAt": "2026-08-25T04:47:07.524Z"
   },
   {
     "ticker": "WBC.AX",

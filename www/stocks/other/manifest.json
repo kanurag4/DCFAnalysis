@@ -234,19 +234,6 @@
     "updatedAt": "2026-08-22T00:10:49.077Z"
   },
   {
-    "ticker": "051910.KS",
-    "slug": "051910-ks",
-    "name": "LG Chem, Ltd.",
-    "sector": "Basic Materials",
-    "method": "DCF",
-    "intrinsic": null,
-    "price": 264000,
-    "marginOfSafety": null,
-    "marketCap": 20664626970624,
-    "updated": "2026-08-25",
-    "updatedAt": "2026-08-25T04:47:26.931Z"
-  },
-  {
     "ticker": "064400.KS",
     "slug": "064400-ks",
     "name": "LG CNS",
@@ -284,19 +271,6 @@
     "marketCap": 1685897216000,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:11:03.555Z"
-  },
-  {
-    "ticker": "096770.KS",
-    "slug": "096770-ks",
-    "name": "SK Innovation Co., Ltd.",
-    "sector": "Energy",
-    "method": "DCF",
-    "intrinsic": null,
-    "price": 127900,
-    "marginOfSafety": null,
-    "marketCap": 21658958036992,
-    "updated": "2026-08-25",
-    "updatedAt": "2026-08-25T04:47:44.135Z"
   },
   {
     "ticker": "112610.KS",
@@ -681,12 +655,12 @@
     "name": "BASF SE",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 91.08357194906668,
-    "price": 51.67,
-    "marginOfSafety": 0.7627941155228697,
-    "marketCap": 45693083648,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:34:31.464Z"
+    "intrinsic": 90.82480453567047,
+    "price": 52.43,
+    "marginOfSafety": 0.7323060182275504,
+    "marketCap": 46365171712,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T05:25:22.907Z"
   },
   {
     "ticker": "BN.PA",
