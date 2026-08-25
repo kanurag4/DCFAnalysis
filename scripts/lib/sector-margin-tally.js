@@ -32,8 +32,25 @@ const PUBLISHED_PATH = path.join(__dirname, '../..', 'www', 'sector-margins.json
 // One ticker's own multi-year margin, independent of isCyclical() -- applied
 // to every evaluated ticker so the peer pool for an industry isn't limited
 // to tickers already flagged cyclical.
-function tallyTickerMargin(data) {
+//
+// minRevenueToMarketCapRatio guards against a near-zero-revenue (pre-revenue
+// / development-stage) company swamping a peer average -- FCF/revenue as a
+// "margin" concept breaks down when revenue is a rounding error relative to
+// the company's actual economic size, not a genuine cyclical-trough signal.
+// Confirmed live 2026-08-25: VUL.AX ($7.35M revenue against a $1.31B market
+// cap, 0.56% ratio) produced a -1361.7% "margin" that single-handedly
+// dragged a healthy 16-peer ASX 'Other Industrial Metals & Mining' average
+// from a normal positive mix down to -88% -- every real operating company in
+// that same peer set sat at >=4.37% revenue/marketCap. Relative to market
+// cap (not an absolute revenue floor) because this tally pools 6 markets
+// across 5 different currencies -- a fixed-currency dollar threshold isn't
+// portable across them, a ratio is currency-agnostic. Fails closed (treats
+// a missing/non-positive marketCap as excluded) since the ratio can't be
+// verified without it.
+function tallyTickerMargin(data, opts) {
   if (!data || !data.industry) return null;
+  const minRatio = (opts && opts.minRevenueToMarketCapRatio) ?? 0.02;
+  if (!(data.marketCap > 0) || !(data.totalRevenue >= data.marketCap * minRatio)) return null;
   const normalized = normalizeCyclicalFcf({
     fcfHistory: data.annualFcfHistory,
     revenueHistory: data.annualRevenueHistory,

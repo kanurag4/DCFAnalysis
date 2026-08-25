@@ -288,9 +288,28 @@ const cyclicalStockNegativeMargin = {
 };
 
 test('evaluateStock excludes a cyclical ticker whose own margin is negative and no sector data exists (pre-fix baseline, unchanged)', () => {
-  const r = evaluateStock(cyclicalStockNegativeMargin, params);
-  assert.strictEqual(r.excluded, true);
-  assert.strictEqual(r.reason, 'dcf-unavailable');
+  // Must not rely on evaluate.js's module-load-time read of the real
+  // www/sector-margins.json -- that file gets legitimately populated by real
+  // screen runs (this is the whole point of the feature), so a fixture
+  // industry that happens to gain real sector data would silently break this
+  // "no sector data" baseline. Force a fresh require against an explicitly
+  // empty seed instead, same pattern as the next test.
+  const sectorPath = require.resolve('../www/sector-margins.json');
+  const original = fs.readFileSync(sectorPath, 'utf8');
+  fs.writeFileSync(sectorPath, JSON.stringify({}));
+  delete require.cache[sectorPath];
+  delete require.cache[require.resolve('../scripts/lib/evaluate.js')];
+  const { evaluateStock: evaluateStockFresh } = require('../scripts/lib/evaluate.js');
+
+  try {
+    const r = evaluateStockFresh(cyclicalStockNegativeMargin, params);
+    assert.strictEqual(r.excluded, true);
+    assert.strictEqual(r.reason, 'dcf-unavailable');
+  } finally {
+    fs.writeFileSync(sectorPath, original);
+    delete require.cache[sectorPath];
+    delete require.cache[require.resolve('../scripts/lib/evaluate.js')];
+  }
 });
 
 test('evaluateStock substitutes the sector-average margin for a cyclical ticker whose own margin is negative', () => {
