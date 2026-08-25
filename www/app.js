@@ -481,6 +481,9 @@ function prefillInputs(data) {
     } else if (fcfInfo.method === 'annual') {
       els.fcfSource.textContent = '≈ latest annual (TTM n/a)';
       els.fcfSource.className = 'fcf-source confirmed';
+    } else if (fcfInfo.method === 'normalized' && fcfInfo.source === 'sector') {
+      els.fcfSource.textContent = `≈ ${fcfInfo.peerCount}-peer sector margin`;
+      els.fcfSource.className = 'fcf-source confirmed';
     } else if (fcfInfo.method === 'normalized') {
       els.fcfSource.textContent = `≈ ${fcfInfo.yearsUsed}yr normalized margin`;
       els.fcfSource.className = 'fcf-source confirmed';
@@ -495,7 +498,10 @@ function prefillInputs(data) {
   }
 
   if (els.cyclicalNote) {
-    if (fcfInfo.method === 'normalized') {
+    if (fcfInfo.method === 'normalized' && fcfInfo.source === 'sector') {
+      els.cyclicalNote.hidden = false;
+      els.cyclicalNote.textContent = `📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.`;
+    } else if (fcfInfo.method === 'normalized') {
       els.cyclicalNote.hidden = false;
       els.cyclicalNote.textContent = `📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.`;
     } else {
