@@ -187,12 +187,12 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 2.1473001709735393,
-    "price": 0.887,
-    "marginOfSafety": 1.420857013498917,
-    "marketCap": 2023543040,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:21:44.599Z"
+    "intrinsic": 1.2496794565064475,
+    "price": 0.885,
+    "marginOfSafety": 0.41206718249316104,
+    "marketCap": 2018980352,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T04:45:47.929Z"
   },
   {
     "ticker": "BVS.AX",
@@ -447,12 +447,12 @@
     "name": "Genesis Minerals Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 13.946969290318776,
-    "price": 8.59,
-    "marginOfSafety": 0.623628555333967,
-    "marketCap": 10080714752,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:23:03.147Z"
+    "intrinsic": null,
+    "price": 8.605,
+    "marginOfSafety": null,
+    "marketCap": 10098317312,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T04:46:06.816Z"
   },
   {
     "ticker": "GMG.AX",
@@ -759,12 +759,12 @@
     "name": "PLS Group Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 1.2700269147622603,
-    "price": 5.48,
-    "marginOfSafety": -0.7682432637295146,
-    "marketCap": 17665445888,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:24:59.350Z"
+    "intrinsic": null,
+    "price": 5.145,
+    "marginOfSafety": null,
+    "marketCap": 16585533440,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T04:46:26.950Z"
   },
   {
     "ticker": "PRN.AX",
@@ -1120,15 +1120,15 @@
   {
     "ticker": "VAU.AX",
     "slug": "vau-ax",
-    "name": "VLTMINLTD FPO [VAU]",
+    "name": "Vault Minerals Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 8.534204222497989,
-    "price": 6.94,
-    "marginOfSafety": 0.2297124239910646,
-    "marketCap": 7179887104,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:26:22.570Z"
+    "intrinsic": null,
+    "price": 6.97,
+    "marginOfSafety": null,
+    "marketCap": 7210924032,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T04:46:48.805Z"
   },
   {
     "ticker": "VCX.AX",
@@ -1162,12 +1162,12 @@
     "name": "West African Resources Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 12.586401046105578,
-    "price": 3.895,
-    "marginOfSafety": 2.23142517229925,
-    "marketCap": 4454917632,
-    "updated": "2026-08-24",
-    "updatedAt": "2026-08-24T05:26:41.468Z"
+    "intrinsic": null,
+    "price": 3.855,
+    "marginOfSafety": null,
+    "marketCap": 4409167872,
+    "updated": "2026-08-25",
+    "updatedAt": "2026-08-25T04:47:07.524Z"
   },
   {
     "ticker": "WBC.AX",
