@@ -14,7 +14,8 @@ const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const { deriveFfo, deriveAffo, calculateReitValue } = require('../../www/calc/reit.js');
 const { calculateAirlineValue } = require('../../www/calc/airline.js');
-const { normalizeCyclicalFcf } = require('../../www/calc/cyclicalNormalization.js');
+const { normalizeCyclicalFcf, resolveCyclicalMargin } = require('../../www/calc/cyclicalNormalization.js');
+const sectorMarginLookup = require('../../www/sector-margins.json');
 const { applyHoldcoDiscountToScenarios } = require('../../www/calc/holdcoDiscount.js');
 const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE, HOLDCO_DISCOUNT } = require('../../www/config.js');
 const {
@@ -383,6 +384,20 @@ function pickCadence(series, name) {
   const q = series[`quarterly${name}`] || [];
   if (q.length >= 2) return { points: q, cadence: 'Quarterly' };
   return { points: series[`annual${name}`] || [], cadence: 'Annual' };
+}
+
+// Gate for the revenue-normalised FCF fallback (a stand-in for "Yahoo has no
+// FCF data at all"). Must NOT fire when the cyclical-normalization path
+// (isCyclical dispatch above) already deliberately computed a real value
+// that just happens to be negative -- overriding it here silently
+// contradicted the page's own cyclical-note text, which still claimed the
+// negative multi-year/sector margin was used (found 2026-08-24 on
+// 096770.KS/SK Innovation -- see docs/superpowers/specs/2026-08-24-sector-
+// average-cyclical-margin-design.md). A negative cyclical value now flows to
+// calculateDCF()'s own `fcf <= 0 -> null` guard and this file's existing
+// null-base-case retry/skip path instead.
+function shouldApplyRevenueFallback({ baseFcf, fcfMethod, totalRevenue }) {
+  return (baseFcf == null || (baseFcf <= 0 && fcfMethod !== 'normalized')) && totalRevenue > 0;
 }
 
 async function fetchHistorySeries(symbol, proxyUrl) {
@@ -824,7 +839,21 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
           trailingRevenue: data.totalRevenue,
         });
         if (normalized.value !== null) {
-          fcfInfo = { value: normalized.value, method: 'normalized', marginUsed: normalized.marginUsed, yearsUsed: normalized.yearsUsed };
+          const resolved = resolveCyclicalMargin({
+            ownMargin: normalized.marginUsed,
+            sectorLookup: sectorMarginLookup,
+            industry: data.industry,
+          });
+          if (resolved.marginUsed !== null) {
+            fcfInfo = {
+              value: resolved.marginUsed * data.totalRevenue,
+              method: 'normalized',
+              marginUsed: resolved.marginUsed,
+              yearsUsed: normalized.yearsUsed,
+              source: resolved.source,
+              peerCount: resolved.peerCount,
+            };
+          }
         }
       }
       baseFcf = fcfInfo.value;
@@ -837,7 +866,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       // known) so a real, established company with a Yahoo data gap on FCF
       // doesn't just produce an N/A page. Seed matches the live tool exactly:
       // profitMargins if positive, else a flat 10% default.
-      if ((baseFcf == null || baseFcf <= 0) && data.totalRevenue > 0) {
+      if (shouldApplyRevenueFallback({ baseFcf, fcfMethod: fcfInfo.method, totalRevenue: data.totalRevenue })) {
         revenueTargetMarginPct = (data.profitMargins != null && data.profitMargins > 0)
           ? +(data.profitMargins * 100).toFixed(1) : 10;
         baseFcf = Math.round(data.totalRevenue * (revenueTargetMarginPct / 100));
@@ -984,6 +1013,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       // Yahoo's /timeseries typically covers ~4 fiscal years, shorter than a
       // full commodity cycle (5-10yr) -- a real data-availability limitation
       // surfaced here, not hidden.
+      : (fcfInfo.method === 'normalized' && fcfInfo.source === 'sector') ? `Cyclical company — this company's own multi-year FCF margin was negative, so this uses the ${fcfInfo.peerCount}-company industry average margin (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead`
       : fcfInfo.method === 'normalized' ? `Cyclical company — average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue), not the latest year alone, to avoid over/under-valuing at a cycle extreme`
       : 'Rough estimate: operating cash flow × 0.8';
 
@@ -1190,7 +1220,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // visibility -- user-requested 2026-08-24 after confirming the live
     // asymmetry (Utility/Holdco got a prominent standalone note, Cyclical's
     // was only visible by scrolling to the assumptions table).
-    const cyclicalNoteHtml = (fcfInfo && fcfInfo.method === 'normalized')
+    const cyclicalNoteHtml = (fcfInfo && fcfInfo.method === 'normalized' && fcfInfo.source === 'sector')
+      ? `<p class="cyclical-note">📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.</p>`
+      : (fcfInfo && fcfInfo.method === 'normalized')
       ? `<p class="cyclical-note">📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.</p>`
       : '';
 
@@ -1403,4 +1435,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback };

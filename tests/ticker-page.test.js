@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence, deriveScenarios } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback } = require('../scripts/lib/ticker-page.js');
 
 // Regression test for a real bug (found by peer review, fixed 2026-08-15):
 // this file's ExcessReturn branch clamped the ROE spread to growthOffsetSpread's
@@ -78,4 +78,32 @@ test('pickCadence returns an empty annual series when both quarterly and annual 
   const r = pickCadence({}, 'DilutedEPS');
   assert.strictEqual(r.cadence, 'Annual');
   assert.deepStrictEqual(r.points, []);
+});
+
+// ── shouldApplyRevenueFallback (sector-average cyclical margin fix, 2026-08-25) ──
+// Regression test for a real bug (found 2026-08-24 on 096770.KS/SK Innovation):
+// the revenue-normalised fallback (a stand-in for "Yahoo has no FCF data at
+// all") was firing even when the cyclical-normalization path had already
+// deliberately computed a real, disclosed value that just happened to be
+// negative -- silently discarding it while the page's own methodology text
+// still claimed the negative multi-year/sector margin was used.
+
+test('shouldApplyRevenueFallback fires when baseFcf is null (genuine data gap)', () => {
+  assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: null, fcfMethod: 'reported', totalRevenue: 1e9 }), true);
+});
+
+test('shouldApplyRevenueFallback fires when baseFcf is negative and NOT from cyclical normalization', () => {
+  assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: -1e8, fcfMethod: 'reported', totalRevenue: 1e9 }), true);
+});
+
+test('shouldApplyRevenueFallback does NOT fire when baseFcf is negative but IS from cyclical normalization (the bug fix)', () => {
+  assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: -1e8, fcfMethod: 'normalized', totalRevenue: 1e9 }), false);
+});
+
+test('shouldApplyRevenueFallback does not fire when baseFcf is positive', () => {
+  assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: 1e8, fcfMethod: 'reported', totalRevenue: 1e9 }), false);
+});
+
+test('shouldApplyRevenueFallback does not fire when totalRevenue is missing, even with null baseFcf', () => {
+  assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: null, fcfMethod: 'reported', totalRevenue: 0 }), false);
 });
