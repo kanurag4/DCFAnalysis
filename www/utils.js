@@ -137,6 +137,31 @@ function isConglomerate(sector, industry, ticker) {
   return HOLDCO_TICKER_ALLOWLIST.has((ticker || '').toUpperCase());
 }
 
+// SEO-copy classifier only -- does NOT feed deriveDcfAssumptions() or any
+// valuation-model dispatch, so it's exempt from the model-dispatch
+// consumer checklist (live tool / evaluate / ticker-page generators /
+// worker-watchlist). Used only by the DCF and growth ticker-page
+// generators to add "SaaS valuation" to a page's title/meta for companies
+// genuinely known as SaaS. Deliberately a manual ticker allowlist, not a
+// Yahoo industry-tag check like the classifiers above -- "Software -
+// Application"/"Software - Infrastructure" is too unreliable to match
+// directly (confirmed live 2026-08-26: COVER Corporation, a Japanese
+// VTuber talent agency, is tagged "Software - Application" same as
+// Twilio; Microsoft/Uber/Oracle/Adobe/Palantir also fall under those two
+// industry tags but aren't what "<company> saas valuation" searchers
+// mean). Seeded from real GSC query demand (2026-08-26: twilio/snowflake/
+// okta/crowdstrike/autodesk/atlassian saas valuation, all 0-click at
+// position 28-85) plus other unambiguous SaaS names -- grows over time,
+// same pattern as HOLDCO_TICKER_ALLOWLIST above.
+const SAAS_TICKER_ALLOWLIST = new Set([
+  'TWLO', 'OKTA', 'ADSK', 'TEAM', 'CRWD', 'SNOW', 'DDOG', 'GWRE', 'ZETA',
+  'XRO.AX', 'WTC.AX', '4478.T',
+]);
+
+function isSaas(ticker) {
+  return SAAS_TICKER_ALLOWLIST.has((ticker || '').toUpperCase());
+}
+
 // Narrow check: banks and insurers where FCF-based DCF is structurally broken
 // -- defaults them to DDM. Intentionally excludes asset managers, payment
 // networks, and exchanges that have real FCF and remain on the DCF path.
@@ -287,7 +312,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
   deriveFcf,
-  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isCyclical, isConglomerate, isBankOrInsurance, chooseFinancialModel,
+  isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isCyclical, isConglomerate, isSaas, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,

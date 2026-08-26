@@ -20,7 +20,7 @@ const { applyHoldcoDiscountToScenarios } = require('../../www/calc/holdcoDiscoun
 const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE, HOLDCO_DISCOUNT } = require('../../www/config.js');
 const {
   deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
-  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility, isCyclical, isConglomerate,
+  getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility, isCyclical, isConglomerate, isSaas,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
@@ -1404,9 +1404,17 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       </section>`;
 
     const METHOD_FULL = { DCF: 'Discounted Cash Flow', DDM: 'Dividend Discount Model', ExcessReturn: 'Excess Return Model', REIT: 'FFO/AFFO Valuation', Airline: 'EV/EBITDA Valuation' };
+    // "SaaS valuation" title/meta variant: GSC (2026-08-26) showed real search
+    // demand for "<company> saas valuation" sitting at position 28-85 with zero
+    // clicks -- isSaas() is a manual allowlist, not the method dispatch above.
+    const isSaasTicker = isSaas(t);
     const html = pageShell({
-      title: `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
-      description: `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
+      title: isSaasTicker
+        ? `${name} (${t}) SaaS Valuation — Is It Undervalued? | KashVector`
+        : `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
+      description: isSaasTicker
+        ? `${name} (${t}) SaaS valuation via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`
+        : `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
       subtitle: `${METHOD_SHORT[method]} Valuation · ${escapeHtml(sectorLine)}`,
