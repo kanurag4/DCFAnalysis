@@ -104,6 +104,19 @@
     "updatedAt": "2026-08-24T05:27:42.820Z"
   },
   {
+    "ticker": "AVAL",
+    "slug": "aval",
+    "name": "Grupo Aval Acciones y Valores S.A.",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 5.582423727652093,
+    "price": 5.54,
+    "marginOfSafety": 0.007657712572579906,
+    "marketCap": 6576942592,
+    "updated": "2026-08-26",
+    "updatedAt": "2026-08-26T11:01:50.046Z"
+  },
+  {
     "ticker": "AVGO",
     "slug": "avgo",
     "name": "Broadcom Inc.",
@@ -128,6 +141,19 @@
     "marketCap": 13923040256,
     "updated": "2026-08-22",
     "updatedAt": "2026-08-22T00:04:57.824Z"
+  },
+  {
+    "ticker": "BABA",
+    "slug": "baba",
+    "name": "Alibaba Group Holding Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 91.22382148010823,
+    "price": 119.44,
+    "marginOfSafety": -0.23623726155301214,
+    "marketCap": 286282612736,
+    "updated": "2026-08-26",
+    "updatedAt": "2026-08-26T11:02:56.832Z"
   },
   {
     "ticker": "BAX",
@@ -494,6 +520,19 @@
     "updatedAt": "2026-08-22T00:06:35.517Z"
   },
   {
+    "ticker": "MKL",
+    "slug": "mkl",
+    "name": "Markel Group Inc.",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 1814.6450486152155,
+    "price": 1808.9,
+    "marginOfSafety": 0.003175990168177019,
+    "marketCap": 22412195840,
+    "updated": "2026-08-26",
+    "updatedAt": "2026-08-26T11:01:11.007Z"
+  },
+  {
     "ticker": "MMM",
     "slug": "mmm",
     "name": "3M Company",
@@ -791,6 +830,19 @@
     "marketCap": 1433132728320,
     "updated": "2026-08-24",
     "updatedAt": "2026-08-24T05:30:13.504Z"
+  },
+  {
+    "ticker": "TSM",
+    "slug": "tsm",
+    "name": "Taiwan Semiconductor Manufacturing Company Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 183.6962772006429,
+    "price": 417.41,
+    "marginOfSafety": -0.5599140480567238,
+    "marketCap": 2164886077440,
+    "updated": "2026-08-26",
+    "updatedAt": "2026-08-26T11:02:14.766Z"
   },
   {
     "ticker": "TWLO",

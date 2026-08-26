@@ -312,6 +312,19 @@
     "updatedAt": "2026-08-24T05:33:13.663Z"
   },
   {
+    "ticker": "1810.HK",
+    "slug": "1810-hk",
+    "name": "Xiaomi Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 25.819746483962266,
+    "price": 28.46,
+    "marginOfSafety": -0.09277067870828301,
+    "marketCap": 732469329920,
+    "updated": "2026-08-26",
+    "updatedAt": "2026-08-26T11:03:15.460Z"
+  },
+  {
     "ticker": "185750.KS",
     "slug": "185750-ks",
     "name": "Chong Kun Dang Pharmaceutical Corp.",
@@ -505,6 +518,19 @@
     "marketCap": 4605087842304,
     "updated": "2026-08-24",
     "updatedAt": "2026-08-24T05:34:01.207Z"
+  },
+  {
+    "ticker": "7974.T",
+    "slug": "7974-t",
+    "name": "Nintendo Co., Ltd.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 9513.7064240777,
+    "price": 8896,
+    "marginOfSafety": 0.06943642356988533,
+    "marketCap": 10255960375296,
+    "updated": "2026-08-26",
+    "updatedAt": "2026-08-26T11:01:26.549Z"
   },
   {
     "ticker": "8053.T",
