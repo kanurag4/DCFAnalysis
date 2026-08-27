@@ -130,6 +130,19 @@
     "updatedAt": "2026-08-22T08:31:58.595Z"
   },
   {
+    "ticker": "BAP.AX",
+    "slug": "bap-ax",
+    "name": "Bapcor Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 1.362042922215414,
+    "price": 0.645,
+    "marginOfSafety": 1.1116944530471535,
+    "marketCap": 433925728,
+    "updated": "2026-08-27",
+    "updatedAt": "2026-08-27T09:31:35.502Z"
+  },
+  {
     "ticker": "BBN.AX",
     "slug": "bbn-ax",
     "name": "Baby Bunting Group Limited",
