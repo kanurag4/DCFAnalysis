@@ -228,5 +228,85 @@
     "exitDate": "2026-08-22",
     "exitPrice": 22.4,
     "dollarPnl": -16.6
+  },
+  {
+    "ticker": "DRR.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 4.37,
+    "exitDate": "2026-08-28",
+    "exitPrice": 4.14,
+    "dollarPnl": -15.7
+  },
+  {
+    "ticker": "WAF.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 3.78,
+    "exitDate": "2026-08-28",
+    "exitPrice": 3.92,
+    "dollarPnl": 20.83
+  },
+  {
+    "ticker": "WOR.AX",
+    "entryDate": "2026-06-18",
+    "entryPrice": 12.72,
+    "exitDate": "2026-08-28",
+    "exitPrice": 10.24,
+    "dollarPnl": -34.05
+  },
+  {
+    "ticker": "NEM.AX",
+    "entryDate": "2026-08-07",
+    "entryPrice": 152.82,
+    "exitDate": "2026-08-28",
+    "exitPrice": 182.8,
+    "dollarPnl": 9.22
+  },
+  {
+    "ticker": "TAH.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 0.81,
+    "exitDate": "2026-08-28",
+    "exitPrice": 0.92,
+    "dollarPnl": 12.5
+  },
+  {
+    "ticker": "MAH.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 1.03,
+    "exitDate": "2026-08-28",
+    "exitPrice": 0.985,
+    "dollarPnl": -24.57
+  },
+  {
+    "ticker": "PRN.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 2.08,
+    "exitDate": "2026-08-28",
+    "exitPrice": 2.29,
+    "dollarPnl": -34.57
+  },
+  {
+    "ticker": "GMD.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 8.32,
+    "exitDate": "2026-08-28",
+    "exitPrice": 8.57,
+    "dollarPnl": 16.9
+  },
+  {
+    "ticker": "VNT.AX",
+    "entryDate": "2026-07-10",
+    "entryPrice": 5.95,
+    "exitDate": "2026-08-28",
+    "exitPrice": 5.46,
+    "dollarPnl": 0.77
+  },
+  {
+    "ticker": "AAI.AX",
+    "entryDate": "2026-07-17",
+    "entryPrice": 66.98,
+    "exitDate": "2026-08-28",
+    "exitPrice": 71,
+    "dollarPnl": -5.41
   }
 ]
