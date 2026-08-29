@@ -465,5 +465,45 @@
     "exitDate": "2026-08-22",
     "exitPrice": 25.29,
     "dollarPnl": 9.59
+  },
+  {
+    "ticker": "MMM",
+    "entryDate": "2026-07-25",
+    "entryPrice": 172.62,
+    "exitDate": "2026-08-29",
+    "exitPrice": 174.34,
+    "dollarPnl": -12.92
+  },
+  {
+    "ticker": "HAL",
+    "entryDate": "2026-08-15",
+    "entryPrice": 34.42,
+    "exitDate": "2026-08-29",
+    "exitPrice": 36.18,
+    "dollarPnl": 14.32
+  },
+  {
+    "ticker": "ADSK",
+    "entryDate": "2026-08-01",
+    "entryPrice": 234.2,
+    "exitDate": "2026-08-29",
+    "exitPrice": 260.66,
+    "dollarPnl": 16.23
+  },
+  {
+    "ticker": "ALL",
+    "entryDate": "2026-08-22",
+    "entryPrice": 253.83,
+    "exitDate": "2026-08-29",
+    "exitPrice": 260.58,
+    "dollarPnl": 16.02
+  },
+  {
+    "ticker": "MCK",
+    "entryDate": "2026-08-22",
+    "entryPrice": 858.9,
+    "exitDate": "2026-08-29",
+    "exitPrice": 893.39,
+    "dollarPnl": 24.19
   }
 ]
