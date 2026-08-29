@@ -126,5 +126,21 @@
     "exitDate": "2026-08-22",
     "exitPrice": 253.1,
     "dollarPnl": -32.34
+  },
+  {
+    "ticker": "IBE.MC",
+    "entryDate": "2026-08-22",
+    "entryPrice": 20.05,
+    "exitDate": "2026-08-29",
+    "exitPrice": 20.28,
+    "dollarPnl": 7.23
+  },
+  {
+    "ticker": "DB1.DE",
+    "entryDate": "2026-08-15",
+    "entryPrice": 272.9,
+    "exitDate": "2026-08-29",
+    "exitPrice": 291.2,
+    "dollarPnl": 18.5
   }
 ]

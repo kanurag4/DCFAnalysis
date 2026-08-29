@@ -100,12 +100,12 @@
     "firstPrice": 29.04
   },
   "FRE.DE": {
-    "firstSeen": "2026-08-15",
-    "firstPrice": 47.08
+    "firstSeen": "2026-08-29",
+    "firstPrice": 45.85
   },
   "PUB.PA": {
-    "firstSeen": "2026-08-15",
-    "firstPrice": 101.8
+    "firstSeen": "2026-08-29",
+    "firstPrice": 101.65
   },
   "URW.PA": {
     "firstSeen": "2026-08-15",
@@ -122,5 +122,9 @@
   "IBE.MC": {
     "firstSeen": "2026-08-22",
     "firstPrice": 20.05
+  },
+  "RWE.DE": {
+    "firstSeen": "2026-08-29",
+    "firstPrice": 59.1
   }
 }
