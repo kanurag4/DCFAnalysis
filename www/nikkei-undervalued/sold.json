@@ -206,5 +206,29 @@
     "exitDate": "2026-08-22",
     "exitPrice": 1940,
     "dollarPnl": -374.89
+  },
+  {
+    "ticker": "1605.T",
+    "entryDate": "2026-08-22",
+    "entryPrice": 3954,
+    "exitDate": "2026-08-29",
+    "exitPrice": 3876,
+    "dollarPnl": -1365.47
+  },
+  {
+    "ticker": "4021.T",
+    "entryDate": "2026-07-19",
+    "entryPrice": 7608,
+    "exitDate": "2026-08-29",
+    "exitPrice": 8130,
+    "dollarPnl": 1318.79
+  },
+  {
+    "ticker": "285A.T",
+    "entryDate": "2026-08-08",
+    "entryPrice": 47730,
+    "exitDate": "2026-08-29",
+    "exitPrice": 47900,
+    "dollarPnl": -8180.89
   }
 ]
