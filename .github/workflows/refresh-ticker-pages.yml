@@ -13,7 +13,10 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # ~14s/ticker since 48c4c4b7a added 3200ms spacing between buildTickerPage's
+    # 4-6 internal Worker fetches (the 429 fix); the full ~275-ticker batch now
+    # runs ~75 min, well past the old 30-min cap that was cancelling every run.
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
         with:
