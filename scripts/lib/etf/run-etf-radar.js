@@ -93,7 +93,10 @@ async function ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, 
       }
       fresh = {
         asOf: raw.asOf, source: raw.source, fetchedAt: new Date().toISOString(),
-        rows: resolved.map(r => ({ yahoo: r.yahoo, raw: r.rawSymbol, name: r.name, weight: r.weight, country: r.country })),
+        rows: resolved.map(r => ({
+          yahoo: r.yahoo, raw: r.rawSymbol, name: r.name, weight: r.weight,
+          country: r.country || null, sector: r.sector || null,
+        })),
       };
     } catch (e) { log(`  fetch failed: ${fund.slug} — ${e.message}`); }
   }
@@ -134,6 +137,26 @@ function valueOne(sym, data, evaluateStock, bounds = {}) {
   return { unvaluable: true, reason: ev.reason || 'unvaluable' };
 }
 
+// One batch call to the Worker's /quote?symbols= endpoint for the fund listing
+// tickers — price + currency for all of them in a single request (ETF quotes
+// come back via regularMarketPrice, which the per-symbol quoteSummary path
+// often lacks). Returns { [ticker]: { price, currency } }. Injected for tests.
+async function fetchQuotesReal(tickers, proxyUrl) {
+  if (!tickers.length || !proxyUrl) return {};
+  try {
+    const url = `${proxyUrl.replace(/\/$/, '')}/quote?symbols=${encodeURIComponent(tickers.join(','))}`;
+    const res = await fetch(url, { headers: batchHeaders() });
+    if (!res.ok) return {};
+    const body = await res.json();
+    const out = {};
+    for (const q of (Array.isArray(body) ? body : body.quotes || body.result || [])) {
+      const price = q.regularMarketPrice ?? q.price;
+      if (q.symbol && Number.isFinite(price)) out[q.symbol] = { price, currency: q.currency || null };
+    }
+    return out;
+  } catch (_) { return {}; }
+}
+
 // Thin wrapper over the Worker /search?q= endpoint — returns the top match's
 // symbol when the query looks unambiguous, else null. Injected so tests stub it.
 async function searchSymbolReal(name, proxyUrl) {
@@ -151,6 +174,7 @@ async function runEtfRadar(deps, opts = {}) {
   const {
     universePath, injectedUniverse, holdingsDir, overridesPath, proxyUrl, rawCachePath,
     fetchSymbol = realFetchSymbol, evaluateStock = realEvaluateStock, fetchFx = fetchFxRate,
+    fetchQuotes = fetchQuotesReal,
     searchSymbol = (name) => searchSymbolReal(name, proxyUrl),
     now = () => new Date(), log = console.log,
   } = deps;
@@ -158,10 +182,10 @@ async function runEtfRadar(deps, opts = {}) {
     bounds = {} } = opts;
   const asAt = now().toISOString().slice(0, 10);
   const fxCache = new Map();
-  // --reagg re-runs valuation + pages from the raw-data cache; it should not
-  // re-download issuer holdings either (that only adds spurious asOf-unchanged
-  // flags on a same-day re-run).
-  const holdingsOffline = offline || reagg;
+  // --reagg reuses the cached union (the 25-50 min part) but still re-downloads
+  // issuer holdings (cheap, ~10s — and picks up adapter changes) and re-fetches
+  // listing prices (one batch call).
+  const holdingsOffline = offline;
 
   const universe = loadUniverse(universePath, injectedUniverse);
 
@@ -186,6 +210,8 @@ async function runEtfRadar(deps, opts = {}) {
   const cache = (reagg && rawCachePath && fs.existsSync(rawCachePath))
     ? JSON.parse(fs.readFileSync(rawCachePath, 'utf8')) : null;
 
+  let listingPrices = {};
+
   if (cache) {
     for (const [k, v] of Object.entries(cache.fx || {})) fxCache.set(k, v);
     const noNetFx = async () => null; // every pair is already in fxCache on reagg
@@ -195,16 +221,8 @@ async function runEtfRadar(deps, opts = {}) {
       valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
       if (data) fetched++; else failed++;
     }
-    for (const w of withHoldings) {
-      w.snapshotPrices = {};
-      for (const l of (w.fund.listings || [])) {
-        const p = cache.listingPrices && cache.listingPrices[l.ticker];
-        if (p) w.snapshotPrices[l.ticker] = p;
-      }
-    }
   } else {
     const rawUnion = {};
-    const listingPrices = {};
     // Written after every symbol so a killed long run still leaves a usable
     // partial cache for --reagg (the union fetch is 25-50 min).
     const flushCache = () => {
@@ -242,54 +260,84 @@ async function runEtfRadar(deps, opts = {}) {
       }
       flushCache();
     }
-
-    // 2b. fund-level listing snapshot prices — for the detail pages (monthly
-    // snapshot price, not a live refresh). Best-effort.
-    for (const w of withHoldings) {
-      w.snapshotPrices = {};
-      for (const l of (w.fund.listings || [])) {
-        const d = await fetchSymbol(l.ticker, { proxyUrl, retries: 1, backoffMs: 4000 });
-        if (d && Number.isFinite(d.price)) {
-          w.snapshotPrices[l.ticker] = { price: d.price, currency: d.currency || l.currency || null };
-          listingPrices[l.ticker] = w.snapshotPrices[l.ticker];
-        }
-        if (throttleMs) await sleep(throttleMs);
-      }
-    }
     flushCache();
   }
 
-  // 3. aggregate per fund + crypto detection + sisters
+  // Fund-level listing prices — one batch /quote call for every listing ticker
+  // (cheap enough to redo even on --reagg for a fresh snapshot price).
+  const allTickers = [...new Set(withHoldings.flatMap(w => (w.fund.listings || []).map(l => l.ticker)))];
+  listingPrices = await fetchQuotes(allTickers, proxyUrl);
+  for (const w of withHoldings) {
+    w.snapshotPrices = {};
+    for (const l of (w.fund.listings || [])) {
+      if (listingPrices[l.ticker]) w.snapshotPrices[l.ticker] = listingPrices[l.ticker];
+    }
+  }
+  if (rawCachePath && fs.existsSync(rawCachePath)) {
+    try {
+      const cur = JSON.parse(fs.readFileSync(rawCachePath, 'utf8'));
+      cur.listingPrices = listingPrices;
+      fs.writeFileSync(rawCachePath, JSON.stringify(cur));
+    } catch (_) { /* cache write is best-effort */ }
+  }
+
+  // 3. aggregate per fund + crypto safety-net + sisters
   const fundsForOverlap = withHoldings.map(w => ({ slug: w.fund.slug, holdings: w.holdings }));
-  const funds = withHoldings.map(w => {
-    const isCrypto = w.fund.assetClass === 'crypto' || detectCrypto(w.holdings, valuations, {});
-    const agg = isCrypto ? null : aggregateFund(w.holdings, valuations, { coverageGate });
-    return {
+  const cryptoExcluded = [];
+  const funds = [];
+  for (const w of withHoldings) {
+    // Crypto safety-net: an unflagged fund whose holdings are mostly crypto
+    // proxies is dropped entirely — no ranked row, no page. (Crypto isn't
+    // something the radar values; there are no crypto funds in etfs.json.)
+    if (detectCrypto(w.holdings, valuations, {})) {
+      cryptoExcluded.push(w.fund.slug);
+      log(`  excluded (crypto-heavy): ${w.fund.slug}`);
+      continue;
+    }
+    const agg = aggregateFund(w.holdings, valuations, { coverageGate });
+    funds.push({
       slug: w.fund.slug, name: w.fund.name, theme: w.fund.theme, fee: w.fund.fee,
-      listings: w.fund.listings, assetClass: isCrypto ? 'crypto' : 'equity',
+      listings: w.fund.listings,
       holdingsAsOf: w.holdingsAsOf, flags: w.flags,
       holdingsCount: w.holdings.length,
-      lookThroughMos: agg ? agg.lookThroughMos : null,
-      coverage: agg ? agg.coverage : null,
-      ranked: agg ? agg.ranked : false,
-      valued: agg ? agg.valued : [], unvalued: agg ? agg.unvalued : [],
-      cheapest: agg ? agg.cheapest : null, priciest: agg ? agg.priciest : null,
+      lookThroughMos: agg.lookThroughMos,
+      coverage: agg.coverage,
+      ranked: agg.ranked,
+      valued: agg.valued, unvalued: agg.unvalued,
+      cheapest: agg.cheapest, priciest: agg.priciest,
       sisters: sistersFor(w.fund.slug, fundsForOverlap, {}),
       snapshotPrices: w.snapshotPrices || {},
-    };
-  });
+      sectorMix: weightMix(w.holdings, 'sector'),
+      countryMix: weightMix(w.holdings, 'country'),
+    });
+  }
 
   const ranked = funds.filter(f => f.ranked)
     .sort((a, b) => b.lookThroughMos - a.lookThroughMos)
     .map((f, i) => ({ ...f, rank: i + 1 }));
-  const unranked = funds.filter(f => !f.ranked && f.assetClass !== 'crypto');
-  const notValued = funds.filter(f => f.assetClass === 'crypto');
+  const unranked = funds.filter(f => !f.ranked);
 
   return {
     asAt, funds,
     union: { count: union.length, fetched, failed },
-    rankings: { ranked, unranked, notValued },
+    rankings: { ranked, unranked },
+    cryptoExcluded,
   };
+}
+
+// weight-share breakdown by a row key (sector / country), top entries first.
+function weightMix(holdings, key) {
+  const by = new Map();
+  let total = 0;
+  for (const h of holdings) {
+    const k = (h[key] || '').trim() || 'Other';
+    by.set(k, (by.get(k) || 0) + (h.weight || 0));
+    total += h.weight || 0;
+  }
+  if (!(total > 0)) return [];
+  return [...by.entries()]
+    .map(([name, w]) => ({ name, weight: w / total }))
+    .sort((a, b) => b.weight - a.weight);
 }
 
 const ordinal = (n) => {
@@ -356,6 +404,11 @@ function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot,
   const radarDir = path.join(pagesRoot, 'etf-radar');
   fs.mkdirSync(radarDir, { recursive: true });
   fs.writeFileSync(path.join(radarDir, 'index.html'), renderRadarPage(result, { asAt: at }).html);
+  // The ranking page reuses the "Most Undervalued <market>" screen stylesheet
+  // (all six are byte-identical). Copy the ASX one alongside so /dcf/etf-radar/
+  // style.css resolves like the screens'.
+  const screenCss = path.join(__dirname, '..', '..', '..', 'www', 'asx-undervalued', 'style.css');
+  if (fs.existsSync(screenCss)) fs.copyFileSync(screenCss, path.join(radarDir, 'style.css'));
 }
 
 module.exports = {

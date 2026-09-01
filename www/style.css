@@ -632,47 +632,53 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
 .rsc-verdict-pill.rsc-bad { background: rgba(239,68,68,0.22); color: var(--kv-fail); border: 1px solid rgba(239,68,68,0.55); }
 .related-stocks-sub { color: var(--kv-muted); font-size: 0.85rem; margin: 2px 0 0; }
 
-/* ── Thematic ETF Radar (etf-radar-page.js / etf-page.js) ── */
-.etf-page, .etf-radar { max-width: 860px; margin: 0 auto; }
-.etf-theme-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--kv-primary); background: var(--kv-card-2); border: 1px solid var(--kv-border); border-radius: 20px; padding: 3px 12px; margin: 0 0 12px; }
-.etf-headline { font-size: 1.15rem; line-height: 1.5; margin: 8px 0; }
+/* ── Thematic ETF Radar — per-fund detail page (etf-page.js).
+   The ranking page (/dcf/etf-radar/) uses the shared ranking-screen style.css
+   instead; this block only styles the detail pages, which use the per-ticker
+   page shell + design language (.summary / .stats / .synopsis / .tool-info). ── */
+.etf-page { max-width: 900px; margin: 0 auto; }
+.etf-page section { margin: 26px 0; }
+.etf-note { font-size: 0.74rem; font-weight: 500; color: var(--kv-muted); }
+.etf-sub { font-size: 0.85rem; color: var(--kv-muted); line-height: 1.55; margin: 6px 0 0; }
+.etf-sub a { color: var(--kv-accent); }
+
+.etf-valuation h2, .etf-holdings h2, .etf-breakdown h2, .etf-sisters h2 {
+  font-size: 1rem; font-weight: 600; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--kv-border);
+}
+.etf-headline { font-size: 1.08rem; line-height: 1.55; margin: 4px 0; }
 .etf-headline strong { color: var(--kv-primary); }
-.etf-coverage-notice { font-size: 1.02rem; line-height: 1.5; background: var(--kv-card-2); border: 1px solid var(--kv-border); border-radius: 8px; padding: 12px 14px; margin: 8px 0; }
-.etf-coverage-line, .etf-meta, .etf-rank-line { font-size: 0.85rem; color: var(--kv-muted); margin: 4px 0; }
-.etf-rank-line a { color: var(--kv-primary); }
-.etf-rest { font-size: 0.82rem; color: var(--kv-muted); margin: 10px 0 0; }
-.etf-note { font-size: 0.72rem; font-weight: 500; color: var(--kv-muted); }
+html.dark .etf-headline strong { color: var(--kv-accent); }
 
-.etf-holdings, .etf-callouts, .etf-sisters, .etf-methodology { margin: 22px 0; }
-.etf-holdings-table, .etf-radar-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-.etf-holdings-table th, .etf-radar-table th { text-align: left; color: var(--kv-muted); font-weight: 600; border-bottom: 2px solid var(--kv-border); padding: 8px 10px; }
-.etf-holdings-table td, .etf-radar-table td { padding: 8px 10px; border-bottom: 1px solid var(--kv-border); }
-.etf-holdings-table a, .etf-radar-table a { color: var(--kv-primary); }
-.etf-premium { color: var(--kv-fail); }
-.etf-discount { color: var(--kv-pass); }
+.etf-callouts { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+.etf-callout { flex: 1 1 200px; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; font-weight: 600; }
+.etf-callout .etf-callout-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kv-muted); }
+.etf-callout .etf-callout-name { font-weight: 600; }
+.etf-callout.neg { border-left: 3px solid var(--kv-fail); }
+.etf-callout.pos { border-left: 3px solid var(--kv-pass); }
 
-.etf-callouts { display: flex; gap: 12px; flex-wrap: wrap; }
-.etf-callout { flex: 1 1 200px; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
-.etf-callout-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--kv-muted); }
-.etf-callout-name { font-weight: 600; }
-.etf-callout.etf-premium { border-left: 3px solid var(--kv-fail); }
-.etf-callout.etf-discount { border-left: 3px solid var(--kv-pass); }
+.etf-holdings-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.etf-holdings-table th { text-align: left; color: var(--kv-muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 2px solid var(--kv-border); padding: 8px 10px; }
+.etf-holdings-table td { padding: 8px 10px; border-bottom: 1px solid var(--kv-border); white-space: nowrap; }
+.etf-holdings-table td.num, .etf-holdings-table th.num { text-align: right; }
+.etf-holdings-table a { color: var(--kv-primary); }
+html.dark .etf-holdings-table a { color: var(--kv-accent); }
+.etf-holdings-table .neg { color: var(--kv-fail); font-weight: 600; }
+.etf-holdings-table .pos { color: var(--kv-pass); font-weight: 600; }
 
-.etf-sister-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.etf-breakdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.etf-breakdown-grid h3 { font-size: 0.82rem; color: var(--kv-muted); margin: 0 0 8px; }
+.etf-mix { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.etf-mix li { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; font-size: 0.8rem; padding: 3px 6px; z-index: 0; }
+.etf-mix-bar { position: absolute; left: 0; top: 0; bottom: 0; background: var(--kv-card-2); border-radius: 4px; z-index: -1; }
+.etf-mix-pct { color: var(--kv-muted); font-variant-numeric: tabular-nums; }
+
+.etf-sister-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
 .etf-sister-card { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--kv-text); display: flex; flex-direction: column; gap: 5px; }
 .etf-sister-card:hover { border-color: var(--kv-accent); }
 .etf-sister-name { font-weight: 600; font-size: 0.88rem; }
-.etf-sister-overlap, .etf-sister-fee, .etf-sister-lt { font-size: 0.76rem; color: var(--kv-muted); }
 
-.etf-methodology p { font-size: 0.88rem; line-height: 1.55; color: var(--kv-text); }
-.etf-disclaimer { font-size: 0.82rem !important; color: var(--kv-muted) !important; }
-
-.etf-radar-intro { font-size: 0.95rem; line-height: 1.55; margin-bottom: 16px; }
-.etf-radar-table-wrap { overflow-x: auto; }
-.etf-radar-block { margin: 24px 0; }
-.etf-radar-block h2 { font-size: 1rem; }
-.etf-radar-block ul { font-size: 0.85rem; line-height: 1.6; color: var(--kv-muted); padding-left: 18px; }
 @media (max-width: 640px) {
-  .etf-holdings-table, .etf-radar-table { font-size: 0.78rem; }
-  .etf-holdings-table th, .etf-holdings-table td, .etf-radar-table th, .etf-radar-table td { padding: 6px 7px; }
+  .etf-breakdown-grid { grid-template-columns: 1fr; }
+  .etf-holdings-table { font-size: 0.78rem; }
+  .etf-holdings-table th, .etf-holdings-table td { padding: 6px 7px; }
 }

@@ -30,3 +30,11 @@ test('a clean fresh snapshot is ok', () => {
   const fresh = { asOf: '2026-08-01', rows: new Array(41).fill({ weight: 0.0244 }) };
   assert.equal(evaluateFreshness(prev, fresh).ok, true);
 });
+
+test('asOf-unchanged alone is non-blocking — adopt the fresh rows, still flag it', () => {
+  const prev = { asOf: '2026-08-01', rows: new Array(40).fill({ weight: 0.025 }) };
+  const fresh = { asOf: '2026-08-01', rows: new Array(40).fill({ weight: 0.025 }) };
+  const r = evaluateFreshness(prev, fresh);
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.flags, ['asOf-unchanged']);
+});

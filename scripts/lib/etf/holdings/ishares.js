@@ -52,6 +52,7 @@ function parse(csvText) {
   const header = rows[headerIdx].map(h => h.trim().toLowerCase());
   const iTicker = header.indexOf('ticker');
   const iName = header.indexOf('name');
+  const iSector = header.indexOf('sector');
   const iClass = header.indexOf('asset class');
   const iWeight = header.findIndex(h => h.startsWith('weight'));
   const iLocation = header.indexOf('location');
@@ -72,6 +73,7 @@ function parse(csvText) {
       rawSymbol,
       name: (r[iName] || '').trim(),
       weight: weight / 100,
+      sector: iSector >= 0 ? (r[iSector] || '').trim() : null,
       country: US_EXCHANGES.has(exch) ? 'United States' : (r[iLocation] || '').trim(),
       currency: (r[iCurrency] || '').trim(),
     });

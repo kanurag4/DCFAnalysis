@@ -1,221 +1,222 @@
-// scripts/lib/etf/etf-radar-page.js — the ranking page generator. Pure/CPU-only;
-// consumes runEtfRadar()'s result object. No verdict pill on any fund — the
-// look-through number is shown as an ordered measurement.
-const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('../page-shell.js');
+// scripts/lib/etf/etf-radar-page.js — the ranking page generator.
+// Pure/CPU-only; consumes runEtfRadar()'s result object. Pre-rendered (monthly
+// snapshot, no live prices) but matches the "Most Undervalued <market>" screen
+// design — same style.css, .app-header / .rules-card / .table-card / #rank-table
+// / .tool-info / .editorial structure. No verdict pill on any fund.
+const { escapeHtml } = require('../page-shell.js');
 const { fmtMos } = require('./etf-page.js');
 
 const pct = (x, dp = 0) => (x == null || !Number.isFinite(x) ? '—' : `${(x * 100).toFixed(dp)}%`);
 const firstTicker = (f) => (f.listings && f.listings[0] && f.listings[0].ticker) || f.slug.toUpperCase();
+const firstPrice = (f) => (f.snapshotPrices && f.snapshotPrices[firstTicker(f)]) || null;
+const money = (p) => (p && Number.isFinite(p.price)
+  ? `${p.currency ? escapeHtml(p.currency) + ' ' : ''}${p.price.toFixed(2)}` : '—');
+// "Implied fair value" — where the fund would trade if its price reflected the
+// combined intrinsic value of its holdings. lookThroughMos = (intrinsic − price)
+// / price, so fair value = price × (1 + lookThroughMos).
+const impliedFairValue = (f) => {
+  const p = firstPrice(f);
+  if (!p || !Number.isFinite(p.price) || !Number.isFinite(f.lookThroughMos)) return null;
+  return { price: p.price * (1 + f.lookThroughMos), currency: p.currency };
+};
 
 function renderRadarPage(result, { asAt } = {}) {
   const canonical = 'https://kashvector.com/dcf/etf-radar/';
   const when = escapeHtml(asAt || result.asAt || '');
-  const { ranked = [], unranked = [], notValued = [] } = result.rankings || {};
+  const { ranked = [], unranked = [] } = result.rankings || {};
+  const title = 'Thematic ETF Valuation Radar 2026 — Monthly Look-Through DCF | KashVector';
+  const desc = 'Which thematic ETFs trade furthest above the intrinsic value of what they hold? '
+    + 'A monthly look-through DCF: we value every underlying holding, weight by fund weight, and rank. Free, no sign-up.';
 
-  const crumbs = [
-    { name: 'Home', url: 'https://kashvector.com/', path: '/' },
-    { name: 'Thematic ETF Radar', url: canonical, path: '/dcf/etf-radar/' },
-  ];
-
-  const rows = ranked.map(f => `<tr>
-      <td>${f.rank}</td>
-      <td><a href="/dcf/etfs/${escapeHtml(f.slug)}/">${escapeHtml(f.name)}</a>
-          <span class="etf-note">${escapeHtml(firstTicker(f))}</span></td>
+  const rankRow = (f) => `<tr>
+      <td class="num">${f.rank}</td>
+      <td><div class="tk"><a href="/dcf/etfs/${escapeHtml(f.slug)}/">${escapeHtml(f.name)}</a></div><div class="nm">${escapeHtml(firstTicker(f))}</div></td>
       <td>${escapeHtml(f.theme || '')}</td>
-      <td class="${f.lookThroughMos < 0 ? 'etf-premium' : 'etf-discount'}">${fmtMos(f.lookThroughMos)}</td>
-      <td>${pct(f.coverage)}</td>
-      <td>${pct(f.fee, 2)}</td>
-      <td>${f.holdingsCount != null ? f.holdingsCount : '—'}</td>
-    </tr>`).join('\n');
+      <td class="num">${money(firstPrice(f))}</td>
+      <td class="num fv">${money(impliedFairValue(f))}</td>
+      <td class="num ${f.lookThroughMos < 0 ? 'neg' : 'pos'}">${fmtMos(f.lookThroughMos)}</td>
+      <td class="num">${pct(f.coverage)}</td>
+      <td class="num">${pct(f.fee, 2)}</td>
+      <td class="num">${f.holdingsCount != null ? f.holdingsCount : '—'}</td>
+    </tr>`;
 
   const tableHtml = ranked.length ? `
-    <div class="etf-radar-table-wrap">
-      <table class="etf-radar-table">
-        <thead><tr>
-          <th title="Ordered by look-through value — most below combined intrinsic value first">#</th>
-          <th>ETF</th>
-          <th>Theme</th>
-          <th title="Fund-weighted premium or discount of the holdings to their own combined intrinsic value. Negative = holdings trade above intrinsic (a premium); positive = below (a discount).">vs intrinsic value</th>
-          <th title="Share of fund weight we can put a valuation on. A fund is ranked only above 70%.">Coverage</th>
-          <th title="Stated management fee">Fee</th>
-          <th title="Number of holdings we could value">Holdings</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>` : '<p>No funds ranked this cycle.</p>';
+      <div class="table-scroll">
+        <table id="rank-table">
+          <thead><tr>
+            <th class="num">#</th>
+            <th>ETF</th>
+            <th>Theme</th>
+            <th class="num">Price</th>
+            <th class="num">Implied fair value</th>
+            <th class="num">vs intrinsic value</th>
+            <th class="num">Coverage</th>
+            <th class="num">Fee</th>
+            <th class="num">Holdings</th>
+          </tr></thead>
+          <tbody>${ranked.map(rankRow).join('\n')}</tbody>
+        </table>
+      </div>` : '<div class="status">No funds ranked this cycle.</div>';
 
   const unrankedHtml = unranked.length ? `
-    <section class="etf-radar-block">
-      <h2>Insufficient coverage to rank</h2>
-      <p>We can value less than 70% of these funds by weight, so they get a detail page but no ranked row.</p>
-      <ul>${unranked.map(f => `<li><a href="/dcf/etfs/${escapeHtml(f.slug)}/">${escapeHtml(f.name)}</a>
-        (${escapeHtml(firstTicker(f))}) — ${escapeHtml(f.theme || '')} — we can value ${pct(f.coverage)} of this fund</li>`).join('\n')}</ul>
+    <section class="editorial">
+      <p><strong>Insufficient coverage to rank.</strong> We can value less than 70% of these funds by
+         weight this cycle, so they get a detail page but no ranked row:
+         ${unranked.map(f => `<a href="/dcf/etfs/${escapeHtml(f.slug)}/">${escapeHtml(firstTicker(f))}</a>
+         (${pct(f.coverage)})`).join(' · ')}.</p>
     </section>` : '';
 
-  const notValuedHtml = notValued.length ? `
-    <section class="etf-radar-block">
-      <h2>Not valued</h2>
-      <p>These funds hold crypto assets — there is no cash-flow basis for a look-through valuation.</p>
-      <ul>${notValued.map(f => `<li><a href="/dcf/etfs/${escapeHtml(f.slug)}/">${escapeHtml(f.name)}</a>
-        (${escapeHtml(firstTicker(f))}) — ${escapeHtml(f.theme || '')}</li>`).join('\n')}</ul>
-    </section>` : '';
+  const faq = [
+    ['What does the "vs intrinsic value" number mean?',
+      'The fund-weighted average premium or discount of the fund’s holdings to their own combined intrinsic value. A negative number ("premium") means the holdings collectively trade above what the models say they are worth; a positive number ("discount") means below.'],
+    ['Is this a buy list?',
+      'No. Nothing here is financial advice and it is never a buy, sell or hold call. It is a measurement of how much optimism is priced into each theme — a starting point for research, not a verdict.'],
+    ['Why is nearly every fund showing a premium?',
+      'Partly the market, partly the method. The DCF is deliberately conservative on growth and caps it, so it systematically values fast-growing companies below their market price. An across-the-board premium in a strong market is normal and not on its own a sign of mispricing.'],
+    ['Why do AI and big-tech names read as heavily overvalued?',
+      'A 5-year discounted cash flow cannot price a genuine platform shift, and it penalises companies whose growth currently shows up as capital investment rather than free cash flow. Large semiconductor and cloud businesses often read as steep premiums here for that reason — it reflects the model’s known limitation as much as the price.'],
+    ['How is the growth rate estimated?',
+      'The slower of a holding’s multi-year revenue trend and its multi-year free-cash-flow trend (about four years of history), rather than a single year’s figure. One distorted year — an earnings rebound off a depressed base — would otherwise drive a mature company’s projection and skew the whole fund’s number.'],
+    ['What is "coverage" and why does it matter?',
+      'The share of a fund’s weight we could put a valuation on. The look-through number is computed over the covered portion only, so a fund at 75% coverage tells you less than one at 100%. Below 70% we publish no headline figure.'],
+    ['Why thematic ETFs and not VAS or IVV?',
+      'Broad market-cap index funds reconstitute — they drop what gets expensive — so a look-through verdict on them has little predictive value. Thematic funds are locked to their theme, which is what makes the measurement meaningful.'],
+    ['How often is it updated?',
+      'Monthly. Holdings come from each issuer’s published full-holdings file; prices and fundamentals are a monthly snapshot from Yahoo Finance, not a live feed.'],
+  ];
+  const faqHtml = faq.map(([q, a]) =>
+    `<details class="faq-item"><summary>${escapeHtml(q)}</summary><p>${a}</p></details>`).join('\n');
 
-  const methodologyHtml = `
-    <section class="etf-methodology" id="methodology">
-      <h2>How this ranking is built</h2>
-      <p>Thematic ETFs are theme-constrained — they can't rotate out of an expensive theme the way a
-         broad index fund self-cleanses — so a point-in-time look-through valuation actually has teeth.
-         For each fund we value every underlying holding with the same engine behind KashVector's
-         <a href="/dcf/">DCF tool</a> and valuation screens (a conservative 5-year discounted cash flow;
-         a dividend or excess-return model for banks, insurers and regulated utilities; an EV/Sales
-         comparison for a small tail the cash-flow models reject), weight each holding's premium or
-         discount by its fund weight, and sum.</p>
-      <p><strong>Growth input.</strong> Where the DCF needs a forward growth rate we use the
-         <em>slower</em> of a holding's multi-year revenue trend and its multi-year free-cash-flow trend
-         (roughly four years of history), rather than a single year's figure. One distorted year — an
-         earnings rebound off a depressed base, say — would otherwise drive a mature company's projection
-         and skew the whole fund's number.</p>
-      <p>Funds are ordered by that look-through number, descending — the fund whose holdings sit furthest
-         <em>below</em> their combined intrinsic value first. A fund is ranked only when the holdings we
-         can value cover at least 70% of its weight; the rest are listed separately. Crypto funds get no
-         cash-flow valuation at all. Individual holdings whose model output lands outside a sanity band
-         (roughly &minus;200% to +100%) are treated as unvaluable rather than blended in.</p>
-      <p class="etf-disclaimer"><strong>Read this as a measurement, not a verdict.</strong> This is
-         mechanical model output — not a judgement on any fund, its holdings, or its management, and
-         never a recommendation to buy, hold or sell. The 5-year DCF is deliberately conservative on
-         growth, so a fund reading as a premium is partly the model's own caution, not proof of a bubble.
-         Fast-growing and AI-exposed companies in particular can read as heavily overvalued here because a
-         short-horizon cash-flow model cannot capture a genuine platform shift or growth that is currently
-         showing up as investment rather than free cash flow. A theme can also trade above a conservative
-         intrinsic value for years while compounding. Figures are a point-in-time snapshot as at ${when}
-         and highly sensitive to assumptions. Not financial advice.</p>
+  const jsonLd = [
+    `{"@context":"https://schema.org","@type":"WebApplication","name":"Thematic ETF Valuation Radar","url":"${canonical}","description":"Monthly look-through DCF ranking of thematic ETFs by premium or discount to combined intrinsic value.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"}}`,
+    JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      itemListElement: ranked.map(f => ({ '@type': 'ListItem', position: f.rank, name: f.name, url: `https://kashvector.com/dcf/etfs/${f.slug}/` })),
+    }),
+    JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, '') } })),
+    }),
+  ];
+
+  return {
+    canonical,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8fafc">
+  <title>${escapeHtml(title)}</title>
+  <link rel="canonical" href="${canonical}">
+  <meta name="description" content="${escapeHtml(desc)}">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(desc)}">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KashVector">
+  <meta name="twitter:card" content="summary">
+  <script src="/kv-theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
+  <link rel="stylesheet" href="/kv-shared.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="/dcf-icon.svg">
+${jsonLd.map(b => `  <script type="application/ld+json">${b}</script>`).join('\n')}
+</head>
+<body>
+  <div id="kv-nav-placeholder" style="height:41px"></div>
+  <script src="/kv-nav.js"></script>
+  <script src="/kv-footer.js"></script>
+
+  <header class="app-header">
+    <div class="app-header-title">
+      <h1><img src="/dcf-icon.svg" alt="" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:6px">Thematic ETF Valuation Radar</h1>
+      <div class="as-at">as at ${when}</div>
+    </div>
+    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
+  </header>
+
+  <main>
+    <section class="rules-card">
+      <details class="rules-details">
+        <summary class="rules-title">How this ranking works, and how to read it</summary>
+        <p class="rules-intro">Thematic ETFs are theme-locked — they can’t rotate out of an expensive
+          theme the way a broad index fund self-cleanses — so a point-in-time look-through valuation
+          actually has teeth. For each fund we value every underlying holding, weight each holding’s
+          premium or discount by its fund weight, and sum.</p>
+        <ul class="rules-list">
+          <li><strong>Same engine as the screens</strong> — a conservative 5-year discounted cash flow; a
+            dividend or excess-return model for banks, insurers and regulated utilities; an EV/Sales
+            comparison for a small tail the cash-flow models reject.</li>
+          <li><strong>Conservative growth input</strong> — the slower of a holding’s multi-year revenue
+            trend and its multi-year free-cash-flow trend, so one distorted year at one company can’t
+            skew the fund’s number.</li>
+          <li><strong>Coverage gate</strong> — a fund is ranked only when the holdings we can value cover
+            at least 70% of its weight.</li>
+          <li><strong>Sanity band</strong> — a single holding whose model output lands outside roughly
+            −200% to +100% is treated as unvaluable (an ADR currency mismatch, a one-off-inflated cash
+            flow), never blended into the average.</li>
+          <li><strong>A premium is partly the model’s caution</strong> — the DCF runs deliberately bearish
+            on growth, so fast-growing and AI-exposed themes will read as steep premiums here by model
+            limitation, not necessarily mispricing. A theme can also trade above a conservative intrinsic
+            value for years while compounding.</li>
+        </ul>
+      </details>
+      <p class="screen-summary">Ordered by look-through value, descending — the fund whose holdings sit
+        furthest <strong>below</strong> their combined intrinsic value first, the most expensive theme
+        last. ${when} snapshot. Not financial advice.</p>
+      <p class="rules-cta">Want to value a single stock? <a href="/dcf/">Open the DCF Valuation tool &rarr;</a></p>
+    </section>
+
+    <section class="table-card">
+${tableHtml}
+    </section>
+
+    ${unrankedHtml}
+
+    <section class="editorial cross-link">
+      <p>🇺🇸 ASX stocks? <a href="/dcf/asx-undervalued/">Most Undervalued ASX screen &rarr;</a></p>
+      <p>🇺🇸 US stocks? <a href="/dcf/sp500-undervalued/">Most Undervalued S&amp;P 500 screen &rarr;</a></p>
+      <p>🇮🇳 Indian stocks? <a href="/dcf/nifty-undervalued/">Most Undervalued NIFTY 500 screen &rarr;</a></p>
+      <p>🇪🇺 European stocks? <a href="/dcf/europe-undervalued/">Most Undervalued Europe screen &rarr;</a></p>
     </section>
 
     <section class="tool-info">
       <div class="tool-about">
         <h2>About this page</h2>
         <p>A monthly look-through valuation of thematic ETFs — ASX-listed and marquee US-listed. Holdings
-           come from each issuer's published full-holdings file; prices and fundamentals from Yahoo Finance.
-           Updated ${when}. General information only — see the full methodology and cautions above.</p>
+          come from each issuer’s published full-holdings file; prices and fundamentals are a monthly
+          snapshot from Yahoo Finance. The same engine powers KashVector’s
+          <a href="/dcf/">DCF tool</a> and its undervalued screens.</p>
+        <p><strong>Implied fair value</strong> is where a fund would trade if its price reflected the
+          combined intrinsic value of its holdings — shown alongside the current price so the premium is
+          concrete, not just a percentage.</p>
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
-        <details class="faq-item"><summary>What does the "vs intrinsic value" number mean?</summary>
-          <p>It is the fund-weighted average premium or discount of the fund's holdings to their own
-             combined intrinsic value. A negative number ("premium") means the holdings collectively trade
-             above what the models say they are worth; a positive number ("discount") means below.</p>
-        </details>
-        <details class="faq-item"><summary>Why is nearly every fund showing a premium right now?</summary>
-          <p>Partly the market, partly the method. The DCF we use is deliberately conservative on growth
-             and applies a hard cap to it, so it systematically values fast-growing companies below their
-             market price. A across-the-board premium says "the market is paying more than a cautious
-             cash-flow model would" — which is normal in a strong market and is not, on its own, a signal
-             that anything is mispriced.</p>
-        </details>
-        <details class="faq-item"><summary>Does a premium mean I should sell?</summary>
-          <p>No. Nothing on this page is advice, and it is never a buy/sell/hold call. A theme can trade
-             above a conservative intrinsic value for a very long time while still compounding. Treat the
-             number as one input — a measure of how much optimism is priced in — not a timing signal.</p>
-        </details>
-        <details class="faq-item"><summary>Why do AI and big-tech names read as so overvalued?</summary>
-          <p>A 5-year discounted cash flow can't price a genuine platform shift, and it penalises companies
-             whose growth currently shows up as capital investment rather than free cash flow. Names like
-             the large semiconductor and cloud businesses will often read as steep premiums here for that
-             reason. It reflects the model's known limitation as much as the stock's price.</p>
-        </details>
-        <details class="faq-item"><summary>What is "coverage" and why does it matter?</summary>
-          <p>The share of a fund's weight we could actually put a valuation on. Some holdings can't be
-             valued (no usable cash-flow data, a currency mismatch we couldn't resolve, or a model output
-             outside the sanity band). The look-through number is computed over the covered portion only,
-             so a fund at 75% coverage tells you less than one at 100%. Below 70% we don't publish a
-             headline figure at all.</p>
-        </details>
-        <details class="faq-item"><summary>How often is this updated?</summary>
-          <p>Monthly. Holdings come from each issuer's published full-holdings file; prices and
-             fundamentals are a monthly snapshot from Yahoo Finance, not a live feed.</p>
-        </details>
-        <details class="faq-item"><summary>Why only thematic ETFs, not VAS or IVV?</summary>
-          <p>Broad market-cap index funds reconstitute — they drop what gets expensive — so a look-through
-             verdict on them has little predictive value (one can read "overvalued" for a decade while
-             compounding). Thematic funds are locked to their theme, which is what makes the measurement
-             meaningful.</p>
-        </details>
-        <details class="faq-item"><summary>Which valuation models do you use?</summary>
-          <p>A conservative 5-year discounted cash flow for most holdings; a dividend-discount or
-             excess-return model for banks, insurers and regulated utilities; and an EV/Sales peer
-             comparison for a small tail of companies the cash-flow models reject. The same engine powers
-             KashVector's <a href="/dcf/">DCF tool</a> and its undervalued screens.</p>
-        </details>
+${faqHtml}
       </div>
-    </section>`;
+    </section>
 
-  const jsonLd = [
-    breadcrumbJsonLd(crumbs),
-    JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'WebPage',
-      name: 'Thematic ETF Valuation Radar',
-      description: 'A monthly look-through DCF ranking of thematic ETFs by how their holdings trade versus combined intrinsic value.',
-      url: canonical,
-    }),
-    JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'ItemList',
-      itemListElement: ranked.map(f => ({
-        '@type': 'ListItem', position: f.rank, name: f.name,
-        url: `https://kashvector.com/dcf/etfs/${f.slug}/`,
-      })),
-    }),
-    JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'FAQPage',
-      mainEntity: [
-        {
-          '@type': 'Question', name: 'What does the look-through valuation number mean?',
-          acceptedAnswer: { '@type': 'Answer', text: 'The fund-weighted average premium or discount of a thematic ETF’s holdings to their own combined intrinsic value. Negative ("premium") = the holdings trade above what the models say they are worth; positive ("discount") = below.' },
-        },
-        {
-          '@type': 'Question', name: 'Why is nearly every fund showing a premium?',
-          acceptedAnswer: { '@type': 'Answer', text: 'Partly the market, partly the method. The DCF used here is deliberately conservative on growth and caps it, so it systematically values fast-growing companies below their market price. An across-the-board premium means the market is paying more than a cautious cash-flow model would — normal in a strong market, and not on its own a sign of mispricing.' },
-        },
-        {
-          '@type': 'Question', name: 'Does a premium mean I should sell?',
-          acceptedAnswer: { '@type': 'Answer', text: 'No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can trade above a conservative intrinsic value for a long time while still compounding. Treat the number as a measure of how much optimism is priced in, not a timing signal.' },
-        },
-        {
-          '@type': 'Question', name: 'Why do AI and big-tech names read as heavily overvalued?',
-          acceptedAnswer: { '@type': 'Answer', text: 'A 5-year discounted cash flow cannot price a genuine platform shift and it penalises companies whose growth currently shows up as capital investment rather than free cash flow. Large semiconductor and cloud businesses often read as steep premiums here for that reason — it reflects the model’s known limitation as much as the price.' },
-        },
-        {
-          '@type': 'Question', name: 'What is coverage and why does it matter?',
-          acceptedAnswer: { '@type': 'Answer', text: 'The share of a fund’s weight we could put a valuation on. The look-through number is computed over the covered portion only, so a fund at 75% coverage tells you less than one at 100%. Below 70% we publish no headline figure.' },
-        },
-      ],
-    }),
-  ];
+    <section class="editorial">
+      <p>⚠️ <strong>This is an automated measurement, not financial advice or a recommendation.</strong>
+        It shows how a fund’s holdings trade versus a conservative combined DCF value — mechanical model
+        output, highly sensitive to assumptions, and never a call to buy, hold or sell. It does not read
+        news, judge management, or weigh competitive position or regulatory risk. Always do your own research.</p>
+    </section>
+  </main>
 
-  const mainHtml = `
-    <div class="etf-radar">
-      <p class="etf-radar-intro">Which investment themes are trading above the intrinsic value of what they
-         actually hold? For each thematic ETF below we value every underlying holding, weight by fund weight,
-         and show the combined premium or discount. It is a measurement — mechanical model output, never a
-         buy/sell/hold call — and the conservative cash-flow model behind it runs deliberately cautious on
-         growth. <a href="#methodology">How this works, and how to read it</a>.</p>
-      ${tableHtml}
-      ${unrankedHtml}
-      ${notValuedHtml}
-      ${methodologyHtml}
-    </div>`;
-
-  const html = pageShell({
-    title: 'Thematic ETF Valuation Radar — Which Themes Trade Above Intrinsic Value? | KashVector',
-    description: 'A monthly look-through DCF ranking of thematic ETFs: we value each fund’s underlying holdings, weight by fund weight, and rank by premium or discount to combined intrinsic value. Free, no sign-up.',
-    canonical,
-    h1: 'Thematic ETF Valuation Radar',
-    subtitle: 'Monthly look-through valuation',
-    jsonLd,
-    breadcrumbHtml: breadcrumbNav(crumbs),
-    mainHtml,
-  });
-
-  return { html, canonical };
+  <footer>
+    <p>⚠️ Not financial advice. Valuations are estimates based on assumptions and public data; they may be wrong. Consult a licensed adviser before investing.</p>
+    <p><a href="/">&larr; All KashVector tools</a></p>
+  </footer>
+</body>
+</html>
+`,
+  };
 }
 
 module.exports = { renderRadarPage };

@@ -1,301 +1,343 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/ATEC_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T02:12:23.998Z",
+  "fetchedAt": "2026-09-01T06:29:54.392Z",
   "rows": [
     {
       "yahoo": "CPU.AX",
       "raw": "CPU AT",
       "name": "COMPUTERSHARE LTD",
       "weight": 0.1055109109,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Industrials"
     },
     {
       "yahoo": "XRO.AX",
       "raw": "XRO AT",
       "name": "XERO LTD",
       "weight": 0.10371519239999999,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "NXT.AX",
       "raw": "NXT AT",
       "name": "NEXTDC LTD",
       "weight": 0.0829532678,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "CAR.AX",
       "raw": "CAR AT",
       "name": "CARSALES.COM LTD",
       "weight": 0.0827343905,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "PME.AX",
       "raw": "PME AT",
       "name": "PRO MEDICUS LTD",
       "weight": 0.07844746429999999,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "TNE.AX",
       "raw": "TNE AT",
       "name": "TECHNOLOGY ONE LTD",
       "weight": 0.0783642473,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "REA.AX",
       "raw": "REA AT",
       "name": "REA GROUP LTD",
       "weight": 0.070026509,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "WTC.AX",
       "raw": "WTC AT",
       "name": "WISETECH GLOBAL LTD",
       "weight": 0.0675305711,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "CDA.AX",
       "raw": "CDA AT",
       "name": "CODAN LTD/AUSTRALIA",
       "weight": 0.0438551517,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "SEK.AX",
       "raw": "SEK AT",
       "name": "SEEK LTD",
       "weight": 0.0414448812,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "XYZ.AX",
       "raw": "XYZ AT",
       "name": "BLOCK INC",
       "weight": 0.035164067,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Financials"
     },
     {
       "yahoo": "MP1.AX",
       "raw": "MP1 AT",
       "name": "MEGAPORT LTD",
       "weight": 0.0307770287,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "360.AX",
       "raw": "360 AT",
       "name": "LIFE360 INC",
       "weight": 0.0273006985,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "DDR.AX",
       "raw": "DDR AT",
       "name": "DICKER DATA LTD",
       "weight": 0.014443752700000001,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "4DX.AX",
       "raw": "4DX AT",
       "name": "4DMEDICAL LTD",
       "weight": 0.013660885499999999,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "DTL.AX",
       "raw": "DTL AT",
       "name": "DATA#3 LTD",
       "weight": 0.0134972501,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "ELS.AX",
       "raw": "ELS AT",
       "name": "ELSIGHT LTD",
       "weight": 0.0090034032,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "IRE.AX",
       "raw": "IRE AT",
       "name": "IRESS LTD",
       "weight": 0.0083794045,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "BVS.AX",
       "raw": "BVS AT",
       "name": "BRAVURA SOLUTIONS LTD",
       "weight": 0.0081675506,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "WBT.AX",
       "raw": "WBT AT",
       "name": "WEEBIT NANO LTD",
       "weight": 0.0070059399,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "MAQ.AX",
       "raw": "MAQ AT",
       "name": "MACQUARIE TECHNOLOGY GROUP LTD",
       "weight": 0.0068325219,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "CAT.AX",
       "raw": "CAT AT",
       "name": "CATAPULT GROUP INTERNATIONAL L",
       "weight": 0.0068158144,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "EIQ.AX",
       "raw": "EIQ AT",
       "name": "ECHOIQ LTD",
       "weight": 0.006425403499999999,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "SDR.AX",
       "raw": "SDR AT",
       "name": "SITEMINDER LTD",
       "weight": 0.0061707663,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "CCL.AX",
       "raw": "CCL AT",
       "name": "CUSCAL LTD",
       "weight": 0.0060978186999999994,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Financials"
     },
     {
       "yahoo": "AYA.AX",
       "raw": "AYA AT",
       "name": "ARTRYA LTD",
       "weight": 0.0053435466,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "HSN.AX",
       "raw": "HSN AT",
       "name": "HANSEN TECHNOLOGIES LTD",
       "weight": 0.0049051832,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "NXL.AX",
       "raw": "NXL AT",
       "name": "NUIX LTD",
       "weight": 0.0037309342,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "GTK.AX",
       "raw": "GTK AT",
       "name": "GENTRACK GROUP LTD",
       "weight": 0.0034945807,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "TYR.AX",
       "raw": "TYR AT",
       "name": "TYRO PAYMENTS LTD",
       "weight": 0.0030792963,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Financials"
     },
     {
       "yahoo": "CGS.AX",
       "raw": "CGS AT",
       "name": "COGSTATE LTD",
       "weight": 0.0029490461,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "PPS.AX",
       "raw": "PPS AT",
       "name": "PRAEMIUM LTD",
       "weight": 0.0026142950999999996,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "APX.AX",
       "raw": "APX AT",
       "name": "APPEN LTD",
       "weight": 0.002399181,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "BRN.AX",
       "raw": "BRN AT",
       "name": "BRAINCHIP HOLDINGS LTD",
       "weight": 0.0021466785,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "AXQ.AX",
       "raw": "AXQ AT",
       "name": "AURA CONSOLIDATED GROUP INC",
       "weight": 0.0019921224,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Industrials"
     },
     {
       "yahoo": "OCL.AX",
       "raw": "OCL AT",
       "name": "OBJECTIVE CORP LTD",
       "weight": 0.0016858257,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "EOL.AX",
       "raw": "EOL AT",
       "name": "ENERGY ONE LTD",
       "weight": 0.0015500799,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "OFX.AX",
       "raw": "OFX AT",
       "name": "OFX GROUP LTD",
       "weight": 0.0015169915,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Financials"
     },
     {
       "yahoo": "DUG.AX",
       "raw": "DUG AT",
       "name": "DUG TECHNOLOGY LTD",
       "weight": 0.0014457836,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "AD8.AX",
       "raw": "AD8 AT",
       "name": "AUDINATE GROUP LTD",
       "weight": 0.0014046858000000002,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "EML.AX",
       "raw": "EML AT",
       "name": "EML PAYMENTS LTD",
       "weight": 0.000690912,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Financials"
     },
     {
       "yahoo": "NVX.AX",
       "raw": "NVX AT",
       "name": "NOVONIX LTD",
       "weight": 0.0006283352999999999,
-      "country": "Australia"
+      "country": "Australia",
+      "sector": "Information Technology"
     }
   ]
 }

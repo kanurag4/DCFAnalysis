@@ -39,22 +39,25 @@ test('end-to-end with injected collaborators produces a ranking', async () => {
   assert.equal(result.union.count, 2);
 });
 
-test('crypto fund (registry flag) lands in notValued, never ranked', async () => {
+test('a crypto-heavy fund is excluded entirely — no fund entry, no ranked row', async () => {
   const holdingsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'etfh-'));
-  seedHoldings(holdingsDir, 'cryp', [{ yahoo: 'COIN', name: 'Coinbase', weight: 1.0, country: 'United States' }]);
+  seedHoldings(holdingsDir, 'blok', [
+    { yahoo: 'COIN', name: 'Coinbase', weight: 0.6, country: 'United States' },
+    { yahoo: 'NVDA', name: 'NVIDIA', weight: 0.4, country: 'United States' },
+  ]);
   const universe = [{
-    slug: 'cryp', name: 'Crypto Innovators', theme: 'Crypto', issuer: 'betashares',
-    issuerFundId: 'x', fee: 0.0067, assetClass: 'crypto', listings: [{ ticker: 'CRYP.AX' }],
+    slug: 'blok', name: 'Blockchain Innovators', theme: 'Blockchain', issuer: 'betashares',
+    issuerFundId: 'x', fee: 0.0067, assetClass: 'equity', listings: [{ ticker: 'BLOK.AX' }],
   }];
   const result = await runEtfRadar({
     universePath: null, injectedUniverse: universe, holdingsDir, overridesPath: null,
-    fetchSymbol: async () => ({ price: 200, sector: 'Financial Services', totalRevenue: 1e9 }),
+    fetchSymbol: async () => ({ price: 200, sector: 'Technology', totalRevenue: 1e9 }),
     evaluateStock: DCF_MINUS_30, now: () => new Date('2026-09-01Z'), log: () => {},
   }, { offline: true, throttleMs: 0 });
 
-  assert.equal(result.rankings.notValued.length, 1);
+  assert.deepEqual(result.cryptoExcluded, ['blok']);
+  assert.equal(result.funds.length, 0);
   assert.equal(result.rankings.ranked.length, 0);
-  assert.equal(result.funds[0].lookThroughMos, null);
 });
 
 test('a fund below the 70% coverage gate is unranked but still carries lookThroughMos', async () => {

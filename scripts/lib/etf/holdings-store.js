@@ -22,7 +22,11 @@ function evaluateFreshness(prev, fresh) {
       && prev.rows.length > 0 && fresh.rows.length / prev.rows.length < 0.80) flags.push('row-count-drop');
   const sum = (fresh.rows || []).reduce((a, r) => a + (r.weight || 0), 0);
   if (sum < 0.97 || sum > 1.03) flags.push('weight-sum-off');
-  return { ok: flags.length === 0, flags };
+  // `asOf-unchanged` on its own is informational (issuer hasn't re-published) —
+  // the fresh rows are still valid and current, so adopt them. A data-integrity
+  // flag (row-count-drop / weight-sum-off / fetch-failed) means keep last-good.
+  const blocking = flags.filter(f => f !== 'asOf-unchanged');
+  return { ok: blocking.length === 0, flags };
 }
 
 module.exports = { readSnapshot, writeSnapshot, evaluateFreshness };

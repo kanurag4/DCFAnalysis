@@ -45,8 +45,9 @@ if (!reagg) console.log(keyed
   }
   console.log(`\nNot ranked — coverage < 70% (${result.rankings.unranked.length}): `
     + (result.rankings.unranked.map(f => `${f.slug} ${(f.coverage * 100).toFixed(0)}%`).join(', ') || '—'));
-  console.log(`Not valued — crypto (${result.rankings.notValued.length}): `
-    + (result.rankings.notValued.map(f => f.slug).join(', ') || '—'));
+  if (result.cryptoExcluded && result.cryptoExcluded.length) {
+    console.log(`Excluded — crypto-heavy: ${result.cryptoExcluded.join(', ')}`);
+  }
   const flagged = result.funds.filter(f => f.flags && f.flags.length);
   if (flagged.length) {
     console.log(`\n⚠ holdings flags: ${flagged.map(f => `${f.slug}[${f.flags.join(',')}]`).join('  ')}`);

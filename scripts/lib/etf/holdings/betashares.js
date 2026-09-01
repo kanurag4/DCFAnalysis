@@ -51,6 +51,7 @@ function parse(csvText) {
   const iTicker = header.indexOf('ticker');
   const iName = header.indexOf('name');
   const iClass = header.indexOf('asset class');
+  const iSector = header.indexOf('sector');
   const iCountry = header.indexOf('country');
   const iCurrency = header.indexOf('currency');
   const iWeight = header.findIndex(h => h.startsWith('weight'));
@@ -70,6 +71,7 @@ function parse(csvText) {
       rawSymbol,
       name: (r[iName] || '').trim(),
       weight: weight / 100,
+      sector: iSector >= 0 ? (r[iSector] || '').trim() : null,
       country: (bbg && BBG_COUNTRY[bbg.toUpperCase()]) || (r[iCountry] || '').trim(),
       currency: (r[iCurrency] || '').trim(),
     });

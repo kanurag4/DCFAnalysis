@@ -1,21 +1,20 @@
 // scripts/lib/etf/etf-page.js — per-fund detail page generator for the ETF
-// radar. Pure/CPU-only: consumes one element of runEtfRadar().funds plus a
-// snapshot-price map + a ticker-page URL index. No network.
+// radar. Pure/CPU-only; consumes one element of runEtfRadar().funds. Uses the
+// shared page shell + the per-ticker-SEO-page design language (.summary /
+// .stats / .synopsis / .tool-info). No verdict pill — the look-through number
+// is a measurement.
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('../page-shell.js');
 
 const pct = (x, dp = 0) => (x == null || !Number.isFinite(x) ? '—' : `${(x * 100).toFixed(dp)}%`);
 
-// Look-through number as a measurement, never a verdict pill. Sign convention:
-// negative mos = holdings trade ABOVE combined intrinsic value (a premium);
-// positive = BELOW (a discount).
+// Look-through number as a measurement, never a verdict. negative mos = holdings
+// trade ABOVE combined intrinsic value (premium); positive = BELOW (discount).
 function fmtPremium(mos) {
   if (mos == null || !Number.isFinite(mos)) return '—';
   const mag = Math.round(Math.abs(mos) * 100);
   if (mag === 0) return 'in line with';
   return mos < 0 ? `${mag}% above` : `${mag}% below`;
 }
-
-// Per-holding premium/discount for the table cell.
 function fmtMos(mos) {
   if (mos == null || !Number.isFinite(mos)) return '—';
   const p = (mos * 100).toFixed(0);
@@ -23,6 +22,8 @@ function fmtMos(mos) {
   if (mos > 0) return `+${p}% (discount)`;
   return '0%';
 }
+const money = (p) => (p && Number.isFinite(p.price)
+  ? `${p.currency ? escapeHtml(p.currency) + ' ' : ''}${p.price.toFixed(2)}` : '—');
 
 function holdingCell(row, tickerPageIndex) {
   const href = tickerPageIndex && tickerPageIndex[row.yahoo];
@@ -30,17 +31,14 @@ function holdingCell(row, tickerPageIndex) {
   return href ? `<a href="${escapeHtml(href)}">${label}</a>` : label;
 }
 
-function listingPrices(fund, snapshotPrices) {
-  const parts = [];
-  for (const l of fund.listings || []) {
-    const p = snapshotPrices && snapshotPrices[l.ticker];
-    if (p && Number.isFinite(p.price)) {
-      parts.push(`${escapeHtml(l.ticker)} ${p.currency ? escapeHtml(p.currency) + ' ' : ''}${p.price.toFixed(2)}`);
-    } else {
-      parts.push(escapeHtml(l.ticker));
-    }
-  }
-  return parts.join(' · ');
+function mixList(mix, n = 8) {
+  const top = (mix || []).slice(0, n);
+  if (!top.length) return '';
+  return `<ul class="etf-mix">${top.map(m => `<li>
+      <span class="etf-mix-bar" style="width:${Math.max(2, Math.round(m.weight * 100))}%"></span>
+      <span class="etf-mix-label">${escapeHtml(m.name)}</span>
+      <span class="etf-mix-pct">${pct(m.weight, 1)}</span>
+    </li>`).join('')}</ul>`;
 }
 
 function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, rankLine, sisterMeta = {} } = {}) {
@@ -51,6 +49,11 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
   const valued = fund.valued || [];
   const unvalued = fund.unvalued || [];
   const holdingsCount = fund.holdingsCount != null ? fund.holdingsCount : (valued.length + unvalued.length);
+  const listings = fund.listings || [];
+  const primary = listings[0] || {};
+  const primaryPrice = snapshotPrices[primary.ticker] || null;
+  const fairValue = (primaryPrice && Number.isFinite(primaryPrice.price) && Number.isFinite(fund.lookThroughMos))
+    ? { price: primaryPrice.price * (1 + fund.lookThroughMos), currency: primaryPrice.currency } : null;
 
   const crumbs = [
     { name: 'Home', url: 'https://kashvector.com/', path: '/' },
@@ -58,195 +61,186 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
     { name: fund.name, url: canonical, path: `/dcf/etfs/${slug}/` },
   ];
 
-  // ── headline ────────────────────────────────────────────────────────────
+  // ── summary: symbol line + stat grid ───────────────────────────────────
+  const priceStats = listings.map(l => {
+    const p = snapshotPrices[l.ticker];
+    return `<div class="stat"><div class="stat-label">${escapeHtml(l.ticker)}</div><div class="stat-value">${money(p)}</div></div>`;
+  }).join('\n');
+  const summaryHtml = `
+    <section class="summary">
+      <h2>${name} <span class="symbol">${escapeHtml(primary.ticker || slug.toUpperCase())}</span></h2>
+      <p class="sector">${theme}${fund.holdingsAsOf ? ` · holdings as at ${escapeHtml(fund.holdingsAsOf)}` : ''}</p>
+      <div class="stats">
+        ${priceStats}
+        <div class="stat"><div class="stat-label">Implied fair value</div><div class="stat-value">${money(fairValue)}</div></div>
+        <div class="stat"><div class="stat-label">vs intrinsic value</div><div class="stat-value">${fmtMos(fund.lookThroughMos)}</div></div>
+        <div class="stat"><div class="stat-label">Coverage</div><div class="stat-value">${pct(fund.coverage)}</div></div>
+        <div class="stat"><div class="stat-label">Management fee</div><div class="stat-value">${pct(fund.fee, 2)}</div></div>
+        <div class="stat"><div class="stat-label">Holdings</div><div class="stat-value">${holdingsCount}</div></div>
+      </div>
+    </section>`;
+
+  // ── valuation callout ──────────────────────────────────────────────────
   const headlineHtml = fund.ranked
     ? `<p class="etf-headline">${name}'s holdings collectively trade
-         <strong>${fmtPremium(fund.lookThroughMos)}</strong> their combined intrinsic value.</p>`
-    : `<p class="etf-coverage-notice">We can value only ${pct(fund.coverage)} of this fund by weight,
-         so this page shows no look-through figure.</p>`;
+         <strong>${fmtPremium(fund.lookThroughMos)}</strong> their combined intrinsic value${fairValue
+        ? ` — an implied fair value of about <strong>${money(fairValue)}</strong> versus ${money(primaryPrice)} today` : ''}.</p>`
+    : `<p class="etf-headline">We can value only ${pct(fund.coverage)} of this fund by weight — below the 70%
+         threshold — so no single look-through figure is published for it.</p>`;
+  const coverageLine = `<p class="etf-sub">Based on ${valued.length} of ${holdingsCount} valued holdings, ${pct(fund.coverage)} of fund weight${
+    unvalued.length ? `; ${unvalued.length} unvalued` : ''}.${
+    rankLine ? ` <a href="/dcf/etf-radar/">${escapeHtml(rankLine)} thematic ETFs by look-through value</a>.` : ''}</p>`;
+  const nameFor = (y) => { const h = valued.find(v => v.yahoo === y); return escapeHtml(h ? (h.name || y) : y); };
+  const calloutsHtml = (fund.cheapest || fund.priciest) ? `
+    <div class="etf-callouts">
+      ${fund.priciest ? `<div class="etf-callout neg"><span class="etf-callout-label">Priciest holding</span>
+        <span class="etf-callout-name">${nameFor(fund.priciest.yahoo)}</span><span>${fmtMos(fund.priciest.mos)}</span></div>` : ''}
+      ${fund.cheapest ? `<div class="etf-callout pos"><span class="etf-callout-label">Cheapest holding</span>
+        <span class="etf-callout-name">${nameFor(fund.cheapest.yahoo)}</span><span>${fmtMos(fund.cheapest.mos)}</span></div>` : ''}
+    </div>` : '';
+  const valuationHtml = `
+    <section class="etf-valuation">
+      <h2>Look-through valuation</h2>
+      ${headlineHtml}
+      ${coverageLine}
+      ${calloutsHtml}
+    </section>`;
 
-  const coverageLine = `<p class="etf-coverage-line">Based on ${valued.length} of ${holdingsCount} holdings —
-      ${pct(fund.coverage)} of fund weight.${unvalued.length ? ` ${unvalued.length} unvalued.` : ''}</p>`;
-
-  const metaLine = `<p class="etf-meta">As at ${escapeHtml(asAt || fund.holdingsAsOf || '')}
-      · fee ${pct(fund.fee, 2)} · ${listingPrices(fund, snapshotPrices)}</p>`;
-
-  const rankLineHtml = rankLine
-    ? `<p class="etf-rank-line"><a href="/dcf/etf-radar/">${escapeHtml(rankLine)} thematic ETFs by look-through value</a></p>`
-    : '';
-
-  // ── top-15 holdings table ───────────────────────────────────────────────
+  // ── holdings table (top 15) ────────────────────────────────────────────
   const top = valued.slice(0, 15);
   const rest = valued.slice(15);
-  const rows = top.map(r => `<tr>
-      <td>${pct(r.weight, 1)}</td>
-      <td>${holdingCell(r, tickerPageIndex)}</td>
-      <td>${escapeHtml(r.method || '')}</td>
-      <td class="${r.mos < 0 ? 'etf-premium' : 'etf-discount'}">${fmtMos(r.mos)}</td>
-    </tr>`).join('\n');
   let restLine = '';
   if (rest.length) {
-    const restW = rest.reduce((a, r) => a + (r.weight || 0), 0);
-    const restMosW = rest.reduce((a, r) => a + (r.weight || 0) * r.mos, 0);
-    const restMos = restW > 0 ? restMosW / restW : null;
-    restLine = `<p class="etf-rest">Remaining ${rest.length} valued holdings
-       (${pct(restW)} of fund) collectively trade ${fmtPremium(restMos)} their combined intrinsic value.</p>`;
+    const rw = rest.reduce((a, r) => a + (r.weight || 0), 0);
+    const rm = rw > 0 ? rest.reduce((a, r) => a + (r.weight || 0) * r.mos, 0) / rw : null;
+    restLine = `<p class="etf-sub">Remaining ${rest.length} valued holdings (${pct(rw)} of fund) collectively trade ${fmtPremium(rm)} their combined intrinsic value.</p>`;
   }
-  const tableHtml = valued.length ? `
+  const holdingsHtml = valued.length ? `
     <section class="etf-holdings">
       <h2>Holdings we can value <span class="etf-note">top ${top.length} by weight</span></h2>
-      <table class="etf-holdings-table">
-        <thead><tr><th>Weight</th><th>Holding</th><th>Model</th><th>vs intrinsic value</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="etf-holdings-table">
+          <thead><tr><th>Weight</th><th>Holding</th><th>Model</th><th class="num">vs intrinsic value</th></tr></thead>
+          <tbody>${top.map(r => `<tr>
+            <td>${pct(r.weight, 1)}</td>
+            <td>${holdingCell(r, tickerPageIndex)}</td>
+            <td>${escapeHtml(r.method || '')}</td>
+            <td class="num ${r.mos < 0 ? 'neg' : 'pos'}">${fmtMos(r.mos)}</td>
+          </tr>`).join('\n')}</tbody>
+        </table>
+      </div>
       ${restLine}
     </section>` : '';
 
-  // ── cheapest / priciest ─────────────────────────────────────────────────
-  const nameFor = (y) => {
-    const hit = valued.find(v => v.yahoo === y);
-    return escapeHtml(hit ? (hit.name || y) : y);
-  };
-  const calloutHtml = (fund.cheapest || fund.priciest) ? `
-    <section class="etf-callouts">
-      ${fund.priciest ? `<div class="etf-callout etf-premium"><span class="etf-callout-label">Priciest holding</span>
-        <span class="etf-callout-name">${nameFor(fund.priciest.yahoo)}</span>
-        <span class="etf-callout-mos">${fmtMos(fund.priciest.mos)}</span></div>` : ''}
-      ${fund.cheapest ? `<div class="etf-callout etf-discount"><span class="etf-callout-label">Cheapest holding</span>
-        <span class="etf-callout-name">${nameFor(fund.cheapest.yahoo)}</span>
-        <span class="etf-callout-mos">${fmtMos(fund.cheapest.mos)}</span></div>` : ''}
+  // ── sector / country mix ───────────────────────────────────────────────
+  const mixHtml = (fund.sectorMix && fund.sectorMix.length) || (fund.countryMix && fund.countryMix.length) ? `
+    <section class="etf-breakdown">
+      <h2>What the fund holds</h2>
+      <div class="etf-breakdown-grid">
+        ${fund.sectorMix && fund.sectorMix.length ? `<div><h3>By sector</h3>${mixList(fund.sectorMix)}</div>` : ''}
+        ${fund.countryMix && fund.countryMix.length ? `<div><h3>By country</h3>${mixList(fund.countryMix)}</div>` : ''}
+      </div>
+      <p class="etf-note">From the issuer's published holdings file.</p>
     </section>` : '';
 
-  // ── sister ETFs ─────────────────────────────────────────────────────────
+  // ── sisters ────────────────────────────────────────────────────────────
   const sisters = fund.sisters || [];
-  const sisterCards = sisters.map(s => {
-    const m = sisterMeta[s.slug] || {};
-    const lt = m.lookThroughMos != null
-      ? `holdings trade ${fmtPremium(m.lookThroughMos)} intrinsic value`
-      : 'look-through value —';
-    return `<a class="etf-sister-card" href="/dcf/etfs/${escapeHtml(s.slug)}/">
-        <span class="etf-sister-name">${escapeHtml(m.name || s.slug)}</span>
-        <span class="etf-sister-overlap">${pct(s.overlap)} holdings overlap</span>
-        ${m.fee != null ? `<span class="etf-sister-fee">fee ${pct(m.fee, 2)}</span>` : ''}
-        <span class="etf-sister-lt">${lt}</span>
-      </a>`;
-  }).join('\n');
   const sisterHtml = sisters.length ? `
     <section class="etf-sisters">
       <h2>Sister ETFs <span class="etf-note">≥30% holdings overlap</span></h2>
-      <div class="etf-sister-grid">${sisterCards}</div>
+      <div class="etf-sister-grid">${sisters.map(s => {
+    const m = sisterMeta[s.slug] || {};
+    return `<a class="etf-sister-card" href="/dcf/etfs/${escapeHtml(s.slug)}/">
+        <span class="etf-sister-name">${escapeHtml(m.name || s.slug)}</span>
+        <span class="etf-note">${pct(s.overlap)} holdings overlap${m.fee != null ? ` · fee ${pct(m.fee, 2)}` : ''}</span>
+        <span class="etf-note">${m.lookThroughMos != null ? `holdings trade ${fmtPremium(m.lookThroughMos)} intrinsic value` : 'look-through value —'}</span>
+      </a>`;
+  }).join('\n')}</div>
     </section>` : '';
 
-  // ── methodology + about/FAQ ─────────────────────────────────────────────
-  const methodologyHtml = `
-    <section class="etf-methodology" id="methodology">
-      <h2>How this is calculated</h2>
-      <p>We value each of the fund's underlying holdings with the same engine behind KashVector's
-         <a href="/dcf/">DCF tool</a> and its valuation screens — a conservative 5-year discounted cash flow,
-         or a dividend / excess-return model for banks, insurers and regulated utilities, or an EV/Sales
-         comparison for a small tail of holdings the cash-flow models can't value. Each holding's
-         premium or discount to its own intrinsic value is then weighted by its fund weight and summed.</p>
-      <p>Where the DCF needs a forward growth rate we use the <em>slower</em> of a holding's multi-year
-         revenue trend and its multi-year free-cash-flow trend, not a single year's figure, so one
-         distorted year at one company can't skew the fund's number. A fund gets a ranked look-through
-         number only when the holdings we can value cover at least 70% of its weight; crypto-based funds
-         get no cash-flow valuation at all.</p>
-      <p class="etf-disclaimer"><strong>Read this as a measurement, not a verdict.</strong> Mechanical
-         model output — not a judgement on the fund, its holdings, or its management, and never a
-         recommendation to buy, hold or sell. The 5-year DCF is deliberately conservative on growth, so a
-         premium is partly the model's own caution. Fast-growing and AI-exposed holdings in particular can
-         read as heavily overvalued because a short-horizon cash-flow model can't capture a genuine
-         platform shift or growth that currently shows up as investment rather than free cash flow. A fund
-         can also trade above a conservative intrinsic value for years while compounding. A point-in-time
-         snapshot as at ${escapeHtml(asAt || fund.holdingsAsOf || '')}, highly sensitive to assumptions.
-         Not financial advice.</p>
-    </section>
+  // ── synopsis + methodology + FAQ ───────────────────────────────────────
+  const synopsisHtml = `
+    <section class="synopsis">
+      <h2>About ${name}</h2>
+      <p>${name} is a thematic ETF tracking ${theme ? `the ${theme.toLowerCase()} theme` : 'a thematic index'},
+         holding ${holdingsCount} positions. This page values what the fund actually holds — a look-through
+         discounted cash flow of every underlying company, weighted by fund weight — refreshed monthly.
+         The management fee shown is the issuer's stated cost.</p>
+      <p class="src">Holdings from the issuer's published file; prices and fundamentals from Yahoo Finance. General information only.</p>
+    </section>`;
 
+  const toolInfoHtml = `
     <section class="tool-info">
       <div class="tool-about">
-        <h2>About this page</h2>
-        <p>${name} tracks ${theme ? `the ${theme.toLowerCase()} theme` : 'a thematic index'}. This page
-           values what the fund actually holds, refreshed monthly. Fee shown is the stated management cost.
-           General information only — see the methodology and cautions above.</p>
+        <h2>How this is calculated</h2>
+        <p>Each holding is valued with the same engine behind KashVector's <a href="/dcf/">DCF tool</a> and
+           its undervalued screens — a conservative 5-year discounted cash flow, or a dividend / excess-return
+           model for banks, insurers and regulated utilities, or an EV/Sales comparison for a small tail the
+           cash-flow models can't value. Where the DCF needs a forward growth rate we use the <em>slower</em>
+           of a holding's multi-year revenue trend and its multi-year free-cash-flow trend, so one distorted
+           year at one company can't skew the fund's number. Each holding's premium or discount to its own
+           intrinsic value is weighted by fund weight and summed.</p>
+        <p><strong>Read this as a measurement, not a verdict.</strong> The 5-year DCF is deliberately
+           conservative on growth, so a premium is partly the model's own caution. Fast-growing and
+           AI-exposed holdings in particular can read as heavily overvalued because a short-horizon cash-flow
+           model can't capture a genuine platform shift or growth that currently shows up as investment
+           rather than free cash flow. A fund can also trade above a conservative intrinsic value for years
+           while compounding. A point-in-time snapshot as at ${escapeHtml(asAt || fund.holdingsAsOf || '')},
+           highly sensitive to assumptions. Not financial advice.</p>
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
         <details class="faq-item"><summary>Does ${name} trade above or below the value of what it holds?</summary>
           <p>${fund.ranked
-            ? `As at ${escapeHtml(asAt || '')}, its holdings collectively trade ${fmtPremium(fund.lookThroughMos)}
-               their combined intrinsic value, covering ${pct(fund.coverage)} of fund weight. A mechanical
-               measurement, not advice.`
-            : `We can currently value only ${pct(fund.coverage)} of this fund by weight — below our 70%
-               threshold — so we don't publish a single look-through figure for it.`}</p>
+    ? `As at ${escapeHtml(asAt || '')}, its holdings collectively trade ${fmtPremium(fund.lookThroughMos)} their combined intrinsic value, over ${pct(fund.coverage)} of fund weight. A mechanical measurement, not advice.`
+    : `We can currently value only ${pct(fund.coverage)} of this fund by weight — below our 70% threshold — so no single look-through figure is published.`}</p>
         </details>
-        <details class="faq-item"><summary>Does a premium mean I should sell ${escapeHtml(fund.listings && fund.listings[0] ? fund.listings[0].ticker : fund.name)}?</summary>
-          <p>No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can
-             trade above a conservative intrinsic value for a long time while still compounding — the
-             number measures how much optimism is priced in, not when to act.</p>
+        <details class="faq-item"><summary>Does a premium mean I should sell?</summary>
+          <p>No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can trade
+             above a conservative intrinsic value for a long time while still compounding.</p>
         </details>
         <details class="faq-item"><summary>Why do the tech / AI holdings read as so overvalued?</summary>
           <p>A 5-year discounted cash flow can't price a genuine platform shift, and it penalises companies
-             whose growth currently shows up as capital investment rather than free cash flow. That is a
-             limitation of the model as much as a statement about the price.</p>
+             whose growth currently shows up as capital investment rather than free cash flow. It reflects
+             the model's limitation as much as the price.</p>
         </details>
         <details class="faq-item"><summary>How often is this updated?</summary>
-          <p>Monthly. Holdings come from ${escapeHtml(fund.name.split(' ')[0])}'s published full-holdings file;
-             prices and fundamentals are a monthly snapshot from Yahoo Finance, not a live feed.</p>
+          <p>Monthly. Holdings come from the issuer's published full-holdings file; prices and fundamentals
+             are a monthly snapshot from Yahoo Finance, not a live feed.</p>
         </details>
       </div>
     </section>`;
 
   const jsonLd = [
     breadcrumbJsonLd(crumbs),
-    JSON.stringify({
-      '@context': 'https://schema.org', '@type': 'InvestmentFund',
-      name: fund.name, description: `Look-through valuation of ${fund.name} (${fund.theme}).`,
-      url: canonical,
-    }),
+    JSON.stringify({ '@context': 'https://schema.org', '@type': 'InvestmentFund', name: fund.name, description: `Look-through valuation of ${fund.name} (${fund.theme}).`, url: canonical }),
     JSON.stringify({
       '@context': 'https://schema.org', '@type': 'FAQPage',
       mainEntity: [
-        {
-          '@type': 'Question', name: `Does ${fund.name} trade above or below the value of what it holds?`,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: fund.ranked
-              ? `Its holdings collectively trade ${fmtPremium(fund.lookThroughMos)} their combined intrinsic value as at ${asAt || ''}, over ${pct(fund.coverage)} of fund weight. A mechanical measurement, not advice.`
-              : `Coverage is below 70% of fund weight, so no single look-through figure is published.`,
-          },
-        },
-        {
-          '@type': 'Question', name: 'Does a premium mean I should sell?',
-          acceptedAnswer: { '@type': 'Answer', text: 'No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can trade above a conservative intrinsic value for a long time while still compounding.' },
-        },
-        {
-          '@type': 'Question', name: 'Why do the tech and AI holdings read as heavily overvalued?',
-          acceptedAnswer: { '@type': 'Answer', text: 'A 5-year discounted cash flow cannot price a genuine platform shift and it penalises companies whose growth currently shows up as capital investment rather than free cash flow. It reflects the model’s limitation as much as the price.' },
-        },
+        { '@type': 'Question', name: `Does ${fund.name} trade above or below the value of what it holds?`, acceptedAnswer: { '@type': 'Answer', text: fund.ranked ? `Its holdings collectively trade ${fmtPremium(fund.lookThroughMos)} their combined intrinsic value as at ${asAt || ''}, over ${pct(fund.coverage)} of fund weight. A mechanical measurement, not advice.` : `Coverage is below 70% of fund weight, so no single look-through figure is published.` } },
+        { '@type': 'Question', name: 'Does a premium mean I should sell?', acceptedAnswer: { '@type': 'Answer', text: 'No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can trade above a conservative intrinsic value for a long time while still compounding.' } },
       ],
     }),
   ];
 
   const mainHtml = `
     <div class="etf-page">
-      <p class="etf-theme-tag">${theme}</p>
-      ${headlineHtml}
-      ${coverageLine}
-      ${metaLine}
-      ${rankLineHtml}
-      ${calloutHtml}
-      ${tableHtml}
+      ${synopsisHtml}
+      ${summaryHtml}
+      ${valuationHtml}
+      ${holdingsHtml}
+      ${mixHtml}
       ${sisterHtml}
-      ${methodologyHtml}
+      ${toolInfoHtml}
     </div>`;
 
   const html = pageShell({
-    title: `${fund.name} — Look-Through Valuation | KashVector`,
+    title: `${fund.name} (${primary.ticker || slug.toUpperCase()}) — Look-Through Valuation | KashVector`,
     description: fund.ranked
       ? `${fund.name}'s holdings collectively trade ${fmtPremium(fund.lookThroughMos)} their combined intrinsic value (${pct(fund.coverage)} coverage, as at ${asAt || ''}). A monthly look-through DCF. Free, no sign-up.`
       : `Look-through holdings analysis of ${fund.name}. ${pct(fund.coverage)} of fund weight valued. Free, no sign-up.`,
     canonical,
-    h1: fund.name,
+    h1: `${fund.name} (${primary.ticker || slug.toUpperCase()})`,
     subtitle: `Look-through valuation · ${fund.theme || ''}`,
     jsonLd,
     breadcrumbHtml: breadcrumbNav(crumbs),

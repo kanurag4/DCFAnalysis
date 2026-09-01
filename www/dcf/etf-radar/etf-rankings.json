@@ -13,9 +13,10 @@
           "currency": "AUD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-31",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 42,
       "lookThroughMos": -0.3446828655407058,
       "coverage": 0.9405411210471659,
@@ -321,7 +322,44 @@
         "mos": -0.9526426282304272
       },
       "sisters": [],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "HACK.AX": {
+          "price": 17.84,
+          "currency": "AUD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Information Technology",
+          "weight": 0.9222107404184837
+        },
+        {
+          "name": "Industrials",
+          "weight": 0.05906375996640183
+        },
+        {
+          "name": "Communication Services",
+          "weight": 0.018725499615114535
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "United States",
+          "weight": 0.9640156401266297
+        },
+        {
+          "name": "France",
+          "weight": 0.01926445501904278
+        },
+        {
+          "name": "Japan",
+          "weight": 0.008966313174217073
+        },
+        {
+          "name": "Canada",
+          "weight": 0.007753591680110492
+        }
+      ]
     },
     {
       "slug": "asia",
@@ -335,9 +373,10 @@
           "currency": "AUD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-31",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 50,
       "lookThroughMos": -0.5387586402896177,
       "coverage": 0.7587918258561875,
@@ -685,7 +724,48 @@
         "mos": -0.9839081672628632
       },
       "sisters": [],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "ASIA.AX": {
+          "price": 20.48,
+          "currency": "AUD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Information Technology",
+          "weight": 0.7528260630464255
+        },
+        {
+          "name": "Communication Services",
+          "weight": 0.13640384483198584
+        },
+        {
+          "name": "Consumer Discretionary",
+          "weight": 0.10786806593568975
+        },
+        {
+          "name": "Industrials",
+          "weight": 0.0029020261858987615
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "Taiwan",
+          "weight": 0.2970399990781665
+        },
+        {
+          "name": "South Korea",
+          "weight": 0.2863827353464157
+        },
+        {
+          "name": "United States",
+          "weight": 0.2737010324615034
+        },
+        {
+          "name": "Hong Kong",
+          "weight": 0.14287623311391445
+        }
+      ]
     },
     {
       "slug": "atec",
@@ -699,9 +779,10 @@
           "currency": "AUD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-31",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 42,
       "lookThroughMos": -0.5242563728691294,
       "coverage": 0.9425856873671604,
@@ -1004,7 +1085,40 @@
         "mos": -1.1800055617866476
       },
       "sisters": [],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "ATEC.AX": {
+          "price": 22.89,
+          "currency": "AUD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Information Technology",
+          "weight": 0.5494951556544624
+        },
+        {
+          "name": "Communication Services",
+          "weight": 0.19500483845419697
+        },
+        {
+          "name": "Industrials",
+          "weight": 0.10794535346188416
+        },
+        {
+          "name": "Healthcare",
+          "weight": 0.10081404117988553
+        },
+        {
+          "name": "Financials",
+          "weight": 0.046740611249570824
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "Australia",
+          "weight": 1
+        }
+      ]
     },
     {
       "slug": "drug",
@@ -1018,9 +1132,10 @@
           "currency": "AUD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-31",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 59,
       "lookThroughMos": -0.17408313829305372,
       "coverage": 0.9151920628138916,
@@ -1450,33 +1565,68 @@
           "overlap": 0.7481791969999999
         }
       ],
-      "snapshotPrices": {}
-    },
-    {
-      "slug": "cryp",
-      "name": "Betashares Crypto Innovators ETF",
-      "theme": "Crypto industry",
-      "fee": 0.0067,
-      "listings": [
-        {
-          "ticker": "CRYP.AX",
-          "exchange": "ASX",
+      "snapshotPrices": {
+        "DRUG.AX": {
+          "price": 9.005,
           "currency": "AUD"
         }
+      },
+      "sectorMix": [
+        {
+          "name": "Healthcare",
+          "weight": 0.9924477628427557
+        },
+        {
+          "name": "Consumer Staples",
+          "weight": 0.007552237157244372
+        }
       ],
-      "assetClass": "crypto",
-      "holdingsAsOf": "2026-08-31",
-      "flags": [],
-      "holdingsCount": 45,
-      "lookThroughMos": null,
-      "coverage": null,
-      "ranked": false,
-      "valued": [],
-      "unvalued": [],
-      "cheapest": null,
-      "priciest": null,
-      "sisters": [],
-      "snapshotPrices": {}
+      "countryMix": [
+        {
+          "name": "United States",
+          "weight": 0.7576050091008666
+        },
+        {
+          "name": "Switzerland",
+          "weight": 0.06314692085394821
+        },
+        {
+          "name": "United Kingdom",
+          "weight": 0.05567282027975734
+        },
+        {
+          "name": "Japan",
+          "weight": 0.029380141957035238
+        },
+        {
+          "name": "France",
+          "weight": 0.02594892504275499
+        },
+        {
+          "name": "Denmark",
+          "weight": 0.025012901477737284
+        },
+        {
+          "name": "Hong Kong",
+          "weight": 0.01856832010189831
+        },
+        {
+          "name": "Belgium",
+          "weight": 0.01343175294996253
+        },
+        {
+          "name": "Germany",
+          "weight": 0.00879919070816893
+        },
+        {
+          "name": "Brazil",
+          "weight": 0.001752534561326477
+        },
+        {
+          "name": "Malaysia",
+          "weight": 0.0006814829665440678
+        }
+      ]
     },
     {
       "slug": "soxx",
@@ -1490,9 +1640,10 @@
           "currency": "USD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-28",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 30,
       "lookThroughMos": -0.7392580482122522,
       "coverage": 1,
@@ -1719,7 +1870,24 @@
         "mos": -0.9839081672628632
       },
       "sisters": [],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "SOXX": {
+          "price": 511.04,
+          "currency": "USD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Information Technology",
+          "weight": 1
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "United States",
+          "weight": 1
+        }
+      ]
     },
     {
       "slug": "ita",
@@ -1733,9 +1901,10 @@
           "currency": "USD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-28",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 48,
       "lookThroughMos": -0.3806760961954459,
       "coverage": 0.9690597777110244,
@@ -2085,7 +2254,28 @@
         "mos": -1.054829808381716
       },
       "sisters": [],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "ITA": {
+          "price": 228.35,
+          "currency": "USD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Industrials",
+          "weight": 0.9991989586462402
+        },
+        {
+          "name": "Consumer Discretionary",
+          "weight": 0.0008010413537598881
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "United States",
+          "weight": 1
+        }
+      ]
     },
     {
       "slug": "igv",
@@ -2099,9 +2289,10 @@
           "currency": "USD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-28",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 106,
       "lookThroughMos": -0.39011203787376353,
       "coverage": 0.9733866933466735,
@@ -2842,7 +3033,28 @@
         "mos": -1.6100604794680629
       },
       "sisters": [],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "IGV": {
+          "price": 109.98,
+          "currency": "USD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Information Technology",
+          "weight": 0.9603801900950474
+        },
+        {
+          "name": "Communication",
+          "weight": 0.0396198099049525
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "United States",
+          "weight": 1
+        }
+      ]
     },
     {
       "slug": "ixj",
@@ -2861,9 +3073,10 @@
           "currency": "AUD"
         }
       ],
-      "assetClass": "equity",
       "holdingsAsOf": "2026-08-28",
-      "flags": [],
+      "flags": [
+        "asOf-unchanged"
+      ],
       "holdingsCount": 110,
       "lookThroughMos": -0.21947453363887443,
       "coverage": 0.9021477318346046,
@@ -3641,13 +3854,90 @@
           "overlap": 0.7481791969999999
         }
       ],
-      "snapshotPrices": {}
+      "snapshotPrices": {
+        "IXJ": {
+          "price": 104.24,
+          "currency": "USD"
+        },
+        "IXJ.AX": {
+          "price": 143.92,
+          "currency": "AUD"
+        }
+      },
+      "sectorMix": [
+        {
+          "name": "Health Care",
+          "weight": 1
+        }
+      ],
+      "countryMix": [
+        {
+          "name": "United States",
+          "weight": 0.7229024488157365
+        },
+        {
+          "name": "Switzerland",
+          "weight": 0.09755118426334805
+        },
+        {
+          "name": "United Kingdom",
+          "weight": 0.05028101164191088
+        },
+        {
+          "name": "Japan",
+          "weight": 0.037635487755921314
+        },
+        {
+          "name": "Denmark",
+          "weight": 0.021678040947410673
+        },
+        {
+          "name": "France",
+          "weight": 0.020473705339221195
+        },
+        {
+          "name": "Germany",
+          "weight": 0.016961059815335206
+        },
+        {
+          "name": "Belgium",
+          "weight": 0.011641910879164994
+        },
+        {
+          "name": "Australia",
+          "weight": 0.01043757527097551
+        },
+        {
+          "name": "China",
+          "weight": 0.0033119229225210757
+        },
+        {
+          "name": "Korea (South)",
+          "weight": 0.0027097551184263346
+        },
+        {
+          "name": "Netherlands",
+          "weight": 0.002509032517061421
+        },
+        {
+          "name": "Brazil",
+          "weight": 0.0008028904054596548
+        },
+        {
+          "name": "Sweden",
+          "weight": 0.000702529104777198
+        },
+        {
+          "name": "Spain",
+          "weight": 0.0004014452027298274
+        }
+      ]
     }
   ],
   "union": {
-    "count": 454,
-    "fetched": 440,
-    "failed": 14
+    "count": 417,
+    "fetched": 406,
+    "failed": 11
   },
   "rankings": {
     "ranked": [
@@ -3663,9 +3953,10 @@
             "currency": "AUD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-31",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 59,
         "lookThroughMos": -0.17408313829305372,
         "coverage": 0.9151920628138916,
@@ -4095,7 +4386,68 @@
             "overlap": 0.7481791969999999
           }
         ],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "DRUG.AX": {
+            "price": 9.005,
+            "currency": "AUD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Healthcare",
+            "weight": 0.9924477628427557
+          },
+          {
+            "name": "Consumer Staples",
+            "weight": 0.007552237157244372
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "United States",
+            "weight": 0.7576050091008666
+          },
+          {
+            "name": "Switzerland",
+            "weight": 0.06314692085394821
+          },
+          {
+            "name": "United Kingdom",
+            "weight": 0.05567282027975734
+          },
+          {
+            "name": "Japan",
+            "weight": 0.029380141957035238
+          },
+          {
+            "name": "France",
+            "weight": 0.02594892504275499
+          },
+          {
+            "name": "Denmark",
+            "weight": 0.025012901477737284
+          },
+          {
+            "name": "Hong Kong",
+            "weight": 0.01856832010189831
+          },
+          {
+            "name": "Belgium",
+            "weight": 0.01343175294996253
+          },
+          {
+            "name": "Germany",
+            "weight": 0.00879919070816893
+          },
+          {
+            "name": "Brazil",
+            "weight": 0.001752534561326477
+          },
+          {
+            "name": "Malaysia",
+            "weight": 0.0006814829665440678
+          }
+        ],
         "rank": 1
       },
       {
@@ -4115,9 +4467,10 @@
             "currency": "AUD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-28",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 110,
         "lookThroughMos": -0.21947453363887443,
         "coverage": 0.9021477318346046,
@@ -4895,7 +5248,84 @@
             "overlap": 0.7481791969999999
           }
         ],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "IXJ": {
+            "price": 104.24,
+            "currency": "USD"
+          },
+          "IXJ.AX": {
+            "price": 143.92,
+            "currency": "AUD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Health Care",
+            "weight": 1
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "United States",
+            "weight": 0.7229024488157365
+          },
+          {
+            "name": "Switzerland",
+            "weight": 0.09755118426334805
+          },
+          {
+            "name": "United Kingdom",
+            "weight": 0.05028101164191088
+          },
+          {
+            "name": "Japan",
+            "weight": 0.037635487755921314
+          },
+          {
+            "name": "Denmark",
+            "weight": 0.021678040947410673
+          },
+          {
+            "name": "France",
+            "weight": 0.020473705339221195
+          },
+          {
+            "name": "Germany",
+            "weight": 0.016961059815335206
+          },
+          {
+            "name": "Belgium",
+            "weight": 0.011641910879164994
+          },
+          {
+            "name": "Australia",
+            "weight": 0.01043757527097551
+          },
+          {
+            "name": "China",
+            "weight": 0.0033119229225210757
+          },
+          {
+            "name": "Korea (South)",
+            "weight": 0.0027097551184263346
+          },
+          {
+            "name": "Netherlands",
+            "weight": 0.002509032517061421
+          },
+          {
+            "name": "Brazil",
+            "weight": 0.0008028904054596548
+          },
+          {
+            "name": "Sweden",
+            "weight": 0.000702529104777198
+          },
+          {
+            "name": "Spain",
+            "weight": 0.0004014452027298274
+          }
+        ],
         "rank": 2
       },
       {
@@ -4910,9 +5340,10 @@
             "currency": "AUD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-31",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 42,
         "lookThroughMos": -0.3446828655407058,
         "coverage": 0.9405411210471659,
@@ -5218,7 +5649,44 @@
           "mos": -0.9526426282304272
         },
         "sisters": [],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "HACK.AX": {
+            "price": 17.84,
+            "currency": "AUD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Information Technology",
+            "weight": 0.9222107404184837
+          },
+          {
+            "name": "Industrials",
+            "weight": 0.05906375996640183
+          },
+          {
+            "name": "Communication Services",
+            "weight": 0.018725499615114535
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "United States",
+            "weight": 0.9640156401266297
+          },
+          {
+            "name": "France",
+            "weight": 0.01926445501904278
+          },
+          {
+            "name": "Japan",
+            "weight": 0.008966313174217073
+          },
+          {
+            "name": "Canada",
+            "weight": 0.007753591680110492
+          }
+        ],
         "rank": 3
       },
       {
@@ -5233,9 +5701,10 @@
             "currency": "USD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-28",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 48,
         "lookThroughMos": -0.3806760961954459,
         "coverage": 0.9690597777110244,
@@ -5585,7 +6054,28 @@
           "mos": -1.054829808381716
         },
         "sisters": [],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "ITA": {
+            "price": 228.35,
+            "currency": "USD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Industrials",
+            "weight": 0.9991989586462402
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weight": 0.0008010413537598881
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "United States",
+            "weight": 1
+          }
+        ],
         "rank": 4
       },
       {
@@ -5600,9 +6090,10 @@
             "currency": "USD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-28",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 106,
         "lookThroughMos": -0.39011203787376353,
         "coverage": 0.9733866933466735,
@@ -6343,7 +6834,28 @@
           "mos": -1.6100604794680629
         },
         "sisters": [],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "IGV": {
+            "price": 109.98,
+            "currency": "USD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Information Technology",
+            "weight": 0.9603801900950474
+          },
+          {
+            "name": "Communication",
+            "weight": 0.0396198099049525
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "United States",
+            "weight": 1
+          }
+        ],
         "rank": 5
       },
       {
@@ -6358,9 +6870,10 @@
             "currency": "AUD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-31",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 42,
         "lookThroughMos": -0.5242563728691294,
         "coverage": 0.9425856873671604,
@@ -6663,7 +7176,40 @@
           "mos": -1.1800055617866476
         },
         "sisters": [],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "ATEC.AX": {
+            "price": 22.89,
+            "currency": "AUD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Information Technology",
+            "weight": 0.5494951556544624
+          },
+          {
+            "name": "Communication Services",
+            "weight": 0.19500483845419697
+          },
+          {
+            "name": "Industrials",
+            "weight": 0.10794535346188416
+          },
+          {
+            "name": "Healthcare",
+            "weight": 0.10081404117988553
+          },
+          {
+            "name": "Financials",
+            "weight": 0.046740611249570824
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "Australia",
+            "weight": 1
+          }
+        ],
         "rank": 6
       },
       {
@@ -6678,9 +7224,10 @@
             "currency": "AUD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-31",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 50,
         "lookThroughMos": -0.5387586402896177,
         "coverage": 0.7587918258561875,
@@ -7028,7 +7575,48 @@
           "mos": -0.9839081672628632
         },
         "sisters": [],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "ASIA.AX": {
+            "price": 20.48,
+            "currency": "AUD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Information Technology",
+            "weight": 0.7528260630464255
+          },
+          {
+            "name": "Communication Services",
+            "weight": 0.13640384483198584
+          },
+          {
+            "name": "Consumer Discretionary",
+            "weight": 0.10786806593568975
+          },
+          {
+            "name": "Industrials",
+            "weight": 0.0029020261858987615
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "Taiwan",
+            "weight": 0.2970399990781665
+          },
+          {
+            "name": "South Korea",
+            "weight": 0.2863827353464157
+          },
+          {
+            "name": "United States",
+            "weight": 0.2737010324615034
+          },
+          {
+            "name": "Hong Kong",
+            "weight": 0.14287623311391445
+          }
+        ],
         "rank": 7
       },
       {
@@ -7043,9 +7631,10 @@
             "currency": "USD"
           }
         ],
-        "assetClass": "equity",
         "holdingsAsOf": "2026-08-28",
-        "flags": [],
+        "flags": [
+          "asOf-unchanged"
+        ],
         "holdingsCount": 30,
         "lookThroughMos": -0.7392580482122522,
         "coverage": 1,
@@ -7272,38 +7861,28 @@
           "mos": -0.9839081672628632
         },
         "sisters": [],
-        "snapshotPrices": {},
+        "snapshotPrices": {
+          "SOXX": {
+            "price": 511.04,
+            "currency": "USD"
+          }
+        },
+        "sectorMix": [
+          {
+            "name": "Information Technology",
+            "weight": 1
+          }
+        ],
+        "countryMix": [
+          {
+            "name": "United States",
+            "weight": 1
+          }
+        ],
         "rank": 8
       }
     ],
-    "unranked": [],
-    "notValued": [
-      {
-        "slug": "cryp",
-        "name": "Betashares Crypto Innovators ETF",
-        "theme": "Crypto industry",
-        "fee": 0.0067,
-        "listings": [
-          {
-            "ticker": "CRYP.AX",
-            "exchange": "ASX",
-            "currency": "AUD"
-          }
-        ],
-        "assetClass": "crypto",
-        "holdingsAsOf": "2026-08-31",
-        "flags": [],
-        "holdingsCount": 45,
-        "lookThroughMos": null,
-        "coverage": null,
-        "ranked": false,
-        "valued": [],
-        "unvalued": [],
-        "cheapest": null,
-        "priciest": null,
-        "sisters": [],
-        "snapshotPrices": {}
-      }
-    ]
-  }
+    "unranked": []
+  },
+  "cryptoExcluded": []
 }
