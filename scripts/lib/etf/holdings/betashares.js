@@ -11,6 +11,7 @@ const { parseCsv } = require('./csv.js');
 const BBG_COUNTRY = {
   UW: 'United States', UN: 'United States', UQ: 'United States', UR: 'United States',
   UP: 'United States', UF: 'United States', UV: 'United States', US: 'United States',
+  UA: 'United States', UD: 'United States', // NYSE American / OTC ADR
   AU: 'Australia', CT: 'Canada', CN: 'Canada',
   LN: 'United Kingdom', FP: 'France', GY: 'Germany', GR: 'Germany', NA: 'Netherlands',
   IM: 'Italy', SM: 'Spain', SQ: 'Spain', BB: 'Belgium', PL: 'Portugal', AV: 'Austria',

@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/QLTY_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:22.937Z",
+  "fetchedAt": "2026-09-01T10:46:47.735Z",
   "rows": [
     {
       "yahoo": "PLTR",
@@ -316,7 +316,7 @@
       "sector": "Consumer Staples"
     },
     {
-      "yahoo": "388.HK",
+      "yahoo": "0388.HK",
       "raw": "388 HK",
       "name": "HONG KONG EXCHANGES & CLEARING",
       "weight": 0.009484011799999999,
@@ -356,7 +356,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "ATCOA.ST",
+      "yahoo": "ATCO-A.ST",
       "raw": "ATCOA SS",
       "name": "ATLAS COPCO AB",
       "weight": 0.0081547754,
@@ -564,7 +564,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "669.HK",
+      "yahoo": "0669.HK",
       "raw": "669 HK",
       "name": "TECHTRONIC INDUSTRIES CO LTD",
       "weight": 0.0037314819,
@@ -764,7 +764,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "SGX.SI",
+      "yahoo": "S68.SI",
       "raw": "SGX SP",
       "name": "SINGAPORE EXCHANGE LTD",
       "weight": 0.0024224375,
@@ -804,7 +804,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "GIB/A.TO",
+      "yahoo": "GIB-A.TO",
       "raw": "GIB/A CT",
       "name": "CGI INC",
       "weight": 0.0020737492,
@@ -932,7 +932,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "YZJSGD.SI",
+      "yahoo": "BS6.SI",
       "raw": "YZJSGD SP",
       "name": "YANGZIJIANG SHIPBUILDING HOLDI",
       "weight": 0.0015344954999999998,

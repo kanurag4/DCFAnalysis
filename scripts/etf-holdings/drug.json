@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/DRUG_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:22.783Z",
+  "fetchedAt": "2026-09-01T10:46:47.641Z",
   "rows": [
     {
       "yahoo": "JNJ",
@@ -100,7 +100,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "NOVOB.CO",
+      "yahoo": "NOVO-B.CO",
       "raw": "NOVOB DC",
       "name": "NOVO NORDISK A/S",
       "weight": 0.024611383299999998,
@@ -460,7 +460,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "IHH.KL",
+      "yahoo": "5225.KL",
       "raw": "IHH MK",
       "name": "IHH HEALTHCARE BHD",
       "weight": 0.0006705435,

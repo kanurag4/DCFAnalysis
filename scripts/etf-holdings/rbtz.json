@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/RBTZ_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:23.025Z",
+  "fetchedAt": "2026-09-01T10:46:47.774Z",
   "rows": [
     {
       "yahoo": "6861.T",
@@ -52,7 +52,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "300124.SS",
+      "yahoo": "300124.SZ",
       "raw": "300124 C2",
       "name": "SHENZHEN INOVANCE TECHNOLOGY C",
       "weight": 0.040700456100000004,
@@ -68,7 +68,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "300757.SS",
+      "yahoo": "300757.SZ",
       "raw": "300757 C2",
       "name": "ROBOTECHNIK INTELLIGENT TECHNO",
       "weight": 0.027400753299999997,
@@ -164,7 +164,7 @@
       "sector": "Communication Services"
     },
     {
-      "yahoo": "277810.KS",
+      "yahoo": "277810.KQ",
       "raw": "277810 KQ",
       "name": "RAINBOW ROBOTICS",
       "weight": 0.014614923799999999,
@@ -236,7 +236,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "002747.SS",
+      "yahoo": "002747.SZ",
       "raw": "002747 C2",
       "name": "ESTUN AUTOMATION CO LTD",
       "weight": 0.0079253471,
@@ -268,7 +268,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "300024.SS",
+      "yahoo": "300024.SZ",
       "raw": "300024 C2",
       "name": "SIASUN ROBOT & AUTOMATION CO L",
       "weight": 0.0065243002,
@@ -284,7 +284,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "108490.KS",
+      "yahoo": "108490.KQ",
       "raw": "108490 KQ",
       "name": "ROBOTIS CO LTD",
       "weight": 0.0061729286000000005,
@@ -412,7 +412,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "388720.KS",
+      "yahoo": "388720.KQ",
       "raw": "388720 KQ",
       "name": "YUIL ROBOTICS CO LTD",
       "weight": 0.0012862818,
@@ -420,7 +420,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "090360.KS",
+      "yahoo": "090360.KQ",
       "raw": "090360 KQ",
       "name": "ROBOSTAR CO LTD",
       "weight": 0.001253721,
@@ -468,7 +468,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "455900.KS",
+      "yahoo": "455900.KQ",
       "raw": "455900 KQ",
       "name": "ANGEL ROBOTICS CO LTD",
       "weight": 0.0005178399000000001,

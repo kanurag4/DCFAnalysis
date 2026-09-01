@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/MNRS_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:23.329Z",
+  "fetchedAt": "2026-09-01T10:46:47.906Z",
   "rows": [
     {
       "yahoo": "NEM",
@@ -372,11 +372,11 @@
       "sector": "Materials"
     },
     {
-      "yahoo": "GROY.TO",
+      "yahoo": "GROY",
       "raw": "GROY UA",
       "name": "GOLD ROYALTY CORP",
       "weight": 0.0009197814999999999,
-      "country": "Canada",
+      "country": "United States",
       "sector": "Materials"
     }
   ]

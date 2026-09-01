@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/ETHI_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:22.875Z",
+  "fetchedAt": "2026-09-01T10:46:47.688Z",
   "rows": [
     {
       "yahoo": "NVDA",
@@ -364,7 +364,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "NDA.HE",
+      "yahoo": "NDA-FI.HE",
       "raw": "NDA FH",
       "name": "NORDEA BANK ABP",
       "weight": 0.005708388,
@@ -412,7 +412,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "SREN",
+      "yahoo": "SREN.SW",
       "raw": "SREN SE",
       "name": "SWISS RE AG",
       "weight": 0.0047939023,
@@ -460,7 +460,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "NOVOB.CO",
+      "yahoo": "NOVO-B.CO",
       "raw": "NOVOB DC",
       "name": "NOVO NORDISK A/S",
       "weight": 0.0043148923,
@@ -516,7 +516,7 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "SEBA.ST",
+      "yahoo": "SEB-A.ST",
       "raw": "SEBA SS",
       "name": "SKANDINAVISKA ENSKILDA BANKEN",
       "weight": 0.0038668638,
@@ -524,7 +524,7 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "SWEDA.ST",
+      "yahoo": "SWED-A.ST",
       "raw": "SWEDA SS",
       "name": "SWEDBANK AB",
       "weight": 0.0037942703,
@@ -668,7 +668,7 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "AIBG.IR",
+      "yahoo": "A5G.IR",
       "raw": "AIBG ID",
       "name": "AIB GROUP PLC",
       "weight": 0.0027184192,
@@ -700,7 +700,7 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "AV/.L",
+      "yahoo": "AV.L",
       "raw": "AV/ LN",
       "name": "AVIVA PLC",
       "weight": 0.0027076339,
@@ -732,7 +732,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "SHBA.ST",
+      "yahoo": "SHB-A.ST",
       "raw": "SHBA SS",
       "name": "SVENSKA HANDELSBANKEN AB",
       "weight": 0.0025194942,
@@ -820,7 +820,7 @@
       "sector": "Healthcare"
     },
     {
-      "yahoo": "669.HK",
+      "yahoo": "0669.HK",
       "raw": "669 HK",
       "name": "TECHTRONIC INDUSTRIES CO LTD",
       "weight": 0.0020984993,
@@ -1052,7 +1052,7 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "RCI/B.TO",
+      "yahoo": "RCI-B.TO",
       "raw": "RCI/B CT",
       "name": "ROGERS COMMUNICATIONS INC",
       "weight": 0.0013978175000000002,
@@ -1492,7 +1492,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "LIFCOB.ST",
+      "yahoo": "LIFCO-B.ST",
       "raw": "LIFCOB SS",
       "name": "LIFCO AB",
       "weight": 0.0006020117,

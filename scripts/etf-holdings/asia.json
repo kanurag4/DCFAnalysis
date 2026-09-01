@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/ASIA_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:22.537Z",
+  "fetchedAt": "2026-09-01T10:46:47.550Z",
   "rows": [
     {
       "yahoo": "000660.KS",
@@ -44,7 +44,7 @@
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "700.HK",
+      "yahoo": "0700.HK",
       "raw": "700 HK",
       "name": "TENCENT HOLDINGS LTD",
       "weight": 0.0702858455,
@@ -236,7 +236,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "5274.TW",
+      "yahoo": "5274.TWO",
       "raw": "5274 TT",
       "name": "ASPEED TECHNOLOGY INC",
       "weight": 0.006108495699999999,
@@ -252,7 +252,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "6223.TW",
+      "yahoo": "6223.TWO",
       "raw": "6223 TT",
       "name": "MPI CORP",
       "weight": 0.0051420447,
@@ -260,7 +260,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "8299.TW",
+      "yahoo": "8299.TWO",
       "raw": "8299 TT",
       "name": "PHISON ELECTRONICS CORP",
       "weight": 0.0045539435,
@@ -356,7 +356,7 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "20.HK",
+      "yahoo": "0020.HK",
       "raw": "20 HK",
       "name": "SENSETIME GROUP INC",
       "weight": 0.0020176255,
@@ -372,7 +372,7 @@
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "3293.TW",
+      "yahoo": "3293.TWO",
       "raw": "3293 TT",
       "name": "INTERNATIONAL GAMES SYSTEM CO",
       "weight": 0.0019121452,
@@ -380,7 +380,7 @@
       "sector": "Communication Services"
     },
     {
-      "yahoo": "3529.TW",
+      "yahoo": "3529.TWO",
       "raw": "3529 TT",
       "name": "EMEMORY TECHNOLOGY INC",
       "weight": 0.0018418910999999998,
@@ -396,7 +396,7 @@
       "sector": "Communication Services"
     },
     {
-      "yahoo": "100.HK",
+      "yahoo": "0100.HK",
       "raw": "100 HK",
       "name": "MINIMAX GROUP INC",
       "weight": 0.0017390386999999998,

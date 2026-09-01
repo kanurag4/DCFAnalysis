@@ -41,6 +41,47 @@ test('dot-delimited Bloomberg exchange code is still stripped', () => {
   assert.equal(resolveYahooSymbol({ rawSymbol: 'HO.FP', country: 'France' }, {}), 'HO.PA');
 });
 
+test('Hong Kong numeric codes are zero-padded to 4 digits', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: '700 HK', country: 'Hong Kong' }, {}), '0700.HK');
+  assert.equal(resolveYahooSymbol({ rawSymbol: '20 HK', country: 'Hong Kong' }, {}), '0020.HK');
+  assert.equal(resolveYahooSymbol({ rawSymbol: '9988 HK', country: 'Hong Kong' }, {}), '9988.HK');
+});
+
+test('Bloomberg exchange code pins Shenzhen / KOSDAQ over the Country column', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: '300124 C2', country: 'China' }, {}), '300124.SZ');
+  assert.equal(resolveYahooSymbol({ rawSymbol: '600519 C1', country: 'China' }, {}), '600519.SS');
+  assert.equal(resolveYahooSymbol({ rawSymbol: '277810 KQ', country: 'South Korea' }, {}), '277810.KQ');
+  assert.equal(resolveYahooSymbol({ rawSymbol: '005930 KP', country: 'South Korea' }, {}), '005930.KS');
+});
+
+test('Bloomberg "/" class separator is normalised', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'AV/ LN', country: 'United Kingdom' }, {}), 'AV.L');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'RCI/B CT', country: 'Canada' }, {}), 'RCI-B.TO');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'GIB/A CT', country: 'Canada' }, {}), 'GIB-A.TO');
+});
+
+test('a trailing-dot ticker does not become a double dot', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'SN.', country: 'United Kingdom' }, {}), 'SN.L');
+});
+
+test('a lone trailing A/B token is a share class, not an exchange', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'NOVO B', country: 'Denmark' }, {}), 'NOVO-B.CO');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'GETI B', country: 'Sweden' }, {}), 'GETI-B.ST');
+});
+
+test('a class letter glued with no separator is left alone (ZETA / BETA are not ZET-A / BET-A)', () => {
+  // "HEIA" -> "HEI-A" is real but indistinguishable from "ZETA" -> wrong;
+  // HEICO / Moog go through etf-symbol-overrides.json instead.
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'ZETA', country: 'United States', name: 'ZETA GLOBAL HOLDINGS CLASS A' }, {}), 'ZETA');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'HEIA', country: 'United States', name: 'HEICO CLASS A' }, {}), 'HEIA');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'HEIA', country: 'United States', name: 'HEICO CLASS A' }, { 'ishares:HEIA': 'HEI-A' }, 'ishares'), 'HEI-A');
+});
+
+test('an already-.TWO-suffixed override value is trusted', () => {
+  const ov = { 'betashares:5274 TT': '5274.TWO' };
+  assert.equal(resolveYahooSymbol({ rawSymbol: '5274 TT', country: 'Taiwan' }, ov, 'betashares'), '5274.TWO');
+});
+
 test('resolveHoldings splits resolved / unresolved', () => {
   const rows = [
     { rawSymbol: 'NVDA', country: 'United States', weight: 0.1 },

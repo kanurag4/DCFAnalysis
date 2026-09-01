@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-28",
   "source": "https://www.ishares.com/us/products/239502/ishares-us-aerospace-defense-etf/latest-holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:23.746Z",
+  "fetchedAt": "2026-09-01T10:46:48.077Z",
   "rows": [
     {
       "yahoo": "GE",
@@ -132,7 +132,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "HEIA",
+      "yahoo": "HEI-A",
       "raw": "HEIA",
       "name": "HEICO CLASS A",
       "weight": 0.014199999999999999,
@@ -172,7 +172,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "MOGA",
+      "yahoo": "MOG-A",
       "raw": "MOGA",
       "name": "MOOG INC CLASS A",
       "weight": 0.0078000000000000005,

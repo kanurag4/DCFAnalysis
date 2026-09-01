@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-31",
   "source": "https://www.betashares.com.au/files/csv/ERTH_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:14:23.215Z",
+  "fetchedAt": "2026-09-01T10:46:47.859Z",
   "rows": [
     {
       "yahoo": "ECL",
@@ -92,7 +92,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "NSISB.CO",
+      "yahoo": "NSIS-B.CO",
       "raw": "NSISB DC",
       "name": "NOVOZYMES A/S",
       "weight": 0.030030888199999998,
@@ -268,7 +268,7 @@
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "NIBEB.ST",
+      "yahoo": "NIBE-B.ST",
       "raw": "NIBEB SS",
       "name": "NIBE INDUSTRIER AB",
       "weight": 0.0075650441,
@@ -340,7 +340,7 @@
       "sector": "Utilities"
     },
     {
-      "yahoo": "247540.KS",
+      "yahoo": "247540.KQ",
       "raw": "247540 KQ",
       "name": "ECOPRO BM CO LTD",
       "weight": 0.0053996333,
@@ -436,7 +436,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "968.HK",
+      "yahoo": "0968.HK",
       "raw": "968 HK",
       "name": "XINYI SOLAR HOLDINGS LTD",
       "weight": 0.0034583008,
@@ -484,7 +484,7 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "383310.KS",
+      "yahoo": "383310.KQ",
       "raw": "383310 KQ",
       "name": "ECOPRO HN CO LTD",
       "weight": 0.0032726396,

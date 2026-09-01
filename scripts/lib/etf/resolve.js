@@ -1,9 +1,10 @@
 // scripts/lib/etf/resolve.js — DOM-free, network-free.
 // Maps an issuer holdings row's raw identifier to the Yahoo Finance symbol
-// scripts/fetch-yahoo.js expects. Deterministic: country/exchange -> suffix
-// table, then a manual override file, then give up (caller logs it; that
-// weight counts as unvaluable). A name-based /search fallback is added by the
-// orchestrator, not here, to keep this module network-free.
+// scripts/fetch-yahoo.js expects. Deterministic: override map, then an already-
+// suffixed symbol trusted as-is, then a Bloomberg exchange code / country ->
+// suffix table with issuer-quirk normalisation, then give up (caller logs it;
+// that weight counts as unvaluable). A name-based /search fallback is added by
+// the orchestrator, not here, to keep this module network-free.
 
 const COUNTRY_SUFFIX = {
   'United States': '', 'USA': '', 'US': '',
@@ -11,7 +12,7 @@ const COUNTRY_SUFFIX = {
   'Japan': '.T',
   'South Korea': '.KS', 'Korea': '.KS', 'Korea, Republic Of': '.KS', 'Korea (South)': '.KS',
   'Hong Kong': '.HK',
-  'China': '.SS', // ambiguous SS/SZ — rely on override for the exceptions
+  'China': '.SS', // ambiguous SS/SZ — a Bloomberg exchange code or an override pins Shenzhen
   'Taiwan': '.TW',
   'Israel': '.TA',
   'India': '.NS',
@@ -26,8 +27,21 @@ const COUNTRY_SUFFIX = {
   'Canada': '.TO',
 };
 
+// Bloomberg composite exchange code — the token after the space in "300124 C2",
+// "700 HK", "277810 KQ" — for the codes that pin a Yahoo suffix the issuer's
+// Country column cannot: Shenzhen vs Shanghai, KOSDAQ vs KOSPI, and Hong Kong
+// (whose numeric code Yahoo also wants zero-padded to 4 digits). A code that
+// isn't here falls through to the Country -> suffix table.
+const BBG_EXCH_SUFFIX = {
+  HK: '.HK',
+  C1: '.SS', CH: '.SS',   // Shanghai (Connect / native)
+  C2: '.SZ', CS: '.SZ',   // Shenzhen (Connect / native)
+  KP: '.KS', KS: '.KS',   // KOSPI
+  KQ: '.KQ',              // KOSDAQ
+};
+
 const KNOWN_SUFFIXES = new Set(Object.values(COUNTRY_SUFFIX).filter(Boolean).concat(
-  ['.KQ', '.SZ', '.BO', '.NZ'],
+  ['.KQ', '.SZ', '.BO', '.NZ', '.TWO'],
 ));
 
 function hasKnownSuffix(sym) {
@@ -45,19 +59,47 @@ function resolveYahooSymbol(row, overrides = {}, issuer) {
 
   if (hasKnownSuffix(raw)) return raw;                     // issuer already gave a Yahoo-style symbol
 
-  const country = (row.country || '').trim();
-  if (Object.prototype.hasOwnProperty.call(COUNTRY_SUFFIX, country)) {
-    const sfx = COUNTRY_SUFFIX[country];
-    // Drop the exchange token from a Bloomberg-style identifier ("PANW UW",
-    // "6861 JP", "HO.FP"). Only strip a *2+*-letter trailing ".XX" — a single
-    // trailing ".A"/".B" is a US share class (BRK.B, BF.B), not an exchange
-    // code, and Yahoo wants that as "BRK-B". Leave anything else for the
-    // name-search fallback / override map.
-    let base = raw.split(/\s+/)[0].replace(/\.[A-Z]{2,4}$/i, '');
-    if (sfx === '' && /\.[A-Za-z]$/.test(base)) base = base.replace(/\.([A-Za-z])$/, '-$1');
-    return sfx ? `${base}${sfx}` : base;
+  // "TICKER EXCH" (Bloomberg "PANW UW", "300124 C2") or "TICKER CLASS"
+  // (iShares "NOVO B") or bare "TICKER".
+  const [rawBase, secondTok = ''] = raw.split(/\s+/);
+  const tok = secondTok.toUpperCase();
+
+  // A lone trailing "A"/"B" token is a share class, not an exchange code.
+  const shareClass = /^[AB]$/.test(tok) ? tok : '';
+
+  // Suffix: a pinning Bloomberg exchange code beats the Country -> suffix table.
+  let sfx = BBG_EXCH_SUFFIX[tok];
+  if (sfx === undefined) {
+    const country = (row.country || '').trim();
+    if (!Object.prototype.hasOwnProperty.call(COUNTRY_SUFFIX, country)) return null;
+    sfx = COUNTRY_SUFFIX[country];
   }
-  return null;
+
+  // Normalise the ticker part.
+  let base = rawBase
+    .replace(/\.[A-Z]{2,4}$/i, '')   // dot-delimited Bloomberg exchange code ("PANW.UW", "HO.FP")
+    .replace(/\.{2,}/g, '.')         // stray double dot
+    .replace(/\.$/, '');             // trailing dot ("SN." -> "SN", so we don't build "SN..L")
+
+  // Bloomberg "/" class separator: "AV/" -> "AV", "RCI/B" -> "RCI-B".
+  if (base.includes('/')) {
+    const [l, r] = base.split('/');
+    base = r ? `${l}-${r.toUpperCase()}` : l;
+  }
+
+  // Hong Kong: Yahoo wants a 4-digit zero-padded code ("700" -> "0700").
+  if (sfx === '.HK' && /^\d{1,4}$/.test(base)) base = base.padStart(4, '0');
+
+  // US share class glued with a dot ("BRK.B" -> "BRK-B"). A class letter glued
+  // with NO separator ("HEIA") is indistinguishable from a ticker that just ends
+  // in A/B ("ZETA", "BETA") — those go through etf-symbol-overrides.json instead.
+  if (sfx === '' && /\.[A-Za-z]$/.test(base)) {
+    base = base.replace(/\.([A-Za-z])$/, (_, c) => `-${c.toUpperCase()}`);
+  }
+
+  if (shareClass) base = `${base}-${shareClass}`;         // iShares "NOVO B" -> "NOVO-B"
+
+  return sfx ? `${base}${sfx}` : base;
 }
 
 function resolveHoldings(rows, { issuer, overrides = {} } = {}) {
@@ -70,4 +112,4 @@ function resolveHoldings(rows, { issuer, overrides = {} } = {}) {
   return { resolved, unresolved };
 }
 
-module.exports = { resolveYahooSymbol, resolveHoldings, COUNTRY_SUFFIX };
+module.exports = { resolveYahooSymbol, resolveHoldings, COUNTRY_SUFFIX, BBG_EXCH_SUFFIX };
