@@ -49,10 +49,16 @@ test('detail page: ticker-page shell, summary stats, valuation, holdings, breakd
 test('a sub-70% fund omits the headline number but still renders the page', () => {
   const { html } = renderEtfPage({ ...fund, ranked: false, coverage: 0.52 }, {
     snapshotPrices: {}, tickerPageIndex: {}, asAt: '2026-09-01', rankLine: null,
+    sisterMeta: { bug: { name: 'Global X Cybersecurity ETF' } },
   });
   assert.match(html, /can value only 52% of this fund/i);
   assert.doesNotMatch(html, /holdings collectively trade\s*<strong>36% above/);
   assert.match(html, /Sister ETFs/i);
+});
+
+test('a sister with no published page (no sisterMeta) is not linked', () => {
+  const { html } = renderEtfPage(fund, { snapshotPrices: {}, tickerPageIndex: {}, asAt: '2026-09-01', sisterMeta: {} });
+  assert.doesNotMatch(html, /Sister ETFs/i);   // the only sister ('bug') has no meta -> dropped
 });
 
 test('holding with no ticker page renders as plain text', () => {

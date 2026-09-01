@@ -1,8 +1,9 @@
 // scripts/refresh-etf-radar.js
-//   node scripts/refresh-etf-radar.js            full monthly run (download holdings + fetch + rank + pages)
-//   node scripts/refresh-etf-radar.js --offline  re-run from committed snapshots, no issuer downloads
+//   node scripts/refresh-etf-radar.js            full monthly run (download holdings + fetch union + rank + pages)
+//   node scripts/refresh-etf-radar.js --offline  use committed holdings snapshots (no issuer downloads); still fetches the Yahoo union
 //   node scripts/refresh-etf-radar.js --regen    alias for --offline
-//   node scripts/refresh-etf-radar.js --reagg    re-aggregate + regenerate pages from the raw-data cache, zero network
+//   node scripts/refresh-etf-radar.js --reagg    reuse the cached union (the slow part); still re-downloads issuer holdings,
+//                                                re-fetches /quote prices + live rf, re-runs FX + valuation + pages
 const path = require('node:path');
 const { runEtfRadar, writeRadarArtifacts } = require('./lib/etf/run-etf-radar.js');
 const { readProxyUrl } = require('./lib/run-screen.js');

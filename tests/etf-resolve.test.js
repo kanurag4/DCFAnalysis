@@ -31,6 +31,16 @@ test('emerging-market suffixes (Brazil, Malaysia, Korea (South) variant)', () =>
   assert.equal(resolveYahooSymbol({ rawSymbol: '068270', country: 'Korea (South)' }, {}), '068270.KS');
 });
 
+test('US share classes: ".B" is preserved as "-B", not stripped', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'BRK.B', country: 'United States' }, {}), 'BRK-B');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'BF.B', country: 'United States' }, {}), 'BF-B');
+});
+
+test('dot-delimited Bloomberg exchange code is still stripped', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'PANW.UW', country: 'United States' }, {}), 'PANW');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'HO.FP', country: 'France' }, {}), 'HO.PA');
+});
+
 test('resolveHoldings splits resolved / unresolved', () => {
   const rows = [
     { rawSymbol: 'NVDA', country: 'United States', weight: 0.1 },

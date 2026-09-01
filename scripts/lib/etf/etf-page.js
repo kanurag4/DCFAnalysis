@@ -144,12 +144,14 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
     </section>` : '';
 
   // ── sisters ────────────────────────────────────────────────────────────
-  const sisters = fund.sisters || [];
+  // Only sisters that have a published page (a sisterMeta entry) — a
+  // crypto-excluded fund can be an overlap match but has no /dcf/etfs/<slug>/.
+  const sisters = (fund.sisters || []).filter(s => sisterMeta[s.slug]);
   const sisterHtml = sisters.length ? `
     <section class="etf-sisters">
       <h2>Sister ETFs <span class="etf-note">≥30% holdings overlap</span></h2>
       <div class="etf-sister-grid">${sisters.map(s => {
-    const m = sisterMeta[s.slug] || {};
+    const m = sisterMeta[s.slug];
     return `<a class="etf-sister-card" href="/dcf/etfs/${escapeHtml(s.slug)}/">
         <span class="etf-sister-name">${escapeHtml(m.name || s.slug)}</span>
         <span class="etf-note">${pct(s.overlap)} holdings overlap${m.fee != null ? ` · fee ${pct(m.fee, 2)}` : ''}</span>

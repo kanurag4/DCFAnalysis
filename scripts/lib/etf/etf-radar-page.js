@@ -66,6 +66,9 @@ function renderRadarPage(result, { asAt } = {}) {
          (${pct(f.coverage)})`).join(' · ')}.</p>
     </section>` : '';
 
+  // [question, answer]. The answer is TRUSTED HTML (may contain <a> etc.) —
+  // hardcoded here, never user/issuer input. Rendered raw into <p>; the JSON-LD
+  // path strips tags. An editor adding literal "&" must write "&amp;".
   const faq = [
     ['What does the "vs intrinsic value" number mean?',
       'The fund-weighted average premium or discount of the fund’s holdings to their own combined intrinsic value. A negative number ("premium") means the holdings collectively trade above what the models say they are worth; a positive number ("discount") means below.'],

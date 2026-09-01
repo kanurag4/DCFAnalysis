@@ -16,6 +16,7 @@ const { marketParamsFor } = require('../market.js');
 const { evaluateStock: realEvaluateStock } = require('../evaluate.js');
 const { fetchSymbol: realFetchSymbol } = require('../../fetch-yahoo.js');
 const { fetchFxRate } = require('../../../www/data.js');
+const { fetchUsRf, fetchAusRf, fetchIndRf } = require('../rf.js');
 const { batchHeaders } = require('../batch-auth.js');
 const { renderEtfPage } = require('./etf-page.js');
 const { renderRadarPage } = require('./etf-radar-page.js');
@@ -78,7 +79,8 @@ async function ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, 
       // resolve.js). A confident hit is written into the overrides map so it is
       // never searched again.
       for (const u of unresolved.slice()) {
-        if (!u.name || !searchSymbol) break;
+        if (!searchSymbol) break;
+        if (!u.name) continue;               // SEDOL-only row with no name — skip just this one
         const hit = await searchSymbol(u.name);
         if (hit) {
           overrides[`${fund.issuer}:${u.rawSymbol}`] = hit;
@@ -111,15 +113,17 @@ function plausible(mos, { maxMargin = MAX_HOLDING_MARGIN, minMargin = MIN_HOLDIN
   return Number.isFinite(mos) && mos <= maxMargin && mos >= minMargin;
 }
 
-function valueOne(sym, data, evaluateStock, bounds = {}) {
+function valueOne(sym, data, evaluateStock, bounds = {}, live = {}) {
   if (!data) return { unvaluable: true, reason: 'fetch-failed' };
   if (data.quoteType === 'CRYPTO' || data.quoteType === 'CRYPTOCURRENCY') return { quoteType: 'CRYPTO' };
   // Replace the engine's 1-year revenue/earnings growth with the conservative
   // multi-year trend (growth-rate.js). Setting both fields equal makes
-  // deriveBaseGrowth()'s avg() return that value, still subject to the engine's
-  // own [-0.05, 0.25] clamp. EV/Sales fallback + quoteType read the raw `data`.
+  // deriveBaseGrowth()'s avg() return that value (still clamped [-0.05, 0.25]),
+  // and also feeds deriveDividendGrowth() for bank/insurer/utility holdings
+  // (clamped [0, 0.06] there — a conservative dividend-growth input, fine).
+  // The EV/Sales fallback + quoteType read the raw `data`.
   const g = lookThroughGrowth(data);
-  const ev = evaluateStock({ ...data, revenueGrowth: g, earningsGrowth: g }, marketParamsFor(sym, {}));
+  const ev = evaluateStock({ ...data, revenueGrowth: g, earningsGrowth: g }, marketParamsFor(sym, live));
   if (!ev.excluded && Number.isFinite(ev.marginOfSafety)) {
     return plausible(ev.marginOfSafety, bounds)
       ? { mos: ev.marginOfSafety, method: ev.method }
@@ -143,18 +147,25 @@ function valueOne(sym, data, evaluateStock, bounds = {}) {
 // often lacks). Returns { [ticker]: { price, currency } }. Injected for tests.
 async function fetchQuotesReal(tickers, proxyUrl) {
   if (!tickers.length || !proxyUrl) return {};
-  try {
-    const url = `${proxyUrl.replace(/\/$/, '')}/quote?symbols=${encodeURIComponent(tickers.join(','))}`;
-    const res = await fetch(url, { headers: batchHeaders() });
-    if (!res.ok) return {};
-    const body = await res.json();
-    const out = {};
-    for (const q of (Array.isArray(body) ? body : body.quotes || body.result || [])) {
-      const price = q.regularMarketPrice ?? q.price;
-      if (q.symbol && Number.isFinite(price)) out[q.symbol] = { price, currency: q.currency || null };
-    }
-    return out;
-  } catch (_) { return {}; }
+  const url = `${proxyUrl.replace(/\/$/, '')}/quote?symbols=${encodeURIComponent(tickers.join(','))}`;
+  // One retry: a single transient 502 here would otherwise blank every listing
+  // price + Implied fair value column for the whole run, silently.
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(url, { headers: batchHeaders() });
+      if (res.ok) {
+        const body = await res.json();
+        const out = {};
+        for (const q of (Array.isArray(body) ? body : body.quotes || body.result || [])) {
+          const price = q.regularMarketPrice ?? q.price;
+          if (q.symbol && Number.isFinite(price)) out[q.symbol] = { price, currency: q.currency || null };
+        }
+        if (Object.keys(out).length) return out;
+      }
+    } catch (_) { /* retry */ }
+    if (attempt === 0) await sleep(4000);
+  }
+  return {};
 }
 
 // Thin wrapper over the Worker /search?q= endpoint — returns the top match's
@@ -162,7 +173,8 @@ async function fetchQuotesReal(tickers, proxyUrl) {
 async function searchSymbolReal(name, proxyUrl) {
   if (!proxyUrl) return null;
   try {
-    const res = await fetch(`${proxyUrl.replace(/\/$/, '')}/search?q=${encodeURIComponent(name)}`);
+    const res = await fetch(`${proxyUrl.replace(/\/$/, '')}/search?q=${encodeURIComponent(name)}`,
+      { headers: batchHeaders() });
     if (!res.ok) return null;
     const body = await res.json();
     const hit = (body.quotes || body.results || [])[0];
@@ -170,11 +182,23 @@ async function searchSymbolReal(name, proxyUrl) {
   } catch (_) { return null; }
 }
 
+// Live risk-free rates for the markets market.js can override (us/aus/ind — the
+// rest have no live source). Fetched once, reused for every holding, so the ETF
+// DCFs use the same rf as the "Most Undervalued" screens and the /dcf/stocks/
+// pages rather than a stale static seed. Injected for tests.
+async function fetchLiveRatesReal(proxyUrl) {
+  if (!proxyUrl) return {};
+  const [usRf, ausRf, indRf] = await Promise.all([
+    fetchUsRf(proxyUrl), fetchAusRf(proxyUrl), fetchIndRf(proxyUrl),
+  ]);
+  return { usRf, ausRf, indRf };
+}
+
 async function runEtfRadar(deps, opts = {}) {
   const {
     universePath, injectedUniverse, holdingsDir, overridesPath, proxyUrl, rawCachePath,
     fetchSymbol = realFetchSymbol, evaluateStock = realEvaluateStock, fetchFx = fetchFxRate,
-    fetchQuotes = fetchQuotesReal,
+    fetchQuotes = fetchQuotesReal, fetchLiveRates = fetchLiveRatesReal,
     searchSymbol = (name) => searchSymbolReal(name, proxyUrl),
     now = () => new Date(), log = console.log,
   } = deps;
@@ -182,17 +206,14 @@ async function runEtfRadar(deps, opts = {}) {
     bounds = {} } = opts;
   const asAt = now().toISOString().slice(0, 10);
   const fxCache = new Map();
-  // --reagg reuses the cached union (the 25-50 min part) but still re-downloads
-  // issuer holdings (cheap, ~10s — and picks up adapter changes) and re-fetches
-  // listing prices (one batch call).
-  const holdingsOffline = offline;
 
   const universe = loadUniverse(universePath, injectedUniverse);
 
-  // 1. holdings for every fund (fresh issuer download, or committed snapshot)
+  // 1. holdings for every fund. --reagg still re-downloads issuer files (cheap,
+  //    ~10s, and picks up adapter changes) — only the union fetch is cached.
   const withHoldings = [];
   for (const fund of universe) {
-    const { snapshot, flags } = await ensureHoldings(fund, { holdingsDir, overridesPath, offline: holdingsOffline, log, searchSymbol });
+    const { snapshot, flags } = await ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, searchSymbol });
     withHoldings.push({
       fund, holdings: (snapshot && snapshot.rows) || [],
       holdingsAsOf: snapshot && snapshot.asOf, flags,
@@ -204,11 +225,14 @@ async function runEtfRadar(deps, opts = {}) {
   const valuations = {};
   let fetched = 0, failed = 0;
 
-  // --reagg: skip all network, re-run FX + valueOne + aggregate + pages from the
-  // raw-data cache written by the last real run. Fast iteration on the bounds /
-  // aggregation without a 25-minute re-fetch.
+  // --reagg: reuse the cached union (the 25-50 min fetch) and re-run FX +
+  // valueOne + aggregate + pages. Still hits the network for the cheap parts —
+  // issuer holdings (above), /quote listing prices, name-search. A symbol added
+  // to a fund since the cached run has no cache entry -> counts as fetch-failed.
   const cache = (reagg && rawCachePath && fs.existsSync(rawCachePath))
     ? JSON.parse(fs.readFileSync(rawCachePath, 'utf8')) : null;
+
+  const live = (cache && cache.live) ? cache.live : await fetchLiveRates(proxyUrl);
 
   let listingPrices = {};
 
@@ -218,7 +242,7 @@ async function runEtfRadar(deps, opts = {}) {
     for (const sym of union) {
       const data = cache.union[sym] || null;
       const converted = data ? await convertFinancials(data, { proxyUrl, fxCache, fetchFx: noNetFx }) : null;
-      valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
+      valuations[sym] = valueOne(sym, converted, evaluateStock, bounds, live);
       if (data) fetched++; else failed++;
     }
   } else {
@@ -228,7 +252,7 @@ async function runEtfRadar(deps, opts = {}) {
     const flushCache = () => {
       if (rawCachePath) {
         fs.writeFileSync(rawCachePath, JSON.stringify({
-          asAt, union: rawUnion, listingPrices, fx: Object.fromEntries(fxCache),
+          asAt, live, union: rawUnion, listingPrices, fx: Object.fromEntries(fxCache),
         }));
       }
     };
@@ -237,7 +261,7 @@ async function runEtfRadar(deps, opts = {}) {
       const data = await fetchSymbol(sym, { proxyUrl, retries: 2, backoffMs: 4000 });
       rawUnion[sym] = data || null;
       const converted = await convertFinancials(data, { proxyUrl, fxCache, fetchFx });
-      valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
+      valuations[sym] = valueOne(sym, converted, evaluateStock, bounds, live);
       if (data) fetched++; else failed++;
       if (++i % 10 === 0) { flushCache(); log(`  … ${i}/${union.length} fetched (${failed} failed)`); }
       if (throttleMs) await sleep(throttleMs);
@@ -253,7 +277,7 @@ async function runEtfRadar(deps, opts = {}) {
         if (data) {
           rawUnion[sym] = data;
           const converted = await convertFinancials(data, { proxyUrl, fxCache, fetchFx });
-          valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
+          valuations[sym] = valueOne(sym, converted, evaluateStock, bounds, live);
           failed--; fetched++;
         }
         if (throttleMs) await sleep(throttleMs);
@@ -277,23 +301,25 @@ async function runEtfRadar(deps, opts = {}) {
     try {
       const cur = JSON.parse(fs.readFileSync(rawCachePath, 'utf8'));
       cur.listingPrices = listingPrices;
+      cur.live = live;
       fs.writeFileSync(rawCachePath, JSON.stringify(cur));
     } catch (_) { /* cache write is best-effort */ }
   }
 
-  // 3. aggregate per fund + crypto safety-net + sisters
-  const fundsForOverlap = withHoldings.map(w => ({ slug: w.fund.slug, holdings: w.holdings }));
-  const cryptoExcluded = [];
+  // 3. crypto safety-net, then aggregate per fund + sisters.
+  // A fund whose holdings are mostly crypto proxies is dropped entirely — no
+  // ranked row, no page. (Crypto isn't something the radar values; there are no
+  // crypto funds in etfs.json.) Excluded funds are also removed from the
+  // sister-overlap pool so no detail page links to a page that won't exist.
+  const cryptoExcluded = withHoldings
+    .filter(w => detectCrypto(w.holdings, valuations, {}))
+    .map(w => w.fund.slug);
+  cryptoExcluded.forEach(s => log(`  excluded (crypto-heavy): ${s}`));
+  const rankable = withHoldings.filter(w => !cryptoExcluded.includes(w.fund.slug));
+  const fundsForOverlap = rankable.map(w => ({ slug: w.fund.slug, holdings: w.holdings }));
+
   const funds = [];
-  for (const w of withHoldings) {
-    // Crypto safety-net: an unflagged fund whose holdings are mostly crypto
-    // proxies is dropped entirely — no ranked row, no page. (Crypto isn't
-    // something the radar values; there are no crypto funds in etfs.json.)
-    if (detectCrypto(w.holdings, valuations, {})) {
-      cryptoExcluded.push(w.fund.slug);
-      log(`  excluded (crypto-heavy): ${w.fund.slug}`);
-      continue;
-    }
+  for (const w of rankable) {
     const agg = aggregateFund(w.holdings, valuations, { coverageGate });
     funds.push({
       slug: w.fund.slug, name: w.fund.name, theme: w.fund.theme, fee: w.fund.fee,
@@ -368,9 +394,30 @@ function buildTickerPageIndex(stocksRoot) {
   return idx;
 }
 
+// Slim per-fund summary for the published etf-rankings.json — the full valued/
+// unvalued/sectorMix/... arrays are consumed at page-gen time and don't need to
+// ship to the CDN (they made the file ~8k lines with valued[] duplicated across
+// funds + rankings). Enough here for the skill's "biggest movers vs last run"
+// diff and any future data feed.
+function slimResult(result) {
+  const fund = (f) => ({
+    slug: f.slug, name: f.name, theme: f.theme, fee: f.fee,
+    lookThroughMos: f.lookThroughMos, coverage: f.coverage, ranked: f.ranked,
+    holdingsCount: f.holdingsCount, valuedCount: (f.valued || []).length,
+    rank: f.rank ?? null, flags: f.flags || [],
+  });
+  return {
+    asAt: result.asAt,
+    union: result.union,
+    cryptoExcluded: result.cryptoExcluded || [],
+    ranked: result.rankings.ranked.map(fund),
+    unranked: result.rankings.unranked.map(fund),
+  };
+}
+
 function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot, tickerPageIndex, asAt } = {}) {
   fs.mkdirSync(outDir, { recursive: true });
-  fs.writeFileSync(path.join(outDir, 'etf-rankings.json'), JSON.stringify(result, null, 2) + '\n');
+  fs.writeFileSync(path.join(outDir, 'etf-rankings.json'), JSON.stringify(slimResult(result), null, 2) + '\n');
   if (!generatePages) return;
 
   const at = asAt || result.asAt;
@@ -424,7 +471,7 @@ function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot,
 }
 
 module.exports = {
-  runEtfRadar, writeRadarArtifacts, valueOne, plausible, convertFinancials,
+  runEtfRadar, writeRadarArtifacts, slimResult, valueOne, plausible, convertFinancials,
   ensureHoldings, buildTickerPageIndex, ordinal,
   MAX_HOLDING_MARGIN, MIN_HOLDING_MARGIN,
 };

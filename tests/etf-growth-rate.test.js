@@ -2,24 +2,26 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { lookThroughGrowth, seriesCagr, oneYearFallback } = require('../scripts/lib/etf/growth-rate.js');
 
-test('seriesCagr: compound rate over the span', () => {
-  assert.ok(Math.abs(seriesCagr([{ value: 100 }, { value: 121 }]) - 0.21) < 1e-9);        // span 1 -> +21%
+test('seriesCagr: compound rate over the span (>= 3 points)', () => {
   assert.ok(Math.abs(seriesCagr([{ value: 100 }, { value: 200 }, { value: 400 }]) - 1.0) < 1e-9); // span 2, x4 -> 100%/yr
+  assert.ok(Math.abs(seriesCagr([100, 110, 121]) - 0.10) < 1e-9);                                 // bare numbers, span 2
 });
 
-test('seriesCagr: null when fewer than 2 points or a non-positive endpoint', () => {
-  assert.equal(seriesCagr([{ value: 100 }]), null);
+test('seriesCagr: span comes from dates, not point count, when present', () => {
+  // 3 points but the outer dates are 3 years apart -> 3-year CAGR, not 2
+  const r = seriesCagr([{ date: '2022', value: 100 }, { date: '2024', value: 150 }, { date: '2025', value: 200 }]);
+  assert.ok(Math.abs(r - (Math.pow(2, 1 / 3) - 1)) < 1e-9);
+});
+
+test('seriesCagr: null for < 3 points, < 2-year span, or a non-positive endpoint', () => {
+  assert.equal(seriesCagr([{ value: 100 }, { value: 121 }]), null);      // only 2 points
   assert.equal(seriesCagr([]), null);
-  assert.equal(seriesCagr([{ value: -5 }, { value: 10 }]), null);
-  assert.equal(seriesCagr([{ value: 10 }, { value: 0 }]), null);
-});
-
-test('seriesCagr: accepts a bare number array', () => {
-  assert.ok(Math.abs(seriesCagr([100, 110]) - 0.10) < 1e-9);
+  assert.equal(seriesCagr([{ value: -5 }, { value: 10 }, { value: 20 }]), null); // negative first endpoint
+  assert.equal(seriesCagr([{ value: 10 }, { value: 15 }, { value: 0 }]), null);  // zero last endpoint
+  assert.equal(seriesCagr([{ date: '2025', value: 1 }, { date: '2025', value: 1 }, { date: '2025', value: 1 }]), null); // 0-year span
 });
 
 test('lookThroughGrowth: the slower of revenue vs FCF CAGR', () => {
-  // revenue grows ~11%/yr, FCF shrinks ~-11%/yr -> use the FCF trend
   const data = {
     annualRevenueHistory: [{ value: 324 }, { value: 372 }, { value: 400 }, { value: 448 }],
     annualFcfHistory: [{ value: 23.4 }, { value: 25.7 }, { value: 20.7 }, { value: 16.1 }],
@@ -33,11 +35,15 @@ test('lookThroughGrowth: genuine hypergrowth survives (caller clamps)', () => {
     annualRevenueHistory: [{ value: 27 }, { value: 61 }, { value: 130 }, { value: 216 }],
     annualFcfHistory: [{ value: 3.8 }, { value: 27 }, { value: 61 }, { value: 97 }],
   };
-  assert.ok(lookThroughGrowth(data) > 0.5); // ~100%/yr, left for the [-0.05,0.25] clamp
+  assert.ok(lookThroughGrowth(data) > 0.5);
 });
 
-test('lookThroughGrowth: falls back to min(1-yr rev, earn) without history', () => {
+test('lookThroughGrowth: falls back to min(1-yr rev, earn) with too little history', () => {
   assert.ok(Math.abs(lookThroughGrowth({ revenueGrowth: 0.004, earningsGrowth: 0.615 }) - 0.004) < 1e-9);
+  // 2-point history is not enough -> falls through to the 1-year figure
+  assert.ok(Math.abs(lookThroughGrowth({
+    annualRevenueHistory: [{ value: 100 }, { value: 200 }], revenueGrowth: 0.03, earningsGrowth: 0.05,
+  }) - 0.03) < 1e-9);
 });
 
 test('lookThroughGrowth: 0.05 default with nothing at all', () => {

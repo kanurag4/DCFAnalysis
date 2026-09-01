@@ -48,8 +48,13 @@ function resolveYahooSymbol(row, overrides = {}, issuer) {
   const country = (row.country || '').trim();
   if (Object.prototype.hasOwnProperty.call(COUNTRY_SUFFIX, country)) {
     const sfx = COUNTRY_SUFFIX[country];
-    // strip an issuer's own local-exchange suffix (e.g. "PANW UW", "6861 JP") first
-    const base = raw.split(/\s+/)[0].replace(/\.[A-Z]{1,4}$/i, '');
+    // Drop the exchange token from a Bloomberg-style identifier ("PANW UW",
+    // "6861 JP", "HO.FP"). Only strip a *2+*-letter trailing ".XX" — a single
+    // trailing ".A"/".B" is a US share class (BRK.B, BF.B), not an exchange
+    // code, and Yahoo wants that as "BRK-B". Leave anything else for the
+    // name-search fallback / override map.
+    let base = raw.split(/\s+/)[0].replace(/\.[A-Z]{2,4}$/i, '');
+    if (sfx === '' && /\.[A-Za-z]$/.test(base)) base = base.replace(/\.([A-Za-z])$/, '-$1');
     return sfx ? `${base}${sfx}` : base;
   }
   return null;
