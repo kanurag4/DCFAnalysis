@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const os = require('node:os'); const fs = require('node:fs'); const path = require('node:path');
-const { runEtfRadar, valueOne, writeRadarArtifacts, ordinal } = require('../scripts/lib/etf/run-etf-radar.js');
+const { runEtfRadar, valueOne, plausible, convertFinancials, writeRadarArtifacts, ordinal } = require('../scripts/lib/etf/run-etf-radar.js');
 
 function seedHoldings(dir, slug, rows, asOf = '2026-08-01') {
   fs.writeFileSync(path.join(dir, `${slug}.json`), JSON.stringify({ asOf, source: 'x', rows }));
@@ -89,10 +89,11 @@ test('valueOne: null data -> fetch-failed', () => {
 });
 
 test('valueOne: DCF-rejected non-financial falls back to EV/Sales', () => {
-  const data = { sector: 'Technology', price: 40, totalRevenue: 2e9, totalDebt: 0, totalCash: 1e8, dilutedSharesOutstanding: 1e8 };
+  // revenue 2e9 * sector 6x + cash 1e8, / 1e8 shares -> intrinsic ~121; price 90 -> mos ~0.34
+  const data = { sector: 'Technology', price: 90, totalRevenue: 2e9, totalDebt: 0, totalCash: 1e8, dilutedSharesOutstanding: 1e8 };
   const ev = valueOne('X', data, () => ({ excluded: true, reason: 'dcf-unavailable' }));
   assert.equal(ev.method, 'EV/Sales');
-  assert.ok(Number.isFinite(ev.mos));
+  assert.ok(Number.isFinite(ev.mos) && ev.mos > 0 && ev.mos < 1);
 });
 
 test('valueOne: DCF-rejected financial does NOT use the EV/Sales fallback', () => {
@@ -100,6 +101,51 @@ test('valueOne: DCF-rejected financial does NOT use the EV/Sales fallback', () =
   const ev = valueOne('X', data, () => ({ excluded: true, reason: 'ddm-unavailable' }));
   assert.equal(ev.unvaluable, true);
   assert.equal(ev.reason, 'ddm-unavailable');
+});
+
+test('plausible band', () => {
+  assert.equal(plausible(0.4), true);
+  assert.equal(plausible(-0.9), true);
+  assert.equal(plausible(19), false);     // WIT/TSM-style ADR currency artifact
+  assert.equal(plausible(-5), false);     // trades at 6x intrinsic — share-count artifact
+  assert.equal(plausible(NaN), false);
+});
+
+test('valueOne: an implausible margin (ADR currency artifact) is dropped, not blended', () => {
+  const data = { sector: 'Technology', price: 1.85 };
+  const ev = valueOne('WIT', data, () => ({ method: 'DCF', intrinsic: 816, marginOfSafety: 440 }));
+  assert.equal(ev.unvaluable, true);
+  assert.equal(ev.reason, 'implausible-margin');
+});
+
+test('convertFinancials: converts statement figures from financialCurrency into the quote currency', async () => {
+  const data = {
+    currency: 'USD', financialCurrency: 'INR', price: 1.85,
+    totalRevenue: 8300, freeCashflow: 830, totalDebt: 100, marketCap: 18e9,
+    annualFcfHistory: [{ date: '2025', value: 800 }],
+  };
+  const out = await convertFinancials(data, { proxyUrl: 'x', fxCache: new Map(), fetchFx: async () => 0.012 });
+  assert.ok(Math.abs(out.totalRevenue - 99.6) < 1e-6);   // 8300 * 0.012
+  assert.ok(Math.abs(out.freeCashflow - 9.96) < 1e-6);
+  assert.equal(out.marketCap, 18e9);                     // NOT converted (already a quote-currency figure)
+  assert.equal(out.price, 1.85);
+  assert.ok(Math.abs(out.annualFcfHistory[0].value - 9.6) < 1e-6);
+});
+
+test('convertFinancials: no rate -> fail closed (statement figures nulled)', async () => {
+  const data = { currency: 'USD', financialCurrency: 'INR', totalRevenue: 8300, freeCashflow: 830 };
+  const out = await convertFinancials(data, { proxyUrl: 'x', fxCache: new Map(), fetchFx: async () => null });
+  assert.equal(out.totalRevenue, null);
+  assert.equal(out.freeCashflow, null);
+  assert.equal(out.fxConversionFailed, true);
+});
+
+test('convertFinancials: matching currencies pass through untouched, no FX call', async () => {
+  let called = false;
+  const data = { currency: 'USD', financialCurrency: 'USD', totalRevenue: 100 };
+  const out = await convertFinancials(data, { proxyUrl: 'x', fxCache: new Map(), fetchFx: async () => { called = true; return 1; } });
+  assert.equal(out, data);
+  assert.equal(called, false);
 });
 
 test('ordinal', () => {

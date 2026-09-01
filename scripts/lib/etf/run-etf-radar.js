@@ -14,6 +14,8 @@ const { evSalesFallback } = require('./growth-eval.js');
 const { marketParamsFor } = require('../market.js');
 const { evaluateStock: realEvaluateStock } = require('../evaluate.js');
 const { fetchSymbol: realFetchSymbol } = require('../../fetch-yahoo.js');
+const { fetchFxRate } = require('../../../www/data.js');
+const { batchHeaders } = require('../batch-auth.js');
 const { renderEtfPage } = require('./etf-page.js');
 const { renderRadarPage } = require('./etf-radar-page.js');
 const { readGrowthManifest, listGrowthMarketFolders } = require('../growth-manifest-reader.js');
@@ -22,6 +24,42 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const DCF_FALLBACK_REASONS = new Set(['dcf-unavailable', 'no-wacc']);
 const FINANCIALish = /financial|bank|insurance/i;
 const COOLDOWN_MS = 65000;
+// A single holding's premium/discount outside this band is almost always a data
+// artifact (ADR currency/share-count mismatch, one-off-inflated FCF), not a real
+// valuation — the "Most Undervalued" screens drop anything over +80% for the
+// same reason. Such a holding is treated as unvaluable (drags coverage down),
+// never blended into the look-through average.
+const MAX_HOLDING_MARGIN = 1.0;   // > +100% "undervalued" — implausibly cheap
+const MIN_HOLDING_MARGIN = -3.0;  // trades at > 4x its intrinsic value — implausible
+
+// Convert a holding's financial-statement figures from its reporting currency
+// into its quote currency, mirroring www/data.js's fetchDCFData() exactly. ADRs
+// (Yahoo `currency` USD, `financialCurrency` INR/CNY/TWD/…) otherwise feed a
+// DCF that divides an INR-denominated intrinsic value by a USD price. Fail
+// closed: no rate -> null the figures so evaluateStock excludes the holding.
+async function convertFinancials(data, { proxyUrl, fxCache, fetchFx = fetchFxRate }) {
+  if (!data || !data.currency || !data.financialCurrency || data.currency === data.financialCurrency) return data;
+  const key = `${data.financialCurrency}>${data.currency}`;
+  let rate = fxCache.get(key);
+  if (rate === undefined) {
+    rate = await fetchFx(data.financialCurrency, data.currency, proxyUrl, batchHeaders());
+    fxCache.set(key, rate);
+  }
+  const FIELDS = ['freeCashflow', 'operatingCashflow', 'capitalExpenditures', 'totalCash', 'totalDebt',
+    'totalRevenue', 'ebit', 'interestExpense', 'annualFcf', 'netIncome', 'depreciationAndAmortization', 'ebitda'];
+  const out = { ...data };
+  if (rate == null) {
+    for (const f of FIELDS) out[f] = null;
+    out.annualFcfHistory = []; out.annualRevenueHistory = [];
+    out.fxConversionFailed = true;
+    return out;
+  }
+  const c = (v) => (v != null && Number.isFinite(v) ? v * rate : v);
+  for (const f of FIELDS) out[f] = c(data[f]);
+  out.annualFcfHistory = (data.annualFcfHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
+  out.annualRevenueHistory = (data.annualRevenueHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
+  return out;
+}
 
 async function ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, searchSymbol }) {
   const overrides = overridesPath && fs.existsSync(overridesPath)
@@ -65,17 +103,27 @@ async function ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, 
   return { snapshot, flags: freshness.flags };
 }
 
-function valueOne(sym, data, evaluateStock) {
+function plausible(mos, { maxMargin = MAX_HOLDING_MARGIN, minMargin = MIN_HOLDING_MARGIN } = {}) {
+  return Number.isFinite(mos) && mos <= maxMargin && mos >= minMargin;
+}
+
+function valueOne(sym, data, evaluateStock, bounds = {}) {
   if (!data) return { unvaluable: true, reason: 'fetch-failed' };
   if (data.quoteType === 'CRYPTO' || data.quoteType === 'CRYPTOCURRENCY') return { quoteType: 'CRYPTO' };
   const ev = evaluateStock(data, marketParamsFor(sym, {}));
   if (!ev.excluded && Number.isFinite(ev.marginOfSafety)) {
-    return { mos: ev.marginOfSafety, method: ev.method };
+    return plausible(ev.marginOfSafety, bounds)
+      ? { mos: ev.marginOfSafety, method: ev.method }
+      : { unvaluable: true, reason: 'implausible-margin' };
   }
   const nonFinancial = !FINANCIALish.test(data.sector || '');
   if (nonFinancial && (!ev.reason || DCF_FALLBACK_REASONS.has(ev.reason))) {
     const g = evSalesFallback(data);
-    if (g) return { mos: g.marginOfSafety, method: g.method };
+    if (g) {
+      return plausible(g.marginOfSafety, bounds)
+        ? { mos: g.marginOfSafety, method: g.method }
+        : { unvaluable: true, reason: 'implausible-margin' };
+    }
   }
   return { unvaluable: true, reason: ev.reason || 'unvaluable' };
 }
@@ -95,13 +143,15 @@ async function searchSymbolReal(name, proxyUrl) {
 
 async function runEtfRadar(deps, opts = {}) {
   const {
-    universePath, injectedUniverse, holdingsDir, overridesPath, proxyUrl,
-    fetchSymbol = realFetchSymbol, evaluateStock = realEvaluateStock,
+    universePath, injectedUniverse, holdingsDir, overridesPath, proxyUrl, rawCachePath,
+    fetchSymbol = realFetchSymbol, evaluateStock = realEvaluateStock, fetchFx = fetchFxRate,
     searchSymbol = (name) => searchSymbolReal(name, proxyUrl),
     now = () => new Date(), log = console.log,
   } = deps;
-  const { throttleMs = 3200, coverageGate = 0.70, offline = false } = opts;
+  const { throttleMs = 3200, coverageGate = 0.70, offline = false, reagg = false,
+    bounds = {} } = opts;
   const asAt = now().toISOString().slice(0, 10);
+  const fxCache = new Map();
 
   const universe = loadUniverse(universePath, injectedUniverse);
 
@@ -119,35 +169,75 @@ async function runEtfRadar(deps, opts = {}) {
   const union = [...new Set(withHoldings.flatMap(w => w.holdings.map(h => h.yahoo)))];
   const valuations = {};
   let fetched = 0, failed = 0;
-  for (const sym of union) {
-    const data = await fetchSymbol(sym, { proxyUrl, retries: 2, backoffMs: 4000 });
-    valuations[sym] = valueOne(sym, data, evaluateStock);
-    if (data) fetched++; else failed++;
-    if (throttleMs) await sleep(throttleMs);
-  }
-  // one cooldown sweep for the fetch-failures (mirrors run-screen.js)
-  if (failed && !offline) {
-    await sleep(COOLDOWN_MS);
+
+  // --reagg: skip all network, re-run FX + valueOne + aggregate + pages from the
+  // raw-data cache written by the last real run. Fast iteration on the bounds /
+  // aggregation without a 25-minute re-fetch.
+  const cache = (reagg && rawCachePath && fs.existsSync(rawCachePath))
+    ? JSON.parse(fs.readFileSync(rawCachePath, 'utf8')) : null;
+
+  if (cache) {
+    for (const [k, v] of Object.entries(cache.fx || {})) fxCache.set(k, v);
+    const noNetFx = async () => null; // every pair is already in fxCache on reagg
     for (const sym of union) {
-      const v = valuations[sym];
-      if (!v.unvaluable || v.reason !== 'fetch-failed') continue;
+      const data = cache.union[sym] || null;
+      const converted = data ? await convertFinancials(data, { proxyUrl, fxCache, fetchFx: noNetFx }) : null;
+      valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
+      if (data) fetched++; else failed++;
+    }
+    for (const w of withHoldings) {
+      w.snapshotPrices = {};
+      for (const l of (w.fund.listings || [])) {
+        const p = cache.listingPrices && cache.listingPrices[l.ticker];
+        if (p) w.snapshotPrices[l.ticker] = p;
+      }
+    }
+  } else {
+    const rawUnion = {};
+    for (const sym of union) {
       const data = await fetchSymbol(sym, { proxyUrl, retries: 2, backoffMs: 4000 });
-      if (data) { valuations[sym] = valueOne(sym, data, evaluateStock); failed--; fetched++; }
+      rawUnion[sym] = data || null;
+      const converted = await convertFinancials(data, { proxyUrl, fxCache, fetchFx });
+      valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
+      if (data) fetched++; else failed++;
       if (throttleMs) await sleep(throttleMs);
     }
-  }
-
-  // 2b. fund-level listing snapshot prices — for the detail pages (like ticker
-  // pages, a monthly snapshot price, not a live refresh). Best-effort: a page
-  // just shows the ticker without a price if this misses.
-  for (const w of withHoldings) {
-    w.snapshotPrices = {};
-    for (const l of (w.fund.listings || [])) {
-      const d = await fetchSymbol(l.ticker, { proxyUrl, retries: 1, backoffMs: 4000 });
-      if (d && Number.isFinite(d.price)) {
-        w.snapshotPrices[l.ticker] = { price: d.price, currency: d.currency || l.currency || null };
+    // one cooldown sweep for the fetch-failures (mirrors run-screen.js)
+    if (failed && !offline) {
+      await sleep(COOLDOWN_MS);
+      for (const sym of union) {
+        const v = valuations[sym];
+        if (!v.unvaluable || v.reason !== 'fetch-failed') continue;
+        const data = await fetchSymbol(sym, { proxyUrl, retries: 2, backoffMs: 4000 });
+        if (data) {
+          rawUnion[sym] = data;
+          const converted = await convertFinancials(data, { proxyUrl, fxCache, fetchFx });
+          valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
+          failed--; fetched++;
+        }
+        if (throttleMs) await sleep(throttleMs);
       }
-      if (throttleMs) await sleep(throttleMs);
+    }
+
+    // 2b. fund-level listing snapshot prices — for the detail pages (monthly
+    // snapshot price, not a live refresh). Best-effort.
+    const listingPrices = {};
+    for (const w of withHoldings) {
+      w.snapshotPrices = {};
+      for (const l of (w.fund.listings || [])) {
+        const d = await fetchSymbol(l.ticker, { proxyUrl, retries: 1, backoffMs: 4000 });
+        if (d && Number.isFinite(d.price)) {
+          w.snapshotPrices[l.ticker] = { price: d.price, currency: d.currency || l.currency || null };
+          listingPrices[l.ticker] = w.snapshotPrices[l.ticker];
+        }
+        if (throttleMs) await sleep(throttleMs);
+      }
+    }
+
+    if (rawCachePath) {
+      fs.writeFileSync(rawCachePath, JSON.stringify({
+        asAt, union: rawUnion, listingPrices, fx: Object.fromEntries(fxCache),
+      }));
     }
   }
 
@@ -250,4 +340,8 @@ function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot,
   fs.writeFileSync(path.join(radarDir, 'index.html'), renderRadarPage(result, { asAt: at }).html);
 }
 
-module.exports = { runEtfRadar, writeRadarArtifacts, valueOne, ensureHoldings, buildTickerPageIndex, ordinal };
+module.exports = {
+  runEtfRadar, writeRadarArtifacts, valueOne, plausible, convertFinancials,
+  ensureHoldings, buildTickerPageIndex, ordinal,
+  MAX_HOLDING_MARGIN, MIN_HOLDING_MARGIN,
+};

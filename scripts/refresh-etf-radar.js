@@ -2,20 +2,23 @@
 //   node scripts/refresh-etf-radar.js            full monthly run (download holdings + fetch + rank + pages)
 //   node scripts/refresh-etf-radar.js --offline  re-run from committed snapshots, no issuer downloads
 //   node scripts/refresh-etf-radar.js --regen    alias for --offline
+//   node scripts/refresh-etf-radar.js --reagg    re-aggregate + regenerate pages from the raw-data cache, zero network
 const path = require('node:path');
 const { runEtfRadar, writeRadarArtifacts } = require('./lib/etf/run-etf-radar.js');
 const { readProxyUrl } = require('./lib/run-screen.js');
 
 const offline = process.argv.includes('--offline') || process.argv.includes('--regen');
+const reagg = process.argv.includes('--reagg');
 
 (async () => {
   const result = await runEtfRadar({
     universePath: path.join(__dirname, 'etfs.json'),
     holdingsDir: path.join(__dirname, 'etf-holdings'),
     overridesPath: path.join(__dirname, 'etf-symbol-overrides.json'),
+    rawCachePath: path.join(__dirname, '_raw-etf.json'),
     proxyUrl: readProxyUrl(),
     log: console.log,
-  }, { offline });
+  }, { offline, reagg });
 
   const dcfRoot = path.join(__dirname, '..', 'www', 'dcf');
   writeRadarArtifacts(result, path.join(dcfRoot, 'etf-radar'), {
