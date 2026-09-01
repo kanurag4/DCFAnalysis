@@ -194,14 +194,27 @@ async function runEtfRadar(deps, opts = {}) {
     }
   } else {
     const rawUnion = {};
+    const listingPrices = {};
+    // Written after every symbol so a killed long run still leaves a usable
+    // partial cache for --reagg (the union fetch is 25-50 min).
+    const flushCache = () => {
+      if (rawCachePath) {
+        fs.writeFileSync(rawCachePath, JSON.stringify({
+          asAt, union: rawUnion, listingPrices, fx: Object.fromEntries(fxCache),
+        }));
+      }
+    };
+    let i = 0;
     for (const sym of union) {
       const data = await fetchSymbol(sym, { proxyUrl, retries: 2, backoffMs: 4000 });
       rawUnion[sym] = data || null;
       const converted = await convertFinancials(data, { proxyUrl, fxCache, fetchFx });
       valuations[sym] = valueOne(sym, converted, evaluateStock, bounds);
       if (data) fetched++; else failed++;
+      if (++i % 10 === 0) { flushCache(); log(`  … ${i}/${union.length} fetched (${failed} failed)`); }
       if (throttleMs) await sleep(throttleMs);
     }
+    flushCache();
     // one cooldown sweep for the fetch-failures (mirrors run-screen.js)
     if (failed && !offline) {
       await sleep(COOLDOWN_MS);
@@ -217,11 +230,11 @@ async function runEtfRadar(deps, opts = {}) {
         }
         if (throttleMs) await sleep(throttleMs);
       }
+      flushCache();
     }
 
     // 2b. fund-level listing snapshot prices — for the detail pages (monthly
     // snapshot price, not a live refresh). Best-effort.
-    const listingPrices = {};
     for (const w of withHoldings) {
       w.snapshotPrices = {};
       for (const l of (w.fund.listings || [])) {
@@ -233,12 +246,7 @@ async function runEtfRadar(deps, opts = {}) {
         if (throttleMs) await sleep(throttleMs);
       }
     }
-
-    if (rawCachePath) {
-      fs.writeFileSync(rawCachePath, JSON.stringify({
-        asAt, union: rawUnion, listingPrices, fx: Object.fromEntries(fxCache),
-      }));
-    }
+    flushCache();
   }
 
   // 3. aggregate per fund + crypto detection + sisters
