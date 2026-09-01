@@ -23,10 +23,12 @@ const impliedFairValue = (f) => {
 function renderRadarPage(result, { asAt } = {}) {
   const canonical = 'https://kashvector.com/dcf/etf-radar/';
   const when = escapeHtml(asAt || result.asAt || '');
+  const year = String(asAt || result.asAt || '2026').slice(0, 4);
   const { ranked = [], unranked = [] } = result.rankings || {};
-  const title = 'Thematic ETF Valuation Radar 2026 — Monthly Look-Through DCF | KashVector';
-  const desc = 'Which thematic ETFs trade furthest above the intrinsic value of what they hold? '
-    + 'A monthly look-through DCF: we value every underlying holding, weight by fund weight, and rank. Free, no sign-up.';
+  const n = ranked.length;
+  const title = `Thematic ETF Valuation Radar ${year} — Look-Through DCF Ranking | KashVector`;
+  const desc = `Which thematic ETFs trade above the intrinsic value of what they hold? A monthly `
+    + `look-through DCF of every underlying holding across ${n} funds, ranked. Free, no sign-up.`;
 
   const rankRow = (f) => `<tr>
       <td class="num">${f.rank}</td>
@@ -91,9 +93,25 @@ function renderRadarPage(result, { asAt } = {}) {
     `<details class="faq-item"><summary>${escapeHtml(q)}</summary><p>${a}</p></details>`).join('\n');
 
   const jsonLd = [
-    `{"@context":"https://schema.org","@type":"WebApplication","name":"Thematic ETF Valuation Radar","url":"${canonical}","description":"Monthly look-through DCF ranking of thematic ETFs by premium or discount to combined intrinsic value.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"}}`,
+    JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'WebApplication',
+      name: 'Thematic ETF Valuation Radar', url: canonical,
+      description: 'Monthly look-through DCF ranking of thematic ETFs by premium or discount to combined intrinsic value.',
+      applicationCategory: 'FinanceApplication', operatingSystem: 'Web',
+      dateModified: asAt || result.asAt || undefined,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'AUD' },
+    }),
+    JSON.stringify({
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://kashvector.com/' },
+        { '@type': 'ListItem', position: 2, name: 'DCF Valuation', item: 'https://kashvector.com/dcf/' },
+        { '@type': 'ListItem', position: 3, name: 'Thematic ETF Valuation Radar', item: canonical },
+      ],
+    }),
     JSON.stringify({
       '@context': 'https://schema.org', '@type': 'ItemList',
+      name: 'Thematic ETFs ranked by look-through value',
       itemListElement: ranked.map(f => ({ '@type': 'ListItem', position: f.rank, name: f.name, url: `https://kashvector.com/dcf/etfs/${f.slug}/` })),
     }),
     JSON.stringify({
@@ -118,7 +136,14 @@ function renderRadarPage(result, { asAt } = {}) {
   <meta property="og:url" content="${canonical}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="KashVector">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://kashvector.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="KashVector — free stock valuation tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(desc)}">
+  <meta name="twitter:image" content="https://kashvector.com/og-image.png">
   <script src="/kv-theme.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,6 +160,9 @@ function renderRadarPage(result, { asAt } = {}) {
     #rank-table a, .tool-faq a, .faq-item a { color: var(--kv-accent); text-decoration: none; }
     #rank-table a:hover, .tool-faq a:hover, .faq-item a:hover { text-decoration: underline; }
     #rank-table td .tk a { font-weight: 600; }
+    .etf-radar-lede { max-width: 1340px; margin: 16px auto 0; padding: 0 16px; font-size: 0.95rem; line-height: 1.55; color: var(--kv-text); }
+    .etf-radar-lede a { color: var(--kv-accent); }
+    .etf-radar-h2 { max-width: 1340px; margin: 20px auto 8px; padding: 0 16px; font-size: 1.05rem; font-weight: 600; }
   </style>
 ${jsonLd.map(b => `  <script type="application/ld+json">${b}</script>`).join('\n')}
 </head>
@@ -146,13 +174,21 @@ ${jsonLd.map(b => `  <script type="application/ld+json">${b}</script>`).join('\n
   <header class="app-header">
     <div class="app-header-title">
       <h1><img src="/dcf-icon.svg" alt="" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:6px">Thematic ETF Valuation Radar</h1>
-      <div class="as-at">as at ${when}</div>
+      <div class="as-at">as at <time datetime="${when}">${when}</time></div>
     </div>
     <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
   </header>
 
   <main>
-    <section class="rules-card">
+    <p class="etf-radar-lede">The Thematic ETF Valuation Radar values what each thematic ETF <em>actually
+      holds</em> — a conservative look-through discounted cash flow of every underlying company — and
+      ranks the funds by how far their holdings collectively trade above or below combined intrinsic
+      value. ${n} ${n === 1 ? 'fund' : 'funds'}, refreshed monthly, snapshot ${when}. A measurement,
+      never a buy/sell/hold call. <a href="#methodology">How it works, and how to read it</a>.</p>
+
+    <h2 class="etf-radar-h2">${n} thematic ETFs ranked by look-through value</h2>
+
+    <section class="rules-card" id="methodology">
       <details class="rules-details">
         <summary class="rules-title">How this ranking works, and how to read it</summary>
         <p class="rules-intro">Thematic ETFs are theme-locked — they can’t rotate out of an expensive
