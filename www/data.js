@@ -213,6 +213,10 @@ function mapQuoteSummary(body, symbol) {
   return {
     ticker:            symbol,
     name:              result.quoteType?.longName ?? result.quoteType?.shortName ?? symbol,
+    // Yahoo's instrument class (EQUITY / ETF / CRYPTOCURRENCY / INDEX / …) —
+    // the ETF radar batch's crypto safety-net detector reads this. Null-safe;
+    // no other consumer depends on it.
+    quoteType:         result.quoteType?.quoteType ?? null,
     price:             rawVal(result.financialData?.currentPrice),
     marketCap:         rawVal(result.summaryDetail?.marketCap),
     currency:          result.summaryDetail?.currency ?? null,
