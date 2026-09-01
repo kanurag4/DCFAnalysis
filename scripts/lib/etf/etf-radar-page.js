@@ -124,6 +124,15 @@ function renderRadarPage(result, { asAt } = {}) {
   <link rel="stylesheet" href="/kv-shared.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/svg+xml" href="/dcf-icon.svg">
+  <style>
+    /* ETF-radar-only: the shared ranking-screen style.css never had links in
+       its table cells (its screens render plain-text tickers), so #rank-table a
+       and the FAQ links fall through to the browser default blue/purple. Match
+       the screen's other links (--kv-accent, good contrast in both themes). */
+    #rank-table a, .tool-faq a, .faq-item a { color: var(--kv-accent); text-decoration: none; }
+    #rank-table a:hover, .tool-faq a:hover, .faq-item a:hover { text-decoration: underline; }
+    #rank-table td .tk a { font-weight: 600; }
+  </style>
 ${jsonLd.map(b => `  <script type="application/ld+json">${b}</script>`).join('\n')}
 </head>
 <body>
