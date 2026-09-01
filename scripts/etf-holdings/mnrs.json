@@ -1,0 +1,383 @@
+{
+  "asOf": "2026-08-31",
+  "source": "https://www.betashares.com.au/files/csv/MNRS_Portfolio_Holdings.csv",
+  "fetchedAt": "2026-09-01T10:14:23.329Z",
+  "rows": [
+    {
+      "yahoo": "NEM",
+      "raw": "NEM UN",
+      "name": "NEWMONT CORP",
+      "weight": 0.0833191955,
+      "country": "United States",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "WPM.TO",
+      "raw": "WPM CT",
+      "name": "WHEATON PRECIOUS METALS CORP",
+      "weight": 0.0813189736,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "AEM.TO",
+      "raw": "AEM CT",
+      "name": "AGNICO EAGLE MINES LTD",
+      "weight": 0.0800586014,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "ABX.TO",
+      "raw": "ABX CT",
+      "name": "BARRICK GOLD CORP",
+      "weight": 0.0761525562,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "ANG.JO",
+      "raw": "ANG SJ",
+      "name": "ANGLOGOLD ASHANTI PLC",
+      "weight": 0.0668051248,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "GFI.JO",
+      "raw": "GFI SJ",
+      "name": "GOLD FIELDS LTD",
+      "weight": 0.04211221229999999,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "FNV.TO",
+      "raw": "FNV CT",
+      "name": "FRANCO-NEVADA CORP",
+      "weight": 0.0411894167,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "2899.HK",
+      "raw": "2899 HK",
+      "name": "ZIJIN MINING GROUP CO LTD",
+      "weight": 0.040534671800000005,
+      "country": "Hong Kong",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "K.TO",
+      "raw": "K CT",
+      "name": "KINROSS GOLD CORP",
+      "weight": 0.0365618774,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "PAAS.TO",
+      "raw": "PAAS CT",
+      "name": "PAN AMERICAN SILVER CORP",
+      "weight": 0.031259494299999996,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "CDE",
+      "raw": "CDE UN",
+      "name": "COEUR MINING INC",
+      "weight": 0.0303762071,
+      "country": "United States",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "RGLD",
+      "raw": "RGLD UW",
+      "name": "ROYAL GOLD INC",
+      "weight": 0.0266347833,
+      "country": "United States",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "VAL.JO",
+      "raw": "VAL SJ",
+      "name": "VALTERRA PLATINUM LIMITED",
+      "weight": 0.0260499185,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "AGI.TO",
+      "raw": "AGI CT",
+      "name": "ALAMOS GOLD INC",
+      "weight": 0.0233856276,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "EQX.TO",
+      "raw": "EQX CT",
+      "name": "EQUINOX GOLD CORP",
+      "weight": 0.022914047000000003,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "HL",
+      "raw": "HL UN",
+      "name": "HECLA MINING CO",
+      "weight": 0.0178191802,
+      "country": "United States",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "ELD.TO",
+      "raw": "ELD CT",
+      "name": "ELDORADO GOLD CORP",
+      "weight": 0.0177677405,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "EDV.L",
+      "raw": "EDV LN",
+      "name": "ENDEAVOUR MINING PLC",
+      "weight": 0.0176737035,
+      "country": "United Kingdom",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "IMG.TO",
+      "raw": "IMG CT",
+      "name": "IAMGOLD CORP",
+      "weight": 0.017071611,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "AG.TO",
+      "raw": "AG CT",
+      "name": "FIRST MAJESTIC SILVER CORP",
+      "weight": 0.0154857281,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "DPM.TO",
+      "raw": "DPM CT",
+      "name": "DUNDEE PRECIOUS METALS INC",
+      "weight": 0.015232154,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "IMP.JO",
+      "raw": "IMP SJ",
+      "name": "IMPALA PLATINUM HOLDINGS LTD",
+      "weight": 0.0141915877,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "HAR.JO",
+      "raw": "HAR SJ",
+      "name": "HARMONY GOLD MINING CO LTD",
+      "weight": 0.0128000593,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "FRES.L",
+      "raw": "FRES LN",
+      "name": "FRESNILLO PLC",
+      "weight": 0.012023250999999999,
+      "country": "United Kingdom",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "SSRM.TO",
+      "raw": "SSRM CT",
+      "name": "SSR MINING INC",
+      "weight": 0.0118520407,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "LUG.TO",
+      "raw": "LUG CT",
+      "name": "LUNDIN GOLD INC",
+      "weight": 0.010993199700000001,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "BTO.TO",
+      "raw": "BTO CT",
+      "name": "B2GOLD CORP",
+      "weight": 0.0105491946,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "OGC.TO",
+      "raw": "OGC CT",
+      "name": "OCEANAGOLD CORP",
+      "weight": 0.0100039527,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "SSW.JO",
+      "raw": "SSW SJ",
+      "name": "SIBANYE STILLWATER LTD",
+      "weight": 0.0095456003,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "OR.TO",
+      "raw": "OR CT",
+      "name": "OSISKO GOLD ROYALTIES LTD",
+      "weight": 0.0089323275,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "1818.HK",
+      "raw": "1818 HK",
+      "name": "ZHAOJIN MINING INDUSTRY CO LTD",
+      "weight": 0.0073735285,
+      "country": "Hong Kong",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "TXG.TO",
+      "raw": "TXG CT",
+      "name": "TOREX GOLD RESOURCES INC",
+      "weight": 0.006964936499999999,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "CG.TO",
+      "raw": "CG CT",
+      "name": "CENTERRA GOLD INC",
+      "weight": 0.0063614286,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "NPH.JO",
+      "raw": "NPH SJ",
+      "name": "NORTHAM PLATINUM HOLDINGS LTD",
+      "weight": 0.006155064500000001,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "AYA.TO",
+      "raw": "AYA CT",
+      "name": "AYA GOLD & SILVER INC",
+      "weight": 0.0060771363,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "WDO.TO",
+      "raw": "WDO CT",
+      "name": "WESDOME GOLD MINES LTD",
+      "weight": 0.0054071133,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "1787.HK",
+      "raw": "1787 HK",
+      "name": "SHANDONG GOLD MINING CO LTD",
+      "weight": 0.0052524094,
+      "country": "Hong Kong",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "FVI.TO",
+      "raw": "FVI CT",
+      "name": "FORTUNA SILVER MINES INC",
+      "weight": 0.0052520917,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "SEA.TO",
+      "raw": "SEA CT",
+      "name": "SEABRIDGE GOLD INC",
+      "weight": 0.0046852152000000005,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "PAF.L",
+      "raw": "PAF LN",
+      "name": "PAN AFRICAN RESOURCES PLC",
+      "weight": 0.0046080389999999995,
+      "country": "United Kingdom",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "EDR.TO",
+      "raw": "EDR CT",
+      "name": "ENDEAVOUR SILVER CORP",
+      "weight": 0.0045299575,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "HOC.L",
+      "raw": "HOC LN",
+      "name": "HOCHSCHILD MINING PLC",
+      "weight": 0.0043833622,
+      "country": "United Kingdom",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "NG.TO",
+      "raw": "NG CT",
+      "name": "NOVAGOLD RESOURCES INC",
+      "weight": 0.0041868649,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "SVM.TO",
+      "raw": "SVM CT",
+      "name": "SILVERCORP METALS INC",
+      "weight": 0.0041787896,
+      "country": "Canada",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "5857.T",
+      "raw": "5857 JT",
+      "name": "ASAHI HOLDINGS INC",
+      "weight": 0.0032641789,
+      "country": "Japan",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "DRD.JO",
+      "raw": "DRD SJ",
+      "name": "DRDGOLD LTD",
+      "weight": 0.0016580201,
+      "country": "South Africa",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "GROY.TO",
+      "raw": "GROY UA",
+      "name": "GOLD ROYALTY CORP",
+      "weight": 0.0009197814999999999,
+      "country": "Canada",
+      "sector": "Materials"
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "asOf": "2026-08-31",
+  "source": "https://www.betashares.com.au/files/csv/CLDD_Portfolio_Holdings.csv",
+  "fetchedAt": "2026-09-01T10:14:23.106Z",
+  "rows": [
+    {
+      "yahoo": "SNOW",
+      "raw": "SNOW UN",
+      "name": "SNOWFLAKE INC",
+      "weight": 0.0693407605,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "PAYC",
+      "raw": "PAYC UN",
+      "name": "PAYCOM SOFTWARE INC",
+      "weight": 0.0538568427,
+      "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "DDOG",
+      "raw": "DDOG UW",
+      "name": "DATADOG INC",
+      "weight": 0.0511978538,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "NOW",
+      "raw": "NOW UN",
+      "name": "SERVICENOW INC",
+      "weight": 0.0478476547,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "WDAY",
+      "raw": "WDAY UW",
+      "name": "WORKDAY INC",
+      "weight": 0.0460579438,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TWLO",
+      "raw": "TWLO UN",
+      "name": "TWILIO INC",
+      "weight": 0.045438507499999996,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "NET",
+      "raw": "NET UN",
+      "name": "CLOUDFLARE INC",
+      "weight": 0.04250313990000001,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CRM",
+      "raw": "CRM UN",
+      "name": "SALESFORCE INC",
+      "weight": 0.0416521369,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "ZS",
+      "raw": "ZS UW",
+      "name": "ZSCALER INC",
+      "weight": 0.0411632139,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "QLYS",
+      "raw": "QLYS UW",
+      "name": "QUALYS INC",
+      "weight": 0.039929345899999996,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "SHOP",
+      "raw": "SHOP UW",
+      "name": "SHOPIFY INC",
+      "weight": 0.0347343086,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DBX",
+      "raw": "DBX UW",
+      "name": "DROPBOX INC",
+      "weight": 0.0345439507,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "HUBS",
+      "raw": "HUBS UN",
+      "name": "HUBSPOT INC",
+      "weight": 0.033648058700000004,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DOCN",
+      "raw": "DOCN UN",
+      "name": "DIGITALOCEAN HOLDINGS INC",
+      "weight": 0.0327738457,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "PCOR",
+      "raw": "PCOR UN",
+      "name": "PROCORE TECHNOLOGIES INC",
+      "weight": 0.0316490887,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AKAM",
+      "raw": "AKAM UW",
+      "name": "AKAMAI TECHNOLOGIES INC",
+      "weight": 0.0301178837,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BOX",
+      "raw": "BOX UN",
+      "name": "BOX INC",
+      "weight": 0.0297857467,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "WIX",
+      "raw": "WIX UW",
+      "name": "WIX.COM LTD",
+      "weight": 0.0292094442,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "ZM",
+      "raw": "ZM UW",
+      "name": "ZOOM VIDEO COMMUNICATIONS INC",
+      "weight": 0.0284130477,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DLR",
+      "raw": "DLR UN",
+      "name": "DIGITAL REALTY TRUST INC",
+      "weight": 0.026369054,
+      "country": "United States",
+      "sector": "Real Estate"
+    },
+    {
+      "yahoo": "WK",
+      "raw": "WK UN",
+      "name": "WORKIVA INC",
+      "weight": 0.0253954025,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "SINCH.ST",
+      "raw": "SINCH SS",
+      "name": "SINCH AB",
+      "weight": 0.022515224900000002,
+      "country": "Sweden",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "FSLY",
+      "raw": "FSLY UW",
+      "name": "FASTLY INC",
+      "weight": 0.021427223,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "FRSH",
+      "raw": "FRSH UW",
+      "name": "FRESHWORKS INC",
+      "weight": 0.0204142922,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "SPSC",
+      "raw": "SPSC UW",
+      "name": "SPS COMMERCE INC",
+      "weight": 0.018981657,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "MSFT",
+      "raw": "MSFT UW",
+      "name": "MICROSOFT CORP",
+      "weight": 0.0177623391,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "FIVN",
+      "raw": "FIVN UQ",
+      "name": "FIVE9 INC",
+      "weight": 0.0159101803,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AMZN",
+      "raw": "AMZN UW",
+      "name": "AMAZON.COM INC",
+      "weight": 0.013996748400000002,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "GOOGL",
+      "raw": "GOOGL UW",
+      "name": "ALPHABET INC",
+      "weight": 0.012589090800000001,
+      "country": "United States",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "VNET",
+      "raw": "VNET UW",
+      "name": "VNET GROUP INC",
+      "weight": 0.010186500499999999,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AI",
+      "raw": "AI UN",
+      "name": "C3.AI INC",
+      "weight": 0.0092246091,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "YEXT",
+      "raw": "YEXT UN",
+      "name": "YEXT INC",
+      "weight": 0.0050208681,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "PUBM",
+      "raw": "PUBM UQ",
+      "name": "PUBMATIC INC",
+      "weight": 0.0038411605,
+      "country": "United States",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "ORCL",
+      "raw": "ORCL UN",
+      "name": "ORACLE CORP",
+      "weight": 0.0034348474,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "4716.T",
+      "raw": "4716 JT",
+      "name": "ORACLE CORP JAPAN",
+      "weight": 0.0022893373,
+      "country": "Japan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BABA",
+      "raw": "BABA UN",
+      "name": "ALIBABA GROUP HOLDING LTD",
+      "weight": 0.0021908246000000003,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "IBM",
+      "raw": "IBM UN",
+      "name": "INTERNATIONAL BUSINESS MACHINE",
+      "weight": 0.0021723912,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "KC",
+      "raw": "KC UW",
+      "name": "KINGSOFT CLOUD HOLDINGS LTD",
+      "weight": 0.0014549228,
+      "country": "United States",
+      "sector": "Information Technology"
+    }
+  ]
+}
