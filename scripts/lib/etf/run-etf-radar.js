@@ -406,9 +406,14 @@ function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot,
   fs.writeFileSync(path.join(radarDir, 'index.html'), renderRadarPage(result, { asAt: at }).html);
   // The ranking page reuses the "Most Undervalued <market>" screen stylesheet
   // (all six are byte-identical). Copy the ASX one alongside so /dcf/etf-radar/
-  // style.css resolves like the screens'.
+  // style.css resolves like the screens' in local preview. trimEnd() drops a
+  // stray trailing newline this repo's copy carries but the deploy target's
+  // doesn't, keeping the drift pair clean. (The publish step re-copies from the
+  // deploy target's own screen CSS regardless — see the refresh-etf-radar skill.)
   const screenCss = path.join(__dirname, '..', '..', '..', 'www', 'asx-undervalued', 'style.css');
-  if (fs.existsSync(screenCss)) fs.copyFileSync(screenCss, path.join(radarDir, 'style.css'));
+  if (fs.existsSync(screenCss)) {
+    fs.writeFileSync(path.join(radarDir, 'style.css'), fs.readFileSync(screenCss, 'utf8').replace(/\s+$/, '\n'));
+  }
 }
 
 module.exports = {
