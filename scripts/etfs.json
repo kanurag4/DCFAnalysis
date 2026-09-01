@@ -16,17 +16,17 @@
     "issuer": "betashares", "issuerFundId": "crypto-innovators-etf", "fee": 0.0067, "assetClass": "crypto" },
   { "slug": "soxx", "name": "iShares Semiconductor ETF", "theme": "Semiconductors",
     "listings": [{ "ticker": "SOXX", "exchange": "NASDAQ", "currency": "USD" }],
-    "issuer": "ishares", "issuerFundId": "239705/ishares-phlx-semiconductor-etf", "fee": 0.0035, "assetClass": "equity" },
+    "issuer": "ishares", "issuerFundId": "239705/ishares-semiconductor-etf", "fee": 0.0035, "assetClass": "equity" },
   { "slug": "ita", "name": "iShares U.S. Aerospace & Defense ETF", "theme": "Aerospace & defense",
     "listings": [{ "ticker": "ITA", "exchange": "CBOE", "currency": "USD" }],
     "issuer": "ishares", "issuerFundId": "239502/ishares-us-aerospace-defense-etf", "fee": 0.0040, "assetClass": "equity" },
   { "slug": "igv", "name": "iShares Expanded Tech-Software Sector ETF", "theme": "Software",
     "listings": [{ "ticker": "IGV", "exchange": "CBOE", "currency": "USD" }],
-    "issuer": "ishares", "issuerFundId": "239758/ishares-north-american-tech-software-etf", "fee": 0.0041, "assetClass": "equity" },
+    "issuer": "ishares", "issuerFundId": "239771/ishares-north-american-techsoftware-etf", "fee": 0.0041, "assetClass": "equity" },
   { "slug": "ixj", "name": "iShares Global Healthcare ETF", "theme": "Global healthcare",
     "listings": [
       { "ticker": "IXJ", "exchange": "NYSEARCA", "currency": "USD" },
       { "ticker": "IXJ.AX", "exchange": "ASX", "currency": "AUD" }
     ],
-    "issuer": "ishares", "issuerFundId": "239742/ishares-global-healthcare-etf", "fee": 0.0041, "assetClass": "equity" }
+    "issuer": "ishares", "issuerFundId": "239744/ishares-global-healthcare-etf", "fee": 0.0041, "assetClass": "equity" }
 ]
