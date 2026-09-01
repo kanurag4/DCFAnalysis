@@ -25,6 +25,12 @@ test('unknown country + no override + no name -> null', () => {
   assert.equal(resolveYahooSymbol({ rawSymbol: 'XYZ', country: 'Freedonia' }, {}), null);
 });
 
+test('emerging-market suffixes (Brazil, Malaysia, Korea (South) variant)', () => {
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'RDOR3', country: 'Brazil' }, {}), 'RDOR3.SA');
+  assert.equal(resolveYahooSymbol({ rawSymbol: 'IHH', country: 'Malaysia' }, {}), 'IHH.KL');
+  assert.equal(resolveYahooSymbol({ rawSymbol: '068270', country: 'Korea (South)' }, {}), '068270.KS');
+});
+
 test('resolveHoldings splits resolved / unresolved', () => {
   const rows = [
     { rawSymbol: 'NVDA', country: 'United States', weight: 0.1 },
