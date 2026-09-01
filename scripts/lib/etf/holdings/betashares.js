@@ -19,7 +19,7 @@ const BBG_COUNTRY = {
   JT: 'Japan', JP: 'Japan', HK: 'Hong Kong', TT: 'Taiwan', KS: 'South Korea',
   KP: 'South Korea', IN: 'India', IS: 'India', SP: 'Singapore', NZ: 'New Zealand',
   BS: 'Brazil', BZ: 'Brazil', MK: 'Malaysia', IJ: 'Indonesia', TB: 'Thailand',
-  MM: 'Mexico', SJ: 'South Africa',
+  MM: 'Mexico', SJ: 'South Africa', PW: 'Poland',
 };
 
 function holdingsUrl(fund) {

@@ -16,7 +16,7 @@ const COUNTRY_SUFFIX = {
   'Israel': '.TA',
   'India': '.NS',
   'Brazil': '.SA', 'Malaysia': '.KL', 'Indonesia': '.JK', 'Thailand': '.BK',
-  'Mexico': '.MX', 'South Africa': '.JO',
+  'Mexico': '.MX', 'South Africa': '.JO', 'Poland': '.WA',
   'United Kingdom': '.L', 'UK': '.L', 'Britain': '.L',
   'Germany': '.DE', 'France': '.PA', 'Netherlands': '.AS', 'Italy': '.MI',
   'Spain': '.MC', 'Belgium': '.BR', 'Portugal': '.LS', 'Austria': '.VI',
