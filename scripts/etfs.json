@@ -1,0 +1,32 @@
+[
+  { "slug": "hack", "name": "Betashares Global Cybersecurity ETF", "theme": "Cybersecurity",
+    "listings": [{ "ticker": "HACK.AX", "exchange": "ASX", "currency": "AUD" }],
+    "issuer": "betashares", "issuerFundId": "global-cybersecurity-etf", "fee": 0.0067, "assetClass": "equity" },
+  { "slug": "asia", "name": "Betashares Asia Technology Tigers ETF", "theme": "Asia technology",
+    "listings": [{ "ticker": "ASIA.AX", "exchange": "ASX", "currency": "AUD" }],
+    "issuer": "betashares", "issuerFundId": "asia-technology-tigers-etf", "fee": 0.0067, "assetClass": "equity" },
+  { "slug": "atec", "name": "Betashares S&P/ASX Australian Technology ETF", "theme": "Australian technology",
+    "listings": [{ "ticker": "ATEC.AX", "exchange": "ASX", "currency": "AUD" }],
+    "issuer": "betashares", "issuerFundId": "australian-technology-etf", "fee": 0.0048, "assetClass": "equity" },
+  { "slug": "drug", "name": "Betashares Global Healthcare ETF (Currency Hedged)", "theme": "Global healthcare",
+    "listings": [{ "ticker": "DRUG.AX", "exchange": "ASX", "currency": "AUD" }],
+    "issuer": "betashares", "issuerFundId": "global-healthcare-etf-currency-hedged", "fee": 0.0057, "assetClass": "equity" },
+  { "slug": "cryp", "name": "Betashares Crypto Innovators ETF", "theme": "Crypto industry",
+    "listings": [{ "ticker": "CRYP.AX", "exchange": "ASX", "currency": "AUD" }],
+    "issuer": "betashares", "issuerFundId": "crypto-innovators-etf", "fee": 0.0067, "assetClass": "crypto" },
+  { "slug": "soxx", "name": "iShares Semiconductor ETF", "theme": "Semiconductors",
+    "listings": [{ "ticker": "SOXX", "exchange": "NASDAQ", "currency": "USD" }],
+    "issuer": "ishares", "issuerFundId": "239705/ishares-phlx-semiconductor-etf", "fee": 0.0035, "assetClass": "equity" },
+  { "slug": "ita", "name": "iShares U.S. Aerospace & Defense ETF", "theme": "Aerospace & defense",
+    "listings": [{ "ticker": "ITA", "exchange": "CBOE", "currency": "USD" }],
+    "issuer": "ishares", "issuerFundId": "239502/ishares-us-aerospace-defense-etf", "fee": 0.0040, "assetClass": "equity" },
+  { "slug": "igv", "name": "iShares Expanded Tech-Software Sector ETF", "theme": "Software",
+    "listings": [{ "ticker": "IGV", "exchange": "CBOE", "currency": "USD" }],
+    "issuer": "ishares", "issuerFundId": "239758/ishares-north-american-tech-software-etf", "fee": 0.0041, "assetClass": "equity" },
+  { "slug": "ixj", "name": "iShares Global Healthcare ETF", "theme": "Global healthcare",
+    "listings": [
+      { "ticker": "IXJ", "exchange": "NYSEARCA", "currency": "USD" },
+      { "ticker": "IXJ.AX", "exchange": "ASX", "currency": "AUD" }
+    ],
+    "issuer": "ishares", "issuerFundId": "239742/ishares-global-healthcare-etf", "fee": 0.0041, "assetClass": "equity" }
+]
