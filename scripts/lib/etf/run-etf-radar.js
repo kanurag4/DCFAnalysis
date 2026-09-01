@@ -14,6 +14,9 @@ const { evSalesFallback } = require('./growth-eval.js');
 const { marketParamsFor } = require('../market.js');
 const { evaluateStock: realEvaluateStock } = require('../evaluate.js');
 const { fetchSymbol: realFetchSymbol } = require('../../fetch-yahoo.js');
+const { renderEtfPage } = require('./etf-page.js');
+const { renderRadarPage } = require('./etf-radar-page.js');
+const { readGrowthManifest, listGrowthMarketFolders } = require('../growth-manifest-reader.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const DCF_FALLBACK_REASONS = new Set(['dcf-unavailable', 'no-wacc']);
@@ -134,6 +137,20 @@ async function runEtfRadar(deps, opts = {}) {
     }
   }
 
+  // 2b. fund-level listing snapshot prices — for the detail pages (like ticker
+  // pages, a monthly snapshot price, not a live refresh). Best-effort: a page
+  // just shows the ticker without a price if this misses.
+  for (const w of withHoldings) {
+    w.snapshotPrices = {};
+    for (const l of (w.fund.listings || [])) {
+      const d = await fetchSymbol(l.ticker, { proxyUrl, retries: 1, backoffMs: 4000 });
+      if (d && Number.isFinite(d.price)) {
+        w.snapshotPrices[l.ticker] = { price: d.price, currency: d.currency || l.currency || null };
+      }
+      if (throttleMs) await sleep(throttleMs);
+    }
+  }
+
   // 3. aggregate per fund + crypto detection + sisters
   const fundsForOverlap = withHoldings.map(w => ({ slug: w.fund.slug, holdings: w.holdings }));
   const funds = withHoldings.map(w => {
@@ -150,6 +167,7 @@ async function runEtfRadar(deps, opts = {}) {
       valued: agg ? agg.valued : [], unvalued: agg ? agg.unvalued : [],
       cheapest: agg ? agg.cheapest : null, priciest: agg ? agg.priciest : null,
       sisters: sistersFor(w.fund.slug, fundsForOverlap, {}),
+      snapshotPrices: w.snapshotPrices || {},
     };
   });
 
@@ -166,9 +184,70 @@ async function runEtfRadar(deps, opts = {}) {
   };
 }
 
-function writeRadarArtifacts(result, outDir) {
-  fs.mkdirSync(outDir, { recursive: true });
-  fs.writeFileSync(path.join(outDir, 'etf-rankings.json'), JSON.stringify(result, null, 2) + '\n');
+const ordinal = (n) => {
+  const s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
+
+// Map every published DCF + growth ticker page's Yahoo symbol -> its URL, so a
+// detail-page holdings row can link to it. Same manifests ticker-page.js's
+// related-stocks pool reads.
+function buildTickerPageIndex(stocksRoot) {
+  const idx = {};
+  const dcfBase = stocksRoot || path.join(__dirname, '..', '..', '..', 'www', 'stocks');
+  try {
+    for (const folder of fs.readdirSync(dcfBase, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name)) {
+      let m = [];
+      try { m = JSON.parse(fs.readFileSync(path.join(dcfBase, folder, 'manifest.json'), 'utf8')); } catch (_) { m = []; }
+      for (const e of m) if (e.ticker && e.slug) idx[e.ticker] = `/dcf/stocks/${folder}/${e.slug}/`;
+    }
+  } catch (_) { /* no local stocks dir — links just won't render */ }
+  try {
+    for (const folder of listGrowthMarketFolders()) {
+      for (const e of readGrowthManifest(folder)) {
+        if (e.ticker && e.slug && !idx[e.ticker]) idx[e.ticker] = `/growth/stocks/${folder}/${e.slug}/`;
+      }
+    }
+  } catch (_) { /* growth checkout not resolvable */ }
+  return idx;
 }
 
-module.exports = { runEtfRadar, writeRadarArtifacts, valueOne, ensureHoldings };
+function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot, tickerPageIndex, asAt } = {}) {
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'etf-rankings.json'), JSON.stringify(result, null, 2) + '\n');
+  if (!generatePages) return;
+
+  const at = asAt || result.asAt;
+  const idx = tickerPageIndex || buildTickerPageIndex();
+  const sisterMeta = {};
+  for (const f of result.funds) {
+    sisterMeta[f.slug] = {
+      name: f.name, fee: f.fee, lookThroughMos: f.lookThroughMos,
+      tickers: (f.listings || []).map(l => l.ticker),
+    };
+  }
+  const rankBySlug = {};
+  const total = result.rankings.ranked.length;
+  result.rankings.ranked.forEach(f => { rankBySlug[f.slug] = f.rank; });
+
+  const etfsDir = path.join(pagesRoot, 'etfs');
+  const manifest = [];
+  for (const f of result.funds) {
+    const rank = rankBySlug[f.slug];
+    const rankLine = rank ? `${ordinal(rank)} of ${total}` : null;
+    const { html } = renderEtfPage(f, {
+      snapshotPrices: f.snapshotPrices || {}, tickerPageIndex: idx, asAt: at, rankLine, sisterMeta,
+    });
+    const d = path.join(etfsDir, f.slug);
+    fs.mkdirSync(d, { recursive: true });
+    fs.writeFileSync(path.join(d, 'index.html'), html);
+    manifest.push({ slug: f.slug, name: f.name, theme: f.theme, updated: at });
+  }
+  fs.writeFileSync(path.join(etfsDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
+
+  const radarDir = path.join(pagesRoot, 'etf-radar');
+  fs.mkdirSync(radarDir, { recursive: true });
+  fs.writeFileSync(path.join(radarDir, 'index.html'), renderRadarPage(result, { asAt: at }).html);
+}
+
+module.exports = { runEtfRadar, writeRadarArtifacts, valueOne, ensureHoldings, buildTickerPageIndex, ordinal };

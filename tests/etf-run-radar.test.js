@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const os = require('node:os'); const fs = require('node:fs'); const path = require('node:path');
-const { runEtfRadar, valueOne } = require('../scripts/lib/etf/run-etf-radar.js');
+const { runEtfRadar, valueOne, writeRadarArtifacts, ordinal } = require('../scripts/lib/etf/run-etf-radar.js');
 
 function seedHoldings(dir, slug, rows, asOf = '2026-08-01') {
   fs.writeFileSync(path.join(dir, `${slug}.json`), JSON.stringify({ asOf, source: 'x', rows }));
@@ -100,4 +100,40 @@ test('valueOne: DCF-rejected financial does NOT use the EV/Sales fallback', () =
   const ev = valueOne('X', data, () => ({ excluded: true, reason: 'ddm-unavailable' }));
   assert.equal(ev.unvaluable, true);
   assert.equal(ev.reason, 'ddm-unavailable');
+});
+
+test('ordinal', () => {
+  assert.equal(ordinal(1), '1st'); assert.equal(ordinal(2), '2nd'); assert.equal(ordinal(3), '3rd');
+  assert.equal(ordinal(4), '4th'); assert.equal(ordinal(11), '11th'); assert.equal(ordinal(22), '22nd');
+});
+
+test('writeRadarArtifacts with generatePages writes rankings JSON + all pages', async () => {
+  const holdingsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'etfh-'));
+  seedHoldings(holdingsDir, 'aaa', [
+    { yahoo: 'NVDA', name: 'NVIDIA', weight: 0.6, country: 'United States' },
+    { yahoo: 'AMD', name: 'AMD', weight: 0.4, country: 'United States' },
+  ]);
+  const universe = [{
+    slug: 'aaa', name: 'Test Semis ETF', theme: 'Semis', issuer: 'ishares',
+    issuerFundId: 'x', fee: 0.005, assetClass: 'equity', listings: [{ ticker: 'AAA', currency: 'USD' }],
+  }];
+  const result = await runEtfRadar({
+    universePath: null, injectedUniverse: universe, holdingsDir, overridesPath: null,
+    fetchSymbol: async (sym) => ({ NVDA: { price: 100, totalRevenue: 1e9, sector: 'Technology' }, AMD: { price: 50, totalRevenue: 5e8, sector: 'Technology' } }[sym] || null),
+    evaluateStock: DCF_MINUS_30, now: () => new Date('2026-09-01Z'), log: () => {},
+  }, { offline: true, throttleMs: 0 });
+
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'etfout-'));
+  writeRadarArtifacts(result, path.join(out, 'etf-radar'), {
+    generatePages: true, pagesRoot: out, tickerPageIndex: { NVDA: '/dcf/stocks/sp500/nvidia/' }, asAt: '2026-09-01',
+  });
+
+  assert.ok(fs.existsSync(path.join(out, 'etf-radar', 'etf-rankings.json')));
+  assert.ok(fs.existsSync(path.join(out, 'etf-radar', 'index.html')));
+  assert.ok(fs.existsSync(path.join(out, 'etfs', 'aaa', 'index.html')));
+  const manifest = JSON.parse(fs.readFileSync(path.join(out, 'etfs', 'manifest.json'), 'utf8'));
+  assert.equal(manifest[0].slug, 'aaa');
+  const detail = fs.readFileSync(path.join(out, 'etfs', 'aaa', 'index.html'), 'utf8');
+  assert.match(detail, /href="\/dcf\/stocks\/sp500\/nvidia\/"/);   // linked holding via injected index
+  assert.match(detail, /1st of 1 thematic ETFs/);                  // rank line
 });

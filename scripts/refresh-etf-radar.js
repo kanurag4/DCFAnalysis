@@ -17,8 +17,10 @@ const offline = process.argv.includes('--offline') || process.argv.includes('--r
     log: console.log,
   }, { offline });
 
-  const outDir = path.join(__dirname, '..', 'www', 'dcf', 'etf-radar');
-  writeRadarArtifacts(result, outDir);
+  const dcfRoot = path.join(__dirname, '..', 'www', 'dcf');
+  writeRadarArtifacts(result, path.join(dcfRoot, 'etf-radar'), {
+    generatePages: true, pagesRoot: dcfRoot,
+  });
 
   const pct = (x) => (x == null ? '  —  ' : `${(x * 100).toFixed(1)}%`);
   console.log(`\n=== ETF Radar ${result.asAt} ${offline ? '(offline)' : ''} ===`);
