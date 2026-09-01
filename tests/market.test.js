@@ -96,3 +96,24 @@ test('Shanghai (.SS) / Shenzhen (.SZ) tickers get the spread-adjusted rf and a t
   assert.deepStrictEqual(marketParamsFor('000001.SZ'), expected);
   assert.ok(expected.terminalGrowth < expected.rf, 'terminalGrowth must stay under rf (Damodaran stable-growth ceiling)');
 });
+
+// ETF radar (2026-08-31): thematic-fund holdings pull in suffixes that previously
+// hit the generic US-style fallback. Static Damodaran-style seeds, same posture as
+// the no-live-source markets above — see market.js's inline comments.
+test('Taiwan .TW gets a dedicated bucket, not the US fallback', () => {
+  const p = marketParamsFor('2330.TW', {});
+  assert.equal(p.rf, 0.017);
+  assert.equal(p.erp, 0.058);
+  assert.equal(p.terminalGrowth, 0.012);
+});
+
+test('KOSDAQ .KQ reuses the Korea .KS parameters', () => {
+  assert.deepEqual(marketParamsFor('012450.KQ', {}), marketParamsFor('012450.KS', {}));
+});
+
+test('Israel .TA, Switzerland .SW, Sweden .ST, Norway .OL, Singapore .SI each resolve to a non-US bucket', () => {
+  for (const t of ['ESLT.TA', 'ABBN.SW', 'SAAB-B.ST', 'KOG.OL', 'S63.SI']) {
+    const p = marketParamsFor(t, {});
+    assert.ok(p.rf !== 0.045 || p.erp !== 0.055, `${t} still hitting the US fallback`);
+  }
+});

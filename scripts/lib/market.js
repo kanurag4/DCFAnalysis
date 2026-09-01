@@ -73,6 +73,31 @@ function marketParamsFor(ticker, live = {}) {
   // Backported from www/dcf/app.js's CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d)
   // -- keep these two in sync if the live tool's seed ever changes.
   if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.011, erp: 0.052, terminalGrowth: 0.006 };
+  // ETF radar additions (2026-08-31): suffixes that thematic-fund holdings pull in
+  // and that currently hit the generic US-style fallback. No live govt-bond ticker
+  // on Yahoo for any of these -> static seeds, Damodaran country-risk-based, same
+  // "documented, refine later" convention as every non-US bucket above.
+  // Taiwan (.TW): rf ~1.7% 10-yr TGB spot (Aug 2026) minus Taiwan's ~0.5% default
+  // spread (Aa3, Damodaran Jan 2026) ~= 1.2% -- but the raw yield is already so low
+  // that keeping rf at the raw 1.7% and setting terminalGrowth well under it (0.012,
+  // ~70% ratio) is the internally-consistent choice, same posture as China's
+  // tiny-base-yield handling above. erp elevated ~0.3pp over the developed-market
+  // tier for Taiwan Strait geopolitical risk (Damodaran country ERP).
+  if (t.endsWith('.TW')) return { rf: 0.017, erp: 0.058, terminalGrowth: 0.012 };
+  // Israel (.TA): rf ~4.0% 10-yr Shekel bond spot minus ~0.9% default spread
+  // (A2, Damodaran Jan 2026) ~= 3.1%. erp carries an elevated country-risk premium.
+  if (t.endsWith('.TA')) return { rf: 0.031, erp: 0.072, terminalGrowth: 0.018 };
+  // Switzerland (.SW): rf ~0.6% 10-yr Confederation bond (structurally low-yield
+  // safe haven); terminalGrowth 0.008 keeps a ~55% ratio. AAA, zero default spread.
+  if (t.endsWith('.SW')) return { rf: 0.006, erp: 0.05, terminalGrowth: 0.008 };
+  // Sweden (.ST) / Norway (.OL): rf ~2.4% / ~3.5% 10-yr govt bond spot; both AAA
+  // (zero default spread). Developed-market erp.
+  if (t.endsWith('.ST')) return { rf: 0.024, erp: 0.052, terminalGrowth: 0.015 };
+  if (t.endsWith('.OL')) return { rf: 0.035, erp: 0.052, terminalGrowth: 0.018 };
+  // Singapore (.SI): rf ~2.5% 10-yr SGS bond; AAA. Developed-market erp.
+  if (t.endsWith('.SI')) return { rf: 0.025, erp: 0.053, terminalGrowth: 0.016 };
+  // KOSDAQ (.KQ): same market as KOSPI (.KS) for valuation-parameter purposes.
+  if (t.endsWith('.KQ')) return { rf: 0.039, erp: 0.075, terminalGrowth: 0.0175 };
   if (!t.includes('.')) return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 };
   return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
 }
