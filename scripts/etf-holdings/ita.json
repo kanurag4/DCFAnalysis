@@ -1,0 +1,343 @@
+{
+  "asOf": "2026-08-28",
+  "source": "https://www.ishares.com/us/products/239502/ishares-us-aerospace-defense-etf/latest-holdings.csv",
+  "fetchedAt": "2026-09-01T02:12:24.328Z",
+  "rows": [
+    {
+      "yahoo": "GE",
+      "raw": "GE",
+      "name": "GE AEROSPACE",
+      "weight": 0.21600000000000003,
+      "country": "United States"
+    },
+    {
+      "yahoo": "RTX",
+      "raw": "RTX",
+      "name": "RTX",
+      "weight": 0.1723,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BA",
+      "raw": "BA",
+      "name": "BOEING",
+      "weight": 0.08990000000000001,
+      "country": "United States"
+    },
+    {
+      "yahoo": "GD",
+      "raw": "GD",
+      "name": "GENERAL DYNAMICS CORP",
+      "weight": 0.0484,
+      "country": "United States"
+    },
+    {
+      "yahoo": "LMT",
+      "raw": "LMT",
+      "name": "LOCKHEED MARTIN CORP",
+      "weight": 0.0467,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HWM",
+      "raw": "HWM",
+      "name": "HOWMET AEROSPACE",
+      "weight": 0.0462,
+      "country": "United States"
+    },
+    {
+      "yahoo": "NOC",
+      "raw": "NOC",
+      "name": "NORTHROP GRUMMAN CORP",
+      "weight": 0.0438,
+      "country": "United States"
+    },
+    {
+      "yahoo": "TDG",
+      "raw": "TDG",
+      "name": "TRANSDIGM GROUP",
+      "weight": 0.0425,
+      "country": "United States"
+    },
+    {
+      "yahoo": "LHX",
+      "raw": "LHX",
+      "name": "L3HARRIS TECHNOLOGIES",
+      "weight": 0.0358,
+      "country": "United States"
+    },
+    {
+      "yahoo": "AXON",
+      "raw": "AXON",
+      "name": "AXON ENTERPRISE",
+      "weight": 0.0354,
+      "country": "United States"
+    },
+    {
+      "yahoo": "RKLB",
+      "raw": "RKLB",
+      "name": "ROCKET LAB CORP",
+      "weight": 0.024,
+      "country": "United States"
+    },
+    {
+      "yahoo": "ATI",
+      "raw": "ATI",
+      "name": "ATI",
+      "weight": 0.021,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CRS",
+      "raw": "CRS",
+      "name": "CARPENTER TECHNOLOGY",
+      "weight": 0.0173,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CW",
+      "raw": "CW",
+      "name": "CURTISS WRIGHT",
+      "weight": 0.0161,
+      "country": "United States"
+    },
+    {
+      "yahoo": "WWD",
+      "raw": "WWD",
+      "name": "WOODWARD",
+      "weight": 0.0149,
+      "country": "United States"
+    },
+    {
+      "yahoo": "FTAI",
+      "raw": "FTAI",
+      "name": "FTAI AVIATION",
+      "weight": 0.0146,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HEIA",
+      "raw": "HEIA",
+      "name": "HEICO CLASS A",
+      "weight": 0.014199999999999999,
+      "country": "United States"
+    },
+    {
+      "yahoo": "TXT",
+      "raw": "TXT",
+      "name": "TEXTRON INC",
+      "weight": 0.0106,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BWXT",
+      "raw": "BWXT",
+      "name": "BWX TECHNOLOGIES INC",
+      "weight": 0.0102,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HEI",
+      "raw": "HEI",
+      "name": "HEICO",
+      "weight": 0.009899999999999999,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HII",
+      "raw": "HII",
+      "name": "HUNTINGTON INGALLS INDUSTRIES",
+      "weight": 0.0085,
+      "country": "United States"
+    },
+    {
+      "yahoo": "MOGA",
+      "raw": "MOGA",
+      "name": "MOOG INC CLASS A",
+      "weight": 0.0078000000000000005,
+      "country": "United States"
+    },
+    {
+      "yahoo": "KTOS",
+      "raw": "KTOS",
+      "name": "KRATOS DEFENSE AND SECURITY SOLUTI",
+      "weight": 0.0070999999999999995,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HXL",
+      "raw": "HXL",
+      "name": "HEXCEL",
+      "weight": 0.0052,
+      "country": "United States"
+    },
+    {
+      "yahoo": "VSEC",
+      "raw": "VSEC",
+      "name": "VSE CORP",
+      "weight": 0.0044,
+      "country": "United States"
+    },
+    {
+      "yahoo": "AIR",
+      "raw": "AIR",
+      "name": "AAR",
+      "weight": 0.0038,
+      "country": "United States"
+    },
+    {
+      "yahoo": "AVAV",
+      "raw": "AVAV",
+      "name": "AEROVIRONMENT",
+      "weight": 0.0034999999999999996,
+      "country": "United States"
+    },
+    {
+      "yahoo": "SARO",
+      "raw": "SARO",
+      "name": "STANDARDAERO",
+      "weight": 0.0034999999999999996,
+      "country": "United States"
+    },
+    {
+      "yahoo": "MRCY",
+      "raw": "MRCY",
+      "name": "MERCURY SYSTEMS INC",
+      "weight": 0.0034000000000000002,
+      "country": "United States"
+    },
+    {
+      "yahoo": "KRMN",
+      "raw": "KRMN",
+      "name": "KARMAN HOLDINGS INC",
+      "weight": 0.003,
+      "country": "United States"
+    },
+    {
+      "yahoo": "ACHR",
+      "raw": "ACHR",
+      "name": "ARCHER AVIATION CLASS A",
+      "weight": 0.0027,
+      "country": "United States"
+    },
+    {
+      "yahoo": "DRS",
+      "raw": "DRS",
+      "name": "LEONARDO DRS INC",
+      "weight": 0.0022,
+      "country": "United States"
+    },
+    {
+      "yahoo": "ATRO",
+      "raw": "ATRO",
+      "name": "ASTRONICS",
+      "weight": 0.0021,
+      "country": "United States"
+    },
+    {
+      "yahoo": "LOAR",
+      "raw": "LOAR",
+      "name": "LOAR HOLDINGS",
+      "weight": 0.0019,
+      "country": "United States"
+    },
+    {
+      "yahoo": "DCO",
+      "raw": "DCO",
+      "name": "DUCOMMUN",
+      "weight": 0.0018,
+      "country": "United States"
+    },
+    {
+      "yahoo": "LUNR",
+      "raw": "LUNR",
+      "name": "INTUITIVE MACHINES INC CLASS A",
+      "weight": 0.0014000000000000002,
+      "country": "United States"
+    },
+    {
+      "yahoo": "VVX",
+      "raw": "VVX",
+      "name": "V2X",
+      "weight": 0.0012,
+      "country": "United States"
+    },
+    {
+      "yahoo": "RDW",
+      "raw": "RDW",
+      "name": "REDWIRE",
+      "weight": 0.0009,
+      "country": "United States"
+    },
+    {
+      "yahoo": "RCAT",
+      "raw": "RCAT",
+      "name": "RED CAT HOLDINGS INC",
+      "weight": 0.0008,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CDRE",
+      "raw": "CDRE",
+      "name": "CADRE HOLDINGS INC",
+      "weight": 0.0007000000000000001,
+      "country": "United States"
+    },
+    {
+      "yahoo": "NPK",
+      "raw": "NPK",
+      "name": "NATIONAL PRESTO INDUSTRIES INC",
+      "weight": 0.0006,
+      "country": "United States"
+    },
+    {
+      "yahoo": "FLY",
+      "raw": "FLY",
+      "name": "FIREFLY AEROSPACE",
+      "weight": 0.0005,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BETA",
+      "raw": "BETA",
+      "name": "BETA TECHNOLOGIES CLASS A",
+      "weight": 0.0005,
+      "country": "United States"
+    },
+    {
+      "yahoo": "RGR",
+      "raw": "RGR",
+      "name": "STURM RUGER",
+      "weight": 0.0004,
+      "country": "United States"
+    },
+    {
+      "yahoo": "SWBI",
+      "raw": "SWBI",
+      "name": "SMITH WESSON BRANDS INC",
+      "weight": 0.0004,
+      "country": "United States"
+    },
+    {
+      "yahoo": "VOYG",
+      "raw": "VOYG",
+      "name": "VOYAGER TECHNOLOGIES CLASS A",
+      "weight": 0.0003,
+      "country": "United States"
+    },
+    {
+      "yahoo": "SPCE",
+      "raw": "SPCE",
+      "name": "VIRGIN GALACTIC HOLDINGS INC SHS C",
+      "weight": 0.0002,
+      "country": "United States"
+    },
+    {
+      "yahoo": "YSS",
+      "raw": "YSS",
+      "name": "YORK SPACE SYSTEMS INC",
+      "weight": 0.0001,
+      "country": "United States"
+    }
+  ]
+}

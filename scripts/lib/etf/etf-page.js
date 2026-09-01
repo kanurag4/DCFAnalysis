@@ -146,18 +146,28 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
          or a dividend / excess-return model for banks, insurers and regulated utilities, or an EV/Sales
          comparison for a small tail of holdings the cash-flow models can't value. Each holding's
          premium or discount to its own intrinsic value is then weighted by its fund weight and summed.</p>
-      <p>A fund gets a ranked look-through number only when the holdings we can value cover at least
-         70% of its weight. Crypto-based funds get no cash-flow valuation at all.</p>
-      <p class="etf-disclaimer"><strong>Mechanical model output, not a judgement on the fund or its
-         management.</strong> These figures are highly sensitive to assumptions and are a point-in-time
-         snapshot as at ${escapeHtml(asAt || fund.holdingsAsOf || '')}. Not financial advice.</p>
+      <p>Where the DCF needs a forward growth rate we use the <em>slower</em> of a holding's multi-year
+         revenue trend and its multi-year free-cash-flow trend, not a single year's figure, so one
+         distorted year at one company can't skew the fund's number. A fund gets a ranked look-through
+         number only when the holdings we can value cover at least 70% of its weight; crypto-based funds
+         get no cash-flow valuation at all.</p>
+      <p class="etf-disclaimer"><strong>Read this as a measurement, not a verdict.</strong> Mechanical
+         model output — not a judgement on the fund, its holdings, or its management, and never a
+         recommendation to buy, hold or sell. The 5-year DCF is deliberately conservative on growth, so a
+         premium is partly the model's own caution. Fast-growing and AI-exposed holdings in particular can
+         read as heavily overvalued because a short-horizon cash-flow model can't capture a genuine
+         platform shift or growth that currently shows up as investment rather than free cash flow. A fund
+         can also trade above a conservative intrinsic value for years while compounding. A point-in-time
+         snapshot as at ${escapeHtml(asAt || fund.holdingsAsOf || '')}, highly sensitive to assumptions.
+         Not financial advice.</p>
     </section>
 
     <section class="tool-info">
       <div class="tool-about">
         <h2>About this page</h2>
         <p>${name} tracks ${theme ? `the ${theme.toLowerCase()} theme` : 'a thematic index'}. This page
-           values what the fund actually holds, refreshed monthly. Fee shown is the stated management cost.</p>
+           values what the fund actually holds, refreshed monthly. Fee shown is the stated management cost.
+           General information only — see the methodology and cautions above.</p>
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
@@ -169,9 +179,19 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
             : `We can currently value only ${pct(fund.coverage)} of this fund by weight — below our 70%
                threshold — so we don't publish a single look-through figure for it.`}</p>
         </details>
+        <details class="faq-item"><summary>Does a premium mean I should sell ${escapeHtml(fund.listings && fund.listings[0] ? fund.listings[0].ticker : fund.name)}?</summary>
+          <p>No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can
+             trade above a conservative intrinsic value for a long time while still compounding — the
+             number measures how much optimism is priced in, not when to act.</p>
+        </details>
+        <details class="faq-item"><summary>Why do the tech / AI holdings read as so overvalued?</summary>
+          <p>A 5-year discounted cash flow can't price a genuine platform shift, and it penalises companies
+             whose growth currently shows up as capital investment rather than free cash flow. That is a
+             limitation of the model as much as a statement about the price.</p>
+        </details>
         <details class="faq-item"><summary>How often is this updated?</summary>
           <p>Monthly. Holdings come from ${escapeHtml(fund.name.split(' ')[0])}'s published full-holdings file;
-             prices and fundamentals from Yahoo Finance.</p>
+             prices and fundamentals are a monthly snapshot from Yahoo Finance, not a live feed.</p>
         </details>
       </div>
     </section>`;
@@ -185,15 +205,25 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
     }),
     JSON.stringify({
       '@context': 'https://schema.org', '@type': 'FAQPage',
-      mainEntity: [{
-        '@type': 'Question', name: `Does ${fund.name} trade above or below the value of what it holds?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: fund.ranked
-            ? `Its holdings collectively trade ${fmtPremium(fund.lookThroughMos)} their combined intrinsic value (as at ${asAt || ''}).`
-            : `Coverage is below 70% of fund weight, so no single look-through figure is published.`,
+      mainEntity: [
+        {
+          '@type': 'Question', name: `Does ${fund.name} trade above or below the value of what it holds?`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: fund.ranked
+              ? `Its holdings collectively trade ${fmtPremium(fund.lookThroughMos)} their combined intrinsic value as at ${asAt || ''}, over ${pct(fund.coverage)} of fund weight. A mechanical measurement, not advice.`
+              : `Coverage is below 70% of fund weight, so no single look-through figure is published.`,
+          },
         },
-      }],
+        {
+          '@type': 'Question', name: 'Does a premium mean I should sell?',
+          acceptedAnswer: { '@type': 'Answer', text: 'No. Nothing here is financial advice and it is never a buy, sell or hold call. A theme can trade above a conservative intrinsic value for a long time while still compounding.' },
+        },
+        {
+          '@type': 'Question', name: 'Why do the tech and AI holdings read as heavily overvalued?',
+          acceptedAnswer: { '@type': 'Answer', text: 'A 5-year discounted cash flow cannot price a genuine platform shift and it penalises companies whose growth currently shows up as capital investment rather than free cash flow. It reflects the model’s limitation as much as the price.' },
+        },
+      ],
     }),
   ];
 

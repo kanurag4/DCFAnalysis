@@ -11,6 +11,7 @@ const { readSnapshot, writeSnapshot, evaluateFreshness } = require('./holdings-s
 const { aggregateFund, detectCrypto } = require('./aggregate.js');
 const { sistersFor } = require('./overlap.js');
 const { evSalesFallback } = require('./growth-eval.js');
+const { lookThroughGrowth } = require('./growth-rate.js');
 const { marketParamsFor } = require('../market.js');
 const { evaluateStock: realEvaluateStock } = require('../evaluate.js');
 const { fetchSymbol: realFetchSymbol } = require('../../fetch-yahoo.js');
@@ -30,7 +31,7 @@ const COOLDOWN_MS = 65000;
 // same reason. Such a holding is treated as unvaluable (drags coverage down),
 // never blended into the look-through average.
 const MAX_HOLDING_MARGIN = 1.0;   // > +100% "undervalued" — implausibly cheap
-const MIN_HOLDING_MARGIN = -3.0;  // trades at > 4x its intrinsic value — implausible
+const MIN_HOLDING_MARGIN = -2.0;  // trades at > 3x its intrinsic value — implausible
 
 // Convert a holding's financial-statement figures from its reporting currency
 // into its quote currency, mirroring www/data.js's fetchDCFData() exactly. ADRs
@@ -110,7 +111,12 @@ function plausible(mos, { maxMargin = MAX_HOLDING_MARGIN, minMargin = MIN_HOLDIN
 function valueOne(sym, data, evaluateStock, bounds = {}) {
   if (!data) return { unvaluable: true, reason: 'fetch-failed' };
   if (data.quoteType === 'CRYPTO' || data.quoteType === 'CRYPTOCURRENCY') return { quoteType: 'CRYPTO' };
-  const ev = evaluateStock(data, marketParamsFor(sym, {}));
+  // Replace the engine's 1-year revenue/earnings growth with the conservative
+  // multi-year trend (growth-rate.js). Setting both fields equal makes
+  // deriveBaseGrowth()'s avg() return that value, still subject to the engine's
+  // own [-0.05, 0.25] clamp. EV/Sales fallback + quoteType read the raw `data`.
+  const g = lookThroughGrowth(data);
+  const ev = evaluateStock({ ...data, revenueGrowth: g, earningsGrowth: g }, marketParamsFor(sym, {}));
   if (!ev.excluded && Number.isFinite(ev.marginOfSafety)) {
     return plausible(ev.marginOfSafety, bounds)
       ? { mos: ev.marginOfSafety, method: ev.method }
@@ -118,10 +124,10 @@ function valueOne(sym, data, evaluateStock, bounds = {}) {
   }
   const nonFinancial = !FINANCIALish.test(data.sector || '');
   if (nonFinancial && (!ev.reason || DCF_FALLBACK_REASONS.has(ev.reason))) {
-    const g = evSalesFallback(data);
-    if (g) {
-      return plausible(g.marginOfSafety, bounds)
-        ? { mos: g.marginOfSafety, method: g.method }
+    const gg = evSalesFallback(data);
+    if (gg) {
+      return plausible(gg.marginOfSafety, bounds)
+        ? { mos: gg.marginOfSafety, method: gg.method }
         : { unvaluable: true, reason: 'implausible-margin' };
     }
   }
@@ -152,13 +158,17 @@ async function runEtfRadar(deps, opts = {}) {
     bounds = {} } = opts;
   const asAt = now().toISOString().slice(0, 10);
   const fxCache = new Map();
+  // --reagg re-runs valuation + pages from the raw-data cache; it should not
+  // re-download issuer holdings either (that only adds spurious asOf-unchanged
+  // flags on a same-day re-run).
+  const holdingsOffline = offline || reagg;
 
   const universe = loadUniverse(universePath, injectedUniverse);
 
   // 1. holdings for every fund (fresh issuer download, or committed snapshot)
   const withHoldings = [];
   for (const fund of universe) {
-    const { snapshot, flags } = await ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, searchSymbol });
+    const { snapshot, flags } = await ensureHoldings(fund, { holdingsDir, overridesPath, offline: holdingsOffline, log, searchSymbol });
     withHoldings.push({
       fund, holdings: (snapshot && snapshot.rows) || [],
       holdingsAsOf: snapshot && snapshot.asOf, flags,

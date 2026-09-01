@@ -1,0 +1,322 @@
+{
+  "asOf": "2026-08-31",
+  "source": "https://www.betashares.com.au/files/csv/CRYP_Portfolio_Holdings.csv",
+  "fetchedAt": "2026-09-01T02:12:24.090Z",
+  "rows": [
+    {
+      "yahoo": "COIN",
+      "raw": "COIN UW",
+      "name": "COINBASE GLOBAL INC",
+      "weight": 0.1236243823,
+      "country": "United States"
+    },
+    {
+      "yahoo": "MSTR",
+      "raw": "MSTR UW",
+      "name": "STRATEGY INC",
+      "weight": 0.1105453713,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CRCL",
+      "raw": "CRCL UN",
+      "name": "CIRCLE INTERNET GROUP INC",
+      "weight": 0.102618755,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BMNR",
+      "raw": "BMNR UN",
+      "name": "BITMINE IMMERSION TECHNOLOGIES",
+      "weight": 0.0829888364,
+      "country": "United States"
+    },
+    {
+      "yahoo": "IREN",
+      "raw": "IREN UW",
+      "name": "IRIS ENERGY LTD",
+      "weight": 0.06839198269999999,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HUT.TO",
+      "raw": "HUT CT",
+      "name": "HUT 8 CORP",
+      "weight": 0.0475294519,
+      "country": "Canada"
+    },
+    {
+      "yahoo": "RIOT",
+      "raw": "RIOT UR",
+      "name": "RIOT PLATFORMS INC",
+      "weight": 0.0397475728,
+      "country": "United States"
+    },
+    {
+      "yahoo": "WULF",
+      "raw": "WULF UR",
+      "name": "TERAWULF INC",
+      "weight": 0.0373739748,
+      "country": "United States"
+    },
+    {
+      "yahoo": "FIGR",
+      "raw": "FIGR UW",
+      "name": "FIGURE TECHNOLOGY SOLUTIONS IN",
+      "weight": 0.0315112918,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CIFR",
+      "raw": "CIFR UW",
+      "name": "CIPHER MINING INC",
+      "weight": 0.030571357099999998,
+      "country": "United States"
+    },
+    {
+      "yahoo": "GLXY",
+      "raw": "GLXY UW",
+      "name": "GALAXY DIGITAL INC",
+      "weight": 0.0275011971,
+      "country": "United States"
+    },
+    {
+      "yahoo": "MARA",
+      "raw": "MARA UR",
+      "name": "MARATHON DIGITAL HOLDINGS INC",
+      "weight": 0.0240706502,
+      "country": "United States"
+    },
+    {
+      "yahoo": "HOOD",
+      "raw": "HOOD UW",
+      "name": "ROBINHOOD MARKETS INC",
+      "weight": 0.0190918842,
+      "country": "United States"
+    },
+    {
+      "yahoo": "DBS.SI",
+      "raw": "DBS SP",
+      "name": "DBS GROUP HOLDINGS LTD",
+      "weight": 0.0184865774,
+      "country": "Singapore"
+    },
+    {
+      "yahoo": "MELI",
+      "raw": "MELI UW",
+      "name": "MERCADOLIBRE INC",
+      "weight": 0.0180906058,
+      "country": "United States"
+    },
+    {
+      "yahoo": "MA",
+      "raw": "MA UN",
+      "name": "MASTERCARD INC",
+      "weight": 0.0180282913,
+      "country": "United States"
+    },
+    {
+      "yahoo": "DB1.DE",
+      "raw": "DB1 GY",
+      "name": "DEUTSCHE BOERSE AG",
+      "weight": 0.017679051299999998,
+      "country": "Germany"
+    },
+    {
+      "yahoo": "V",
+      "raw": "V UN",
+      "name": "VISA INC",
+      "weight": 0.0176123582,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BLK",
+      "raw": "BLK UN",
+      "name": "BLACKROCK INC",
+      "weight": 0.0174369795,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CLSK",
+      "raw": "CLSK UR",
+      "name": "CLEANSPARK INC",
+      "weight": 0.017229794899999998,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BNY",
+      "raw": "BNY UN",
+      "name": "BANK OF NEW YORK MELLON CORP/T",
+      "weight": 0.017015063100000002,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CME",
+      "raw": "CME UW",
+      "name": "CME GROUP INC",
+      "weight": 0.0166621954,
+      "country": "United States"
+    },
+    {
+      "yahoo": "GLE.PA",
+      "raw": "GLE FP",
+      "name": "SOCIETE GENERALE SA",
+      "weight": 0.015608174800000001,
+      "country": "France"
+    },
+    {
+      "yahoo": "3350.T",
+      "raw": "3350 JT",
+      "name": "METAPLANET INC",
+      "weight": 0.014061109,
+      "country": "Japan"
+    },
+    {
+      "yahoo": "KEEL.TO",
+      "raw": "KEEL CT",
+      "name": "KEEL INFRASTRUCTURE CORP",
+      "weight": 0.0110464633,
+      "country": "Canada"
+    },
+    {
+      "yahoo": "ETOR",
+      "raw": "ETOR UW",
+      "name": "ETORO GROUP LTD",
+      "weight": 0.0099730194,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BTDR",
+      "raw": "BTDR UR",
+      "name": "BITDEER TECHNOLOGIES GROUP",
+      "weight": 0.0090052661,
+      "country": "United States"
+    },
+    {
+      "yahoo": "ASST",
+      "raw": "ASST UQ",
+      "name": "STRIVE INC",
+      "weight": 0.0089377662,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BLSH",
+      "raw": "BLSH UN",
+      "name": "BULLISH",
+      "weight": 0.007886209,
+      "country": "United States"
+    },
+    {
+      "yahoo": "863.HK",
+      "raw": "863 HK",
+      "name": "BC TECHNOLOGY GROUP LTD",
+      "weight": 0.0050089302,
+      "country": "Hong Kong"
+    },
+    {
+      "yahoo": "HIVE.TO",
+      "raw": "HIVE CT",
+      "name": "HIVE DIGITAL TECHNOLOGIES LTD",
+      "weight": 0.0044206113,
+      "country": "Canada"
+    },
+    {
+      "yahoo": "CAN",
+      "raw": "CAN UR",
+      "name": "CANAAN INC",
+      "weight": 0.0014649546999999999,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BKKT",
+      "raw": "BKKT UN",
+      "name": "BAKKT HOLDINGS INC",
+      "weight": 0.0013500164,
+      "country": "United States"
+    },
+    {
+      "yahoo": "GEMI",
+      "raw": "GEMI UW",
+      "name": "GEMINI SPACE STATION INC",
+      "weight": 0.0010294491,
+      "country": "United States"
+    },
+    {
+      "yahoo": "434.HK",
+      "raw": "434 HK",
+      "name": "BOYAA INTERACTIVE INTERNATIONA",
+      "weight": 0.0008944533999999999,
+      "country": "Hong Kong"
+    },
+    {
+      "yahoo": "SLNH",
+      "raw": "SLNH UR",
+      "name": "SOLUNA HOLDINGS INC",
+      "weight": 0.0007718238,
+      "country": "United States"
+    },
+    {
+      "yahoo": "ALCPB.PA",
+      "raw": "ALCPB FP",
+      "name": "CAPITAL B",
+      "weight": 0.000695088,
+      "country": "France"
+    },
+    {
+      "yahoo": "ADE.DE",
+      "raw": "ADE GY",
+      "name": "BITCOIN GROUP SE",
+      "weight": 0.0006936148,
+      "country": "Germany"
+    },
+    {
+      "yahoo": "BTGO",
+      "raw": "BTGO UN",
+      "name": "BITGO HOLDINGS INC",
+      "weight": 0.0005007376,
+      "country": "United States"
+    },
+    {
+      "yahoo": "NAKA",
+      "raw": "NAKA UQ",
+      "name": "KINDLY MD INC",
+      "weight": 0.00048786120000000004,
+      "country": "United States"
+    },
+    {
+      "yahoo": "BTCS",
+      "raw": "BTCS UR",
+      "name": "BTCS INC",
+      "weight": 0.000350756,
+      "country": "United States"
+    },
+    {
+      "yahoo": "EMPD",
+      "raw": "EMPD UW",
+      "name": "EMPERY DIGITAL INC",
+      "weight": 0.0003201474,
+      "country": "United States"
+    },
+    {
+      "yahoo": "EXOD",
+      "raw": "EXOD UA",
+      "name": "EXODUS MOVEMENT INC",
+      "weight": 0.0002833967,
+      "country": "United States"
+    },
+    {
+      "yahoo": "CANG",
+      "raw": "CANG UN",
+      "name": "CANGO INC/KY",
+      "weight": 0.00025086199999999997,
+      "country": "United States"
+    },
+    {
+      "yahoo": "NXTT",
+      "raw": "NXTT UR",
+      "name": "NEXT TECHNOLOGY HOLDING INC",
+      "weight": 0.0000263839,
+      "country": "United States"
+    }
+  ]
+}
