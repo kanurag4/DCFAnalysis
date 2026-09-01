@@ -401,6 +401,13 @@ function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot,
   }
   fs.writeFileSync(path.join(etfsDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 
+  // Keep the /dcf/stocks/ hub's "Thematic ETFs" section in sync (it reads the
+  // manifest just written). Best-effort — a hub without a stocks manifest yet
+  // just throws and is skipped.
+  try {
+    require('../../generate-stocks-hub.js').generateStocksHub();
+  } catch (_) { /* no stocks manifest, or hub gen unavailable */ }
+
   const radarDir = path.join(pagesRoot, 'etf-radar');
   fs.mkdirSync(radarDir, { recursive: true });
   fs.writeFileSync(path.join(radarDir, 'index.html'), renderRadarPage(result, { asAt: at }).html);

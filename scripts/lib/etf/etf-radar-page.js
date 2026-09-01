@@ -178,9 +178,11 @@ ${tableHtml}
     ${unrankedHtml}
 
     <section class="editorial cross-link">
-      <p>🇺🇸 ASX stocks? <a href="/dcf/asx-undervalued/">Most Undervalued ASX screen &rarr;</a></p>
+      <p>🇦🇺 ASX stocks? <a href="/dcf/asx-undervalued/">Most Undervalued ASX screen &rarr;</a></p>
       <p>🇺🇸 US stocks? <a href="/dcf/sp500-undervalued/">Most Undervalued S&amp;P 500 screen &rarr;</a></p>
       <p>🇮🇳 Indian stocks? <a href="/dcf/nifty-undervalued/">Most Undervalued NIFTY 500 screen &rarr;</a></p>
+      <p>🇰🇷 Korean stocks? <a href="/dcf/kospi-undervalued/">Most Undervalued KOSPI 200 screen &rarr;</a></p>
+      <p>🇯🇵 Japanese stocks? <a href="/dcf/nikkei-undervalued/">Most Undervalued Nikkei 225 screen &rarr;</a></p>
       <p>🇪🇺 European stocks? <a href="/dcf/europe-undervalued/">Most Undervalued Europe screen &rarr;</a></p>
     </section>
 

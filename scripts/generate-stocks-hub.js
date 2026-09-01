@@ -47,11 +47,35 @@ function generateStocksHub() {
     { name: 'Stocks', path: canonical, url: canonical },
   ];
 
+  // Thematic ETF radar section — only rendered once at least one fund page is
+  // published (www/dcf/etfs/manifest.json exists). Grows with the universe.
+  let etfSection = '';
+  try {
+    const etfManifest = JSON.parse(fs.readFileSync(
+      path.join(__dirname, '..', 'www', 'dcf', 'etfs', 'manifest.json'), 'utf8'));
+    if (etfManifest.length) {
+      const chips = etfManifest
+        .slice().sort((a, b) => a.name.localeCompare(b.name))
+        .map(e => `<a class="ticker-chip" href="/dcf/etfs/${escapeHtml(e.slug)}/">${escapeHtml(e.name)}</a>`)
+        .join('\n        ');
+      etfSection = `
+    <section class="other-tickers" style="margin-top:16px">
+      <h2>Thematic ETFs</h2>
+      <p class="related-stocks-sub">Look-through valuations of thematic ETFs — we value what each fund
+        actually holds. <a href="/dcf/etf-radar/">See the full ranking &rarr;</a></p>
+      <div class="ticker-chip-row">
+        ${chips}
+      </div>
+    </section>`;
+    }
+  } catch (_) { /* no ETF pages published yet */ }
+
   const mainHtml = `    <section class="other-tickers" style="margin-top:16px">
       <h2>Browse by market</h2>
       <div class="screens-row">${cards}
       </div>
     </section>
+${etfSection}
 
     <section class="tool-info">
       <div class="tool-about">
