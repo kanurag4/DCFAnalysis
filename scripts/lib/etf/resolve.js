@@ -22,7 +22,7 @@ const COUNTRY_SUFFIX = {
   'Spain': '.MC', 'Belgium': '.BR', 'Portugal': '.LS', 'Austria': '.VI',
   'Finland': '.HE', 'Ireland': '.IR',
   'Switzerland': '.SW', 'Sweden': '.ST', 'Norway': '.OL', 'Denmark': '.CO',
-  'Singapore': '.SI',
+  'Singapore': '.SI', 'New Zealand': '.NZ',
   'Canada': '.TO',
 };
 
