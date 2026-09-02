@@ -69,9 +69,22 @@ function renderRadarPage(result, { asAt } = {}) {
     </section>` : '';
 
   // [question, answer]. The answer is TRUSTED HTML (may contain <a> etc.) —
-  // hardcoded here, never user/issuer input. Rendered raw into <p>; the JSON-LD
-  // path strips tags. An editor adding literal "&" must write "&amp;".
+  // hardcoded here, never user/issuer input (except the "are any undervalued"
+  // answer below, which is generated from the live ranking so it never asserts
+  // a stale premium/discount claim once a fund's sign flips). Rendered raw into
+  // <p>; the JSON-LD path strips tags. An editor adding literal "&" must write
+  // "&amp;".
+  const undervaluedNow = ranked.filter(f => Number.isFinite(f.lookThroughMos) && f.lookThroughMos > 0);
+  const closestFund = ranked[0];
+  const areAnyUndervaluedAnswer = undervaluedNow.length
+    ? `Yes — on this snapshot, ${undervaluedNow.map(f => escapeHtml(f.name)).join(', ')} `
+      + `${undervaluedNow.length === 1 ? 'reads' : 'read'} a discount to combined intrinsic value. Most funds still `
+      + `read a premium; check the ranking above for the full picture.`
+    : `Not on this snapshot — every fund currently reads a premium to its combined look-through intrinsic value, `
+      + `so none is undervalued today.${closestFund ? ` ${escapeHtml(closestFund.name)} is currently closest to fair value.` : ''} `
+      + `Coverage and prices are updated monthly, so this can change.`;
   const faq = [
+    ['Are any thematic ETFs undervalued right now?', areAnyUndervaluedAnswer],
     ['What does the "vs intrinsic value" number mean?',
       'The fund-weighted average premium or discount of the fund’s holdings to their own combined intrinsic value. A negative number ("premium") means the holdings collectively trade above what the models say they are worth; a positive number ("discount") means below.'],
     ['Is this a buy list?',
