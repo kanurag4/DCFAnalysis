@@ -257,6 +257,7 @@ ${tableHtml}
         <p><strong>Implied fair value</strong> is where a fund would trade if its price reflected the
           combined intrinsic value of its holdings — shown alongside the current price so the premium is
           concrete, not just a percentage.</p>
+        <p style="margin-top:12px;font-size:0.85rem;"><strong style="color:var(--kv-text)">Further reading:</strong> <a href="/articles/undervalued-etfs-radar/" style="color:var(--kv-accent);text-decoration:none;" onmouseover="this.style.color='var(--kv-accent-h)'" onmouseout="this.style.color='var(--kv-accent)'">Are any of these funds actually undervalued? The full explainer &rarr;</a></p>
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
