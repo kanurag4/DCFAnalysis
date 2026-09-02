@@ -35,8 +35,12 @@ async function fetchRfRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FET
   return (pct && pct > 0 && pct < 0.15) ? pct : fallback;
 }
 
-const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',         0.045, { proxyUrl });
-const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.048, { proxyUrl });
+// Fallbacks corrected 2026-09-02 (were 0.045/0.048) -- ^GSBG10.AX has been silently
+// 404ing (confirmed live), so fetchAusRf's fallback is what actually feeds every batch
+// consumer of this function. Same three-copy sync issue as market.js/assumptions.js's
+// FALLBACK_RF/app.js's inline defaults -- see docs/TODO.md P6.
+const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',         0.048, { proxyUrl });
+const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.052, { proxyUrl });
 
 // India's ^INBMKG10.NS is the raw 10-yr G-Sec yield, which double-counts country risk
 // the same way the batch's static market.js fallback used to (erp already carries

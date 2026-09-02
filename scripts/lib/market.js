@@ -4,7 +4,15 @@
 // the documented fallback is used (matches the live tool's fallbacks).
 function marketParamsFor(ticker, live = {}) {
   const t = (ticker || '').toUpperCase();
-  if (t.endsWith('.AX')) return { rf: live.ausRf ?? 0.048, erp: 0.06, terminalGrowth: 0.025 };
+  // AU/US fallbacks corrected 2026-09-02 (was 0.048/0.045) -- found live-testing the
+  // multi-year growth work: AU's live fetch (^GSBG10.AX, see rf.js's fetchAusRf) has
+  // been silently 404ing, so this static fallback is what actually feeds every batch
+  // consumer (6 screens, ETF radar, ticker pages) via this file, completely
+  // independently of www/dcf/calc/assumptions.js's FALLBACK_RF (also corrected the
+  // same day) and app.js's own inline defaults -- THREE separate copies of the same
+  // conceptual data, discovered out of sync in the same session. Keep all three in
+  // sync by hand until they're consolidated into one source (see docs/TODO.md P6).
+  if (t.endsWith('.AX')) return { rf: live.ausRf ?? 0.052, erp: 0.06, terminalGrowth: 0.025 };
   // India (.NS/.BO): rf was the raw 10-yr G-Sec yield (~6.8-7%) until 2026-08-15 --
   // that double-counts country risk, since erp already carries India's country risk
   // premium (Damodaran's ~7.1-7.3% total ERP for India). Damodaran's own convention:
@@ -98,8 +106,10 @@ function marketParamsFor(ticker, live = {}) {
   if (t.endsWith('.SI')) return { rf: 0.025, erp: 0.053, terminalGrowth: 0.016 };
   // KOSDAQ (.KQ): same market as KOSPI (.KS) for valuation-parameter purposes.
   if (t.endsWith('.KQ')) return { rf: 0.039, erp: 0.075, terminalGrowth: 0.0175 };
-  if (!t.includes('.')) return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 };
-  return { rf: live.usRf ?? 0.045, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
+  // US fallback corrected 2026-09-02 (was 0.045) -- same three-copy sync issue as AU
+  // above (this file, assumptions.js's FALLBACK_RF.us, app.js's liveRfRate default).
+  if (!t.includes('.')) return { rf: live.usRf ?? 0.048, erp: 0.055, terminalGrowth: 0.025 };
+  return { rf: live.usRf ?? 0.048, erp: 0.055, terminalGrowth: 0.025 }; // other international — conservative US-style seed
 }
 
 module.exports = { marketParamsFor };

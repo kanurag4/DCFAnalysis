@@ -3,7 +3,7 @@ const assert = require('node:assert');
 const { marketParamsFor } = require('../scripts/lib/market.js');
 
 test('ASX ticker gets AUS rf fallback and 6% erp', () => {
-  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.048, erp: 0.06, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.052, erp: 0.06, terminalGrowth: 0.025 });
 });
 
 test('ASX ticker uses provided live rf when given', () => {
@@ -22,7 +22,7 @@ test('Indian ticker uses provided live rf when given (same override mechanism as
 });
 
 test('US ticker (no suffix) gets US defaults', () => {
-  assert.deepStrictEqual(marketParamsFor('AAPL'), { rf: 0.045, erp: 0.055, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('AAPL'), { rf: 0.048, erp: 0.055, terminalGrowth: 0.025 });
 });
 
 // Corrected 2026-08-15: rf was the raw KTB yield (double-counted Korea's country risk,
@@ -48,7 +48,7 @@ test('Japanese ticker ignores any live rf passed in (no live source exists)', ()
 });
 
 test('.TO (Toronto) does not match the .T Japan branch', () => {
-  assert.deepStrictEqual(marketParamsFor('SHOP.TO'), { rf: 0.045, erp: 0.055, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('SHOP.TO'), { rf: 0.048, erp: 0.055, terminalGrowth: 0.025 });
 });
 
 test('UK (.L) ticker gets fixed Gilt-proxy rf/erp/terminalGrowth, no live override possible', () => {
@@ -114,6 +114,6 @@ test('KOSDAQ .KQ reuses the Korea .KS parameters', () => {
 test('Israel .TA, Switzerland .SW, Sweden .ST, Norway .OL, Singapore .SI each resolve to a non-US bucket', () => {
   for (const t of ['ESLT.TA', 'ABBN.SW', 'SAAB-B.ST', 'KOG.OL', 'S63.SI']) {
     const p = marketParamsFor(t, {});
-    assert.ok(p.rf !== 0.045 || p.erp !== 0.055, `${t} still hitting the US fallback`);
+    assert.ok(p.rf !== 0.048 || p.erp !== 0.055, `${t} still hitting the US fallback`);
   }
 });
