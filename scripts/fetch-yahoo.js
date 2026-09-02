@@ -23,7 +23,11 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
   // arrays regardless of /timeseries success/failure — mirrors www/data.js's
   // fetchDCFData(), and lets scripts/lib/evaluate.js's isCyclical branch
   // check .length without a null guard.
-  const withHistoryDefaults = { ...mapped, annualFcfHistory: [], annualRevenueHistory: [] };
+  const withHistoryDefaults = {
+    ...mapped,
+    annualFcfHistory: [], annualRevenueHistory: [],
+    annualNetIncomeHistory: [], annualStockholdersEquityHistory: [], annualDividendsPaidHistory: [],
+  };
   try {
     const url = `${proxyUrl.replace(/\/$/, '')}/timeseries/${encodeURIComponent(symbol)}`;
     const res = await fetchImpl(url, { headers: batchHeaders() });
@@ -51,6 +55,14 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     // trough. Same source www/dcf/data.js's fetchDCFData() uses.
     const annualFcfHistory = Array.isArray(body.annualFreeCashFlow) ? body.annualFreeCashFlow : [];
     const annualRevenueHistory = Array.isArray(body.annualTotalRevenue) ? body.annualTotalRevenue : [];
+    // Same three series Damodaran's fundamental-growth seed needs (see
+    // www/utils.js's deriveMultiYearGrowth) -- mirrors www/dcf/data.js's
+    // fetchDCFData() exactly. No FX conversion here, matching this file's
+    // existing precedent for annualFcfHistory/annualRevenueHistory; the ETF
+    // radar's own convertFinancials() handles conversion where it matters.
+    const annualNetIncomeHistory = Array.isArray(body.annualNetIncome) ? body.annualNetIncome : [];
+    const annualStockholdersEquityHistory = Array.isArray(body.annualStockholdersEquity) ? body.annualStockholdersEquity : [];
+    const annualDividendsPaidHistory = Array.isArray(body.annualCashDividendsPaid) ? body.annualCashDividendsPaid : [];
 
     return {
       ...mapped,
@@ -62,6 +74,9 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
       annualFcf,
       annualFcfHistory,
       annualRevenueHistory,
+      annualNetIncomeHistory,
+      annualStockholdersEquityHistory,
+      annualDividendsPaidHistory,
     };
   } catch (_) {
     return withHistoryDefaults; // enrichment fields stay absent/empty — evaluate.js's existing fallbacks apply

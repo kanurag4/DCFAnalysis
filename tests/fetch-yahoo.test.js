@@ -155,6 +155,39 @@ test('fetchSymbol defaults annualFcfHistory/annualRevenueHistory to empty arrays
   assert.deepStrictEqual(d.annualRevenueHistory, []);
 });
 
+test('fetchSymbol carries annualNetIncome/annualStockholdersEquity/annualCashDividendsPaid history for the multi-year growth seed', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'Test Co' },
+    financialData: { currentPrice: { raw: 42 } }, summaryDetail: { currency: 'USD' },
+    defaultKeyStatistics: {}, assetProfile: { sector: 'Technology', industry: 'Software—Infrastructure' } }] } };
+  const tsBody = {
+    annualNetIncome: [{ date: '2024-12-31', value: 4e9 }, { date: '2025-12-31', value: 5e9 }],
+    annualStockholdersEquity: [{ date: '2024-12-31', value: 20e9 }, { date: '2025-12-31', value: 24e9 }],
+    annualCashDividendsPaid: [{ date: '2024-12-31', value: -1e9 }, { date: '2025-12-31', value: -1.2e9 }],
+  };
+  const fakeFetch = async (url) => (url.includes('/timeseries/')
+    ? { ok: true, status: 200, json: async () => tsBody }
+    : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('TEST', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.strictEqual(d.annualNetIncomeHistory.length, 2);
+  assert.strictEqual(d.annualStockholdersEquityHistory.length, 2);
+  assert.strictEqual(d.annualDividendsPaidHistory.length, 2);
+  assert.strictEqual(d.annualNetIncomeHistory[1].value, 5e9);
+  assert.strictEqual(d.annualDividendsPaidHistory[0].value, -1e9);
+});
+
+test('fetchSymbol defaults annualNetIncome/annualStockholdersEquity/annualCashDividendsPaid history to empty arrays when /timeseries fails', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'Solo Co' },
+    financialData: { currentPrice: { raw: 5 } },
+    summaryDetail: { currency: 'USD' }, defaultKeyStatistics: {}, assetProfile: {} }] } };
+  const fakeFetch = async (url) => (url.includes('/timeseries/')
+    ? { ok: false, status: 500, json: async () => ({}) }
+    : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('SOLO', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.deepStrictEqual(d.annualNetIncomeHistory, []);
+  assert.deepStrictEqual(d.annualStockholdersEquityHistory, []);
+  assert.deepStrictEqual(d.annualDividendsPaidHistory, []);
+});
+
 test('fetchSymbol sends no batch-key header when KV_BATCH_KEY is unset (dev-machine runs stay unauthenticated)', async () => {
   let capturedHeaders = 'not-called';
   const fakeFetch = async (url, opts) => {
