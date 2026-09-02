@@ -363,6 +363,19 @@ function oneYearFallbackGrowth(data) {
 // the ETF radar already ships. Raw growth is clamped to [-0.05, 0.15] --
 // tighter than deriveBaseGrowth's [-0.05, 0.25], since a multi-year anchor
 // no longer needs the wider ceiling to accommodate a single good/bad year.
+//
+// Cyclical tickers (isCyclical()) skip the historical-CAGR cross-check and
+// use fundamental growth alone when it's computable. A 2-point endpoint CAGR
+// is unreliable for a commodity cyclical -- whichever two years happen to
+// bookend the window can coincidentally read as flat/negative even when the
+// business is fine (confirmed live, BHP.AX: FCF $16.74B in FY2023 vs
+// $16.69B in FY2026 reads as -0.1% despite a real mid-cycle trough to
+// $13.00B and recovery in between). This project already treats cyclicals'
+// BASE FCF the same way (calc/cyclicalNormalization.js averages the margin
+// across the cycle instead of anchoring to one year) -- this extends the
+// same reasoning to the growth seed. Falls through to the historical CAGR
+// (still useful as a last resort) when fundamentals aren't computable even
+// for a cyclical, same as the non-cyclical path.
 function deriveMultiYearGrowth(data) {
   if (!data) return 0.05;
 
@@ -377,8 +390,11 @@ function deriveMultiYearGrowth(data) {
   const historical = [revCagr, fcfCagr].filter(x => x != null);
   const historicalGrowth = historical.length ? Math.min(...historical) : null;
 
+  const cyclical = isCyclical(data.sector, data.industry);
+
   let raw;
-  if (fg != null) raw = (historicalGrowth != null) ? Math.min(fg, historicalGrowth) : fg;
+  if (fg != null && cyclical) raw = fg;
+  else if (fg != null) raw = (historicalGrowth != null) ? Math.min(fg, historicalGrowth) : fg;
   else if (historicalGrowth != null) raw = historicalGrowth;
   else raw = oneYearFallbackGrowth(data);
 
