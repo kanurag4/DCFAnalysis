@@ -42,7 +42,33 @@
 // corrected here (jpn looks significantly stale too; not fixed without a verified
 // current Damodaran default-spread table to reapply the spread-adjusted convention
 // correctly) and for the ^GSBG10.AX / ^INBMKG10.NS dead-symbol follow-up.
-const FALLBACK_RF = { us: 0.045, aus: 0.052, ind: 0.049, kor: 0.039, jpn: 0.022, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.011 };
+const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.049, kor: 0.039, jpn: 0.022, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.011 };
+
+// Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
+// scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
+// means no verified baseline exists yet (never checked, not "checked and
+// fine") -- the script always flags those rather than guessing a plausible-
+// looking date. method 'raw' = the live/fallback IS the risk-free rate
+// directly (us/aus/uk/eu/hk); 'spread-adjusted' = raw govt bond yield minus
+// that country's Damodaran default spread (ind/kor/jpn/cn), since MARKET_ERP
+// already carries country risk premium separately -- see the comment above.
+// liveSymbol: the Yahoo ticker app.js's live-refine fetch uses for this
+// market, or null where no live fetch exists (by design, see the comment
+// above) -- found 2026-09-02 that aus/ind's symbols 404 (dead), so this
+// field also doubles as "does the live path even work" documentation until
+// a replacement is found (see docs/TODO.md's P6).
+const FALLBACK_RF_META = {
+  us:  { asOf: '2026-09-02', source: 'Yahoo ^TNX (confirmed live)', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
+  aus: { asOf: '2026-09-02', source: 'multiple sources, AU 10yr govt bond ~5.16-5.2%', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  ind: { asOf: null, source: null, method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-08-15', source: 'Damodaran Jan 2026 default spread table', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-08-15', source: 'Damodaran Jan 2026 default spread table', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  eu:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  cn:  { asOf: '2026-08-15', source: 'Damodaran Jan 2026 default spread table', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+};
+
 const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
 const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6 };
@@ -384,5 +410,5 @@ function computeScenarios(data, valuationModel, seeds, options) {
 // 2026-08-15 Damodaran rf fix and caused a real live valuation mismatch (see
 // kashvector-native-apps.md / the Watchlist bug investigation). Single source of
 // truth now; a future rate change here flows to Watchlist automatically.
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, FALLBACK_RF, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
 if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.roeOffsetSpread = roeOffsetSpread; window.discountRateSpread = discountRateSpread; }
