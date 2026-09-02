@@ -19,7 +19,7 @@ const sectorMarginLookup = require('../../www/sector-margins.json');
 const { applyHoldcoDiscountToScenarios } = require('../../www/calc/holdcoDiscount.js');
 const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE, HOLDCO_DISCOUNT } = require('../../www/config.js');
 const {
-  deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
+  deriveFcf, deriveMultiYearGrowth, deriveDividendGrowth,
   getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel, isReit, isAirline, isUtility, isCyclical, isConglomerate, isSaas,
 } = require('../../www/utils.js');
 const { marketParamsFor } = require('./market.js');
@@ -482,6 +482,14 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     // fetchDCFData() uses for the live tool.
     annualFcfHistory: Array.isArray(series.annualFreeCashFlow) ? series.annualFreeCashFlow : [],
     annualRevenueHistory: Array.isArray(series.annualTotalRevenue) ? series.annualTotalRevenue : [],
+    // Same three series Damodaran's fundamental-growth seed needs (see
+    // www/utils.js's deriveMultiYearGrowth) -- kept separate from the
+    // `equity`/`netIncome` fields above (used only for the ROE chart, and
+    // NOT run through the FX-conversion block below) so the growth seed
+    // always gets a correctly-converted value regardless of chart handling.
+    annualNetIncomeHistory: Array.isArray(series.annualNetIncome) ? series.annualNetIncome : [],
+    annualStockholdersEquityHistory: Array.isArray(series.annualStockholdersEquity) ? series.annualStockholdersEquity : [],
+    annualDividendsPaidHistory: Array.isArray(series.annualCashDividendsPaid) ? series.annualCashDividendsPaid : [],
   };
 }
 
@@ -685,6 +693,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.fcfAnnualLatest = c(hist.fcfAnnualLatest);
         hist.annualFcfHistory = hist.annualFcfHistory.map(e => ({ date: e.date, value: c(e.value) }));
         hist.annualRevenueHistory = hist.annualRevenueHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualNetIncomeHistory = hist.annualNetIncomeHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualStockholdersEquityHistory = hist.annualStockholdersEquityHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualDividendsPaidHistory = hist.annualDividendsPaidHistory.map(e => ({ date: e.date, value: c(e.value) }));
         // REIT FFO/AFFO inputs (see calc/reit.js) -- missed in the original
         // REIT wiring pass, same currency-mixing bug class as the SONY
         // incident above (net income/D&A left unconverted while capex above
@@ -706,6 +717,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         hist.fcfAnnualLatest = null;
         hist.annualFcfHistory = [];
         hist.annualRevenueHistory = [];
+        hist.annualNetIncomeHistory = [];
+        hist.annualStockholdersEquityHistory = [];
+        hist.annualDividendsPaidHistory = [];
         data.netIncome = null;
         data.depreciationAndAmortization = null;
         data.ebitda = null;
@@ -889,7 +903,13 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       }
       const waccPct = r2(waccResult.wacc * 100);
       waccOrRePct = waccPct;
-      const baseGrowthPct = r1(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100);
+      const baseGrowthPct = r1(deriveMultiYearGrowth({
+        revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
+        annualRevenueHistory: hist.annualRevenueHistory, annualFcfHistory: hist.annualFcfHistory,
+        annualNetIncomeHistory: hist.annualNetIncomeHistory,
+        annualStockholdersEquityHistory: hist.annualStockholdersEquityHistory,
+        annualDividendsPaidHistory: hist.annualDividendsPaidHistory,
+      }) * 100);
       const s = deriveScenarios({ method: 'DCF', baseGrowthPct, waccOrRePct: waccPct });
       method = 'DCF';
       // Fade growth toward the terminal rate instead of holding one flat
