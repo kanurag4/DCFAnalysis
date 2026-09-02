@@ -131,7 +131,7 @@ function deriveDcfAssumptions(data, opts) {
   });
   const re = rf + effectiveBeta * erp;
 
-  const baseGrowthPct = +(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth) * 100).toFixed(1);
+  const baseGrowthPct = +(deriveMultiYearGrowth(data) * 100).toFixed(1);
   // Bear/bull spread as a magnitude offset from base, not a base*0.5/1.5
   // multiplier — the multiplier form inverts direction once base is
   // negative (2026-08-11 fix, see CLAUDE.md's Known Traps). |base| as the
