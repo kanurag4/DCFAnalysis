@@ -126,6 +126,9 @@ test('convertFinancials: converts statement figures from financialCurrency into 
     currency: 'USD', financialCurrency: 'INR', price: 1.85,
     totalRevenue: 8300, freeCashflow: 830, totalDebt: 100, marketCap: 18e9,
     annualFcfHistory: [{ date: '2025', value: 800 }],
+    annualNetIncomeHistory: [{ date: '2025', value: 500 }],
+    annualStockholdersEquityHistory: [{ date: '2025', value: 5000 }],
+    annualDividendsPaidHistory: [{ date: '2025', value: -100 }],
   };
   const out = await convertFinancials(data, { proxyUrl: 'x', fxCache: new Map(), fetchFx: async () => 0.012 });
   assert.ok(Math.abs(out.totalRevenue - 99.6) < 1e-6);   // 8300 * 0.012
@@ -133,14 +136,25 @@ test('convertFinancials: converts statement figures from financialCurrency into 
   assert.equal(out.marketCap, 18e9);                     // NOT converted (already a quote-currency figure)
   assert.equal(out.price, 1.85);
   assert.ok(Math.abs(out.annualFcfHistory[0].value - 9.6) < 1e-6);
+  assert.ok(Math.abs(out.annualNetIncomeHistory[0].value - 6) < 1e-6);
+  assert.ok(Math.abs(out.annualStockholdersEquityHistory[0].value - 60) < 1e-6);
+  assert.ok(Math.abs(out.annualDividendsPaidHistory[0].value - (-1.2)) < 1e-6);
 });
 
 test('convertFinancials: no rate -> fail closed (statement figures nulled)', async () => {
-  const data = { currency: 'USD', financialCurrency: 'INR', totalRevenue: 8300, freeCashflow: 830 };
+  const data = {
+    currency: 'USD', financialCurrency: 'INR', totalRevenue: 8300, freeCashflow: 830,
+    annualNetIncomeHistory: [{ date: '2025', value: 500 }],
+    annualStockholdersEquityHistory: [{ date: '2025', value: 5000 }],
+    annualDividendsPaidHistory: [{ date: '2025', value: -100 }],
+  };
   const out = await convertFinancials(data, { proxyUrl: 'x', fxCache: new Map(), fetchFx: async () => null });
   assert.equal(out.totalRevenue, null);
   assert.equal(out.freeCashflow, null);
   assert.equal(out.fxConversionFailed, true);
+  assert.deepStrictEqual(out.annualNetIncomeHistory, []);
+  assert.deepStrictEqual(out.annualStockholdersEquityHistory, []);
+  assert.deepStrictEqual(out.annualDividendsPaidHistory, []);
 });
 
 test('convertFinancials: matching currencies pass through untouched, no FX call', async () => {

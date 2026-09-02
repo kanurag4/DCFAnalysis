@@ -53,6 +53,7 @@ async function convertFinancials(data, { proxyUrl, fxCache, fetchFx = fetchFxRat
   if (rate == null) {
     for (const f of FIELDS) out[f] = null;
     out.annualFcfHistory = []; out.annualRevenueHistory = [];
+    out.annualNetIncomeHistory = []; out.annualStockholdersEquityHistory = []; out.annualDividendsPaidHistory = [];
     out.fxConversionFailed = true;
     return out;
   }
@@ -60,6 +61,9 @@ async function convertFinancials(data, { proxyUrl, fxCache, fetchFx = fetchFxRat
   for (const f of FIELDS) out[f] = c(data[f]);
   out.annualFcfHistory = (data.annualFcfHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
   out.annualRevenueHistory = (data.annualRevenueHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
+  out.annualNetIncomeHistory = (data.annualNetIncomeHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
+  out.annualStockholdersEquityHistory = (data.annualStockholdersEquityHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
+  out.annualDividendsPaidHistory = (data.annualDividendsPaidHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
   return out;
 }
 
