@@ -2,7 +2,7 @@
 // Pure: evaluate one stock's BASE-CASE valuation exactly as app.js seeds it.
 // Returns a ranked-row object, or { excluded: true, reason } when un-rankable.
 const {
-  deriveFcf, deriveBaseGrowth, deriveDividendGrowth,
+  deriveFcf, deriveMultiYearGrowth, deriveDividendGrowth,
   getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
   isUtility, isCyclical, isConglomerate,
 } = require('../../www/utils.js');
@@ -195,7 +195,7 @@ function evaluateStockCore(data, params) {
   // to duck under the screen's own 80% "inflated FCF" cap, when the correct
   // fading-growth value (102.3%, matching the live tool/ticker page exactly)
   // should have excluded it from qualifying at all.
-  const baseGrowthPct = round1pct(deriveBaseGrowth(data.revenueGrowth, data.earningsGrowth));
+  const baseGrowthPct = round1pct(deriveMultiYearGrowth(data));
   const useMultiStage = baseGrowthPct < 0;
   const dcfCommon = {
     terminalGrowth, wacc: waccUsed, projectionYears: PROJECTION_YEARS,
