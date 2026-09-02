@@ -96,6 +96,24 @@ function marketMeta(ticker) {
   // 2026-08-10) so this doesn't silently fall into the generic bucket either.
   if (t.endsWith('.HK')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'HK$', indexTicker: '^HSI', indexName: 'Hang Seng Index' };
   if (t.endsWith('.SS') || t.endsWith('.SZ')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'CN¥', indexTicker: '000001.SS', indexName: 'Shanghai Composite' };
+  // ETF radar additions (2026-08-31 in market.js's WACC/growth seeds -- never
+  // mirrored here until 2026-09-02, found live-testing RO.SW: it fell to the
+  // generic catch-all below, which has indexTicker: null, so its page silently
+  // had no comparison line on the price chart at all, unlike every other
+  // European ticker. All 6 symbols below confirmed live against the Worker's
+  // /history route before adding (Norway needed OSEBX.OL -- ^OSEBX returns
+  // empty). Switzerland gets STOXX Europe 600, matching this file's existing
+  // precedent of using that broad pan-European benchmark for the UK too
+  // (line above), not a UK/Swiss-specific local index.
+  if (t.endsWith('.SW')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'CHF', indexTicker: '^STOXX', indexName: 'STOXX Europe 600' };
+  if (t.endsWith('.TW')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'NT$', indexTicker: '^TWII', indexName: 'Taiwan Weighted Index' };
+  if (t.endsWith('.TA')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: '₪', indexTicker: 'TA35.TA', indexName: 'Tel Aviv 35' };
+  if (t.endsWith('.ST')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'kr', indexTicker: '^OMX', indexName: 'OMX Stockholm 30' };
+  if (t.endsWith('.OL')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'kr', indexTicker: 'OSEBX.OL', indexName: 'Oslo Børs Benchmark' };
+  if (t.endsWith('.SI')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'S$', indexTicker: '^STI', indexName: 'Straits Times Index' };
+  // KOSDAQ: same market as KOSPI (.KS above) for valuation-parameter purposes
+  // -- see market.js's identical note -- so it gets the identical metadata too.
+  if (t.endsWith('.KQ')) return { folder: 'other', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };
   if (!t.includes('.')) return { folder: 'sp500', label: 'S&P 500', screenName: 'S&P 500 Most Undervalued', screenUrl: '/dcf/sp500-undervalued/', currencySymbol: '$', indexTicker: '^GSPC', indexName: 'S&P 500' };
   return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: '$', indexTicker: null, indexName: null };
 }
@@ -1463,4 +1481,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta };

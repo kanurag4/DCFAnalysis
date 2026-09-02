@@ -1,6 +1,33 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta } = require('../scripts/lib/ticker-page.js');
+
+// Regression test for a real bug (found live 2026-09-02): RO.SW (Switzerland)
+// fell through marketMeta()'s generic catch-all (indexTicker: null), so its
+// published page silently had no comparison line on the price chart at all --
+// the 6 "ETF radar additions" suffixes (added to market.js's WACC/growth
+// seeds 2026-08-31) were never mirrored into this file's own market metadata.
+test('marketMeta gives every ETF-radar-added suffix (SW/TW/TA/ST/OL/SI/KQ) a real indexTicker, not the generic null fallback', () => {
+  const cases = [
+    ['ROG.SW', '^STOXX'], ['2330.TW', '^TWII'], ['ESLT.TA', 'TA35.TA'],
+    ['SAAB-B.ST', '^OMX'], ['KOG.OL', 'OSEBX.OL'], ['S63.SI', '^STI'], ['012450.KQ', '^KS11'],
+  ];
+  for (const [ticker, expectedIndex] of cases) {
+    const m = marketMeta(ticker);
+    assert.equal(m.indexTicker, expectedIndex, `${ticker} should get indexTicker ${expectedIndex}, got ${m.indexTicker}`);
+    assert.notEqual(m.currencySymbol, '$', `${ticker} should not inherit the generic '$' fallback currency symbol`);
+  }
+});
+
+test('marketMeta KOSDAQ (.KQ) matches KOSPI (.KS) metadata exactly, per market.js\'s "same market" convention', () => {
+  assert.deepEqual(marketMeta('012450.KQ'), marketMeta('012450.KS'));
+});
+
+test('marketMeta genuinely uncovered suffixes still fall to the generic catch-all (indexTicker: null)', () => {
+  const m = marketMeta('XYZ.ZZ');
+  assert.equal(m.indexTicker, null);
+  assert.equal(m.currencySymbol, '$');
+});
 
 // Regression test for a real bug (found by peer review, fixed 2026-08-15):
 // this file's ExcessReturn branch clamped the ROE spread to growthOffsetSpread's
