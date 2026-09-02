@@ -208,7 +208,7 @@ if (!isNative) {
 let currentData   = null;
 let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best-effort
 let liveRfRate    = 4.5;   // updated when US 10-yr Treasury is fetched
-let liveAusRfRate = 4.8;   // updated when Australian 10-yr bond is fetched; 4.8% default
+let liveAusRfRate = 5.2;   // updated when Australian 10-yr bond is fetched; 5.2% default -- corrected 2026-09-02 (was 4.8%, real yield ~5.16-5.2%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
 let liveIndRfRate = 4.9;   // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 4.9% default
 // Korea: no live 10-yr KTB yield ticker exists on Yahoo (see docs/japan-korea-market-research.md
 // in the source repo) — these are fixed, never overwritten by a fetch.

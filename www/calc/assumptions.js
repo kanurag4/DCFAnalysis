@@ -31,7 +31,18 @@
 // didn't violate the ceiling but drifted out of the ~40-57% ratio band every other market
 // here sits in. kor's TGROWTH unchanged -- already ~45% against the corrected rf.
 // See scripts/lib/market.js in DCFAnalysis for the full reasoning (kept in sync here).
-const FALLBACK_RF = { us: 0.045, aus: 0.048, ind: 0.049, kor: 0.039, jpn: 0.022, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.011 };
+//
+// aus: corrected 2026-09-02 -- was 4.8%, real AU 10-year government bond yield is
+// ~5.16-5.2% (multiple sources, 2026-09-01/02; a multi-year high). Found live testing:
+// the tool's own live-refine fetch for this market (app.js's fetchAndSetAustralianRfRate,
+// symbol ^GSBG10.AX) has been silently 404ing -- confirmed against the live Worker -- so
+// the page was permanently stuck on this stale fallback with no visible error. AU uses
+// the raw yield directly (developed-market convention, same as us/uk), no spread
+// deduction. See docs/TODO.md for the other markets checked in the same pass but not
+// corrected here (jpn looks significantly stale too; not fixed without a verified
+// current Damodaran default-spread table to reapply the spread-adjusted convention
+// correctly) and for the ^GSBG10.AX / ^INBMKG10.NS dead-symbol follow-up.
+const FALLBACK_RF = { us: 0.045, aus: 0.052, ind: 0.049, kor: 0.039, jpn: 0.022, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.011 };
 const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
 const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6 };
