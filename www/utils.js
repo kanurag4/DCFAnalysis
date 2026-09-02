@@ -279,6 +279,112 @@ function deriveBaseGrowth(revenueGrowth, earningsGrowth) {
   return Math.max(-0.05, Math.min(0.25, avg));
 }
 
+// CAGR between the first and last *positive* points of a [{date,value}]
+// series. Ported from scripts/lib/etf/growth-rate.js's already-proven
+// seriesCagr (shipped with the ETF radar 2026-09-01) so every DCF consumer
+// shares one implementation instead of the radar keeping its own copy.
+// Returns null unless there are >= minPoints non-null points spanning >=
+// minYears -- a 2-point series with only a 1-year gap is just a 1-year rate,
+// which isn't the "multi-year trend" this function is for.
+function seriesCagr(series, { minPoints = 3, minYears = 2 } = {}) {
+  const pts = (Array.isArray(series) ? series : [])
+    .filter(e => e && e.value != null && isFinite(e.value));
+  if (pts.length < minPoints) return null;
+  const first = pts[0], last = pts[pts.length - 1];
+  if (!(first.value > 0) || !(last.value > 0)) return null; // sign flips make CAGR meaningless
+  const yr = (d) => (/^\d{4}/.test(String(d || '')) ? Number(String(d).slice(0, 4)) : null);
+  const y0 = yr(first.date), y1 = yr(last.date);
+  const years = (y0 != null && y1 != null) ? y1 - y0 : pts.length - 1;
+  if (years < minYears) return null;
+  return Math.pow(last.value / first.value, 1 / years) - 1;
+}
+
+// Damodaran's fundamental growth: retention ratio x ROE, averaged over every
+// fiscal year with both net income and stockholders' equity on record
+// (Investment Valuation, ch. 11 -- ties growth to a company's real
+// reinvestment capacity, not its price/earnings history). A year is
+// excluded, not zeroed, when net income <= 0 (retention/ROE are meaningless
+// off a loss) or equity <= 0 (a negative-equity balance sheet breaks ROE as
+// a growth proxy). retention is floored at 0 (never negative) when
+// dividends paid exceed net income -- a company funding a payout from
+// reserves/debt is modeled as retaining nothing, not as actively destroying
+// capital; that floor is a deliberate conservative choice, matching this
+// codebase's existing bias toward capping optimistic-looking inputs rather
+// than letting one distorted year swing the result (see
+// calc/cyclicalNormalization.js for the same philosophy applied to FCF).
+// Needs >= minYears valid years to trust the average -- same bar
+// cyclicalNormalization.js's own minYears already uses.
+function fundamentalGrowth({ netIncomeHistory, equityHistory, dividendsHistory, minYears = 2 }) {
+  const niByDate = new Map(
+    (Array.isArray(netIncomeHistory) ? netIncomeHistory : [])
+      .filter(e => e && e.value != null && isFinite(e.value))
+      .map(e => [e.date, e.value])
+  );
+  const divByDate = new Map(
+    (Array.isArray(dividendsHistory) ? dividendsHistory : [])
+      .filter(e => e && e.value != null && isFinite(e.value))
+      .map(e => [e.date, e.value])
+  );
+
+  const rates = [];
+  for (const e of (Array.isArray(equityHistory) ? equityHistory : [])) {
+    if (!e || e.value == null || !isFinite(e.value) || e.value <= 0) continue;
+    const ni = niByDate.get(e.date);
+    if (ni == null || ni <= 0) continue;
+    const roe = ni / e.value;
+    const paidOut = divByDate.has(e.date) ? Math.min(Math.abs(divByDate.get(e.date)), ni) : 0;
+    const retention = 1 - (paidOut / ni);
+    rates.push(retention * roe);
+  }
+  if (rates.length < minYears) return null;
+  return rates.reduce((a, b) => a + b, 0) / rates.length;
+}
+
+function oneYearFallbackGrowth(data) {
+  const y = [data.revenueGrowth, data.earningsGrowth].filter(v => v != null && isFinite(v));
+  return y.length ? Math.min(...y) : 0.05;
+}
+
+// The forward growth seed for every DCF consumer (live tool, /evaluate/,
+// Watchlist, the 6 undervalued screens, the ticker-page generator, the ETF
+// radar). Replaces deriveBaseGrowth's 1-year Yahoo average, which clamps a
+// single distorted year (an earnings rebound off a crisis-depressed base)
+// to the +25% ceiling and produces a 3-7x intrinsic-value blow-up for a
+// structurally mid-single-digit-growth mega-cap -- see the spec's UNH/LMT
+// evidence table.
+//
+// fundamentalGrowth (retention x ROE) is Damodaran's actual preferred
+// method -- it is the primary signal. The multi-year revenue/FCF CAGR (the
+// same technique already shipped on the ETF radar) is a sanity cross-check:
+// a serial acquirer's ROE can look excellent on paper while revenue/FCF
+// barely move, so the lower of the two wins. Falls through to the
+// historical CAGR alone when fundamentals aren't computable (short
+// history), then the 1-year figure, then 0.05 -- the exact fallback chain
+// the ETF radar already ships. Raw growth is clamped to [-0.05, 0.15] --
+// tighter than deriveBaseGrowth's [-0.05, 0.25], since a multi-year anchor
+// no longer needs the wider ceiling to accommodate a single good/bad year.
+function deriveMultiYearGrowth(data) {
+  if (!data) return 0.05;
+
+  const fg = fundamentalGrowth({
+    netIncomeHistory: data.annualNetIncomeHistory,
+    equityHistory: data.annualStockholdersEquityHistory,
+    dividendsHistory: data.annualDividendsPaidHistory,
+  });
+
+  const revCagr = seriesCagr(data.annualRevenueHistory);
+  const fcfCagr = seriesCagr(data.annualFcfHistory);
+  const historical = [revCagr, fcfCagr].filter(x => x != null);
+  const historicalGrowth = historical.length ? Math.min(...historical) : null;
+
+  let raw;
+  if (fg != null) raw = (historicalGrowth != null) ? Math.min(fg, historicalGrowth) : fg;
+  else if (historicalGrowth != null) raw = historicalGrowth;
+  else raw = oneYearFallbackGrowth(data);
+
+  return Math.max(-0.05, Math.min(0.15, raw));
+}
+
 function isAsxTicker(ticker) {
   return !!(ticker && ticker.toUpperCase().endsWith('.AX'));
 }
@@ -316,5 +422,6 @@ if (typeof module !== 'undefined') module.exports = {
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
+  deriveMultiYearGrowth, seriesCagr, fundamentalGrowth,
   formatUpdatedDate,
 };
