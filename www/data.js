@@ -34,6 +34,9 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let annualFcf = null;
   let annualFcfHistory = [];
   let annualRevenueHistory = [];
+  let annualNetIncomeHistory = [];
+  let annualStockholdersEquityHistory = [];
+  let annualDividendsPaidHistory = [];
   try {
     const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`, { headers: extraHeaders });
     if (tsRes.ok) {
@@ -60,6 +63,14 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
         // only source with real per-year FCF/revenue data.
         annualFcfHistory = Array.isArray(tsBody.annualFreeCashFlow) ? tsBody.annualFreeCashFlow : [];
         annualRevenueHistory = Array.isArray(tsBody.annualTotalRevenue) ? tsBody.annualTotalRevenue : [];
+        // Full multi-year series for Damodaran's fundamental-growth seed
+        // (retention x ROE) -- see utils.js's deriveMultiYearGrowth(). Same
+        // /timeseries call already in flight; the Worker returns these three
+        // fields unconditionally regardless of ?type= (see CLAUDE.md's Data
+        // Fetching Contract), so no Worker change was needed.
+        annualNetIncomeHistory = Array.isArray(tsBody.annualNetIncome) ? tsBody.annualNetIncome : [];
+        annualStockholdersEquityHistory = Array.isArray(tsBody.annualStockholdersEquity) ? tsBody.annualStockholdersEquity : [];
+        annualDividendsPaidHistory = Array.isArray(tsBody.annualCashDividendsPaid) ? tsBody.annualCashDividendsPaid : [];
       }
     }
   } catch (_) {
@@ -96,6 +107,9 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let annualFcfConverted = annualFcf;
   let annualFcfHistoryConverted = annualFcfHistory;
   let annualRevenueHistoryConverted = annualRevenueHistory;
+  let annualNetIncomeHistoryConverted = annualNetIncomeHistory;
+  let annualStockholdersEquityHistoryConverted = annualStockholdersEquityHistory;
+  let annualDividendsPaidHistoryConverted = annualDividendsPaidHistory;
   let netIncomeConverted = data.netIncome;
   let depreciationConverted = data.depreciationAndAmortization;
   let ebitdaConverted = data.ebitda;
@@ -115,6 +129,9 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       annualFcfConverted = c(annualFcfConverted);
       annualFcfHistoryConverted = annualFcfHistory.map(e => ({ date: e.date, value: c(e.value) }));
       annualRevenueHistoryConverted = annualRevenueHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualNetIncomeHistoryConverted = annualNetIncomeHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualStockholdersEquityHistoryConverted = annualStockholdersEquityHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualDividendsPaidHistoryConverted = annualDividendsPaidHistory.map(e => ({ date: e.date, value: c(e.value) }));
       netIncomeConverted = c(netIncomeConverted);
       depreciationConverted = c(depreciationConverted);
       ebitdaConverted = c(ebitdaConverted);
@@ -131,6 +148,9 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       annualFcfConverted = null;
       annualFcfHistoryConverted = [];
       annualRevenueHistoryConverted = [];
+      annualNetIncomeHistoryConverted = [];
+      annualStockholdersEquityHistoryConverted = [];
+      annualDividendsPaidHistoryConverted = [];
       netIncomeConverted = null;
       depreciationConverted = null;
       ebitdaConverted = null;
@@ -146,6 +166,9 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     annualFcf: annualFcfConverted,
     annualFcfHistory: annualFcfHistoryConverted,
     annualRevenueHistory: annualRevenueHistoryConverted,
+    annualNetIncomeHistory: annualNetIncomeHistoryConverted,
+    annualStockholdersEquityHistory: annualStockholdersEquityHistoryConverted,
+    annualDividendsPaidHistory: annualDividendsPaidHistoryConverted,
     netIncome: netIncomeConverted,
     depreciationAndAmortization: depreciationConverted,
     ebitda: ebitdaConverted,
