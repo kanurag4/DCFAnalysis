@@ -884,6 +884,19 @@
     "updatedAt": "2026-08-29T06:19:54.041Z"
   },
   {
+    "ticker": "RO.SW",
+    "slug": "ro-sw",
+    "name": "Roche Holding AG",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 564.9688078370839,
+    "price": 359.4,
+    "marginOfSafety": 0.5719777624849303,
+    "marketCap": 286357651456,
+    "updated": "2026-09-02",
+    "updatedAt": "2026-09-02T11:30:51.130Z"
+  },
+  {
     "ticker": "SAN.PA",
     "slug": "san-pa",
     "name": "Sanofi",

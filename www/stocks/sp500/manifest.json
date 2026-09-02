@@ -234,6 +234,19 @@
     "updatedAt": "2026-08-29T05:48:01.853Z"
   },
   {
+    "ticker": "CRM",
+    "slug": "crm",
+    "name": "Salesforce, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 269.1124029763296,
+    "price": 258.11,
+    "marginOfSafety": 0.04262679856003085,
+    "marketCap": 212424523776,
+    "updated": "2026-09-02",
+    "updatedAt": "2026-09-02T11:29:35.173Z"
+  },
+  {
     "ticker": "CSCO",
     "slug": "csco",
     "name": "Cisco Systems, Inc.",
@@ -258,6 +271,19 @@
     "marketCap": 24483010560,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T05:48:28.259Z"
+  },
+  {
+    "ticker": "DT",
+    "slug": "dt",
+    "name": "Dynatrace, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 44.23074296661734,
+    "price": 52.86,
+    "marginOfSafety": -0.16324738996183613,
+    "marketCap": 15276651520,
+    "updated": "2026-09-02",
+    "updatedAt": "2026-09-02T11:29:50.138Z"
   },
   {
     "ticker": "EA",
@@ -453,6 +479,19 @@
     "marketCap": 1046996910080,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T05:51:46.936Z"
+  },
+  {
+    "ticker": "LMT",
+    "slug": "lmt",
+    "name": "Lockheed Martin Corporation",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 891.0514901156565,
+    "price": 544.5,
+    "marginOfSafety": 0.6364582003960634,
+    "marketCap": 125665566720,
+    "updated": "2026-09-02",
+    "updatedAt": "2026-09-02T11:30:19.773Z"
   },
   {
     "ticker": "MA",
@@ -869,6 +908,19 @@
     "marketCap": 160994590720,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T05:58:53.638Z"
+  },
+  {
+    "ticker": "UNH",
+    "slug": "unh",
+    "name": "UnitedHealth Group Incorporated",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 401.68772865139147,
+    "price": 396.3,
+    "marginOfSafety": 0.013595076082239352,
+    "marketCap": 355716825088,
+    "updated": "2026-09-02",
+    "updatedAt": "2026-09-02T11:29:20.308Z"
   },
   {
     "ticker": "VZ",
