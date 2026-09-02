@@ -30,12 +30,12 @@ test('lookThroughGrowth: the slower of revenue vs FCF CAGR', () => {
   assert.ok(g < 0 && g > -0.15, `expected a mild negative, got ${g}`);
 });
 
-test('lookThroughGrowth: genuine hypergrowth survives (caller clamps)', () => {
+test('lookThroughGrowth: genuine hypergrowth clamps at +15% (re-aligned 2026-09-02 to the shared deriveMultiYearGrowth, which clamps internally -- previously left unclamped for the caller)', () => {
   const data = {
     annualRevenueHistory: [{ value: 27 }, { value: 61 }, { value: 130 }, { value: 216 }],
     annualFcfHistory: [{ value: 3.8 }, { value: 27 }, { value: 61 }, { value: 97 }],
   };
-  assert.ok(lookThroughGrowth(data) > 0.5);
+  assert.strictEqual(lookThroughGrowth(data), 0.15);
 });
 
 test('lookThroughGrowth: falls back to min(1-yr rev, earn) with too little history', () => {

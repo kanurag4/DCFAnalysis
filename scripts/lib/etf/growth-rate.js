@@ -1,22 +1,23 @@
 // scripts/lib/etf/growth-rate.js — pure.
-// The ETF radar's forward-growth input for a holding's DCF. Deliberately more
-// conservative + more robust than the shared engine's deriveBaseGrowth(), which
-// averages Yahoo's 1-year revenueGrowth + earningsGrowth: a single distorted
-// year (an earnings bounce off a litigation-crushed base — UNH showed +61%
-// "earnings growth" that way) then drives a 25%-capped growth assumption for a
-// mature mega-cap and blows up the fund's look-through average.
+// The ETF radar's forward-growth input for a holding's DCF. Originally a
+// standalone multi-year revenue/FCF CAGR (shipped 2026-09-01, the fix that
+// tamed the first run's UNH/ASIA blow-ups) -- re-aligned 2026-09-02:
+// lookThroughGrowth() now delegates to the shared www/utils.js
+// deriveMultiYearGrowth(), which is a superset of what this file used to do
+// alone -- it adds Damodaran's fundamental growth (retention x ROE) as the
+// primary signal, with this file's original multi-year CAGR technique now
+// serving as the shared function's own cross-check. Every DCF consumer (live
+// tool, Watchlist, the 6 screens, ticker pages, and this radar) shares one
+// implementation instead of a sixth standalone copy.
 //
-// Instead: the SLOWER of the multi-year revenue CAGR and the multi-year
-// free-cash-flow CAGR over whatever annual history Yahoo's /timeseries returns
-// (~4 years). A series needs >= 3 non-null points spanning >= 2 years to count —
-// otherwise, and when there's no history at all, it falls back to
-// min(1-year revenueGrowth, 1-year earningsGrowth), then 0.05. The caller still
-// applies the engine's [-0.05, 0.25] clamp.
-//
-// Known limitation: an endpoint CAGR (not a regression slope) shares the
-// single-year failure mode when the distortion sits at an endpoint. The
-// min(rev, fcf) pick + the engine clamp bound the damage; a least-squares slope
-// would be more robust and is a reasonable future change.
+// seriesCagr/oneYearFallback below are kept as this file's own local
+// implementations (not re-exported from utils.js) because they're more
+// permissive about input shape (bare-number arrays, not just {date,value}
+// objects -- see the tests) and nothing in production code calls them
+// directly anymore (only lookThroughGrowth, via run-etf-radar.js) -- they're
+// kept for their own test coverage's sake, not because anything still
+// depends on their exact behavior downstream.
+const { deriveMultiYearGrowth } = require('../../../www/utils.js');
 
 // CAGR between the first and last *positive* points of a [{date,value}] (or
 // [{value}]) series. Returns null unless there are >= `minPoints` non-null
@@ -45,14 +46,14 @@ function oneYearFallback(data) {
   return y.length ? Math.min(...y) : 0.05;
 }
 
-// Raw (un-clamped) growth rate for the look-through DCF. The caller clamps.
+// Growth rate for the look-through DCF -- already clamped to [-0.05, 0.15]
+// by the shared deriveMultiYearGrowth (previously this returned a raw,
+// unclamped value and left clamping to the caller; the shared function
+// clamps internally for every consumer, this one included, so a caller no
+// longer needs to remember to).
 function lookThroughGrowth(data) {
   if (!data) return 0.05;
-  const revC = seriesCagr(data.annualRevenueHistory);
-  const fcfC = seriesCagr(data.annualFcfHistory);
-  const multi = [revC, fcfC].filter(x => x != null);
-  if (multi.length) return Math.min(...multi);
-  return oneYearFallback(data);
+  return deriveMultiYearGrowth(data);
 }
 
 module.exports = { lookThroughGrowth, seriesCagr, oneYearFallback };
