@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8fafc">
+  <title>Exit History — Every Stock That Left Our Undervalued Screens | KashVector</title>
+  <link rel="canonical" href="https://kashvector.com/dcf/exits/">
+  <meta property="og:title" content="Exit History — Every Stock That Left Our Undervalued Screens | KashVector">
+  <meta property="og:description" content="Every stock that has exited our Most Undervalued screens across all six markets, with entry/exit price, return, and days held — the full record, not just this week's.">
+  <meta property="og:url" content="https://kashvector.com/dcf/exits/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KashVector">
+  <meta property="og:image" content="https://kashvector.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="KashVector — free stock valuation tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Exit History — Every Stock That Left Our Undervalued Screens | KashVector">
+  <meta name="twitter:description" content="Every stock that has exited our Most Undervalued screens across all six markets, with entry/exit price, return, and days held — the full record, not just this week's.">
+  <meta name="twitter:image" content="https://kashvector.com/og-image.png">
+  <meta name="description" content="Every stock that has exited our Most Undervalued screens across all six markets, with entry/exit price, return, and days held — the full record, not just this week's.">
+  <script src="/kv-theme.js"></script>
+  <script src="/kv-banner.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/brand.css">
+  <link rel="stylesheet" href="/kv-shared.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="../../dcf-icon.svg">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"KashVector Exit History","url":"https://kashvector.com/dcf/exits/","description":"Every stock that has exited a KashVector Most Undervalued screen, across all six markets, with entry/exit price, return and days held.","applicationCategory":"FinanceApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this a list of stocks to avoid?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. A stock leaves a screen simply because its margin of safety fell out of that week's top 20 — which can happen because the price rose (a good outcome, the stock is no longer as cheap) or because the model's own inputs moved. It is not a verdict on the company, and plenty of exits here left at a solid gain." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why did some stocks exit at a loss?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The screen mechanically replaces whatever drops out of the ranked top 20 with the next-ranked stock every week, regardless of which direction the price moved. A stock can exit at a loss if cheaper opportunities appeared elsewhere on the list, or if its own fundamentals or valuation genuinely deteriorated. Both are shown here, unfiltered." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this show every exit ever, or just this week's?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Every exit recorded since each screen's own launch, across all six markets — not just the most recent refresh. Each individual screen page only shows its latest week's exits; this page is the full history." }
+      },
+      {
+        "@type": "Question",
+        "name": "How is \"Return\" calculated here?",
+        "acceptedAnswer": { "@type": "Answer", "text": "(Exit price − entry price) / entry price — price return only, per individual stock. It does not include dividends. That differs from each screen's own headline paper-portfolio return, which is a total-return figure across the whole $10,000 basket including dividends — see The $10,000 Paper Portfolio for that methodology." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div id="kv-nav-placeholder" style="height:41px"></div>
+  <script src="/kv-nav.js"></script>
+  <script src="/kv-footer.js"></script>
+
+  <header class="app-header">
+    <h1><img src="../../dcf-icon.svg" alt="" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:6px">Exit History</h1>
+    <button class="theme-toggle" onclick="window.kvTheme.toggle()" aria-label="Toggle theme"></button>
+  </header>
+
+  <main>
+    <section class="rules-card">
+      <details class="rules-details" open>
+        <summary class="rules-title">What this page is</summary>
+        <p class="rules-intro">Each of our six <a href="/dcf/asx-undervalued/">Most Undervalued</a> screens re-ranks its market every week and replaces whatever drops out of the top 20. Every one of those departures — win or loss — is logged here permanently, across every market, since each screen's own launch. Each screen's own page only shows its latest week's exits; this is the complete record.</p>
+        <p class="rules-cta">Curious how the underlying paper portfolio works? <a href="/articles/paper-portfolio-tracker/">Read the methodology →</a></p>
+      </details>
+    </section>
+
+    <div id="status" class="status">Loading exit history…</div>
+    <div id="markets"></div>
+
+    <section class="tool-info">
+      <div class="tool-about">
+        <h2>About this page</h2>
+        <p>Every KashVector undervalued screen is mechanical: a stock's margin of safety is recalculated
+        fresh every week, and whatever no longer clears the bar for the top 20 is "sold" at that week's
+        snapshot price. This page is the complete, permanent log of those departures across all six
+        markets — the good exits and the bad ones, not a curated highlight reel.</p>
+        <p>It exists for the same reason the screens themselves publish a live, checkable
+        <a href="/dcf/asx-undervalued/">rankings list</a> instead of a static "top picks" article: so the
+        claim that a screen works — or doesn't — can be verified against what it actually did, not just
+        what it says.</p>
+      </div>
+      <div class="tool-faq">
+        <h2>Frequently asked questions</h2>
+        <details class="faq-item"><summary>Is this a list of stocks to avoid?</summary><p>No. A stock leaves a screen simply because its margin of safety fell out of that week's top 20 — which can happen because the price rose (a good outcome, the stock is no longer as cheap) or because the model's own inputs moved. It is not a verdict on the company, and plenty of exits here left at a solid gain.</p></details>
+        <details class="faq-item"><summary>Why did some stocks exit at a loss?</summary><p>The screen mechanically replaces whatever drops out of the ranked top 20 with the next-ranked stock every week, regardless of which direction the price moved. A stock can exit at a loss if cheaper opportunities appeared elsewhere on the list, or if its own fundamentals or valuation genuinely deteriorated. Both are shown here, unfiltered.</p></details>
+        <details class="faq-item"><summary>Does this show every exit ever, or just this week's?</summary><p>Every exit recorded since each screen's own launch, across all six markets — not just the most recent refresh. Each individual screen page only shows its latest week's exits; this page is the full history.</p></details>
+        <details class="faq-item"><summary>How is "Return" calculated here?</summary><p>(Exit price − entry price) / entry price — price return only, per individual stock. It does not include dividends. That differs from each screen's own headline paper-portfolio return, which is a total-return figure across the whole $10,000 basket including dividends — see <a href="/articles/paper-portfolio-tracker/">The $10,000 Paper Portfolio</a> for that methodology.</p></details>
+      </div>
+    </section>
+
+    <section class="editorial">
+      <p>⚠️ <strong>This is an automated log, not financial advice or a recommendation.</strong>
+      Exits happen mechanically when a stock's margin of safety falls out of a screen's top 20 —
+      not because of a judgment on the company's management, news, or prospects. Past exits, wins or
+      losses, are not a reliable indicator of how any future pick will perform. Always do your own
+      research.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>⚠️ Not financial advice. Valuations are estimates based on assumptions and public data; they may be wrong. Consult a licensed adviser before investing.</p>
+    <p><a href="../../">← All KashVector tools</a></p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

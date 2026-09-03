@@ -309,7 +309,8 @@
           '<th>Exit date</th><th class="num">Exit price</th><th class="num">Return</th>' +
         '</tr></thead>' +
         '<tbody>' + tbodyContent + '</tbody>' +
-      '</table></div>';
+      '</table></div>' +
+      '<p class="activity-exits-link"><a href="/dcf/exits/">See the full exit history across all six markets →</a></p>';
 
     const leverageNote = document.querySelector('.leverage-note');
     const ref = leverageNote || tableEl.parentNode;
