@@ -476,6 +476,6 @@ function writeRadarArtifacts(result, outDir, { generatePages = false, pagesRoot,
 
 module.exports = {
   runEtfRadar, writeRadarArtifacts, slimResult, valueOne, plausible, convertFinancials,
-  ensureHoldings, buildTickerPageIndex, ordinal,
+  ensureHoldings, buildTickerPageIndex, ordinal, fetchQuotesReal,
   MAX_HOLDING_MARGIN, MIN_HOLDING_MARGIN,
 };
