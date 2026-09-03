@@ -2,8 +2,12 @@
 //   node scripts/refresh-etf-radar.js            full monthly run (download holdings + fetch union + rank + pages)
 //   node scripts/refresh-etf-radar.js --offline  use committed holdings snapshots (no issuer downloads); still fetches the Yahoo union
 //   node scripts/refresh-etf-radar.js --regen    alias for --offline
-//   node scripts/refresh-etf-radar.js --reagg    reuse the cached union (the slow part); still re-downloads issuer holdings,
-//                                                re-fetches /quote prices + live rf, re-runs FX + valuation + pages
+//   node scripts/refresh-etf-radar.js --reagg    reuse the cached union of Yahoo data (the 25-50 min fetch); STILL re-downloads
+//                                                issuer holdings CSVs + re-fetches /quote prices + live rf, and re-runs FX +
+//                                                valuation + all 15 pages. Not a read-only recompute. A re-downloaded holdings
+//                                                file that goes backwards in asOf is now rejected (holdings-store.js's
+//                                                asOf-regressed guard). Funds added via --only ARE visible here (their cache is
+//                                                folded into _raw-etf.json — see the --only branch).
 //   node scripts/refresh-etf-radar.js --only=<slug>  scoped add/update: fetch + value ONLY that fund's own
 //                                                holdings, merge the result into the existing published
 //                                                rankings, regenerate only that fund's page + the ranking
@@ -18,6 +22,7 @@ const {
   runEtfRadar, writeRadarArtifacts, buildTickerPageIndex, ordinal, fetchQuotesReal,
 } = require('./lib/etf/run-etf-radar.js');
 const { mergeFundIntoRankings } = require('./lib/etf/merge-fund.js');
+const { mergeUnionCache } = require('./lib/etf/raw-cache.js');
 const { renderEtfPage } = require('./lib/etf/etf-page.js');
 const { renderRadarPage } = require('./lib/etf/etf-radar-page.js');
 const { sistersFor } = require('./lib/etf/overlap.js');
@@ -54,17 +59,34 @@ const etfsJsonPath = path.join(__dirname, 'etfs.json');
     if (!fund) throw new Error(`--only=${only}: no such slug in scripts/etfs.json`);
 
     const proxyUrl = readProxyUrl();
+    const sharedCachePath = path.join(__dirname, '_raw-etf.json');
+    const fundCachePath = path.join(__dirname, `_raw-etf-${only}.json`);
     const result = await runEtfRadar({
       injectedUniverse: [fund],
       holdingsDir: path.join(__dirname, 'etf-holdings'),
       overridesPath: path.join(__dirname, 'etf-symbol-overrides.json'),
-      rawCachePath: path.join(__dirname, `_raw-etf-${only}.json`), // never the main _raw-etf.json — that's the full-run cache used by --reagg
+      rawCachePath: fundCachePath, // a scoped run writes its own partial cache, never the full-run _raw-etf.json (which it would clobber) — it's folded back in below
       proxyUrl,
       log: console.log,
     }, { offline, throttleMs });
 
     const targetFund = result.funds[0];
     if (!targetFund) throw new Error(`--only=${only}: fund produced no result (crypto-excluded?)`);
+
+    // Fold this fund's freshly-fetched union data into the shared full-run cache
+    // so a later `--reagg` sees it — otherwise --reagg marks every holding of a
+    // fund added via --only as fetch-failed and its coverage collapses (see
+    // scripts/lib/etf/raw-cache.js's header for the SHLD incident this fixes).
+    if (fs.existsSync(sharedCachePath) && fs.existsSync(fundCachePath)) {
+      try {
+        const merged = mergeUnionCache(
+          JSON.parse(fs.readFileSync(sharedCachePath, 'utf8')),
+          JSON.parse(fs.readFileSync(fundCachePath, 'utf8')),
+        );
+        fs.writeFileSync(sharedCachePath, JSON.stringify(merged));
+        console.log(`Folded ${only}'s union into ${path.basename(sharedCachePath)} (--reagg will now see it)`);
+      } catch (e) { console.warn(`⚠ couldn't fold ${only} into the shared cache: ${e.message}`); }
+    }
 
     // Cheap, single batched quote call for EVERY fund's listing ticker (not a
     // re-valuation of anyone else's holdings) so the ranking page's price

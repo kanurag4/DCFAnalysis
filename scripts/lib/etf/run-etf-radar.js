@@ -214,7 +214,9 @@ async function runEtfRadar(deps, opts = {}) {
   const universe = loadUniverse(universePath, injectedUniverse);
 
   // 1. holdings for every fund. --reagg still re-downloads issuer files (cheap,
-  //    ~10s, and picks up adapter changes) — only the union fetch is cached.
+  //    ~10s, and picks up adapter changes) — only the Yahoo union fetch is cached.
+  //    ensureHoldings() keeps last-good on any data-integrity flag, including a
+  //    re-downloaded file whose asOf goes backwards (holdings-store.js).
   const withHoldings = [];
   for (const fund of universe) {
     const { snapshot, flags } = await ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, searchSymbol });
@@ -232,7 +234,9 @@ async function runEtfRadar(deps, opts = {}) {
   // --reagg: reuse the cached union (the 25-50 min fetch) and re-run FX +
   // valueOne + aggregate + pages. Still hits the network for the cheap parts —
   // issuer holdings (above), /quote listing prices, name-search. A symbol added
-  // to a fund since the cached run has no cache entry -> counts as fetch-failed.
+  // to a fund since the cached run has no cache entry -> counts as fetch-failed;
+  // funds added via `--only` avoid this because that path folds its per-fund
+  // cache back into _raw-etf.json (see refresh-etf-radar.js's --only branch).
   const cache = (reagg && rawCachePath && fs.existsSync(rawCachePath))
     ? JSON.parse(fs.readFileSync(rawCachePath, 'utf8')) : null;
 

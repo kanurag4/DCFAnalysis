@@ -38,3 +38,12 @@ test('asOf-unchanged alone is non-blocking — adopt the fresh rows, still flag 
   assert.equal(r.ok, true);
   assert.deepEqual(r.flags, ['asOf-unchanged']);
 });
+
+test('asOf-regressed blocks — an older-dated issuer file never overwrites a newer committed one', () => {
+  const prev = { asOf: '2026-09-01', rows: new Array(40).fill({ weight: 0.025 }) };
+  const fresh = { asOf: '2026-08-31', rows: new Array(40).fill({ weight: 0.025 }) }; // structurally fine, just older
+  const r = evaluateFreshness(prev, fresh);
+  assert.equal(r.ok, false, 'a backwards asOf must keep last-good');
+  assert.ok(r.flags.includes('asOf-regressed'));
+  assert.ok(!r.flags.includes('weight-sum-off'), 'weights are fine — asOf is the only problem');
+});
