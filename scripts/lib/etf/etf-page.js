@@ -28,7 +28,15 @@ const money = (p) => (p && Number.isFinite(p.price)
 function holdingCell(row, tickerPageIndex) {
   const href = tickerPageIndex && tickerPageIndex[row.yahoo];
   const label = escapeHtml(row.name || row.yahoo);
-  return href ? `<a href="${escapeHtml(href)}">${label}</a>` : label;
+  if (!row.yahoo) return label;
+  // Baked <a> for a page that exists at generation time (crawlable). Every row
+  // also carries data-kv-ticker so /kv-ticker-links.js can link the ones whose
+  // ticker page was published AFTER this ETF run — no re-run needed. See that
+  // script's header.
+  const dt = ` data-kv-ticker="${escapeHtml(row.yahoo)}"`;
+  return href
+    ? `<a href="${escapeHtml(href)}"${dt}>${label}</a>`
+    : `<span${dt}>${label}</span>`;
 }
 
 function mixList(mix, n = 8) {

@@ -39,7 +39,8 @@ test('detail page: ticker-page shell, summary stats, valuation, holdings, breakd
   assert.match(html, /94% of fund weight/i);
   assert.match(html, /8th of 22 thematic ETFs/i);
   assert.match(html, /Palo Alto Networks/);
-  assert.match(html, /href="\/dcf\/stocks\/sp500\/panw\/"/);
+  assert.match(html, /<a href="\/dcf\/stocks\/sp500\/panw\/" data-kv-ticker="PANW">Palo Alto Networks<\/a>/);
+  assert.match(html, /<span data-kv-ticker="OKTA">Okta<\/span>/); // no baked page yet — kv-ticker-links.js links it client-side
   assert.match(html, /By sector/);
   assert.match(html, /Information Technology/);
   assert.match(html, /Sister ETFs/i);
@@ -61,7 +62,14 @@ test('a sister with no published page (no sisterMeta) is not linked', () => {
   assert.doesNotMatch(html, /Sister ETFs/i);   // the only sister ('bug') has no meta -> dropped
 });
 
-test('holding with no ticker page renders as plain text', () => {
+test('holding with no baked ticker page renders as a data-kv-ticker span (client-linked later)', () => {
   const { html } = renderEtfPage(fund, { tickerPageIndex: {}, asAt: '2026-09-01' });
-  assert.match(html, /<td>Palo Alto Networks<\/td>/);
+  assert.match(html, /<td><span data-kv-ticker="PANW">Palo Alto Networks<\/span><\/td>/);
+  assert.doesNotMatch(html, /<a href="\/dcf\/stocks/); // nothing in the index -> no baked links
+});
+
+test('a holding row with no yahoo symbol is plain text, no span', () => {
+  const f = { ...fund, valued: [{ name: 'Mystery Co', weight: 0.05, mos: -0.1, method: 'DCF' }] };
+  const { html } = renderEtfPage(f, { tickerPageIndex: {}, asAt: '2026-09-01' });
+  assert.match(html, /<td>Mystery Co<\/td>/);
 });

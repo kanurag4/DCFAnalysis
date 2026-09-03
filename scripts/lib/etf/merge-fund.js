@@ -70,4 +70,41 @@ function mergeFundIntoRankings(existing, targetFund, etfsStatic, listingPrices =
   return { rankingsSlim, fullRanked, fullUnranked };
 }
 
-module.exports = { mergeFundIntoRankings };
+// patchFatResult — fold one freshly-valued fund's full object into the persisted
+// FAT run result (scripts/_etf-result.json), the one `--pages-only` re-renders
+// from. Unlike mergeFundIntoRankings (which works against the slim on-disk
+// rankings), this needs the last full run's fat result as input — every OTHER
+// fund keeps its full valued[]/unvalued[]/sectorMix[]/sisters so the pages can
+// still be regenerated for all 15 without a fetch. Also refreshes every fund's
+// snapshotPrices from the scoped run's batched /quote so the price column stays
+// current. Pure; returns a new object.
+//
+// fatResult: the parsed scripts/_etf-result.json ({asAt, funds:[…fat],
+//   union, rankings:{ranked,unranked}, cryptoExcluded}) — or null (nothing to
+//   patch; caller should fall back to a full run).
+// freshFund: result.funds[0] from a runEtfRadar({injectedUniverse:[thatFund]}).
+// listingPrices: flat {ticker:{price,currency}} for every fund's listings.
+function patchFatResult(fatResult, freshFund, listingPrices = {}, asAt) {
+  if (!fatResult || !Array.isArray(fatResult.funds)) return null;
+  const pricesFor = (listings) => {
+    const out = {};
+    for (const l of (listings || [])) if (listingPrices[l.ticker]) out[l.ticker] = listingPrices[l.ticker];
+    return out;
+  };
+  const funds = fatResult.funds
+    .filter(f => f.slug !== freshFund.slug)
+    .concat([freshFund])
+    .map(f => ({ ...f, snapshotPrices: pricesFor(f.listings) }));
+  const ranked = funds.filter(f => f.ranked)
+    .sort((a, b) => b.lookThroughMos - a.lookThroughMos)
+    .map((f, i) => ({ ...f, rank: i + 1 }));
+  const unranked = funds.filter(f => !f.ranked);
+  return {
+    ...fatResult,
+    asAt: asAt || fatResult.asAt,
+    funds,
+    rankings: { ranked, unranked },
+  };
+}
+
+module.exports = { mergeFundIntoRankings, patchFatResult };

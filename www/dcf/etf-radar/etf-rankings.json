@@ -2,8 +2,8 @@
   "asAt": "2026-09-03",
   "union": {
     "count": 860,
-    "fetched": 848,
-    "failed": 12
+    "fetched": 860,
+    "failed": 0
   },
   "cryptoExcluded": [],
   "ranked": [
@@ -42,20 +42,22 @@
       "name": "iShares Global Healthcare ETF",
       "theme": "Global healthcare",
       "fee": 0.0041,
-      "lookThroughMos": -0.286215577109317,
-      "coverage": 0.9398956451936584,
+      "lookThroughMos": -0.28487624646506365,
+      "coverage": 0.9382084461831679,
       "ranked": true,
       "holdingsCount": 110,
       "valuedCount": 101,
       "rank": 3,
-      "flags": []
+      "flags": [
+        "asOf-regressed"
+      ]
     },
     {
       "slug": "shld",
       "name": "Global X Defense Tech ETF",
       "theme": "Defense technology",
       "fee": 0.005,
-      "lookThroughMos": -0.29250686485683025,
+      "lookThroughMos": -0.2931153099194894,
       "coverage": 0.8763516219463356,
       "ranked": true,
       "holdingsCount": 50,
@@ -190,7 +192,7 @@
       "name": "Betashares Global Robotics and Artificial Intelligence ETF",
       "theme": "Robotics & AI",
       "fee": 0.0057,
-      "lookThroughMos": -0.5778627278036036,
+      "lookThroughMos": -0.5778617662520588,
       "coverage": 0.9183807844955985,
       "ranked": true,
       "holdingsCount": 60,
@@ -205,7 +207,7 @@
       "name": "Betashares S&P/ASX Australian Technology ETF",
       "theme": "Australian technology",
       "fee": 0.0048,
-      "lookThroughMos": -0.6214341197120128,
+      "lookThroughMos": -0.6214410660765372,
       "coverage": 0.942792292685911,
       "ranked": true,
       "holdingsCount": 42,

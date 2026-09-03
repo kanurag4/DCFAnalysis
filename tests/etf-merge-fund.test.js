@@ -112,3 +112,35 @@ test('missing listing prices leave an empty snapshotPrices object, not a crash',
   const { fullRanked } = mergeFundIntoRankings(existing, shld, etfsStatic, {});
   assert.deepEqual(fullRanked.find(f => f.slug === 'shld').snapshotPrices, {});
 });
+
+test('patchFatResult swaps one fund in, re-ranks, refreshes prices, keeps others fat', () => {
+  const { patchFatResult } = require('../scripts/lib/etf/merge-fund.js');
+  const fat = {
+    asAt: '2026-09-01',
+    union: { count: 800, fetched: 800, failed: 0 },
+    cryptoExcluded: [],
+    funds: [
+      { slug: 'cldd', name: 'CLDD', theme: 'Cloud', ranked: true, lookThroughMos: -0.20, coverage: 0.98, listings: [{ ticker: 'CLDD' }], valued: [{ yahoo: 'A' }], sectorMix: [{ name: 'IT', weight: 1 }], snapshotPrices: {} },
+      { slug: 'shld', name: 'SHLD', theme: 'Defense', ranked: true, lookThroughMos: -0.29, coverage: 0.72, listings: [{ ticker: 'SHLD' }], valued: [{ yahoo: 'LMT' }], sectorMix: [], snapshotPrices: {} },
+    ],
+    rankings: { ranked: [], unranked: [] },
+  };
+  const freshShld = { slug: 'shld', name: 'SHLD', theme: 'Defense', ranked: true, lookThroughMos: -0.31, coverage: 0.88, listings: [{ ticker: 'SHLD' }], valued: [{ yahoo: 'LMT' }, { yahoo: 'RTX' }], sectorMix: [{ name: 'Industrials', weight: 1 }] };
+  const out = patchFatResult(fat, freshShld, { CLDD: { price: 20, currency: 'USD' }, SHLD: { price: 41, currency: 'USD' } }, '2026-09-03');
+  assert.equal(out.asAt, '2026-09-03');
+  const shld = out.funds.find(f => f.slug === 'shld');
+  assert.equal(shld.coverage, 0.88, 'fresh fund data replaced the stale entry');
+  assert.equal(shld.valued.length, 2);
+  assert.deepEqual(shld.snapshotPrices, { SHLD: { price: 41, currency: 'USD' } });
+  const cldd = out.funds.find(f => f.slug === 'cldd');
+  assert.deepEqual(cldd.valued, [{ yahoo: 'A' }], 'the other fund keeps its fat arrays');
+  assert.deepEqual(cldd.snapshotPrices, { CLDD: { price: 20, currency: 'USD' } }, 'other funds get a price refresh too');
+  assert.deepEqual(out.rankings.ranked.map(f => f.slug), ['cldd', 'shld']); // -0.20 before -0.31
+  assert.deepEqual(out.rankings.ranked.map(f => f.rank), [1, 2]);
+});
+
+test('patchFatResult returns null when there is no fat result yet', () => {
+  const { patchFatResult } = require('../scripts/lib/etf/merge-fund.js');
+  assert.equal(patchFatResult(null, { slug: 'x' }, {}), null);
+  assert.equal(patchFatResult({ notFunds: true }, { slug: 'x' }, {}), null);
+});

@@ -49,6 +49,7 @@ ${ld}
   <div id="kv-nav-placeholder" style="height:41px"></div>
   <script src="/kv-nav.js"></script>
   <script src="/kv-footer.js"></script>
+  <script src="/kv-ticker-links.js" defer></script>
 
   <header class="app-header">
     <h1>${escapeHtml(h1)}</h1>

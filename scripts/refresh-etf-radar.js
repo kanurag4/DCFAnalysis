@@ -16,12 +16,19 @@
 //                                                one cheap batched /quote call, not a re-valuation). Use
 //                                                this to add one new fund or refresh one existing fund;
 //                                                reserve a plain full run for the monthly cycle.
+//   node scripts/refresh-etf-radar.js --pages-only  re-render every ETF page (ranking + 15 detail + manifest +
+//                                                stocks hub) from the last run's persisted fat result
+//                                                (scripts/_etf-result.json). ZERO network, ZERO data change,
+//                                                ~5s. This is the operation a template/CSS/copy change to the
+//                                                ETF pages needs — it does NOT re-download holdings, re-fetch
+//                                                prices, or re-value anything. (Every full run and --only run
+//                                                refreshes _etf-result.json.)
 const path = require('node:path');
 const fs = require('node:fs');
 const {
   runEtfRadar, writeRadarArtifacts, buildTickerPageIndex, ordinal, fetchQuotesReal,
 } = require('./lib/etf/run-etf-radar.js');
-const { mergeFundIntoRankings } = require('./lib/etf/merge-fund.js');
+const { mergeFundIntoRankings, patchFatResult } = require('./lib/etf/merge-fund.js');
 const { mergeUnionCache } = require('./lib/etf/raw-cache.js');
 const { renderEtfPage } = require('./lib/etf/etf-page.js');
 const { renderRadarPage } = require('./lib/etf/etf-radar-page.js');
@@ -31,6 +38,7 @@ const { readProxyUrl } = require('./lib/run-screen.js');
 
 const offline = process.argv.includes('--offline') || process.argv.includes('--regen');
 const reagg = process.argv.includes('--reagg');
+const pagesOnly = process.argv.includes('--pages-only');
 const onlyArg = process.argv.find(a => a.startsWith('--only='));
 const only = onlyArg ? onlyArg.slice('--only='.length) : null;
 
@@ -42,7 +50,7 @@ const only = onlyArg ? onlyArg.slice('--only='.length) : null;
 // holdings is a few minutes either way.
 const keyed = !!process.env.KV_BATCH_KEY;
 const throttleMs = reagg ? 0 : (keyed ? 3300 : 6600);
-if (!reagg) console.log(keyed
+if (!reagg && !pagesOnly) console.log(keyed
   ? 'KV_BATCH_KEY set — batch-authenticated, 3.3s throttle.'
   : '⚠ KV_BATCH_KEY not set — keyless run at 6.6s throttle. Set it to go faster.');
 
@@ -50,9 +58,23 @@ const dcfRoot = path.join(__dirname, '..', 'www', 'dcf');
 const rankingsPath = path.join(dcfRoot, 'etf-radar', 'etf-rankings.json');
 const manifestPath = path.join(dcfRoot, 'etfs', 'manifest.json');
 const etfsJsonPath = path.join(__dirname, 'etfs.json');
+const fatResultPath = path.join(__dirname, '_etf-result.json'); // gitignored (scripts/_*)
 
 (async () => {
   const etfsStatic = JSON.parse(fs.readFileSync(etfsJsonPath, 'utf8'));
+
+  if (pagesOnly) {
+    if (!fs.existsSync(fatResultPath)) {
+      throw new Error(`--pages-only: ${path.basename(fatResultPath)} not found — run a full refresh once first (it persists the fat result).`);
+    }
+    const result = JSON.parse(fs.readFileSync(fatResultPath, 'utf8'));
+    writeRadarArtifacts(result, path.join(dcfRoot, 'etf-radar'), {
+      generatePages: true, pagesRoot: dcfRoot,
+    });
+    console.log(`\n=== --pages-only ${result.asAt} — re-rendered from ${path.basename(fatResultPath)}, no network ===`);
+    console.log(`${result.funds.length} fund pages + ranking page + manifest + stocks hub. No data changed.`);
+    return;
+  }
 
   if (only) {
     const fund = etfsStatic.find(f => f.slug === only);
@@ -140,6 +162,17 @@ const etfsJsonPath = path.join(__dirname, 'etfs.json');
 
     try { require('./generate-stocks-hub.js').generateStocksHub(); } catch (_) { /* no stocks manifest yet */ }
 
+    // Keep the persisted fat result current so `--pages-only` re-renders this
+    // fund's page from fresh data too (not the last full run's stale copy).
+    if (fs.existsSync(fatResultPath)) {
+      try {
+        const patched = patchFatResult(
+          JSON.parse(fs.readFileSync(fatResultPath, 'utf8')), targetFund, listingPrices, result.asAt,
+        );
+        if (patched) fs.writeFileSync(fatResultPath, JSON.stringify(patched));
+      } catch (e) { console.warn(`⚠ couldn't patch ${path.basename(fatResultPath)}: ${e.message}`); }
+    }
+
     console.log(`\n=== --only=${only} ${result.asAt} ===`);
     console.log(`${only}: ${targetFund.ranked ? rankLine : 'not ranked'} — `
       + `${targetFund.lookThroughMos != null ? (targetFund.lookThroughMos * 100).toFixed(1) + '%' : '—'} `
@@ -160,6 +193,10 @@ const etfsJsonPath = path.join(__dirname, 'etfs.json');
   writeRadarArtifacts(result, path.join(dcfRoot, 'etf-radar'), {
     generatePages: true, pagesRoot: dcfRoot,
   });
+
+  // Persist the full result so `--pages-only` can re-render every page later with
+  // zero network / zero data change (a template/CSS/copy edit to the ETF pages).
+  fs.writeFileSync(fatResultPath, JSON.stringify(result));
 
   const pct = (x) => (x == null ? '  —  ' : `${(x * 100).toFixed(1)}%`);
   console.log(`\n=== ETF Radar ${result.asAt} ${offline ? '(offline)' : ''} ===`);
