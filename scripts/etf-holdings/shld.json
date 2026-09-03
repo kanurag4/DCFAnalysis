@@ -1,8 +1,48 @@
 {
   "asOf": "2026-09-02",
   "source": "https://assets.globalxetfs.com/funds/holdings/shld_full-holdings_20260902.csv",
-  "fetchedAt": "2026-09-03T07:55:02.841Z",
+  "fetchedAt": "2026-09-03T10:50:53.086Z",
   "rows": [
+    {
+      "yahoo": "YSS",
+      "raw": "YSS",
+      "name": "YORK SPACE SYSTEMS INC",
+      "weight": 0.0014000000000000002,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "ASB.AX",
+      "raw": "ASB AU",
+      "name": "AUSTAL LTD",
+      "weight": 0.001,
+      "country": "Australia",
+      "sector": null
+    },
+    {
+      "yahoo": "BKSY",
+      "raw": "BKSY",
+      "name": "BLACKSKY TECHNOLOGY INC",
+      "weight": 0.001,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "ELS.AX",
+      "raw": "ELS AU",
+      "name": "ELSIGHT LTD",
+      "weight": 0.001,
+      "country": "Australia",
+      "sector": null
+    },
+    {
+      "yahoo": "ARYT.TA",
+      "raw": "ARYT IT",
+      "name": "ARYT INDUSTRIES LTD",
+      "weight": 0.0005,
+      "country": "Israel",
+      "sector": null
+    },
     {
       "yahoo": "ASELS.IS",
       "raw": "ASELS TI",
@@ -137,46 +177,6 @@
       "name": "ELECTRO OPTIC SYSTEMS HOLDIN",
       "weight": 0.0016,
       "country": "Australia",
-      "sector": null
-    },
-    {
-      "yahoo": "YSS",
-      "raw": "YSS",
-      "name": "YORK SPACE SYSTEMS INC",
-      "weight": 0.0014000000000000002,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "ASB.AX",
-      "raw": "ASB AU",
-      "name": "AUSTAL LTD",
-      "weight": 0.001,
-      "country": "Australia",
-      "sector": null
-    },
-    {
-      "yahoo": "BKSY",
-      "raw": "BKSY",
-      "name": "BLACKSKY TECHNOLOGY INC",
-      "weight": 0.001,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "ELS.AX",
-      "raw": "ELS AU",
-      "name": "ELSIGHT LTD",
-      "weight": 0.001,
-      "country": "Australia",
-      "sector": null
-    },
-    {
-      "yahoo": "ARYT.TA",
-      "raw": "ARYT IT",
-      "name": "ARYT INDUSTRIES LTD",
-      "weight": 0.0005,
-      "country": "Israel",
       "sector": null
     },
     {

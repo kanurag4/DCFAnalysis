@@ -1,9 +1,9 @@
 {
   "asAt": "2026-09-03",
   "union": {
-    "count": 830,
-    "fetched": 830,
-    "failed": 0
+    "count": 860,
+    "fetched": 848,
+    "failed": 12
   },
   "cryptoExcluded": [],
   "ranked": [
@@ -42,28 +42,28 @@
       "name": "iShares Global Healthcare ETF",
       "theme": "Global healthcare",
       "fee": 0.0041,
-      "lookThroughMos": -0.28487624646506365,
-      "coverage": 0.9382084461831679,
+      "lookThroughMos": -0.286215577109317,
+      "coverage": 0.9398956451936584,
       "ranked": true,
       "holdingsCount": 110,
       "valuedCount": 101,
       "rank": 3,
-      "flags": [
-        "asOf-unchanged"
-      ]
+      "flags": []
     },
     {
       "slug": "shld",
       "name": "Global X Defense Tech ETF",
       "theme": "Defense technology",
       "fee": 0.005,
-      "lookThroughMos": -0.29408085031505143,
+      "lookThroughMos": -0.29250686485683025,
       "coverage": 0.8763516219463356,
       "ranked": true,
       "holdingsCount": 50,
       "valuedCount": 43,
       "rank": 4,
-      "flags": []
+      "flags": [
+        "asOf-unchanged"
+      ]
     },
     {
       "slug": "mnrs",
