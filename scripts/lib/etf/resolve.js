@@ -25,6 +25,7 @@ const COUNTRY_SUFFIX = {
   'Switzerland': '.SW', 'Sweden': '.ST', 'Norway': '.OL', 'Denmark': '.CO',
   'Singapore': '.SI', 'New Zealand': '.NZ',
   'Canada': '.TO',
+  'Turkey': '.IS',
 };
 
 // Bloomberg composite exchange code — the token after the space in "300124 C2",
@@ -38,6 +39,8 @@ const BBG_EXCH_SUFFIX = {
   C2: '.SZ', CS: '.SZ',   // Shenzhen (Connect / native)
   KP: '.KS', KS: '.KS',   // KOSPI
   KQ: '.KQ',              // KOSDAQ
+  TI: '.IS',               // Istanbul
+  IT: '.TA',               // Tel Aviv (not to be confused with Italy, which has no Bloomberg code collision here)
 };
 
 const KNOWN_SUFFIXES = new Set(Object.values(COUNTRY_SUFFIX).filter(Boolean).concat(

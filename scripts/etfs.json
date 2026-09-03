@@ -227,5 +227,21 @@
     "issuerFundId": "239744/ishares-global-healthcare-etf",
     "fee": 0.0041,
     "assetClass": "equity"
+  },
+  {
+    "slug": "shld",
+    "name": "Global X Defense Tech ETF",
+    "theme": "Defense technology",
+    "listings": [
+      {
+        "ticker": "SHLD",
+        "exchange": "NYSEArca",
+        "currency": "USD"
+      }
+    ],
+    "issuer": "globalx",
+    "issuerFundId": "defense-tech",
+    "fee": 0.005,
+    "assetClass": "equity"
   }
 ]

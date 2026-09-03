@@ -21,6 +21,7 @@ const BBG_COUNTRY = {
   KP: 'South Korea', IN: 'India', IS: 'India', SP: 'Singapore', NZ: 'New Zealand',
   BS: 'Brazil', BZ: 'Brazil', MK: 'Malaysia', IJ: 'Indonesia', TB: 'Thailand',
   MM: 'Mexico', SJ: 'South Africa', PW: 'Poland',
+  TI: 'Turkey', IT: 'Israel',
 };
 
 function holdingsUrl(fund) {
