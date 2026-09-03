@@ -660,7 +660,7 @@ html.dark .etf-headline strong { color: var(--kv-accent); }
 .etf-holdings-table th { text-align: left; color: var(--kv-muted); font-weight: 600; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 2px solid var(--kv-border); padding: 8px 10px; }
 .etf-holdings-table td { padding: 8px 10px; border-bottom: 1px solid var(--kv-border); white-space: nowrap; }
 .etf-holdings-table td.num, .etf-holdings-table th.num { text-align: right; }
-.etf-holdings-table a { color: var(--kv-primary); }
+.etf-holdings-table a { color: var(--kv-primary); text-decoration: underline; text-underline-offset: 2px; }
 html.dark .etf-holdings-table a { color: var(--kv-accent); }
 .etf-holdings-table .neg { color: var(--kv-fail); font-weight: 600; }
 .etf-holdings-table .pos { color: var(--kv-pass); font-weight: 600; }
