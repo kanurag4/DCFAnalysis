@@ -229,6 +229,9 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
   margin: 0 0 12px;
   font-family: 'Carlito', system-ui, sans-serif;
 }
+.activity-exits-link { margin: 10px 0 0; font-size: 0.8rem; }
+.activity-exits-link a { color: var(--kv-accent); text-decoration: none; font-weight: 600; }
+.activity-exits-link a:hover { text-decoration: underline; }
 .activity-table {
   width: 100%;
   font-size: 0.82rem;

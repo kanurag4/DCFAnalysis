@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-08-31",
+  "asOf": "2026-09-02",
   "source": "https://www.betashares.com.au/files/csv/ASIA_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-01T10:46:47.550Z",
+  "fetchedAt": "2026-09-03T06:52:27.929Z",
   "rows": [
     {
       "yahoo": "000660.KS",
       "raw": "000660 KP",
       "name": "SK HYNIX INC",
-      "weight": 0.1435108728,
+      "weight": 0.14067483749999998,
       "country": "South Korea",
       "sector": "Information Technology"
     },
@@ -15,7 +15,7 @@
       "yahoo": "005930.KS",
       "raw": "005930 KP",
       "name": "SAMSUNG ELECTRONICS CO LTD",
-      "weight": 0.1090448671,
+      "weight": 0.1068789829,
       "country": "South Korea",
       "sector": "Information Technology"
     },
@@ -23,7 +23,7 @@
       "yahoo": "TSM",
       "raw": "TSM UN",
       "name": "TAIWAN SEMICONDUCTOR MANUFACTU",
-      "weight": 0.0897021642,
+      "weight": 0.090649682,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -31,7 +31,7 @@
       "yahoo": "2454.TW",
       "raw": "2454 TT",
       "name": "MEDIATEK INC",
-      "weight": 0.0707653437,
+      "weight": 0.07770174049999999,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -39,7 +39,7 @@
       "yahoo": "BABA",
       "raw": "BABA UN",
       "name": "ALIBABA GROUP HOLDING LTD",
-      "weight": 0.0704943448,
+      "weight": 0.0698279143,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
@@ -47,7 +47,7 @@
       "yahoo": "0700.HK",
       "raw": "700 HK",
       "name": "TENCENT HOLDINGS LTD",
-      "weight": 0.0702858455,
+      "weight": 0.0686480241,
       "country": "Hong Kong",
       "sector": "Communication Services"
     },
@@ -55,7 +55,7 @@
       "yahoo": "2308.TW",
       "raw": "2308 TT",
       "name": "DELTA ELECTRONICS INC",
-      "weight": 0.0450972693,
+      "weight": 0.0427456764,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -63,7 +63,7 @@
       "yahoo": "2317.TW",
       "raw": "2317 TT",
       "name": "HON HAI PRECISION INDUSTRY CO",
-      "weight": 0.0344250663,
+      "weight": 0.0348435316,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -71,7 +71,7 @@
       "yahoo": "ASX",
       "raw": "ASX UN",
       "name": "ASE TECHNOLOGY HOLDING CO LTD",
-      "weight": 0.0301659077,
+      "weight": 0.030578548200000003,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -79,31 +79,31 @@
       "yahoo": "SE",
       "raw": "SE UN",
       "name": "SEA LTD",
-      "weight": 0.0235624148,
+      "weight": 0.0236604636,
       "country": "United States",
       "sector": "Communication Services"
-    },
-    {
-      "yahoo": "009150.KS",
-      "raw": "009150 KP",
-      "name": "SAMSUNG ELECTRO-MECHANICS CO L",
-      "weight": 0.0222992307,
-      "country": "South Korea",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "1810.HK",
       "raw": "1810 HK",
       "name": "XIAOMI CORP",
-      "weight": 0.0222156535,
+      "weight": 0.0227881507,
       "country": "Hong Kong",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "009150.KS",
+      "raw": "009150 KP",
+      "name": "SAMSUNG ELECTRO-MECHANICS CO L",
+      "weight": 0.0217827694,
+      "country": "South Korea",
       "sector": "Information Technology"
     },
     {
       "yahoo": "3690.HK",
       "raw": "3690 HK",
       "name": "MEITUAN",
-      "weight": 0.019908217500000002,
+      "weight": 0.020062817900000002,
       "country": "Hong Kong",
       "sector": "Consumer Discretionary"
     },
@@ -111,7 +111,7 @@
       "yahoo": "INFY",
       "raw": "INFY UN",
       "name": "INFOSYS LTD",
-      "weight": 0.017958221400000002,
+      "weight": 0.0180046774,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -119,39 +119,31 @@
       "yahoo": "2303.TW",
       "raw": "2303 TT",
       "name": "UNITED MICROELECTRONICS CORP",
-      "weight": 0.0175278778,
+      "weight": 0.0172593264,
       "country": "Taiwan",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "9999.HK",
-      "raw": "9999 HK",
-      "name": "NETEASE INC",
-      "weight": 0.0155939642,
-      "country": "Hong Kong",
-      "sector": "Communication Services"
     },
     {
       "yahoo": "JD",
       "raw": "JD UW",
       "name": "JD.COM INC",
-      "weight": 0.015454618,
+      "weight": 0.0153844499,
       "country": "United States",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "9999.HK",
+      "raw": "9999 HK",
+      "name": "NETEASE INC",
+      "weight": 0.0152867208,
+      "country": "Hong Kong",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "3017.TW",
       "raw": "3017 TT",
       "name": "ASIA VITAL COMPONENTS CO LTD",
-      "weight": 0.0132865816,
-      "country": "Taiwan",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "2327.TW",
-      "raw": "2327 TT",
-      "name": "YAGEO CORP",
-      "weight": 0.0120950417,
+      "weight": 0.012944770299999998,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -159,7 +151,15 @@
       "yahoo": "2345.TW",
       "raw": "2345 TT",
       "name": "ACCTON TECHNOLOGY CORP",
-      "weight": 0.0119024199,
+      "weight": 0.0126182259,
+      "country": "Taiwan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "2327.TW",
+      "raw": "2327 TT",
+      "name": "YAGEO CORP",
+      "weight": 0.0120814287,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -167,7 +167,7 @@
       "yahoo": "2408.TW",
       "raw": "2408 TT",
       "name": "NANYA TECHNOLOGY CORP",
-      "weight": 0.0116838237,
+      "weight": 0.0112364363,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -175,7 +175,15 @@
       "yahoo": "2382.TW",
       "raw": "2382 TT",
       "name": "QUANTA COMPUTER INC",
-      "weight": 0.0109018391,
+      "weight": 0.0109416965,
+      "country": "Taiwan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "6669.TW",
+      "raw": "6669 TT",
+      "name": "WIWYNN CORP",
+      "weight": 0.0105543223,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -183,23 +191,15 @@
       "yahoo": "BIDU",
       "raw": "BIDU UW",
       "name": "BAIDU INC",
-      "weight": 0.0096117159,
+      "weight": 0.0096132498,
       "country": "United States",
       "sector": "Communication Services"
-    },
-    {
-      "yahoo": "6669.TW",
-      "raw": "6669 TT",
-      "name": "WIWYNN CORP",
-      "weight": 0.0095412932,
-      "country": "Taiwan",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "035420.KS",
       "raw": "035420 KP",
       "name": "NAVER CORP",
-      "weight": 0.008336640400000001,
+      "weight": 0.0081682745,
       "country": "South Korea",
       "sector": "Communication Services"
     },
@@ -207,7 +207,7 @@
       "yahoo": "3653.TW",
       "raw": "3653 TT",
       "name": "JENTECH PRECISION INDUSTRIAL C",
-      "weight": 0.0074983652,
+      "weight": 0.0072816408,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -215,7 +215,7 @@
       "yahoo": "WIT",
       "raw": "WIT UN",
       "name": "WIPRO LTD",
-      "weight": 0.0071243194,
+      "weight": 0.007001955399999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -223,15 +223,7 @@
       "yahoo": "2301.TW",
       "raw": "2301 TT",
       "name": "LITE-ON TECHNOLOGY CORP",
-      "weight": 0.0066538971,
-      "country": "Taiwan",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "2344.TW",
-      "raw": "2344 TT",
-      "name": "WINBOND ELECTRONICS CORP",
-      "weight": 0.0066382538000000005,
+      "weight": 0.0069278817,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -239,15 +231,15 @@
       "yahoo": "5274.TWO",
       "raw": "5274 TT",
       "name": "ASPEED TECHNOLOGY INC",
-      "weight": 0.006108495699999999,
+      "weight": 0.0067944366,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "3443.TW",
-      "raw": "3443 TT",
-      "name": "GLOBAL UNICHIP CORP",
-      "weight": 0.0054426375999999995,
+      "yahoo": "2344.TW",
+      "raw": "2344 TT",
+      "name": "WINBOND ELECTRONICS CORP",
+      "weight": 0.0065638354,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -255,7 +247,15 @@
       "yahoo": "6223.TWO",
       "raw": "6223 TT",
       "name": "MPI CORP",
-      "weight": 0.0051420447,
+      "weight": 0.0053454937000000004,
+      "country": "Taiwan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "3443.TW",
+      "raw": "3443 TT",
+      "name": "GLOBAL UNICHIP CORP",
+      "weight": 0.0053024559,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -263,7 +263,15 @@
       "yahoo": "8299.TWO",
       "raw": "8299 TT",
       "name": "PHISON ELECTRONICS CORP",
-      "weight": 0.0045539435,
+      "weight": 0.0043788842,
+      "country": "Taiwan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "2379.TW",
+      "raw": "2379 TT",
+      "name": "REALTEK SEMICONDUCTOR CORP",
+      "weight": 0.0039797177,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -271,23 +279,15 @@
       "yahoo": "1347.HK",
       "raw": "1347 HK",
       "name": "HUA HONG SEMICONDUCTOR LTD",
-      "weight": 0.0041195235000000005,
+      "weight": 0.0039734315,
       "country": "Hong Kong",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "2379.TW",
-      "raw": "2379 TT",
-      "name": "REALTEK SEMICONDUCTOR CORP",
-      "weight": 0.003825612,
-      "country": "Taiwan",
       "sector": "Information Technology"
     },
     {
       "yahoo": "3661.TW",
       "raw": "3661 TT",
       "name": "ALCHIP TECHNOLOGIES LTD",
-      "weight": 0.0037050328,
+      "weight": 0.0038497046,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -295,7 +295,7 @@
       "yahoo": "3034.TW",
       "raw": "3034 TT",
       "name": "NOVATEK MICROELECTRONICS CORP",
-      "weight": 0.0034848616,
+      "weight": 0.0035326879,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -303,63 +303,55 @@
       "yahoo": "6869.HK",
       "raw": "6869 HK",
       "name": "YANGTZE OPTICAL FIBRE & CABLE",
-      "weight": 0.0030908666,
+      "weight": 0.0031713492,
       "country": "Hong Kong",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "035720.KS",
-      "raw": "035720 KP",
-      "name": "KAKAO CORP",
-      "weight": 0.0029918241,
-      "country": "South Korea",
-      "sector": "Communication Services"
     },
     {
       "yahoo": "YMM",
       "raw": "YMM UN",
       "name": "FULL TRUCK ALLIANCE CO LTD",
-      "weight": 0.0029000066000000003,
+      "weight": 0.0029847059999999997,
       "country": "United States",
       "sector": "Industrials"
+    },
+    {
+      "yahoo": "035720.KS",
+      "raw": "035720 KP",
+      "name": "KAKAO CORP",
+      "weight": 0.0029228633,
+      "country": "South Korea",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "2337.TW",
       "raw": "2337 TT",
       "name": "MACRONIX INTERNATIONAL CO LTD",
-      "weight": 0.0027995456000000003,
+      "weight": 0.0027550899,
       "country": "Taiwan",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "GDS",
-      "raw": "GDS UQ",
-      "name": "GDS HOLDINGS LTD",
-      "weight": 0.0023497039,
-      "country": "United States",
       "sector": "Information Technology"
     },
     {
       "yahoo": "TME",
       "raw": "TME UN",
       "name": "TENCENT MUSIC ENTERTAINMENT GR",
-      "weight": 0.0022513232,
+      "weight": 0.0023071163000000002,
       "country": "United States",
       "sector": "Communication Services"
     },
     {
-      "yahoo": "9660.HK",
-      "raw": "9660 HK",
-      "name": "HORIZON ROBOTICS INC",
-      "weight": 0.0020430223,
-      "country": "Hong Kong",
+      "yahoo": "GDS",
+      "raw": "GDS UQ",
+      "name": "GDS HOLDINGS LTD",
+      "weight": 0.0022963657,
+      "country": "United States",
       "sector": "Information Technology"
     },
     {
       "yahoo": "0020.HK",
       "raw": "20 HK",
       "name": "SENSETIME GROUP INC",
-      "weight": 0.0020176255,
+      "weight": 0.0019735052,
       "country": "Hong Kong",
       "sector": "Information Technology"
     },
@@ -367,15 +359,23 @@
       "yahoo": "VIPS",
       "raw": "VIPS UN",
       "name": "VIPSHOP HOLDINGS LTD",
-      "weight": 0.0019358178,
+      "weight": 0.0019434768,
       "country": "United States",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "9660.HK",
+      "raw": "9660 HK",
+      "name": "HORIZON ROBOTICS INC",
+      "weight": 0.0018814395000000001,
+      "country": "Hong Kong",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "3293.TWO",
       "raw": "3293 TT",
       "name": "INTERNATIONAL GAMES SYSTEM CO",
-      "weight": 0.0019121452,
+      "weight": 0.0018695838,
       "country": "Taiwan",
       "sector": "Communication Services"
     },
@@ -383,25 +383,25 @@
       "yahoo": "3529.TWO",
       "raw": "3529 TT",
       "name": "EMEMORY TECHNOLOGY INC",
-      "weight": 0.0018418910999999998,
+      "weight": 0.0018529850000000001,
       "country": "Taiwan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "0100.HK",
+      "raw": "100 HK",
+      "name": "MINIMAX GROUP INC",
+      "weight": 0.0017236821999999999,
+      "country": "Hong Kong",
       "sector": "Information Technology"
     },
     {
       "yahoo": "9626.HK",
       "raw": "9626 HK",
       "name": "BILIBILI INC",
-      "weight": 0.001763045,
+      "weight": 0.0016780840999999999,
       "country": "Hong Kong",
       "sector": "Communication Services"
-    },
-    {
-      "yahoo": "0100.HK",
-      "raw": "100 HK",
-      "name": "MINIMAX GROUP INC",
-      "weight": 0.0017390386999999998,
-      "country": "Hong Kong",
-      "sector": "Information Technology"
     }
   ]
 }

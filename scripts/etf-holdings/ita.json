@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-08-28",
+  "asOf": "2026-09-01",
   "source": "https://www.ishares.com/us/products/239502/ishares-us-aerospace-defense-etf/latest-holdings.csv",
-  "fetchedAt": "2026-09-01T10:46:48.077Z",
+  "fetchedAt": "2026-09-03T06:52:28.664Z",
   "rows": [
     {
       "yahoo": "GE",
       "raw": "GE",
       "name": "GE AEROSPACE",
-      "weight": 0.21600000000000003,
+      "weight": 0.21559999999999999,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -15,7 +15,7 @@
       "yahoo": "RTX",
       "raw": "RTX",
       "name": "RTX",
-      "weight": 0.1723,
+      "weight": 0.1724,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -23,7 +23,7 @@
       "yahoo": "BA",
       "raw": "BA",
       "name": "BOEING",
-      "weight": 0.08990000000000001,
+      "weight": 0.091,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -31,7 +31,7 @@
       "yahoo": "GD",
       "raw": "GD",
       "name": "GENERAL DYNAMICS CORP",
-      "weight": 0.0484,
+      "weight": 0.048600000000000004,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -39,7 +39,7 @@
       "yahoo": "LMT",
       "raw": "LMT",
       "name": "LOCKHEED MARTIN CORP",
-      "weight": 0.0467,
+      "weight": 0.0466,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -47,7 +47,7 @@
       "yahoo": "HWM",
       "raw": "HWM",
       "name": "HOWMET AEROSPACE",
-      "weight": 0.0462,
+      "weight": 0.045899999999999996,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -55,7 +55,7 @@
       "yahoo": "NOC",
       "raw": "NOC",
       "name": "NORTHROP GRUMMAN CORP",
-      "weight": 0.0438,
+      "weight": 0.0441,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -63,7 +63,7 @@
       "yahoo": "TDG",
       "raw": "TDG",
       "name": "TRANSDIGM GROUP",
-      "weight": 0.0425,
+      "weight": 0.042800000000000005,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -71,7 +71,7 @@
       "yahoo": "LHX",
       "raw": "LHX",
       "name": "L3HARRIS TECHNOLOGIES",
-      "weight": 0.0358,
+      "weight": 0.0371,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -79,7 +79,7 @@
       "yahoo": "AXON",
       "raw": "AXON",
       "name": "AXON ENTERPRISE",
-      "weight": 0.0354,
+      "weight": 0.0315,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -95,7 +95,7 @@
       "yahoo": "ATI",
       "raw": "ATI",
       "name": "ATI",
-      "weight": 0.021,
+      "weight": 0.0207,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -103,7 +103,7 @@
       "yahoo": "CRS",
       "raw": "CRS",
       "name": "CARPENTER TECHNOLOGY",
-      "weight": 0.0173,
+      "weight": 0.0177,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -119,7 +119,7 @@
       "yahoo": "WWD",
       "raw": "WWD",
       "name": "WOODWARD",
-      "weight": 0.0149,
+      "weight": 0.0151,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -127,7 +127,7 @@
       "yahoo": "FTAI",
       "raw": "FTAI",
       "name": "FTAI AVIATION",
-      "weight": 0.0146,
+      "weight": 0.0147,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -140,18 +140,18 @@
       "sector": "Industrials"
     },
     {
-      "yahoo": "TXT",
-      "raw": "TXT",
-      "name": "TEXTRON INC",
-      "weight": 0.0106,
+      "yahoo": "BWXT",
+      "raw": "BWXT",
+      "name": "BWX TECHNOLOGIES INC",
+      "weight": 0.011200000000000002,
       "country": "United States",
       "sector": "Industrials"
     },
     {
-      "yahoo": "BWXT",
-      "raw": "BWXT",
-      "name": "BWX TECHNOLOGIES INC",
-      "weight": 0.0102,
+      "yahoo": "TXT",
+      "raw": "TXT",
+      "name": "TEXTRON INC",
+      "weight": 0.0105,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -167,7 +167,7 @@
       "yahoo": "HII",
       "raw": "HII",
       "name": "HUNTINGTON INGALLS INDUSTRIES",
-      "weight": 0.0085,
+      "weight": 0.0087,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -183,7 +183,7 @@
       "yahoo": "KTOS",
       "raw": "KTOS",
       "name": "KRATOS DEFENSE AND SECURITY SOLUTI",
-      "weight": 0.0070999999999999995,
+      "weight": 0.006999999999999999,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -199,7 +199,7 @@
       "yahoo": "VSEC",
       "raw": "VSEC",
       "name": "VSE CORP",
-      "weight": 0.0044,
+      "weight": 0.0042,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -207,7 +207,7 @@
       "yahoo": "AIR",
       "raw": "AIR",
       "name": "AAR",
-      "weight": 0.0038,
+      "weight": 0.0037,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -231,7 +231,7 @@
       "yahoo": "MRCY",
       "raw": "MRCY",
       "name": "MERCURY SYSTEMS INC",
-      "weight": 0.0034000000000000002,
+      "weight": 0.0033,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -239,7 +239,7 @@
       "yahoo": "KRMN",
       "raw": "KRMN",
       "name": "KARMAN HOLDINGS INC",
-      "weight": 0.003,
+      "weight": 0.0028000000000000004,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -271,7 +271,7 @@
       "yahoo": "LOAR",
       "raw": "LOAR",
       "name": "LOAR HOLDINGS",
-      "weight": 0.0019,
+      "weight": 0.0018,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -351,7 +351,7 @@
       "yahoo": "RGR",
       "raw": "RGR",
       "name": "STURM RUGER",
-      "weight": 0.0004,
+      "weight": 0.0005,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },

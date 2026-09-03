@@ -1,5 +1,5 @@
 {
-  "asAt": "2026-09-01",
+  "asAt": "2026-09-03",
   "union": {
     "count": 830,
     "fetched": 830,
@@ -12,11 +12,11 @@
       "name": "Betashares Cloud Computing ETF",
       "theme": "Cloud computing",
       "fee": 0.0067,
-      "lookThroughMos": -0.17574765410979798,
-      "coverage": 0.9489135563143448,
+      "lookThroughMos": -0.2255601417209133,
+      "coverage": 0.9877613864349427,
       "ranked": true,
       "holdingsCount": 38,
-      "valuedCount": 34,
+      "valuedCount": 36,
       "rank": 1,
       "flags": [
         "asOf-unchanged"
@@ -27,8 +27,8 @@
       "name": "Betashares Global Healthcare ETF (Currency Hedged)",
       "theme": "Global healthcare",
       "fee": 0.0057,
-      "lookThroughMos": -0.22407134080543098,
-      "coverage": 0.9408864472581729,
+      "lookThroughMos": -0.2742450799566772,
+      "coverage": 0.939286464557766,
       "ranked": true,
       "holdingsCount": 59,
       "valuedCount": 55,
@@ -42,8 +42,8 @@
       "name": "iShares Global Healthcare ETF",
       "theme": "Global healthcare",
       "fee": 0.0041,
-      "lookThroughMos": -0.2427899104359955,
-      "coverage": 0.9398835808912084,
+      "lookThroughMos": -0.28487624646506365,
+      "coverage": 0.9382084461831679,
       "ranked": true,
       "holdingsCount": 110,
       "valuedCount": 101,
@@ -57,11 +57,11 @@
       "name": "Betashares Global Gold Miners ETF (Currency Hedged)",
       "theme": "Gold miners",
       "fee": 0.0057,
-      "lookThroughMos": -0.325085237971424,
-      "coverage": 0.7963416145823565,
+      "lookThroughMos": -0.3887847309695452,
+      "coverage": 0.9155558921920394,
       "ranked": true,
       "holdingsCount": 47,
-      "valuedCount": 35,
+      "valuedCount": 40,
       "rank": 4,
       "flags": [
         "asOf-unchanged"
@@ -72,8 +72,8 @@
       "name": "Betashares Global Cybersecurity ETF",
       "theme": "Cybersecurity",
       "fee": 0.0067,
-      "lookThroughMos": -0.367323191518152,
-      "coverage": 0.9405411210471659,
+      "lookThroughMos": -0.4135390628588095,
+      "coverage": 0.9379966006812801,
       "ranked": true,
       "holdingsCount": 42,
       "valuedCount": 36,
@@ -83,61 +83,31 @@
       ]
     },
     {
-      "slug": "igv",
-      "name": "iShares Expanded Tech-Software Sector ETF",
-      "theme": "Software",
-      "fee": 0.0041,
-      "lookThroughMos": -0.40377291224360706,
-      "coverage": 0.9770793714342908,
+      "slug": "ethi",
+      "name": "Betashares Global Sustainability Leaders ETF",
+      "theme": "Sustainability / ethical",
+      "fee": 0.0059,
+      "lookThroughMos": -0.42835407708621387,
+      "coverage": 0.9314809656784958,
       "ranked": true,
-      "holdingsCount": 106,
-      "valuedCount": 90,
+      "holdingsCount": 198,
+      "valuedCount": 176,
       "rank": 6,
       "flags": [
         "asOf-unchanged"
       ]
     },
     {
-      "slug": "ethi",
-      "name": "Betashares Global Sustainability Leaders ETF",
-      "theme": "Sustainability / ethical",
-      "fee": 0.0059,
-      "lookThroughMos": -0.405176744733916,
-      "coverage": 0.9228068732529464,
+      "slug": "igv",
+      "name": "iShares Expanded Tech-Software Sector ETF",
+      "theme": "Software",
+      "fee": 0.0041,
+      "lookThroughMos": -0.4511774963710875,
+      "coverage": 0.9816945083525057,
       "ranked": true,
-      "holdingsCount": 198,
-      "valuedCount": 173,
+      "holdingsCount": 106,
+      "valuedCount": 94,
       "rank": 7,
-      "flags": [
-        "asOf-unchanged"
-      ]
-    },
-    {
-      "slug": "ita",
-      "name": "iShares U.S. Aerospace & Defense ETF",
-      "theme": "Aerospace & defense",
-      "fee": 0.004,
-      "lookThroughMos": -0.4146808284190584,
-      "coverage": 0.9910884149394213,
-      "ranked": true,
-      "holdingsCount": 48,
-      "valuedCount": 46,
-      "rank": 8,
-      "flags": [
-        "asOf-unchanged"
-      ]
-    },
-    {
-      "slug": "erth",
-      "name": "Betashares Climate Change Innovation ETF",
-      "theme": "Climate innovation",
-      "fee": 0.0065,
-      "lookThroughMos": -0.434158805115262,
-      "coverage": 0.8247000164371096,
-      "ranked": true,
-      "holdingsCount": 88,
-      "valuedCount": 61,
-      "rank": 9,
       "flags": [
         "asOf-unchanged"
       ]
@@ -147,12 +117,12 @@
       "name": "Betashares Global Quality Leaders ETF",
       "theme": "Quality factor",
       "fee": 0.0035,
-      "lookThroughMos": -0.45007489702632786,
-      "coverage": 0.9516124619661586,
+      "lookThroughMos": -0.45565537273720136,
+      "coverage": 0.941577201633479,
       "ranked": true,
       "holdingsCount": 150,
-      "valuedCount": 142,
-      "rank": 10,
+      "valuedCount": 143,
+      "rank": 8,
       "flags": [
         "asOf-unchanged"
       ]
@@ -162,27 +132,42 @@
       "name": "Betashares Asia Technology Tigers ETF",
       "theme": "Asia technology",
       "fee": 0.0067,
-      "lookThroughMos": -0.4987920821563709,
-      "coverage": 0.8505445633690101,
+      "lookThroughMos": -0.4896054311937619,
+      "coverage": 0.8616862123594643,
       "ranked": true,
       "holdingsCount": 50,
-      "valuedCount": 37,
-      "rank": 11,
+      "valuedCount": 38,
+      "rank": 9,
       "flags": [
         "asOf-unchanged"
       ]
     },
     {
-      "slug": "atec",
-      "name": "Betashares S&P/ASX Australian Technology ETF",
-      "theme": "Australian technology",
-      "fee": 0.0048,
-      "lookThroughMos": -0.5242563728691294,
-      "coverage": 0.9425856873671604,
+      "slug": "ita",
+      "name": "iShares U.S. Aerospace & Defense ETF",
+      "theme": "Aerospace & defense",
+      "fee": 0.004,
+      "lookThroughMos": -0.4919768434356527,
+      "coverage": 0.9908826770864643,
       "ranked": true,
-      "holdingsCount": 42,
-      "valuedCount": 33,
-      "rank": 12,
+      "holdingsCount": 48,
+      "valuedCount": 46,
+      "rank": 10,
+      "flags": [
+        "asOf-unchanged"
+      ]
+    },
+    {
+      "slug": "erth",
+      "name": "Betashares Climate Change Innovation ETF",
+      "theme": "Climate innovation",
+      "fee": 0.0065,
+      "lookThroughMos": -0.4944253119693296,
+      "coverage": 0.8976811566923817,
+      "ranked": true,
+      "holdingsCount": 88,
+      "valuedCount": 64,
+      "rank": 11,
       "flags": [
         "asOf-unchanged"
       ]
@@ -192,11 +177,26 @@
       "name": "Betashares Global Robotics and Artificial Intelligence ETF",
       "theme": "Robotics & AI",
       "fee": 0.0057,
-      "lookThroughMos": -0.5654499546935989,
-      "coverage": 0.8936713625939873,
+      "lookThroughMos": -0.5778627278036036,
+      "coverage": 0.9183807844955985,
       "ranked": true,
       "holdingsCount": 60,
-      "valuedCount": 47,
+      "valuedCount": 49,
+      "rank": 12,
+      "flags": [
+        "asOf-unchanged"
+      ]
+    },
+    {
+      "slug": "atec",
+      "name": "Betashares S&P/ASX Australian Technology ETF",
+      "theme": "Australian technology",
+      "fee": 0.0048,
+      "lookThroughMos": -0.6214341197120128,
+      "coverage": 0.942792292685911,
+      "ranked": true,
+      "holdingsCount": 42,
+      "valuedCount": 33,
       "rank": 13,
       "flags": [
         "asOf-unchanged"
@@ -207,11 +207,11 @@
       "name": "iShares Semiconductor ETF",
       "theme": "Semiconductors",
       "fee": 0.0035,
-      "lookThroughMos": -0.7418436298371383,
-      "coverage": 1,
+      "lookThroughMos": -0.7174028873391116,
+      "coverage": 0.9752876438219109,
       "ranked": true,
       "holdingsCount": 30,
-      "valuedCount": 30,
+      "valuedCount": 29,
       "rank": 14,
       "flags": [
         "asOf-unchanged"
