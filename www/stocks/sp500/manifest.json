@@ -208,6 +208,19 @@
     "updatedAt": "2026-08-29T05:47:35.483Z"
   },
   {
+    "ticker": "BMY",
+    "slug": "bmy",
+    "name": "Bristol-Myers Squibb Company",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 106.4149915956063,
+    "price": 67.66,
+    "marginOfSafety": 0.5727902984866435,
+    "marketCap": 138210082816,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:26:58.072Z"
+  },
+  {
     "ticker": "BSX",
     "slug": "bsx",
     "name": "Boston Scientific Corporation",
@@ -349,6 +362,19 @@
     "marketCap": 242877579264,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T05:49:34.385Z"
+  },
+  {
+    "ticker": "GILD",
+    "slug": "gild",
+    "name": "Gilead Sciences, Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 191.69668452293993,
+    "price": 149.61,
+    "marginOfSafety": 0.2813093010022052,
+    "marketCap": 185509691392,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:26:41.060Z"
   },
   {
     "ticker": "HAL",
@@ -663,6 +689,19 @@
     "updatedAt": "2026-08-29T05:54:39.002Z"
   },
   {
+    "ticker": "NOW",
+    "slug": "now",
+    "name": "ServiceNow, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 112.71620044452798,
+    "price": 136.72,
+    "marginOfSafety": -0.1755690429744881,
+    "marketCap": 141349617664,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:25:39.761Z"
+  },
+  {
     "ticker": "NTAP",
     "slug": "ntap",
     "name": "NetApp, Inc.",
@@ -728,6 +767,19 @@
     "updatedAt": "2026-08-29T05:55:44.971Z"
   },
   {
+    "ticker": "PCOR",
+    "slug": "pcor",
+    "name": "Procore Technologies, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 60.021554905655776,
+    "price": 59.49,
+    "marginOfSafety": 0.008935197607257929,
+    "marketCap": 9039823872,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:26:25.286Z"
+  },
+  {
     "ticker": "PFE",
     "slug": "pfe",
     "name": "Pfizer Inc.",
@@ -752,6 +804,19 @@
     "marketCap": 334805958656,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T05:56:11.551Z"
+  },
+  {
+    "ticker": "QLYS",
+    "slug": "qlys",
+    "name": "Qualys, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 191.6328569166232,
+    "price": 170.83,
+    "marginOfSafety": 0.12177519707676168,
+    "marketCap": 6016121344,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:26:10.600Z"
   },
   {
     "ticker": "REGN",
@@ -949,6 +1014,19 @@
     "updatedAt": "2026-08-29T05:59:20.119Z"
   },
   {
+    "ticker": "WDAY",
+    "slug": "wday",
+    "name": "Workday, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 211.79672183006295,
+    "price": 200.87,
+    "marginOfSafety": 0.054396982277408,
+    "marketCap": 48409669632,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:25:24.942Z"
+  },
+  {
     "ticker": "YUM",
     "slug": "yum",
     "name": "Yum! Brands, Inc.",
@@ -960,5 +1038,18 @@
     "marketCap": 41988562944,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T05:59:33.361Z"
+  },
+  {
+    "ticker": "ZS",
+    "slug": "zs",
+    "name": "Zscaler, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 193.45702478004728,
+    "price": 172.73,
+    "marginOfSafety": 0.11999666983180275,
+    "marketCap": 27932084224,
+    "updated": "2026-09-03",
+    "updatedAt": "2026-09-03T10:25:55.610Z"
   }
 ]
