@@ -239,5 +239,29 @@
     "exitDate": "2026-08-29",
     "exitPrice": 185.24,
     "dollarPnl": -100.93
+  },
+  {
+    "ticker": "WIPRO.NS",
+    "entryDate": "2026-08-15",
+    "entryPrice": 184,
+    "exitDate": "2026-09-04",
+    "exitPrice": 176.4,
+    "dollarPnl": -188.01
+  },
+  {
+    "ticker": "LTM.NS",
+    "entryDate": "2026-08-15",
+    "entryPrice": 4715,
+    "exitDate": "2026-09-04",
+    "exitPrice": 4554,
+    "dollarPnl": -193.52
+  },
+  {
+    "ticker": "OFSS.NS",
+    "entryDate": "2026-08-15",
+    "entryPrice": 11828,
+    "exitDate": "2026-09-04",
+    "exitPrice": 12058,
+    "dollarPnl": -80.97
   }
 ]
