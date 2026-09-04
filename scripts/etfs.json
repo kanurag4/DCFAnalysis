@@ -261,5 +261,37 @@
     "holdingsUrlOverride": "https://www.blackrock.com/au/products/273416/fund/1478358644060.ajax?fileType=csv&fileName=IAA_holdings&dataType=fund",
     "fee": 0.0029,
     "assetClass": "equity"
+  },
+  {
+    "slug": "game",
+    "name": "Betashares Video Games and Esports ETF",
+    "theme": "Video games & esports",
+    "listings": [
+      {
+        "ticker": "GAME.AX",
+        "exchange": "ASX",
+        "currency": "AUD"
+      }
+    ],
+    "issuer": "betashares",
+    "issuerFundId": "video-games-and-esports-etf",
+    "fee": 0.0057,
+    "assetClass": "equity"
+  },
+  {
+    "slug": "gtum",
+    "name": "Betashares Global Momentum ETF",
+    "theme": "Momentum factor",
+    "listings": [
+      {
+        "ticker": "GTUM.AX",
+        "exchange": "ASX",
+        "currency": "AUD"
+      }
+    ],
+    "issuer": "betashares",
+    "issuerFundId": "global-momentum-etf",
+    "fee": 0.0035,
+    "assetClass": "equity"
   }
 ]
