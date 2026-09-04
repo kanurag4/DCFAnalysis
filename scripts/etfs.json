@@ -243,5 +243,23 @@
     "issuerFundId": "defense-tech",
     "fee": 0.005,
     "assetClass": "equity"
+  },
+  {
+    "slug": "iaa",
+    "name": "iShares Asia 50 ETF",
+    "theme": "Asia large-cap",
+    "listings": [
+      {
+        "ticker": "IAA.AX",
+        "exchange": "ASX",
+        "currency": "AUD"
+      }
+    ],
+    "issuer": "ishares",
+    "issuerFundId": "273416/ishares-asia-50-etf",
+    "issuerRegion": "au",
+    "holdingsUrlOverride": "https://www.blackrock.com/au/products/273416/fund/1478358644060.ajax?fileType=csv&fileName=IAA_holdings&dataType=fund",
+    "fee": 0.0029,
+    "assetClass": "equity"
   }
 ]
