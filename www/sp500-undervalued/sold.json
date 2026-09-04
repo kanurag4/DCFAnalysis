@@ -505,5 +505,133 @@
     "exitDate": "2026-08-29",
     "exitPrice": 893.39,
     "dollarPnl": 24.19
+  },
+  {
+    "ticker": "MGM",
+    "entryDate": "2026-08-22",
+    "entryPrice": 43.74,
+    "exitDate": "2026-09-04",
+    "exitPrice": 41.22,
+    "dollarPnl": -15.06
+  },
+  {
+    "ticker": "BAX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 26.34,
+    "exitDate": "2026-09-04",
+    "exitPrice": 25.83,
+    "dollarPnl": -6.9
+  },
+  {
+    "ticker": "DLTR",
+    "entryDate": "2026-08-29",
+    "entryPrice": 128.26,
+    "exitDate": "2026-09-04",
+    "exitPrice": 131.42,
+    "dollarPnl": 14.8
+  },
+  {
+    "ticker": "TGT",
+    "entryDate": "2026-08-29",
+    "entryPrice": 163.18,
+    "exitDate": "2026-09-04",
+    "exitPrice": 164.44,
+    "dollarPnl": 4.64
+  },
+  {
+    "ticker": "HST",
+    "entryDate": "2026-08-15",
+    "entryPrice": 22.9,
+    "exitDate": "2026-09-04",
+    "exitPrice": 22.05,
+    "dollarPnl": -6.2
+  },
+  {
+    "ticker": "HPQ",
+    "entryDate": "2026-08-29",
+    "entryPrice": 30.52,
+    "exitDate": "2026-09-04",
+    "exitPrice": 32.64,
+    "dollarPnl": 41.72
+  },
+  {
+    "ticker": "MDLZ",
+    "entryDate": "2026-08-01",
+    "entryPrice": 62.31,
+    "exitDate": "2026-09-04",
+    "exitPrice": 61.28,
+    "dollarPnl": -10.4
+  },
+  {
+    "ticker": "AVY",
+    "entryDate": "2026-08-01",
+    "entryPrice": 169.73,
+    "exitDate": "2026-09-04",
+    "exitPrice": 175.06,
+    "dollarPnl": -5.71
+  },
+  {
+    "ticker": "GD",
+    "entryDate": "2026-08-01",
+    "entryPrice": 383.42,
+    "exitDate": "2026-09-04",
+    "exitPrice": 359.39,
+    "dollarPnl": -31.56
+  },
+  {
+    "ticker": "BKNG",
+    "entryDate": "2026-07-08",
+    "entryPrice": 181.95,
+    "exitDate": "2026-09-04",
+    "exitPrice": 193.29,
+    "dollarPnl": -36.05
+  },
+  {
+    "ticker": "MNST",
+    "entryDate": "2026-08-22",
+    "entryPrice": 47.79,
+    "exitDate": "2026-09-04",
+    "exitPrice": 43.82,
+    "dollarPnl": -38.97
+  },
+  {
+    "ticker": "TMUS",
+    "entryDate": "2026-08-22",
+    "entryPrice": 183.04,
+    "exitDate": "2026-09-04",
+    "exitPrice": 181.52,
+    "dollarPnl": 0.5
+  },
+  {
+    "ticker": "DRI",
+    "entryDate": "2026-08-01",
+    "entryPrice": 203.58,
+    "exitDate": "2026-09-04",
+    "exitPrice": 216.88,
+    "dollarPnl": 3.48
+  },
+  {
+    "ticker": "HPE",
+    "entryDate": "2026-08-29",
+    "entryPrice": 52.31,
+    "exitDate": "2026-09-04",
+    "exitPrice": 52,
+    "dollarPnl": -3.56
+  },
+  {
+    "ticker": "EA",
+    "entryDate": "2026-08-07",
+    "entryPrice": 209.7,
+    "exitDate": "2026-09-04",
+    "exitPrice": 209.7,
+    "dollarPnl": 0
+  },
+  {
+    "ticker": "REGN",
+    "entryDate": "2026-08-29",
+    "entryPrice": 794.19,
+    "exitDate": "2026-09-04",
+    "exitPrice": 827.72,
+    "dollarPnl": 25.36
   }
 ]
