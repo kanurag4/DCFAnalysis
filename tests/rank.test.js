@@ -17,12 +17,21 @@ const rows = [
   // proxyDropped and excluded from every ranking screen -- the opposite of what this
   // model exists for.
   { ticker: 'I.AX', method: 'ExcessReturn', intrinsic: 18, snapshotPrice: 10, marginOfSafety: 0.8 }, // kept (ExcessReturn, no fcfMethod)
+  // Regression fixture (bug found 2026-09-05): the Cyclical normalization model
+  // (shipped 2026-08-24) tags its output fcfMethod: 'normalized' -- a deliberate
+  // multi-year-average-margin upgrade, not a rough guess -- but this filter's
+  // allow-list only recognised 'reported'/'derived', so every cyclical stock
+  // using the normalized FCF was silently misclassified as proxyDropped. First
+  // surfaced live: ASX's proxyFcf count went from 0 every week through 08-22 to
+  // 9 in the very next run after Cyclical shipped (08-28), wrongly excluding
+  // 9 real qualifiers (RIO.AX, WHC.AX, etc.).
+  { ticker: 'J.AX', method: 'DCF', fcfMethod: 'normalized', intrinsic: 14, snapshotPrice: 10, marginOfSafety: 0.4 }, // kept (normalized, not a rough proxy)
 ];
 
 test('filters, sorts by margin desc, caps, and takes top N', () => {
   const out = rankRows(rows, { topN: 10, maxMargin: 1.5 });
-  assert.deepStrictEqual(out.map(r => r.ticker), ['A.AX', 'I.AX', 'F.AX', 'B.AX']);
-  assert.deepStrictEqual(out.map(r => r.rank), [1, 2, 3, 4]);
+  assert.deepStrictEqual(out.map(r => r.ticker), ['A.AX', 'I.AX', 'F.AX', 'J.AX', 'B.AX']);
+  assert.deepStrictEqual(out.map(r => r.rank), [1, 2, 3, 4, 5]);
 });
 
 test('respects topN', () => {
@@ -35,15 +44,20 @@ test('ExcessReturn rows are exempt from the proxy-FCF filter, same as DDM', () =
   assert.ok(out.some(r => r.ticker === 'I.AX'), 'ExcessReturn row must not be dropped as proxyDropped');
 });
 
+test('normalized rows (Cyclical model) are exempt from the proxy-FCF filter, not a rough proxy', () => {
+  const out = rankRows(rows, { topN: 10, maxMargin: 1.5 });
+  assert.ok(out.some(r => r.ticker === 'J.AX'), 'normalized row must not be dropped as proxyDropped');
+});
+
 test('funnel buckets are mutually exclusive and sum to total', () => {
   const f = rankFunnel(rows, { maxMargin: 1.5 });
   assert.deepStrictEqual(f, {
-    evaluated: 9,
+    evaluated: 10,
     unvaluable: 1,   // G.AX excluded
     overvalued: 1,   // D.AX MoS -0.1
     capped: 2,       // C.AX (2.0) + E.AX (3.0) > 1.5 — cap checked before proxy
     proxyDropped: 1, // H.AX proxy, in-cap
-    kept: 4,         // A.AX, B.AX, F.AX, I.AX
+    kept: 5,         // A.AX, B.AX, F.AX, I.AX, J.AX
   });
   assert.strictEqual(
     f.unvaluable + f.overvalued + f.capped + f.proxyDropped + f.kept, f.evaluated);
