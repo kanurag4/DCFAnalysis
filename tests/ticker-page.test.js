@@ -1,6 +1,44 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart } = require('../scripts/lib/ticker-page.js');
+
+// Regression test for a real bug (found live on RBLX's EPS chart, 2026-09-04):
+// an all-negative series left the area-fill polygon's baseline (y(0)) far
+// outside the SVG's viewBox, since only `min` was forced to include 0, not
+// `max` -- when every value sits below zero, `max` stayed at the least-
+// negative value instead of 0, so 0 fell outside the plotted [min, max]
+// domain and its scaled y-coordinate extrapolated way off-chart.
+test('lineChart keeps the zero-baseline inside the plot area for an all-negative series', () => {
+  const series = [
+    { q: 'Q1', v: -0.32 }, { q: 'Q2', v: -0.41 }, { q: 'Q3', v: -0.37 }, { q: 'Q4', v: -0.26 },
+  ];
+  const h = 120;
+  const svg = lineChart(series, { w: 460, h, valueKey: 'v', labelKey: 'q', fmtFn: (v) => `$${v}` });
+  const polygonMatch = svg.match(/<polygon points="([^"]+)"/);
+  assert.ok(polygonMatch, 'polygon must be present');
+  const ys = polygonMatch[1].trim().split(/\s+/).map((p) => parseFloat(p.split(',')[1]));
+  for (const y of ys) {
+    assert.ok(y >= 0 && y <= h, `fill polygon y=${y} must stay within the viewBox [0, ${h}], was outside it before the fix`);
+  }
+});
+
+test('lineChart still fills correctly for an all-positive series (regression guard)', () => {
+  const series = [{ q: 'Q1', v: 1 }, { q: 'Q2', v: 2 }, { q: 'Q3', v: 3 }];
+  const h = 120;
+  const svg = lineChart(series, { w: 460, h, valueKey: 'v', labelKey: 'q', fmtFn: (v) => `$${v}` });
+  const polygonMatch = svg.match(/<polygon points="([^"]+)"/);
+  const ys = polygonMatch[1].trim().split(/\s+/).map((p) => parseFloat(p.split(',')[1]));
+  for (const y of ys) assert.ok(y >= 0 && y <= h, `fill polygon y=${y} must stay within [0, ${h}]`);
+});
+
+test('lineChart still fills correctly for a series crossing zero (regression guard)', () => {
+  const series = [{ q: 'Q1', v: -1 }, { q: 'Q2', v: 0.5 }, { q: 'Q3', v: 2 }];
+  const h = 120;
+  const svg = lineChart(series, { w: 460, h, valueKey: 'v', labelKey: 'q', fmtFn: (v) => `$${v}` });
+  const polygonMatch = svg.match(/<polygon points="([^"]+)"/);
+  const ys = polygonMatch[1].trim().split(/\s+/).map((p) => parseFloat(p.split(',')[1]));
+  for (const y of ys) assert.ok(y >= 0 && y <= h, `fill polygon y=${y} must stay within [0, ${h}]`);
+});
 
 // Regression test for a real bug (found live 2026-09-02): RO.SW (Switzerland)
 // fell through marketMeta()'s generic catch-all (indexTicker: null), so its

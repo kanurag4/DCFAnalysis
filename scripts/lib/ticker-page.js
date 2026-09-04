@@ -236,7 +236,15 @@ function chartXs(series, padL, innerW) {
 function lineChart(series, { w, h, valueKey, labelKey, fmtFn }) {
   const pad = { t: 22, r: 8, b: labelKey ? 18 : 6, l: 8 };
   const vals = series.map(d => d[valueKey]);
-  let max = Math.max(...vals), min = Math.min(...vals, 0);
+  // Both bounds forced to include 0, not just min -- the area fill's baseline
+  // is y(0), so if the whole series sits on one side of zero (e.g. an
+  // all-negative EPS run), 0 must still be a real point in the domain or y(0)
+  // extrapolates far outside the plot (bug found live on RBLX's EPS chart,
+  // 2026-09-04: an all-negative series left max at the least-negative value
+  // instead of 0, producing a fill polygon baseline y=-116.67 against a
+  // viewBox height of 120). Matches dualLineChart()'s already-correct
+  // symmetric Math.max(...allVals, 0)/Math.min(...allVals, 0) pattern below.
+  let max = Math.max(...vals, 0), min = Math.min(...vals, 0);
   if (max === min) { max += 1; min -= 1; }
   const range = max - min;
   const innerW = w - pad.l - pad.r, innerH = h - pad.t - pad.b;
@@ -1481,4 +1489,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart };
