@@ -308,5 +308,117 @@
     "exitDate": "2026-08-28",
     "exitPrice": 71,
     "dollarPnl": -5.41
+  },
+  {
+    "ticker": "GLF.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 4.7,
+    "exitDate": "2026-09-04",
+    "exitPrice": 4.58,
+    "dollarPnl": -14.43
+  },
+  {
+    "ticker": "AZJ.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 3.65,
+    "exitDate": "2026-09-04",
+    "exitPrice": 3.75,
+    "dollarPnl": 14.28
+  },
+  {
+    "ticker": "SRG.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 3.66,
+    "exitDate": "2026-09-04",
+    "exitPrice": 3.83,
+    "dollarPnl": 12.06
+  },
+  {
+    "ticker": "ANN.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 40.99,
+    "exitDate": "2026-09-04",
+    "exitPrice": 42.26,
+    "dollarPnl": 25.49
+  },
+  {
+    "ticker": "EOS.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 10.05,
+    "exitDate": "2026-09-04",
+    "exitPrice": 9.52,
+    "dollarPnl": -29.81
+  },
+  {
+    "ticker": "NWH.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 8.2,
+    "exitDate": "2026-09-04",
+    "exitPrice": 7.64,
+    "dollarPnl": -1.48
+  },
+  {
+    "ticker": "COL.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 23.8,
+    "exitDate": "2026-09-04",
+    "exitPrice": 23.68,
+    "dollarPnl": 5.94
+  },
+  {
+    "ticker": "RHC.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 45,
+    "exitDate": "2026-09-04",
+    "exitPrice": 52.29,
+    "dollarPnl": 13.66
+  },
+  {
+    "ticker": "ABB.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 4.36,
+    "exitDate": "2026-09-04",
+    "exitPrice": 4.15,
+    "dollarPnl": -22.56
+  },
+  {
+    "ticker": "QUB.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 5.01,
+    "exitDate": "2026-09-04",
+    "exitPrice": 5.11,
+    "dollarPnl": 0
+  },
+  {
+    "ticker": "LOV.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 22.48,
+    "exitDate": "2026-09-04",
+    "exitPrice": 23.08,
+    "dollarPnl": -70.14
+  },
+  {
+    "ticker": "EVT.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 15.09,
+    "exitDate": "2026-09-04",
+    "exitPrice": 14.67,
+    "dollarPnl": -15.73
+  },
+  {
+    "ticker": "JBH.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 67.08,
+    "exitDate": "2026-09-04",
+    "exitPrice": 67.3,
+    "dollarPnl": 1.85
+  },
+  {
+    "ticker": "QBE.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 21.93,
+    "exitDate": "2026-09-04",
+    "exitPrice": 22.62,
+    "dollarPnl": 17.78
   }
 ]
