@@ -45,9 +45,9 @@ test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.8
   near(r, 0.0493);
 });
 
-test('fetchIndRf falls back to the already-spread-adjusted static default (0.049) when the live fetch fails, not raw-0.07-minus-spread', async () => {
-  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.049);
-  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.049);
+test('fetchIndRf falls back to the already-spread-adjusted static default (0.0509) when the live fetch fails, not raw-0.07-minus-spread', async () => {
+  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0509);
+  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0509);
 });
 
 test('fetchIndRf floors at 1% even if the live yield were implausibly close to the spread', async () => {

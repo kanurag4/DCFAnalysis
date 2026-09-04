@@ -209,7 +209,7 @@ let currentData   = null;
 let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best-effort
 let liveRfRate    = 4.8;   // updated when US 10-yr Treasury is fetched -- 4.8% default, corrected 2026-09-02 (was 4.5%, real ^TNX ~4.76%; the live fetch here works, so this default rarely shows, but see calc/assumptions.js's FALLBACK_RF.us)
 let liveAusRfRate = 5.2;   // updated when Australian 10-yr bond is fetched; 5.2% default -- corrected 2026-09-02 (was 4.8%, real yield ~5.16-5.2%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
-let liveIndRfRate = 4.9;   // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 4.9% default
+let liveIndRfRate = 5.09;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.09% default -- corrected 2026-09-04 (was 4.9%), raw G-Sec 6.96% minus the unchanged 1.87% Damodaran spread; the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
 // Korea: no live 10-yr KTB yield ticker exists on Yahoo (see docs/japan-korea-market-research.md
 // in the source repo) — these are fixed, never overwritten by a fetch.
 // rf corrected 2026-08-15: 4.3 was the raw KTB yield, which double-counts country risk
@@ -1920,7 +1920,7 @@ async function fetchAndSetAustralianRfRate() {
 // carries India's country risk premium; using the raw yield double-counts it. 1.87% is
 // Damodaran's Jan 2026 default spread for a Baa3 sovereign rating -- update this if that
 // rating (or Damodaran's published spread for it) changes. Keep in sync with
-// FALLBACK_RF.ind in calc/assumptions.js (same 6.8% G-Sec − 1.87% ≈ 4.9% math).
+// FALLBACK_RF.ind in calc/assumptions.js (same 6.96% G-Sec − 1.87% ≈ 5.09% math, refreshed 2026-09-04).
 const IND_DEFAULT_SPREAD_PCT = 1.87;
 
 async function fetchAndSetIndianRfRate() {
@@ -1942,7 +1942,7 @@ async function fetchAndSetIndianRfRate() {
       fetchSucceeded = true;
     }
   } catch (_) {
-    // silently fall back to 4.9% default
+    // silently fall back to 5.09% default
   }
   if (currentMarket === 'ind') {
     els.rfInput.value = liveIndRfRate;

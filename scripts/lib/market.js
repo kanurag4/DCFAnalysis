@@ -12,6 +12,11 @@ function marketParamsFor(ticker, live = {}) {
   // same day) and app.js's own inline defaults -- THREE separate copies of the same
   // conceptual data, discovered out of sync in the same session. Keep all three in
   // sync by hand until they're consolidated into one source (see docs/TODO.md P6).
+  // ind/kor/jpn/eu/uk/cn rf refreshed again 2026-09-04 against fresh raw 10yr yields --
+  // same Damodaran default spreads kept unchanged for the 4 spread-adjusted markets
+  // (ratings move far slower than yields); hk deliberately left stale, no trustworthy
+  // current figure found. Applied to all 3 copies (this file, assumptions.js, app.js's
+  // liveIndRfRate) in the same pass -- see docs/TODO.md P4.
   if (t.endsWith('.AX')) return { rf: live.ausRf ?? 0.052, erp: 0.06, terminalGrowth: 0.025 };
   // India (.NS/.BO): rf was the raw 10-yr G-Sec yield (~6.8-7%) until 2026-08-15 --
   // that double-counts country risk, since erp already carries India's country risk
@@ -24,7 +29,8 @@ function marketParamsFor(ticker, live = {}) {
   // UK 40%, eurozone 56%, HK 57%) -- Damodaran's own rule is only a ceiling ("stable
   // growth should not exceed the riskfree rate"), no specific numeric gap below it, so
   // there's no reason to push India toward China's 88%-of-rf outlier ratio instead.
-  if (t.endsWith('.NS') || t.endsWith('.BO')) return { rf: live.indRf ?? 0.049, erp: 0.075, terminalGrowth: 0.025 };
+  // rf refreshed 2026-09-04: raw G-Sec 6.96% (Sept 1) - unchanged 1.87% spread ~= 5.09%.
+  if (t.endsWith('.NS') || t.endsWith('.BO')) return { rf: live.indRf ?? 0.0509, erp: 0.075, terminalGrowth: 0.025 };
   // Korea: no live 10-yr KTB yield ticker exists on Yahoo (confirmed via exhaustive search —
   // see docs/japan-korea-market-research.md) so rf is a fixed static value, never live-fetched.
   // rf corrected 2026-08-15: was the raw ~4.3% KTB yield, which double-counts country risk
@@ -34,7 +40,8 @@ function marketParamsFor(ticker, live = {}) {
   // every other market bucket here uses, so no reason to touch it. erp is elevated to
   // reflect a governance-risk premium (weak minority-shareholder protections) -- left as-is,
   // not re-verified against Damodaran's Korea-specific figure in this pass.
-  if (t.endsWith('.KS')) return { rf: 0.039, erp: 0.075, terminalGrowth: 0.0175 };
+  // rf refreshed 2026-09-04: raw yield 4.42% (Sept 2, 2 sources) - unchanged 0.42% spread ~= 4.0%.
+  if (t.endsWith('.KS')) return { rf: 0.040, erp: 0.075, terminalGrowth: 0.0175 };
   // Japan: same "no live RF ticker" situation as Korea (10-yr JGB has no Yahoo symbol —
   // see docs/japan-korea-market-research.md). rf corrected 2026-08-15: was the raw ~2.8%
   // JGB yield -- Japan is A1-rated with a 0.60% default spread (Damodaran, Jan 2026), so
@@ -44,11 +51,13 @@ function marketParamsFor(ticker, live = {}) {
   // ~55%. Not a ceiling violation either way (1.5% < 2.2%), just an internal-consistency
   // nudge, same reasoning as India's "why touch/not touch terminalGrowth" note above. erp
   // is developed-market tier (~AUS level) -- left as-is.
-  if (t.endsWith('.T')) return { rf: 0.022, erp: 0.06, terminalGrowth: 0.012 };
+  // rf refreshed 2026-09-04: raw JGB yield 2.96% (Sept 4) - unchanged 0.60% spread ~= 2.36%.
+  if (t.endsWith('.T')) return { rf: 0.0236, erp: 0.06, terminalGrowth: 0.012 };
   // UK: no live 10-yr Gilt yield ticker on Yahoo (same "no live source" situation as
   // Korea/Japan) -- fixed rf reflects the ~5.0% Gilt regime (spot-checked 2026-08-03).
   // erp/terminalGrowth are near-US-tier (mature, liquid developed market).
-  if (t.endsWith('.L')) return { rf: 0.050, erp: 0.06, terminalGrowth: 0.02 };
+  // rf refreshed 2026-09-04: raw Gilt yield 5.07% (Sept 2026).
+  if (t.endsWith('.L')) return { rf: 0.0507, erp: 0.06, terminalGrowth: 0.02 };
   // Eurozone: same "no live source" situation -- fixed rf reflects the ~3.2% Bund
   // regime (spot-checked 2026-08-03). One bucket for every eurozone exchange suffix
   // (Germany/France/Netherlands/Italy/Spain/Belgium/Portugal/Austria/Finland/Ireland) --
@@ -56,7 +65,8 @@ function marketParamsFor(ticker, live = {}) {
   // matching how ASX/NIFTY/etc. each get one rf regardless of which state/exchange
   // within that market a ticker is on.
   const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
-  if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return { rf: 0.032, erp: 0.055, terminalGrowth: 0.018 };
+  // rf refreshed 2026-09-04: raw German Bund yield 3.35% (Sept 3).
+  if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return { rf: 0.0335, erp: 0.055, terminalGrowth: 0.018 };
   // Hong Kong: same "no live source" situation as Korea/Japan/UK/eurozone -- fixed rf
   // is an approximate HK Exchange Fund Note yield. Unlike every other market seed here,
   // erp is NOT backed by a clean current Damodaran country-risk figure specifically for
@@ -80,7 +90,8 @@ function marketParamsFor(ticker, live = {}) {
   // rather than picking another value that just barely clears the new lower ceiling.
   // Backported from www/dcf/app.js's CHINA_RF/CHINA_ERP/CHINA_TGROWTH (commit 98dc69d)
   // -- keep these two in sync if the live tool's seed ever changes.
-  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.011, erp: 0.052, terminalGrowth: 0.006 };
+  // rf refreshed 2026-09-04: raw yield 1.68% (Sept 1) - unchanged 0.60% spread ~= 1.08% (smallest move).
+  if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: 0.0108, erp: 0.052, terminalGrowth: 0.006 };
   // ETF radar additions (2026-08-31): suffixes that thematic-fund holdings pull in
   // and that currently hit the generic US-style fallback. No live govt-bond ticker
   // on Yahoo for any of these -> static seeds, Damodaran country-risk-based, same
@@ -105,7 +116,8 @@ function marketParamsFor(ticker, live = {}) {
   // Singapore (.SI): rf ~2.5% 10-yr SGS bond; AAA. Developed-market erp.
   if (t.endsWith('.SI')) return { rf: 0.025, erp: 0.053, terminalGrowth: 0.016 };
   // KOSDAQ (.KQ): same market as KOSPI (.KS) for valuation-parameter purposes.
-  if (t.endsWith('.KQ')) return { rf: 0.039, erp: 0.075, terminalGrowth: 0.0175 };
+  // A separate hardcoded copy, not derived from the .KS branch -- keep in sync by hand.
+  if (t.endsWith('.KQ')) return { rf: 0.040, erp: 0.075, terminalGrowth: 0.0175 };
   // US fallback corrected 2026-09-02 (was 0.045) -- same three-copy sync issue as AU
   // above (this file, assumptions.js's FALLBACK_RF.us, app.js's liveRfRate default).
   if (!t.includes('.')) return { rf: live.usRf ?? 0.048, erp: 0.055, terminalGrowth: 0.025 };

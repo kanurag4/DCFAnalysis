@@ -38,11 +38,21 @@
 // symbol ^GSBG10.AX) has been silently 404ing -- confirmed against the live Worker -- so
 // the page was permanently stuck on this stale fallback with no visible error. AU uses
 // the raw yield directly (developed-market convention, same as us/uk), no spread
-// deduction. See docs/TODO.md for the other markets checked in the same pass but not
-// corrected here (jpn looks significantly stale too; not fixed without a verified
-// current Damodaran default-spread table to reapply the spread-adjusted convention
-// correctly) and for the ^GSBG10.AX / ^INBMKG10.NS dead-symbol follow-up.
-const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.049, kor: 0.039, jpn: 0.022, uk: 0.050, eu: 0.032, hk: 0.035, cn: 0.011 };
+// deduction.
+//
+// uk/eu/ind/kor/jpn/cn: refreshed 2026-09-04 against fresh raw 10yr yields (multiple
+// sources each, 2026-09-01/04) -- uk 5.0%->5.07%, eu/Germany 3.2%->3.35%, raw yields
+// applied directly (same 'raw' convention as us/aus). ind/kor/jpn/cn kept the SAME
+// Damodaran default spreads already in place (India Baa3/1.87%, Korea Aa2/0.42%, Japan
+// A1/0.60%, China A1/0.60% -- Jan 2026 table, unchanged since sovereign ratings move far
+// slower than yields) and only refreshed the raw yield being spread-adjusted: ind
+// 6.96%-1.87%=5.09% (was 4.9%), kor 4.42%-0.42%=4.00% (was 3.9%), jpn 2.96%-0.60%=2.36%
+// (was 2.2% -- confirms this was the biggest gap, per docs/TODO.md P4's rough pass),
+// cn 1.68%-0.60%=1.08% (was 1.1%, smallest move). hk deliberately NOT touched -- no
+// trustworthy current 10yr figure found (HKMA's public data only surfaced short-end
+// bill yields); still 3.5%, needs its own dedicated look. See docs/TODO.md P4 for the
+// full source list and the 2026-08-15 double-counting rationale being preserved here.
+const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.0509, kor: 0.040, jpn: 0.0236, uk: 0.0507, eu: 0.0335, hk: 0.035, cn: 0.0108 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -60,13 +70,13 @@ const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.049, kor: 0.039, jpn: 0.022,
 const FALLBACK_RF_META = {
   us:  { asOf: '2026-09-02', source: 'Yahoo ^TNX (confirmed live)', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
   aus: { asOf: '2026-09-02', source: 'multiple sources, AU 10yr govt bond ~5.16-5.2%', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: null, source: null, method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
-  kor: { asOf: '2026-08-15', source: 'Damodaran Jan 2026 default spread table', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  jpn: { asOf: '2026-08-15', source: 'Damodaran Jan 2026 default spread table', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  eu:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  ind: { asOf: '2026-09-04', source: 'raw G-Sec 6.96% (Sept 1) minus Jan-2026 Damodaran spread 1.87%', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-09-04', source: 'raw yield 4.42% (Sept 2, 2 sources) minus Jan-2026 Damodaran spread 0.42%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-09-04', source: 'raw JGB yield 2.96% (Sept 4) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-09-04', source: 'raw gilt yield 5.07% (Sept 2026)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  eu:  { asOf: '2026-09-04', source: 'raw German bund yield 3.35% (Sept 3)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   hk:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  cn:  { asOf: '2026-08-15', source: 'Damodaran Jan 2026 default spread table', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  cn:  { asOf: '2026-09-04', source: 'raw yield 1.68% (Sept 1) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
 const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };

@@ -51,13 +51,13 @@ const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.052, { proxyUrl })
 // original pass, which only touched market.js's fallback and the live DCF tool's
 // app.js, not this batch-only live-fetch path. Pass `null` as fetchRfRate's own
 // fallback so a failed/out-of-band fetch is distinguishable from a real value: on
-// failure, return the already-spread-adjusted static default directly (0.049) rather
+// failure, return the already-spread-adjusted static default directly (0.0509) rather
 // than subtracting the spread from it a second time.
 const IND_DEFAULT_SPREAD = 0.0187; // Damodaran Jan 2026, Baa3 rating -- keep in sync with
                                     // www/app.js's IND_DEFAULT_SPREAD_PCT (percentage units there)
 async function fetchIndRf(proxyUrl, opts = {}) {
   const raw = await fetchRfRate('^INBMKG10.NS', null, { proxyUrl, ...opts });
-  if (raw == null) return 0.049; // fetch failed or out of plausible band
+  if (raw == null) return 0.0509; // fetch failed or out of plausible band -- refreshed 2026-09-04 (was 0.049), raw G-Sec 6.96% minus the unchanged 1.87% spread
   return Math.max(0.01, raw - IND_DEFAULT_SPREAD);
 }
 
