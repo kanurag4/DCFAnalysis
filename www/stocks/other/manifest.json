@@ -520,6 +520,19 @@
     "updatedAt": "2026-08-29T06:15:05.835Z"
   },
   {
+    "ticker": "7832.T",
+    "slug": "7832-t",
+    "name": "BANDAI NAMCO Holdings Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 6108.6239958830965,
+    "price": 5565,
+    "marginOfSafety": 0.09768625262948726,
+    "marketCap": 3569201446912,
+    "updated": "2026-09-04",
+    "updatedAt": "2026-09-04T07:20:46.121Z"
+  },
+  {
     "ticker": "7974.T",
     "slug": "7974-t",
     "name": "Nintendo Co., Ltd.",
@@ -583,6 +596,19 @@
     "marketCap": 617360982016,
     "updated": "2026-08-29",
     "updatedAt": "2026-08-29T06:15:55.496Z"
+  },
+  {
+    "ticker": "9684.T",
+    "slug": "9684-t",
+    "name": "Square Enix Holdings Co., Ltd.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 2983.597833781421,
+    "price": 2890,
+    "marginOfSafety": 0.032386793695993364,
+    "marketCap": 1042352242688,
+    "updated": "2026-09-04",
+    "updatedAt": "2026-09-04T07:20:30.879Z"
   },
   {
     "ticker": "9766.T",

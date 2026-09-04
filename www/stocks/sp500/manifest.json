@@ -806,6 +806,19 @@
     "updatedAt": "2026-08-29T05:56:11.551Z"
   },
   {
+    "ticker": "QCOM",
+    "slug": "qcom",
+    "name": "QUALCOMM Incorporated",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 81.04972286205336,
+    "price": 168.57,
+    "marginOfSafety": -0.5191924846529432,
+    "marketCap": 180042956800,
+    "updated": "2026-09-04",
+    "updatedAt": "2026-09-04T07:19:59.010Z"
+  },
+  {
     "ticker": "QLYS",
     "slug": "qlys",
     "name": "Qualys, Inc.",
@@ -817,6 +830,19 @@
     "marketCap": 6016121344,
     "updated": "2026-09-03",
     "updatedAt": "2026-09-03T10:26:10.600Z"
+  },
+  {
+    "ticker": "RBLX",
+    "slug": "rblx",
+    "name": "Roblox Corporation",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 38.546216031897465,
+    "price": 41.51,
+    "marginOfSafety": -0.07139927651415401,
+    "marketCap": 29653743616,
+    "updated": "2026-09-04",
+    "updatedAt": "2026-09-04T07:20:17.641Z"
   },
   {
     "ticker": "REGN",
