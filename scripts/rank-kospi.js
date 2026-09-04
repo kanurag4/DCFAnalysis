@@ -34,6 +34,14 @@ const config = {
     '0126Z0.KS': 'Samsung Group',        // Samsung Epis Holdings
     '011780.KS': 'Kumho Asiana Group',   // Kumho Petrochemical, added 2026-07-25
     '161890.KS': 'Kolmar Group',         // Kolmar Korea, added 2026-07-25
+    '009540.KS': 'Hyundai Heavy Industries Group', // HD Korea Shipbuilding & Offshore Engineering (KSOE) -- same group as 071970.KS above, added 2026-09-05
+    '078930.KS': 'GS Group',             // GS Holdings Corp -- the group's own apex holding company, added 2026-09-05
+    // NOTE: distinct from '071970.KS' / '009540.KS' above ("Hyundai Heavy Industries
+    // Group" / HD Hyundai) -- Hyundai Elevator is the de facto holding company of the
+    // original (smaller, post-2000 split) Hyundai Group, an unrelated chaebol despite
+    // the shared "Hyundai" branding. Don't merge these labels.
+    '017800.KS': 'Hyundai Group',        // Hyundai Elevator, added 2026-09-05
+    '064400.KS': 'LG Group',             // LG CNS, added 2026-09-05
   },
   // Moved to scripts/blacklist-kospi.json (2026-08-01) — see rank-asx.js's comment.
   blacklist: blacklistEntries.map(e => e.ticker),
