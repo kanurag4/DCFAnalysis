@@ -5,13 +5,16 @@
 // header, see scripts/lib/batch-auth.js / worker-watchlist/batch-auth.js) --
 // the live browser tool always calls this with 5 args, so it stays {}.
 // Mirrors the same param growth/data.js's fetchGrowthData already has.
-async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProxyUrl = '', extraHeaders = {}) {
+// toolTag overrides the default 'dcf' value sent as ?tool= — see the same
+// param on stock/data.js's fetchStockData for why (native app's onboarding
+// example-ticker chips only).
+async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProxyUrl = '', extraHeaders = {}, toolTag = 'dcf') {
   if (!yahooProxyUrl) throw new Error('Missing Yahoo proxy URL in config.js');
 
   const raw = ticker.trim().toUpperCase();
   const symbol = raw.includes('.') ? raw : (isASX ? `${raw}.AX` : raw);
   const base = yahooProxyUrl.replace(/\/$/, '');
-  const url = `${base}/quoteSummary/${encodeURIComponent(symbol)}?tool=dcf`;
+  const url = `${base}/quoteSummary/${encodeURIComponent(symbol)}?tool=${encodeURIComponent(toolTag)}`;
 
   let res;
   try { res = await fetch(url, { headers: extraHeaders }); }

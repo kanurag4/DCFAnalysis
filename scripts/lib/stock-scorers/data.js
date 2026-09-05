@@ -4,7 +4,12 @@
 // debtToEquity is returned as a PERCENTAGE (Yahoo's convention, e.g. 53.2
 // means 53.2%). Scorers divide by 100 before comparing against thresholds.
 
-async function fetchStockData(ticker, isASX = false, _useCorsProxy = true, _unused = '', yahooProxyUrl = '') {
+// toolTag overrides the default 'stock' value sent as ?tool= — only the
+// native app's onboarding example-ticker chips pass a non-default value
+// (a tag not in the Worker's STATS_TOOLS allowlist), so those taps don't
+// get counted toward /popular/'s ranking the same way a real typed search
+// does. Every other caller stays on the default, unchanged behavior.
+async function fetchStockData(ticker, isASX = false, _useCorsProxy = true, _unused = '', yahooProxyUrl = '', toolTag = 'stock') {
   if (!yahooProxyUrl) throw new Error("Missing Yahoo proxy URL in config.js");
 
   const raw = ticker.trim().toUpperCase();
@@ -12,7 +17,7 @@ async function fetchStockData(ticker, isASX = false, _useCorsProxy = true, _unus
     ? raw
     : isASX ? `${raw}.AX` : raw;
 
-  const url = `${yahooProxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}?tool=stock`;
+  const url = `${yahooProxyUrl.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent(symbol)}?tool=${encodeURIComponent(toolTag)}`;
 
   let res;
   try {
