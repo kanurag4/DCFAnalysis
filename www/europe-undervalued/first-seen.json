@@ -72,8 +72,8 @@
     "firstPrice": 272.9
   },
   "HEIA.AS": {
-    "firstSeen": "2026-08-03",
-    "firstPrice": 78.54
+    "firstSeen": "2026-09-05",
+    "firstPrice": 73.02
   },
   "AV.L": {
     "firstSeen": "2026-08-03",
@@ -126,5 +126,33 @@
   "RWE.DE": {
     "firstSeen": "2026-08-29",
     "firstPrice": 59.1
+  },
+  "BAYN.DE": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 48.85
+  },
+  "G24.DE": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 76.1
+  },
+  "ABI.BR": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 69.04
+  },
+  "ENI.MI": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 23.07
+  },
+  "DSY.PA": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 21.02
+  },
+  "REP.MC": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 27.74
+  },
+  "KER.PA": {
+    "firstSeen": "2026-09-05",
+    "firstPrice": 245.2
   }
 }

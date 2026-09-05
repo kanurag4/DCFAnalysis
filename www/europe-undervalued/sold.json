@@ -142,5 +142,61 @@
     "exitDate": "2026-08-29",
     "exitPrice": 291.2,
     "dollarPnl": 18.5
+  },
+  {
+    "ticker": "FRE.DE",
+    "entryDate": "2026-08-29",
+    "entryPrice": 45.85,
+    "exitDate": "2026-09-05",
+    "exitPrice": 43.63,
+    "dollarPnl": -28.51
+  },
+  {
+    "ticker": "PUB.PA",
+    "entryDate": "2026-08-29",
+    "entryPrice": 101.65,
+    "exitDate": "2026-09-05",
+    "exitPrice": 101.1,
+    "dollarPnl": -3.19
+  },
+  {
+    "ticker": "URW.PA",
+    "entryDate": "2026-08-15",
+    "entryPrice": 103.5,
+    "exitDate": "2026-09-05",
+    "exitPrice": 97.14,
+    "dollarPnl": -10.83
+  },
+  {
+    "ticker": "SAP.DE",
+    "entryDate": "2026-08-08",
+    "entryPrice": 177.96,
+    "exitDate": "2026-09-05",
+    "exitPrice": 185.68,
+    "dollarPnl": -17.36
+  },
+  {
+    "ticker": "SHL.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 36.86,
+    "exitDate": "2026-09-05",
+    "exitPrice": 39,
+    "dollarPnl": -7.75
+  },
+  {
+    "ticker": "QIA.DE",
+    "entryDate": "2026-08-08",
+    "entryPrice": 36.46,
+    "exitDate": "2026-09-05",
+    "exitPrice": 37.435,
+    "dollarPnl": -2.43
+  },
+  {
+    "ticker": "ENR.DE",
+    "entryDate": "2026-08-22",
+    "entryPrice": 153.36,
+    "exitDate": "2026-09-05",
+    "exitPrice": 146.52,
+    "dollarPnl": -12.51
   }
 ]
