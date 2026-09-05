@@ -5,12 +5,12 @@
     "name": "Axis Bank Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 840.8213666740555,
-    "price": 1265,
-    "marginOfSafety": -0.33531907772801933,
-    "marketCap": 3938049851392,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T05:59:50.107Z"
+    "intrinsic": 834.3693616798596,
+    "price": 1273,
+    "marginOfSafety": -0.34456452342509064,
+    "marketCap": 3963161149440,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:39:44.799Z"
   },
   {
     "ticker": "BAJFINANCE.NS",
@@ -18,12 +18,12 @@
     "name": "Bajaj Finance Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 249.48668864130684,
-    "price": 1079.9,
-    "marginOfSafety": -0.7689724153705836,
-    "marketCap": 6717964288000,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:00:03.315Z"
+    "intrinsic": 248.4455299512694,
+    "price": 1060.5,
+    "marginOfSafety": -0.7657279302675442,
+    "marketCap": 6597278433280,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:39:58.069Z"
   },
   {
     "ticker": "BANKBARODA.NS",
@@ -31,25 +31,25 @@
     "name": "Bank of Baroda Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 349.8262876073422,
-    "price": 241.9,
-    "marginOfSafety": 0.44616075902167085,
-    "marketCap": 1250952478720,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:00:16.519Z"
+    "intrinsic": 347.3372299177599,
+    "price": 239,
+    "marginOfSafety": 0.453293849028284,
+    "marketCap": 1235955613696,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:40:11.419Z"
   },
   {
     "ticker": "BANKINDIA.NS",
     "slug": "bankindia-ns",
-    "name": "Bank of India Limited",
+    "name": "Bank of India",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 224.33991881079058,
-    "price": 144,
-    "marginOfSafety": 0.5579161028527123,
-    "marketCap": 655584133120,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:00:29.726Z"
+    "intrinsic": 222.8288107305231,
+    "price": 145,
+    "marginOfSafety": 0.5367504188311937,
+    "marketCap": 660136787968,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:40:24.820Z"
   },
   {
     "ticker": "BHARTIARTL.NS",
@@ -57,12 +57,12 @@
     "name": "Bharti Airtel Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 3978.4744095898936,
-    "price": 1882.4,
-    "marginOfSafety": 1.1135116923023234,
-    "marketCap": 11743649595392,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:00:42.951Z"
+    "intrinsic": 1440.5036954164598,
+    "price": 1840,
+    "marginOfSafety": -0.21711755683888057,
+    "marketCap": 11479130570752,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:40:38.129Z"
   },
   {
     "ticker": "CANBK.NS",
@@ -70,12 +70,12 @@
     "name": "Canara Bank",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 171.56417710552768,
-    "price": 128.35,
-    "marginOfSafety": 0.3366901215857241,
-    "marketCap": 1164218204160,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:00:56.166Z"
+    "intrinsic": 170.29826633257142,
+    "price": 125.5,
+    "marginOfSafety": 0.3569582974706886,
+    "marketCap": 1138366742528,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:40:51.589Z"
   },
   {
     "ticker": "CASTROLIND.NS",
@@ -83,12 +83,12 @@
     "name": "Castrol India Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 395.1552365610827,
-    "price": 185.24,
-    "marginOfSafety": 1.1332068482027784,
-    "marketCap": 183225040896,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:01:09.370Z"
+    "intrinsic": 187.0526279786069,
+    "price": 190.27,
+    "marginOfSafety": -0.0169095076543497,
+    "marketCap": 188200321024,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:41:04.904Z"
   },
   {
     "ticker": "CENTRALBK.NS",
@@ -96,12 +96,12 @@
     "name": "Central Bank of India",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 49.223072368240956,
-    "price": 30.54,
-    "marginOfSafety": 0.6117574449325788,
-    "marketCap": 276429799424,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:01:22.568Z"
+    "intrinsic": 48.85688704100274,
+    "price": 31.08,
+    "marginOfSafety": 0.5719719125161759,
+    "marketCap": 281317539840,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:41:18.156Z"
   },
   {
     "ticker": "GICRE.NS",
@@ -109,12 +109,12 @@
     "name": "General Insurance Corporation of India",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 556.4357658318854,
-    "price": 353.3,
-    "marginOfSafety": 0.5749667869569357,
-    "marketCap": 619829526528,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:01:35.726Z"
+    "intrinsic": 552.3700944186066,
+    "price": 358.45,
+    "marginOfSafety": 0.5409962182134375,
+    "marketCap": 628864712704,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:41:31.525Z"
   },
   {
     "ticker": "HCLTECH.NS",
@@ -122,12 +122,12 @@
     "name": "HCL Technologies Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1171.8372594133793,
-    "price": 1316.1,
-    "marginOfSafety": -0.109613813985731,
-    "marketCap": 3561059516416,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:01:52.196Z"
+    "intrinsic": 990.5538352847562,
+    "price": 1293.4,
+    "marginOfSafety": -0.23414733625734022,
+    "marketCap": 3499638652928,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:41:48.169Z"
   },
   {
     "ticker": "HDFCBANK.NS",
@@ -135,12 +135,12 @@
     "name": "HDFC Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 224.1002783909753,
-    "price": 720.3,
-    "marginOfSafety": -0.6888792469929539,
-    "marketCap": 11100543254528,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:02:05.408Z"
+    "intrinsic": 217.9936843875933,
+    "price": 712.1,
+    "marginOfSafety": -0.6938720904541591,
+    "marketCap": 10976350961664,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:42:01.471Z"
   },
   {
     "ticker": "HDFCLIFE.NS",
@@ -148,12 +148,12 @@
     "name": "HDFC Life Insurance Company Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 36.20081420161909,
-    "price": 548,
-    "marginOfSafety": -0.9339401200700381,
-    "marketCap": 1190282919936,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:02:18.610Z"
+    "intrinsic": 35.21436440107277,
+    "price": 546.4,
+    "marginOfSafety": -0.9355520417257087,
+    "marketCap": 1186807676928,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:42:14.754Z"
   },
   {
     "ticker": "HEROMOTOCO.NS",
@@ -161,12 +161,12 @@
     "name": "Hero MotoCorp Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 5643.200300392678,
-    "price": 5600,
-    "marginOfSafety": 0.007714339355835429,
-    "marketCap": 1120790773760,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:02:31.807Z"
+    "intrinsic": 5208.925701835009,
+    "price": 5300,
+    "marginOfSafety": -0.017183829842451127,
+    "marketCap": 1060748328960,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:42:28.052Z"
   },
   {
     "ticker": "HINDUNILVR.NS",
@@ -174,12 +174,12 @@
     "name": "Hindustan Unilever Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 753.7205289266701,
-    "price": 2010.4,
-    "marginOfSafety": -0.625089271325771,
-    "marketCap": 4723618349056,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:02:44.978Z"
+    "intrinsic": 613.0144336509303,
+    "price": 1973.4,
+    "marginOfSafety": -0.6893612883090452,
+    "marketCap": 4636683534336,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:42:41.483Z"
   },
   {
     "ticker": "ICICIBANK.NS",
@@ -187,12 +187,12 @@
     "name": "ICICI Bank Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 683.0007525354722,
-    "price": 1422.8,
-    "marginOfSafety": -0.5199601120779644,
-    "marketCap": 10210903064576,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:02:58.222Z"
+    "intrinsic": 677.9192344899913,
+    "price": 1423.2,
+    "marginOfSafety": -0.5236655182054587,
+    "marketCap": 10214680035328,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:42:54.796Z"
   },
   {
     "ticker": "INFY.NS",
@@ -200,12 +200,12 @@
     "name": "Infosys Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1235.9333529438434,
-    "price": 1144,
-    "marginOfSafety": 0.08036132250335959,
-    "marketCap": 4633542524928,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:03:14.725Z"
+    "intrinsic": 1156.706422237055,
+    "price": 1130,
+    "marginOfSafety": 0.023634001979694685,
+    "marketCap": 4576838156288,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:43:11.457Z"
   },
   {
     "ticker": "ITC.NS",
@@ -213,12 +213,12 @@
     "name": "ITC Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 131.59015150435553,
-    "price": 266,
-    "marginOfSafety": -0.5053001823144528,
-    "marketCap": 3332921884672,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:03:27.907Z"
+    "intrinsic": 138.9364758026033,
+    "price": 264.1,
+    "marginOfSafety": -0.4739247413759815,
+    "marketCap": 3309115539456,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:43:24.779Z"
   },
   {
     "ticker": "KOTAKBANK.NS",
@@ -226,12 +226,12 @@
     "name": "Kotak Mahindra Bank Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 196.28693631282658,
-    "price": 423.7,
-    "marginOfSafety": -0.5367313280320354,
-    "marketCap": 4214822010880,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:03:41.093Z"
+    "intrinsic": 194.73608533258908,
+    "price": 424.5,
+    "marginOfSafety": -0.5412577495109798,
+    "marketCap": 4222780178432,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:43:38.132Z"
   },
   {
     "ticker": "LT.NS",
@@ -239,12 +239,12 @@
     "name": "Larsen & Toubro Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 1792.6677941050555,
-    "price": 4045.8,
-    "marginOfSafety": -0.5569064723651551,
-    "marketCap": 5566478942208,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:03:54.280Z"
+    "intrinsic": 860.7046915105113,
+    "price": 3964.1,
+    "marginOfSafety": -0.7828751314269288,
+    "marketCap": 5454071070720,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:43:51.391Z"
   },
   {
     "ticker": "LTM.NS",
@@ -252,12 +252,12 @@
     "name": "LTM Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 5265.92750400167,
-    "price": 4675,
-    "marginOfSafety": 0.12640160513404708,
-    "marketCap": 1385956245504,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:04:07.543Z"
+    "intrinsic": 3700.3567977409466,
+    "price": 4554,
+    "marginOfSafety": -0.1874491001886371,
+    "marketCap": 1350084329472,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:44:04.731Z"
   },
   {
     "ticker": "MARUTI.NS",
@@ -265,12 +265,12 @@
     "name": "Maruti Suzuki India Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 6652.102163614159,
-    "price": 13376,
-    "marginOfSafety": -0.5026837497298028,
-    "marketCap": 4205448527872,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:04:20.761Z"
+    "intrinsic": 5826.305893606306,
+    "price": 12694,
+    "marginOfSafety": -0.541018914951449,
+    "marketCap": 3991026008064,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:44:18.001Z"
   },
   {
     "ticker": "MRF.NS",
@@ -278,12 +278,12 @@
     "name": "MRF Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 50000.658221062615,
-    "price": 132080,
-    "marginOfSafety": -0.6214365670725119,
-    "marketCap": 560170139648,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:04:33.960Z"
+    "intrinsic": 59271.54786325669,
+    "price": 129945,
+    "marginOfSafety": -0.5438720392223119,
+    "marketCap": 551115358208,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:44:31.345Z"
   },
   {
     "ticker": "MUTHOOTMF.NS",
@@ -291,12 +291,12 @@
     "name": "Muthoot Microfin Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 159.30912968049586,
-    "price": 208.46,
-    "marginOfSafety": -0.23578082279336154,
-    "marketCap": 34972643328,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:04:47.173Z"
+    "intrinsic": 159.7918362849587,
+    "price": 205.29,
+    "marginOfSafety": -0.22162873844337913,
+    "marketCap": 34440818688,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:44:44.593Z"
   },
   {
     "ticker": "OFSS.NS",
@@ -304,12 +304,12 @@
     "name": "Oracle Financial Services Software Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 13452.73544690599,
-    "price": 12190,
-    "marginOfSafety": 0.10358781352797293,
-    "marketCap": 1061543346176,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:05:00.355Z"
+    "intrinsic": 5609.0505063955625,
+    "price": 12058,
+    "marginOfSafety": -0.534827458418016,
+    "marketCap": 1050048331776,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:44:58.000Z"
   },
   {
     "ticker": "PFC.NS",
@@ -317,12 +317,12 @@
     "name": "Power Finance Corporation Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 579.4242495530132,
-    "price": 352,
-    "marginOfSafety": 0.6460916180483328,
-    "marketCap": 1161635823616,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:05:13.531Z"
+    "intrinsic": 581.529928020895,
+    "price": 355.6,
+    "marginOfSafety": 0.6353485039957676,
+    "marketCap": 1173516189696,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:45:11.268Z"
   },
   {
     "ticker": "PNB.NS",
@@ -330,12 +330,12 @@
     "name": "Punjab National Bank",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 166.41763796836977,
-    "price": 115.4,
-    "marginOfSafety": 0.4420939165369997,
-    "marketCap": 1326285586432,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:05:26.717Z"
+    "intrinsic": 165.24239657056785,
+    "price": 117,
+    "marginOfSafety": 0.41232817581681924,
+    "marketCap": 1344674332672,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:45:24.745Z"
   },
   {
     "ticker": "RECLTD.NS",
@@ -343,12 +343,12 @@
     "name": "REC Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 437.9821575431157,
-    "price": 316.8,
-    "marginOfSafety": 0.3825194366891278,
-    "marketCap": 834205319168,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:05:39.973Z"
+    "intrinsic": 435.0777020859119,
+    "price": 318.7,
+    "marginOfSafety": 0.3651637969435579,
+    "marketCap": null,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:45:38.101Z"
   },
   {
     "ticker": "RELIANCE.NS",
@@ -382,12 +382,12 @@
     "name": "SBI Life Insurance Company Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 237.73540320110482,
-    "price": 1761.1,
-    "marginOfSafety": -0.8650074367150616,
-    "marketCap": 1766998933504,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:06:19.575Z"
+    "intrinsic": 235.91785929199193,
+    "price": 1775,
+    "marginOfSafety": -0.8670885299763426,
+    "marketCap": 1780945518592,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:46:58.427Z"
   },
   {
     "ticker": "SBIN.NS",
@@ -395,12 +395,12 @@
     "name": "State Bank of India",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 841.623837609262,
-    "price": 1047.5,
-    "marginOfSafety": -0.19654048915583583,
-    "marketCap": 9669072388096,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:06:32.762Z"
+    "intrinsic": 835.3007020165053,
+    "price": 1016.1,
+    "marginOfSafety": -0.17793455170110692,
+    "marketCap": 9379230253056,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:47:11.655Z"
   },
   {
     "ticker": "SIGNATURE.NS",
@@ -408,12 +408,12 @@
     "name": "Signatureglobal (India) Limited",
     "sector": "Real Estate",
     "method": "DCF",
-    "intrinsic": 75.18048860062811,
-    "price": 779.25,
-    "marginOfSafety": -0.903521990887869,
-    "marketCap": 109629587456,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:06:45.954Z"
+    "intrinsic": 165.3752943087363,
+    "price": 796.55,
+    "marginOfSafety": -0.7923855447759257,
+    "marketCap": 112063455232,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:47:24.818Z"
   },
   {
     "ticker": "TCS.NS",
@@ -434,12 +434,12 @@
     "name": "Tech Mahindra Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 2187.0473929101504,
-    "price": 1640.9,
-    "marginOfSafety": 0.3328340501615883,
-    "marketCap": 1453670268928,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:07:12.374Z"
+    "intrinsic": 933.8256608854417,
+    "price": 1596.9,
+    "marginOfSafety": -0.4152259622484553,
+    "marketCap": 1414690766848,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:48:11.685Z"
   },
   {
     "ticker": "UNIONBANK.NS",
@@ -447,12 +447,12 @@
     "name": "Union Bank of India",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 212.7862636982128,
-    "price": 186,
-    "marginOfSafety": 0.14401217042049888,
-    "marketCap": 1419850678272,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:07:25.601Z"
+    "intrinsic": 210.8978684287467,
+    "price": 187.22,
+    "marginOfSafety": 0.12647082805654689,
+    "marketCap": 1429163606016,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:48:25.067Z"
   },
   {
     "ticker": "WIPRO.NS",
@@ -460,11 +460,11 @@
     "name": "Wipro Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 210.30426894369333,
-    "price": 180.95,
-    "marginOfSafety": 0.1622230944663904,
-    "marketCap": 1790095917056,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T06:07:38.815Z"
+    "intrinsic": 168.80674104582602,
+    "price": 176.4,
+    "marginOfSafety": -0.043045685681258446,
+    "marketCap": 1745083826176,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T02:48:38.367Z"
   }
 ]
