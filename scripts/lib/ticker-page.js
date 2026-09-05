@@ -1279,6 +1279,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? `<p class="holdco-note">🏛️ Holding company / conglomerate — a ${(HOLDCO_DISCOUNT * 100).toFixed(0)}% discount has been applied to the intrinsic values below, reflecting typically less efficient capital allocation and reduced transparency across diversified business lines (not a per-segment valuation — Yahoo doesn't expose segment-level financials).</p>`
       : '';
 
+    // Surfaces deriveNullReason()'s output to the reader instead of leaving
+    // it as a silent 'N/A' on every scenario card (previously only used for
+    // the console/diagnostics log -- see 2026-09-05: AZJ.AX/006400.KS both
+    // came back with a genuine, non-transient null base case, "net debt
+    // exceeds DCF firm value", and the page gave no explanation why).
+    const nullReasonNoticeHtml = nullReason
+      ? `<div class="notice">⚠️ <strong>No DCF value available for the base case</strong> — ${escapeHtml(nullReason)}. Any scenario card below showing N/A means the model couldn't produce a meaningful value under that scenario's assumptions, rather than an estimated number.</div>`
+      : '';
+
     // Best-effort: must never turn a scoring hiccup into a whole-page skip
     // (this whole function body runs inside one outer try/catch, and a
     // thrown error here would count against the refresh workflow's 20%
@@ -1409,6 +1418,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       ${holdcoNoteHtml}
 
+      ${nullReasonNoticeHtml}
+
       <section class="scenarios-results">
         <h3>Intrinsic value estimate · 5-year forecast${revenueNormalised ? ' · Revenue-normalised' : ''}</h3>
         <div class="scenario-cards">${scenarioCardsHtml}</div>
@@ -1444,7 +1455,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         <div class="tool-faq">
           <h2>Frequently asked questions</h2>
           <details class="faq-item"><summary>Is ${escapeHtml(name)} (${escapeHtml(t)}) undervalued?</summary>
-            <p>The Base-case ${METHOD_SHORT[method]} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.</p>
+            <p>${nullReason
+              ? `A Base-case ${METHOD_SHORT[method]} value could not be computed for ${escapeHtml(name)} as of ${today} — ${escapeHtml(nullReason)}. This is a mechanical output of the model's current inputs, not a judgment on the company.`
+              : `The Base-case ${METHOD_SHORT[method]} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.`
+            }</p>
           </details>
         </div>
       </section>`;

@@ -122,12 +122,12 @@
     "name": "Aurizon Holdings Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 6.4315510207843465,
-    "price": 3.76,
-    "marginOfSafety": 0.7105188885064753,
-    "marketCap": 6329235456,
-    "updated": "2026-08-29",
-    "updatedAt": "2026-08-29T05:24:06.653Z"
+    "intrinsic": null,
+    "price": 3.75,
+    "marginOfSafety": null,
+    "marketCap": 6312402432,
+    "updated": "2026-09-05",
+    "updatedAt": "2026-09-05T03:40:15.693Z"
   },
   {
     "ticker": "BAP.AX",
