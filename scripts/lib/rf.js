@@ -10,6 +10,13 @@
 // otherwise the documented per-market fallback is returned (matches the live
 // tool's silent fallback). fetchImpl is injectable for testing.
 const { batchHeaders } = require('./batch-auth.js');
+// FALLBACK_RF.us/.aus/.ind, used below as this file's own live-fetch fallback values,
+// used to be a fourth hand-copied version of the same numbers (found 2026-09-06, see
+// docs/risk-free-rates.md) -- IND_DEFAULT_SPREAD stays a local constant deliberately:
+// assumptions.js's FALLBACK_RF_META has no machine-readable spread field (only a
+// free-text `source` string), and restructuring that is a bigger, separate change than
+// this consolidation's scope.
+const { FALLBACK_RF } = require('../../www/calc/assumptions.js');
 
 const DEFAULT_FETCH = async (url) => {
   const res = await fetch(url, { headers: batchHeaders() });
@@ -39,8 +46,8 @@ async function fetchRfRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FET
 // 404ing (confirmed live), so fetchAusRf's fallback is what actually feeds every batch
 // consumer of this function. Same three-copy sync issue as market.js/assumptions.js's
 // FALLBACK_RF/app.js's inline defaults -- see docs/TODO.md P6.
-const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',         0.048, { proxyUrl });
-const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  0.052, { proxyUrl });
+const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',        FALLBACK_RF.us,  { proxyUrl });
+const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  FALLBACK_RF.aus, { proxyUrl });
 
 // India's ^INBMKG10.NS is the raw 10-yr G-Sec yield, which double-counts country risk
 // the same way the batch's static market.js fallback used to (erp already carries
@@ -57,7 +64,7 @@ const IND_DEFAULT_SPREAD = 0.0187; // Damodaran Jan 2026, Baa3 rating -- keep in
                                     // www/app.js's IND_DEFAULT_SPREAD_PCT (percentage units there)
 async function fetchIndRf(proxyUrl, opts = {}) {
   const raw = await fetchRfRate('^INBMKG10.NS', null, { proxyUrl, ...opts });
-  if (raw == null) return 0.0509; // fetch failed or out of plausible band -- refreshed 2026-09-04 (was 0.049), raw G-Sec 6.96% minus the unchanged 1.87% spread
+  if (raw == null) return FALLBACK_RF.ind; // fetch failed or out of plausible band -- see docs/risk-free-rates.md for the current value's sourcing
   return Math.max(0.01, raw - IND_DEFAULT_SPREAD);
 }
 
