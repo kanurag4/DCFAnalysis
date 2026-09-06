@@ -230,10 +230,22 @@ let liveIndRfRate = 5.09;  // updated when Indian 10-yr Govt bond is fetched (sp
 // `staticFallback`, when given, is used instead of the assumptions.js table entirely
 // (used by the aus/ind/us branches below, which have their own live-Yahoo-refined
 // value to prefer over the static table).
+// Native-only: overrides the static FALLBACK_RF/MARKET_ERP tables with a fresh
+// fetch from worker-watchlist's /rates endpoint (see fetchNativeLiveRates()
+// below), so a hand-updated rate reaches installed native apps without an
+// app-store release. Stays null on web (isNative gates the fetch itself) and on
+// native until/unless that fetch succeeds -- the static table underneath is
+// always a safe, fully-offline-capable fallback.
+let nativeLiveRates = null;
+
 function marketRf(market, staticFallback) {
+  const live = nativeLiveRates && nativeLiveRates.FALLBACK_RF && nativeLiveRates.FALLBACK_RF[market];
+  if (live != null) return +(live * 100).toFixed(2);
   return staticFallback != null ? staticFallback : +(FALLBACK_RF[market] * 100).toFixed(2);
 }
 function marketErp(market, staticFallback) {
+  const live = nativeLiveRates && nativeLiveRates.MARKET_ERP && nativeLiveRates.MARKET_ERP[market];
+  if (live != null) return +(live * 100).toFixed(2);
   return staticFallback != null ? staticFallback : +(MARKET_ERP[market] * 100).toFixed(2);
 }
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
@@ -283,6 +295,7 @@ if (els.fcfNorm) els.fcfNorm.addEventListener('input', () => formatMoneyInput(el
 
 fetchAndSetRiskFreeRate();
 fetchSectorMarginLookup();
+fetchNativeLiveRates();
 
 // Ticker input, autocomplete, recents, market checkboxes, and ?ticker= URL
 // read/write are all owned by the shared kv-ticker-input.js module.
@@ -366,15 +379,15 @@ function prefillInputs(data) {
   // ── Market detection — still drives the RF/ERP input values and the
   // "About the X numbers" panel, both DOM-only concerns that stay here ──
   if (currentMarket === 'aus') {
-    els.rfInput.value  = liveAusRfRate;
+    els.rfInput.value  = marketRf('aus', liveAusRfRate);
     els.erpInput.value = 6.0;
-    setRfBadge('aus', liveAusRfRate);   // immediate — async fetch may refine the value
+    setRfBadge('aus', marketRf('aus', liveAusRfRate));   // immediate — async fetch may refine the value
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Australian MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
     fetchAndSetAustralianRfRate();
   } else if (currentMarket === 'ind') {
-    els.rfInput.value  = liveIndRfRate;
+    els.rfInput.value  = marketRf('ind', liveIndRfRate);
     els.erpInput.value = 7.5;
-    setRfBadge('ind', liveIndRfRate);   // immediate — async fetch may refine the value
+    setRfBadge('ind', marketRf('ind', liveIndRfRate));   // immediate — async fetch may refine the value
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP (7.0–9.0%)'; els.erpMarketNote.hidden = false; }
     fetchAndSetIndianRfRate();
   } else if (currentMarket === 'kor') {
@@ -414,9 +427,9 @@ function prefillInputs(data) {
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'China A-share MRP (Damodaran country-risk estimate)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — China has no live rate source to fetch.
   } else {
-    els.rfInput.value  = liveRfRate;
+    els.rfInput.value  = marketRf('us', liveRfRate);
     els.erpInput.value = 5.5;
-    setRfBadge('us', liveRfRate);
+    setRfBadge('us', marketRf('us', liveRfRate));
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
   }
 
@@ -1695,10 +1708,10 @@ function parseMoney(el) {
 // Called whenever the user edits the RF or ERP fields.
 function resetRfErp() {
   if (currentMarket === 'aus') {
-    els.rfInput.value  = liveAusRfRate;
+    els.rfInput.value  = marketRf('aus', liveAusRfRate);
     els.erpInput.value = 6.0;
   } else if (currentMarket === 'ind') {
-    els.rfInput.value  = liveIndRfRate;
+    els.rfInput.value  = marketRf('ind', liveIndRfRate);
     els.erpInput.value = 7.5;
   } else if (currentMarket === 'kor') {
     els.rfInput.value  = marketRf('kor');
@@ -1719,7 +1732,7 @@ function resetRfErp() {
     els.rfInput.value  = marketRf('cn');
     els.erpInput.value = marketErp('cn');
   } else {
-    els.rfInput.value  = liveRfRate;
+    els.rfInput.value  = marketRf('us', liveRfRate);
     els.erpInput.value = 5.5;
   }
   recomputeDiscount();
@@ -1821,6 +1834,28 @@ async function fetchSectorMarginLookup() {
     // silently keep the {} default -- same graceful-degradation posture as
     // every other consumer of this file (see the design spec's Error
     // handling section)
+  }
+}
+
+// Native-only: fetches the current hand-maintained rate table from
+// worker-watchlist's /rates endpoint (added specifically so a rate fix
+// reaches installed native apps without an app-store release -- see
+// docs/risk-free-rates.md). No-ops on web. On any failure (offline, Worker
+// down, unexpected shape), silently keeps using the bundled static
+// FALLBACK_RF/MARKET_ERP tables -- same defensive pattern as every other
+// live-fetch-with-fallback in this file.
+async function fetchNativeLiveRates() {
+  if (!isNative || typeof WATCHLIST_API === 'undefined') return;
+  try {
+    const resp = await fetch(`${WATCHLIST_API}/rates`);
+    if (!resp.ok) throw new Error('not ok');
+    const body = await resp.json();
+    if (body && body.ok && body.FALLBACK_RF && body.MARKET_ERP) {
+      nativeLiveRates = body;
+      resetRfErp();
+    }
+  } catch (_) {
+    // silently keep using the bundled static tables
   }
 }
 
