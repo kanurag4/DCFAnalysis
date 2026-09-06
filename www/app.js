@@ -217,7 +217,10 @@ let liveIndRfRate = 5.09;  // updated when Indian 10-yr Govt bond is fetched (sp
 // 0.42% default spread (Damodaran, Jan 2026) -> 4.29% spot (Aug 2026) - 0.42% ~= 3.9.
 // TGROWTH unchanged: 1.75 against the corrected 3.9 rf is a ~45% ratio, already in the
 // same ~40-57% band every other market here uses.
-const KOR_RF      = 3.9;
+// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.kor) but this display-only
+// constant was missed by that pass -- found+fixed 2026-09-06: raw yield 4.42% - 0.42%
+// spread ~= 4.0%.
+const KOR_RF      = 4.0;
 const KOR_ERP     = 7.5;
 const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the Korea numbers" panel
 // Japan: same situation as Korea — no live 10-yr JGB yield ticker exists on Yahoo
@@ -227,14 +230,19 @@ const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the 
 // 1.5->1.2 too: against the old 2.8 rf, 1.5 was a 54% ratio (in-band); against the
 // corrected 2.2 it would drift to 68%, out of the ~40-57% band -- 1.2 restores ~55%.
 // Not a ceiling violation either way (1.5 < 2.2), just internal-consistency.
-const JPN_RF      = 2.2;   // post-deflation JGB regime, spread-adjusted (was 2.8 raw)
+// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.jpn) but this display-only
+// constant was missed by that pass -- found+fixed 2026-09-06: raw JGB yield 2.96% - 0.60%
+// spread ~= 2.36%.
+const JPN_RF      = 2.36;  // post-deflation JGB regime, spread-adjusted (was 2.8 raw)
 const JPN_ERP     = 6.0;   // developed-market tier (~AUS level)
 const JPN_TGROWTH = 1.2;   // vs the tool's 2.5% default — see the "About the Japan numbers" panel
 // UK/eurozone: same "no live source" situation as Korea/Japan — no live 10-yr Gilt/Bund
 // yield ticker exists on Yahoo. Mirrors scripts/lib/market.js's .L / eurozone-suffix
 // branches in the DCFAnalysis batch repo (spot-checked against real yields 2026-08-03) —
 // these are two independent hand-synced implementations, same drift warning as Korea/Japan.
-const UK_RF       = 5.0;   // UK Gilt-proxy
+// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.uk) but this display-only
+// constant was missed by that pass -- found+fixed 2026-09-06: 5.07% (raw Gilt yield).
+const UK_RF       = 5.07;  // UK Gilt-proxy
 const UK_ERP      = 6.0;   // near-US-tier developed market
 const UK_TGROWTH  = 2.0;
 // EUROZONE_SUFFIXES moved to calc/assumptions.js's detectMarket() — this
@@ -243,7 +251,14 @@ const UK_TGROWTH  = 2.0;
 // refactor. A duplicate const of the same name in both <script>-loaded
 // files is a fatal SyntaxError (classic scripts share one top-level
 // lexical scope), not just dead-code duplication — don't re-add this here.
-const EU_RF       = 3.2;   // eurozone Bund-proxy
+// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.eu) but this display-only
+// constant was missed by that pass -- found+fixed 2026-09-06: 3.35% (raw German Bund
+// yield). Note this constant only feeds els.rfInput.value/recomputeDiscount()'s "Adjust
+// assumptions" path -- the page's initial Bear/Base/Bull DCF numbers were already
+// correct the whole time, since those come from assumptions.rf (FALLBACK_RF.eu), not
+// this constant. Only the displayed input value and any user-triggered recompute were
+// silently using the stale 3.2%.
+const EU_RF       = 3.35;  // eurozone Bund-proxy
 const EU_ERP      = 5.5;
 const EU_TGROWTH  = 1.8;
 // Hong Kong (.HK): same "no live source" situation as Korea/Japan/UK/eurozone — no live
@@ -252,7 +267,11 @@ const EU_TGROWTH  = 1.8;
 // current Damodaran country-risk figure specifically for Hong Kong (checked 2026-08-10) —
 // set at developed-market tier (same as UK/Japan) as a best estimate. Flagged explicitly
 // to the user in hkInfoBlock() rather than presented with false precision.
-const HK_RF       = 3.5;
+// rf refreshed 2026-09-06: first trustworthy current figure found (TradingEconomics,
+// 3.65% Sept 4 2026, corroborated by an HKMA 10yr institutional bond tender on Aug 12
+// 2026 at 3.58%) -- was 3.5%, a long-standing placeholder never actually verified.
+// See calc/assumptions.js's FALLBACK_RF.hk (kept in sync here).
+const HK_RF       = 3.65;
 const HK_ERP      = 6.0;
 const HK_TGROWTH  = 2.0;
 // China A-shares (.SS Shanghai / .SZ Shenzhen): same "no live source" situation — no live
@@ -263,7 +282,10 @@ const HK_TGROWTH  = 2.0;
 // issue as India/Japan/Korea, and proportionally the largest of the four, since China's
 // default spread (A1-rated, 0.60%, Damodaran Jan 2026) is a big chunk of its already-tiny
 // base yield: 1.70 spot (Aug 2026) - 0.60 ~= 1.1.
-const CHINA_RF      = 1.1;
+// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.cn) but this display-only
+// constant was missed by that pass -- found+fixed 2026-09-06: 1.68% - 0.60% ~= 1.08%
+// (smallest move of the 09-04 batch, negligible vs the old 1.1).
+const CHINA_RF      = 1.08;
 const CHINA_ERP     = 5.2;
 // Was 2.5 (the tool's US-tier default) until 2026-08-11 — that broke Damodaran's
 // stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for

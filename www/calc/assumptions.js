@@ -48,11 +48,14 @@
 // slower than yields) and only refreshed the raw yield being spread-adjusted: ind
 // 6.96%-1.87%=5.09% (was 4.9%), kor 4.42%-0.42%=4.00% (was 3.9%), jpn 2.96%-0.60%=2.36%
 // (was 2.2% -- confirms this was the biggest gap, per docs/TODO.md P4's rough pass),
-// cn 1.68%-0.60%=1.08% (was 1.1%, smallest move). hk deliberately NOT touched -- no
-// trustworthy current 10yr figure found (HKMA's public data only surfaced short-end
-// bill yields); still 3.5%, needs its own dedicated look. See docs/TODO.md P4 for the
+// cn 1.68%-0.60%=1.08% (was 1.1%, smallest move). hk deliberately NOT touched on 09-04 --
+// no trustworthy current 10yr figure found (HKMA's public data only surfaced short-end
+// bill yields). Refreshed 2026-09-06: TradingEconomics finally gave a trustworthy
+// current figure, 3.65% (Sept 4, 2026), corroborated by an actual HKMA 10yr
+// institutional bond tender (Aug 12, 2026) at 3.58% -- was 3.5%, a long-standing
+// never-actually-verified placeholder. See docs/TODO.md P4 for the
 // full source list and the 2026-08-15 double-counting rationale being preserved here.
-const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.0509, kor: 0.040, jpn: 0.0236, uk: 0.0507, eu: 0.0335, hk: 0.035, cn: 0.0108 };
+const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.0509, kor: 0.040, jpn: 0.0236, uk: 0.0507, eu: 0.0335, hk: 0.0365, cn: 0.0108 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -75,7 +78,7 @@ const FALLBACK_RF_META = {
   jpn: { asOf: '2026-09-04', source: 'raw JGB yield 2.96% (Sept 4) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
   uk:  { asOf: '2026-09-04', source: 'raw gilt yield 5.07% (Sept 2026)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   eu:  { asOf: '2026-09-04', source: 'raw German bund yield 3.35% (Sept 3)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  hk:  { asOf: null, source: null, method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58%', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   cn:  { asOf: '2026-09-04', source: 'raw yield 1.68% (Sept 1) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 

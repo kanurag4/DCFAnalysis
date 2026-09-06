@@ -17,6 +17,13 @@ function marketParamsFor(ticker, live = {}) {
   // (ratings move far slower than yields); hk deliberately left stale, no trustworthy
   // current figure found. Applied to all 3 copies (this file, assumptions.js, app.js's
   // liveIndRfRate) in the same pass -- see docs/TODO.md P4.
+  // hk/tw/il/ch/se/no/si rf refreshed 2026-09-06 -- hk finally got a trustworthy current
+  // figure; tw/il/se/no/si were simple raw-yield updates; ch (Switzerland) also fixed a
+  // real terminalGrowth-exceeds-rf ceiling violation found in the same pass. This same
+  // 09-04 session also found app.js's KOR_RF/JPN_RF/UK_RF/EU_RF/HK_RF/CHINA_RF constants
+  // (a FOURTH copy, display-only but also what recomputeDiscount() uses on "Adjust
+  // assumptions" -- see app.js) had been silently missed by the 09-04 refresh entirely --
+  // fixed in the same pass. See docs/risk-free-rates.md.
   if (t.endsWith('.AX')) return { rf: live.ausRf ?? 0.052, erp: 0.06, terminalGrowth: 0.025 };
   // India (.NS/.BO): rf was the raw 10-yr G-Sec yield (~6.8-7%) until 2026-08-15 --
   // that double-counts country risk, since erp already carries India's country risk
@@ -73,7 +80,10 @@ function marketParamsFor(ticker, live = {}) {
   // Hong Kong (checked 2026-08-10) -- set at developed-market tier (same as UK/Japan) as
   // a best estimate. Backported from www/dcf/app.js's HK_RF/HK_ERP/HK_TGROWTH (commit
   // 98dc69d) -- keep these two in sync if the live tool's seed ever changes.
-  if (t.endsWith('.HK')) return { rf: 0.035, erp: 0.06, terminalGrowth: 0.02 };
+  // rf refreshed 2026-09-06: first trustworthy current figure found (TradingEconomics,
+  // 3.65% Sept 4 2026, corroborated by an HKMA 10yr institutional bond tender on Aug 12
+  // 2026 at 3.58%) -- was 0.035, a long-standing placeholder never actually verified.
+  if (t.endsWith('.HK')) return { rf: 0.0365, erp: 0.06, terminalGrowth: 0.02 };
   // China A-shares (Shanghai .SS / Shenzhen .SZ): same "no live source" situation --
   // rf/erp sourced from Damodaran's country-risk dataset (checked 2026-08-10). Distinct
   // from Hong Kong above -- different currency (CNY vs HKD) and risk profile.
@@ -102,19 +112,36 @@ function marketParamsFor(ticker, live = {}) {
   // ~70% ratio) is the internally-consistent choice, same posture as China's
   // tiny-base-yield handling above. erp elevated ~0.3pp over the developed-market
   // tier for Taiwan Strait geopolitical risk (Damodaran country ERP).
-  if (t.endsWith('.TW')) return { rf: 0.017, erp: 0.058, terminalGrowth: 0.012 };
+  // rf refreshed 2026-09-06: raw TGB yield 1.91% (TradingEconomics, Sept 4 2026).
+  // terminalGrowth kept at 0.012 (now a ~63% ratio) -- same tiny-base-yield exception
+  // as before, not a ceiling violation (0.012 < 0.0191).
+  if (t.endsWith('.TW')) return { rf: 0.0191, erp: 0.058, terminalGrowth: 0.012 };
   // Israel (.TA): rf ~4.0% 10-yr Shekel bond spot minus ~0.9% default spread
   // (A2, Damodaran Jan 2026) ~= 3.1%. erp carries an elevated country-risk premium.
-  if (t.endsWith('.TA')) return { rf: 0.031, erp: 0.072, terminalGrowth: 0.018 };
+  // rf refreshed 2026-09-06: raw yield 3.88% (TradingEconomics, Sept 4 2026) minus the
+  // unchanged 0.9% spread ~= 2.98%.
+  if (t.endsWith('.TA')) return { rf: 0.0298, erp: 0.072, terminalGrowth: 0.018 };
   // Switzerland (.SW): rf ~0.6% 10-yr Confederation bond (structurally low-yield
   // safe haven); terminalGrowth 0.008 keeps a ~55% ratio. AAA, zero default spread.
-  if (t.endsWith('.SW')) return { rf: 0.006, erp: 0.05, terminalGrowth: 0.008 };
+  // BUG FOUND + FIXED 2026-09-06: that "~55% ratio" comment was never actually true --
+  // 0.008 / 0.006 = 133%, an outright Damodaran stable-growth-ceiling violation
+  // (terminalGrowth > rf) that had been live since this bucket was added 2026-08-31.
+  // Also refreshed the rf itself against a real current reading: TradingEconomics has
+  // the actual Swiss 10yr yield at just 0.42-0.44% (Sept 4 2026) -- the original 0.6%
+  // was never a verified figure either. terminalGrowth lowered to 0.0024 to restore the
+  // same ~55% ratio every other market bucket in this file uses.
+  if (t.endsWith('.SW')) return { rf: 0.0043, erp: 0.05, terminalGrowth: 0.0024 };
   // Sweden (.ST) / Norway (.OL): rf ~2.4% / ~3.5% 10-yr govt bond spot; both AAA
   // (zero default spread). Developed-market erp.
-  if (t.endsWith('.ST')) return { rf: 0.024, erp: 0.052, terminalGrowth: 0.015 };
-  if (t.endsWith('.OL')) return { rf: 0.035, erp: 0.052, terminalGrowth: 0.018 };
+  // rf refreshed 2026-09-06 (TradingEconomics, Sept 4 2026): Sweden 3.09% (was a stale
+  // 2.4% -- the biggest gap found in this pass), Norway 4.47% (was a stale 3.5%, driven
+  // by Norges Bank's rate-hike cycle through 2026). terminalGrowth ratios land at ~49%
+  // (Sweden) and ~40% (Norway) against the corrected rf -- both still in-band, no change.
+  if (t.endsWith('.ST')) return { rf: 0.0309, erp: 0.052, terminalGrowth: 0.015 };
+  if (t.endsWith('.OL')) return { rf: 0.0447, erp: 0.052, terminalGrowth: 0.018 };
   // Singapore (.SI): rf ~2.5% 10-yr SGS bond; AAA. Developed-market erp.
-  if (t.endsWith('.SI')) return { rf: 0.025, erp: 0.053, terminalGrowth: 0.016 };
+  // rf refreshed 2026-09-06: 2.38% (TradingEconomics, Sept 4 2026).
+  if (t.endsWith('.SI')) return { rf: 0.0238, erp: 0.053, terminalGrowth: 0.016 };
   // KOSDAQ (.KQ): same market as KOSPI (.KS) for valuation-parameter purposes.
   // A separate hardcoded copy, not derived from the .KS branch -- keep in sync by hand.
   if (t.endsWith('.KQ')) return { rf: 0.040, erp: 0.075, terminalGrowth: 0.0175 };

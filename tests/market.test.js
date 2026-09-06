@@ -104,7 +104,7 @@ test('Shanghai (.SS) / Shenzhen (.SZ) tickers get the spread-adjusted rf and a t
 // the no-live-source markets above — see market.js's inline comments.
 test('Taiwan .TW gets a dedicated bucket, not the US fallback', () => {
   const p = marketParamsFor('2330.TW', {});
-  assert.equal(p.rf, 0.017);
+  assert.equal(p.rf, 0.0191); // refreshed 2026-09-06, was 0.017
   assert.equal(p.erp, 0.058);
   assert.equal(p.terminalGrowth, 0.012);
 });
