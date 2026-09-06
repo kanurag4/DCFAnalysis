@@ -210,95 +210,32 @@ let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best
 let liveRfRate    = 4.8;   // updated when US 10-yr Treasury is fetched -- 4.8% default, corrected 2026-09-02 (was 4.5%, real ^TNX ~4.76%; the live fetch here works, so this default rarely shows, but see calc/assumptions.js's FALLBACK_RF.us)
 let liveAusRfRate = 5.2;   // updated when Australian 10-yr bond is fetched; 5.2% default -- corrected 2026-09-02 (was 4.8%, real yield ~5.16-5.2%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
 let liveIndRfRate = 5.09;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.09% default -- corrected 2026-09-04 (was 4.9%), raw G-Sec 6.96% minus the unchanged 1.87% Damodaran spread; the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
-// Korea: no live 10-yr KTB yield ticker exists on Yahoo (see docs/japan-korea-market-research.md
-// in the source repo) — these are fixed, never overwritten by a fetch.
-// rf corrected 2026-08-15: 4.3 was the raw KTB yield, which double-counts country risk
-// the same way India's raw G-Sec yield did (erp already carries it). Korea is Aa2-rated,
-// 0.42% default spread (Damodaran, Jan 2026) -> 4.29% spot (Aug 2026) - 0.42% ~= 3.9.
-// TGROWTH unchanged: 1.75 against the corrected 3.9 rf is a ~45% ratio, already in the
-// same ~40-57% band every other market here uses.
-// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.kor) but this display-only
-// constant was missed by that pass -- found+fixed 2026-09-06: raw yield 4.42% - 0.42%
-// spread ~= 4.0%.
-const KOR_RF      = 4.0;
-const KOR_ERP     = 7.5;
-const KOR_TGROWTH = 1.75;  // vs the tool's 2.5% default — see the "About the Korea numbers" panel
-// Japan: same situation as Korea — no live 10-yr JGB yield ticker exists on Yahoo
-// (see docs/japan-korea-market-research.md in the source repo) — fixed, never fetched.
-// rf corrected 2026-08-15: 2.8 was the raw JGB yield -- Japan is A1-rated, 0.60% default
-// spread (Damodaran, Jan 2026) -> 2.84 spot (Aug 2026) - 0.60 ~= 2.2. TGROWTH lowered
-// 1.5->1.2 too: against the old 2.8 rf, 1.5 was a 54% ratio (in-band); against the
-// corrected 2.2 it would drift to 68%, out of the ~40-57% band -- 1.2 restores ~55%.
-// Not a ceiling violation either way (1.5 < 2.2), just internal-consistency.
-// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.jpn) but this display-only
-// constant was missed by that pass -- found+fixed 2026-09-06: raw JGB yield 2.96% - 0.60%
-// spread ~= 2.36%.
-const JPN_RF      = 2.36;  // post-deflation JGB regime, spread-adjusted (was 2.8 raw)
-const JPN_ERP     = 6.0;   // developed-market tier (~AUS level)
-const JPN_TGROWTH = 1.2;   // vs the tool's 2.5% default — see the "About the Japan numbers" panel
-// UK/eurozone: same "no live source" situation as Korea/Japan — no live 10-yr Gilt/Bund
-// yield ticker exists on Yahoo. Mirrors scripts/lib/market.js's .L / eurozone-suffix
-// branches in the DCFAnalysis batch repo (spot-checked against real yields 2026-08-03) —
-// these are two independent hand-synced implementations, same drift warning as Korea/Japan.
-// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.uk) but this display-only
-// constant was missed by that pass -- found+fixed 2026-09-06: 5.07% (raw Gilt yield).
-const UK_RF       = 5.07;  // UK Gilt-proxy
-const UK_ERP      = 6.0;   // near-US-tier developed market
-const UK_TGROWTH  = 2.0;
-// EUROZONE_SUFFIXES moved to calc/assumptions.js's detectMarket() — this
-// file's own market-detection chain (which used to reference it here) was
-// replaced by deriveDcfAssumptions() in the 2026-08-13 pure-extraction
-// refactor. A duplicate const of the same name in both <script>-loaded
-// files is a fatal SyntaxError (classic scripts share one top-level
-// lexical scope), not just dead-code duplication — don't re-add this here.
-// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.eu) but this display-only
-// constant was missed by that pass -- found+fixed 2026-09-06: 3.35% (raw German Bund
-// yield). Note this constant only feeds els.rfInput.value/recomputeDiscount()'s "Adjust
-// assumptions" path -- the page's initial Bear/Base/Bull DCF numbers were already
-// correct the whole time, since those come from assumptions.rf (FALLBACK_RF.eu), not
-// this constant. Only the displayed input value and any user-triggered recompute were
-// silently using the stale 3.2%.
-const EU_RF       = 3.35;  // eurozone Bund-proxy
-const EU_ERP      = 5.5;
-const EU_TGROWTH  = 1.8;
-// Hong Kong (.HK): same "no live source" situation as Korea/Japan/UK/eurozone — no live
-// 10-yr HK Exchange Fund Note yield ticker exists on Yahoo — fixed, never fetched.
-// Unlike every other market seed in this tool, the ERP here is NOT backed by a clean,
-// current Damodaran country-risk figure specifically for Hong Kong (checked 2026-08-10) —
-// set at developed-market tier (same as UK/Japan) as a best estimate. Flagged explicitly
-// to the user in hkInfoBlock() rather than presented with false precision.
-// rf refreshed 2026-09-06: first trustworthy current figure found (TradingEconomics,
-// 3.65% Sept 4 2026, corroborated by an HKMA 10yr institutional bond tender on Aug 12
-// 2026 at 3.58%) -- was 3.5%, a long-standing placeholder never actually verified.
-// See calc/assumptions.js's FALLBACK_RF.hk (kept in sync here).
-const HK_RF       = 3.65;
-const HK_ERP      = 6.0;
-const HK_TGROWTH  = 2.0;
-// China A-shares (.SS Shanghai / .SZ Shenzhen): same "no live source" situation — no live
-// 10-yr China Govt bond yield ticker exists on Yahoo — fixed, never fetched. RF/ERP sourced
-// from Damodaran's country-risk dataset (checked 2026-08-10). Distinct from Hong Kong (.HK)
-// above — different currency (CNY vs HKD) and a different risk profile.
-// rf corrected 2026-08-15: 1.7 was the raw CNY govt bond yield -- same double-counting
-// issue as India/Japan/Korea, and proportionally the largest of the four, since China's
-// default spread (A1-rated, 0.60%, Damodaran Jan 2026) is a big chunk of its already-tiny
-// base yield: 1.70 spot (Aug 2026) - 0.60 ~= 1.1.
-// rf refreshed 2026-09-04 (calc/assumptions.js's FALLBACK_RF.cn) but this display-only
-// constant was missed by that pass -- found+fixed 2026-09-06: 1.68% - 0.60% ~= 1.08%
-// (smallest move of the 09-04 batch, negligible vs the old 1.1).
-const CHINA_RF      = 1.08;
-const CHINA_ERP     = 5.2;
-// Was 2.5 (the tool's US-tier default) until 2026-08-11 — that broke Damodaran's
-// stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for
-// long-run nominal economy growth) against China's own CHINA_RF above it. Lowered to
-// sit under CHINA_RF like every other market's *_TGROWTH does relative to its own
-// *_RF — see chinaInfoBlock() and the new renderTerminalGrowthWarning() check below,
-// which now flags this same violation live for any market/scenario a user edits into.
-// Lowered AGAIN 2026-08-15, forced by the CHINA_RF correction above: the old 1.5 now
-// exceeds the new 1.1 rf outright (a fresh ceiling violation the moment rf moved under
-// it), and picking a value that just barely clears the new ceiling would leave China as
-// an outlier again -- 0.6 is a ~55% ratio to the new rf, back in the ~40-57% band every
-// other market here uses.
-const CHINA_TGROWTH = 0.6;
+// Korea/Japan/UK/Eurozone/Hong Kong/China: no live govt-bond yield ticker exists on
+// Yahoo for any of these (see docs/japan-korea-market-research.md) -- rf/erp come
+// straight from calc/assumptions.js's FALLBACK_RF/MARKET_ERP tables (already loaded on
+// this page before app.js runs -- classic <script> tags share one top-level lexical
+// scope, confirmed by the EUROZONE_SUFFIXES comment this replaced) via the
+// marketRf()/marketErp() helpers below, instead of app.js keeping its own copy.
+//
+// This used to be 6 pairs of hand-typed constants (KOR_RF/KOR_ERP, JPN_RF/JPN_ERP, ...)
+// that the 2026-09-04 rate refresh silently missed updating for two full days -- found
+// 2026-09-06, see docs/risk-free-rates.md. A *_TGROWTH constant existed per market too
+// (KOR_TGROWTH, JPN_TGROWTH, etc.) but was dead code: grep confirms none of them were
+// ever read anywhere in this file -- the terminal growth actually used in every DCF
+// calc always came from assumptions.js's own MARKET_TGROWTH via deriveDcfAssumptions().
+// Removed rather than migrated.
+//
+// FALLBACK_RF/MARKET_ERP are decimal fractions (0.048 = 4.8%); this tool's rf/erp
+// inputs are whole-percent fields (4.8), so these helpers convert at the boundary.
+// `staticFallback`, when given, is used instead of the assumptions.js table entirely
+// (used by the aus/ind/us branches below, which have their own live-Yahoo-refined
+// value to prefer over the static table).
+function marketRf(market, staticFallback) {
+  return staticFallback != null ? staticFallback : +(FALLBACK_RF[market] * 100).toFixed(2);
+}
+function marketErp(market, staticFallback) {
+  return staticFallback != null ? staticFallback : +(MARKET_ERP[market] * 100).toFixed(2);
+}
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
 let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDiscount, read by buildScenarios()
 let breakdownChart = null;
@@ -441,39 +378,39 @@ function prefillInputs(data) {
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP (7.0–9.0%)'; els.erpMarketNote.hidden = false; }
     fetchAndSetIndianRfRate();
   } else if (currentMarket === 'kor') {
-    els.rfInput.value  = KOR_RF;
-    els.erpInput.value = KOR_ERP;
-    setRfBadge('kor', KOR_RF);   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
+    els.rfInput.value  = marketRf('kor');
+    els.erpInput.value = marketErp('kor');
+    setRfBadge('kor', marketRf('kor'));   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP incl. governance-risk premium (7.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Korea has no live rate source to fetch.
   } else if (currentMarket === 'jpn') {
-    els.rfInput.value  = JPN_RF;
-    els.erpInput.value = JPN_ERP;
-    setRfBadge('jpn', JPN_RF);   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
+    els.rfInput.value  = marketRf('jpn');
+    els.erpInput.value = marketErp('jpn');
+    setRfBadge('jpn', marketRf('jpn'));   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Japan has no live rate source to fetch.
   } else if (currentMarket === 'uk') {
-    els.rfInput.value  = UK_RF;
-    els.erpInput.value = UK_ERP;
-    setRfBadge('uk', UK_RF);   // fixed estimate — no live source exists, see setRfBadge's 'uk' label
+    els.rfInput.value  = marketRf('uk');
+    els.erpInput.value = marketErp('uk');
+    setRfBadge('uk', marketRf('uk'));   // fixed estimate — no live source exists, see setRfBadge's 'uk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'UK MRP (near-US developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — UK has no live rate source to fetch.
   } else if (currentMarket === 'eu') {
-    els.rfInput.value  = EU_RF;
-    els.erpInput.value = EU_ERP;
-    setRfBadge('eu', EU_RF);   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
+    els.rfInput.value  = marketRf('eu');
+    els.erpInput.value = marketErp('eu');
+    setRfBadge('eu', marketRf('eu'));   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
   } else if (currentMarket === 'hk') {
-    els.rfInput.value  = HK_RF;
-    els.erpInput.value = HK_ERP;
-    setRfBadge('hk', HK_RF);   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
+    els.rfInput.value  = marketRf('hk');
+    els.erpInput.value = marketErp('hk');
+    setRfBadge('hk', marketRf('hk'));   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP — rougher estimate than other markets, see "About the Hong Kong numbers"'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Hong Kong has no live rate source to fetch.
   } else if (currentMarket === 'cn') {
-    els.rfInput.value  = CHINA_RF;
-    els.erpInput.value = CHINA_ERP;
-    setRfBadge('cn', CHINA_RF);   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
+    els.rfInput.value  = marketRf('cn');
+    els.erpInput.value = marketErp('cn');
+    setRfBadge('cn', marketRf('cn'));   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'China A-share MRP (Damodaran country-risk estimate)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — China has no live rate source to fetch.
   } else {
@@ -1764,23 +1701,23 @@ function resetRfErp() {
     els.rfInput.value  = liveIndRfRate;
     els.erpInput.value = 7.5;
   } else if (currentMarket === 'kor') {
-    els.rfInput.value  = KOR_RF;
-    els.erpInput.value = KOR_ERP;
+    els.rfInput.value  = marketRf('kor');
+    els.erpInput.value = marketErp('kor');
   } else if (currentMarket === 'jpn') {
-    els.rfInput.value  = JPN_RF;
-    els.erpInput.value = JPN_ERP;
+    els.rfInput.value  = marketRf('jpn');
+    els.erpInput.value = marketErp('jpn');
   } else if (currentMarket === 'uk') {
-    els.rfInput.value  = UK_RF;
-    els.erpInput.value = UK_ERP;
+    els.rfInput.value  = marketRf('uk');
+    els.erpInput.value = marketErp('uk');
   } else if (currentMarket === 'eu') {
-    els.rfInput.value  = EU_RF;
-    els.erpInput.value = EU_ERP;
+    els.rfInput.value  = marketRf('eu');
+    els.erpInput.value = marketErp('eu');
   } else if (currentMarket === 'hk') {
-    els.rfInput.value  = HK_RF;
-    els.erpInput.value = HK_ERP;
+    els.rfInput.value  = marketRf('hk');
+    els.erpInput.value = marketErp('hk');
   } else if (currentMarket === 'cn') {
-    els.rfInput.value  = CHINA_RF;
-    els.erpInput.value = CHINA_ERP;
+    els.rfInput.value  = marketRf('cn');
+    els.erpInput.value = marketErp('cn');
   } else {
     els.rfInput.value  = liveRfRate;
     els.erpInput.value = 5.5;
