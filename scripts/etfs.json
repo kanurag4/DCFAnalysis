@@ -325,5 +325,21 @@
     "issuerFundId": "239515/ishares-us-insurance-etf",
     "fee": 0.0037,
     "assetClass": "equity"
+  },
+  {
+    "slug": "dtcr",
+    "name": "Global X Data Center & Digital Infrastructure ETF",
+    "theme": "Data centers & digital infrastructure",
+    "listings": [
+      {
+        "ticker": "DTCR",
+        "exchange": "NASDAQ",
+        "currency": "USD"
+      }
+    ],
+    "issuer": "globalx",
+    "issuerFundId": "dtcr",
+    "fee": 0.005,
+    "assetClass": "equity"
   }
 ]

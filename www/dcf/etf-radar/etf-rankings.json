@@ -270,6 +270,19 @@
       ]
     },
     {
+      "slug": "dtcr",
+      "name": "Global X Data Center & Digital Infrastructure ETF",
+      "theme": "Data centers & digital infrastructure",
+      "fee": 0.005,
+      "lookThroughMos": -0.6787596828625373,
+      "coverage": 0.8646940822467403,
+      "ranked": true,
+      "holdingsCount": 25,
+      "valuedCount": 21,
+      "rank": 19,
+      "flags": []
+    },
+    {
       "slug": "soxx",
       "name": "iShares Semiconductor ETF",
       "theme": "Semiconductors",
@@ -279,7 +292,7 @@
       "ranked": true,
       "holdingsCount": 30,
       "valuedCount": 29,
-      "rank": 19,
+      "rank": 20,
       "flags": [
         "asOf-unchanged"
       ]
@@ -294,7 +307,7 @@
       "ranked": true,
       "holdingsCount": 296,
       "valuedCount": 230,
-      "rank": 20,
+      "rank": 21,
       "flags": []
     }
   ],
