@@ -1,5 +1,5 @@
 {
-  "asAt": "2026-09-04",
+  "asAt": "2026-09-07",
   "union": {
     "count": 860,
     "fetched": 860,
@@ -270,6 +270,19 @@
       "flags": [
         "asOf-unchanged"
       ]
+    },
+    {
+      "slug": "vtek",
+      "name": "Vanguard Global Technology Index ETF",
+      "theme": "Technology",
+      "fee": 0.0023,
+      "lookThroughMos": -0.717690753195361,
+      "coverage": 0.9749082588724225,
+      "ranked": true,
+      "holdingsCount": 296,
+      "valuedCount": 230,
+      "rank": 19,
+      "flags": []
     }
   ],
   "unranked": []

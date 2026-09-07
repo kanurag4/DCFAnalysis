@@ -293,5 +293,21 @@
     "issuerFundId": "global-momentum-etf",
     "fee": 0.0035,
     "assetClass": "equity"
+  },
+  {
+    "slug": "vtek",
+    "name": "Vanguard Global Technology Index ETF",
+    "theme": "Technology",
+    "listings": [
+      {
+        "ticker": "VTEK.AX",
+        "exchange": "ASX",
+        "currency": "AUD"
+      }
+    ],
+    "issuer": "vanguard",
+    "issuerFundId": "F109",
+    "fee": 0.0023,
+    "assetClass": "equity"
   }
 ]
