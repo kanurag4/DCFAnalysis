@@ -68,7 +68,12 @@ function parse(csvText) {
   const iName = header.indexOf('name');
   const iSector = header.indexOf('sector');
   const iClass = header.indexOf('asset class');
-  const iWeight = header.findIndex(h => h.startsWith('weight'));
+  // "Weight (%)" on the standard US template (SOXX, ITA, …). An alternate
+  // template some older funds serve (IAK, 2006 inception) names it "Market
+  // Weight" and adds a near-identical "Notional Weight" right after it — match
+  // the former, never the latter. Every other column is addressed by exact
+  // name and survives the reordering between the two templates unchanged.
+  const iWeight = header.findIndex(h => (h.startsWith('weight') || h === 'market weight') && !h.includes('notional'));
   const iLocation = header.indexOf('location');
   const iExchange = header.indexOf('exchange');
   const iCurrency = header.indexOf('currency');

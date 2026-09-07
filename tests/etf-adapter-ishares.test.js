@@ -81,3 +81,24 @@ test('IAA parses asOf, drops cash/futures, and every equity holding resolves', (
   const dbs = resolved.find(r => r.rawSymbol === 'D05');
   assert.equal(dbs.yahoo, 'D05.SI');
 });
+
+// IAK (iShares U.S. Insurance, 2006) serves an alternate US CSV template: an
+// extra "Type" column, and the weight column named "Market Weight" (with a
+// near-identical "Notional Weight" right after it) instead of "Weight (%)".
+// Added onboarding IAK 2026-09-07.
+const iakCsv = fs.readFileSync(path.join(__dirname, 'fixtures/etf/ishares-iak.csv'), 'utf8');
+
+test('the "Market Weight" template parses (not the "Notional Weight" column) and drops the short trailing row', () => {
+  const { asOf, rows } = adapter.parse(iakCsv);
+  assert.equal(asOf, '2026-09-03');
+  assert.equal(rows.length, 6);                       // 6 equities; the malformed trailing row is skipped by the length guard
+  assert.equal(rows[0].rawSymbol, 'PGR');
+  assert.ok(Math.abs(rows[0].weight - 0.1331) < 1e-6, `PGR weight ${rows[0].weight} — must be Market Weight (13.31%), not Notional Weight (13.28%)`);
+  assert.ok(rows.every(r => r.country === 'United States'));
+});
+
+test('every IAK holding resolves to a Yahoo symbol', () => {
+  const { rows } = adapter.parse(iakCsv);
+  const { unresolved } = resolveHoldings(rows, { issuer: 'ishares', overrides: {} });
+  assert.equal(unresolved.length, 0, `unresolved: ${unresolved.map(u => u.rawSymbol).join(', ')}`);
+});

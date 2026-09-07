@@ -21,6 +21,19 @@
       "flags": []
     },
     {
+      "slug": "iak",
+      "name": "iShares U.S. Insurance ETF",
+      "theme": "Insurance",
+      "fee": 0.0037,
+      "lookThroughMos": -0.18213074059881118,
+      "coverage": 0.9923108053419669,
+      "ranked": true,
+      "holdingsCount": 57,
+      "valuedCount": 54,
+      "rank": 2,
+      "flags": []
+    },
+    {
       "slug": "cldd",
       "name": "Betashares Cloud Computing ETF",
       "theme": "Cloud computing",
@@ -30,7 +43,7 @@
       "ranked": true,
       "holdingsCount": 38,
       "valuedCount": 36,
-      "rank": 2,
+      "rank": 3,
       "flags": [
         "asOf-unchanged"
       ]
@@ -45,7 +58,7 @@
       "ranked": true,
       "holdingsCount": 59,
       "valuedCount": 55,
-      "rank": 3,
+      "rank": 4,
       "flags": [
         "asOf-unchanged"
       ]
@@ -60,7 +73,7 @@
       "ranked": true,
       "holdingsCount": 110,
       "valuedCount": 101,
-      "rank": 4,
+      "rank": 5,
       "flags": [
         "asOf-regressed"
       ]
@@ -75,7 +88,7 @@
       "ranked": true,
       "holdingsCount": 50,
       "valuedCount": 43,
-      "rank": 5,
+      "rank": 6,
       "flags": [
         "asOf-unchanged"
       ]
@@ -90,7 +103,7 @@
       "ranked": true,
       "holdingsCount": 53,
       "valuedCount": 40,
-      "rank": 6,
+      "rank": 7,
       "flags": []
     },
     {
@@ -103,7 +116,7 @@
       "ranked": true,
       "holdingsCount": 47,
       "valuedCount": 40,
-      "rank": 7,
+      "rank": 8,
       "flags": [
         "asOf-unchanged"
       ]
@@ -118,7 +131,7 @@
       "ranked": true,
       "holdingsCount": 42,
       "valuedCount": 36,
-      "rank": 8,
+      "rank": 9,
       "flags": [
         "asOf-unchanged"
       ]
@@ -133,7 +146,7 @@
       "ranked": true,
       "holdingsCount": 198,
       "valuedCount": 176,
-      "rank": 9,
+      "rank": 10,
       "flags": [
         "asOf-unchanged"
       ]
@@ -148,7 +161,7 @@
       "ranked": true,
       "holdingsCount": 106,
       "valuedCount": 94,
-      "rank": 10,
+      "rank": 11,
       "flags": [
         "asOf-unchanged"
       ]
@@ -163,7 +176,7 @@
       "ranked": true,
       "holdingsCount": 150,
       "valuedCount": 143,
-      "rank": 11,
+      "rank": 12,
       "flags": [
         "asOf-unchanged"
       ]
@@ -178,7 +191,7 @@
       "ranked": true,
       "holdingsCount": 50,
       "valuedCount": 38,
-      "rank": 12,
+      "rank": 13,
       "flags": [
         "asOf-unchanged"
       ]
@@ -193,7 +206,7 @@
       "ranked": true,
       "holdingsCount": 48,
       "valuedCount": 46,
-      "rank": 13,
+      "rank": 14,
       "flags": [
         "asOf-unchanged"
       ]
@@ -208,7 +221,7 @@
       "ranked": true,
       "holdingsCount": 88,
       "valuedCount": 64,
-      "rank": 14,
+      "rank": 15,
       "flags": [
         "asOf-unchanged"
       ]
@@ -223,7 +236,7 @@
       "ranked": true,
       "holdingsCount": 200,
       "valuedCount": 165,
-      "rank": 15,
+      "rank": 16,
       "flags": []
     },
     {
@@ -236,7 +249,7 @@
       "ranked": true,
       "holdingsCount": 60,
       "valuedCount": 49,
-      "rank": 16,
+      "rank": 17,
       "flags": [
         "asOf-unchanged"
       ]
@@ -251,7 +264,7 @@
       "ranked": true,
       "holdingsCount": 42,
       "valuedCount": 33,
-      "rank": 17,
+      "rank": 18,
       "flags": [
         "asOf-unchanged"
       ]
@@ -266,7 +279,7 @@
       "ranked": true,
       "holdingsCount": 30,
       "valuedCount": 29,
-      "rank": 18,
+      "rank": 19,
       "flags": [
         "asOf-unchanged"
       ]
@@ -281,7 +294,7 @@
       "ranked": true,
       "holdingsCount": 296,
       "valuedCount": 230,
-      "rank": 19,
+      "rank": 20,
       "flags": []
     }
   ],
