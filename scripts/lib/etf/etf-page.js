@@ -185,8 +185,9 @@ function renderEtfPage(fund, { snapshotPrices = {}, tickerPageIndex = {}, asAt, 
         <h2>How this is calculated</h2>
         <p>Each holding is valued with the same engine behind KashVector's <a href="/dcf/">DCF tool</a> and
            its undervalued screens — a conservative 5-year discounted cash flow, or a dividend / excess-return
-           model for banks, insurers and regulated utilities, or an EV/Sales comparison for a small tail the
-           cash-flow models can't value. Where the DCF needs a forward growth rate we use the <em>slower</em>
+           model for banks, insurers and regulated utilities, a P/AFFO multiple for property REITs, an
+           EV/EBITDA multiple for airlines, or an EV/Sales comparison for a small tail the cash-flow models
+           can't value. Where the DCF needs a forward growth rate we use the <em>slower</em>
            of a holding's multi-year revenue trend and its multi-year free-cash-flow trend, so one distorted
            year at one company can't skew the fund's number. Each holding's premium or discount to its own
            intrinsic value is weighted by fund weight and summed.</p>

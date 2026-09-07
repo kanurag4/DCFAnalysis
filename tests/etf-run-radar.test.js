@@ -200,3 +200,71 @@ test('writeRadarArtifacts with generatePages writes rankings JSON + all pages', 
   assert.match(detail, /href="\/dcf\/stocks\/sp500\/nvidia\/"/);   // linked holding via injected index
   assert.match(detail, /1st of 1 thematic ETFs/);                  // rank line
 });
+
+// ── valueOne: REIT / airline routing (radar-only — evaluate.js is untouched) ──
+// Added onboarding DTCR-class REIT-heavy ETFs 2026-09-07.
+
+const REIT_DATA = {
+  ticker: 'PLD', sector: 'Real Estate', industry: 'REIT - Industrial', price: 100,
+  netIncome: 100, depreciationAndAmortization: 50, capitalExpenditures: -30, sharesOutstanding: 10,
+};
+
+test('valueOne routes an equity REIT through the P/AFFO model, never the DCF path', () => {
+  let evaluateCalled = false;
+  const spyEvaluate = () => { evaluateCalled = true; return { method: 'DCF', marginOfSafety: -0.9 }; };
+  // FFO 150, AFFO 120, /10 = 12/sh, × 18 (REIT - Industrial) = 216 vs price 100 → +116%… > band.
+  // Use a lower multiple case instead: bump price so it lands in-band.
+  const v = valueOne('PLD', { ...REIT_DATA, price: 200 }, spyEvaluate);
+  assert.equal(evaluateCalled, false, 'evaluateStock must not be called for an equity REIT');
+  assert.equal(v.method, 'REIT');
+  assert.ok(Math.abs(v.mos - 0.08) < 1e-9, `expected +8%, got ${v.mos}`); // (216-200)/200
+});
+
+test('valueOne routes an airline through the EV/EBITDA model, never the DCF path', () => {
+  let evaluateCalled = false;
+  const spyEvaluate = () => { evaluateCalled = true; return { method: 'DCF', marginOfSafety: -0.9 }; };
+  // EV 100×6=600, netDebt 200-50=150, equity 450, /10 = 45/sh vs price 40 → +12.5%.
+  const v = valueOne('DAL', {
+    ticker: 'DAL', sector: 'Industrials', industry: 'Airlines', price: 40,
+    ebitda: 100, totalDebt: 200, totalCash: 50, sharesOutstanding: 10,
+  }, spyEvaluate);
+  assert.equal(evaluateCalled, false);
+  assert.equal(v.method, 'Airline');
+  assert.ok(Math.abs(v.mos - 0.125) < 1e-9);
+});
+
+test('valueOne leaves a mortgage REIT to evaluateStock (DDM), not the P/AFFO model', () => {
+  let seen = null;
+  const spyEvaluate = (d) => { seen = d; return { method: 'DDM', marginOfSafety: -0.1 }; };
+  const v = valueOne('AGNC', {
+    ticker: 'AGNC', sector: 'Real Estate', industry: 'REIT - Mortgage', price: 10,
+    netIncome: 5, depreciationAndAmortization: 0, capitalExpenditures: 0, sharesOutstanding: 100,
+  }, spyEvaluate);
+  assert.ok(seen !== null, 'evaluateStock must handle mortgage REITs');
+  assert.equal(v.method, 'DDM');
+});
+
+test('valueOne: a REIT with non-positive AFFO is unvaluable — and does NOT fall through to EV/Sales', () => {
+  const v = valueOne('BADREIT', {
+    ...REIT_DATA, netIncome: -500, // FFO -450, AFFO -480 → no P/AFFO value
+    totalRevenue: 1e9, // would satisfy an EV/Sales attempt if it were allowed to try
+  }, () => { throw new Error('evaluateStock should not be reached'); });
+  assert.equal(v.unvaluable, true);
+  assert.equal(v.reason, 'reit-unavailable');
+});
+
+test('valueOne: a REIT whose P/AFFO value implies an implausible margin is dropped, not blended', () => {
+  // AFFO/sh 12 × 18 = 216 vs price 50 → +332%, outside the [-2.0, +1.0] band.
+  const v = valueOne('PLD', { ...REIT_DATA, price: 50 }, () => { throw new Error('unreached'); });
+  assert.equal(v.unvaluable, true);
+  assert.equal(v.reason, 'implausible-margin');
+});
+
+test('valueOne still sends a normal (non-REIT, non-airline) stock through evaluateStock unchanged', () => {
+  let evaluateCalled = false;
+  const spyEvaluate = () => { evaluateCalled = true; return { method: 'DCF', intrinsic: 70, marginOfSafety: -0.30 }; };
+  const v = valueOne('AAPL', { ticker: 'AAPL', sector: 'Technology', industry: 'Consumer Electronics', price: 100 }, spyEvaluate);
+  assert.equal(evaluateCalled, true);
+  assert.equal(v.method, 'DCF');
+  assert.ok(Math.abs(v.mos - (-0.30)) < 1e-9);
+});

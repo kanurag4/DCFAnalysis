@@ -47,6 +47,12 @@ test('detail page: ticker-page shell, summary stats, valuation, holdings, breakd
   assert.doesNotMatch(html, /\bOvervalued\b|\bUndervalued\b/);
 });
 
+test('the methodology paragraph names the REIT and airline models, not just DCF / DDM / EV-Sales', () => {
+  const { html } = renderEtfPage(fund, { tickerPageIndex: {}, asAt: '2026-09-01' });
+  assert.match(html, /P\/AFFO/i);     // property REITs
+  assert.match(html, /EV\/EBITDA/i);  // airlines
+});
+
 test('a sub-70% fund omits the headline number but still renders the page', () => {
   const { html } = renderEtfPage({ ...fund, ranked: false, coverage: 0.52 }, {
     snapshotPrices: {}, tickerPageIndex: {}, asAt: '2026-09-01', rankLine: null,

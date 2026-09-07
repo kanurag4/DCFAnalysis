@@ -11,7 +11,9 @@ const { readSnapshot, writeSnapshot, evaluateFreshness } = require('./holdings-s
 const { aggregateFund, detectCrypto } = require('./aggregate.js');
 const { sistersFor } = require('./overlap.js');
 const { evSalesFallback } = require('./growth-eval.js');
+const { reitValue, airlineValue } = require('./sector-models.js');
 const { lookThroughGrowth } = require('./growth-rate.js');
+const { isReit, isAirline, isBankOrInsurance } = require('../../../www/utils.js');
 const { marketParamsFor } = require('../market.js');
 const { evaluateStock: realEvaluateStock } = require('../evaluate.js');
 const { fetchSymbol: realFetchSymbol } = require('../../fetch-yahoo.js');
@@ -120,6 +122,31 @@ function plausible(mos, { maxMargin = MAX_HOLDING_MARGIN, minMargin = MIN_HOLDIN
 function valueOne(sym, data, evaluateStock, bounds = {}, live = {}) {
   if (!data) return { unvaluable: true, reason: 'fetch-failed' };
   if (data.quoteType === 'CRYPTO' || data.quoteType === 'CRYPTOCURRENCY') return { quoteType: 'CRYPTO' };
+
+  // REITs and airlines are structurally wrong for FCF-based DCF — value them
+  // with the same P/AFFO / EV-EBITDA engines the per-ticker pages use, before
+  // the DCF path, exactly as ticker-page.js dispatches. This branch is
+  // radar-only: scripts/lib/evaluate.js (the undervalued-screen engine)
+  // deliberately has no REIT/airline branch, and keeping the logic here rather
+  // than there is what stops it from moving the screen rankings. Mortgage REITs
+  // are excluded by isReit() itself and still route through evaluateStock's DDM
+  // (via isBankOrInsurance); the !isBank guard mirrors ticker-page.js:756-757.
+  const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
+  if (!isBank && isReit(data.sector, data.industry)) {
+    const rr = reitValue(data);
+    if (!rr) return { unvaluable: true, reason: 'reit-unavailable' };
+    return plausible(rr.marginOfSafety, bounds)
+      ? { mos: rr.marginOfSafety, method: 'REIT' }
+      : { unvaluable: true, reason: 'implausible-margin' };
+  }
+  if (!isBank && isAirline(data.sector, data.industry)) {
+    const ar = airlineValue(data);
+    if (!ar) return { unvaluable: true, reason: 'airline-unavailable' };
+    return plausible(ar.marginOfSafety, bounds)
+      ? { mos: ar.marginOfSafety, method: 'Airline' }
+      : { unvaluable: true, reason: 'implausible-margin' };
+  }
+
   // Replace the engine's 1-year revenue/earnings growth with the conservative
   // multi-year trend (growth-rate.js). Setting both fields equal makes
   // deriveBaseGrowth()'s avg() return that value (still clamped [-0.05, 0.25]),
