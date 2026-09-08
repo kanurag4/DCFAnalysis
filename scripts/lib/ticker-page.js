@@ -131,6 +131,15 @@ const CURRENCY_SYMBOLS = { USD: '$', AUD: '$', INR: '₹', KRW: '₩', JPY: '¥'
 // identifier has no spaces and reads badly inline (e.g. "ExcessReturn Valuation",
 // "mechanical ExcessReturn formula") -- fixed 2026-08-15, peer review finding.
 const METHOD_SHORT = { DCF: 'DCF', DDM: 'DDM', ExcessReturn: 'Excess Return', REIT: 'FFO/AFFO', Airline: 'EV/EBITDA' };
+// Where the "What is <method>?" footer link points — a dedicated glossary page
+// where one exists, else the relevant glossary anchor.
+const METHOD_GLOSSARY = {
+  DCF: '/glossary/dcf-vs-ddm/',
+  DDM: '/glossary/dcf-vs-ddm/',
+  ExcessReturn: '/glossary/#excess-return-model',
+  REIT: '/glossary/#p-affo-multiple',
+  Airline: '/glossary/#ev-ebitda-multiple',
+};
 
 const slugify = (ticker) => ticker.toLowerCase().replace(/\./g, '-');
 
@@ -1139,11 +1148,11 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
          <tr><td>Cost of equity</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`
       : isBank
       ? `<tr><td>Dividend growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
-         <tr><td>Terminal growth</td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
+         <tr><td><a href="/glossary/terminal-growth-rate/">Terminal growth</a></td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
          <tr><td>Cost of equity</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`
       : `<tr><td>5-yr FCF growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
-         <tr><td>Terminal growth</td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
-         <tr><td>WACC (discount rate)</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`;
+         <tr><td><a href="/glossary/terminal-growth-rate/">Terminal growth</a></td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
+         <tr><td><a href="/glossary/wacc/">WACC</a> (discount rate)</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`;
 
     const assumptionTiles = isReitTicker
       ? `<div class="assump-item"><div class="al">Net income</div><div class="av">${data.netIncome != null ? moneyB(data.netIncome, currencySym) : 'N/A'}</div><div class="an">GAAP, from income statement</div></div>
@@ -1194,7 +1203,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       ? `Enterprise Value = EBITDA × Multiple = ${data.ebitda != null ? moneyB(data.ebitda, currencySym) : 'N/A'} × ${airlineMultiples.base}x — Equity Value = EV − Net Debt, ÷ shares outstanding`
       : (isBank || isUtilityTicker)
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
-      : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · WACC = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
+      : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · <a href="/glossary/wacc/">WACC</a> = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
 
     const reitAffoPayoutRatio = (() => {
       if (!isReitTicker || affoPerShare == null || affoPerShare <= 0) return null;
@@ -1438,7 +1447,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       <p class="pure-maths-note">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : method === 'REIT' ? 'AFFO' : method === 'Airline' ? 'EBITDA' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="/glossary/">What is ${METHOD_SHORT[method]}?</a></span>
+        <span>These numbers come from running ${escapeHtml(name)}'s ${method === 'DCF' ? 'cash flows' : method === 'DDM' ? 'dividends' : method === 'REIT' ? 'AFFO' : method === 'Airline' ? 'EBITDA' : 'book value and return on equity'} through the mechanical ${METHOD_SHORT[method]} formula and assumptions above — not from any view on the news, management, or ${escapeHtml(t)}'s competitive position. <a href="${METHOD_GLOSSARY[method] || '/glossary/'}">What is ${METHOD_SHORT[method]}?</a></span>
       </p>
 
       <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : method === 'REIT' ? 'P/AFFO multiple' : method === 'Airline' ? 'EV/EBITDA multiple' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
