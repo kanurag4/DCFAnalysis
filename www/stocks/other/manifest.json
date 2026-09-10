@@ -221,6 +221,19 @@
     "updatedAt": "2026-09-05T02:52:15.319Z"
   },
   {
+    "ticker": "036570.KS",
+    "slug": "036570-ks",
+    "name": "NC Corporation",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 169858.6702032028,
+    "price": 209500,
+    "marginOfSafety": -0.18921875797993884,
+    "marketCap": 4079569076224,
+    "updated": "2026-09-10",
+    "updatedAt": "2026-09-10T10:56:09.061Z"
+  },
+  {
     "ticker": "051600.KS",
     "slug": "051600-ks",
     "name": "KEPCO Plant Service & Engineering Co.,Ltd.",
@@ -388,6 +401,19 @@
     "marketCap": 12077757366272,
     "updated": "2026-09-05",
     "updatedAt": "2026-09-05T02:54:42.622Z"
+  },
+  {
+    "ticker": "3659.T",
+    "slug": "3659-t",
+    "name": "NEXON Co., Ltd.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 3833.776178677156,
+    "price": 3116,
+    "marginOfSafety": 0.23035179033284858,
+    "marketCap": 2426982367232,
+    "updated": "2026-09-10",
+    "updatedAt": "2026-09-10T10:54:26.549Z"
   },
   {
     "ticker": "4021.T",
@@ -609,6 +635,19 @@
     "marketCap": 1042352242688,
     "updated": "2026-09-05",
     "updatedAt": "2026-09-05T02:57:34.167Z"
+  },
+  {
+    "ticker": "9697.T",
+    "slug": "9697-t",
+    "name": "Capcom Co., Ltd.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 3057.462296372194,
+    "price": 4196,
+    "marginOfSafety": -0.27133882355286126,
+    "marketCap": 1755223818240,
+    "updated": "2026-09-10",
+    "updatedAt": "2026-09-10T10:54:13.887Z"
   },
   {
     "ticker": "9766.T",
@@ -856,6 +895,19 @@
     "marketCap": 117741404160,
     "updated": "2026-09-05",
     "updatedAt": "2026-09-05T03:00:51.393Z"
+  },
+  {
+    "ticker": "LDO.MI",
+    "slug": "ldo-mi",
+    "name": "Leonardo S.p.a.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 64.26476330026303,
+    "price": 49.835,
+    "marginOfSafety": 0.2895507835911112,
+    "marketCap": 28749107200,
+    "updated": "2026-09-10",
+    "updatedAt": "2026-09-10T10:54:02.625Z"
   },
   {
     "ticker": "MC.PA",

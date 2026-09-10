@@ -494,6 +494,19 @@
     "updatedAt": "2026-09-05T02:29:24.093Z"
   },
   {
+    "ticker": "LDOS",
+    "slug": "ldos",
+    "name": "Leidos Holdings, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 197.84534213436135,
+    "price": 128.14,
+    "marginOfSafety": 0.543978009476833,
+    "marketCap": 16118149120,
+    "updated": "2026-09-10",
+    "updatedAt": "2026-09-10T10:53:49.869Z"
+  },
+  {
     "ticker": "LLY",
     "slug": "lly",
     "name": "Eli Lilly and Company",
@@ -869,6 +882,19 @@
     "marketCap": 20925284352,
     "updated": "2026-09-05",
     "updatedAt": "2026-09-05T02:35:50.884Z"
+  },
+  {
+    "ticker": "RTX",
+    "slug": "rtx",
+    "name": "RTX Corporation",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 182.96000126910653,
+    "price": 197.55,
+    "marginOfSafety": -0.07385471389973922,
+    "marketCap": 266249617408,
+    "updated": "2026-09-10",
+    "updatedAt": "2026-09-10T10:53:30.767Z"
   },
   {
     "ticker": "SBUX",
