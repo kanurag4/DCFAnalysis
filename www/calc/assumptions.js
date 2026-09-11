@@ -55,7 +55,33 @@
 // institutional bond tender (Aug 12, 2026) at 3.58% -- was 3.5%, a long-standing
 // never-actually-verified placeholder. See docs/TODO.md P4 for the
 // full source list and the 2026-08-15 double-counting rationale being preserved here.
-const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.0509, kor: 0.040, jpn: 0.0236, uk: 0.0507, eu: 0.0335, hk: 0.0365, cn: 0.0108 };
+//
+// us/aus/uk/eu/ind/kor: refreshed 2026-09-11 amid a live, still-unfolding global
+// sovereign bond selloff -- US-Iran conflict escalation pushed Brent crude above
+// $100/barrel, driving a broad inflation/rate-hike repricing across every market
+// below (confirmed via multiple corroborating sources per market, all dated
+// 2026-09-10/11). us 4.80%->4.94%, sourced directly from a live ^TNX pull via the
+// Worker's own /history endpoint (Sept 10 close 4.944%, up from 4.784% on Sept 4) --
+// not just secondhand web citations, since ^TNX is both the confirmed-working live
+// symbol and now the citation for the fallback itself. aus 5.20%->5.25% (Bloomberg:
+// "highest since 2011" on oil concerns). uk 5.07%->5.30% (raw gilt yield 5.295%,
+// 19-year high). eu/Germany 3.35%->3.44% (highest since April 2011). ind/kor kept
+// the SAME Jan-2026 Damodaran default spreads (1.87%/0.42%) and only refreshed the
+// raw yield being spread-adjusted: ind 6.96%->7.02% (crossed 7% for the first time
+// in 3+ months) => net 5.09%->5.15%; kor 4.42%->4.54% (highest since Oct 2022) =>
+// net 4.00%->4.12%. jpn/hk/cn checked and NOT moved: jpn's raw JGB yield was
+// essentially flat (2.96%->~2.92%, within noise -- BOJ dynamics differ from the
+// oil-driven global channel that's moving everything else); no trustworthy fresh HK
+// figure found (same gap as 09-04); cn's raw yield unchanged at 1.68% (policy-managed,
+// largely insulated from this move). Also re-verified empirically (via /history and
+// /search against the live Worker, which don't touch ticker-lookup stats) that no
+// live Yahoo symbol exists for aus/ind/uk/eu/kor/jpn/hk/cn -- Yahoo's CBOE yield-index
+// family (^TNX/^TYX/^FVX/^IRX) is US-Treasury-only; every non-US "Bund"/"Gilt"/"JGB"
+// hit is a bond-price ETF, not a yield quote, and isn't a valid substitute anyway
+// (ETF price != yield%). This is a live, fast-moving event as of this writing --
+// re-verify sooner than the usual cadence if the selloff continues. See
+// docs/risk-free-rates.md.
+const FALLBACK_RF = { us: 0.0494, aus: 0.0525, ind: 0.0515, kor: 0.0412, jpn: 0.0236, uk: 0.0530, eu: 0.0344, hk: 0.0365, cn: 0.0108 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -71,13 +97,13 @@ const FALLBACK_RF = { us: 0.048, aus: 0.052, ind: 0.0509, kor: 0.040, jpn: 0.023
 // field also doubles as "does the live path even work" documentation until
 // a replacement is found (see docs/TODO.md's P6).
 const FALLBACK_RF_META = {
-  us:  { asOf: '2026-09-02', source: 'Yahoo ^TNX (confirmed live)', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
-  aus: { asOf: '2026-09-02', source: 'multiple sources, AU 10yr govt bond ~5.16-5.2%', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: '2026-09-04', source: 'raw G-Sec 6.96% (Sept 1) minus Jan-2026 Damodaran spread 1.87%', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
-  kor: { asOf: '2026-09-04', source: 'raw yield 4.42% (Sept 2, 2 sources) minus Jan-2026 Damodaran spread 0.42%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  us:  { asOf: '2026-09-11', source: 'Yahoo ^TNX live pull via the Worker /history endpoint -- Sept 10 close 4.944%, part of a global bond selloff (Bloomberg: "cusp of 5%")', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
+  aus: { asOf: '2026-09-11', source: 'Bloomberg/TradingEconomics, AU 10yr govt bond 5.25% (highest since 2011, oil-driven global selloff)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  ind: { asOf: '2026-09-11', source: 'raw G-Sec crossed 7.02% (highest in 3+ months, oil/global-yield driven) minus Jan-2026 Damodaran spread 1.87%', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-09-11', source: 'raw yield closed 4.54% (highest since Oct 2022) minus Jan-2026 Damodaran spread 0.42%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
   jpn: { asOf: '2026-09-04', source: 'raw JGB yield 2.96% (Sept 4) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: '2026-09-04', source: 'raw gilt yield 5.07% (Sept 2026)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  eu:  { asOf: '2026-09-04', source: 'raw German bund yield 3.35% (Sept 3)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-09-11', source: 'raw gilt yield 5.295% (Sept 10, 19-year high on oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  eu:  { asOf: '2026-09-11', source: 'raw German bund yield 3.44% (Sept 10, highest since April 2011)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58%', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   cn:  { asOf: '2026-09-04', source: 'raw yield 1.68% (Sept 1) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };

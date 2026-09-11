@@ -45,9 +45,12 @@ test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.8
   near(r, 0.0493);
 });
 
-test('fetchIndRf falls back to the already-spread-adjusted static default (0.0509) when the live fetch fails, not raw-0.07-minus-spread', async () => {
-  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0509);
-  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0509);
+// Default refreshed 2026-09-11 alongside assumptions.js's FALLBACK_RF.ind (0.0509->0.0515,
+// global bond selloff -- G-Sec crossed 7% for the first time in 3+ months, same spread) --
+// fetchIndRf reads this straight from assumptions.js, so no code change was needed here.
+test('fetchIndRf falls back to the already-spread-adjusted static default (0.0515) when the live fetch fails, not raw-0.07-minus-spread', async () => {
+  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0515);
+  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0515);
 });
 
 test('fetchIndRf floors at 1% even if the live yield were implausibly close to the spread', async () => {
