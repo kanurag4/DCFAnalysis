@@ -1703,6 +1703,11 @@ function parseMoney(el) {
 // Fetch live US 10-year Treasury yield via ^TNX through the Worker.
 // ^TNX price on Yahoo Finance = yield in % (e.g. 4.25 means 4.25%).
 // Updates the RF rate input silently; keeps 4.5% default on any failure.
+// Reads /history's last daily close, NOT quoteSummary's summaryDetail chain --
+// switched 2026-09-11 after finding quoteSummary's previousClose stuck a
+// day-plus stale (4.837 vs /history's real 4.944) during a live global bond
+// selloff, the same class of bug already fixed for fetchIndexPrice in
+// DCFAnalysis's rf.js (2026-07-31, index tickers). See docs/risk-free-rates.md.
 // Re-derive WACC (DCF) or cost of equity (DDM) from current RF + ERP inputs,
 // update the scenario discount inputs and breakdown panel, then re-render.
 // Called whenever the user edits the RF or ERP fields.
@@ -1861,15 +1866,14 @@ async function fetchNativeLiveRates() {
 
 async function fetchAndSetRiskFreeRate() {
   try {
-    const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/quoteSummary/${encodeURIComponent('^TNX')}`;
+    const period2 = Math.floor(Date.now() / 1000);
+    const period1 = period2 - 10 * 24 * 60 * 60; // 10 days back -- crosses any weekend/holiday gap
+    const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/history/${encodeURIComponent('^TNX')}` +
+      `?period1=${period1}&period2=${period2}`;
     const resp = await fetch(url);
     if (!resp.ok) return;
     const body = await resp.json();
-    const result = body?.quoteSummary?.result?.[0];
-    const raw =
-      result?.summaryDetail?.previousClose?.raw ??
-      result?.summaryDetail?.regularMarketPrice?.raw ??
-      result?.financialData?.currentPrice?.raw;
+    const raw = Array.isArray(body) && body.length ? body[body.length - 1]?.close : null; // ascending by date -- last entry is most recent
     if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
       liveRfRate = +raw.toFixed(2);
       if (currentMarket === 'us' || currentMarket === 'other') {

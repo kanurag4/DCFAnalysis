@@ -3,32 +3,36 @@ const assert = require('node:assert');
 const { fetchRfRate, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchEurFxRates } = require('../scripts/lib/rf.js');
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `expected ~${b}, got ${a}`);
-// Minimal raw quoteSummary body with one summaryDetail field populated.
+// Minimal raw quoteSummary body with one summaryDetail field populated -- still used by
+// fetchFxRate below, which is unrelated to fetchRfRate's 2026-09-11 quoteSummary->history
+// switch (see rf.js's inline comment).
 const detail = (field, raw) => ({ quoteSummary: { result: [{ summaryDetail: { [field]: { raw } } }] } });
+// Minimal /history-shaped body: a single day's close, matching fetchIndexPrice's tests below.
+const history = (close) => [{ date: '2026-09-10', close }];
 
-test('reads summaryDetail.previousClose, percent -> decimal (4.25 -> 0.0425)', async () => {
-  const r = await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 4.25) });
+// fetchRfRate switched from quoteSummary to /history 2026-09-11 -- found live during a
+// global bond selloff that quoteSummary's previousClose for ^TNX was a day-plus stale.
+// Same underlying mechanism as fetchIndexPrice, so these mirror its test shape.
+test('reads the last /history close, percent -> decimal (4.25 -> 0.0425)', async () => {
+  const r = await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => history(4.25) });
   near(r, 0.0425);
 });
 
-test('falls back to summaryDetail.regularMarketPrice', async () => {
-  const r = await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => detail('regularMarketPrice', 4.10) });
-  near(r, 0.041);
+test('reads the last entry when /history has multiple days (ascending by date)', async () => {
+  const days = [{ date: '2026-09-08', close: 4.0 }, { date: '2026-09-09', close: 4.1 }, { date: '2026-09-10', close: 4.94 }];
+  const r = await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => days });
+  near(r, 0.0494);
 });
 
-test('uses financialData.currentPrice when summaryDetail has no price', async () => {
-  const body = { quoteSummary: { result: [{ financialData: { currentPrice: { raw: 3.90 } } }] } };
-  near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => body }), 0.039);
-});
-
-test('falls back when the body has no usable field', async () => {
+test('falls back when the body is empty, not an array, or null', async () => {
+  near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => [] }), 0.045);
   near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => ({}) }), 0.045);
   near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => null }), 0.045);
 });
 
 test('falls back when out of the plausible band', async () => {
-  near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 0) }), 0.045);
-  near(await fetchRfRate('^GSBG10.AX', 0.048, { proxyUrl: 'x', fetchImpl: async () => detail('previousClose', 99) }), 0.048);
+  near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => history(0) }), 0.045);
+  near(await fetchRfRate('^GSBG10.AX', 0.048, { proxyUrl: 'x', fetchImpl: async () => history(99) }), 0.048);
 });
 
 test('falls back when the fetch throws', async () => {
@@ -41,7 +45,7 @@ test('falls back when the fetch throws', async () => {
 // for NIFTY -- it overrides market.js's static fallback whenever it succeeds, which is
 // why market.js's own fallback fix alone didn't change the batch's real output.
 test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.80% -> ~4.93%)', async () => {
-  const r = await fetchIndRf('x', { fetchImpl: async () => detail('previousClose', 6.80) });
+  const r = await fetchIndRf('x', { fetchImpl: async () => history(6.80) });
   near(r, 0.0493);
 });
 
@@ -54,7 +58,7 @@ test('fetchIndRf falls back to the already-spread-adjusted static default (0.051
 });
 
 test('fetchIndRf floors at 1% even if the live yield were implausibly close to the spread', async () => {
-  const r = await fetchIndRf('x', { fetchImpl: async () => detail('previousClose', 2.0) });
+  const r = await fetchIndRf('x', { fetchImpl: async () => history(2.0) });
   near(r, 0.01); // 2.0% - 1.87% = 0.13%, floored to 1%
 });
 
