@@ -633,5 +633,29 @@
     "exitDate": "2026-09-04",
     "exitPrice": 827.72,
     "dollarPnl": 25.36
+  },
+  {
+    "ticker": "FIS",
+    "entryDate": "2026-09-04",
+    "entryPrice": 41.89,
+    "exitDate": "2026-09-11",
+    "exitPrice": 38.14,
+    "dollarPnl": -53.41
+  },
+  {
+    "ticker": "CVX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 208.6,
+    "exitDate": "2026-09-11",
+    "exitPrice": 214.06,
+    "dollarPnl": 15.62
+  },
+  {
+    "ticker": "CAH",
+    "entryDate": "2026-09-04",
+    "entryPrice": 247.18,
+    "exitDate": "2026-09-11",
+    "exitPrice": 234.57,
+    "dollarPnl": -30.44
   }
 ]

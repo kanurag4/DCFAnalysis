@@ -132,8 +132,8 @@
     "firstPrice": 118.32
   },
   "INTU": {
-    "firstSeen": "2026-06-19",
-    "firstPrice": 267
+    "firstSeen": "2026-09-11",
+    "firstPrice": 321.57
   },
   "MDT": {
     "firstSeen": "2026-06-26",
@@ -330,5 +330,13 @@
   "CVX": {
     "firstSeen": "2026-09-04",
     "firstPrice": 208.6
+  },
+  "KDP": {
+    "firstSeen": "2026-09-11",
+    "firstPrice": 31.39
+  },
+  "CPAY": {
+    "firstSeen": "2026-09-11",
+    "firstPrice": 408.22
   }
 }
