@@ -702,6 +702,19 @@
     "updatedAt": "2026-09-05T02:58:20.881Z"
   },
   {
+    "ticker": "ADS.DE",
+    "slug": "ads-de",
+    "name": "adidas AG",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 60.192269912879716,
+    "price": 141.7,
+    "marginOfSafety": -0.5752133386529308,
+    "marketCap": 24806410240,
+    "updated": "2026-09-11",
+    "updatedAt": "2026-09-11T09:08:22.613Z"
+  },
+  {
     "ticker": "ADYEN.AS",
     "slug": "adyen-as",
     "name": "Adyen N.V.",

@@ -273,6 +273,32 @@
     "updatedAt": "2026-09-05T02:25:36.945Z"
   },
   {
+    "ticker": "DECK",
+    "slug": "deck",
+    "name": "Deckers Outdoor Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 127.61445186021729,
+    "price": 79.88,
+    "marginOfSafety": 0.5975770137733762,
+    "marketCap": 10878205952,
+    "updated": "2026-09-11",
+    "updatedAt": "2026-09-11T09:09:34.164Z"
+  },
+  {
+    "ticker": "DKS",
+    "slug": "dks",
+    "name": "DICK'S Sporting Goods, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 64.63067571768066,
+    "price": 133.14,
+    "marginOfSafety": -0.5145660528940914,
+    "marketCap": 11839682560,
+    "updated": "2026-09-11",
+    "updatedAt": "2026-09-11T09:09:13.094Z"
+  },
+  {
     "ticker": "DRI",
     "slug": "dri",
     "name": "Darden Restaurants, Inc.",
@@ -533,6 +559,19 @@
     "updatedAt": "2026-09-05T02:29:50.941Z"
   },
   {
+    "ticker": "LULU",
+    "slug": "lulu",
+    "name": "lululemon athletica inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 225.22794035657898,
+    "price": 96.88,
+    "marginOfSafety": 1.3248135874956544,
+    "marketCap": 10725586944,
+    "updated": "2026-09-11",
+    "updatedAt": "2026-09-11T09:09:53.723Z"
+  },
+  {
     "ticker": "MA",
     "slug": "ma",
     "name": "Mastercard Incorporated",
@@ -778,6 +817,19 @@
     "marketCap": 28957517824,
     "updated": "2026-09-05",
     "updatedAt": "2026-09-05T02:34:04.254Z"
+  },
+  {
+    "ticker": "ONON",
+    "slug": "onon",
+    "name": "On Holding AG",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 7.237155724448154,
+    "price": 26.85,
+    "marginOfSafety": -0.7304597495550036,
+    "marketCap": 8973664256,
+    "updated": "2026-09-11",
+    "updatedAt": "2026-09-11T09:08:46.871Z"
   },
   {
     "ticker": "PCOR",
