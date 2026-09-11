@@ -27,6 +27,10 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   catch (_) { throw new Error('The data service returned an unreadable response. Please try again.'); }
 
   const data = mapQuoteSummary(body, symbol);
+  // GBp tickers (LSE, quoted in pence): /timeseries reports financial-
+  // statement aggregates in pounds, same as quoteSummary's financialData
+  // module -- see mapQuoteSummary()'s gbpPenceScale() comment.
+  const gbpToPence = gbpPenceScale(data.currency);
 
   // Best-effort — /timeseries must never block or fail the DCF. Uses the
   // same resolved `symbol` as the quoteSummary call above, not the raw
@@ -46,16 +50,18 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       const tsBody = await tsRes.json();
       if (!tsBody.error) {
         dilutedSharesOutstanding = latestSeriesValue(tsBody.annualDilutedAverageShares);
-        ebit = latestSeriesValue(tsBody.annualOperatingIncome);
+        const rawEbit = latestSeriesValue(tsBody.annualOperatingIncome);
+        ebit = (rawEbit != null) ? rawEbit * gbpToPence : null;
         const rawInterestExpense = latestSeriesValue(tsBody.annualInterestExpense);
         // fundamentals-timeseries reports this as a positive magnitude, unlike
         // incomeStatementHistory's negative expense convention (see file-top
         // comment) — negate so both sources share one sign convention.
-        interestExpenseTs = (rawInterestExpense != null) ? -rawInterestExpense : null;
+        interestExpenseTs = (rawInterestExpense != null) ? -rawInterestExpense * gbpToPence : null;
         // Last-resort FCF fallback — see utils.js's deriveFcf() for why this
         // tier exists and why it's ordered last (only used when quoteSummary's
         // TTM-based freeCashflow/operatingCashflow are both unavailable).
-        annualFcf = latestSeriesValue(tsBody.annualFreeCashFlow);
+        const rawAnnualFcf = latestSeriesValue(tsBody.annualFreeCashFlow);
+        annualFcf = (rawAnnualFcf != null) ? rawAnnualFcf * gbpToPence : null;
         // Full multi-year series (not just the latest entry) -- used by
         // calc/cyclicalNormalization.js to average the FCF margin across a
         // real fiscal-year history instead of anchoring a DCF to whichever
@@ -64,16 +70,16 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
         // returns {maxAge, endDate, netIncome} per year -- no capex, no
         // operating cash flow -- on every ticker checked; /timeseries is the
         // only source with real per-year FCF/revenue data.
-        annualFcfHistory = Array.isArray(tsBody.annualFreeCashFlow) ? tsBody.annualFreeCashFlow : [];
-        annualRevenueHistory = Array.isArray(tsBody.annualTotalRevenue) ? tsBody.annualTotalRevenue : [];
+        annualFcfHistory = scaleTimeseries(Array.isArray(tsBody.annualFreeCashFlow) ? tsBody.annualFreeCashFlow : [], gbpToPence);
+        annualRevenueHistory = scaleTimeseries(Array.isArray(tsBody.annualTotalRevenue) ? tsBody.annualTotalRevenue : [], gbpToPence);
         // Full multi-year series for Damodaran's fundamental-growth seed
         // (retention x ROE) -- see utils.js's deriveMultiYearGrowth(). Same
         // /timeseries call already in flight; the Worker returns these three
         // fields unconditionally regardless of ?type= (see CLAUDE.md's Data
         // Fetching Contract), so no Worker change was needed.
-        annualNetIncomeHistory = Array.isArray(tsBody.annualNetIncome) ? tsBody.annualNetIncome : [];
-        annualStockholdersEquityHistory = Array.isArray(tsBody.annualStockholdersEquity) ? tsBody.annualStockholdersEquity : [];
-        annualDividendsPaidHistory = Array.isArray(tsBody.annualCashDividendsPaid) ? tsBody.annualCashDividendsPaid : [];
+        annualNetIncomeHistory = scaleTimeseries(Array.isArray(tsBody.annualNetIncome) ? tsBody.annualNetIncome : [], gbpToPence);
+        annualStockholdersEquityHistory = scaleTimeseries(Array.isArray(tsBody.annualStockholdersEquity) ? tsBody.annualStockholdersEquity : [], gbpToPence);
+        annualDividendsPaidHistory = scaleTimeseries(Array.isArray(tsBody.annualCashDividendsPaid) ? tsBody.annualCashDividendsPaid : [], gbpToPence);
       }
     }
   } catch (_) {
@@ -117,7 +123,14 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let depreciationConverted = data.depreciationAndAmortization;
   let ebitdaConverted = data.ebitda;
 
-  if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
+  // GBp/GBP is the same currency at two quote sub-units, already reconciled
+  // by mapQuoteSummary()'s gbpPenceScale() and the /timeseries scaling above
+  // -- not a real cross-currency mismatch. Treating it as one here would try
+  // to fetch a nonexistent "GBPGBp=X" FX pair, fail, and null out every
+  // financial field for every UK non-DDM stock (confirmed via a stubbed-
+  // fetch reproduction before this fix).
+  const isGbpPence = isGbpPenceCurrencyPair(data.currency, data.financialCurrency);
+  if (!isGbpPence && data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
     const rate = await fetchFxRate(data.financialCurrency, data.currency, base, extraHeaders);
     if (rate != null) {
       const c = v => (v != null ? v * rate : v);
@@ -223,10 +236,13 @@ function mapQuoteSummary(body, symbol) {
   const inc = result.incomeStatementHistory?.incomeStatementHistory?.[0];
   const cf  = result.cashflowStatementHistory?.cashflowStatements?.[0];
 
-  // UK stocks quoted in pence (GBp): Yahoo returns price in pence but dividend
-  // rates in GBP (pounds). Multiply dividends by 100 so all values are in pence.
+  // UK stocks quoted in pence (GBp): Yahoo returns price in pence but every
+  // other monetary aggregate (dividend rates, FCF, revenue, debt, market
+  // cap...) in GBP (pounds). Multiply all of them by 100 so every value
+  // compared against price is on the same pence scale -- see
+  // gbpPenceScale()'s comment above.
   const currency = result.summaryDetail?.currency ?? null;
-  const gbpToPence = currency === 'GBp' ? 100 : 1;
+  const gbpToPence = gbpPenceScale(currency);
 
   // Derive tax rate so calc/wacc.js receives a plain 0–1 number
   const taxExpense = rawVal(inc?.incomeTaxExpense);
@@ -244,7 +260,7 @@ function mapQuoteSummary(body, symbol) {
     // no other consumer depends on it.
     quoteType:         result.quoteType?.quoteType ?? null,
     price:             rawVal(result.financialData?.currentPrice),
-    marketCap:         rawVal(result.summaryDetail?.marketCap),
+    marketCap:         rawMul(result.summaryDetail?.marketCap, gbpToPence),
     currency:          result.summaryDetail?.currency ?? null,
     // The currency financial-statement figures (FCF, revenue, debt...) are
     // reported in -- can legitimately differ from `currency` above (the
@@ -254,36 +270,42 @@ function mapQuoteSummary(body, symbol) {
     financialCurrency: result.financialData?.financialCurrency ?? null,
     sector:            result.assetProfile?.sector ?? null,
     industry:          result.assetProfile?.industry ?? null,
-    // DCF core inputs
-    freeCashflow:      rawVal(result.financialData?.freeCashflow),
-    operatingCashflow: rawVal(result.financialData?.operatingCashflow),
-    capitalExpenditures: rawVal(cf?.capitalExpenditures),  // negative in Yahoo (outflow); used for FCF = OCF − |CapEx|
+    // DCF core inputs -- GBp stocks: Yahoo reports these in GBP (pounds)
+    // while price is in pence -- scale by gbpToPence (see the gbpPenceScale()
+    // comment above) so calculateDCF's margin-of-safety comparison isn't off
+    // by 100x.
+    freeCashflow:      rawMul(result.financialData?.freeCashflow, gbpToPence),
+    operatingCashflow: rawMul(result.financialData?.operatingCashflow, gbpToPence),
+    capitalExpenditures: rawMul(cf?.capitalExpenditures, gbpToPence),  // negative in Yahoo (outflow); used for FCF = OCF − |CapEx|
     // REIT FFO/AFFO inputs (see calc/reit.js) -- GAAP net income and D&A,
     // both already fetched by the Worker's incomeStatementHistory/
     // cashflowStatementHistory modules but never previously extracted here.
-    netIncome:                  rawVal(inc?.netIncome),
-    depreciationAndAmortization: rawVal(cf?.depreciation),
-    totalCash:         rawVal(result.financialData?.totalCash),
-    totalDebt:         rawVal(result.financialData?.totalDebt),
+    netIncome:                  rawMul(inc?.netIncome, gbpToPence),
+    depreciationAndAmortization: rawMul(cf?.depreciation, gbpToPence),
+    totalCash:         rawMul(result.financialData?.totalCash, gbpToPence),
+    totalDebt:         rawMul(result.financialData?.totalDebt, gbpToPence),
     sharesOutstanding: rawVal(result.defaultKeyStatistics?.sharesOutstanding),
     // WACC inputs
     beta:              rawVal(result.summaryDetail?.beta),
-    interestExpense:   rawVal(inc?.interestExpense),  // negative in Yahoo
+    interestExpense:   rawMul(inc?.interestExpense, gbpToPence),  // negative in Yahoo
     taxRate,
     // Growth seeds
     revenueGrowth:     rawVal(result.financialData?.revenueGrowth),
     earningsGrowth:    rawVal(result.financialData?.earningsGrowth),
     // Key metrics display
     trailingPE:        rawVal(result.summaryDetail?.trailingPE),
-    totalRevenue:      rawVal(result.financialData?.totalRevenue),
+    totalRevenue:      rawMul(result.financialData?.totalRevenue, gbpToPence),
     profitMargins:     rawVal(result.financialData?.profitMargins),
     operatingMargins:  rawVal(result.financialData?.operatingMargins),
+    // Quote-type fields (dayHigh/Low-style) -- Yahoo already reports these on
+    // the SAME pence scale as price for GBp tickers, unlike the fundamentals
+    // above -- do not scale.
     targetMeanPrice:   rawVal(result.financialData?.targetMeanPrice),
     fiftyTwoWeekHigh:  rawVal(result.summaryDetail?.fiftyTwoWeekHigh),
     fiftyTwoWeekLow:   rawVal(result.summaryDetail?.fiftyTwoWeekLow),
     // Financial sector alternative multiples
     returnOnEquity:    rawVal(result.financialData?.returnOnEquity),
-    ebitda:            rawVal(result.financialData?.ebitda),
+    ebitda:            rawMul(result.financialData?.ebitda, gbpToPence),
     dividendYield:     rawVal(result.summaryDetail?.dividendYield),
     priceToBook:       rawVal(result.defaultKeyStatistics?.priceToBook),
     // DDM inputs (banks/insurance) — annual dividend per share.
@@ -295,6 +317,43 @@ function mapQuoteSummary(body, symbol) {
     // since price is in pence for these tickers too.
     trailingEps:                rawMul(result.defaultKeyStatistics?.trailingEps, gbpToPence),
   };
+}
+
+// Yahoo quotes UK-listed (LSE) securities in pence (currency 'GBp') but
+// reports their financial-statement aggregates (FCF, revenue, debt, market
+// cap, EBITDA...) in pounds -- confirmed empirically: BP.L's raw
+// freeCashflow (10,053,125,120) / sharesOutstanding (15,450,781,365) is
+// ~£0.65/share, a sane FCF yield against its real £5.525 price, but
+// calculateDCF was comparing that pounds-per-share figure directly against
+// the raw pence price (552.5), producing a ~-97% "margin of safety" for a
+// stock that isn't actually overvalued at all. The dividendRate/
+// trailingEps scaling below already handled this for DDM/Excess-Return
+// tickers (banks/insurers/utilities); this generalizes the same fix to
+// every other monetary aggregate so the plain DCF/REIT/Airline/Cyclical
+// paths get it too.
+function gbpPenceScale(currency) {
+  return currency === 'GBp' ? 100 : 1;
+}
+
+// Scales every {date, value} entry's `value` by `scale` -- used for
+// /timeseries history arrays (annualFreeCashFlow, annualTotalRevenue, etc.)
+// on GBp tickers. Returns the same array reference when scale is 1 (every
+// non-GBp ticker), so this is a zero-cost no-op for ~95% of tickers.
+function scaleTimeseries(series, scale) {
+  if (scale === 1 || !Array.isArray(series)) return series;
+  return series.map(e => (e && e.value != null) ? { ...e, value: e.value * scale } : e);
+}
+
+// GBp (pence-quoted LSE stock) vs GBP (pounds, the SAME company's financial-
+// statement reporting currency) is not a real cross-currency mismatch -- it's
+// one currency at two different quote sub-units, already reconciled by
+// gbpPenceScale() above. fetchDCFData()'s ADR/foreign-private-issuer FX-
+// conversion guard (added 2026-08-12 for SONY: financials JPY, price USD)
+// must not treat this pair as a mismatch requiring a live FX rate -- there is
+// no "GBPGBp=X" ticker on Yahoo, so that fetch always fails and would
+// otherwise null out every financial field for every UK non-DDM stock.
+function isGbpPenceCurrencyPair(currency, financialCurrency) {
+  return currency === 'GBp' && financialCurrency === 'GBP';
 }
 
 function rawVal(obj) {
@@ -361,4 +420,7 @@ async function fetchTickerPageUrl(ticker, currentMarket) {
   return entry ? `https://kashvector.com/dcf/stocks/${folder}/${entry.slug}/` : null;
 }
 
-if (typeof module !== 'undefined') module.exports = { fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER };
+if (typeof module !== 'undefined') module.exports = {
+  fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER,
+  gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair,
+};
