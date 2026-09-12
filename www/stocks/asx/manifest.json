@@ -123,11 +123,11 @@
     "sector": "Industrials",
     "method": "DCF",
     "intrinsic": null,
-    "price": 3.75,
+    "price": 3.73,
     "marginOfSafety": null,
-    "marketCap": 6312402432,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:40:15.693Z"
+    "marketCap": 6278735872,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:41:48.325Z"
   },
   {
     "ticker": "BAP.AX",
@@ -200,12 +200,12 @@
     "name": "Beach Energy Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 1.66199447870586,
-    "price": 0.86,
-    "marginOfSafety": 0.9325517194254187,
-    "marketCap": 1961947008,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:21:10.446Z"
+    "intrinsic": 1.0533055100016737,
+    "price": 0.88,
+    "marginOfSafety": 0.19693807954735648,
+    "marketCap": 2007573760,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:42:07.284Z"
   },
   {
     "ticker": "BVS.AX",
@@ -317,12 +317,12 @@
     "name": "Computershare Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 13.74523530490627,
-    "price": 39.81,
-    "marginOfSafety": -0.6547290805097646,
-    "marketCap": 23025590272,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:21:31.268Z"
+    "intrinsic": 13.934143614529901,
+    "price": 39.54,
+    "marginOfSafety": -0.6475937376193752,
+    "marketCap": 22869426176,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:42:29.124Z"
   },
   {
     "ticker": "CQR.AX",
@@ -656,11 +656,11 @@
     "sector": "Consumer Defensive",
     "method": "DCF",
     "intrinsic": 4.960147703209123,
-    "price": 2.98,
-    "marginOfSafety": 0.6644790950366185,
-    "marketCap": 3277184000,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:22:09.310Z"
+    "price": 2.83,
+    "marginOfSafety": 0.7527023686251317,
+    "marketCap": 3112225024,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:42:48.411Z"
   },
   {
     "ticker": "NAB.AX",
@@ -746,12 +746,12 @@
     "name": "Orica Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 7.949926111951949,
-    "price": 22.54,
-    "marginOfSafety": -0.6472969781742702,
-    "marketCap": 10448248832,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:22:26.713Z"
+    "intrinsic": 7.881259678851591,
+    "price": 22.05,
+    "marginOfSafety": -0.6425732571949392,
+    "marketCap": 10221112320,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:43:06.871Z"
   },
   {
     "ticker": "PRN.AX",
@@ -980,12 +980,12 @@
     "name": "Santos Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 2.1508361751253386,
-    "price": 8.21,
-    "marginOfSafety": -0.7380223903623218,
-    "marketCap": 26664216576,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:22:47.592Z"
+    "intrinsic": 2.1035371957806044,
+    "price": 8.59,
+    "marginOfSafety": -0.7551179050313616,
+    "marketCap": 27898370048,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:43:29.905Z"
   },
   {
     "ticker": "SUN.AX",
@@ -1045,12 +1045,12 @@
     "name": "Telstra Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 3.738563973936462,
-    "price": 4.8,
-    "marginOfSafety": -0.22113250542990376,
-    "marketCap": 53467856896,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:23:04.839Z"
+    "intrinsic": 4.149705862406404,
+    "price": 4.83,
+    "marginOfSafety": -0.140847647534906,
+    "marketCap": 53802029056,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:43:48.026Z"
   },
   {
     "ticker": "TLX.AX",
@@ -1188,12 +1188,12 @@
     "name": "Woolworths Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 32.11173714882375,
-    "price": 40.32,
-    "marginOfSafety": -0.20357794769782367,
-    "marketCap": 49254879232,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:23:22.242Z"
+    "intrinsic": 32.331455570154304,
+    "price": 38.5,
+    "marginOfSafety": -0.16022193324274533,
+    "marketCap": 47031570432,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:44:06.140Z"
   },
   {
     "ticker": "WTC.AX",

@@ -356,12 +356,12 @@
     "name": "Reliance Industries Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 232.44928323382334,
-    "price": 1322,
-    "marginOfSafety": -0.824168469565943,
-    "marketCap": 17889929199616,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:23:39.632Z"
+    "intrinsic": 231.35445033663606,
+    "price": 1257.5,
+    "marginOfSafety": -0.8160203178237486,
+    "marketCap": 17017084051456,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:44:24.854Z"
   },
   {
     "ticker": "RPOWER.NS",
@@ -370,11 +370,11 @@
     "sector": "Utilities",
     "method": "DCF",
     "intrinsic": 36.78391541648063,
-    "price": 22.08,
-    "marginOfSafety": 0.6659381982101736,
-    "marketCap": 91317821440,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:23:56.941Z"
+    "price": 21.58,
+    "marginOfSafety": 0.704537322357768,
+    "marketCap": 89249931264,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:44:42.961Z"
   },
   {
     "ticker": "SBILIFE.NS",
@@ -421,12 +421,12 @@
     "name": "Tata Consultancy Services Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1937.0706228359686,
-    "price": 2304,
-    "marginOfSafety": -0.15925754217188862,
-    "marketCap": 8336073293824,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:24:14.389Z"
+    "intrinsic": 1921.1920553224945,
+    "price": 2200.8,
+    "marginOfSafety": -0.1270483209185322,
+    "marketCap": 7962686914560,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T02:45:01.658Z"
   },
   {
     "ticker": "TECHM.NS",
