@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { mapQuoteSummary, fetchFxRate } = require('../../www/data.js');
+const { mapQuoteSummary, fetchFxRate, gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair } = require('../../www/data.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
@@ -435,7 +435,7 @@ function shouldApplyRevenueFallback({ baseFcf, fcfMethod, totalRevenue }) {
   return (baseFcf == null || (baseFcf <= 0 && fcfMethod !== 'normalized')) && totalRevenue > 0;
 }
 
-async function fetchHistorySeries(symbol, proxyUrl) {
+async function fetchHistorySeries(symbol, proxyUrl, currency) {
   const now = Math.floor(Date.now() / 1000);
   const period1 = now - 3 * 365 * 24 * 60 * 60;
   const period2 = now + 60 * 24 * 60 * 60;
@@ -452,6 +452,17 @@ async function fetchHistorySeries(symbol, proxyUrl) {
   // (mapQuoteSummary's data.interestExpense) — negate so both sources share
   // one sign convention. Same fix already made in www/dcf/data.js.
   const rawInterestExpense = latestAnnual(series.annualInterestExpense);
+  // GBp tickers (LSE, quoted in pence): /timeseries reports financial-
+  // statement aggregates in pounds, same as quoteSummary's financialData
+  // module -- see www/data.js's mapQuoteSummary()/gbpPenceScale() comment.
+  // Only the calc-engine-feeding fields below are scaled -- eps/fcf/div/
+  // shares/equity/netIncome are chart-display series and are deliberately
+  // left in native currency, same precedent the FX-conversion block further
+  // down in buildTickerPage() already establishes for genuinely-different-
+  // currency ADRs.
+  const gbpToPence = gbpPenceScale(currency);
+  const rawEbit = latestAnnual(series.annualOperatingIncome);
+  const rawFcfAnnualLatest = latestAnnual(series.annualFreeCashFlow);
 
   // Dividend-per-share needs `div` (CashDividendsPaid) and `shares`
   // (DilutedAverageShares) at the SAME cadence, joined by exact date,
@@ -503,28 +514,28 @@ async function fetchHistorySeries(symbol, proxyUrl) {
     // which is for the history charts) to match the cadence the live
     // tool's own /timeseries merge uses.
     dilutedSharesOutstanding: latestAnnual(series.annualDilutedAverageShares),
-    ebit: latestAnnual(series.annualOperatingIncome),
-    interestExpense: rawInterestExpense != null ? -rawInterestExpense : null,
+    ebit: rawEbit != null ? rawEbit * gbpToPence : null,
+    interestExpense: rawInterestExpense != null ? -rawInterestExpense * gbpToPence : null,
     // Last-resort FCF fallback — see www/utils.js's deriveFcf() for why this
     // tier exists (Yahoo's financialData module only ever reports TTM, and
     // some tickers, e.g. TECHM.NS, have no TTM figure at all despite every
     // individual fiscal year having real data) and why it's ordered last.
-    fcfAnnualLatest: latestAnnual(series.annualFreeCashFlow),
+    fcfAnnualLatest: rawFcfAnnualLatest != null ? rawFcfAnnualLatest * gbpToPence : null,
     // Full multi-year series (not just the latest entry) — used by the
     // isCyclical branch below to average the FCF margin across a real
     // fiscal-year history instead of anchoring the DCF to whichever single
     // year happens to be a cycle peak or trough. Same source www/dcf/data.js's
     // fetchDCFData() uses for the live tool.
-    annualFcfHistory: Array.isArray(series.annualFreeCashFlow) ? series.annualFreeCashFlow : [],
-    annualRevenueHistory: Array.isArray(series.annualTotalRevenue) ? series.annualTotalRevenue : [],
+    annualFcfHistory: scaleTimeseries(Array.isArray(series.annualFreeCashFlow) ? series.annualFreeCashFlow : [], gbpToPence),
+    annualRevenueHistory: scaleTimeseries(Array.isArray(series.annualTotalRevenue) ? series.annualTotalRevenue : [], gbpToPence),
     // Same three series Damodaran's fundamental-growth seed needs (see
     // www/utils.js's deriveMultiYearGrowth) -- kept separate from the
     // `equity`/`netIncome` fields above (used only for the ROE chart, and
     // NOT run through the FX-conversion block below) so the growth seed
     // always gets a correctly-converted value regardless of chart handling.
-    annualNetIncomeHistory: Array.isArray(series.annualNetIncome) ? series.annualNetIncome : [],
-    annualStockholdersEquityHistory: Array.isArray(series.annualStockholdersEquity) ? series.annualStockholdersEquity : [],
-    annualDividendsPaidHistory: Array.isArray(series.annualCashDividendsPaid) ? series.annualCashDividendsPaid : [],
+    annualNetIncomeHistory: scaleTimeseries(Array.isArray(series.annualNetIncome) ? series.annualNetIncome : [], gbpToPence),
+    annualStockholdersEquityHistory: scaleTimeseries(Array.isArray(series.annualStockholdersEquity) ? series.annualStockholdersEquity : [], gbpToPence),
+    annualDividendsPaidHistory: scaleTimeseries(Array.isArray(series.annualCashDividendsPaid) ? series.annualCashDividendsPaid : [], gbpToPence),
   };
 }
 
@@ -701,7 +712,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // Moved earlier (was after the scenario computation below) so the DCF
     // branch can use its diluted-shares/EBIT/interest-expense fields.
     await sleep(FETCH_SPACING_MS);
-    const hist = await fetchHistorySeries(t, proxyUrl);
+    const hist = await fetchHistorySeries(t, proxyUrl, data.currency);
 
     // Currency guard: see www/data.js's fetchDCFData() for the full
     // rationale (SONY confirmed live 2026-08-12: base-case intrinsic value
@@ -712,7 +723,12 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     // every downstream reference in this function reads from them by
     // property access.
     let fxConversionFailed = false;
-    if (data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
+    // GBp/GBP is the same currency at two quote sub-units, already reconciled
+    // by fetchHistorySeries()'s/mapQuoteSummary()'s gbpPenceScale() above --
+    // not a real cross-currency ADR mismatch. See www/data.js's fetchDCFData()
+    // for the identical guard and full rationale.
+    const isGbpPence = isGbpPenceCurrencyPair(data.currency, data.financialCurrency);
+    if (!isGbpPence && data.currency && data.financialCurrency && data.currency !== data.financialCurrency) {
       await sleep(FETCH_SPACING_MS);
       const rate = await fetchFxRate(data.financialCurrency, data.currency, proxyUrl.replace(/\/$/, ''), batchHeaders());
       if (rate != null) {
@@ -1512,4 +1528,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair };
