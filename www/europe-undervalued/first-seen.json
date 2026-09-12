@@ -154,5 +154,37 @@
   "KER.PA": {
     "firstSeen": "2026-09-05",
     "firstPrice": 245.2
+  },
+  "CCH.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 4494
+  },
+  "SN.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 1008.5
+  },
+  "BMW.DE": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 63
+  },
+  "SGE.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 958
+  },
+  "ABDN.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 248.2
+  },
+  "INF.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 889.4
+  },
+  "RKT.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 5000
+  },
+  "VOD.L": {
+    "firstSeen": "2026-09-12",
+    "firstPrice": 128.75
   }
 }
