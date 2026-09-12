@@ -106,6 +106,47 @@ test('fetchSymbol enrichment also carries dilutedSharesOutstanding/ebit and pref
   assert.strictEqual(d.interestExpense, -40); // negated to match the expense-convention sign
 });
 
+// ── GBp (pence-quoted UK stocks): /timeseries fields must scale too ────────
+
+test('fetchSymbol scales /timeseries-sourced monetary fields by 100 for a GBp (pence-quoted) ticker', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'BP p.l.c.' },
+    financialData: { currentPrice: { raw: 552.5 }, freeCashflow: {}, operatingCashflow: {} },
+    summaryDetail: { currency: 'GBp' }, defaultKeyStatistics: {}, assetProfile: {} }] } };
+  const tsBody = {
+    annualOperatingIncome: [{ date: '2026-12-31', value: 18000000000 }],
+    annualInterestExpense: [{ date: '2026-12-31', value: 1500000000 }],
+    annualFreeCashFlow: [{ date: '2026-12-31', value: 10053125120 }],
+    annualTotalRevenue: [{ date: '2026-12-31', value: 190000000000 }],
+    annualNetIncome: [{ date: '2026-12-31', value: 12000000000 }],
+    annualStockholdersEquity: [{ date: '2026-12-31', value: 60000000000 }],
+    annualCashDividendsPaid: [{ date: '2026-12-31', value: -4000000000 }],
+  };
+  const fakeFetch = async (url) => (url.includes('/timeseries/') ? { ok: true, status: 200, json: async () => tsBody } : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('BP.L', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.strictEqual(d.ebit, 1800000000000);
+  assert.strictEqual(d.interestExpense, -150000000000);
+  assert.strictEqual(d.annualFcf, 1005312512000);
+  assert.strictEqual(d.annualFcfHistory[0].value, 1005312512000);
+  assert.strictEqual(d.annualRevenueHistory[0].value, 19000000000000);
+  assert.strictEqual(d.annualNetIncomeHistory[0].value, 1200000000000);
+  assert.strictEqual(d.annualStockholdersEquityHistory[0].value, 6000000000000);
+  assert.strictEqual(d.annualDividendsPaidHistory[0].value, -400000000000);
+});
+
+test('fetchSymbol does not scale /timeseries fields for a non-GBp ticker (regression)', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'US Co' },
+    financialData: { currentPrice: { raw: 100 }, freeCashflow: {}, operatingCashflow: {} },
+    summaryDetail: { currency: 'USD' }, defaultKeyStatistics: {}, assetProfile: {} }] } };
+  const tsBody = {
+    annualOperatingIncome: [{ date: '2026-12-31', value: 18000000000 }],
+    annualFreeCashFlow: [{ date: '2026-12-31', value: 10000000000 }],
+  };
+  const fakeFetch = async (url) => (url.includes('/timeseries/') ? { ok: true, status: 200, json: async () => tsBody } : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('XOM', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.strictEqual(d.ebit, 18000000000);
+  assert.strictEqual(d.annualFcf, 10000000000);
+});
+
 test('fetchSymbol still returns the mapped quoteSummary result when /timeseries itself fails (best-effort, never blocks)', async () => {
   const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'Solo Co' },
     financialData: { currentPrice: { raw: 5 }, freeCashflow: { raw: 10 } },

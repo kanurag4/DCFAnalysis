@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair } = require('../scripts/lib/ticker-page.js');
 
 // Regression test for a real bug (found live on RBLX's EPS chart, 2026-09-04):
 // an all-negative series left the area-fill polygon's baseline (y(0)) far
@@ -171,4 +171,51 @@ test('shouldApplyRevenueFallback does not fire when baseFcf is positive', () => 
 
 test('shouldApplyRevenueFallback does not fire when totalRevenue is missing, even with null baseFcf', () => {
   assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: null, fcfMethod: 'reported', totalRevenue: 0 }), false);
+});
+
+// ── fetchHistorySeries: GBp (pence-quoted UK) unit handling ────────────────
+
+test('fetchHistorySeries scales calc-engine-feeding fields by 100 for a GBp ticker, leaves chart-display fields untouched', async () => {
+  const tsBody = {
+    annualOperatingIncome: [{ date: '2026-12-31', value: 18000000000 }],
+    annualInterestExpense: [{ date: '2026-12-31', value: 1500000000 }],
+    annualFreeCashFlow: [{ date: '2025-12-31', value: 9000000000 }, { date: '2026-12-31', value: 10053125120 }],
+    annualTotalRevenue: [{ date: '2026-12-31', value: 190000000000 }],
+    annualNetIncome: [{ date: '2026-12-31', value: 12000000000 }],
+    annualStockholdersEquity: [{ date: '2026-12-31', value: 60000000000 }],
+    annualCashDividendsPaid: [{ date: '2026-12-31', value: -4000000000 }],
+    annualDilutedAverageShares: [{ date: '2026-12-31', value: 15500000000 }],
+  };
+  global.fetch = async () => ({ ok: true, json: async () => tsBody });
+  const hist = await fetchHistorySeries('BP.L', 'https://proxy', 'GBp');
+
+  assert.strictEqual(hist.ebit, 1800000000000);
+  assert.strictEqual(hist.interestExpense, -150000000000);
+  assert.strictEqual(hist.fcfAnnualLatest, 1005312512000);
+  assert.strictEqual(hist.annualFcfHistory[1].value, 1005312512000);
+  assert.strictEqual(hist.annualRevenueHistory[0].value, 19000000000000);
+  assert.strictEqual(hist.annualNetIncomeHistory[0].value, 1200000000000);
+  assert.strictEqual(hist.annualStockholdersEquityHistory[0].value, 6000000000000);
+  assert.strictEqual(hist.annualDividendsPaidHistory[0].value, -400000000000);
+  // Chart-display series stay in native (pounds) currency -- deliberately
+  // not scaled, matching the pre-existing ADR/FX-conversion block's own
+  // precedent of leaving these untouched too.
+  assert.strictEqual(hist.netIncome[0].value, 12000000000);
+  assert.strictEqual(hist.equity[0].value, 60000000000);
+});
+
+test('fetchHistorySeries does not scale fields for a non-GBp currency (regression)', async () => {
+  const tsBody = {
+    annualOperatingIncome: [{ date: '2026-12-31', value: 18000000000 }],
+    annualFreeCashFlow: [{ date: '2026-12-31', value: 10000000000 }],
+  };
+  global.fetch = async () => ({ ok: true, json: async () => tsBody });
+  const hist = await fetchHistorySeries('XOM', 'https://proxy', 'USD');
+  assert.strictEqual(hist.ebit, 18000000000);
+  assert.strictEqual(hist.fcfAnnualLatest, 10000000000);
+});
+
+test('isGbpPenceCurrencyPair is re-exported from ticker-page.js\'s data.js import for the currency guard', () => {
+  assert.strictEqual(isGbpPenceCurrencyPair('GBp', 'GBP'), true);
+  assert.strictEqual(isGbpPenceCurrencyPair('USD', 'JPY'), false);
 });

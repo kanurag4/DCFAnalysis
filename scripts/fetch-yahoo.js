@@ -4,7 +4,7 @@
 // Optional retries with linear backoff handle transient failures (429 rate-limit,
 // Yahoo 5xx, network blips) — the Worker caps at 20 req/60s, so the batch also
 // throttles between calls; retries catch the occasional straggler.
-const { mapQuoteSummary, latestSeriesValue } = require('../www/data.js');
+const { mapQuoteSummary, latestSeriesValue, gbpPenceScale, scaleTimeseries } = require('../www/data.js');
 const { batchHeaders } = require('./lib/batch-auth.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -35,34 +35,41 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     const body = await res.json();
     if (!body || body.error) return withHistoryDefaults;
 
+    // GBp tickers (LSE, quoted in pence): /timeseries reports financial-
+    // statement aggregates in pounds, same as quoteSummary's financialData
+    // module -- see www/data.js's mapQuoteSummary()/gbpPenceScale() comment.
+    const gbpToPence = gbpPenceScale(mapped.currency);
+
     const dilutedSharesOutstanding = latestSeriesValue(body.annualDilutedAverageShares);
-    const ebit = latestSeriesValue(body.annualOperatingIncome);
+    const rawEbit = latestSeriesValue(body.annualOperatingIncome);
+    const ebit = (rawEbit != null) ? rawEbit * gbpToPence : null;
     const rawInterestExpense = latestSeriesValue(body.annualInterestExpense);
     // fundamentals-timeseries reports this as a positive magnitude, unlike
     // incomeStatementHistory's negative expense convention — negate so both
     // sources share one sign convention (same as fetchDCFData()).
-    const interestExpenseTs = (rawInterestExpense != null) ? -rawInterestExpense : null;
+    const interestExpenseTs = (rawInterestExpense != null) ? -rawInterestExpense * gbpToPence : null;
     // Last-resort FCF fallback — see utils.js's deriveFcf() for why this tier
     // exists and why it's ordered last (only used when quoteSummary's
     // TTM-based freeCashflow/operatingCashflow are both unavailable, which
     // Yahoo does for a real, non-trivial share of NSE tickers — confirmed
     // live on TECHM.NS, 2026-08-15).
-    const annualFcf = latestSeriesValue(body.annualFreeCashFlow);
+    const rawAnnualFcf = latestSeriesValue(body.annualFreeCashFlow);
+    const annualFcf = (rawAnnualFcf != null) ? rawAnnualFcf * gbpToPence : null;
     // Full multi-year series (not just the latest entry) — used by
     // scripts/lib/evaluate.js's isCyclical branch to average the FCF margin
     // across a real fiscal-year history instead of anchoring the batch's
     // base case to whichever single year happens to be a cycle peak or
     // trough. Same source www/dcf/data.js's fetchDCFData() uses.
-    const annualFcfHistory = Array.isArray(body.annualFreeCashFlow) ? body.annualFreeCashFlow : [];
-    const annualRevenueHistory = Array.isArray(body.annualTotalRevenue) ? body.annualTotalRevenue : [];
+    const annualFcfHistory = scaleTimeseries(Array.isArray(body.annualFreeCashFlow) ? body.annualFreeCashFlow : [], gbpToPence);
+    const annualRevenueHistory = scaleTimeseries(Array.isArray(body.annualTotalRevenue) ? body.annualTotalRevenue : [], gbpToPence);
     // Same three series Damodaran's fundamental-growth seed needs (see
     // www/utils.js's deriveMultiYearGrowth) -- mirrors www/dcf/data.js's
     // fetchDCFData() exactly. No FX conversion here, matching this file's
     // existing precedent for annualFcfHistory/annualRevenueHistory; the ETF
     // radar's own convertFinancials() handles conversion where it matters.
-    const annualNetIncomeHistory = Array.isArray(body.annualNetIncome) ? body.annualNetIncome : [];
-    const annualStockholdersEquityHistory = Array.isArray(body.annualStockholdersEquity) ? body.annualStockholdersEquity : [];
-    const annualDividendsPaidHistory = Array.isArray(body.annualCashDividendsPaid) ? body.annualCashDividendsPaid : [];
+    const annualNetIncomeHistory = scaleTimeseries(Array.isArray(body.annualNetIncome) ? body.annualNetIncome : [], gbpToPence);
+    const annualStockholdersEquityHistory = scaleTimeseries(Array.isArray(body.annualStockholdersEquity) ? body.annualStockholdersEquity : [], gbpToPence);
+    const annualDividendsPaidHistory = scaleTimeseries(Array.isArray(body.annualCashDividendsPaid) ? body.annualCashDividendsPaid : [], gbpToPence);
 
     return {
       ...mapped,
