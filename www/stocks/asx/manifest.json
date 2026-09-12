@@ -5,12 +5,12 @@
     "name": "The a2 Milk Company Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 6.589820458618464,
-    "price": 6.59,
-    "marginOfSafety": -0.000027244519201243826,
-    "marketCap": 4797888512,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:55:12.496Z"
+    "intrinsic": 6.48492361093989,
+    "price": 6.65,
+    "marginOfSafety": -0.02482351715189629,
+    "marketCap": 4841571840,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:41:20.552Z"
   },
   {
     "ticker": "AAI.AX",
@@ -18,12 +18,12 @@
     "name": "Alcoa Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 0.6451750461691883,
-    "price": 70.57,
-    "marginOfSafety": -0.9908576584076918,
-    "marketCap": 18624090112,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:55:29.190Z"
+    "intrinsic": 0.658335380100651,
+    "price": 67.59,
+    "marginOfSafety": -0.9902598700976379,
+    "marketCap": 17837637632,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:41:37.036Z"
   },
   {
     "ticker": "AGL.AX",
@@ -31,12 +31,12 @@
     "name": "AGL Energy Limited",
     "sector": "Utilities",
     "method": "DCF",
-    "intrinsic": 8.203222003560711,
-    "price": 8.72,
-    "marginOfSafety": -0.059263531701753386,
-    "marketCap": 5866356224,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:55:42.348Z"
+    "intrinsic": 18.252413545282696,
+    "price": 8.4,
+    "marginOfSafety": 1.172906374438416,
+    "marketCap": 5651076608,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:41:50.143Z"
   },
   {
     "ticker": "AIA.AX",
@@ -44,12 +44,12 @@
     "name": "Auckland International Airport Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 1.692526519143713,
-    "price": 7.03,
-    "marginOfSafety": -0.7592423159112784,
-    "marketCap": 11950780416,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:55:58.880Z"
+    "intrinsic": 1.6554837090010406,
+    "price": 6.77,
+    "marginOfSafety": -0.7554676943868478,
+    "marketCap": 11508788224,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:42:06.531Z"
   },
   {
     "ticker": "ALL.AX",
@@ -57,12 +57,12 @@
     "name": "Aristocrat Leisure Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 27.14082488316918,
-    "price": 61,
-    "marginOfSafety": -0.5550684445382101,
-    "marketCap": 36419170304,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:56:12.040Z"
+    "intrinsic": 26.87744164096238,
+    "price": 59.89,
+    "marginOfSafety": -0.55121987575618,
+    "marketCap": 35756462080,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:42:19.727Z"
   },
   {
     "ticker": "ANZ.AX",
@@ -70,12 +70,12 @@
     "name": "ANZ Group Holdings Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 25.650528370411955,
-    "price": 37.95,
-    "marginOfSafety": -0.3240967491327549,
+    "intrinsic": 25.52667661520407,
+    "price": 37.27,
+    "marginOfSafety": -0.3150878289454234,
     "marketCap": null,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:56:25.218Z"
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:42:32.904Z"
   },
   {
     "ticker": "APX.AX",
@@ -83,12 +83,12 @@
     "name": "Appen Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1.0870627869478215,
-    "price": 1.08,
-    "marginOfSafety": 0.006539617544279144,
-    "marketCap": 290005536,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:56:41.747Z"
+    "intrinsic": 1.0938575683058565,
+    "price": 0.965,
+    "marginOfSafety": 0.13353115886617253,
+    "marketCap": 259125312,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:42:49.330Z"
   },
   {
     "ticker": "ASX.AX",
@@ -96,12 +96,12 @@
     "name": "ASX Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 65.82978319195382,
-    "price": 55.97,
-    "marginOfSafety": 0.1761619294613869,
-    "marketCap": 10937090048,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:56:54.917Z"
+    "intrinsic": 66.12836721946543,
+    "price": 54.78,
+    "marginOfSafety": 0.20716259984420282,
+    "marketCap": 10704551936,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:43:02.467Z"
   },
   {
     "ticker": "AVH.AX",
@@ -109,12 +109,12 @@
     "name": "AVITA Medical, Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 0.530907348223122,
-    "price": 3.02,
-    "marginOfSafety": -0.8242028648267808,
-    "marketCap": 466995392,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:57:11.324Z"
+    "intrinsic": 0.5404341642970305,
+    "price": 2.7,
+    "marginOfSafety": -0.7998391984085073,
+    "marketCap": 417512448,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:43:18.829Z"
   },
   {
     "ticker": "AZJ.AX",
@@ -135,12 +135,12 @@
     "name": "Bapcor Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 5.292397158095553,
-    "price": 0.875,
-    "marginOfSafety": 5.048453894966346,
-    "marketCap": 588658944,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:58:08.051Z"
+    "intrinsic": 5.683368256245404,
+    "price": 0.8,
+    "marginOfSafety": 6.1042103203067555,
+    "marketCap": 538202496,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:44:15.107Z"
   },
   {
     "ticker": "BBN.AX",
@@ -148,12 +148,12 @@
     "name": "Baby Bunting Group Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 3.1527741495682817,
-    "price": 1.12,
-    "marginOfSafety": 1.8149769192573941,
-    "marketCap": 153265168,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:58:21.180Z"
+    "intrinsic": 3.34835954236926,
+    "price": 1.045,
+    "marginOfSafety": 2.204171810879675,
+    "marketCap": 143001872,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:44:28.238Z"
   },
   {
     "ticker": "BEN.AX",
@@ -161,12 +161,12 @@
     "name": "Bendigo and Adelaide Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 9.739146981302827,
-    "price": 10.63,
-    "marginOfSafety": -0.08380555208816307,
-    "marketCap": 6135099904,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:58:34.346Z"
+    "intrinsic": 9.672571330240398,
+    "price": 10.25,
+    "marginOfSafety": -0.056334504366790425,
+    "marketCap": 5915783168,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:44:41.371Z"
   },
   {
     "ticker": "BFL.AX",
@@ -174,12 +174,12 @@
     "name": "BSP Financial Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 11.093056031180986,
-    "price": 8,
-    "marginOfSafety": 0.3866320038976232,
-    "marketCap": 3736000000,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:58:50.759Z"
+    "intrinsic": 10.995193966856043,
+    "price": 7.98,
+    "marginOfSafety": 0.3778438554957446,
+    "marketCap": 3726660096,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:44:57.773Z"
   },
   {
     "ticker": "BHP.AX",
@@ -187,12 +187,12 @@
     "name": "BHP Group Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 41.60756804135843,
-    "price": 62.25,
-    "marginOfSafety": -0.33160533266894093,
-    "marketCap": 316413870080,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:59:07.227Z"
+    "intrinsic": 41.65605790060884,
+    "price": 60.87,
+    "marginOfSafety": -0.315655365523101,
+    "marketCap": 309399388160,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:45:14.212Z"
   },
   {
     "ticker": "BPT.AX",
@@ -213,12 +213,12 @@
     "name": "Bravura Solutions Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1.7004949917017798,
-    "price": 3.17,
-    "marginOfSafety": -0.4635662486745174,
-    "marketCap": 1421110912,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T01:59:53.984Z"
+    "intrinsic": 2.990620189983076,
+    "price": 3.05,
+    "marginOfSafety": -0.01946879016948315,
+    "marketCap": 1367314944,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:46:00.474Z"
   },
   {
     "ticker": "BXB.AX",
@@ -226,12 +226,12 @@
     "name": "Brambles Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 9.548613870576721,
-    "price": 19.23,
-    "marginOfSafety": -0.5034522168186832,
-    "marketCap": 25630644224,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:00:10.430Z"
+    "intrinsic": 9.528689309927323,
+    "price": 18.65,
+    "marginOfSafety": -0.4890783211835215,
+    "marketCap": 24838545408,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:46:16.899Z"
   },
   {
     "ticker": "CAR.AX",
@@ -239,12 +239,12 @@
     "name": "CAR Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 13.587258163704766,
-    "price": 26.37,
-    "marginOfSafety": -0.4847456138147605,
-    "marketCap": 9996084224,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:00:23.711Z"
+    "intrinsic": 13.56199978991497,
+    "price": 23.81,
+    "marginOfSafety": -0.43040740067555777,
+    "marketCap": 9025664000,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:46:30.027Z"
   },
   {
     "ticker": "CBA.AX",
@@ -252,12 +252,12 @@
     "name": "Commonwealth Bank of Australia",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 80.08232557263987,
-    "price": 160.42,
-    "marginOfSafety": -0.5007958759965099,
-    "marketCap": 268195069952,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:00:36.932Z"
+    "intrinsic": 79.54173957525185,
+    "price": 154.19,
+    "marginOfSafety": -0.4841316585041063,
+    "marketCap": 257779580928,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:46:43.152Z"
   },
   {
     "ticker": "CIP.AX",
@@ -265,12 +265,12 @@
     "name": "Centuria Industrial REIT",
     "sector": "Real Estate",
     "method": "REIT",
-    "intrinsic": 4.546755474216884,
-    "price": 2.95,
-    "marginOfSafety": 0.5412730421074181,
-    "marketCap": 1841944960,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:00:50.125Z"
+    "intrinsic": 4.600313287301666,
+    "price": 2.83,
+    "marginOfSafety": 0.6255523983398112,
+    "marketCap": 1767018240,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:46:56.307Z"
   },
   {
     "ticker": "COF.AX",
@@ -279,11 +279,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 0.9239508016412845,
-    "price": 0.88,
-    "marginOfSafety": 0.04994409277418694,
-    "marketCap": 525656576,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:01:03.425Z"
+    "price": 0.855,
+    "marginOfSafety": 0.08064421244594683,
+    "marketCap": 510723168,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:47:09.435Z"
   },
   {
     "ticker": "COH.AX",
@@ -291,12 +291,12 @@
     "name": "Cochlear Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 82.68198095039689,
-    "price": 142.74,
-    "marginOfSafety": -0.4207511492896393,
-    "marketCap": 9335042048,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:01:16.635Z"
+    "intrinsic": 81.9520704710023,
+    "price": 134.14,
+    "marginOfSafety": -0.3890556845757991,
+    "marketCap": 8772610048,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:47:22.588Z"
   },
   {
     "ticker": "COL.AX",
@@ -304,12 +304,12 @@
     "name": "Coles Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 23.231102107623673,
-    "price": 23.68,
-    "marginOfSafety": -0.018956836671297564,
-    "marketCap": 31805636608,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:01:29.850Z"
+    "intrinsic": 23.042167871824894,
+    "price": 23.23,
+    "marginOfSafety": -0.0080857567014682,
+    "marketCap": 31201220608,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:47:35.718Z"
   },
   {
     "ticker": "CPU.AX",
@@ -331,11 +331,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 8.709910529938059,
-    "price": 3.93,
-    "marginOfSafety": 1.2162622213582845,
-    "marketCap": 2284232448,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:02:26.919Z"
+    "price": 3.69,
+    "marginOfSafety": 1.360409357706791,
+    "marketCap": 2144737408,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:48:32.047Z"
   },
   {
     "ticker": "CSL.AX",
@@ -343,12 +343,12 @@
     "name": "CSL Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 99.24396049515879,
-    "price": 174.5,
-    "marginOfSafety": -0.431266702033474,
-    "marketCap": 83570139136,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T03:21:52.081Z"
+    "intrinsic": 99.30447271149849,
+    "price": 167.1,
+    "marginOfSafety": -0.4057182961609905,
+    "marketCap": 80188669952,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:48:48.495Z"
   },
   {
     "ticker": "DMP.AX",
@@ -356,12 +356,12 @@
     "name": "Domino's Pizza Enterprises Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 23.90048072273929,
-    "price": 20.56,
-    "marginOfSafety": 0.16247474332389544,
-    "marketCap": 1947995520,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:03:23.706Z"
+    "intrinsic": 22.21303712929367,
+    "price": 18.93,
+    "marginOfSafety": 0.1734303818961263,
+    "marketCap": 1793558144,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:49:01.646Z"
   },
   {
     "ticker": "DRR.AX",
@@ -369,12 +369,12 @@
     "name": "Deterra Royalties Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 4.675201752359384,
-    "price": 4.19,
-    "marginOfSafety": 0.1157999408972276,
-    "marketCap": 2218630400,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:03:37.071Z"
+    "intrinsic": 4.632914606257018,
+    "price": 4.14,
+    "marginOfSafety": 0.11906149909589823,
+    "marketCap": 2192155136,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:49:14.797Z"
   },
   {
     "ticker": "EDV.AX",
@@ -382,12 +382,12 @@
     "name": "Endeavour Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 5.2792442280231064,
-    "price": 3.26,
-    "marginOfSafety": 0.6194000699457383,
-    "marketCap": 5854065664,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:03:50.405Z"
+    "intrinsic": 5.487782951782532,
+    "price": 3.09,
+    "marginOfSafety": 0.7759815377936998,
+    "marketCap": 5548792320,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:49:27.996Z"
   },
   {
     "ticker": "ELD.AX",
@@ -395,12 +395,12 @@
     "name": "Elders Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 1.302154199137819,
-    "price": 6.21,
-    "marginOfSafety": -0.7903133334721708,
-    "marketCap": 1337626624,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:04:03.765Z"
+    "intrinsic": 1.265068739647963,
+    "price": 6.33,
+    "marginOfSafety": -0.8001471185390264,
+    "marketCap": 1363474432,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:49:41.182Z"
   },
   {
     "ticker": "EVN.AX",
@@ -408,12 +408,12 @@
     "name": "Evolution Mining Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 0.9875649768964417,
-    "price": 15.11,
-    "marginOfSafety": -0.9346416295899111,
-    "marketCap": 30893125632,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:04:17.056Z"
+    "intrinsic": 0.9858043020302109,
+    "price": 14,
+    "marginOfSafety": -0.9295854069978421,
+    "marketCap": 28623677440,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:49:54.301Z"
   },
   {
     "ticker": "FLT.AX",
@@ -421,12 +421,12 @@
     "name": "Flight Centre Travel Group Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 9.532626928789002,
-    "price": 11.57,
-    "marginOfSafety": -0.1760910173907518,
-    "marketCap": 2369377792,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:04:30.349Z"
+    "intrinsic": 9.508971933263737,
+    "price": 10.9,
+    "marginOfSafety": -0.12761725382901495,
+    "marketCap": 2232171008,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:50:07.509Z"
   },
   {
     "ticker": "FMG.AX",
@@ -434,12 +434,12 @@
     "name": "Fortescue Ltd",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 24.110228876960747,
-    "price": 17.22,
-    "marginOfSafety": 0.40012943536357426,
-    "marketCap": 53019774976,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:04:47.003Z"
+    "intrinsic": 24.133792318821172,
+    "price": 16.67,
+    "marginOfSafety": 0.44773799153096394,
+    "marketCap": 51326345216,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:50:24.323Z"
   },
   {
     "ticker": "FPH.AX",
@@ -447,12 +447,12 @@
     "name": "Fisher & Paykel Healthcare Corporation Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 8.45882400087952,
-    "price": 36.38,
-    "marginOfSafety": -0.7674869708389357,
-    "marketCap": 21400274944,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:05:03.711Z"
+    "intrinsic": 8.337438842590487,
+    "price": 35.2,
+    "marginOfSafety": -0.7631409419718612,
+    "marketCap": 20706148352,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:50:40.793Z"
   },
   {
     "ticker": "GMG.AX",
@@ -461,11 +461,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 18.605999995888695,
-    "price": 27.55,
-    "marginOfSafety": -0.32464609815286044,
-    "marketCap": 56608485376,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:05:17.057Z"
+    "price": 26.91,
+    "marginOfSafety": -0.3085841696065145,
+    "marketCap": 55293444096,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:50:53.924Z"
   },
   {
     "ticker": "GPT.AX",
@@ -474,11 +474,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 4.754124034245145,
-    "price": 4.61,
-    "marginOfSafety": 0.03126334799243928,
-    "marketCap": 8830812160,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:05:30.389Z"
+    "price": 4.39,
+    "marginOfSafety": 0.08294397135424732,
+    "marketCap": 8409384960,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:51:07.046Z"
   },
   {
     "ticker": "GQG.AX",
@@ -486,12 +486,12 @@
     "name": "GQG Partners Inc.",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 2.3163591948869606,
-    "price": 1.22,
-    "marginOfSafety": 0.8986550777761972,
-    "marketCap": 3653162752,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:05:47.040Z"
+    "intrinsic": 2.315228883512713,
+    "price": 1.095,
+    "marginOfSafety": 1.11436427718056,
+    "marketCap": 3278863360,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:51:23.444Z"
   },
   {
     "ticker": "HDN.AX",
@@ -500,11 +500,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 1.562264031286502,
-    "price": 1.12,
-    "marginOfSafety": 0.394878599362948,
-    "marketCap": 2343291648,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:06:00.390Z"
+    "price": 1.09,
+    "marginOfSafety": 0.4332697534738549,
+    "marketCap": 2280525056,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:51:36.587Z"
   },
   {
     "ticker": "HGH.AX",
@@ -512,12 +512,12 @@
     "name": "Heartland Group Holdings Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 0.982160286245984,
-    "price": 1.035,
-    "marginOfSafety": -0.051052863530450215,
-    "marketCap": 978289216,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:06:17.205Z"
+    "intrinsic": 0.9753245252632101,
+    "price": 0.985,
+    "marginOfSafety": -0.009822816991664842,
+    "marketCap": 931028864,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:51:53.010Z"
   },
   {
     "ticker": "HVN.AX",
@@ -525,12 +525,12 @@
     "name": "Harvey Norman Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 5.876835743397011,
-    "price": 4.32,
-    "marginOfSafety": 0.36037864430486366,
-    "marketCap": 5382749184,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:06:30.529Z"
+    "intrinsic": 5.026742450610072,
+    "price": 4.17,
+    "marginOfSafety": 0.20545382508634832,
+    "marketCap": 5195847680,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:52:06.200Z"
   },
   {
     "ticker": "IAG.AX",
@@ -538,12 +538,12 @@
     "name": "Insurance Australia Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 3.394092506018824,
-    "price": 8.05,
-    "marginOfSafety": -0.5783736017367921,
+    "intrinsic": 3.3749981265184865,
+    "price": 8.14,
+    "marginOfSafety": -0.5853810655382695,
     "marketCap": null,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:06:43.905Z"
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:52:19.358Z"
   },
   {
     "ticker": "ING.AX",
@@ -551,12 +551,12 @@
     "name": "Inghams Group Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 6.848387727203179,
-    "price": 2.11,
-    "marginOfSafety": 2.2456813873000847,
-    "marketCap": 784243968,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:06:57.222Z"
+    "intrinsic": 6.818521367155898,
+    "price": 2.03,
+    "marginOfSafety": 2.3588775207664523,
+    "marketCap": 754509632,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:52:32.523Z"
   },
   {
     "ticker": "JBH.AX",
@@ -564,12 +564,12 @@
     "name": "JB Hi-Fi Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 60.721980244316335,
-    "price": 67.3,
-    "marginOfSafety": -0.09774174971298162,
-    "marketCap": 7358177280,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:07:10.507Z"
+    "intrinsic": 60.45163109773491,
+    "price": 64.88,
+    "marginOfSafety": -0.06825476113232253,
+    "marketCap": 7093588480,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:52:45.682Z"
   },
   {
     "ticker": "JDO.AX",
@@ -577,12 +577,12 @@
     "name": "Judo Capital Holdings Limited",
     "sector": "Financial Services",
     "method": "ExcessReturn",
-    "intrinsic": 1.1567374944478566,
-    "price": 1.055,
-    "marginOfSafety": 0.09643364402640439,
-    "marketCap": 1184083072,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:07:23.811Z"
+    "intrinsic": 1.1532036227461644,
+    "price": 0.995,
+    "marginOfSafety": 0.15899861582529085,
+    "marketCap": 1116741888,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:52:58.768Z"
   },
   {
     "ticker": "LNW.AX",
@@ -590,12 +590,12 @@
     "name": "Light & Wonder, Inc.",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 202.42749224166184,
-    "price": 127.64,
-    "marginOfSafety": 0.5859251977566737,
-    "marketCap": 9544303616,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:07:40.428Z"
+    "intrinsic": 202.37255543265013,
+    "price": 122.82,
+    "marginOfSafety": 0.6477166213373241,
+    "marketCap": 9183887360,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:53:15.189Z"
   },
   {
     "ticker": "LOV.AX",
@@ -603,12 +603,12 @@
     "name": "Lovisa Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 10.92505128895466,
-    "price": 23.08,
-    "marginOfSafety": -0.5266442249153094,
-    "marketCap": 2555856128,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:07:53.760Z"
+    "intrinsic": 10.907333281442712,
+    "price": 21.63,
+    "marginOfSafety": -0.49573123987782186,
+    "marketCap": 2395284480,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:53:28.302Z"
   },
   {
     "ticker": "MAH.AX",
@@ -616,12 +616,12 @@
     "name": "Macmahon Holdings Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 0.993082375406119,
-    "price": 0.975,
-    "marginOfSafety": 0.018546026057557962,
-    "marketCap": 2101111168,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:08:07.048Z"
+    "intrinsic": 0.9903797397562994,
+    "price": 0.955,
+    "marginOfSafety": 0.037046847912355484,
+    "marketCap": 2058011392,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:53:41.459Z"
   },
   {
     "ticker": "MGH.AX",
@@ -629,12 +629,12 @@
     "name": "MAAS Group Holdings Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 1.997546505577945,
-    "price": 5.5,
-    "marginOfSafety": -0.6368097262585555,
-    "marketCap": 1987332992,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:08:20.330Z"
+    "intrinsic": 1.9896328745197345,
+    "price": 5.9,
+    "marginOfSafety": -0.6627740890644518,
+    "marketCap": 2131866368,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:53:54.534Z"
   },
   {
     "ticker": "MPL.AX",
@@ -642,12 +642,12 @@
     "name": "Medibank Private Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 3.9767559357063904,
-    "price": 4.66,
-    "marginOfSafety": -0.14661889791708363,
-    "marketCap": 12833654784,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:08:33.650Z"
+    "intrinsic": 3.9416733088729203,
+    "price": 4.61,
+    "marginOfSafety": -0.14497325187138393,
+    "marketCap": 12695955456,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:54:07.751Z"
   },
   {
     "ticker": "MTS.AX",
@@ -668,12 +668,12 @@
     "name": "National Australia Bank Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 29.006140709199634,
-    "price": 39.25,
-    "marginOfSafety": -0.260990045625487,
+    "intrinsic": 28.796030923954685,
+    "price": 38.72,
+    "marginOfSafety": -0.2563008542367075,
     "marketCap": null,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:09:20.240Z"
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:54:54.307Z"
   },
   {
     "ticker": "NEM.AX",
@@ -681,12 +681,12 @@
     "name": "Newmont Corporation",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 130.9087152611204,
-    "price": 178.31,
-    "marginOfSafety": -0.2658363789965768,
-    "marketCap": 187883864064,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:09:36.681Z"
+    "intrinsic": 130.51192310161417,
+    "price": 174.61,
+    "marginOfSafety": -0.25255184066425657,
+    "marketCap": 183985209344,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:55:10.792Z"
   },
   {
     "ticker": "NHF.AX",
@@ -694,12 +694,12 @@
     "name": "nib holdings limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 4.668308661077508,
-    "price": 6.68,
-    "marginOfSafety": -0.3011513980422892,
-    "marketCap": 3265937408,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:09:49.852Z"
+    "intrinsic": 4.628175679571337,
+    "price": 6.53,
+    "marginOfSafety": -0.2912441532050021,
+    "marketCap": 3192600576,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:55:23.912Z"
   },
   {
     "ticker": "NWH.AX",
@@ -707,12 +707,12 @@
     "name": "NRW Holdings Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 4.715736885049665,
-    "price": 7.64,
-    "marginOfSafety": -0.38275695221863015,
-    "marketCap": 3510327296,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:10:03.058Z"
+    "intrinsic": 4.684349266975887,
+    "price": 7.69,
+    "marginOfSafety": -0.39085185084838925,
+    "marketCap": 3533300736,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:55:37.056Z"
   },
   {
     "ticker": "NXL.AX",
@@ -720,12 +720,12 @@
     "name": "Nuix Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 2.3515713891228462,
-    "price": 2,
-    "marginOfSafety": 0.17578569456142312,
-    "marketCap": 687082560,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:10:16.252Z"
+    "intrinsic": 2.3568031236482434,
+    "price": 1.82,
+    "marginOfSafety": 0.29494677123529855,
+    "marketCap": 625245120,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:55:50.118Z"
   },
   {
     "ticker": "ORG.AX",
@@ -733,12 +733,12 @@
     "name": "Origin Energy Limited",
     "sector": "Utilities",
     "method": "ExcessReturn",
-    "intrinsic": 7.340816817234511,
-    "price": 11.35,
-    "marginOfSafety": -0.3532319984815408,
-    "marketCap": 19553185792,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:10:29.438Z"
+    "intrinsic": 7.643492663039865,
+    "price": 11.57,
+    "marginOfSafety": -0.3393696920449555,
+    "marketCap": 19932190720,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:56:03.279Z"
   },
   {
     "ticker": "ORI.AX",
@@ -759,12 +759,12 @@
     "name": "Perenti Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 2.394322410563453,
-    "price": 2.28,
-    "marginOfSafety": 0.05014140814186538,
-    "marketCap": 2131344896,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:11:15.938Z"
+    "intrinsic": 2.383687960542971,
+    "price": 2.18,
+    "marginOfSafety": 0.09343484428576646,
+    "marketCap": 2037864960,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:56:49.599Z"
   },
   {
     "ticker": "QAN.AX",
@@ -772,12 +772,12 @@
     "name": "Qantas Airways Limited",
     "sector": "Industrials",
     "method": "Airline",
-    "intrinsic": 11.433520206041093,
-    "price": 9.39,
-    "marginOfSafety": 0.21762728498840175,
-    "marketCap": 14208941056,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:11:29.174Z"
+    "intrinsic": 11.567125636731182,
+    "price": 9.07,
+    "marginOfSafety": 0.27531704925371353,
+    "marketCap": 13724717056,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:57:02.800Z"
   },
   {
     "ticker": "QBE.AX",
@@ -785,12 +785,12 @@
     "name": "QBE Insurance Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 21.497845431115316,
-    "price": 22.62,
-    "marginOfSafety": -0.04960895529994187,
+    "intrinsic": 21.30955344987278,
+    "price": 22.68,
+    "marginOfSafety": -0.060425332898025555,
     "marketCap": null,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:11:45.700Z"
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:57:19.206Z"
   },
   {
     "ticker": "QUB.AX",
@@ -798,12 +798,12 @@
     "name": "Qube Holdings Ltd",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 1.0127152703759505,
+    "intrinsic": 0.9955882668416308,
     "price": 5.11,
-    "marginOfSafety": -0.8018169725291683,
+    "marginOfSafety": -0.8051686366259039,
     "marketCap": 9116711936,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:11:58.908Z"
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:57:32.331Z"
   },
   {
     "ticker": "REA.AX",
@@ -811,12 +811,12 @@
     "name": "REA Group Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 88.64149537091537,
-    "price": 167.19,
-    "marginOfSafety": -0.4698158061432181,
-    "marketCap": 21878452224,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:12:12.117Z"
+    "intrinsic": 87.98419246899505,
+    "price": 154.42,
+    "marginOfSafety": -0.4302279985170635,
+    "marketCap": 20207372288,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:57:45.460Z"
   },
   {
     "ticker": "RHC.AX",
@@ -824,12 +824,12 @@
     "name": "Ramsay Health Care Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 16.119540488391916,
-    "price": 52.29,
-    "marginOfSafety": -0.6917280457373893,
-    "marketCap": 12070090752,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:12:25.366Z"
+    "intrinsic": 15.528098333374695,
+    "price": 53.55,
+    "marginOfSafety": -0.7100261749136378,
+    "marketCap": 12360936448,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:57:58.605Z"
   },
   {
     "ticker": "RMD.AX",
@@ -837,12 +837,12 @@
     "name": "ResMed Inc.",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 20.278288212475488,
-    "price": 31.68,
-    "marginOfSafety": -0.35990251854559696,
-    "marketCap": 45699129344,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:12:41.899Z"
+    "intrinsic": 18.222158756534302,
+    "price": 30.31,
+    "marginOfSafety": -0.39880703541622226,
+    "marketCap": 43722870784,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:58:15.000Z"
   },
   {
     "ticker": "S32.AX",
@@ -850,12 +850,12 @@
     "name": "South32 Limited",
     "sector": "Basic Materials",
     "method": "DCF",
-    "intrinsic": 1.3419513344412732,
-    "price": 5.19,
-    "marginOfSafety": -0.7414351956760553,
-    "marketCap": 23258601472,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:12:58.318Z"
+    "intrinsic": 1.3437258531775291,
+    "price": 5.02,
+    "marginOfSafety": -0.7323255272554723,
+    "marketCap": 22496757760,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:58:31.400Z"
   },
   {
     "ticker": "SDF.AX",
@@ -863,12 +863,12 @@
     "name": "Steadfast Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 3.3804993752630232,
-    "price": 5.69,
-    "marginOfSafety": -0.40588763176396786,
-    "marketCap": 6327232512,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:13:11.891Z"
+    "intrinsic": 3.3514375610688996,
+    "price": 5.71,
+    "marginOfSafety": -0.4130582204783013,
+    "marketCap": 6349472768,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:58:44.494Z"
   },
   {
     "ticker": "SEK.AX",
@@ -876,12 +876,12 @@
     "name": "SEEK Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 3.5245416144154005,
-    "price": 13.85,
-    "marginOfSafety": -0.7455204610530397,
-    "marketCap": 4957886976,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:13:25.041Z"
+    "intrinsic": 4.7527754104695905,
+    "price": 12.39,
+    "marginOfSafety": -0.6164023074681525,
+    "marketCap": 4435250688,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:58:57.603Z"
   },
   {
     "ticker": "SGH.AX",
@@ -889,12 +889,12 @@
     "name": "SGH Limited",
     "sector": null,
     "method": "DCF",
-    "intrinsic": 23.721023852145716,
-    "price": 38.4,
-    "marginOfSafety": -0.38226500385037193,
-    "marketCap": 15628730368,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:13:38.255Z"
+    "intrinsic": 20.77648126985488,
+    "price": 37.71,
+    "marginOfSafety": -0.4490458427511302,
+    "marketCap": 15293744128,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:59:10.723Z"
   },
   {
     "ticker": "SGP.AX",
@@ -903,11 +903,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 5.739999999769014,
-    "price": 4.41,
-    "marginOfSafety": 0.30158730153492386,
-    "marketCap": 10723550208,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:13:51.472Z"
+    "price": 4.09,
+    "marginOfSafety": 0.4034229828286099,
+    "marketCap": 9945424896,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:59:23.941Z"
   },
   {
     "ticker": "SHL.AX",
@@ -915,12 +915,12 @@
     "name": "Sonic Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 17.32854992961801,
-    "price": 19.54,
-    "marginOfSafety": -0.11317554096120723,
-    "marketCap": 9657409536,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:14:04.667Z"
+    "intrinsic": 17.209376940292035,
+    "price": 19,
+    "marginOfSafety": -0.09424331893199815,
+    "marketCap": 9390521344,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:59:37.068Z"
   },
   {
     "ticker": "SIG.AX",
@@ -928,12 +928,12 @@
     "name": "Sigma Healthcare Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 0.44580390835111533,
-    "price": 2.7,
-    "marginOfSafety": -0.8348874413514388,
-    "marketCap": 31057414144,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:14:17.875Z"
+    "intrinsic": 0.5039894661710335,
+    "price": 2.63,
+    "marginOfSafety": -0.808369024269569,
+    "marketCap": 30252222464,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T00:59:50.229Z"
   },
   {
     "ticker": "SLC.AX",
@@ -941,25 +941,25 @@
     "name": "Superloop Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 3.013199616409461,
-    "price": 2.8,
-    "marginOfSafety": 0.07614272014623613,
-    "marketCap": 1441198848,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:14:31.014Z"
+    "intrinsic": 3.0512576577684674,
+    "price": 2.69,
+    "marginOfSafety": 0.13429652705147488,
+    "marketCap": 1385883008,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:00:03.334Z"
   },
   {
     "ticker": "SOL.AX",
     "slug": "sol-ax",
-    "name": "WHSP Holdings Limited",
+    "name": "Washington H. Soul Pattinson and Company Limited",
     "sector": "Financial Services",
     "method": "DCF",
-    "intrinsic": 34.72125472370607,
-    "price": 44.22,
-    "marginOfSafety": -0.2148065417524634,
-    "marketCap": 16800049152,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:14:44.241Z"
+    "intrinsic": 34.48779469554864,
+    "price": 43.95,
+    "marginOfSafety": -0.21529477370765338,
+    "marketCap": 16697469952,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:00:16.517Z"
   },
   {
     "ticker": "SRG.AX",
@@ -967,12 +967,12 @@
     "name": "SRG Global Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 2.5687939982510235,
-    "price": 3.83,
-    "marginOfSafety": -0.32929660620077716,
-    "marketCap": 2425796352,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:14:57.435Z"
+    "intrinsic": 2.5345084817434107,
+    "price": 3.86,
+    "marginOfSafety": -0.34339158504056716,
+    "marketCap": 2444797440,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:00:29.618Z"
   },
   {
     "ticker": "STO.AX",
@@ -993,12 +993,12 @@
     "name": "Suncorp Group Limited",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 12.245367836539554,
-    "price": 19.37,
-    "marginOfSafety": -0.3678178711130845,
-    "marketCap": 20533196800,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:15:53.898Z"
+    "intrinsic": 12.139026669887501,
+    "price": 19.61,
+    "marginOfSafety": -0.38097773228518605,
+    "marketCap": 20787607552,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:01:25.819Z"
   },
   {
     "ticker": "SXE.AX",
@@ -1006,12 +1006,12 @@
     "name": "Southern Cross Electrical Engineering Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 7.335170131087552,
-    "price": 4.17,
-    "marginOfSafety": 0.7590336045773507,
-    "marketCap": 1286401408,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:16:07.090Z"
+    "intrinsic": 7.2827138057845895,
+    "price": 4.26,
+    "marginOfSafety": 0.7095572314048333,
+    "marketCap": 1314165504,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:01:38.925Z"
   },
   {
     "ticker": "TAH.AX",
@@ -1019,12 +1019,12 @@
     "name": "Tabcorp Holdings Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 0.8644954668212653,
-    "price": 0.885,
-    "marginOfSafety": -0.023168964043768007,
-    "marketCap": 2028990208,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:16:20.294Z"
+    "intrinsic": 0.9842395257690827,
+    "price": 0.915,
+    "marginOfSafety": 0.07567161286238541,
+    "marketCap": 2097769600,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:01:52.068Z"
   },
   {
     "ticker": "TLC.AX",
@@ -1032,12 +1032,12 @@
     "name": "The Lottery Corporation Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 9.704450179947763,
-    "price": 4.99,
-    "marginOfSafety": 0.9447795951799123,
-    "marketCap": 11106600960,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:16:33.417Z"
+    "intrinsic": 9.643635697590865,
+    "price": 4.81,
+    "marginOfSafety": 1.0049138664430075,
+    "marketCap": 10705961984,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:02:05.342Z"
   },
   {
     "ticker": "TLS.AX",
@@ -1058,12 +1058,12 @@
     "name": "Telix Pharmaceuticals Limited",
     "sector": "Healthcare",
     "method": "DCF",
-    "intrinsic": 1.1329811075969551,
-    "price": 16.47,
-    "marginOfSafety": -0.9312094045174891,
-    "marketCap": 5596247040,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:17:23.399Z"
+    "intrinsic": 1.1100072651876487,
+    "price": 15.67,
+    "marginOfSafety": -0.9291635440212094,
+    "marketCap": 5324419584,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:02:54.891Z"
   },
   {
     "ticker": "TPG.AX",
@@ -1071,12 +1071,12 @@
     "name": "TPG Telecom Limited",
     "sector": "Communication Services",
     "method": "DCF",
-    "intrinsic": 50.72365279197564,
+    "intrinsic": 50.135668671432164,
     "price": 3.84,
-    "marginOfSafety": 12.209284581243656,
+    "marginOfSafety": 12.056163716518794,
     "marketCap": 7538032640,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:17:36.700Z"
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:03:08.059Z"
   },
   {
     "ticker": "TPW.AX",
@@ -1085,11 +1085,11 @@
     "sector": "Consumer Cyclical",
     "method": "DCF",
     "intrinsic": 1.2674792184580086,
-    "price": 4.84,
-    "marginOfSafety": -0.7381241284177668,
-    "marketCap": 564086208,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:17:49.952Z"
+    "price": 4.54,
+    "marginOfSafety": -0.720819555405725,
+    "marketCap": 529122144,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:03:21.257Z"
   },
   {
     "ticker": "TWE.AX",
@@ -1097,12 +1097,12 @@
     "name": "Treasury Wine Estates Limited",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 3.072091850576904,
-    "price": 5.54,
-    "marginOfSafety": -0.4454707850944217,
-    "marketCap": 4481512448,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:18:03.231Z"
+    "intrinsic": 1.8108447220720079,
+    "price": 5.18,
+    "marginOfSafety": -0.6504160768200756,
+    "marketCap": 4190295040,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:03:34.377Z"
   },
   {
     "ticker": "VCX.AX",
@@ -1111,11 +1111,11 @@
     "sector": "Real Estate",
     "method": "REIT",
     "intrinsic": 3.9182000001340613,
-    "price": 2.54,
-    "marginOfSafety": 0.5425984252496304,
-    "marketCap": 11786454016,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:18:16.524Z"
+    "price": 2.37,
+    "marginOfSafety": 0.6532489452042453,
+    "marketCap": 10997597184,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:03:47.507Z"
   },
   {
     "ticker": "VNT.AX",
@@ -1123,12 +1123,12 @@
     "name": "Ventia Services Group Limited",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 4.611496440901097,
-    "price": 5.6,
-    "marginOfSafety": -0.17651849269623265,
-    "marketCap": 4579816448,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:18:29.916Z"
+    "intrinsic": 4.545923374173716,
+    "price": 5.7,
+    "marginOfSafety": -0.20246958347829544,
+    "marketCap": 4661598720,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:04:00.652Z"
   },
   {
     "ticker": "WBC.AX",
@@ -1136,12 +1136,12 @@
     "name": "Westpac Banking Corporation",
     "sector": "Financial Services",
     "method": "DDM",
-    "intrinsic": 25.14548075949359,
-    "price": 34.96,
-    "marginOfSafety": -0.28073567621585843,
-    "marketCap": 119385161728,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:18:43.277Z"
+    "intrinsic": 25.181458522082437,
+    "price": 34.22,
+    "marginOfSafety": -0.26413037632722275,
+    "marketCap": 116858134528,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:04:13.781Z"
   },
   {
     "ticker": "WDS.AX",
@@ -1149,12 +1149,12 @@
     "name": "Woodside Energy Group Ltd",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 5.849360187030603,
-    "price": 31.83,
-    "marginOfSafety": -0.8162312225249574,
-    "marketCap": 60512018432,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:18:59.991Z"
+    "intrinsic": 5.742519933080501,
+    "price": 32.86,
+    "marginOfSafety": -0.8252428504844643,
+    "marketCap": 62470152192,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:04:30.178Z"
   },
   {
     "ticker": "WES.AX",
@@ -1162,12 +1162,12 @@
     "name": "Wesfarmers Limited",
     "sector": "Consumer Cyclical",
     "method": "DCF",
-    "intrinsic": 42.4228587834409,
-    "price": 77.73,
-    "marginOfSafety": -0.45422798426037697,
-    "marketCap": 88245526528,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:19:13.267Z"
+    "intrinsic": 35.953228452172496,
+    "price": 72.82,
+    "marginOfSafety": -0.5062726112033439,
+    "marketCap": 82671288320,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:04:43.313Z"
   },
   {
     "ticker": "WOR.AX",
@@ -1175,12 +1175,12 @@
     "name": "Worley Limited",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 12.173136431488437,
-    "price": 9.8,
-    "marginOfSafety": 0.24215677872330985,
-    "marketCap": 4779069952,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:19:26.598Z"
+    "intrinsic": 12.046566293424354,
+    "price": 9.76,
+    "marginOfSafety": 0.2342793333426592,
+    "marketCap": 4759563776,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:04:56.454Z"
   },
   {
     "ticker": "WOW.AX",
@@ -1201,12 +1201,12 @@
     "name": "WiseTech Global Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 21.521670255878604,
-    "price": 37.69,
-    "marginOfSafety": -0.42898195129003436,
-    "marketCap": 12675261440,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:20:16.723Z"
+    "intrinsic": 22.15578231151036,
+    "price": 32.69,
+    "marginOfSafety": -0.3222458760626992,
+    "marketCap": 10993745920,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:05:46.180Z"
   },
   {
     "ticker": "XRO.AX",
@@ -1214,12 +1214,12 @@
     "name": "Xero Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 21.135520249511966,
-    "price": 79.37,
-    "marginOfSafety": -0.7337089549009453,
-    "marketCap": 14021628928,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:20:33.355Z"
+    "intrinsic": 21.05936961382844,
+    "price": 67.05,
+    "marginOfSafety": -0.6859154420010672,
+    "marketCap": 11845158912,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:06:02.559Z"
   },
   {
     "ticker": "YAL.AX",
@@ -1227,11 +1227,11 @@
     "name": "Yancoal Australia Ltd",
     "sector": "Energy",
     "method": "DCF",
-    "intrinsic": 12.882299725141408,
-    "price": 6.13,
-    "marginOfSafety": 1.1015170840361188,
-    "marketCap": 8094294016,
-    "updated": "2026-09-05",
-    "updatedAt": "2026-09-05T02:20:46.622Z"
+    "intrinsic": 12.817941190764019,
+    "price": 6.22,
+    "marginOfSafety": 1.0607622493189741,
+    "marketCap": 8213132800,
+    "updated": "2026-09-12",
+    "updatedAt": "2026-09-12T01:06:15.662Z"
   }
 ]
