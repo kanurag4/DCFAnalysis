@@ -198,5 +198,53 @@
     "exitDate": "2026-09-05",
     "exitPrice": 146.52,
     "dollarPnl": -12.51
+  },
+  {
+    "ticker": "ISP.MI",
+    "entryDate": "2026-08-03",
+    "entryPrice": 6.54,
+    "exitDate": "2026-09-12",
+    "exitPrice": 6.832,
+    "dollarPnl": 7.5
+  },
+  {
+    "ticker": "REP.MC",
+    "entryDate": "2026-09-05",
+    "entryPrice": 27.74,
+    "exitDate": "2026-09-12",
+    "exitPrice": 28.92,
+    "dollarPnl": 23.36
+  },
+  {
+    "ticker": "HNR1.DE",
+    "entryDate": "2026-08-03",
+    "entryPrice": 250.6,
+    "exitDate": "2026-09-12",
+    "exitPrice": 250.4,
+    "dollarPnl": -21.5
+  },
+  {
+    "ticker": "RWE.DE",
+    "entryDate": "2026-08-29",
+    "entryPrice": 59.1,
+    "exitDate": "2026-09-12",
+    "exitPrice": 59.84,
+    "dollarPnl": 13.54
+  },
+  {
+    "ticker": "VIE.PA",
+    "entryDate": "2026-08-03",
+    "entryPrice": 34.47,
+    "exitDate": "2026-09-12",
+    "exitPrice": 31.44,
+    "dollarPnl": -7.92
+  },
+  {
+    "ticker": "KER.PA",
+    "entryDate": "2026-09-05",
+    "entryPrice": 245.2,
+    "exitDate": "2026-09-12",
+    "exitPrice": 238.6,
+    "dollarPnl": -14.78
   }
 ]
