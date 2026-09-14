@@ -772,6 +772,23 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         data.netIncome = c(data.netIncome);
         data.depreciationAndAmortization = c(data.depreciationAndAmortization);
         data.ebitda = c(data.ebitda);
+        // Solvency Check (Altman Z-Score + Piotroski F-Score) monetary
+        // inputs -- same currency-mixing bug class as the REIT FFO/AFFO
+        // incident above, caught in peer review 2026-09-14. Originally left
+        // unconverted on the theory that these are "internally consistent
+        // within one currency already" -- true for Altman Z's X1/X2, false
+        // for X3/X4/X5, which each pair an ALREADY-CONVERTED field (ebit,
+        // revenue) against one of these. hist.annualSharesHistory is the
+        // one deliberate exception: a share COUNT is dimensionless and must
+        // never be FX-converted.
+        hist.annualTotalAssetsHistory = hist.annualTotalAssetsHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualCurrentAssetsHistory = hist.annualCurrentAssetsHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualCurrentLiabilitiesHistory = hist.annualCurrentLiabilitiesHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualTotalLiabilitiesHistory = hist.annualTotalLiabilitiesHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualRetainedEarningsHistory = hist.annualRetainedEarningsHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualTotalDebtHistory = hist.annualTotalDebtHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualCapexHistory = hist.annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        hist.annualGrossProfitHistory = hist.annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
       } else {
         fxConversionFailed = true;
         data.freeCashflow = null;
@@ -791,6 +808,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
         data.netIncome = null;
         data.depreciationAndAmortization = null;
         data.ebitda = null;
+        hist.annualTotalAssetsHistory = [];
+        hist.annualCurrentAssetsHistory = [];
+        hist.annualCurrentLiabilitiesHistory = [];
+        hist.annualTotalLiabilitiesHistory = [];
+        hist.annualRetainedEarningsHistory = [];
+        hist.annualTotalDebtHistory = [];
+        hist.annualCapexHistory = [];
+        hist.annualGrossProfitHistory = [];
       }
     }
 
