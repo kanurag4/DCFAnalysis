@@ -149,6 +149,28 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let netIncomeConverted = data.netIncome;
   let depreciationConverted = data.depreciationAndAmortization;
   let ebitdaConverted = data.ebitda;
+  // Solvency Check (Altman Z-Score + Piotroski F-Score) monetary inputs --
+  // MUST go through the same FX conversion as every other financial field
+  // here. Originally left out on the theory that these ratios are
+  // "internally consistent within one currency already" -- true for X1/X2
+  // (both operands are these same fields) but FALSE for X3 (ebit/assets),
+  // X4 (marketCap/liabilities), and X5 (revenue/assets), which each pair
+  // an ALREADY-CONVERTED pre-existing field (ebit, revenue, marketCap)
+  // against an unconverted one, silently mixing currencies for any real
+  // ADR (SONY-style). Same bug class this file's own FX guard exists to
+  // prevent elsewhere. Piotroski's OCF (fcf - capex) is worse -- an
+  // absolute subtraction of mismatched-currency values, not just a ratio.
+  // annualSharesHistory is the one exception, correctly excluded: a share
+  // COUNT is dimensionless and must never be FX-converted (same reasoning
+  // as it's never GBp-pence-scaled either).
+  let annualTotalAssetsHistoryConverted = annualTotalAssetsHistory;
+  let annualCurrentAssetsHistoryConverted = annualCurrentAssetsHistory;
+  let annualCurrentLiabilitiesHistoryConverted = annualCurrentLiabilitiesHistory;
+  let annualTotalLiabilitiesHistoryConverted = annualTotalLiabilitiesHistory;
+  let annualRetainedEarningsHistoryConverted = annualRetainedEarningsHistory;
+  let annualTotalDebtHistoryConverted = annualTotalDebtHistory;
+  let annualCapexHistoryConverted = annualCapexHistory;
+  let annualGrossProfitHistoryConverted = annualGrossProfitHistory;
 
   // GBp/GBP is the same currency at two quote sub-units, already reconciled
   // by mapQuoteSummary()'s gbpPenceScale() and the /timeseries scaling above
@@ -178,6 +200,14 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       netIncomeConverted = c(netIncomeConverted);
       depreciationConverted = c(depreciationConverted);
       ebitdaConverted = c(ebitdaConverted);
+      annualTotalAssetsHistoryConverted = annualTotalAssetsHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualCurrentAssetsHistoryConverted = annualCurrentAssetsHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualCurrentLiabilitiesHistoryConverted = annualCurrentLiabilitiesHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualTotalLiabilitiesHistoryConverted = annualTotalLiabilitiesHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualRetainedEarningsHistoryConverted = annualRetainedEarningsHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualTotalDebtHistoryConverted = annualTotalDebtHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualCapexHistoryConverted = annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      annualGrossProfitHistoryConverted = annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
     } else {
       fxConversionFailed = true;
       freeCashflow = null;
@@ -197,6 +227,14 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
       netIncomeConverted = null;
       depreciationConverted = null;
       ebitdaConverted = null;
+      annualTotalAssetsHistoryConverted = [];
+      annualCurrentAssetsHistoryConverted = [];
+      annualCurrentLiabilitiesHistoryConverted = [];
+      annualTotalLiabilitiesHistoryConverted = [];
+      annualRetainedEarningsHistoryConverted = [];
+      annualTotalDebtHistoryConverted = [];
+      annualCapexHistoryConverted = [];
+      annualGrossProfitHistoryConverted = [];
     }
   }
 
@@ -216,20 +254,21 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     depreciationAndAmortization: depreciationConverted,
     ebitda: ebitdaConverted,
     fxConversionFailed,
-    // Solvency Check (Altman Z-Score + Piotroski F-Score) inputs. NOT run
-    // through the ADR/FX-conversion block above -- these ratios are
-    // internally consistent within one currency already (Total Assets/
-    // Total Liabilities/etc. all come from the SAME financialCurrency as
-    // each other), unlike a dollar-per-share DCF comparison against price.
-    annualTotalAssetsHistory,
-    annualCurrentAssetsHistory,
-    annualCurrentLiabilitiesHistory,
-    annualTotalLiabilitiesHistory,
-    annualRetainedEarningsHistory,
-    annualTotalDebtHistory,
+    // Solvency Check (Altman Z-Score + Piotroski F-Score) inputs. Run
+    // through the SAME FX conversion as every other financial field above
+    // -- see the "let annualTotalAssetsHistoryConverted" comment for why
+    // (a real ADR currency-mixing bug, found in peer review). Share COUNT
+    // is the one field deliberately excluded: dimensionless, never
+    // FX-converted or GBp-scaled.
+    annualTotalAssetsHistory: annualTotalAssetsHistoryConverted,
+    annualCurrentAssetsHistory: annualCurrentAssetsHistoryConverted,
+    annualCurrentLiabilitiesHistory: annualCurrentLiabilitiesHistoryConverted,
+    annualTotalLiabilitiesHistory: annualTotalLiabilitiesHistoryConverted,
+    annualRetainedEarningsHistory: annualRetainedEarningsHistoryConverted,
+    annualTotalDebtHistory: annualTotalDebtHistoryConverted,
     annualSharesHistory,
-    annualCapexHistory,
-    annualGrossProfitHistory,
+    annualCapexHistory: annualCapexHistoryConverted,
+    annualGrossProfitHistory: annualGrossProfitHistoryConverted,
   };
 }
 
