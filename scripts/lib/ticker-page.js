@@ -27,6 +27,7 @@ const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
 const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
 const { buildValueScaleCard } = require('./value-scale.js');
+const { buildSolvencyScaleCard } = require('./solvency-scale.js');
 const { selectRelatedStocks, buildRelatedStocksHtml } = require('./related-stocks.js');
 const { readGrowthManifest, listGrowthMarketFolders } = require('./growth-manifest-reader.js');
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./page-shell.js');
@@ -536,6 +537,22 @@ async function fetchHistorySeries(symbol, proxyUrl, currency) {
     annualNetIncomeHistory: scaleTimeseries(Array.isArray(series.annualNetIncome) ? series.annualNetIncome : [], gbpToPence),
     annualStockholdersEquityHistory: scaleTimeseries(Array.isArray(series.annualStockholdersEquity) ? series.annualStockholdersEquity : [], gbpToPence),
     annualDividendsPaidHistory: scaleTimeseries(Array.isArray(series.annualCashDividendsPaid) ? series.annualCashDividendsPaid : [], gbpToPence),
+    // Solvency Check (Altman Z-Score + Piotroski F-Score) inputs -- see
+    // docs/superpowers/specs/2026-09-13-solvency-check-design.md. Mirrors
+    // www/data.js's fetchDCFData() field-for-field.
+    annualTotalAssetsHistory: scaleTimeseries(Array.isArray(series.annualTotalAssets) ? series.annualTotalAssets : [], gbpToPence),
+    annualCurrentAssetsHistory: scaleTimeseries(Array.isArray(series.annualCurrentAssets) ? series.annualCurrentAssets : [], gbpToPence),
+    annualCurrentLiabilitiesHistory: scaleTimeseries(Array.isArray(series.annualCurrentLiabilities) ? series.annualCurrentLiabilities : [], gbpToPence),
+    annualTotalLiabilitiesHistory: scaleTimeseries(Array.isArray(series.annualTotalLiabilitiesNetMinorityInterest) ? series.annualTotalLiabilitiesNetMinorityInterest : [], gbpToPence),
+    annualRetainedEarningsHistory: scaleTimeseries(Array.isArray(series.annualRetainedEarnings) ? series.annualRetainedEarnings : [], gbpToPence),
+    annualTotalDebtHistory: scaleTimeseries(Array.isArray(series.annualTotalDebt) ? series.annualTotalDebt : [], gbpToPence),
+    // Share COUNT, not a monetary aggregate -- never pence-scaled (same
+    // reasoning as www/data.js's identical field).
+    annualSharesHistory: Array.isArray(series.annualOrdinarySharesNumber) ? series.annualOrdinarySharesNumber : [],
+    annualCapexHistory: scaleTimeseries(Array.isArray(series.annualCapitalExpenditure) ? series.annualCapitalExpenditure : [], gbpToPence),
+    // Not in the plan's original field list -- Piotroski's gross-margin
+    // criterion needs it (see www/data.js's identical addition).
+    annualGrossProfitHistory: scaleTimeseries(Array.isArray(series.annualGrossProfit) ? series.annualGrossProfit : [], gbpToPence),
   };
 }
 
@@ -1325,6 +1342,21 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       valueScaleHtml = '';
     }
 
+    // Best-effort, same posture as valueScaleHtml above -- a scoring hiccup
+    // here must never turn into a whole-page skip. isBank/isReitTicker are
+    // the two consts this function already computes above for its own
+    // valuation-model dispatch.
+    let solvencyScaleHtml = '';
+    try {
+      // ebit comes from hist (fetchHistorySeries()'s /timeseries-derived
+      // field), not data (the quoteSummary mapper) -- data.ebit doesn't
+      // exist. Same field hist.ebit that the WACC/EBITDA computations
+      // above already read.
+      solvencyScaleHtml = buildSolvencyScaleCard({ hist, ebit: hist.ebit, marketCap: data.marketCap, excluded: isBank || isReitTicker });
+    } catch (_) {
+      solvencyScaleHtml = '';
+    }
+
     let relatedStocksSectionHtml = '';
     try {
       const relatedPool = buildRelatedStocksPool();
@@ -1436,6 +1468,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       </section>
 
       ${valueScaleHtml}
+
+      ${solvencyScaleHtml}
 
       ${bankMetricsHtml}
 
