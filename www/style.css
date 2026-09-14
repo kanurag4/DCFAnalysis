@@ -605,15 +605,13 @@ html.dark .eval-scorecard-row.fail .value { color: #f87171; }
 .solv-mbar {
   height: 8px;
   border-radius: 4px;
-  /* Stops match the real Altman Z zone thresholds (Distress <1.81, Grey
-     1.81-2.99, Safe >2.99), mapped through the same -2..6 display range
-     altmanBarPct()/altmanBarPct() use for the pointer -- NOT even thirds.
-     A flat 33/66 split put the red/amber boundary at Z=0.64 and the
-     amber/green boundary at Z=3.28, so any Distress-zone score between
-     0.64 and 1.81 visually landed on amber instead of red -- found live
-     on T (AT&T), Z=0.90, Distress by the verdict text but amber on the
-     bar. With an 8-point range (-2 to 6): 1.81 -> 47.625%, 2.99 -> 62.375%. */
-  background: linear-gradient(90deg, var(--kv-fail) 0%, var(--kv-fail) 47.625%, var(--kv-warn) 47.625%, var(--kv-warn) 62.375%, var(--kv-pass) 62.375%, var(--kv-pass) 100%);
+  /* Flat, equal thirds -- one per zone. altmanBarPct() is the piece that
+     does the real work: it maps the pointer piecewise so each zone
+     (Distress/Grey/Safe) gets positioned within its own matching third,
+     instead of skewing these background stops to chase one linear scale's
+     uneven zone widths (see that function's comment for the T/AT&T bug
+     this replaced). */
+  background: linear-gradient(90deg, var(--kv-fail) 0%, var(--kv-fail) 33.333%, var(--kv-warn) 33.333%, var(--kv-warn) 66.667%, var(--kv-pass) 66.667%, var(--kv-pass) 100%);
 }
 .solv-mbar-tri {
   position: absolute;

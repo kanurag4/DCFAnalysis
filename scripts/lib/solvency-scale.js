@@ -20,9 +20,24 @@ function latest(series) {
   return (v != null && isFinite(v)) ? v : null;
 }
 
+// Piecewise, not a single linear map -- each zone gets an equal-width third
+// of the bar, matching the RAG background's flat thirds exactly, with the
+// pointer positioned proportionally WITHIN whichever zone the real Z-Score
+// actually falls in. See www/evaluate/app.js's identical copy for the full
+// rationale (found live on T/AT&T, Z=0.90 -- Distress by the verdict text,
+// landed on amber under the original single linear -2..6 mapping).
 function altmanBarPct(zScore) {
   if (zScore == null) return 50;
-  return Math.min(100, Math.max(0, ((zScore - (-2)) / (6 - (-2))) * 100));
+  const DISTRESS_MAX = 1.81, SAFE_MIN = 2.99;
+  const FLOOR = -2, CEIL = 6;
+  const clamp01 = (t) => Math.max(0, Math.min(1, t));
+  if (zScore < DISTRESS_MAX) {
+    return clamp01((zScore - FLOOR) / (DISTRESS_MAX - FLOOR)) * (100 / 3);
+  } else if (zScore <= SAFE_MIN) {
+    return (100 / 3) + clamp01((zScore - DISTRESS_MAX) / (SAFE_MIN - DISTRESS_MAX)) * (100 / 3);
+  } else {
+    return (200 / 3) + clamp01((zScore - SAFE_MIN) / (CEIL - SAFE_MIN)) * (100 / 3);
+  }
 }
 
 function piotroskiSegmentsHtml(totalScore) {
