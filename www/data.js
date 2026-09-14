@@ -44,6 +44,23 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   let annualNetIncomeHistory = [];
   let annualStockholdersEquityHistory = [];
   let annualDividendsPaidHistory = [];
+  // Solvency Check (Altman Z-Score + Piotroski F-Score) inputs -- see
+  // docs/superpowers/specs/2026-09-13-solvency-check-design.md. Share COUNT
+  // is deliberately never GBp-scaled (see the return-object comment below).
+  let annualTotalAssetsHistory = [];
+  let annualCurrentAssetsHistory = [];
+  let annualCurrentLiabilitiesHistory = [];
+  let annualTotalLiabilitiesHistory = [];
+  let annualRetainedEarningsHistory = [];
+  let annualTotalDebtHistory = [];
+  let annualSharesHistory = [];
+  let annualCapexHistory = [];
+  // Not in the original plan's field list -- Piotroski's gross-margin
+  // criterion needs it, and Yahoo's /timeseries already returns
+  // annualGrossProfit unconditionally (it was already in the Worker's
+  // `types` list for other reasons, just never mapped into a history array
+  // here before now).
+  let annualGrossProfitHistory = [];
   try {
     const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`, { headers: extraHeaders });
     if (tsRes.ok) {
@@ -80,6 +97,16 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
         annualNetIncomeHistory = scaleTimeseries(Array.isArray(tsBody.annualNetIncome) ? tsBody.annualNetIncome : [], gbpToPence);
         annualStockholdersEquityHistory = scaleTimeseries(Array.isArray(tsBody.annualStockholdersEquity) ? tsBody.annualStockholdersEquity : [], gbpToPence);
         annualDividendsPaidHistory = scaleTimeseries(Array.isArray(tsBody.annualCashDividendsPaid) ? tsBody.annualCashDividendsPaid : [], gbpToPence);
+        annualTotalAssetsHistory = scaleTimeseries(Array.isArray(tsBody.annualTotalAssets) ? tsBody.annualTotalAssets : [], gbpToPence);
+        annualCurrentAssetsHistory = scaleTimeseries(Array.isArray(tsBody.annualCurrentAssets) ? tsBody.annualCurrentAssets : [], gbpToPence);
+        annualCurrentLiabilitiesHistory = scaleTimeseries(Array.isArray(tsBody.annualCurrentLiabilities) ? tsBody.annualCurrentLiabilities : [], gbpToPence);
+        annualTotalLiabilitiesHistory = scaleTimeseries(Array.isArray(tsBody.annualTotalLiabilitiesNetMinorityInterest) ? tsBody.annualTotalLiabilitiesNetMinorityInterest : [], gbpToPence);
+        annualRetainedEarningsHistory = scaleTimeseries(Array.isArray(tsBody.annualRetainedEarnings) ? tsBody.annualRetainedEarnings : [], gbpToPence);
+        annualTotalDebtHistory = scaleTimeseries(Array.isArray(tsBody.annualTotalDebt) ? tsBody.annualTotalDebt : [], gbpToPence);
+        // Share COUNT, not a monetary aggregate -- never pence-scaled.
+        annualSharesHistory = Array.isArray(tsBody.annualOrdinarySharesNumber) ? tsBody.annualOrdinarySharesNumber : [];
+        annualCapexHistory = scaleTimeseries(Array.isArray(tsBody.annualCapitalExpenditure) ? tsBody.annualCapitalExpenditure : [], gbpToPence);
+        annualGrossProfitHistory = scaleTimeseries(Array.isArray(tsBody.annualGrossProfit) ? tsBody.annualGrossProfit : [], gbpToPence);
       }
     }
   } catch (_) {
@@ -189,6 +216,20 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
     depreciationAndAmortization: depreciationConverted,
     ebitda: ebitdaConverted,
     fxConversionFailed,
+    // Solvency Check (Altman Z-Score + Piotroski F-Score) inputs. NOT run
+    // through the ADR/FX-conversion block above -- these ratios are
+    // internally consistent within one currency already (Total Assets/
+    // Total Liabilities/etc. all come from the SAME financialCurrency as
+    // each other), unlike a dollar-per-share DCF comparison against price.
+    annualTotalAssetsHistory,
+    annualCurrentAssetsHistory,
+    annualCurrentLiabilitiesHistory,
+    annualTotalLiabilitiesHistory,
+    annualRetainedEarningsHistory,
+    annualTotalDebtHistory,
+    annualSharesHistory,
+    annualCapexHistory,
+    annualGrossProfitHistory,
   };
 }
 
