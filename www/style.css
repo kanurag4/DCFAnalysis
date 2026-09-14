@@ -540,6 +540,113 @@ html:not(.dark):not(.prestige):not(.sky) .sharesight-cta a, html:not(.dark):not(
 .value-scale-block .gauge-marker-area.ok   .gauge-stem { background: var(--kv-warn); }
 .value-scale-block .gauge-marker-area.bad  .gauge-stem { background: var(--kv-fail); }
 .value-scale-block .gauge-sub { text-align: center; font-size: 0.7rem; color: var(--kv-muted); margin-top: 6px; }
+
+/* ── Solvency Check (Altman Z-Score + Piotroski F-Score), ticker pages ──
+   scripts/lib/solvency-scale.js's HTML borrows www/evaluate/style.css's
+   .eval-* class vocabulary verbatim (same "Details" <details> panel
+   pattern as the live /evaluate/ page) -- ported here since ticker pages
+   don't load evaluate/style.css at all. Keep these two files' rules for
+   these shared classes in sync by eye if either changes. ── */
+.eval-card-note {
+  font-size: 0.74rem;
+  color: var(--kv-muted);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+.eval-scorecard {
+  background: var(--kv-card);
+  border: 1px solid var(--kv-border);
+  border-radius: 10px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.eval-scorecard summary {
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--kv-text);
+  list-style: none;
+}
+.eval-scorecard summary::-webkit-details-marker { display: none; }
+.eval-scorecard-group { margin: 6px 0 14px; }
+.eval-scorecard-group h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--kv-muted); margin: 10px 0 4px; }
+.eval-scorecard-row { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; font-size: 0.8rem; }
+.eval-scorecard-row .criterion { color: var(--kv-text); }
+.eval-scorecard-row .value { color: var(--kv-muted); white-space: nowrap; }
+.eval-scorecard-row.pass .value { color: #15803d; }
+.eval-scorecard-row.fail .value { color: #dc2626; }
+html.dark .eval-scorecard-row.pass .value { color: #4ade80; }
+html.dark .eval-scorecard-row.fail .value { color: #f87171; }
+
+/* Solvency Check gauges — deliberately different marker shape from the
+   Value investing scale gauge above (pill-on-a-stem) to read as a distinct
+   instrument; same var(--kv-fail)/var(--kv-warn)/var(--kv-pass) colors. */
+.solv-card { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.solv-mini { display: flex; flex-direction: column; gap: 4px; }
+.solv-mlabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--kv-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.solv-mlabel .solv-mval {
+  color: var(--kv-text);
+  font-weight: 800;
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.solv-mbar-wrap { position: relative; padding-bottom: 5px; }
+.solv-mbar {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--kv-fail) 0%, var(--kv-fail) 33%, var(--kv-warn) 33%, var(--kv-warn) 66%, var(--kv-pass) 66%, var(--kv-pass) 100%);
+}
+.solv-mbar-tri {
+  position: absolute;
+  bottom: -3px;
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--kv-primary);
+  transform: translateX(-50%);
+}
+.solv-mseg-row { display: flex; gap: 2px; }
+.solv-mseg {
+  flex: 1;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--kv-bg);
+  border: 1px solid var(--kv-border);
+}
+.solv-mseg.on.zf { background: var(--kv-fail); border-color: var(--kv-fail); }
+.solv-mseg.on.zw { background: var(--kv-warn); border-color: var(--kv-warn); }
+.solv-mseg.on.zp { background: var(--kv-pass); border-color: var(--kv-pass); }
+
+.solv-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 700px) {
+  .solv-detail-grid { grid-template-columns: 1fr; }
+}
+.solv-methodology { margin-bottom: 14px; }
+.solv-formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  color: var(--kv-text);
+  background: var(--kv-card-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+.solv-scale-block .solv-card { max-width: 420px; margin: 0 auto; }
 .value-scale-gap { text-align: center; font-size: 0.72rem; color: var(--kv-muted); margin-top: 3px; }
 .value-scale-cta { text-align: center; margin: 10px 0 0; font-size: 0.85rem; }
 .value-scale-cta a { color: var(--kv-accent); font-weight: 600; text-decoration: none; }
