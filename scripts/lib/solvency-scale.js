@@ -125,10 +125,10 @@ function buildSolvencyScaleCard({ hist, ebit, marketCap, excluded }) {
     <details class="eval-scorecard">
       <summary>▾ Solvency Check details</summary>
       <p class="eval-card-note solv-methodology">
-        <b>Altman Z-Score</b> combines 5 ratios into one weighted number —
+        <a href="/glossary/altman-z-score/"><b>Altman Z-Score</b></a> combines 5 ratios into one weighted number —
         <span class="solv-formula">Z = 1.2·X1 + 1.4·X2 + 3.3·X3 + 0.6·X4 + 1.0·X5</span> —
         then bands the result: Safe Zone above 2.99, Grey Zone 1.81–2.99, Distress Zone below 1.81.
-        <b>Piotroski F-Score</b> checks 9 yes/no criteria against the prior fiscal year —
+        <a href="/glossary/piotroski-f-score/"><b>Piotroski F-Score</b></a> checks 9 yes/no criteria against the prior fiscal year —
         profitability, leverage &amp; liquidity, and operating efficiency — 1 point each, out of 9.
         Both are a measurement of the underlying numbers, not a recommendation.
       </p>
