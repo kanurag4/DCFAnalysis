@@ -1368,16 +1368,23 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
     }
 
     // Best-effort, same posture as valueScaleHtml above -- a scoring hiccup
-    // here must never turn into a whole-page skip. isBank/isReitTicker are
-    // the two consts this function already computes above for its own
-    // valuation-model dispatch.
+    // here must never turn into a whole-page skip.
     let solvencyScaleHtml = '';
     try {
       // ebit comes from hist (fetchHistorySeries()'s /timeseries-derived
       // field), not data (the quoteSummary mapper) -- data.ebit doesn't
       // exist. Same field hist.ebit that the WACC/EBITDA computations
       // above already read.
-      solvencyScaleHtml = buildSolvencyScaleCard({ hist, ebit: hist.ebit, marketCap: data.marketCap, excluded: isBank || isReitTicker });
+      //
+      // isFinancialSector(data.sector), NOT isBank -- per the design spec's
+      // approved exclusion policy ("Banks / insurers / asset managers"),
+      // broader than isBank (isBankOrInsurance()'s narrow bank/insurance-
+      // text + Indian-NBFC-ticker match, used for THIS function's own
+      // valuation-model dispatch -- deliberately untouched here, that
+      // variable still needs its narrower meaning for DDM/Excess-Return
+      // routing). An asset manager's balance sheet is just as structurally
+      // atypical for these ratios as a bank's. Confirmed in peer review.
+      solvencyScaleHtml = buildSolvencyScaleCard({ hist, ebit: hist.ebit, marketCap: data.marketCap, excluded: isFinancialSector(data.sector) || isReitTicker });
     } catch (_) {
       solvencyScaleHtml = '';
     }
