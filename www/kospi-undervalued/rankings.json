@@ -31,7 +31,16 @@
       "marketCap": 3340486574080,
       "operatingMargin": 0.0939,
       "analystTarget": 705000,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 0.88,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 2,
@@ -49,7 +58,16 @@
       "operatingMargin": 0.1843,
       "analystTarget": 543866.7,
       "currency": "KRW",
-      "chaebolGroup": "Hyundai Heavy Industries Group"
+      "chaebolGroup": "Hyundai Heavy Industries Group",
+      "altmanZ": {
+        "score": 2.4,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 9,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 3,
@@ -67,7 +85,16 @@
       "operatingMargin": 0.2443,
       "analystTarget": 111500,
       "currency": "KRW",
-      "chaebolGroup": "Hyundai Heavy Industries Group"
+      "chaebolGroup": "Hyundai Heavy Industries Group",
+      "altmanZ": {
+        "score": 4.64,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 4,
@@ -85,7 +112,16 @@
       "operatingMargin": 0.2317,
       "analystTarget": 126528.57,
       "currency": "KRW",
-      "chaebolGroup": "GS Group"
+      "chaebolGroup": "GS Group",
+      "altmanZ": {
+        "score": 1.94,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 5,
@@ -102,7 +138,16 @@
       "marketCap": 2418270797824,
       "operatingMargin": 0.062,
       "analystTarget": 512529.4,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 3.78,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 6,
@@ -119,7 +164,16 @@
       "marketCap": 631197401088,
       "operatingMargin": -0.004,
       "analystTarget": 195000,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 2.85,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 7,
@@ -136,7 +190,16 @@
       "marketCap": 2933268414464,
       "operatingMargin": 0.1267,
       "analystTarget": 19246.67,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 4.17,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 8,
@@ -153,7 +216,16 @@
       "marketCap": 880161325056,
       "operatingMargin": 0.0389,
       "analystTarget": 102857.14,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 2.7,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 2,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 9,
@@ -170,7 +242,16 @@
       "marketCap": 4715784437760,
       "operatingMargin": 0.1484,
       "analystTarget": 165705.88,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 6.04,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 10,
@@ -187,7 +268,16 @@
       "marketCap": 1915180810240,
       "operatingMargin": 0.0862,
       "analystTarget": 24481.82,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 3.19,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 11,
@@ -204,7 +294,16 @@
       "marketCap": 620252364800,
       "operatingMargin": 0.1562,
       "analystTarget": null,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 7.69,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 12,
@@ -221,7 +320,16 @@
       "marketCap": 649948168192,
       "operatingMargin": 0.2279,
       "analystTarget": null,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 6.62,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 13,
@@ -239,7 +347,16 @@
       "operatingMargin": 0.122,
       "analystTarget": 120000,
       "currency": "KRW",
-      "chaebolGroup": "Hyundai Group"
+      "chaebolGroup": "Hyundai Group",
+      "altmanZ": {
+        "score": 2.03,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 14,
@@ -256,7 +373,16 @@
       "marketCap": 2752153649152,
       "operatingMargin": 0.089,
       "analystTarget": 91375,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 5.37,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 15,
@@ -274,7 +400,16 @@
       "operatingMargin": 0.0841,
       "analystTarget": 99153.84,
       "currency": "KRW",
-      "chaebolGroup": "LG Group"
+      "chaebolGroup": "LG Group",
+      "altmanZ": {
+        "score": 4.3,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 16,
@@ -291,7 +426,16 @@
       "marketCap": 12549546311680,
       "operatingMargin": 0.0959,
       "analystTarget": 73220.91,
-      "currency": "KRW"
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 1.72,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     }
   ]
 }

@@ -31,7 +31,16 @@
       "marketCap": 3827919749120,
       "operatingMargin": 0.1312,
       "analystTarget": 1623.33,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.43,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 2,
@@ -48,7 +57,16 @@
       "marketCap": 2120183971840,
       "operatingMargin": 0.1811,
       "analystTarget": 3727.27,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 7.02,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 3,
@@ -65,7 +83,16 @@
       "marketCap": 230909050880,
       "operatingMargin": 0.1993,
       "analystTarget": 2565,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 3.4,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 4,
@@ -82,7 +109,16 @@
       "marketCap": 1283644194816,
       "operatingMargin": 0.0443,
       "analystTarget": 5252.5,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.13,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 5,
@@ -99,7 +135,16 @@
       "marketCap": 4680908800000,
       "operatingMargin": 0.1278,
       "analystTarget": 3970,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 3.45,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 6,
@@ -116,7 +161,16 @@
       "marketCap": 3302621184000,
       "operatingMargin": 0.0202,
       "analystTarget": 2892,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 1.19,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 2,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 7,
@@ -133,7 +187,16 @@
       "marketCap": 627336282112,
       "operatingMargin": -0.011,
       "analystTarget": 1815.45,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.77,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 8,
@@ -150,7 +213,16 @@
       "marketCap": 2260137410560,
       "operatingMargin": -0.0304,
       "analystTarget": 3010,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 1.25,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 7,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 9,
@@ -167,7 +239,9 @@
       "marketCap": 7270009667584,
       "operatingMargin": 0.2301,
       "analystTarget": 4986.36,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 10,
@@ -184,7 +258,16 @@
       "marketCap": 532240924672,
       "operatingMargin": 0.0607,
       "analystTarget": 1766.67,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.11,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 11,
@@ -201,7 +284,16 @@
       "marketCap": 1197445087232,
       "operatingMargin": 0.1372,
       "analystTarget": 6201.25,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.52,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 12,
@@ -218,7 +310,16 @@
       "marketCap": 2391153836032,
       "operatingMargin": 0.2584,
       "analystTarget": 2922.89,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 6.38,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 2,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 13,
@@ -235,7 +336,16 @@
       "marketCap": 541953064960,
       "operatingMargin": 0.0819,
       "analystTarget": 1255.71,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 4.69,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 14,
@@ -252,7 +362,16 @@
       "marketCap": 977304616960,
       "operatingMargin": 0.0561,
       "analystTarget": 2762.5,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.85,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 15,
@@ -269,7 +388,16 @@
       "marketCap": 3696514826240,
       "operatingMargin": 0.1348,
       "analystTarget": 4725,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 3.03,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 16,
@@ -286,7 +414,16 @@
       "marketCap": 6016296550400,
       "operatingMargin": 0.0717,
       "analystTarget": 6187.5,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 3.45,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 9,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 17,
@@ -303,7 +440,9 @@
       "marketCap": 6782926716928,
       "operatingMargin": 0.1667,
       "analystTarget": 1943,
-      "currency": "JPY"
+      "currency": "JPY",
+      "altmanZ": null,
+      "piotroskiF": null
     }
   ]
 }

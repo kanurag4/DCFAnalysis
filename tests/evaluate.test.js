@@ -26,6 +26,83 @@ test('values a normal industrial via DCF', () => {
   assert.ok(r.terminalValuePct > 0);
 });
 
+// ── Solvency Check (Altman Z-Score + Piotroski F-Score) display columns ────
+// Additive fields on every evaluateStock() result -- the undervalued screens
+// display these transparently (2026-09-16), never affect ranking/qualification.
+
+test('a stock with no Solvency Check history fields gets null altmanZ/piotroskiF (graceful degradation, not a crash)', () => {
+  const r = evaluateStock(dcfStock, params); // dcfStock carries no annual*History fields at all
+  assert.strictEqual(r.altmanZ, null);
+  assert.strictEqual(r.piotroskiF, null);
+});
+
+const solvencyYears = [
+  { date: '2024-12-31', totalAssets: 900e6, currentAssets: 300e6, currentLiabilities: 200e6, totalLiabilities: 400e6, totalDebt: 250e6, netIncome: 50e6, fcf: 100e6, capex: -20e6, shares: 100e6, revenue: 800e6, grossProfit: 300e6, retainedEarnings: 200e6 },
+  { date: '2025-12-31', totalAssets: 950e6, currentAssets: 320e6, currentLiabilities: 190e6, totalLiabilities: 380e6, totalDebt: 230e6, netIncome: 60e6, fcf: 110e6, capex: -22e6, shares: 100e6, revenue: 850e6, grossProfit: 330e6, retainedEarnings: 240e6 },
+  { date: '2026-12-31', totalAssets: 1000e6, currentAssets: 350e6, currentLiabilities: 180e6, totalLiabilities: 360e6, totalDebt: 210e6, netIncome: 70e6, fcf: 120e6, capex: -25e6, shares: 100e6, revenue: 900e6, grossProfit: 370e6, retainedEarnings: 280e6 },
+];
+function historyOf(field) { return solvencyYears.map(y => ({ date: y.date, value: y[field] })); }
+
+const solventStock = {
+  ...dcfStock, ticker: 'EEE.AX', ebit: 150e6,
+  annualNetIncomeHistory: historyOf('netIncome'),
+  annualTotalAssetsHistory: historyOf('totalAssets'),
+  annualFcfHistory: historyOf('fcf'),
+  annualCapexHistory: historyOf('capex'),
+  annualTotalDebtHistory: historyOf('totalDebt'),
+  annualTotalLiabilitiesHistory: historyOf('totalLiabilities'),
+  annualCurrentAssetsHistory: historyOf('currentAssets'),
+  annualCurrentLiabilitiesHistory: historyOf('currentLiabilities'),
+  annualSharesHistory: historyOf('shares'),
+  annualRevenueHistory: historyOf('revenue'),
+  annualGrossProfitHistory: historyOf('grossProfit'),
+  annualRetainedEarningsHistory: historyOf('retainedEarnings'),
+};
+
+test('a normal industrial with 3 aligned fiscal years gets a real Altman Z and Piotroski F (with trend)', () => {
+  const r = evaluateStock(solventStock, params);
+  assert.ok(r.altmanZ && typeof r.altmanZ.score === 'number');
+  assert.strictEqual(r.altmanZ.zone, 'safe'); // Z ≈ 3.66, well above the 2.99 Safe threshold
+  assert.ok(r.piotroskiF && r.piotroskiF.score === 9 && r.piotroskiF.maxScore === 9);
+  assert.strictEqual(r.piotroskiF.trend, 'Stable'); // 9/9 both periods -- flat, not improving/deteriorating
+});
+
+test('only 2 aligned fiscal years still scores Piotroski F but omits the trend field', () => {
+  const twoYearStock = {
+    ...solventStock, ticker: 'FFF.AX',
+    annualNetIncomeHistory: historyOf('netIncome').slice(1),
+    annualTotalAssetsHistory: historyOf('totalAssets').slice(1),
+    annualFcfHistory: historyOf('fcf').slice(1),
+    annualCapexHistory: historyOf('capex').slice(1),
+    annualTotalDebtHistory: historyOf('totalDebt').slice(1),
+    annualTotalLiabilitiesHistory: historyOf('totalLiabilities').slice(1),
+    annualCurrentAssetsHistory: historyOf('currentAssets').slice(1),
+    annualCurrentLiabilitiesHistory: historyOf('currentLiabilities').slice(1),
+    annualSharesHistory: historyOf('shares').slice(1),
+    annualRevenueHistory: historyOf('revenue').slice(1),
+    annualGrossProfitHistory: historyOf('grossProfit').slice(1),
+    annualRetainedEarningsHistory: historyOf('retainedEarnings').slice(1),
+  };
+  const r = evaluateStock(twoYearStock, params);
+  assert.ok(r.piotroskiF && typeof r.piotroskiF.score === 'number');
+  assert.strictEqual(r.piotroskiF.trend, undefined);
+  assert.ok(r.altmanZ && typeof r.altmanZ.score === 'number'); // Altman only ever needs 1 fiscal year
+});
+
+test('a financial-sector stock gets null altmanZ/piotroskiF regardless of history completeness', () => {
+  const financialWithHistory = { ...solventStock, ticker: 'GGG.AX', sector: 'Financial Services', industry: 'Asset Management' };
+  const r = evaluateStock(financialWithHistory, params);
+  assert.strictEqual(r.altmanZ, null);
+  assert.strictEqual(r.piotroskiF, null);
+});
+
+test('a REIT gets null altmanZ/piotroskiF regardless of history completeness', () => {
+  const reitWithHistory = { ...solventStock, ticker: 'HHH.AX', sector: 'Real Estate', industry: 'REIT - Retail' };
+  const r = evaluateStock(reitWithHistory, params);
+  assert.strictEqual(r.altmanZ, null);
+  assert.strictEqual(r.piotroskiF, null);
+});
+
 test('routes a bank to DDM', () => {
   const bank = { ...dcfStock, ticker: 'BBB.AX', sector: 'Financial Services', industry: 'Banks—Diversified', trailingAnnualDividendRate: 0.8, dividendYield: 0.08 };
   const r = evaluateStock(bank, params);

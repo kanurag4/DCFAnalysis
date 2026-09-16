@@ -31,7 +31,9 @@
       "marketCap": 1166421000192,
       "operatingMargin": 0.8553,
       "analystTarget": 491.43,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 2,
@@ -48,7 +50,9 @@
       "marketCap": 637373448192,
       "operatingMargin": 0.4854,
       "analystTarget": 158.4,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 3,
@@ -65,7 +69,9 @@
       "marketCap": 278240067584,
       "operatingMargin": 0.3967,
       "analystTarget": null,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 4,
@@ -82,7 +88,9 @@
       "marketCap": 309630468096,
       "operatingMargin": 0.8244,
       "analystTarget": 587.08,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 5,
@@ -99,7 +107,9 @@
       "marketCap": 612987371520,
       "operatingMargin": 0.151,
       "analystTarget": 458.17,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 6,
@@ -116,7 +126,9 @@
       "marketCap": 1231456567296,
       "operatingMargin": 0.4554,
       "analystTarget": 290.26,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 7,
@@ -133,7 +145,16 @@
       "marketCap": 2627787292672,
       "operatingMargin": 0.2111,
       "analystTarget": 466.56,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 2.58,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 8,
@@ -150,7 +171,9 @@
       "marketCap": 1341801103360,
       "operatingMargin": 0.294,
       "analystTarget": 121.61,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 9,
@@ -167,7 +190,16 @@
       "marketCap": 264197586944,
       "operatingMargin": 0.0645,
       "analystTarget": 498.08,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 3.12,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 10,
@@ -184,7 +216,9 @@
       "marketCap": null,
       "operatingMargin": 0.9685,
       "analystTarget": 429.08,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 11,
@@ -201,7 +235,9 @@
       "marketCap": 1124760813568,
       "operatingMargin": 0.4414,
       "analystTarget": 150.71,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 12,
@@ -218,7 +254,16 @@
       "marketCap": 2435685023744,
       "operatingMargin": 0.5471,
       "analystTarget": 644.4,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 10.22,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 13,
@@ -235,7 +280,9 @@
       "marketCap": 159968788480,
       "operatingMargin": 0.233,
       "analystTarget": 218,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 14,
@@ -252,7 +299,16 @@
       "marketCap": 198905921536,
       "operatingMargin": 0.0523,
       "analystTarget": 360,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 2.89,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 15,
@@ -269,7 +325,9 @@
       "marketCap": 1359545237504,
       "operatingMargin": -8.8768,
       "analystTarget": 196.76,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 16,
@@ -286,7 +344,16 @@
       "marketCap": 430800044032,
       "operatingMargin": 0.24,
       "analystTarget": 317.03,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 8.56,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 17,
@@ -303,7 +370,16 @@
       "marketCap": 184700649472,
       "operatingMargin": 0.3512,
       "analystTarget": null,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 4.63,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 9,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 18,
@@ -320,7 +396,16 @@
       "marketCap": 185984679936,
       "operatingMargin": 0.2478,
       "analystTarget": 220.8,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 11.25,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 19,
@@ -337,7 +422,16 @@
       "marketCap": 1656093147136,
       "operatingMargin": 0.157,
       "analystTarget": 177.75,
-      "currency": "INR"
+      "currency": "INR",
+      "altmanZ": {
+        "score": 3.95,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     }
   ]
 }

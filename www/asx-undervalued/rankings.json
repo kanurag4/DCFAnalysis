@@ -31,7 +31,16 @@
       "marketCap": 5548792320,
       "operatingMargin": 0.0537,
       "analystTarget": 3.22,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 1.37,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 2,
@@ -48,7 +57,16 @@
       "marketCap": 3112225024,
       "operatingMargin": 0.028,
       "analystTarget": 3.38,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 3.2,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 3,
@@ -65,7 +83,16 @@
       "marketCap": 5341083136,
       "operatingMargin": 0.134,
       "analystTarget": 5.46,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 5.7,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 4,
@@ -82,7 +109,9 @@
       "marketCap": 3278863360,
       "operatingMargin": 0.7599,
       "analystTarget": 1.53,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 5,
@@ -99,7 +128,16 @@
       "marketCap": 22646181888,
       "operatingMargin": 0.1613,
       "analystTarget": 44.84,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.56,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 3,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 6,
@@ -116,7 +154,16 @@
       "marketCap": 1232978048,
       "operatingMargin": 0.0946,
       "analystTarget": 8.88,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 10.28,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 7,
@@ -133,7 +180,16 @@
       "marketCap": 5857136128,
       "operatingMargin": 0.433,
       "analystTarget": 8,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 6.89,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 8,
@@ -150,7 +206,9 @@
       "marketCap": 3726660096,
       "operatingMargin": 0,
       "analystTarget": null,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 9,
@@ -167,7 +225,16 @@
       "marketCap": 1196366208,
       "operatingMargin": 0.0869,
       "analystTarget": 9.62,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 1.77,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 10,
@@ -184,7 +251,16 @@
       "marketCap": 51326345216,
       "operatingMargin": 0.2925,
       "analystTarget": 17.3,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 4.78,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 11,
@@ -201,7 +277,16 @@
       "marketCap": 4759563776,
       "operatingMargin": 0.0444,
       "analystTarget": 11.67,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 1.71,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 8,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 12,
@@ -218,7 +303,16 @@
       "marketCap": 2883993856,
       "operatingMargin": 0.0528,
       "analystTarget": 29.45,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 7.17,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 13,
@@ -235,7 +329,16 @@
       "marketCap": 2007573760,
       "operatingMargin": 0.2279,
       "analystTarget": 1.01,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 1.49,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 14,
@@ -252,7 +355,16 @@
       "marketCap": 5195847680,
       "operatingMargin": 0.2319,
       "analystTarget": 4.61,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.16,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 15,
@@ -269,7 +381,9 @@
       "marketCap": 6924984320,
       "operatingMargin": 0.2877,
       "analystTarget": 2.12,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 16,
@@ -286,7 +400,16 @@
       "marketCap": 4841571840,
       "operatingMargin": 0.1474,
       "analystTarget": 7.55,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 6.03,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 17,
@@ -303,7 +426,16 @@
       "marketCap": 1793558144,
       "operatingMargin": 0.0863,
       "analystTarget": 20.2,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 1.99,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 18,
@@ -320,7 +452,9 @@
       "marketCap": 1116741888,
       "operatingMargin": 0.448,
       "analystTarget": 1.49,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 19,
@@ -337,7 +471,16 @@
       "marketCap": 1385883008,
       "operatingMargin": 0.0566,
       "analystTarget": 3.78,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 3.52,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 20,
@@ -354,7 +497,16 @@
       "marketCap": 9183887360,
       "operatingMargin": 0.2766,
       "analystTarget": 163.77,
-      "currency": "AUD"
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.24,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     }
   ]
 }

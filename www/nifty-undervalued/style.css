@@ -62,6 +62,7 @@ main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 .tag.excessreturn { color:#8b5cf6; border-color:#8b5cf6; }
 .pos { color:var(--kv-pass); font-weight:600; }
 .neg { color:var(--kv-fail); font-weight:600; }
+.warn { color:var(--kv-warn); font-weight:600; }
 #rank-table td.fv { color:var(--kv-pass); font-weight:700; font-size:0.95rem; }
 
 /* ── Tool info & FAQ ── */

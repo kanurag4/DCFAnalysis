@@ -181,6 +181,14 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
       operatingMargin: r.operatingMargin != null ? +r.operatingMargin.toFixed(4) : null,
       analystTarget: r.analystTarget != null ? +r.analystTarget.toFixed(2) : null,
       currency: r.currency ?? config.currency,
+      // Display-only Solvency Check fields (Altman Z-Score + Piotroski
+      // F-Score) — see scripts/lib/evaluate.js's computeSolvency(). null for
+      // banks/insurers/REITs (isFinancialSector()/isReit()) or insufficient
+      // fiscal-year history; never affects ranking/qualification above.
+      altmanZ: r.altmanZ ? { score: +r.altmanZ.score.toFixed(2), zone: r.altmanZ.zone } : null,
+      piotroskiF: r.piotroskiF
+        ? { score: r.piotroskiF.score, maxScore: r.piotroskiF.maxScore, ...(r.piotroskiF.trend ? { trend: r.piotroskiF.trend } : {}) }
+        : null,
       ...(r.highLeverage ? { highLeverage: true } : {}),
       ...(chaebolGroup ? { chaebolGroup } : {}),
     };

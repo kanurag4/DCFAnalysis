@@ -4,7 +4,7 @@
 const {
   deriveFcf, deriveMultiYearGrowth, deriveDividendGrowth,
   getMarketBetaFloor, isBankOrInsurance, isFinancialSector, chooseFinancialModel,
-  isUtility, isCyclical, isConglomerate,
+  isUtility, isCyclical, isConglomerate, isReit,
 } = require('../../www/utils.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
@@ -15,9 +15,70 @@ const { normalizeCyclicalFcf, resolveCyclicalMargin } = require('../../www/calc/
 const sectorMarginLookup = require('../../www/sector-margins.json');
 const { applyHoldcoDiscount } = require('../../www/calc/holdcoDiscount.js');
 const { HOLDCO_DISCOUNT } = require('../../www/config.js');
+const { alignFiscalYears } = require('../../www/calc/fiscalYearAlign.js');
+const { altmanZScore } = require('../../www/calc/altmanZ.js');
+const { piotroskiScore, piotroskiTrend } = require('../../www/calc/piotroski.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
+
+function latestSeriesVal(series) {
+  if (!Array.isArray(series) || !series.length) return null;
+  const v = series[series.length - 1]?.value;
+  return (v != null && isFinite(v)) ? v : null;
+}
+
+// Altman Z-Score + Piotroski F-Score, display-only — additive to whichever
+// valuation method evaluateStockCore() picks below, never affects ranking or
+// qualification (a Z-Score qualification filter was discussed and explicitly
+// discarded in favor of just showing both scores transparently). Same
+// isFinancialSector()/isReit() exclusion, same alignFiscalYears() field
+// mapping, and same calc/altmanZ.js + calc/piotroski.js modules
+// ticker-page.js's buildSolvencyScaleCard() and www/evaluate/app.js's
+// computeSolvencyCheck() already use — a fourth consumer of the same Phase-1
+// Solvency Check calc layer, not a new implementation of it.
+function computeSolvency(data) {
+  if (isFinancialSector(data.sector) || isReit(data.sector, data.industry)) {
+    return { altmanZ: null, piotroskiF: null };
+  }
+
+  const years = alignFiscalYears({
+    netIncome: data.annualNetIncomeHistory,
+    totalAssets: data.annualTotalAssetsHistory,
+    fcf: data.annualFcfHistory,
+    capex: data.annualCapexHistory,
+    totalDebt: data.annualTotalDebtHistory,
+    totalLiabilities: data.annualTotalLiabilitiesHistory,
+    currentAssets: data.annualCurrentAssetsHistory,
+    currentLiabilities: data.annualCurrentLiabilitiesHistory,
+    shares: data.annualSharesHistory,
+    revenue: data.annualRevenueHistory,
+    grossProfit: data.annualGrossProfitHistory,
+  });
+
+  const altman = altmanZScore({
+    totalAssets: years[0] ? years[0].totalAssets : null,
+    currentAssets: years[0] ? years[0].currentAssets : null,
+    currentLiabilities: years[0] ? years[0].currentLiabilities : null,
+    retainedEarnings: latestSeriesVal(data.annualRetainedEarningsHistory),
+    ebit: data.ebit,
+    marketCap: data.marketCap,
+    totalLiabilities: years[0] ? years[0].totalLiabilities : null,
+    revenue: years[0] ? years[0].revenue : null,
+  });
+
+  let piotroski = null;
+  let trend = null;
+  if (years.length >= 2) {
+    piotroski = piotroskiScore(years[0], years[1]);
+    if (years.length >= 3) trend = piotroskiTrend(piotroski, piotroskiScore(years[1], years[2]));
+  }
+
+  return {
+    altmanZ: altman.zScore != null ? { score: altman.zScore, zone: altman.zone } : null,
+    piotroskiF: piotroski ? { score: piotroski.totalScore, maxScore: piotroski.maxScore, ...(trend ? { trend } : {}) } : null,
+  };
+}
 
 // `== null` doesn't catch NaN (NaN == null is false in JS) -- a calc engine
 // returning { intrinsicValue: NaN, marginOfSafety: NaN } under some edge
@@ -45,10 +106,12 @@ function evaluateStockCore(data, params) {
   const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(data.ticker));
 
+  const solvency = computeSolvency(data);
   const base = {
     ticker: data.ticker, name: data.name, sector: data.sector,
     snapshotPrice: data.price, currency: data.currency, trailingPE: data.trailingPE,
     marketCap: data.marketCap, operatingMargin: data.operatingMargins, analystTarget: data.targetMeanPrice,
+    altmanZ: solvency.altmanZ, piotroskiF: solvency.piotroskiF,
   };
 
   // Regulated utilities always use Excess Return (rate-base-and-allowed-return
@@ -236,4 +299,8 @@ function evaluateStock(data, params) {
   return { ...result, intrinsic: discounted.result.intrinsicValue, marginOfSafety: discounted.result.marginOfSafety };
 }
 
-module.exports = { evaluateStock };
+// computeSolvency is also exported standalone — scripts/_backfill-solvency-
+// top20.js (a scoped one-off patch for already-published rankings.json rows)
+// calls it directly rather than running the full valuation just to discard
+// everything but these two fields.
+module.exports = { evaluateStock, computeSolvency };

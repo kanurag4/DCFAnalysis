@@ -229,6 +229,52 @@ test('fetchSymbol defaults annualNetIncome/annualStockholdersEquity/annualCashDi
   assert.deepStrictEqual(d.annualDividendsPaidHistory, []);
 });
 
+// ── Solvency Check (Altman Z-Score + Piotroski F-Score) inputs ─────────────
+
+test('fetchSymbol carries the 8 Solvency Check history fields, GBp-scaled for a pence-quoted ticker', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'BP p.l.c.' },
+    financialData: { currentPrice: { raw: 552.5 }, freeCashflow: {}, operatingCashflow: {} },
+    summaryDetail: { currency: 'GBp' }, defaultKeyStatistics: {}, assetProfile: {} }] } };
+  const tsBody = {
+    annualTotalAssets: [{ date: '2026-12-31', value: 200000000000 }],
+    annualCurrentAssets: [{ date: '2026-12-31', value: 50000000000 }],
+    annualCurrentLiabilities: [{ date: '2026-12-31', value: 40000000000 }],
+    annualTotalLiabilitiesNetMinorityInterest: [{ date: '2026-12-31', value: 120000000000 }],
+    annualRetainedEarnings: [{ date: '2026-12-31', value: 30000000000 }],
+    annualTotalDebt: [{ date: '2026-12-31', value: 60000000000 }],
+    annualOrdinarySharesNumber: [{ date: '2026-12-31', value: 8000000000 }],
+    annualCapitalExpenditure: [{ date: '2026-12-31', value: -5000000000 }],
+    annualGrossProfit: [{ date: '2026-12-31', value: 25000000000 }],
+  };
+  const fakeFetch = async (url) => (url.includes('/timeseries/') ? { ok: true, status: 200, json: async () => tsBody } : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('BP.L', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  assert.strictEqual(d.annualTotalAssetsHistory[0].value, 20000000000000);
+  assert.strictEqual(d.annualCurrentAssetsHistory[0].value, 5000000000000);
+  assert.strictEqual(d.annualCurrentLiabilitiesHistory[0].value, 4000000000000);
+  assert.strictEqual(d.annualTotalLiabilitiesHistory[0].value, 12000000000000);
+  assert.strictEqual(d.annualRetainedEarningsHistory[0].value, 3000000000000);
+  assert.strictEqual(d.annualTotalDebtHistory[0].value, 6000000000000);
+  assert.strictEqual(d.annualCapexHistory[0].value, -500000000000);
+  assert.strictEqual(d.annualGrossProfitHistory[0].value, 2500000000000);
+  // Share COUNT, not a monetary value — must NOT be scaled by gbpToPence.
+  assert.strictEqual(d.annualSharesHistory[0].value, 8000000000);
+});
+
+test('fetchSymbol defaults the 8 Solvency Check history fields to empty arrays when /timeseries fails', async () => {
+  const qsBody = { quoteSummary: { result: [{ quoteType: { longName: 'Solo Co' },
+    financialData: { currentPrice: { raw: 5 } },
+    summaryDetail: { currency: 'USD' }, defaultKeyStatistics: {}, assetProfile: {} }] } };
+  const fakeFetch = async (url) => (url.includes('/timeseries/')
+    ? { ok: false, status: 500, json: async () => ({}) }
+    : { ok: true, status: 200, json: async () => qsBody });
+  const d = await fetchSymbol('SOLO', { fetchImpl: fakeFetch, proxyUrl: 'https://x' });
+  for (const field of ['annualTotalAssetsHistory', 'annualCurrentAssetsHistory', 'annualCurrentLiabilitiesHistory',
+    'annualTotalLiabilitiesHistory', 'annualRetainedEarningsHistory', 'annualTotalDebtHistory',
+    'annualSharesHistory', 'annualCapexHistory', 'annualGrossProfitHistory']) {
+    assert.deepStrictEqual(d[field], [], `${field} should default to []`);
+  }
+});
+
 test('fetchSymbol sends no batch-key header when KV_BATCH_KEY is unset (dev-machine runs stay unauthenticated)', async () => {
   let capturedHeaders = 'not-called';
   const fakeFetch = async (url, opts) => {

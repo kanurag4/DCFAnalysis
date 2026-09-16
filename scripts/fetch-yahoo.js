@@ -27,6 +27,14 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     ...mapped,
     annualFcfHistory: [], annualRevenueHistory: [],
     annualNetIncomeHistory: [], annualStockholdersEquityHistory: [], annualDividendsPaidHistory: [],
+    // Solvency Check (Altman Z-Score + Piotroski F-Score) inputs — same 8
+    // fields DCFAnalysis's own ticker-page.js fetchHistorySeries() already
+    // pulls for the per-ticker SEO pages; evaluate.js's isFinancialSector/
+    // isReit-gated computeSolvency() needs them too now the 6 undervalued
+    // screens display both scores.
+    annualTotalAssetsHistory: [], annualCurrentAssetsHistory: [], annualCurrentLiabilitiesHistory: [],
+    annualTotalLiabilitiesHistory: [], annualRetainedEarningsHistory: [], annualTotalDebtHistory: [],
+    annualSharesHistory: [], annualCapexHistory: [], annualGrossProfitHistory: [],
   };
   try {
     const url = `${proxyUrl.replace(/\/$/, '')}/timeseries/${encodeURIComponent(symbol)}`;
@@ -71,6 +79,20 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     const annualStockholdersEquityHistory = scaleTimeseries(Array.isArray(body.annualStockholdersEquity) ? body.annualStockholdersEquity : [], gbpToPence);
     const annualDividendsPaidHistory = scaleTimeseries(Array.isArray(body.annualCashDividendsPaid) ? body.annualCashDividendsPaid : [], gbpToPence);
 
+    // Solvency Check inputs — same field names/scaling convention as
+    // ticker-page.js's fetchHistorySeries(). annualSharesHistory is a share
+    // COUNT, not a monetary value, so it deliberately skips gbpToPence —
+    // same reasoning as dilutedSharesOutstanding above.
+    const annualTotalAssetsHistory = scaleTimeseries(Array.isArray(body.annualTotalAssets) ? body.annualTotalAssets : [], gbpToPence);
+    const annualCurrentAssetsHistory = scaleTimeseries(Array.isArray(body.annualCurrentAssets) ? body.annualCurrentAssets : [], gbpToPence);
+    const annualCurrentLiabilitiesHistory = scaleTimeseries(Array.isArray(body.annualCurrentLiabilities) ? body.annualCurrentLiabilities : [], gbpToPence);
+    const annualTotalLiabilitiesHistory = scaleTimeseries(Array.isArray(body.annualTotalLiabilitiesNetMinorityInterest) ? body.annualTotalLiabilitiesNetMinorityInterest : [], gbpToPence);
+    const annualRetainedEarningsHistory = scaleTimeseries(Array.isArray(body.annualRetainedEarnings) ? body.annualRetainedEarnings : [], gbpToPence);
+    const annualTotalDebtHistory = scaleTimeseries(Array.isArray(body.annualTotalDebt) ? body.annualTotalDebt : [], gbpToPence);
+    const annualSharesHistory = Array.isArray(body.annualOrdinarySharesNumber) ? body.annualOrdinarySharesNumber : [];
+    const annualCapexHistory = scaleTimeseries(Array.isArray(body.annualCapitalExpenditure) ? body.annualCapitalExpenditure : [], gbpToPence);
+    const annualGrossProfitHistory = scaleTimeseries(Array.isArray(body.annualGrossProfit) ? body.annualGrossProfit : [], gbpToPence);
+
     return {
       ...mapped,
       dilutedSharesOutstanding,
@@ -84,6 +106,15 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
       annualNetIncomeHistory,
       annualStockholdersEquityHistory,
       annualDividendsPaidHistory,
+      annualTotalAssetsHistory,
+      annualCurrentAssetsHistory,
+      annualCurrentLiabilitiesHistory,
+      annualTotalLiabilitiesHistory,
+      annualRetainedEarningsHistory,
+      annualTotalDebtHistory,
+      annualSharesHistory,
+      annualCapexHistory,
+      annualGrossProfitHistory,
     };
   } catch (_) {
     return withHistoryDefaults; // enrichment fields stay absent/empty — evaluate.js's existing fallbacks apply

@@ -53,6 +53,14 @@
   function row(r, livePrice, firstSeen) {
     const price = (typeof livePrice === 'number' && livePrice > 0) ? livePrice : r.snapshotPrice;
     const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
+    // Solvency Check (Altman Z-Score + Piotroski F-Score) — display-only,
+    // never affects ranking. null for financials/REITs or insufficient
+    // fiscal-year history (scripts/lib/evaluate.js's computeSolvency()).
+    const zClass = r.altmanZ ? (r.altmanZ.zone === 'safe' ? 'pos' : (r.altmanZ.zone === 'distress' ? 'neg' : 'warn')) : '';
+    const zText = r.altmanZ ? r.altmanZ.score.toFixed(2) : '—';
+    const fBase = r.piotroskiF ? `${r.piotroskiF.score}/${r.piotroskiF.maxScore}` : '—';
+    const fTrend = r.piotroskiF && r.piotroskiF.trend === 'Improving' ? ' <span class="pos">▲</span>'
+      : r.piotroskiF && r.piotroskiF.trend === 'Deteriorating' ? ' <span class="neg">▼</span>' : '';
     // Map from the row's actual currency — do NOT assume "not GBp means EUR".
     // This universe is genuinely mixed: CPG.L and IHG.L are LSE-listed but
     // USD-quoted, and labelling those '€' states a falsehood about the price.
@@ -85,6 +93,8 @@
       <td class="num">${sym}${Number(price).toFixed(2)}</td>
       <td class="num">${sinceListedHtml}</td>
       <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
+      <td class="num ${zClass}">${zText}</td>
+      <td class="num">${fBase}${fTrend}</td>
       <td class="num">${pct(r.wacc)}</td>
       <td class="num">${r.terminalValuePct == null ? '—' : r.terminalValuePct.toFixed(0) + '%'}</td>
       <td class="num">${opMargin}</td>

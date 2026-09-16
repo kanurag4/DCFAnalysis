@@ -31,7 +31,16 @@
       "marketCap": 42716327936,
       "operatingMargin": 0.1289,
       "analystTarget": 36.21,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 1.45,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 2,
@@ -48,7 +57,16 @@
       "marketCap": 27484438528,
       "operatingMargin": 0.0681,
       "analystTarget": 138.93,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.59,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 3,
@@ -65,7 +83,16 @@
       "marketCap": 6738081792,
       "operatingMargin": 0.1421,
       "analystTarget": 13.57,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.19,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 4,
@@ -82,7 +109,16 @@
       "marketCap": 29940656128,
       "operatingMargin": 0.1279,
       "analystTarget": 43.12,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.65,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 5,
@@ -99,7 +135,16 @@
       "marketCap": 20574285824,
       "operatingMargin": 0.1792,
       "analystTarget": 68.35,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 1.95,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 3,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 6,
@@ -116,7 +161,16 @@
       "marketCap": 120978202624,
       "operatingMargin": 0.1196,
       "analystTarget": 637.84,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.44,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 7,
@@ -133,7 +187,16 @@
       "marketCap": 129998356480,
       "operatingMargin": 0.3442,
       "analystTarget": 66.42,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.47,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 8,
@@ -150,7 +213,16 @@
       "marketCap": 157994942464,
       "operatingMargin": 0.2788,
       "analystTarget": 28.88,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.16,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 9,
@@ -167,7 +239,16 @@
       "marketCap": 70300114944,
       "operatingMargin": 0.051,
       "analystTarget": 29.82,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 0.93,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 10,
@@ -184,7 +265,16 @@
       "marketCap": 11067498496,
       "operatingMargin": 0.1523,
       "analystTarget": 120.41,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 9.46,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 11,
@@ -201,7 +291,16 @@
       "marketCap": 18113243136,
       "operatingMargin": 0.3555,
       "analystTarget": 33,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 1.54,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 12,
@@ -218,7 +317,16 @@
       "marketCap": 85935079424,
       "operatingMargin": 0.1764,
       "analystTarget": 405.6,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 5,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 13,
@@ -235,7 +343,16 @@
       "marketCap": 12420340736,
       "operatingMargin": 0.2706,
       "analystTarget": 104.53,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 1.42,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 14,
@@ -252,7 +369,16 @@
       "marketCap": 210273173504,
       "operatingMargin": 0.23,
       "analystTarget": 51.58,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 1.32,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 15,
@@ -269,7 +395,16 @@
       "marketCap": 34824437760,
       "operatingMargin": 0.2312,
       "analystTarget": 205.52,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 4.07,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 16,
@@ -286,7 +421,16 @@
       "marketCap": 16208714752,
       "operatingMargin": 0.1172,
       "analystTarget": 156.6,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.59,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 17,
@@ -303,7 +447,16 @@
       "marketCap": 112536141824,
       "operatingMargin": 0.1696,
       "analystTarget": 183.59,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 4.36,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 18,
@@ -320,7 +473,9 @@
       "marketCap": 64152592384,
       "operatingMargin": 0.2283,
       "analystTarget": 274.77,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 19,
@@ -337,7 +492,16 @@
       "marketCap": 115178938368,
       "operatingMargin": 0.7612,
       "analystTarget": 70,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 4.83,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 20,
@@ -354,7 +518,16 @@
       "marketCap": 26803562496,
       "operatingMargin": 0.4692,
       "analystTarget": 461,
-      "currency": "USD"
+      "currency": "USD",
+      "altmanZ": {
+        "score": 1.67,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     }
   ]
 }

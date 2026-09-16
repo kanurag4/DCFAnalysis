@@ -31,7 +31,16 @@
       "marketCap": 1637903667200,
       "operatingMargin": 0.1218,
       "analystTarget": 5118.24,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 3.81,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 2,
@@ -48,7 +57,13 @@
       "marketCap": 47323365376,
       "operatingMargin": 0.0919,
       "analystTarget": 58.22,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 3,
@@ -65,7 +80,16 @@
       "marketCap": 844145356800,
       "operatingMargin": 0.1447,
       "analystTarget": 1258.51,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 2.86,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 4,
@@ -83,7 +107,13 @@
       "operatingMargin": 0.0515,
       "analystTarget": 72.62,
       "currency": "EUR",
-      "highLeverage": true
+      "highLeverage": true,
+      "altmanZ": null,
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 5,
@@ -100,7 +130,16 @@
       "marketCap": 38971158528,
       "operatingMargin": 0.1046,
       "analystTarget": 89.09,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 1.95,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 6,
@@ -117,7 +156,16 @@
       "marketCap": 859844198400,
       "operatingMargin": 0.223,
       "analystTarget": 1119.94,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 2.99,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 7,
@@ -134,7 +182,13 @@
       "marketCap": 87770521600,
       "operatingMargin": 0.2103,
       "analystTarget": 94.06,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 8,
@@ -151,7 +205,9 @@
       "marketCap": 56586301440,
       "operatingMargin": 0.4359,
       "analystTarget": 20.76,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 9,
@@ -168,7 +224,9 @@
       "marketCap": 90306043904,
       "operatingMargin": 0.1198,
       "analystTarget": 51.93,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 10,
@@ -185,7 +243,9 @@
       "marketCap": 444512153600,
       "operatingMargin": 0.158,
       "analystTarget": 242.07,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 11,
@@ -202,7 +262,9 @@
       "marketCap": 63335002112,
       "operatingMargin": 0.1733,
       "analystTarget": 549.78,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null
     },
     {
       "rank": 12,
@@ -219,7 +281,16 @@
       "marketCap": 5087219200,
       "operatingMargin": 0.4487,
       "analystTarget": 106.07,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 7.01,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 13,
@@ -236,7 +307,16 @@
       "marketCap": 1111129600000,
       "operatingMargin": 0.179,
       "analystTarget": 1076.33,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 1.71,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 14,
@@ -253,7 +333,16 @@
       "marketCap": 3172143513600,
       "operatingMargin": 0.1819,
       "analystTarget": 6239.05,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 3.39,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 15,
@@ -270,7 +359,16 @@
       "marketCap": 132285915136,
       "operatingMargin": 0.2734,
       "analystTarget": 81.48,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 1.45,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 16,
@@ -287,7 +385,13 @@
       "marketCap": 26596452352,
       "operatingMargin": 0.234,
       "analystTarget": 23.71,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 17,
@@ -304,7 +408,16 @@
       "marketCap": 39534518272,
       "operatingMargin": 0.133,
       "analystTarget": 79.93,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 2.26,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      }
     },
     {
       "rank": 18,
@@ -321,7 +434,16 @@
       "marketCap": 67157864448,
       "operatingMargin": 0.1537,
       "analystTarget": 242.7,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 2.33,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Stable"
+      }
     },
     {
       "rank": 19,
@@ -338,7 +460,16 @@
       "marketCap": 68998627328,
       "operatingMargin": 0.1066,
       "analystTarget": 25.54,
-      "currency": "EUR"
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 1.68,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     },
     {
       "rank": 20,
@@ -355,7 +486,16 @@
       "marketCap": 2975455232000,
       "operatingMargin": 0.0778,
       "analystTarget": 120.42,
-      "currency": "GBp"
+      "currency": "GBp",
+      "altmanZ": {
+        "score": -0.69,
+        "zone": "distress"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      }
     }
   ],
   "fxRates": {
