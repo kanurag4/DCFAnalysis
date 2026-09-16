@@ -1,13 +1,21 @@
 {
-  "asOf": "2026-09-04",
-  "source": "https://assets.globalxetfs.com/funds/holdings/dtcr_full-holdings_20260904.csv",
-  "fetchedAt": "2026-09-07T10:55:53.468Z",
+  "asOf": "2026-09-15",
+  "source": "https://assets.globalxetfs.com/funds/holdings/dtcr_full-holdings_20260915.csv",
+  "fetchedAt": "2026-09-16T09:30:16.295Z",
   "rows": [
     {
-      "yahoo": "DLR",
-      "raw": "DLR",
-      "name": "DIGITAL REALTY TRUST INC",
-      "weight": 0.1284,
+      "yahoo": "1686.HK",
+      "raw": "1686 HK",
+      "name": "SUNEVISION HOLDINGS",
+      "weight": 0.0066,
+      "country": "Hong Kong",
+      "sector": null
+    },
+    {
+      "yahoo": "WYFI",
+      "raw": "WYFI",
+      "name": "WHITEFIBER INC",
+      "weight": 0.0026,
       "country": "United States",
       "sector": null
     },
@@ -15,7 +23,15 @@
       "yahoo": "AMT",
       "raw": "AMT",
       "name": "AMERICAN TOWER CORP",
-      "weight": 0.1251,
+      "weight": 0.1308,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "DLR",
+      "raw": "DLR",
+      "name": "DIGITAL REALTY TRUST INC",
+      "weight": 0.1264,
       "country": "United States",
       "sector": null
     },
@@ -23,7 +39,7 @@
       "yahoo": "EQIX",
       "raw": "EQIX",
       "name": "EQUINIX INC",
-      "weight": 0.1216,
+      "weight": 0.1222,
       "country": "United States",
       "sector": null
     },
@@ -31,7 +47,7 @@
       "yahoo": "CCI",
       "raw": "CCI",
       "name": "CROWN CASTLE INC",
-      "weight": 0.0859,
+      "weight": 0.0858,
       "country": "United States",
       "sector": null
     },
@@ -44,18 +60,10 @@
       "sector": null
     },
     {
-      "yahoo": "NXT.AX",
-      "raw": "NXT AU",
-      "name": "NEXTDC LTD",
-      "weight": 0.0431,
-      "country": "Australia",
-      "sector": null
-    },
-    {
       "yahoo": "KDCREIT.SI",
       "raw": "KDCREIT SP",
       "name": "KEPPEL DC REIT",
-      "weight": 0.043,
+      "weight": 0.0433,
       "country": "Singapore",
       "sector": null
     },
@@ -63,15 +71,23 @@
       "yahoo": "GDS",
       "raw": "GDS",
       "name": "GDS HOLDINGS LTD - ADR",
-      "weight": 0.042300000000000004,
+      "weight": 0.0424,
       "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "NXT.AX",
+      "raw": "NXT AU",
+      "name": "NEXTDC LTD",
+      "weight": 0.038599999999999995,
+      "country": "Australia",
       "sector": null
     },
     {
       "yahoo": "APLD",
       "raw": "APLD",
       "name": "APPLIED DIGITAL CORP",
-      "weight": 0.0409,
+      "weight": 0.0375,
       "country": "United States",
       "sector": null
     },
@@ -79,7 +95,7 @@
       "yahoo": "UNIT",
       "raw": "UNIT",
       "name": "UNITI GROUP INC",
-      "weight": 0.0359,
+      "weight": 0.035699999999999996,
       "country": "United States",
       "sector": null
     },
@@ -87,7 +103,7 @@
       "yahoo": "SMCI",
       "raw": "SMCI",
       "name": "SUPER MICRO COMPUTER INC",
-      "weight": 0.0294,
+      "weight": 0.0274,
       "country": "United States",
       "sector": null
     },
@@ -95,15 +111,15 @@
       "yahoo": "VNET",
       "raw": "VNET",
       "name": "VNET GROUP INCORPORATION",
-      "weight": 0.026600000000000002,
+      "weight": 0.025699999999999997,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "MU",
-      "raw": "MU",
-      "name": "MICRON TECHNOLOGY INC",
-      "weight": 0.0225,
+      "yahoo": "HPE",
+      "raw": "HPE",
+      "name": "HEWLETT PACKARD ENTERPRISE",
+      "weight": 0.024399999999999998,
       "country": "United States",
       "sector": null
     },
@@ -111,15 +127,23 @@
       "yahoo": "0788.HK",
       "raw": "788 HK",
       "name": "CHINA TOWER CORP LTD-H",
-      "weight": 0.0222,
+      "weight": 0.022799999999999997,
       "country": "Hong Kong",
       "sector": null
     },
     {
-      "yahoo": "HPE",
-      "raw": "HPE",
-      "name": "HEWLETT PACKARD ENTERPRISE",
-      "weight": 0.0219,
+      "yahoo": "MRVL",
+      "raw": "MRVL",
+      "name": "MARVELL TECHNOLOGY INC",
+      "weight": 0.0222,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "MU",
+      "raw": "MU",
+      "name": "MICRON TECHNOLOGY INC",
+      "weight": 0.0212,
       "country": "United States",
       "sector": null
     },
@@ -127,15 +151,7 @@
       "yahoo": "NVDA",
       "raw": "NVDA",
       "name": "NVIDIA CORP",
-      "weight": 0.0217,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "MRVL",
-      "raw": "MRVL",
-      "name": "MARVELL TECHNOLOGY INC",
-      "weight": 0.0217,
+      "weight": 0.0206,
       "country": "United States",
       "sector": null
     },
@@ -143,31 +159,23 @@
       "yahoo": "2330.TW",
       "raw": "2330 TT",
       "name": "TAIWAN SEMICONDUCTOR MANUFAC",
-      "weight": 0.0202,
+      "weight": 0.0204,
       "country": "Taiwan",
-      "sector": null
-    },
-    {
-      "yahoo": "INTC",
-      "raw": "INTC",
-      "name": "INTEL CORP",
-      "weight": 0.018600000000000002,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "AVGO",
-      "raw": "AVGO",
-      "name": "BROADCOM INC",
-      "weight": 0.0181,
-      "country": "United States",
       "sector": null
     },
     {
       "yahoo": "AMD",
       "raw": "AMD",
       "name": "ADVANCED MICRO DEVICES",
-      "weight": 0.0181,
+      "weight": 0.0197,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "INTC",
+      "raw": "INTC",
+      "name": "INTEL CORP",
+      "weight": 0.0195,
       "country": "United States",
       "sector": null
     },
@@ -175,31 +183,23 @@
       "yahoo": "000660.KS",
       "raw": "000660 KS",
       "name": "SK HYNIX INC",
-      "weight": 0.0174,
+      "weight": 0.0183,
       "country": "South Korea",
+      "sector": null
+    },
+    {
+      "yahoo": "AVGO",
+      "raw": "AVGO",
+      "name": "BROADCOM INC",
+      "weight": 0.0178,
+      "country": "United States",
       "sector": null
     },
     {
       "yahoo": "MCHP",
       "raw": "MCHP",
       "name": "MICROCHIP TECHNOLOGY INC",
-      "weight": 0.0172,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "1686.HK",
-      "raw": "1686 HK",
-      "name": "SUNEVISION HOLDINGS",
-      "weight": 0.0067,
-      "country": "Hong Kong",
-      "sector": null
-    },
-    {
-      "yahoo": "WYFI",
-      "raw": "WYFI",
-      "name": "WHITEFIBER INC",
-      "weight": 0.0029,
+      "weight": 0.0171,
       "country": "United States",
       "sector": null
     }
