@@ -21,7 +21,7 @@ const config = {
   fetchRf: null,
   rfLabel: 'KOR RF',
   topN: 20,
-  maxMargin: 0.8,
+  maxMargin: 1.0,
   // Chaebol-affiliate annotation (additive, not exclusionary — see run-screen.js
   // and www/kospi-undervalued/app.js). Seeded from names confirmed during the
   // 2026-07-18 exploratory research pass (docs/japan-korea-market-research.md);

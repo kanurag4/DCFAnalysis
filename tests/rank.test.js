@@ -56,9 +56,37 @@ test('funnel buckets are mutually exclusive and sum to total', () => {
     unvaluable: 1,   // G.AX excluded
     overvalued: 1,   // D.AX MoS -0.1
     capped: 2,       // C.AX (2.0) + E.AX (3.0) > 1.5 — cap checked before proxy
+    distressZone: 0, // none of these fixtures carry an altmanZ field at all
     proxyDropped: 1, // H.AX proxy, in-cap
     kept: 5,         // A.AX, B.AX, F.AX, I.AX, J.AX
   });
   assert.strictEqual(
-    f.unvaluable + f.overvalued + f.capped + f.proxyDropped + f.kept, f.evaluated);
+    f.unvaluable + f.overvalued + f.capped + f.distressZone + f.proxyDropped + f.kept, f.evaluated);
+});
+
+// Altman Z-Score solvency floor (added 2026-09-17): only a CONFIRMED Distress
+// Zone score (zone === 'distress') drops a row. A null altmanZ -- exempt
+// sectors (banks/insurers/asset managers/REITs) or insufficient
+// balance-sheet history -- is NOT treated as a fail.
+const solvencyRows = [
+  { ticker: 'K.AX', method: 'DCF', fcfMethod: 'reported', intrinsic: 20, snapshotPrice: 10, marginOfSafety: 1.0, altmanZ: { score: 1.2, zone: 'distress' } }, // dropped: confirmed distress
+  { ticker: 'L.AX', method: 'DCF', fcfMethod: 'reported', intrinsic: 20, snapshotPrice: 10, marginOfSafety: 1.0, altmanZ: { score: 2.5, zone: 'grey' } },     // kept: grey zone is above the floor
+  { ticker: 'M.AX', method: 'DCF', fcfMethod: 'reported', intrinsic: 20, snapshotPrice: 10, marginOfSafety: 1.0, altmanZ: { score: 4.0, zone: 'safe' } },     // kept: safe zone
+  { ticker: 'N.AX', method: 'DCF', fcfMethod: 'reported', intrinsic: 20, snapshotPrice: 10, marginOfSafety: 1.0, altmanZ: null },                             // kept: exempt (bank/insurer/REIT/no history)
+];
+
+test('a confirmed Altman Z Distress Zone score drops the row', () => {
+  const out = rankRows(solvencyRows, { topN: 10, maxMargin: 1.5 });
+  assert.deepStrictEqual(out.map(r => r.ticker), ['L.AX', 'M.AX', 'N.AX']);
+});
+
+test('null altmanZ (exempt sector or insufficient history) is not treated as a fail', () => {
+  const out = rankRows(solvencyRows, { topN: 10, maxMargin: 1.5 });
+  assert.ok(out.some(r => r.ticker === 'N.AX'), 'null-altmanZ row must not be dropped');
+});
+
+test('distressZone funnel bucket counts only confirmed Distress Zone rows', () => {
+  const f = rankFunnel(solvencyRows, { maxMargin: 1.5 });
+  assert.strictEqual(f.distressZone, 1);
+  assert.strictEqual(f.kept, 3);
 });

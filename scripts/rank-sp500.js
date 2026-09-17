@@ -17,7 +17,7 @@ const config = {
   fetchRf: fetchUsRf,
   rfLabel: 'US RF',
   topN: 20,
-  maxMargin: 0.8,
+  maxMargin: 1.0,
   // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
   // Moved to scripts/blacklist-sp500.json (2026-08-01) so the admin console's "Exclude &
   // re-run" action can append to it mechanically — see each entry's `reason` there.

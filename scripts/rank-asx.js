@@ -17,7 +17,7 @@ const config = {
   fetchRf: fetchAusRf,
   rfLabel: 'AUS RF',
   topN: 20,
-  maxMargin: 0.8,          // drop > 80% margins — the most assumption-fragile valuations
+  maxMargin: 1.0,          // drop > 100% margins — the most assumption-fragile valuations
   // Manually curated exclusions — structurally misleading FCF/valuation for the DCF model.
   // Moved to scripts/blacklist-asx.json (2026-08-01) so the admin console's "Exclude &
   // re-run" action can append to it mechanically — see each entry's `reason` there.

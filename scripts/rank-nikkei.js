@@ -26,7 +26,7 @@ const config = {
   fetchRf: null,
   rfLabel: 'JPN RF',
   topN: 20,
-  maxMargin: 0.8,
+  maxMargin: 1.0,
   // Moved to scripts/blacklist-nikkei.json (2026-08-01) — see rank-asx.js's comment.
   blacklist: blacklistEntries.map(e => e.ticker),
   startingValue: 1000000,   // ¥1,000,000 — the natural round local figure, same real-value
