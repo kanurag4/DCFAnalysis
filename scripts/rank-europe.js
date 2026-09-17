@@ -26,7 +26,7 @@ const config = {
   // which are currency-agnostic because margin of safety is a ratio.
   fetchFx: fetchEurFxRates,
   topN: 20,
-  maxMargin: 0.8,
+  maxMargin: 1.0,
   blacklist: blacklistEntries.map(e => e.ticker),
   indexTicker: '^STOXX',        // STOXX Europe 600 — verified resolving via the Worker (2026-08-03)
   indexName: 'STOXX Europe 600',

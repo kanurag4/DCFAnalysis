@@ -28,15 +28,21 @@ function latestSeriesVal(series) {
   return (v != null && isFinite(v)) ? v : null;
 }
 
-// Altman Z-Score + Piotroski F-Score, display-only — additive to whichever
-// valuation method evaluateStockCore() picks below, never affects ranking or
-// qualification (a Z-Score qualification filter was discussed and explicitly
-// discarded in favor of just showing both scores transparently). Same
-// isFinancialSector()/isReit() exclusion, same alignFiscalYears() field
-// mapping, and same calc/altmanZ.js + calc/piotroski.js modules
-// ticker-page.js's buildSolvencyScaleCard() and www/evaluate/app.js's
-// computeSolvencyCheck() already use — a fourth consumer of the same Phase-1
-// Solvency Check calc layer, not a new implementation of it.
+// Altman Z-Score + Piotroski F-Score, computed here for every row.
+// Piotroski F-Score is display-only (never gates ranking/qualification).
+// Altman Z-Score IS a qualification input as of 2026-09-17 — scripts/lib/
+// rank.js's passesSolvencyFloor() drops any row with a CONFIRMED Distress
+// Zone score (a null score here, from isFinancialSector()/isReit() below or
+// insufficient history, is exempted, not treated as a fail). This reverses
+// an earlier decision ("a Z-Score qualification filter was discussed and
+// explicitly discarded in favor of just showing both scores transparently")
+// after a post-ship spot-check found 20-30% of top-20 rows landing in
+// Distress Zone despite being flagged undervalued. Same isFinancialSector()/
+// isReit() exclusion, same alignFiscalYears() field mapping, and same
+// calc/altmanZ.js + calc/piotroski.js modules ticker-page.js's
+// buildSolvencyScaleCard() and www/evaluate/app.js's computeSolvencyCheck()
+// already use — a fourth consumer of the same Phase-1 Solvency Check calc
+// layer, not a new implementation of it.
 function computeSolvency(data) {
   if (isFinancialSector(data.sector) || isReit(data.sector, data.industry)) {
     return { altmanZ: null, piotroskiF: null };

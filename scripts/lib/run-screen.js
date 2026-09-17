@@ -154,6 +154,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
     `\n        − ${f.unvaluable} unvaluable (no/neg FCF, neg equity, bank w/o dividend)` +
     `\n        − ${f.overvalued} overvalued (price ≥ intrinsic)` +
     `\n        − ${f.capped} margin > ${capPct}% (likely one-off-inflated FCF)` +
+    `\n        − ${f.distressZone} Altman Z Distress Zone (<1.81)` +
     `\n        − ${f.proxyDropped} rough proxy-FCF (no reported FCF or CapEx)` +
     `\n        = ${f.kept} qualified → showing top ${ranked.length} (cap ${topN})`
   );
@@ -181,10 +182,12 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
       operatingMargin: r.operatingMargin != null ? +r.operatingMargin.toFixed(4) : null,
       analystTarget: r.analystTarget != null ? +r.analystTarget.toFixed(2) : null,
       currency: r.currency ?? config.currency,
-      // Display-only Solvency Check fields (Altman Z-Score + Piotroski
-      // F-Score) — see scripts/lib/evaluate.js's computeSolvency(). null for
-      // banks/insurers/REITs (isFinancialSector()/isReit()) or insufficient
-      // fiscal-year history; never affects ranking/qualification above.
+      // Solvency Check fields (Altman Z-Score + Piotroski F-Score) — see
+      // scripts/lib/evaluate.js's computeSolvency(). null for banks/insurers/
+      // REITs (isFinancialSector()/isReit()) or insufficient fiscal-year
+      // history. Piotroski F-Score is display-only; Altman Z-Score already
+      // fed rank.js's passesSolvencyFloor() qualification check above (a
+      // null score there is exempted, not treated as a fail).
       altmanZ: r.altmanZ ? { score: +r.altmanZ.score.toFixed(2), zone: r.altmanZ.zone } : null,
       piotroskiF: r.piotroskiF
         ? { score: r.piotroskiF.score, maxScore: r.piotroskiF.maxScore, ...(r.piotroskiF.trend ? { trend: r.piotroskiF.trend } : {}) }
@@ -205,6 +208,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
       unvaluable: f.unvaluable,
       overvalued: f.overvalued,
       marginOverCap: f.capped,
+      distressZone: f.distressZone,
       proxyFcf: f.proxyDropped,
     },
   };

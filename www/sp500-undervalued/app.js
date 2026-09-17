@@ -38,6 +38,7 @@
     if (d.unvaluable) parts.push(`${d.unvaluable} unvaluable`);
     if (d.proxyFcf) parts.push(`${d.proxyFcf} with rough cash-flow data`);
     if (d.marginOverCap) parts.push(`${d.marginOverCap} above the ${capPct}% margin cap`);
+    if (d.distressZone) parts.push(`${d.distressZone} in Altman Z Distress Zone`);
     if (d.fetchFailed) parts.push(`${d.fetchFailed} with no data`);
     const dropText = parts.length ? ` Screened out: ${parts.join(', ')}.` : '';
     el.innerHTML = `From ${s.tickers} ${s.universe || 'S&P 500'} names, <strong>${s.qualified} qualified</strong> this week` +
