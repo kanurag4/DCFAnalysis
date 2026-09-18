@@ -452,5 +452,37 @@
     "exitDate": "2026-09-11",
     "exitPrice": 6.57,
     "dollarPnl": 17.67
+  },
+  {
+    "ticker": "EDV.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 3.26,
+    "exitDate": "2026-09-18",
+    "exitPrice": 2.9,
+    "dollarPnl": -33.43
+  },
+  {
+    "ticker": "PXA.AX",
+    "entryDate": "2026-09-11",
+    "entryPrice": 6.8,
+    "exitDate": "2026-09-18",
+    "exitPrice": 6.89,
+    "dollarPnl": 7.2
+  },
+  {
+    "ticker": "WOR.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 9.8,
+    "exitDate": "2026-09-18",
+    "exitPrice": 9.82,
+    "dollarPnl": 3.34
+  },
+  {
+    "ticker": "BPT.AX",
+    "entryDate": "2026-09-11",
+    "entryPrice": 0.88,
+    "exitDate": "2026-09-18",
+    "exitPrice": 0.87,
+    "dollarPnl": -6.18
   }
 ]
