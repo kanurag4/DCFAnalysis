@@ -42,6 +42,11 @@ const config = {
     // the shared "Hyundai" branding. Don't merge these labels.
     '017800.KS': 'Hyundai Group',        // Hyundai Elevator, added 2026-09-05
     '064400.KS': 'LG Group',             // LG CNS, added 2026-09-05
+    // Hyundai Motor Group (Hyundai Motor/Kia's chaebol) -- a 3rd, distinct
+    // "Hyundai" label from the two above (Hyundai Heavy Industries Group /
+    // HD Hyundai's shipbuilding group, and Hyundai Group / Hyundai Elevator's
+    // group). Mobis is the group's auto-parts/component arm. Don't merge.
+    '012330.KS': 'Hyundai Motor Group',  // Hyundai Mobis, added 2026-09-18
   },
   // Moved to scripts/blacklist-kospi.json (2026-08-01) — see rank-asx.js's comment.
   blacklist: blacklistEntries.map(e => e.ticker),
