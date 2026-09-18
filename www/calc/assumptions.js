@@ -81,7 +81,7 @@
 // (ETF price != yield%). This is a live, fast-moving event as of this writing --
 // re-verify sooner than the usual cadence if the selloff continues. See
 // docs/risk-free-rates.md.
-const FALLBACK_RF = { us: 0.0494, aus: 0.0525, ind: 0.0515, kor: 0.0412, jpn: 0.0236, uk: 0.0530, eu: 0.0344, hk: 0.0365, cn: 0.0108 };
+const FALLBACK_RF = { us: 0.0501, aus: 0.0532, ind: 0.0518, kor: 0.0399, jpn: 0.0240, uk: 0.0530, eu: 0.0351, hk: 0.0365, cn: 0.0108 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -97,15 +97,15 @@ const FALLBACK_RF = { us: 0.0494, aus: 0.0525, ind: 0.0515, kor: 0.0412, jpn: 0.
 // field also doubles as "does the live path even work" documentation until
 // a replacement is found (see docs/TODO.md's P6).
 const FALLBACK_RF_META = {
-  us:  { asOf: '2026-09-11', source: 'Yahoo ^TNX live pull via the Worker /history endpoint -- Sept 10 close 4.944%, part of a global bond selloff (Bloomberg: "cusp of 5%")', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
-  aus: { asOf: '2026-09-11', source: 'Bloomberg/TradingEconomics, AU 10yr govt bond 5.25% (highest since 2011, oil-driven global selloff)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: '2026-09-11', source: 'raw G-Sec crossed 7.02% (highest in 3+ months, oil/global-yield driven) minus Jan-2026 Damodaran spread 1.87%', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
-  kor: { asOf: '2026-09-11', source: 'raw yield closed 4.54% (highest since Oct 2022) minus Jan-2026 Damodaran spread 0.42%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  jpn: { asOf: '2026-09-04', source: 'raw JGB yield 2.96% (Sept 4) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: '2026-09-11', source: 'raw gilt yield 5.295% (Sept 10, 19-year high on oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  eu:  { asOf: '2026-09-11', source: 'raw German bund yield 3.44% (Sept 10, highest since April 2011)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58%', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  cn:  { asOf: '2026-09-04', source: 'raw yield 1.68% (Sept 1) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  us:  { asOf: '2026-09-18', source: 'Yahoo ^TNX live pull via the Worker /history endpoint -- 5.006% close, still near the cusp-of-5% global selloff level', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
+  aus: { asOf: '2026-09-17', source: 'TradingEconomics, AU 10yr govt bond 5.32% (Sept 17, highest since mid-2011, selloff continuing)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  ind: { asOf: '2026-09-17', source: 'raw G-Sec 7.05% (Sept 17) minus Jan-2026 Damodaran spread 1.87%', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-09-18', source: 'raw yield 4.413% (eased back from the 4.54% selloff peak) minus Jan-2026 Damodaran spread 0.42%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-09-17', source: 'raw JGB yield 3.00% (Sept 17, near highest since Sept 1996, ahead of an expected BOJ hike) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-09-11', source: 'raw gilt yield 5.295% (Sept 10, 19-year high on oil-driven global selloff) -- re-checked 09-18, still the latest available figure, no change', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  eu:  { asOf: '2026-09-17', source: 'raw German bund yield 3.51% (Sept 17, continuing the oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58% -- re-checked 09-18, no trustworthy current figure found (search surfaced only a stale June reading)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  cn:  { asOf: '2026-09-18', source: 'raw yield 1.68% (Sept 18, unchanged from Sept 1) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
 const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };
