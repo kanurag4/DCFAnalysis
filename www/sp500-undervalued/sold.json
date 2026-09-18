@@ -657,5 +657,53 @@
     "exitDate": "2026-09-11",
     "exitPrice": 234.57,
     "dollarPnl": -30.44
+  },
+  {
+    "ticker": "KDP",
+    "entryDate": "2026-09-11",
+    "entryPrice": 31.39,
+    "exitDate": "2026-09-18",
+    "exitPrice": 30.96,
+    "dollarPnl": -7.99
+  },
+  {
+    "ticker": "WBD",
+    "entryDate": "2026-08-15",
+    "entryPrice": 27.99,
+    "exitDate": "2026-09-18",
+    "exitPrice": 27.8,
+    "dollarPnl": -4.99
+  },
+  {
+    "ticker": "GEN",
+    "entryDate": "2026-09-04",
+    "entryPrice": 30.65,
+    "exitDate": "2026-09-18",
+    "exitPrice": 29.01,
+    "dollarPnl": -24.09
+  },
+  {
+    "ticker": "GDDY",
+    "entryDate": "2026-09-04",
+    "entryPrice": 101.31,
+    "exitDate": "2026-09-18",
+    "exitPrice": 97.46,
+    "dollarPnl": -3.63
+  },
+  {
+    "ticker": "VZ",
+    "entryDate": "2026-08-07",
+    "entryPrice": 47.06,
+    "exitDate": "2026-09-18",
+    "exitPrice": 48.09,
+    "dollarPnl": -29.03
+  },
+  {
+    "ticker": "CPAY",
+    "entryDate": "2026-09-11",
+    "entryPrice": 408.22,
+    "exitDate": "2026-09-18",
+    "exitPrice": 397.76,
+    "dollarPnl": -14.94
   }
 ]
