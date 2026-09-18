@@ -47,6 +47,15 @@
   </header>
 
   <main>
+    <section class="methodology-update">
+      <p><strong>📐 Screening rules updated (17 Sep 2026):</strong> the plausible margin-of-safety
+      cap rose from 80% to 100%, and a new <strong>Solvency Floor</strong> rule now excludes any
+      stock with a confirmed Altman Z-Score in the Distress Zone. Some stocks may have newly
+      qualified or dropped off this week's list as a result — see
+      <strong>"How a stock makes this list"</strong> below for the full six rules, or the FAQ for
+      why we made the change.</p>
+    </section>
+
     <section class="rules-card">
       <details class="rules-details">
         <summary class="rules-title">How a stock makes this list</summary>
@@ -142,6 +151,8 @@
       </div>
       <div class="tool-faq">
         <h2>Frequently asked questions</h2>
+        <details class="faq-item"><summary>Why did the screening rules change?</summary><p>Two fixes, made 17 Sep 2026. First, the margin-of-safety cap was raised from 80% to 100% — the old cap was excluding some genuinely undervalued stocks that just happened to sit slightly above the old threshold. Second, we added a <strong>Solvency Floor</strong>: an audit of this screen found 20–30% of top-ranked stocks scoring in Altman Z-Score's <em>Distress Zone</em> (a bankruptcy-risk signal) despite looking "undervalued" — a stock can be cheap because it's genuinely mispriced, or cheap because the market has correctly priced in financial distress the DCF math doesn't see. The Solvency Floor now excludes the second case wherever an Altman Z-Score can be computed.</p></details>
+        <details class="faq-item"><summary>What is the Altman Z-Score?</summary><p>A financial-soundness formula that combines five balance-sheet and earnings ratios into one number to gauge bankruptcy risk — it's a solvency check, not a valuation. Below 1.81 is the "Distress Zone", 1.81–2.99 is a "Grey Zone", above 2.99 is "Safe". It's shown as its own column in the table above and is what the Solvency Floor rule is based on. See <a href="https://kashvector.com/glossary/altman-z-score/">the full glossary entry</a> for the formula and how to read it.</p></details>
         <details class="faq-item"><summary>Is this a buy list?</summary><p>No. It's a starting point for research. A DCF says what a stock is worth <em>if</em> a set of assumptions hold — and small changes in those assumptions move the answer a lot. Treat it as a screen, not advice.</p></details>
         <details class="faq-item"><summary>How often is it updated?</summary><p>Roughly weekly. The "as at" date at the top shows when the snapshot was taken. The current price shown updates live each time you open the page.</p></details>
         <details class="faq-item"><summary>Why are some stocks valued with DDM or Excess Return instead of DCF?</summary><p>Banks and insurers have cash flows (deposits, reserves) that aren't owner earnings, so DCF overstates them. Most are valued with a Dividend Discount Model (labelled DDM). Ones that retain most of their earnings instead of paying them out — common among fast-growing lenders — are valued with an Excess Return Model instead (labelled ExcessReturn), since DDM would understate the value created by reinvesting the rest.</p></details>
