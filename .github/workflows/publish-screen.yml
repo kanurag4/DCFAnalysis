@@ -111,14 +111,27 @@ jobs:
             cp "dcf/www/$OUTDIR/$f" "kv/www/dcf/$OUTDIR/$f"
           done
 
+      # Derives the market's meta description (top-3 names + as-at date) and
+      # its www/sitemap.xml <lastmod> from the rankings.json just copied above
+      # -- see scripts/update-undervalued-meta.js in stock-evaluator for the
+      # full rationale. Runs against the "kv" (stock-evaluator) checkout, not
+      # dcf, since that's the only place both rankings.json and index.html/
+      # sitemap.xml exist together. Touches exactly index.html + sitemap.xml,
+      # nothing else -- both explicitly allowed by the assert step below.
+      - name: Regenerate meta description + sitemap lastmod for this market
+        working-directory: kv
+        env:
+          OUTDIR: ${{ steps.market.outputs.outdir }}
+        run: node scripts/update-undervalued-meta.js "$OUTDIR"
+
       - name: Assert only expected files changed (and at least one did)
         working-directory: kv
         env:
           OUTDIR: ${{ steps.market.outputs.outdir }}
         run: |
-          CHANGED=$(git status --porcelain -- www/dcf)
+          CHANGED=$(git status --porcelain -- www/dcf www/sitemap.xml)
           echo "$CHANGED"
-          UNEXPECTED=$(echo "$CHANGED" | grep -vE "www/dcf/$OUTDIR/(rankings|first-seen|sold|portfolio-value|portfolio-history)\.json\$" || true)
+          UNEXPECTED=$(echo "$CHANGED" | grep -vE "www/dcf/$OUTDIR/(rankings|first-seen|sold|portfolio-value|portfolio-history)\.json\$|www/dcf/$OUTDIR/index\.html\$|www/sitemap\.xml\$" || true)
           if [ -n "$UNEXPECTED" ]; then
             echo "::error::Unexpected changes under www/dcf -- refusing to publish. The source repo may have drifted from the deploy target; reconcile before retrying."
             exit 1
@@ -126,7 +139,10 @@ jobs:
           # Was "exactly 5" -- too strict for a quiet run (e.g. a weekend with no
           # rankings/exits/first-seen movement) that legitimately only touches
           # rankings.json + portfolio-value.json + portfolio-history.json. Only
-          # a genuine no-op (0 changed) is refused now; 1-5 is a valid publish.
+          # a genuine no-op (0 changed) is refused now; 1-7 is a valid publish
+          # (the 5 snapshot files, plus index.html/sitemap.xml when the meta
+          # regen above found >=3 qualifying stocks to name -- see its own
+          # skip-if-fewer-than-3 guard).
           COUNT=$(echo "$CHANGED" | grep -c . || true)
           if [ "$COUNT" -eq 0 ]; then
             echo "::error::No changes at all under www/dcf/$OUTDIR -- this run produced nothing new to publish."
@@ -142,7 +158,7 @@ jobs:
           ASAT=$(node -e "console.log(require('./www/dcf/$OUTDIR/rankings.json').asAt)")
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "www/dcf/$OUTDIR"
+          git add "www/dcf/$OUTDIR" www/sitemap.xml
           git commit -m "Deploy: $MARKET undervalued snapshot $ASAT"
           git push origin main
           echo "asat=$ASAT" >> "$GITHUB_OUTPUT"

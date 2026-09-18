@@ -1563,9 +1563,13 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       title: isSaasTicker
         ? `${name} (${t}) SaaS Valuation — Is It Undervalued? | KashVector`
         : `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
+      // Deliberately doesn't reveal Bear/Base/Bull numbers or the verdict --
+      // leads with the question and teases the methodology instead, so the
+      // search snippet gives a reason to click through rather than already
+      // answering it (GSC: 17K impressions/179 clicks, 2026-09-18 CTR audit).
       description: isSaasTicker
-        ? `${name} (${t}) SaaS valuation via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`
-        : `${name} (${t}) intrinsic value via ${METHOD_FULL[method]}: Bear ${money(scenarios[0].result?.intrinsicValue, currencySym)}, Base ${money(scenarios[1].result?.intrinsicValue, currencySym)}, Bull ${money(scenarios[2].result?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today}. Free, no sign-up.`,
+        ? `Is ${name} (${t}) undervalued? SaaS valuation via ${METHOD_FULL[method]} with Bear, Base & Bull scenarios — adjust every assumption yourself. Free, no sign-up.`
+        : `Is ${name} (${t}) undervalued? ${METHOD_FULL[method]} valuation with Bear, Base & Bull scenarios — adjust every assumption yourself. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
       subtitle: `${METHOD_SHORT[method]} Valuation · ${escapeHtml(sectorLine)}`,
