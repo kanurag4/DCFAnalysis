@@ -52,6 +52,19 @@
     "updatedAt": "2026-09-14T11:22:37.234Z"
   },
   {
+    "ticker": "ADI",
+    "slug": "adi",
+    "name": "Analog Devices, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 82.41594165431106,
+    "price": 362.65,
+    "marginOfSafety": -0.772739716932825,
+    "marketCap": 175727673344,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:10:29.373Z"
+  },
+  {
     "ticker": "ADM",
     "slug": "adm",
     "name": "Archer-Daniels-Midland Company",
@@ -89,6 +102,19 @@
     "marketCap": 64152592384,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:23:17.263Z"
+  },
+  {
+    "ticker": "AMAT",
+    "slug": "amat",
+    "name": "Applied Materials, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 38.74564526850739,
+    "price": 417.4,
+    "marginOfSafety": -0.9071738254228381,
+    "marketCap": 331247550464,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:08:58.447Z"
   },
   {
     "ticker": "AMD",
@@ -141,6 +167,19 @@
     "marketCap": 12836996096,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:24:13.915Z"
+  },
+  {
+    "ticker": "BA",
+    "slug": "ba",
+    "name": "The Boeing Company",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 101.88653705572432,
+    "price": 197,
+    "marginOfSafety": -0.4828094565699273,
+    "marketCap": 155589132288,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:11:25.251Z"
   },
   {
     "ticker": "BABA",
@@ -234,6 +273,32 @@
     "updatedAt": "2026-09-14T11:25:51.186Z"
   },
   {
+    "ticker": "CB",
+    "slug": "cb",
+    "name": "Chubb Limited",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 257.4741691345299,
+    "price": 341.9,
+    "marginOfSafety": -0.24693135672848807,
+    "marketCap": 131904970752,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:11:42.885Z"
+  },
+  {
+    "ticker": "COP",
+    "slug": "cop",
+    "name": "ConocoPhillips",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 225.11003809995165,
+    "price": 133.19,
+    "marginOfSafety": 0.690142188602385,
+    "marketCap": 160006144000,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:11:07.637Z"
+  },
+  {
     "ticker": "COST",
     "slug": "cost",
     "name": "Costco Wholesale Corporation",
@@ -273,6 +338,19 @@
     "updatedAt": "2026-09-14T11:26:31.393Z"
   },
   {
+    "ticker": "CVS",
+    "slug": "cvs",
+    "name": "CVS Health Corporation",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 66.70950611316617,
+    "price": 90.27,
+    "marginOfSafety": -0.2610002646154185,
+    "marketCap": 115452649472,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:12:00.519Z"
+  },
+  {
     "ticker": "DECK",
     "slug": "deck",
     "name": "Deckers Outdoor Corporation",
@@ -284,6 +362,19 @@
     "marketCap": 11067498496,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:26:44.948Z"
+  },
+  {
+    "ticker": "DELL",
+    "slug": "dell",
+    "name": "Dell Technologies Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 64.38575638916367,
+    "price": 588.4,
+    "marginOfSafety": -0.8905748531795314,
+    "marketCap": 374112223232,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:08:02.520Z"
   },
   {
     "ticker": "DKS",
@@ -325,6 +416,19 @@
     "updatedAt": "2026-09-14T11:27:24.958Z"
   },
   {
+    "ticker": "DUK",
+    "slug": "duk",
+    "name": "Duke Energy Corporation",
+    "sector": "Utilities",
+    "method": "ExcessReturn",
+    "intrinsic": 77.29659516509794,
+    "price": 118.54,
+    "marginOfSafety": -0.3479281663143417,
+    "marketCap": 92425904128,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:13:13.182Z"
+  },
+  {
     "ticker": "EA",
     "slug": "ea",
     "name": "Electronic Arts Inc",
@@ -351,6 +455,19 @@
     "updatedAt": "2026-09-14T11:27:51.528Z"
   },
   {
+    "ticker": "EQIX",
+    "slug": "eqix",
+    "name": "Equinix, Inc.",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 220.13187529936917,
+    "price": 1025.94,
+    "marginOfSafety": -0.785433967581565,
+    "marketCap": 101231222784,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:12:37.768Z"
+  },
+  {
     "ticker": "FDX",
     "slug": "fdx",
     "name": "FedEx Corporation",
@@ -362,6 +479,19 @@
     "marketCap": 73838804992,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:28:04.882Z"
+  },
+  {
+    "ticker": "FICO",
+    "slug": "fico",
+    "name": "Fair Isaac Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 398.6367987056852,
+    "price": 966.3,
+    "marginOfSafety": -0.5874606243343836,
+    "marketCap": 20869795840,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:07:22.806Z"
   },
   {
     "ticker": "GD",
@@ -512,12 +642,12 @@
     "name": "The Coca-Cola Company",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 18.718317187284743,
-    "price": 88.29,
-    "marginOfSafety": -0.7879905177564307,
-    "marketCap": 379872051200,
-    "updated": "2026-09-14",
-    "updatedAt": "2026-09-14T11:30:45.600Z"
+    "intrinsic": 18.902221895086587,
+    "price": 88.06,
+    "marginOfSafety": -0.7853483772985852,
+    "marketCap": 378882457600,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:07:42.834Z"
   },
   {
     "ticker": "LDOS",
@@ -557,6 +687,19 @@
     "marketCap": 120978202624,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:31:25.957Z"
+  },
+  {
+    "ticker": "LRCX",
+    "slug": "lrcx",
+    "name": "Lam Research Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 20.414194224543817,
+    "price": 269.31,
+    "marginOfSafety": -0.92419815742251,
+    "marketCap": 336993255424,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:08:40.758Z"
   },
   {
     "ticker": "LULU",
@@ -668,12 +811,12 @@
     "name": "Monster Beverage Corporation",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 24.02298603400668,
-    "price": 43.4,
-    "marginOfSafety": -0.44647497617496124,
-    "marketCap": 85022851072,
-    "updated": "2026-09-14",
-    "updatedAt": "2026-09-14T11:33:26.516Z"
+    "intrinsic": 24.109785148908514,
+    "price": 44.51,
+    "marginOfSafety": -0.4583287991707815,
+    "marketCap": 87197392896,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:13:30.715Z"
   },
   {
     "ticker": "MO",
@@ -681,12 +824,12 @@
     "name": "Altria Group, Inc.",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 96.93509818772178,
-    "price": 68.98,
-    "marginOfSafety": 0.4052638183201185,
-    "marketCap": 115178938368,
-    "updated": "2026-09-14",
-    "updatedAt": "2026-09-14T11:33:39.936Z"
+    "intrinsic": 97.41441338540494,
+    "price": 69.7,
+    "marginOfSafety": 0.39762429534296895,
+    "marketCap": 116381138944,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:12:19.318Z"
   },
   {
     "ticker": "MRK",
@@ -702,6 +845,19 @@
     "updatedAt": "2026-09-14T11:33:53.384Z"
   },
   {
+    "ticker": "MRVL",
+    "slug": "mrvl",
+    "name": "Marvell Technology, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 17.522163527167603,
+    "price": 240.76,
+    "marginOfSafety": -0.9272214507095548,
+    "marketCap": 216372117504,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:09:53.533Z"
+  },
+  {
     "ticker": "MSFT",
     "slug": "msft",
     "name": "Microsoft Corporation",
@@ -713,6 +869,19 @@
     "marketCap": 3680323239936,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:34:06.732Z"
+  },
+  {
+    "ticker": "NEE",
+    "slug": "nee",
+    "name": "NextEra Energy, Inc.",
+    "sector": "Utilities",
+    "method": "ExcessReturn",
+    "intrinsic": 30.853341488447686,
+    "price": 81.28,
+    "marginOfSafety": -0.6204067238133897,
+    "marketCap": 169548316672,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:10:48.036Z"
   },
   {
     "ticker": "NFLX",
@@ -832,6 +1001,19 @@
     "updatedAt": "2026-09-14T11:36:11.001Z"
   },
   {
+    "ticker": "PANW",
+    "slug": "panw",
+    "name": "Palo Alto Networks, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 129.16314774918243,
+    "price": 375.06,
+    "marginOfSafety": -0.6556200401290929,
+    "marketCap": 306799083520,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:09:17.465Z"
+  },
+  {
     "ticker": "PCOR",
     "slug": "pcor",
     "name": "Procore Technologies, Inc.",
@@ -863,12 +1045,12 @@
     "name": "The Procter & Gamble Company",
     "sector": "Consumer Defensive",
     "method": "DCF",
-    "intrinsic": 118.01111912214232,
-    "price": 145.27,
-    "marginOfSafety": -0.18764287793665374,
-    "marketCap": 337414619136,
-    "updated": "2026-09-14",
-    "updatedAt": "2026-09-14T11:36:51.285Z"
+    "intrinsic": 118.61272110719719,
+    "price": 147.55,
+    "marginOfSafety": -0.19611846081194728,
+    "marketCap": 342710321152,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:08:21.712Z"
   },
   {
     "ticker": "QCOM",
@@ -941,12 +1123,12 @@
     "name": "RTX Corporation",
     "sector": "Industrials",
     "method": "DCF",
-    "intrinsic": 173.81269309677737,
-    "price": 197.68,
-    "marginOfSafety": -0.12073708469861716,
-    "marketCap": 266424811520,
-    "updated": "2026-09-14",
-    "updatedAt": "2026-09-14T11:38:11.476Z"
+    "intrinsic": 175.3672940934756,
+    "price": 193.54,
+    "marginOfSafety": -0.09389638269362605,
+    "marketCap": 260845092864,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:09:35.976Z"
   },
   {
     "ticker": "SBUX",
@@ -1051,6 +1233,19 @@
     "marketCap": 2246988005376,
     "updated": "2026-09-14",
     "updatedAt": "2026-09-14T11:40:01.824Z"
+  },
+  {
+    "ticker": "TT",
+    "slug": "tt",
+    "name": "Trane Technologies plc",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 208.84026976384382,
+    "price": 423.33,
+    "marginOfSafety": -0.5066726436495315,
+    "marketCap": 93142409216,
+    "updated": "2026-09-18",
+    "updatedAt": "2026-09-18T10:12:55.582Z"
   },
   {
     "ticker": "TWLO",
