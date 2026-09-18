@@ -246,5 +246,37 @@
     "exitDate": "2026-09-12",
     "exitPrice": 238.6,
     "dollarPnl": -14.78
+  },
+  {
+    "ticker": "INF.L",
+    "entryDate": "2026-09-12",
+    "entryPrice": 10.3455,
+    "exitDate": "2026-09-18",
+    "exitPrice": 10.1733,
+    "dollarPnl": -8.05
+  },
+  {
+    "ticker": "ABI.BR",
+    "entryDate": "2026-09-05",
+    "entryPrice": 69.04,
+    "exitDate": "2026-09-18",
+    "exitPrice": 67.6,
+    "dollarPnl": 3.04
+  },
+  {
+    "ticker": "ENI.MI",
+    "entryDate": "2026-09-05",
+    "entryPrice": 23.07,
+    "exitDate": "2026-09-18",
+    "exitPrice": 23.95,
+    "dollarPnl": -1.01
+  },
+  {
+    "ticker": "VOD.L",
+    "entryDate": "2026-09-12",
+    "entryPrice": 1.4976,
+    "exitDate": "2026-09-18",
+    "exitPrice": 1.4674,
+    "dollarPnl": -9.77
   }
 ]
