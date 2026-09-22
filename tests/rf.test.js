@@ -44,23 +44,25 @@ test('falls back when the fetch throws', async () => {
 // so the raw yield alone double-counts it). This is the batch's actual live rf source
 // for NIFTY -- it overrides market.js's static fallback whenever it succeeds, which is
 // why market.js's own fallback fix alone didn't change the batch's real output.
-test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.80% -> ~4.93%)', async () => {
+test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.80% -> ~5.05%)', async () => {
   const r = await fetchIndRf('x', { fetchImpl: async () => history(6.80) });
-  near(r, 0.0493);
+  near(r, 0.0505);
 });
 
 // Default refreshed 2026-09-11 alongside assumptions.js's FALLBACK_RF.ind (0.0509->0.0515,
 // global bond selloff -- G-Sec crossed 7% for the first time in 3+ months, same spread) --
 // fetchIndRf reads this straight from assumptions.js, so no code change was needed here.
-// Refreshed again 2026-09-18 (raw G-Sec 7.05%, same spread): 0.0515->0.0518.
-test('fetchIndRf falls back to the already-spread-adjusted static default (0.0518) when the live fetch fails, not raw-0.07-minus-spread', async () => {
-  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0518);
-  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0518);
+// Refreshed again 2026-09-18 (raw G-Sec 7.05%, same spread): 0.0515->0.0518. Refreshed
+// again 2026-09-22 against Damodaran's July 2026 table (Baa3 spread compressed
+// 1.87%->1.75%, net rf moved UP despite the same raw yield): 0.0518->0.0530.
+test('fetchIndRf falls back to the already-spread-adjusted static default (0.0530) when the live fetch fails, not raw-0.07-minus-spread', async () => {
+  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0530);
+  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0530);
 });
 
 test('fetchIndRf floors at 1% even if the live yield were implausibly close to the spread', async () => {
   const r = await fetchIndRf('x', { fetchImpl: async () => history(2.0) });
-  near(r, 0.01); // 2.0% - 1.87% = 0.13%, floored to 1%
+  near(r, 0.01); // 2.0% - 1.75% = 0.25%, floored to 1%
 });
 
 // fetchIndexPrice — switched 2026-07-31 to read /history (last daily close)

@@ -209,7 +209,7 @@ let currentData   = null;
 let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best-effort
 let liveRfRate    = 4.8;   // updated when US 10-yr Treasury is fetched -- 4.8% default, corrected 2026-09-02 (was 4.5%, real ^TNX ~4.76%; the live fetch here works, so this default rarely shows, but see calc/assumptions.js's FALLBACK_RF.us)
 let liveAusRfRate = 5.2;   // updated when Australian 10-yr bond is fetched; 5.2% default -- corrected 2026-09-02 (was 4.8%, real yield ~5.16-5.2%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
-let liveIndRfRate = 5.09;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.09% default -- corrected 2026-09-04 (was 4.9%), raw G-Sec 6.96% minus the unchanged 1.87% Damodaran spread; the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
+let liveIndRfRate = 5.30;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.30% default -- refreshed 2026-09-22, raw G-Sec 7.05% minus the new Jul-2026 Damodaran spread 1.75% (was 5.09% at the old 1.87% spread); the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
 // Korea/Japan/UK/Eurozone/Hong Kong/China: no live govt-bond yield ticker exists on
 // Yahoo for any of these (see docs/japan-korea-market-research.md) -- rf/erp come
 // straight from calc/assumptions.js's FALLBACK_RF/MARKET_ERP tables (already loaded on
@@ -1915,11 +1915,12 @@ async function fetchAndSetAustralianRfRate() {
 // India (Baa3-rated) government bonds aren't riskfree the way US/AUS/UK govt bonds are --
 // their yield already embeds India's own default risk. Damodaran's convention: riskfree
 // rate = govt bond rate minus that country's default spread, since erp separately already
-// carries India's country risk premium; using the raw yield double-counts it. 1.87% is
-// Damodaran's Jan 2026 default spread for a Baa3 sovereign rating -- update this if that
-// rating (or Damodaran's published spread for it) changes. Keep in sync with
-// FALLBACK_RF.ind in calc/assumptions.js (same 6.96% G-Sec − 1.87% ≈ 5.09% math, refreshed 2026-09-04).
-const IND_DEFAULT_SPREAD_PCT = 1.87;
+// carries India's country risk premium; using the raw yield double-counts it. 1.75% is
+// Damodaran's July 2026 default spread for a Baa3 sovereign rating (refreshed 2026-09-22,
+// was 1.87% at Jan-2026) -- update this if that rating (or Damodaran's published spread
+// for it) changes. Keep in sync with FALLBACK_RF.ind in calc/assumptions.js (same
+// 7.05% G-Sec − 1.75% ≈ 5.30% math).
+const IND_DEFAULT_SPREAD_PCT = 1.75;
 
 async function fetchAndSetIndianRfRate() {
   let fetchSucceeded = false;

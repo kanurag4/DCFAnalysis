@@ -81,7 +81,28 @@
 // (ETF price != yield%). This is a live, fast-moving event as of this writing --
 // re-verify sooner than the usual cadence if the selloff continues. See
 // docs/risk-free-rates.md.
-const FALLBACK_RF = { us: 0.0501, aus: 0.0532, ind: 0.0518, kor: 0.0399, jpn: 0.0240, uk: 0.0530, eu: 0.0351, hk: 0.0365, cn: 0.0108 };
+//
+// ind/kor/jpn/cn spreads + all 9 markets' MARKET_ERP refreshed 2026-09-22 against
+// Damodaran's semiannual July 2026 country risk premium table (ctrypremJuly26.xlsx,
+// "ERPs by country" sheet, Total Equity Risk Premium column) -- his mature-market ERP
+// base fell to 4.20% (was ~5.5% baked into the old numbers here) and every sovereign
+// default spread compressed too, so every single market's ERP dropped: us 5.5%->4.42%,
+// aus 6.0%->4.20%, ind 7.5%->6.92%, kor 7.5%->4.81% (by far the biggest move -- kor's
+// old 7.5% had drifted to match ind's rate rather than its own Aa2 rating, a real
+// correction, not just drift), jpn 6.0%->5.07%, uk 6.0%->4.94%, eu/Germany 5.5%->4.20%,
+// hk 6.0%->4.94%, cn 5.2%->5.07%. The four spread-adjusted markets' underlying default
+// spreads moved too (same ratings, refreshed default-spread-per-rating table): ind
+// Baa3 1.87%->1.75%, kor Aa2 0.42%->0.39%, jpn/cn A1 0.60%->0.56% (same rating bucket,
+// same spread) -- recomputed against the same raw yields already in FALLBACK_RF_META
+// (not re-verified this pass): ind 7.05%-1.75%=5.30% (was 5.18%), kor 4.413%-0.39%=4.02%
+// (was 3.99%), jpn 3.00%-0.56%=2.44% (was 2.40%), cn 1.68%-0.56%=1.12% (was 1.08%). All
+// four moved UP (a smaller spread subtracted), widening their safety margin over
+// terminalGrowth, so no stable-growth-ceiling check was needed this pass. India's
+// IND_DEFAULT_SPREAD_PCT (www/dcf/app.js, both repos) and IND_DEFAULT_SPREAD
+// (DCFAnalysis/scripts/lib/rf.js) -- the only spread with its own separate
+// hand-maintained copy, used by the still-404ing live G-Sec re-fetch path -- updated
+// to match. See docs/risk-free-rates.md.
+const FALLBACK_RF = { us: 0.0501, aus: 0.0532, ind: 0.0530, kor: 0.0402, jpn: 0.0244, uk: 0.0530, eu: 0.0351, hk: 0.0365, cn: 0.0112 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -99,16 +120,18 @@ const FALLBACK_RF = { us: 0.0501, aus: 0.0532, ind: 0.0518, kor: 0.0399, jpn: 0.
 const FALLBACK_RF_META = {
   us:  { asOf: '2026-09-18', source: 'Yahoo ^TNX live pull via the Worker /history endpoint -- 5.006% close, still near the cusp-of-5% global selloff level', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
   aus: { asOf: '2026-09-17', source: 'TradingEconomics, AU 10yr govt bond 5.32% (Sept 17, highest since mid-2011, selloff continuing)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: '2026-09-17', source: 'raw G-Sec 7.05% (Sept 17) minus Jan-2026 Damodaran spread 1.87%', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
-  kor: { asOf: '2026-09-18', source: 'raw yield 4.413% (eased back from the 4.54% selloff peak) minus Jan-2026 Damodaran spread 0.42%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  jpn: { asOf: '2026-09-17', source: 'raw JGB yield 3.00% (Sept 17, near highest since Sept 1996, ahead of an expected BOJ hike) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  ind: { asOf: '2026-09-22', source: 'raw G-Sec 7.05% (Sept 17) minus Jul-2026 Damodaran spread 1.75% (Baa3, refreshed from the Jan-2026 1.87%)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-09-22', source: 'raw yield 4.413% (eased back from the 4.54% selloff peak) minus Jul-2026 Damodaran spread 0.39% (Aa2, refreshed from the Jan-2026 0.42%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-09-22', source: 'raw JGB yield 3.00% (Sept 17, near highest since Sept 1996, ahead of an expected BOJ hike) minus Jul-2026 Damodaran spread 0.56% (A1, refreshed from the Jan-2026 0.60%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
   uk:  { asOf: '2026-09-11', source: 'raw gilt yield 5.295% (Sept 10, 19-year high on oil-driven global selloff) -- re-checked 09-18, still the latest available figure, no change', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   eu:  { asOf: '2026-09-17', source: 'raw German bund yield 3.51% (Sept 17, continuing the oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58% -- re-checked 09-18, no trustworthy current figure found (search surfaced only a stale June reading)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  cn:  { asOf: '2026-09-18', source: 'raw yield 1.68% (Sept 18, unchanged from Sept 1) minus Jan-2026 Damodaran spread 0.60%', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  cn:  { asOf: '2026-09-22', source: 'raw yield 1.68% (Sept 18, unchanged from Sept 1) minus Jul-2026 Damodaran spread 0.56% (A1, refreshed from the Jan-2026 0.60%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
-const MARKET_ERP  = { us: 0.055, aus: 0.060, ind: 0.075, kor: 0.075, jpn: 0.060, uk: 0.060, eu: 0.055, hk: 0.060, cn: 0.052 };
+// Total Equity Risk Premium (rating-based column), Damodaran July 2026 country risk
+// premium table -- see the FALLBACK_RF comment above for the full refresh narrative.
+const MARKET_ERP  = { us: 0.0442, aus: 0.0420, ind: 0.0692, kor: 0.0481, jpn: 0.0507, uk: 0.0494, eu: 0.0420, hk: 0.0494, cn: 0.0507 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
 const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6 };
 const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
