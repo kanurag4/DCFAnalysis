@@ -75,7 +75,6 @@
     const capSym = r.currency === 'GBp' ? '£' : sym;
     const mktCap = (r.marketCap == null) ? '—' : formatMarketCap(r.marketCap, capSym);
     const target = (r.analystTarget == null) ? '—' : `${sym}${r.analystTarget.toFixed(2)}`;
-    const opMargin = (r.operatingMargin == null) ? '—' : `${(r.operatingMargin * 100).toFixed(1)}%`;
     // % change from first-listed price to live price — tracks whether the screen's picks performed
     const firstPrice = firstSeen ? Number(firstSeen.firstPrice) : null;
     const sinceListed = (firstPrice && firstPrice > 0 && price > 0)
@@ -96,9 +95,8 @@
       <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
       <td class="num ${zClass}">${zText}</td>
       <td class="num">${fBase}${fTrend}</td>
+      <td class="num">${aiCorrPillHtml(r.aiCorrelation)}</td>
       <td class="num">${pct(r.wacc)}</td>
-      <td class="num">${r.terminalValuePct == null ? '—' : r.terminalValuePct.toFixed(0) + '%'}</td>
-      <td class="num">${opMargin}</td>
       <td class="num">${r.trailingPE == null ? '—' : r.trailingPE.toFixed(1)}</td>
       <td>${fs}</td>
     </tr>`;

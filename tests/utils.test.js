@@ -4,6 +4,7 @@ const {
   safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector, isReit, isAirline,
   isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor, chooseFinancialModel,
+  aiCorrPillHtml,
 } = require('../www/utils.js');
 
 // ── deriveFcf ────────────────────────────────────────────────────────────────
@@ -433,4 +434,23 @@ test('isAirline handles null/undefined sector or industry', () => {
   assert.strictEqual(isAirline(null, null), false);
   assert.strictEqual(isAirline(undefined, undefined), false);
   assert.strictEqual(isAirline('Industrials', null), false);
+});
+
+// ── aiCorrPillHtml (undervalued-screen AI Sector Correlation cell) ───────────
+
+test('aiCorrPillHtml renders a banded pill with the 2dp value and label for each band', () => {
+  assert.strictEqual(aiCorrPillHtml({ r: 0.684, n: 249, band: 'high' }),
+    '<span class="ai-corr-pill ai-corr-pill-high">0.68 High</span>');
+  assert.strictEqual(aiCorrPillHtml({ r: 0.25, n: 200, band: 'moderate' }),
+    '<span class="ai-corr-pill ai-corr-pill-moderate">0.25 Moderate</span>');
+  assert.strictEqual(aiCorrPillHtml({ r: 0.1, n: 200, band: 'low' }),
+    '<span class="ai-corr-pill ai-corr-pill-low">0.10 Low</span>');
+  assert.strictEqual(aiCorrPillHtml({ r: -0.17, n: 249, band: 'none' }),
+    '<span class="ai-corr-pill ai-corr-pill-none">-0.17 None</span>');
+});
+
+test('aiCorrPillHtml renders a dash for missing, malformed, or unknown-band values', () => {
+  for (const bad of [null, undefined, {}, { r: 0.5 }, { r: NaN, band: 'high' }, { r: '0.5', band: 'high' }, { r: 0.5, band: 'weird' }]) {
+    assert.strictEqual(aiCorrPillHtml(bad), '—', JSON.stringify(bad));
+  }
 });

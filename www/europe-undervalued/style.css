@@ -279,3 +279,13 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 }
 .activity-table .pos { color: var(--kv-pass); }
 .activity-table .neg { color: var(--kv-fail); }
+
+/* AI Sector Correlation column -- see
+   docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md.
+   Solid-colour pill per band (same hexes as the per-ticker page badge). "none" is
+   sky-blue, never red: no AI linkage isn't a failure. */
+.ai-corr-pill { display:inline-block; border-radius:999px; padding:2px 9px; font-size:0.78rem; font-weight:600; color:#ffffff; white-space:nowrap; }
+.ai-corr-pill-high { background:#22c55e; }
+.ai-corr-pill-moderate { background:#f97316; }
+.ai-corr-pill-low { background:#06b6d4; }
+.ai-corr-pill-none { background:#0ea5e9; }
