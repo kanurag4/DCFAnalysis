@@ -13,15 +13,15 @@ function escapeHtml(s) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
-// Deliberately NOT literal Red/Amber/Green -- see spec §3. "None" (no
-// meaningful AI-sector link) isn't a failure, so it renders sky-blue, not
-// red, to avoid reading as a verdict on this codebase's fixed
-// green=pass/red=fail/amber=caution convention.
+// Reversed traffic light -- see spec §3 (user decision, 2026-09-24). Colour
+// reads as dependence on the AI sector: the more a stock's price tracks it,
+// the redder. "None" is neutral cyan, never red or green, since no AI
+// linkage isn't a verdict either way.
 const BAND_COLOR = {
-  high: '#22c55e',
+  high: '#ef4444',
   moderate: '#f97316',
-  low: '#06b6d4',
-  none: '#0ea5e9',
+  low: '#22c55e',
+  none: '#06b6d4',
 };
 
 const BAND_DESCRIPTION = {

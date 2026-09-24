@@ -7,14 +7,22 @@ test('buildAiCorrelationCard renders the badge with value and label for a HIGH b
   assert.match(html, /AI Sector Correlation/);
   assert.match(html, /0\.68/);
   assert.match(html, /High/);
-  assert.match(html, /#22c55e/);
+  assert.match(html, /#ef4444/);
 });
 
-test('buildAiCorrelationCard renders sky-blue (not red) for a NONE band', () => {
+test('buildAiCorrelationCard renders cyan (neutral: not red, green or the old sky-blue) for a NONE band', () => {
   const html = buildAiCorrelationCard({ aiCorrelation: { r: -0.09, n: 249, band: 'none' } });
   assert.match(html, /None/);
-  assert.match(html, /#0ea5e9/);
-  assert.doesNotMatch(html, /#ef4444/); // the site's --kv-fail red must never appear here
+  assert.match(html, /#06b6d4/);
+  assert.doesNotMatch(html, /#ef4444|#22c55e|#0ea5e9/);
+});
+
+test('buildAiCorrelationCard colours run reversed traffic-light: Moderate amber, Low green', () => {
+  const moderate = buildAiCorrelationCard({ aiCorrelation: { r: 0.25, n: 249, band: 'moderate' } });
+  const low = buildAiCorrelationCard({ aiCorrelation: { r: 0.1, n: 249, band: 'low' } });
+  assert.match(moderate, /#f97316/);
+  assert.match(low, /#22c55e/);
+  assert.doesNotMatch(low, /#ef4444/);
 });
 
 test('buildAiCorrelationCard returns empty string when band is null (insufficient history)', () => {
