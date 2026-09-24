@@ -163,3 +163,31 @@ test('partialCorrelationAgainst gives the same answer as partialCorrelation for 
 test('the AI-hardware benchmark is the VanEck semiconductor ETF (SMH)', () => {
   assert.strictEqual(AI_HARDWARE_ETF_TICKER, 'SMH');
 });
+
+// A raw r of 0.3985 displays as "0.40" but used to be banded from the unrounded value (Moderate), so
+// the screens/cards showed "0.40 Moderate" next to a documented High threshold of 0.40.
+const idioNoise = (n) => Array.from({ length: n }, (_, i) => 0.005 * Math.sin(i * 3.3 + 2));
+function aiLoadedWithNoise(weight) {
+  const mkt = marketFactor(N);
+  const ai = aiFactor(N);
+  const idio = idioNoise(N);
+  return partialCorrelation({
+    stock: closesFromReturns(mkt.map((m, i) => m + ai[i] + weight * idio[i]), '2026-01-01'),
+    aiq: closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01'),
+    rsp: closesFromReturns(mkt, '2026-01-01'),
+  });
+}
+
+test('a raw r that rounds up to 0.40 is banded High, matching the value that is displayed', () => {
+  const result = aiLoadedWithNoise(2.69); // raw r = 0.3985
+  assert.strictEqual(result.r, 0.4);
+  assert.strictEqual(result.band, 'high');
+});
+
+test('partialCorrelation returns r already rounded to 2dp, and the band always agrees with that displayed r', () => {
+  for (const weight of [0, 0.5, 1, 1.5, 2, 2.69, 3, 4, 6, 10, 30]) {
+    const { r, band } = aiLoadedWithNoise(weight);
+    assert.strictEqual(r, Number(r.toFixed(2)), `weight ${weight}: r ${r} is not 2dp`);
+    assert.strictEqual(band, bandFor(r), `weight ${weight}: band ${band} disagrees with displayed r ${r}`);
+  }
+});

@@ -97,7 +97,8 @@ function residualsAfterRegression(y, x) {
 // number}], ascending, one entry per trading day (the shape
 // fetchDailyPriceHistory() returns).
 //
-// Returns { r: number|null, n: number, band: string|null }. r/band are null
+// Returns { r: number|null, n: number, band: string|null }. r is rounded to 2dp
+// and band is derived from that rounded value. r/band are null
 // when MIN_TRADING_DAYS or fewer overlapping trading days exist after
 // alignment (too small a sample to trust -- covers recent IPOs and
 // thinly-traded tickers).
@@ -113,7 +114,8 @@ function partialCorrelationAgainst({ stock, benchmark, market }) {
 
   const stockResid = residualsAfterRegression(stockAligned, marketAligned);
   const benchResid = residualsAfterRegression(benchAligned, marketAligned);
-  const r = pearson(stockResid, benchResid);
+  // Rounded BEFORE banding: r is shown to 2dp everywhere, so a raw 0.3985 must band as the "0.40" it displays as.
+  const r = Math.round(pearson(stockResid, benchResid) * 100) / 100;
 
   return { r, n, band: bandFor(r) };
 }
