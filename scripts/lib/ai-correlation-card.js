@@ -52,6 +52,12 @@ const READING_LABEL = {
   hardware: 'AI hardware (semiconductors, SMH)',
 };
 
+// Each card links to the glossary page that explains ITS reading.
+const READING_GUIDE = {
+  ai: '/glossary/ai-sector-correlation/',
+  hardware: '/glossary/ai-hardware-correlation/',
+};
+
 function hasBand(reading) {
   return !!reading && reading.band != null;
 }
@@ -63,6 +69,7 @@ function readingHtml(kind, reading) {
         <span class="ai-corr-label">${escapeHtml(READING_LABEL[kind])}</span>
         <span class="ai-corr-badge" style="background:${BAND_COLOR[band]}"><span class="ai-corr-rval">${r.toFixed(2)}</span> ${escapeHtml(bandLabel(band))}</span>
         <p class="eval-card-note">${escapeHtml(BAND_DESCRIPTION[kind][band])}</p>
+        <p class="eval-card-note ai-corr-guide"><a href="${READING_GUIDE[kind]}">How it's calculated →</a></p>
       </div>`;
 }
 
@@ -81,7 +88,6 @@ function buildAiCorrelationCard({ aiCorrelation, aiHardwareCorrelation } = {}) {
     <div class="ai-corr-cards">
       ${items.join('\n      ')}
     </div>
-    <p class="eval-card-note ai-corr-guide"><a href="/glossary/ai-sector-correlation/">How it's calculated →</a></p>
   </section>`;
 }
 
@@ -100,7 +106,7 @@ function buildAiCorrelationFaqHtml({ aiCorrelation, aiHardwareCorrelation } = {}
     <p>A reading of -0.20 or lower. After removing general market movement, the stock has tended to rise when the AI sector (or semiconductor stocks) fall, and fall when they rise. It is a strong link, just in the opposite direction, which is why it is coloured red like High. It describes past price behaviour, not a prediction.</p>
   </details>
   <details class="faq-item"><summary>What is the "AI hardware" reading, and why show two numbers?</summary>
-    <p>The broad AI ETF mixes hardware, cloud and software companies, so a stock can look unrelated to it while moving strongly with, or against, semiconductor stocks. For example, some large software companies have shown a near-zero reading against the broad AI ETF but a clearly negative one against semiconductors. Showing both lets you see either pattern.</p>
+    <p>The broad AI ETF mixes hardware, cloud and software companies, so a stock can look unrelated to it while moving strongly with, or against, semiconductor stocks. For example, some large software companies have shown a near-zero reading against the broad AI ETF but a clearly negative one against semiconductors. Showing both lets you see either pattern. See the <a href="/glossary/ai-hardware-correlation/">AI Hardware Correlation guide</a> for how the semiconductor reading works.</p>
   </details>
   <details class="faq-item"><summary>What do the colours mean?</summary>
     <p>The colour shows how strongly the stock's price has been tied to the AI sector, in either direction. It is not a good or bad rating. Red means a strong link: High (moves with the AI sector) or Inverse (moves against it). Amber is Moderate, green is Low, and cyan means no meaningful link (None). Red is not a quality or valuation warning.</p>

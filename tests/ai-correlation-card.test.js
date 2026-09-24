@@ -48,9 +48,29 @@ test('buildAiCorrelationCard returns empty string when aiCorrelation is missing 
   assert.strictEqual(buildAiCorrelationCard({}), '');
 });
 
-test('the card links to the glossary page so readers can see how the number is calculated', () => {
+test('the AI sector card links to its own glossary page, and not to the hardware page', () => {
   const html = buildAiCorrelationCard({ aiCorrelation: HIGH });
   assert.match(html, /<a href="\/glossary\/ai-sector-correlation\/">How it's calculated/);
+  assert.doesNotMatch(html, /ai-hardware-correlation/);
+});
+
+test('each card links to ITS OWN glossary page, with the link inside that card and no shared link below', () => {
+  const html = buildAiCorrelationCard({
+    aiCorrelation: { r: 0.07, n: 249, band: 'low' },
+    aiHardwareCorrelation: { r: -0.24, n: 249, band: 'inverse' },
+  });
+  const [, sectorCard, hardwareCard] = html.split('class="value-scale-block ai-corr-item"');
+  assert.match(sectorCard, /href="\/glossary\/ai-sector-correlation\/">How it's calculated/);
+  assert.doesNotMatch(sectorCard, /ai-hardware-correlation/);
+  assert.match(hardwareCard, /href="\/glossary\/ai-hardware-correlation\/">How it's calculated/);
+  assert.doesNotMatch(hardwareCard, /ai-sector-correlation/);
+  assert.strictEqual((html.match(/class="eval-card-note ai-corr-guide"/g) || []).length, 2);
+});
+
+test('a lone AI-hardware card links only to the hardware page', () => {
+  const html = buildAiCorrelationCard({ aiCorrelation: null, aiHardwareCorrelation: { r: 0.66, n: 249, band: 'high' } });
+  assert.match(html, /href="\/glossary\/ai-hardware-correlation\/"/);
+  assert.doesNotMatch(html, /ai-sector-correlation\//);
 });
 
 // ── card: second reading (AI hardware / semiconductors) ──────────────────────
@@ -75,14 +95,13 @@ test('both readings sit under ONE common "AI Sector Correlation" heading, as two
   assert.match(html, /semiconductor/);
 });
 
-test('the wrapper is not itself a card (no card nested inside a card) and the guide link sits below the cards', () => {
+test('the wrapper is not itself a card (no card nested inside a card)', () => {
   const html = buildAiCorrelationCard({
     aiCorrelation: { r: 0.07, n: 249, band: 'low' },
     aiHardwareCorrelation: { r: -0.24, n: 249, band: 'inverse' },
   });
   assert.match(html, /^<section class="ai-corr-block">/);
   assert.doesNotMatch(html, /<section class="value-scale-block/);
-  assert.ok(html.indexOf('ai-corr-guide') > html.lastIndexOf('ai-corr-item'), 'guide link should come after the last card');
 });
 
 test('the card still renders, under the common heading, when only the AI-hardware reading is available', () => {
@@ -145,4 +164,10 @@ test('the colours FAQ says red means strong dependence in either direction, not 
   assert.match(answer, /red/i);
   assert.match(answer, /Inverse/);
   assert.match(answer, /not a (good|quality)/i);
+});
+
+test('the "AI hardware" FAQ answer links to its own glossary page', () => {
+  const html = buildAiCorrelationFaqHtml({ aiCorrelation: { r: 0.68, n: 249, band: 'high' } });
+  const answer = html.split('What is the "AI hardware" reading, and why show two numbers?')[1].split('</details>')[0];
+  assert.match(answer, /<a href="\/glossary\/ai-hardware-correlation\/">/);
 });
