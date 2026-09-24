@@ -113,6 +113,7 @@
       <td class="num ${zClass}">${zText}</td>
       <td class="num">${fBase}${fTrend}</td>
       <td class="num">${aiCorrPillHtml(r.aiCorrelation)}</td>
+      <td class="num">${aiCorrPillHtml(r.aiHardwareCorrelation)}</td>
       <td class="num">${pct(r.wacc)}</td>
       <td class="num">${r.trailingPE == null ? '—' : r.trailingPE.toFixed(1)}</td>
       <td>${fs}</td>

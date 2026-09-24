@@ -108,8 +108,10 @@ test('--rerank carries an existing aiCorrelation forward by ticker and emits nul
   try {
     fs.mkdirSync(AI_OUT_PATH, { recursive: true });
     const prior = { r: 0.55, n: 200, band: 'high' };
+    const priorHw = { r: -0.31, n: 200, band: 'inverse' };
     fs.writeFileSync(path.join(AI_OUT_PATH, 'rankings.json'), JSON.stringify({
-      asAt: '2026-09-17', rows: [{ ticker: 'AAA', aiCorrelation: prior }, { ticker: 'BBB', aiCorrelation: null }],
+      asAt: '2026-09-17',
+      rows: [{ ticker: 'AAA', aiCorrelation: prior, aiHardwareCorrelation: priorHw }, { ticker: 'BBB', aiCorrelation: null, aiHardwareCorrelation: null }],
     }));
     fs.writeFileSync(AI_CACHE_PATH, JSON.stringify({
       asAt: '2026-09-24', tickerCount: 3,
@@ -121,8 +123,11 @@ test('--rerank carries an existing aiCorrelation forward by ticker and emits nul
     const rows = JSON.parse(fs.readFileSync(path.join(AI_OUT_PATH, 'rankings.json'), 'utf8')).rows;
     const by = Object.fromEntries(rows.map(r => [r.ticker, r]));
     assert.deepStrictEqual(by.AAA.aiCorrelation, prior);
+    assert.deepStrictEqual(by.AAA.aiHardwareCorrelation, priorHw);
     assert.strictEqual(by.BBB.aiCorrelation, null);
+    assert.strictEqual(by.BBB.aiHardwareCorrelation, null);
     assert.strictEqual(by.CCC.aiCorrelation, null);
+    assert.strictEqual(by.CCC.aiHardwareCorrelation, null);
   } finally { cleanAiFixtures(); }
 });
 
@@ -136,6 +141,7 @@ test('--rerank emits aiCorrelation: null on every row when there is no prior ran
     const rows = JSON.parse(fs.readFileSync(path.join(AI_OUT_PATH, 'rankings.json'), 'utf8')).rows;
     assert.strictEqual(rows.length, 1);
     assert.strictEqual(rows[0].aiCorrelation, null);
+    assert.strictEqual(rows[0].aiHardwareCorrelation, null);
   } finally { cleanAiFixtures(); }
 });
 
@@ -151,7 +157,11 @@ test('applyAiCorrelation runs the helper once over the written rows and persists
     const calls = [];
     const fake = async (rows, opts) => {
       calls.push({ tickers: rows.map(r => r.ticker), throttleMs: opts.throttleMs, hasProxy: typeof opts.proxyUrl === 'string' });
-      return rows.map((r, i) => ({ ...r, aiCorrelation: i === 0 ? { r: 0.61, n: 240, band: 'high' } : null }));
+      return rows.map((r, i) => ({
+        ...r,
+        aiCorrelation: i === 0 ? { r: 0.61, n: 240, band: 'high' } : null,
+        aiHardwareCorrelation: i === 0 ? { r: -0.28, n: 240, band: 'inverse' } : null,
+      }));
     };
 
     await applyAiCorrelation(AI_CONFIG, { addAiCorrelationImpl: fake });
@@ -162,7 +172,9 @@ test('applyAiCorrelation runs the helper once over the written rows and persists
     assert.strictEqual(calls[0].hasProxy, true);
     const written = JSON.parse(fs.readFileSync(rankingsPath, 'utf8'));
     assert.deepStrictEqual(written.rows[0].aiCorrelation, { r: 0.61, n: 240, band: 'high' });
+    assert.deepStrictEqual(written.rows[0].aiHardwareCorrelation, { r: -0.28, n: 240, band: 'inverse' });
     assert.strictEqual(written.rows[1].aiCorrelation, null);
+    assert.strictEqual(written.rows[1].aiHardwareCorrelation, null);
     assert.strictEqual(written.asAt, '2026-09-24');       // non-row content untouched
     assert.deepStrictEqual(written.summary, { shown: 2 });
   } finally { cleanAiFixtures(); }

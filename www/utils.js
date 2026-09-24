@@ -437,7 +437,7 @@ function formatUpdatedDate(asAt, now = new Date()) {
 // duplicated from calc/aiCorrelation.js's BANDS on purpose: this is a plain
 // browser script and can't require() the calc module. The band is checked
 // against the map, so nothing unexpected can reach the class attribute.
-const AI_CORR_BAND_LABELS = { high: 'High', moderate: 'Moderate', low: 'Low', none: 'None' };
+const AI_CORR_BAND_LABELS = { high: 'High', moderate: 'Moderate', low: 'Low', none: 'None', inverse: 'Inverse' };
 function aiCorrPillHtml(ai) {
   if (!ai || typeof ai.r !== 'number' || !isFinite(ai.r) ||
       !Object.prototype.hasOwnProperty.call(AI_CORR_BAND_LABELS, ai.band)) return '—';

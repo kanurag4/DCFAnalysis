@@ -4,13 +4,14 @@
 // per-ticker page generators and the undervalued-screen batch. fetchImpl /
 // sleepImpl are injectable so tests never touch the network or wait.
 //
-//   getAiCorrelation(symbol, opts)  -> { r, n, band }  (band null = not shown)
-//   addAiCorrelation(rows, opts)    -> rows + aiCorrelation: {r,n,band} | null
+//   getAiCorrelations(symbol, opts) -> { ai, hardware }, each { r, n, band } (band null = not shown):
+//                                      ai = vs AIQ (broad AI basket), hardware = vs SMH (semiconductors)
+//   addAiCorrelation(rows, opts)    -> rows + aiCorrelation / aiHardwareCorrelation: {r,n,band} | null
 //
 // Both never throw. Every Worker call is preceded by a `throttleMs` sleep, so
 // a caller that just made its own Worker call is never hit back-to-back (see
 // CLAUDE.md Known Traps: unspaced per-ticker bursts caused HTTP 429s).
-const { partialCorrelation, AI_ETF_TICKER, MARKET_ETF_TICKER } = require('../../www/calc/aiCorrelation.js');
+const { partialCorrelationAgainst, AI_ETF_TICKER, AI_HARDWARE_ETF_TICKER, MARKET_ETF_TICKER } = require('../../www/calc/aiCorrelation.js');
 const { batchHeaders } = require('./batch-auth.js');
 
 const DEFAULT_THROTTLE_MS = 3200;
@@ -35,11 +36,13 @@ async function fetchDailyCloses(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
-// `cache` (a Map) is shared across a whole batch run so AIQ/RSP are fetched
+// `cache` (a Map) is shared across a whole batch run so AIQ/RSP/SMH are fetched
 // once, not per ticker. Only non-empty benchmark series are cached: an empty
 // result is a transient failure, and caching it would null every remaining
-// ticker in the run.
-async function getAiCorrelation(symbol, { proxyUrl, cache, throttleMs = DEFAULT_THROTTLE_MS, fetchImpl, sleepImpl = DEFAULT_SLEEP } = {}) {
+// ticker in the run. A benchmark that fails only nulls ITS OWN reading.
+const NO_READING = () => ({ r: null, n: 0, band: null });
+
+async function getAiCorrelations(symbol, { proxyUrl, cache, throttleMs = DEFAULT_THROTTLE_MS, fetchImpl, sleepImpl = DEFAULT_SLEEP } = {}) {
   const load = async (sym, isBenchmark) => {
     if (isBenchmark && cache && cache.has(sym)) return cache.get(sym);
     await sleepImpl(throttleMs);
@@ -51,23 +54,26 @@ async function getAiCorrelation(symbol, { proxyUrl, cache, throttleMs = DEFAULT_
     const stock = await load(symbol, false);
     const aiq = await load(AI_ETF_TICKER, true);
     const rsp = await load(MARKET_ETF_TICKER, true);
-    return partialCorrelation({ stock, aiq, rsp });
+    const smh = await load(AI_HARDWARE_ETF_TICKER, true);
+    return {
+      ai: partialCorrelationAgainst({ stock, benchmark: aiq, market: rsp }),
+      hardware: partialCorrelationAgainst({ stock, benchmark: smh, market: rsp }),
+    };
   } catch (_) {
-    return { r: null, n: 0, band: null };
+    return { ai: NO_READING(), hardware: NO_READING() };
   }
 }
+
+const pack = (x) => (x.band == null ? null : { r: +x.r.toFixed(2), n: x.n, band: x.band });
 
 async function addAiCorrelation(rows, opts = {}) {
   const cache = opts.cache || new Map();
   const out = [];
   for (const row of rows) {
-    const res = await getAiCorrelation(row.ticker, { ...opts, cache });
-    out.push({
-      ...row,
-      aiCorrelation: res.band == null ? null : { r: +res.r.toFixed(2), n: res.n, band: res.band },
-    });
+    const { ai, hardware } = await getAiCorrelations(row.ticker, { ...opts, cache });
+    out.push({ ...row, aiCorrelation: pack(ai), aiHardwareCorrelation: pack(hardware) });
   }
   return out;
 }
 
-module.exports = { fetchDailyCloses, getAiCorrelation, addAiCorrelation };
+module.exports = { fetchDailyCloses, getAiCorrelations, addAiCorrelation };

@@ -447,6 +447,8 @@ test('aiCorrPillHtml renders a banded pill with the 2dp value and label for each
     '<span class="ai-corr-pill ai-corr-pill-low">0.10 Low</span>');
   assert.strictEqual(aiCorrPillHtml({ r: -0.17, n: 249, band: 'none' }),
     '<span class="ai-corr-pill ai-corr-pill-none">-0.17 None</span>');
+  assert.strictEqual(aiCorrPillHtml({ r: -0.41, n: 249, band: 'inverse' }),
+    '<span class="ai-corr-pill ai-corr-pill-inverse">-0.41 Inverse</span>');
 });
 
 test('aiCorrPillHtml renders a dash for missing, malformed, or unknown-band values', () => {

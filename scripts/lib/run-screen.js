@@ -168,10 +168,14 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
   // existing value forward from the rankings.json about to be overwritten. A
   // full-fetch run then recomputes every row in applyAiCorrelation(); a ticker
   // newly entering the ranking stays null until that next full run.
-  const prevAi = new Map();
+  const prevAi = new Map();   // vs AIQ (broad AI basket)
+  const prevHw = new Map();   // vs SMH (semiconductors)
   try {
     const prev = JSON.parse(fs.readFileSync(path.join(outDir, 'rankings.json'), 'utf8'));
-    for (const r of prev.rows || []) if (r.aiCorrelation) prevAi.set(r.ticker, r.aiCorrelation);
+    for (const r of prev.rows || []) {
+      if (r.aiCorrelation) prevAi.set(r.ticker, r.aiCorrelation);
+      if (r.aiHardwareCorrelation) prevHw.set(r.ticker, r.aiHardwareCorrelation);
+    }
   } catch (_) { /* first-ever run: no prior rankings.json */ }
 
   // Chaebol-affiliate annotation (Korea screen only — config.chaebolAffiliates is a
@@ -205,6 +209,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
         ? { score: r.piotroskiF.score, maxScore: r.piotroskiF.maxScore, ...(r.piotroskiF.trend ? { trend: r.piotroskiF.trend } : {}) }
         : null,
       aiCorrelation: prevAi.get(r.ticker) ?? null,
+      aiHardwareCorrelation: prevHw.get(r.ticker) ?? null,
       ...(r.highLeverage ? { highLeverage: true } : {}),
       ...(chaebolGroup ? { chaebolGroup } : {}),
     };

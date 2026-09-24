@@ -809,3 +809,8 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
   color: #ffffff;
 }
 .ai-corr-rval { font-variant-numeric: tabular-nums; opacity: 0.92; }
+/* Two readings in one AI Sector Correlation card (vs AIQ and vs SMH semiconductors). */
+.ai-corr-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.ai-corr-item + .ai-corr-item { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--kv-border); width: 100%; }
+.ai-corr-label { font-size: 0.78rem; color: var(--kv-muted); text-transform: uppercase; letter-spacing: 0.03em; }
+.ai-corr-guide { margin-top: 4px; }
