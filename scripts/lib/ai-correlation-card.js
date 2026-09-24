@@ -47,7 +47,7 @@ function buildAiCorrelationCard({ aiCorrelation }) {
     <h2>AI Sector Correlation</h2>
     <div class="ai-corr-card">
       <span class="ai-corr-badge" style="background:${color}"><span class="ai-corr-rval">${r.toFixed(2)}</span> ${escapeHtml(label)}</span>
-      <p class="eval-card-note">${escapeHtml(desc)}</p>
+      <p class="eval-card-note">${escapeHtml(desc)} <a href="/glossary/ai-sector-correlation/">How it's calculated →</a></p>
     </div>
   </section>`;
 }
@@ -61,7 +61,7 @@ function buildAiCorrelationFaqHtml({ aiCorrelation }) {
     <p>A measure of how closely this stock's daily price movements have tracked the AI sector (represented by a broad AI-themed ETF) over the trailing 12 months, after removing the effect of general stock-market movement. It answers "does this stock move with AI-sector sentiment specifically, beyond just moving with the market overall?" — not whether the company's revenue comes from AI.</p>
   </details>
   <details class="faq-item"><summary>How is it calculated?</summary>
-    <p>We compute daily returns for the stock, an AI-sector ETF, and an equal-weight broad-market ETF over the trailing year, then calculate the <em>partial correlation</em> between the stock and the AI ETF while statistically controlling for the broad-market ETF. This isolates AI-specific co-movement from ordinary market-wide moves — a stock correlated with the market generally (which most large stocks are) doesn't automatically score as AI-correlated.</p>
+    <p>We compute daily returns for the stock, an AI-sector ETF, and an equal-weight broad-market ETF over the trailing year, then calculate the <em>partial correlation</em> between the stock and the AI ETF while statistically controlling for the broad-market ETF. This isolates AI-specific co-movement from ordinary market-wide moves — a stock correlated with the market generally (which most large stocks are) doesn't automatically score as AI-correlated. See the <a href="/glossary/ai-sector-correlation/">full glossary entry</a> for the formula and its limits.</p>
   </details>
   <details class="faq-item"><summary>Does a high score mean I should buy this stock?</summary>
     <p>No. This is a descriptive statistic about historical price co-movement, not a valuation judgment or a recommendation. A stock can show high AI correlation and still be overvalued, and a stock with no AI correlation can still be a sound investment for other reasons. Use it alongside the valuation and framework scores above, not in place of them.</p>

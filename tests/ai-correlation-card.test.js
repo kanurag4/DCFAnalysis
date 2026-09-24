@@ -45,3 +45,14 @@ test('FAQ copy describes daily (not weekly) movements, matching the calculation'
   assert.match(html, /daily price movements/);
   assert.doesNotMatch(html, /weekly/);
 });
+
+test('the card links to the glossary page so readers can see how the number is calculated', () => {
+  const html = buildAiCorrelationCard({ aiCorrelation: { r: 0.684, n: 249, band: 'high' } });
+  assert.match(html, /<a href="\/glossary\/ai-sector-correlation\/">How it's calculated/);
+});
+
+test('the "How is it calculated?" FAQ answer links to the full glossary entry', () => {
+  const html = buildAiCorrelationFaqHtml({ aiCorrelation: { r: 0.68, n: 249, band: 'high' } });
+  const answer = html.split('How is it calculated?')[1].split('</details>')[0];
+  assert.match(answer, /<a href="\/glossary\/ai-sector-correlation\/">full glossary entry<\/a>/);
+});

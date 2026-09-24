@@ -289,3 +289,8 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 .ai-corr-pill-moderate { background:#f97316; }
 .ai-corr-pill-low { background:#06b6d4; }
 .ai-corr-pill-none { background:#0ea5e9; }
+
+/* Column header that links to its glossary explanation (AI corr.). Reads as a header, with a dotted
+   underline as the only cue that it is clickable. */
+.th-guide-link { color: inherit; text-decoration: underline dotted; text-underline-offset: 3px; }
+.th-guide-link:hover { color: var(--kv-primary); }
