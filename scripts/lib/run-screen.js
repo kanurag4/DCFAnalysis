@@ -20,6 +20,7 @@ const { mergeFirstSeen } = require('./firstSeen.js');
 const { tallyTickerMargin, updateSectorMarginLookup } = require('./sector-margin-tally.js');
 const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require('./portfolio.js');
 const { prepareEurRebalanceInputs } = require('./fx.js');
+const { addAiCorrelation } = require('./ai-correlation-batch.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const THROTTLE_MS = 3200; // ~18.75 req/min keeps us under the 20/60s Worker cap
@@ -162,6 +163,17 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
   const outDir = path.join(__dirname, '../../www', config.outDir);
   fs.mkdirSync(outDir, { recursive: true });
 
+  // AI Sector Correlation (display-only, spec section 9) needs a Worker fetch
+  // per row, which --rerank/--reeval never make -- so carry each ticker's
+  // existing value forward from the rankings.json about to be overwritten. A
+  // full-fetch run then recomputes every row in applyAiCorrelation(); a ticker
+  // newly entering the ranking stays null until that next full run.
+  const prevAi = new Map();
+  try {
+    const prev = JSON.parse(fs.readFileSync(path.join(outDir, 'rankings.json'), 'utf8'));
+    for (const r of prev.rows || []) if (r.aiCorrelation) prevAi.set(r.ticker, r.aiCorrelation);
+  } catch (_) { /* first-ever run: no prior rankings.json */ }
+
   // Chaebol-affiliate annotation (Korea screen only — config.chaebolAffiliates is a
   // manually curated { ticker: 'Group Name' } map). Additive, not exclusionary — mirrors
   // the highLeverage flag's rendering pattern (asterisk + tooltip + footnote), never
@@ -192,6 +204,7 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
       piotroskiF: r.piotroskiF
         ? { score: r.piotroskiF.score, maxScore: r.piotroskiF.maxScore, ...(r.piotroskiF.trend ? { trend: r.piotroskiF.trend } : {}) }
         : null,
+      aiCorrelation: prevAi.get(r.ticker) ?? null,
       ...(r.highLeverage ? { highLeverage: true } : {}),
       ...(chaebolGroup ? { chaebolGroup } : {}),
     };
@@ -230,6 +243,23 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
   console.log(`\nTop ${rounded.length}:`);
   for (const r of rounded) console.log(`  ${r.rank}. ${r.ticker} ${(r.marginOfSafety * 100).toFixed(0)}% (${r.method})`);
   console.log(`\nWrote ${outDir}\\rankings.json and first-seen.json`);
+}
+
+// Fetch + compute AI Sector Correlation for the ranked rows just written to
+// rankings.json (only those ~20 rows, not the whole 200-500 ticker universe --
+// the column is display-only, so it never needs to gate qualification) and
+// write them back. Never throws: addAiCorrelation() turns any per-row failure
+// into a null value.
+async function applyAiCorrelation(config, { addAiCorrelationImpl = addAiCorrelation } = {}) {
+  const rankingsPath = path.join(__dirname, '../../www', config.outDir, 'rankings.json');
+  const json = JSON.parse(fs.readFileSync(rankingsPath, 'utf8'));
+  json.rows = await addAiCorrelationImpl(json.rows || [], {
+    proxyUrl: readProxyUrl(),
+    throttleMs: config.throttleMs ?? THROTTLE_MS,
+  });
+  fs.writeFileSync(rankingsPath, JSON.stringify(json, null, 2) + '\n');
+  const scored = json.rows.filter(r => r.aiCorrelation).length;
+  console.log(`AI Sector Correlation: ${scored}/${json.rows.length} rows scored`);
 }
 
 // Append (or seed) a { date, portfolioValue, indexPrice } snapshot for the
@@ -404,8 +434,9 @@ async function runScreen(config, argv = process.argv) {
       : null;
     data = await gather(config);
     rankAndWrite(config, data);
+    await applyAiCorrelation(config);
     await updatePortfolio(config, data, oldRankings);
   }
 }
 
-module.exports = { runScreen, readProxyUrl, gather };
+module.exports = { runScreen, readProxyUrl, gather, applyAiCorrelation };
