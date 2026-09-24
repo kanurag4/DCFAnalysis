@@ -48,7 +48,7 @@ function readProxyUrl() {
 const STOCKS_DIR = path.join(__dirname, '..', 'www', 'stocks');
 const MARKET_FOLDERS = ['asx', 'sp500', 'nifty', 'kospi', 'nikkei', 'other'];
 
-async function refreshMarket(folder, proxyUrl, dryRun) {
+async function refreshMarket(folder, proxyUrl, dryRun, aiCorrelationCache) {
   const manifestFile = path.join(STOCKS_DIR, folder, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
   const indexHistoryCache = new Map();
@@ -57,7 +57,7 @@ async function refreshMarket(folder, proxyUrl, dryRun) {
   let done = 0;
   for (const oldEntry of manifest) {
     const outcome = await withNullBaseCaseRetry(
-      () => buildTickerPage(oldEntry.ticker, { proxyUrl, indexHistoryCache }),
+      () => buildTickerPage(oldEntry.ticker, { proxyUrl, indexHistoryCache, aiCorrelationCache }),
       {
         onRetry: (attempt, prevOutcome) => {
           const why = prevOutcome.status === 'skipped' ? prevOutcome.reason : 'null base case';
@@ -101,6 +101,7 @@ async function refreshMarket(folder, proxyUrl, dryRun) {
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
   const proxyUrl = readProxyUrl();
+  const aiCorrelationCache = new Map(); // shared AIQ/RSP daily series across this whole run, every market
 
   const markets = MARKET_FOLDERS.filter(f => fs.existsSync(path.join(STOCKS_DIR, f, 'manifest.json')));
   if (!markets.length) { console.error('No market has a manifest.json -- generate at least one ticker first.'); process.exit(1); }
@@ -118,7 +119,7 @@ async function main() {
   let allResults = [];
   for (const folder of markets) {
     console.log(`\n=== ${folder} ===`);
-    const results = await refreshMarket(folder, proxyUrl, dryRun);
+    const results = await refreshMarket(folder, proxyUrl, dryRun, aiCorrelationCache);
     allResults = allResults.concat(results);
   }
 
