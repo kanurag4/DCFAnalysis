@@ -28,6 +28,8 @@ const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
 const { buildValueScaleCard } = require('./value-scale.js');
 const { buildSolvencyScaleCard } = require('./solvency-scale.js');
+const { buildAiCorrelationCard, buildAiCorrelationFaqHtml } = require('./ai-correlation-card.js');
+const { getAiCorrelation } = require('./ai-correlation-batch.js');
 const { selectRelatedStocks, buildRelatedStocksHtml } = require('./related-stocks.js');
 const { readGrowthManifest, listGrowthMarketFolders } = require('./growth-manifest-reader.js');
 const { pageShell, escapeHtml, breadcrumbJsonLd, breadcrumbNav } = require('./page-shell.js');
@@ -702,7 +704,7 @@ function buildRelatedStocksPool() {
 // (proxyUrl, optional indexHistoryCache Map). Returns:
 // - { status: 'ok', html: string, entry: {...}, market: {...} }
 // - { status: 'skipped', ticker: string, market: string|null, reason: string }
-async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
+async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelationCache } = {}) {
   const t = (ticker || '').trim().toUpperCase();
   if (!TICKER_RE.test(t)) {
     return { status: 'skipped', ticker: ticker, market: null, reason: `invalid ticker format "${ticker}"` };
@@ -1062,6 +1064,17 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
       indexSeriesRaw = [];
     }
     const [priceAligned, indexAligned] = alignByBucket(priceSeriesRaw, indexSeriesRaw);
+
+    // AI Sector Correlation -- see
+    // docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md.
+    // AIQ/RSP are identical for every ticker in a batch run, so the helper
+    // fetches them once into aiCorrelationCache (shared across the whole run,
+    // every market -- unlike indexHistoryCache, which is per-market). It
+    // never throws (a failure just omits the card) and sleeps
+    // FETCH_SPACING_MS before each Worker call it makes.
+    const aiCorrelation = await getAiCorrelation(t, { proxyUrl, cache: aiCorrelationCache, throttleMs: FETCH_SPACING_MS });
+    const aiCorrelationHtml = buildAiCorrelationCard({ aiCorrelation });
+    const aiCorrelationFaqHtml = buildAiCorrelationFaqHtml({ aiCorrelation });
 
     const epsSeries = toPointSeries(hist.eps.points, v => v, d => fyLabel(d, hist.eps.cadence));
     const fcfSeries = toPointSeries(hist.fcf.points, v => v, d => fyLabel(d, hist.fcf.cadence));
@@ -1503,6 +1516,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
 
       ${solvencyScaleHtml}
 
+      ${aiCorrelationHtml}
+
       ${bankMetricsHtml}
 
       ${cyclicalNoteHtml}
@@ -1551,6 +1566,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache } = {}) {
               : `The Base-case ${METHOD_SHORT[method]} estimates intrinsic value at ${money(baseResult?.intrinsicValue, currencySym)} vs a price of ${money(data.price, currencySym)} on ${today} — a ${pctSigned(baseResult?.marginOfSafety)} margin, so the Base case reads ${v.text.toLowerCase()}. This is a mechanical output, not advice.`
             }</p>
           </details>
+          ${aiCorrelationFaqHtml}
         </div>
       </section>`;
 
