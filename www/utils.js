@@ -431,22 +431,24 @@ function formatUpdatedDate(asAt, now = new Date()) {
   return label;
 }
 
-// AI Sector Correlation table cell for the undervalued screens. `ai` is the
-// { r, n, band } object scripts/lib/ai-correlation-batch.js writes into each
-// rankings.json row (null when unavailable). The band -> label map is
-// duplicated from calc/aiCorrelation.js's BANDS on purpose: this is a plain
-// browser script and can't require() the calc module. The band is checked
-// against the map, so nothing unexpected can reach the class attribute.
-const AI_CORR_BAND_LABELS = { high: 'High', moderate: 'Moderate', low: 'Low', none: 'None', inverse: 'Inverse' };
-function aiCorrPillHtml(ai) {
+// AI Sector Correlation cell for the undervalued screens: just the 2dp number, coloured by TEXT like the
+// Altman Z cell (no pill, no band word). `ai` is the { r, n, band } object
+// scripts/lib/ai-correlation-batch.js writes into each rankings.json row (null when unavailable -> a dash).
+// Reuses the screens' existing .neg / .warn / .pos text colours; None gets .ai-none (cyan). High and
+// Inverse are both red: the colour reads as strength of dependence on the AI sector in either direction.
+// The band -> class map is duplicated from calc/aiCorrelation.js's bands on purpose (this is a plain
+// browser script and can't require() the calc module); the band is checked against the map, so nothing
+// unexpected can reach the class attribute.
+const AI_CORR_BAND_CLASS = { high: 'neg', inverse: 'neg', moderate: 'warn', low: 'pos', none: 'ai-none' };
+function aiCorrTd(ai) {
   if (!ai || typeof ai.r !== 'number' || !isFinite(ai.r) ||
-      !Object.prototype.hasOwnProperty.call(AI_CORR_BAND_LABELS, ai.band)) return '—';
-  return `<span class="ai-corr-pill ai-corr-pill-${ai.band}">${ai.r.toFixed(2)} ${AI_CORR_BAND_LABELS[ai.band]}</span>`;
+      !Object.prototype.hasOwnProperty.call(AI_CORR_BAND_CLASS, ai.band)) return '<td class="num">—</td>';
+  return `<td class="num ${AI_CORR_BAND_CLASS[ai.band]}">${ai.r.toFixed(2)}</td>`;
 }
 
 if (typeof module !== 'undefined') module.exports = {
   safe, fmt, formatMarketCap, escapeHtml,
-  aiCorrPillHtml,
+  aiCorrTd,
   deriveFcf,
   isFinancialSector, isRealEstateSector, isReit, isAirline, isUtility, isCyclical, isConglomerate, isSaas, isBankOrInsurance, chooseFinancialModel,
   isAsxTicker, getAsxSectorWaccRange,

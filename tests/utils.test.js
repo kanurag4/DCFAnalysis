@@ -4,7 +4,7 @@ const {
   safe, fmt, deriveFcf, isBankOrInsurance, isFinancialSector, isRealEstateSector, isReit, isAirline,
   isAsxTicker, getAsxSectorWaccRange, getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor, chooseFinancialModel,
-  aiCorrPillHtml,
+  aiCorrTd,
 } = require('../www/utils.js');
 
 // ── deriveFcf ────────────────────────────────────────────────────────────────
@@ -436,23 +436,25 @@ test('isAirline handles null/undefined sector or industry', () => {
   assert.strictEqual(isAirline('Industrials', null), false);
 });
 
-// ── aiCorrPillHtml (undervalued-screen AI Sector Correlation cell) ───────────
+// ── aiCorrTd (undervalued-screen AI Sector Correlation cell) ─────────────────
+// A plain number coloured by a text-colour class, like the Altman Z cell: no pill, no band word.
 
-test('aiCorrPillHtml renders a banded pill with the 2dp value and label for each band', () => {
-  assert.strictEqual(aiCorrPillHtml({ r: 0.684, n: 249, band: 'high' }),
-    '<span class="ai-corr-pill ai-corr-pill-high">0.68 High</span>');
-  assert.strictEqual(aiCorrPillHtml({ r: 0.25, n: 200, band: 'moderate' }),
-    '<span class="ai-corr-pill ai-corr-pill-moderate">0.25 Moderate</span>');
-  assert.strictEqual(aiCorrPillHtml({ r: 0.1, n: 200, band: 'low' }),
-    '<span class="ai-corr-pill ai-corr-pill-low">0.10 Low</span>');
-  assert.strictEqual(aiCorrPillHtml({ r: -0.17, n: 249, band: 'none' }),
-    '<span class="ai-corr-pill ai-corr-pill-none">-0.17 None</span>');
-  assert.strictEqual(aiCorrPillHtml({ r: -0.41, n: 249, band: 'inverse' }),
-    '<span class="ai-corr-pill ai-corr-pill-inverse">-0.41 Inverse</span>');
+test('aiCorrTd renders just the 2dp number, coloured by the same pos/warn/neg classes as Altman Z (None gets its own cyan class)', () => {
+  assert.strictEqual(aiCorrTd({ r: 0.684, n: 249, band: 'high' }), '<td class="num neg">0.68</td>');
+  assert.strictEqual(aiCorrTd({ r: 0.25, n: 200, band: 'moderate' }), '<td class="num warn">0.25</td>');
+  assert.strictEqual(aiCorrTd({ r: 0.1, n: 200, band: 'low' }), '<td class="num pos">0.10</td>');
+  assert.strictEqual(aiCorrTd({ r: -0.17, n: 249, band: 'none' }), '<td class="num ai-none">-0.17</td>');
+  assert.strictEqual(aiCorrTd({ r: -0.41, n: 249, band: 'inverse' }), '<td class="num neg">-0.41</td>');
 });
 
-test('aiCorrPillHtml renders a dash for missing, malformed, or unknown-band values', () => {
+test('aiCorrTd never writes the band word into the cell', () => {
+  for (const band of ['high', 'moderate', 'low', 'none', 'inverse']) {
+    assert.doesNotMatch(aiCorrTd({ r: 0.3, n: 200, band }), /High|Moderate|Low|None|Inverse|<span/);
+  }
+});
+
+test('aiCorrTd renders a plain dash cell for missing, malformed, or unknown-band values', () => {
   for (const bad of [null, undefined, {}, { r: 0.5 }, { r: NaN, band: 'high' }, { r: '0.5', band: 'high' }, { r: 0.5, band: 'weird' }]) {
-    assert.strictEqual(aiCorrPillHtml(bad), '—', JSON.stringify(bad));
+    assert.strictEqual(aiCorrTd(bad), '<td class="num">—</td>', JSON.stringify(bad));
   }
 });

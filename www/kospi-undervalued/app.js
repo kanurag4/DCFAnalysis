@@ -115,8 +115,8 @@
       <td class="num ${liveMargin > 0 ? 'pos' : ''}">${liveMargin == null ? '—' : pct(liveMargin)}</td>
       <td class="num ${zClass}">${zText}</td>
       <td class="num">${fBase}${fTrend}</td>
-      <td class="num">${aiCorrPillHtml(r.aiCorrelation)}</td>
-      <td class="num">${aiCorrPillHtml(r.aiHardwareCorrelation)}</td>
+      ${aiCorrTd(r.aiCorrelation)}
+      ${aiCorrTd(r.aiHardwareCorrelation)}
       <td class="num">${pct(r.wacc)}</td>
       <td class="num">${r.trailingPE == null ? '—' : r.trailingPE.toFixed(1)}</td>
       <td>${fs}</td>

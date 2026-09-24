@@ -280,17 +280,12 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 .activity-table .pos { color: var(--kv-pass); }
 .activity-table .neg { color: var(--kv-fail); }
 
-/* AI Sector Correlation column -- see
+/* AI Sector Correlation columns -- see
    docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md.
-   Solid-colour pill per band (same hexes as the per-ticker page badge). Reads as
-   dependence on the AI sector, reversed traffic light: High red, Moderate amber, Low green,
-   None cyan (neutral). */
-.ai-corr-pill { display:inline-block; border-radius:999px; padding:2px 9px; font-size:0.78rem; font-weight:600; color:#ffffff; white-space:nowrap; }
-.ai-corr-pill-high { background:#ef4444; }
-.ai-corr-pill-moderate { background:#f97316; }
-.ai-corr-pill-low { background:#22c55e; }
-.ai-corr-pill-none { background:#06b6d4; }
-.ai-corr-pill-inverse { background:#ef4444; }
+   The cells are plain numbers coloured by text, like Altman Z: they reuse .neg / .warn / .pos above.
+   Reads as dependence on the AI sector, reversed traffic light: High and Inverse red, Moderate amber,
+   Low green; None is cyan (neutral), which needs its own class. */
+.ai-none { color:#06b6d4; font-weight:600; }
 
 /* Column header that links to its glossary explanation (AI corr.). Reads as a header, with a dotted
    underline as the only cue that it is clickable. */

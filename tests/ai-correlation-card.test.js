@@ -55,23 +55,42 @@ test('the card links to the glossary page so readers can see how the number is c
 
 // ── card: second reading (AI hardware / semiconductors) ──────────────────────
 
-test('the card shows BOTH readings, each labelled, when both are available', () => {
+test('both readings sit under ONE common "AI Sector Correlation" heading, as two side-by-side cards', () => {
   const html = buildAiCorrelationCard({
     aiCorrelation: { r: 0.07, n: 249, band: 'low' },
     aiHardwareCorrelation: { r: -0.24, n: 249, band: 'inverse' },
   });
-  assert.match(html, /AI sector/);
-  assert.match(html, /AI hardware/);
+  // exactly one heading, and it comes before the cards
+  assert.strictEqual((html.match(/<h2>/g) || []).length, 1);
+  assert.match(html, /<h2>AI Sector Correlation<\/h2>/);
+  assert.ok(html.indexOf('<h2>') < html.indexOf('ai-corr-cards'), 'heading should precede the cards');
+  // one container holding exactly two card-styled items, each with its own label and badge
+  assert.strictEqual((html.match(/class="ai-corr-cards"/g) || []).length, 1);
+  assert.strictEqual((html.match(/class="value-scale-block ai-corr-item"/g) || []).length, 2);
+  assert.match(html, />AI sector \(AIQ\)</);
+  assert.match(html, />AI hardware \(semiconductors, SMH\)</);
   assert.match(html, /0\.07/);
   assert.match(html, /-0\.24/);
   assert.strictEqual((html.match(/class="ai-corr-badge"/g) || []).length, 2);
   assert.match(html, /semiconductor/);
 });
 
-test('the card still renders when only the AI-hardware reading is available, and omits the missing one', () => {
+test('the wrapper is not itself a card (no card nested inside a card) and the guide link sits below the cards', () => {
+  const html = buildAiCorrelationCard({
+    aiCorrelation: { r: 0.07, n: 249, band: 'low' },
+    aiHardwareCorrelation: { r: -0.24, n: 249, band: 'inverse' },
+  });
+  assert.match(html, /^<section class="ai-corr-block">/);
+  assert.doesNotMatch(html, /<section class="value-scale-block/);
+  assert.ok(html.indexOf('ai-corr-guide') > html.lastIndexOf('ai-corr-item'), 'guide link should come after the last card');
+});
+
+test('the card still renders, under the common heading, when only the AI-hardware reading is available', () => {
   const html = buildAiCorrelationCard({ aiCorrelation: null, aiHardwareCorrelation: { r: 0.66, n: 249, band: 'high' } });
-  assert.match(html, /AI hardware/);
-  assert.doesNotMatch(html, /AI sector \(AIQ\)/);
+  assert.match(html, /<h2>AI Sector Correlation<\/h2>/);
+  assert.match(html, />AI hardware \(semiconductors, SMH\)</);
+  assert.doesNotMatch(html, />AI sector \(AIQ\)</);
+  assert.strictEqual((html.match(/class="value-scale-block ai-corr-item"/g) || []).length, 1);
   assert.strictEqual((html.match(/class="ai-corr-badge"/g) || []).length, 1);
 });
 

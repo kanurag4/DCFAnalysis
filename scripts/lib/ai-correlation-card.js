@@ -59,7 +59,7 @@ function hasBand(reading) {
 function readingHtml(kind, reading) {
   if (!hasBand(reading)) return '';
   const { r, band } = reading;
-  return `<div class="ai-corr-item">
+  return `<div class="value-scale-block ai-corr-item">
         <span class="ai-corr-label">${escapeHtml(READING_LABEL[kind])}</span>
         <span class="ai-corr-badge" style="background:${BAND_COLOR[band]}"><span class="ai-corr-rval">${r.toFixed(2)}</span> ${escapeHtml(bandLabel(band))}</span>
         <p class="eval-card-note">${escapeHtml(BAND_DESCRIPTION[kind][band])}</p>
@@ -73,12 +73,15 @@ function buildAiCorrelationCard({ aiCorrelation, aiHardwareCorrelation } = {}) {
   const items = [readingHtml('ai', aiCorrelation), readingHtml('hardware', aiHardwareCorrelation)].filter(Boolean);
   if (!items.length) return '';
 
-  return `<section class="value-scale-block ai-corr-block">
+  // One common heading, then each reading as its own .value-scale-block card, laid out side by side
+  // (wrapping to stacked on narrow screens) by .ai-corr-cards. The wrapper itself is deliberately NOT
+  // a card, so there is no card nested inside a card.
+  return `<section class="ai-corr-block">
     <h2>AI Sector Correlation</h2>
-    <div class="ai-corr-card">
+    <div class="ai-corr-cards">
       ${items.join('\n      ')}
-      <p class="eval-card-note ai-corr-guide"><a href="/glossary/ai-sector-correlation/">How it's calculated →</a></p>
     </div>
+    <p class="eval-card-note ai-corr-guide"><a href="/glossary/ai-sector-correlation/">How it's calculated →</a></p>
   </section>`;
 }
 

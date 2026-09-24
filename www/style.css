@@ -801,16 +801,17 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
    Badge colours are set inline by ai-correlation-card.js. They read as dependence on the
    AI sector, reversed traffic light: High red, Moderate amber, Low green, None cyan
    (neutral) -- a deliberate departure from the sitewide green=good convention. */
-.ai-corr-block { margin-top: 20px; }
-.ai-corr-card { display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; }
+.ai-corr-block { margin: 24px 0; }
+.ai-corr-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
 .ai-corr-badge {
   display: inline-flex; align-items: center; gap: 6px;
   border-radius: 999px; padding: 5px 14px; font-size: 0.88rem; font-weight: 600;
   color: #ffffff;
 }
 .ai-corr-rval { font-variant-numeric: tabular-nums; opacity: 0.92; }
-/* Two readings in one AI Sector Correlation card (vs AIQ and vs SMH semiconductors). */
-.ai-corr-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.ai-corr-item + .ai-corr-item { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--kv-border); width: 100%; }
-.ai-corr-label { font-size: 0.78rem; color: var(--kv-muted); text-transform: uppercase; letter-spacing: 0.03em; }
-.ai-corr-guide { margin-top: 4px; }
+/* Each reading (vs AIQ, vs SMH semiconductors) is its own .value-scale-block card. They sit side by
+   side and wrap to stacked on narrow screens; a lone reading stays centred. */
+.ai-corr-item.value-scale-block { flex: 1 1 260px; max-width: 480px; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ai-corr-block > h2 { font-size: 1rem; margin-bottom: 10px; text-align: center; }
+.ai-corr-label { font-size: 0.9rem; font-weight: 600; color: var(--kv-text); }
+.ai-corr-guide { margin-top: 12px; text-align: center; }
