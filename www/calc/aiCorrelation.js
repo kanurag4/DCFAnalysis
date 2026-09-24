@@ -10,18 +10,27 @@
 // against 20+ real tickers before landing on this design.
 
 const AI_ETF_TICKER = 'AIQ';
+// Second benchmark (added 2026-09-24, spec §10): the semiconductor / AI-hardware side of the AI
+// boom. SaaS names read ~0 against the broad AIQ basket but clearly negative against semis, while
+// NVDA/AMD are strongly positive against both.
+const AI_HARDWARE_ETF_TICKER = 'SMH';
 const MARKET_ETF_TICKER = 'RSP';
 const MIN_TRADING_DAYS = 90; // card/FAQ are omitted at or below this many overlapping days
+const INVERSE_MAX = -0.20;   // r at or below this = Inverse (moves AGAINST the benchmark)
 
 const BANDS = [
   { key: 'high', label: 'High', min: 0.40 },
   { key: 'moderate', label: 'Moderate', min: 0.20 },
   { key: 'low', label: 'Low', min: 0.05 },
   { key: 'none', label: 'None', min: -Infinity },
+  // Never matched by the loop below (None's -Infinity catches everything first); bandFor()
+  // checks INVERSE_MAX explicitly, this entry only supplies the label.
+  { key: 'inverse', label: 'Inverse', min: -Infinity },
 ];
 
 function bandFor(r) {
   if (r == null) return null;
+  if (r <= INVERSE_MAX) return 'inverse';
   for (const b of BANDS) {
     if (r >= b.min) return b.key;
   }
@@ -92,24 +101,29 @@ function residualsAfterRegression(y, x) {
 // when MIN_TRADING_DAYS or fewer overlapping trading days exist after
 // alignment (too small a sample to trust -- covers recent IPOs and
 // thinly-traded tickers).
-function partialCorrelation({ stock, aiq, rsp }) {
+function partialCorrelationAgainst({ stock, benchmark, market }) {
   const stockRets = toDailyReturns(stock || []);
-  const aiqRets = toDailyReturns(aiq || []);
-  const rspRets = toDailyReturns(rsp || []);
+  const benchRets = toDailyReturns(benchmark || []);
+  const marketRets = toDailyReturns(market || []);
 
-  const [stockAligned, aiqAligned, rspAligned] = innerJoinByDate([stockRets, aiqRets, rspRets]);
+  const [stockAligned, benchAligned, marketAligned] = innerJoinByDate([stockRets, benchRets, marketRets]);
   const n = stockAligned.length;
 
   if (n <= MIN_TRADING_DAYS) return { r: null, n, band: null };
 
-  const stockResid = residualsAfterRegression(stockAligned, rspAligned);
-  const aiqResid = residualsAfterRegression(aiqAligned, rspAligned);
-  const r = pearson(stockResid, aiqResid);
+  const stockResid = residualsAfterRegression(stockAligned, marketAligned);
+  const benchResid = residualsAfterRegression(benchAligned, marketAligned);
+  const r = pearson(stockResid, benchResid);
 
   return { r, n, band: bandFor(r) };
 }
 
+// The original AIQ-vs-RSP entry point; the generic form above serves any benchmark (e.g. SMH).
+function partialCorrelation({ stock, aiq, rsp }) {
+  return partialCorrelationAgainst({ stock, benchmark: aiq, market: rsp });
+}
+
 if (typeof module !== 'undefined') module.exports = {
-  AI_ETF_TICKER, MARKET_ETF_TICKER, MIN_TRADING_DAYS, BANDS,
-  bandFor, bandLabel, toDailyReturns, innerJoinByDate, partialCorrelation,
+  AI_ETF_TICKER, AI_HARDWARE_ETF_TICKER, MARKET_ETF_TICKER, MIN_TRADING_DAYS, INVERSE_MAX, BANDS,
+  bandFor, bandLabel, toDailyReturns, innerJoinByDate, partialCorrelation, partialCorrelationAgainst,
 };

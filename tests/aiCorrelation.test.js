@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { partialCorrelation, bandFor, bandLabel, MIN_TRADING_DAYS } = require('../www/calc/aiCorrelation.js');
+const { partialCorrelation, partialCorrelationAgainst, bandFor, bandLabel, MIN_TRADING_DAYS, AI_HARDWARE_ETF_TICKER } = require('../www/calc/aiCorrelation.js');
 
 // Converts a returns array into a closes array (deterministic, starts at
 // 100) so tests can construct known-shape return series without hand-typing
@@ -121,7 +121,9 @@ test('bandFor applies thresholds at the documented boundaries', () => {
   assert.strictEqual(bandFor(0.199), 'low');
   assert.strictEqual(bandFor(0.05), 'low');
   assert.strictEqual(bandFor(0.049), 'none');
-  assert.strictEqual(bandFor(-0.5), 'none');
+  assert.strictEqual(bandFor(-0.199), 'none');
+  assert.strictEqual(bandFor(-0.20), 'inverse');
+  assert.strictEqual(bandFor(-0.5), 'inverse');
   assert.strictEqual(bandFor(null), null);
 });
 
@@ -130,5 +132,34 @@ test('bandLabel maps band keys to display labels', () => {
   assert.strictEqual(bandLabel('moderate'), 'Moderate');
   assert.strictEqual(bandLabel('low'), 'Low');
   assert.strictEqual(bandLabel('none'), 'None');
+  assert.strictEqual(bandLabel('inverse'), 'Inverse');
   assert.strictEqual(bandLabel('unknown'), null);
+});
+
+test("partialCorrelation returns a strongly negative r and the inverse band when the stock moves against AIQ's AI-specific component", () => {
+  const mkt = marketFactor(N);
+  const ai = aiFactor(N);
+  const result = partialCorrelation({
+    stock: closesFromReturns(mkt.map((m, i) => m - ai[i]), '2026-01-01'),
+    aiq: closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01'),
+    rsp: closesFromReturns(mkt, '2026-01-01'),
+  });
+  assert.ok(result.r < -0.95, `expected r < -0.95, got ${result.r}`);
+  assert.strictEqual(result.band, 'inverse');
+});
+
+test('partialCorrelationAgainst gives the same answer as partialCorrelation for the same three series', () => {
+  const mkt = marketFactor(N);
+  const ai = aiFactor(N);
+  const stock = closesFromReturns(mkt.map((m, i) => m + 0.5 * ai[i]), '2026-01-01');
+  const bench = closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01');
+  const market = closesFromReturns(mkt, '2026-01-01');
+  assert.deepStrictEqual(
+    partialCorrelationAgainst({ stock, benchmark: bench, market }),
+    partialCorrelation({ stock, aiq: bench, rsp: market }),
+  );
+});
+
+test('the AI-hardware benchmark is the VanEck semiconductor ETF (SMH)', () => {
+  assert.strictEqual(AI_HARDWARE_ETF_TICKER, 'SMH');
 });
