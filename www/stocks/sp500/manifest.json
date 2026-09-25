@@ -1196,6 +1196,19 @@
     "updatedAt": "2026-09-25T11:05:50.752Z"
   },
   {
+    "ticker": "PSX",
+    "slug": "psx",
+    "name": "Phillips 66",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 319.67807113805594,
+    "price": 255.87,
+    "marginOfSafety": 0.24937691459747502,
+    "marketCap": 102097485824,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:17:15.844Z"
+  },
+  {
     "ticker": "QCOM",
     "slug": "qcom",
     "name": "QUALCOMM Incorporated",
