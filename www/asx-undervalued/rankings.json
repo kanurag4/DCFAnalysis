@@ -1,512 +1,712 @@
 {
-  "asAt": "2026-09-18",
+  "asAt": "2026-09-25",
   "universe": "ASX 300",
   "summary": {
     "tickers": 300,
     "evaluated": 297,
-    "qualified": 22,
+    "qualified": 31,
     "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 3,
-      "unvaluable": 124,
-      "overvalued": 132,
-      "marginOverCap": 15,
-      "distressZone": 4,
+      "unvaluable": 121,
+      "overvalued": 122,
+      "marginOverCap": 18,
+      "distressZone": 5,
       "proxyFcf": 0
     }
   },
   "rows": [
     {
       "rank": 1,
-      "ticker": "NHC.AX",
-      "name": "New Hope Corporation Limited",
-      "sector": "Energy",
-      "method": "DCF",
-      "intrinsic": 11.86,
-      "snapshotPrice": 6.38,
-      "marginOfSafety": 0.8597,
-      "wacc": 0.1079,
-      "terminalValuePct": 71.4,
-      "trailingPE": 33.6,
-      "marketCap": 5383272448,
-      "operatingMargin": 0.1663,
-      "analystTarget": 5.54,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 5.64,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      }
-    },
-    {
-      "rank": 2,
-      "ticker": "DRR.AX",
-      "name": "Deterra Royalties Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 7.97,
-      "snapshotPrice": 4.31,
-      "marginOfSafety": 0.8488,
-      "wacc": 0.083,
-      "terminalValuePct": 79.1,
-      "trailingPE": 13.9,
-      "marketCap": 2282171136,
-      "operatingMargin": 0.9462,
-      "analystTarget": 4.7,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 9.95,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      }
-    },
-    {
-      "rank": 3,
-      "ticker": "SUL.AX",
-      "name": "Super Retail Group Limited",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 22.05,
-      "snapshotPrice": 12.18,
-      "marginOfSafety": 0.8107,
-      "wacc": 0.0789,
-      "terminalValuePct": 76.7,
-      "trailingPE": 13.4,
-      "marketCap": 2750566912,
-      "operatingMargin": 0.0854,
-      "analystTarget": 14.67,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 2.21,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      }
-    },
-    {
-      "rank": 4,
-      "ticker": "MTS.AX",
-      "name": "Metcash Limited",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 4.96,
-      "snapshotPrice": 2.82,
-      "marginOfSafety": 0.7589,
-      "wacc": 0.0694,
-      "terminalValuePct": 80.4,
-      "trailingPE": 11.3,
-      "marketCap": 3101227776,
-      "operatingMargin": 0.028,
-      "analystTarget": 3.38,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 3.2,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      }
-    },
-    {
-      "rank": 5,
       "ticker": "JHX.AX",
       "name": "James Hardie Industries plc",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 57.3,
-      "snapshotPrice": 36.45,
-      "marginOfSafety": 0.5719,
-      "wacc": 0.1052,
-      "terminalValuePct": 71.2,
-      "trailingPE": 117.6,
-      "marketCap": 21160044544,
+      "intrinsic": 72.25,
+      "snapshotPrice": 36.98,
+      "marginOfSafety": 0.9537,
+      "wacc": 0.0906,
+      "terminalValuePct": 75.6,
+      "trailingPE": 119.3,
+      "marketCap": 21467721728,
       "operatingMargin": 0.1613,
-      "analystTarget": 43.99,
+      "analystTarget": 45.29,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.52,
+        "score": 2.55,
         "zone": "grey"
       },
       "piotroskiF": {
         "score": 3,
         "maxScore": 9,
         "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.04,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 6,
-      "ticker": "GQG.AX",
-      "name": "GQG Partners Inc.",
-      "sector": "Financial Services",
-      "method": "DCF",
-      "intrinsic": 1.65,
-      "snapshotPrice": 1.07,
-      "marginOfSafety": 0.5446,
-      "wacc": 0.0906,
-      "terminalValuePct": 75.2,
-      "trailingPE": 4.9,
-      "marketCap": 3204003584,
-      "operatingMargin": 0.7599,
-      "analystTarget": 1.54,
-      "currency": "AUD",
-      "altmanZ": null,
-      "piotroskiF": null
-    },
-    {
-      "rank": 7,
+      "rank": 2,
       "ticker": "RRL.AX",
       "name": "Regis Resources Limited",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 11.04,
-      "snapshotPrice": 7.8,
-      "marginOfSafety": 0.4153,
-      "wacc": 0.1377,
-      "terminalValuePct": 65,
-      "trailingPE": 8.3,
-      "marketCap": 5917832192,
+      "intrinsic": 14,
+      "snapshotPrice": 7.72,
+      "marginOfSafety": 0.814,
+      "wacc": 0.1128,
+      "terminalValuePct": 71.4,
+      "trailingPE": 8.2,
+      "marketCap": 5857136128,
       "operatingMargin": 0.433,
-      "analystTarget": 8.16,
+      "analystTarget": 8.06,
       "currency": "AUD",
       "altmanZ": {
-        "score": 6.96,
+        "score": 6.92,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 8,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.08,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 8,
+      "rank": 3,
+      "ticker": "GQG.AX",
+      "name": "GQG Partners Inc.",
+      "sector": "Financial Services",
+      "method": "DCF",
+      "intrinsic": 1.98,
+      "snapshotPrice": 1.09,
+      "marginOfSafety": 0.813,
+      "wacc": 0.0798,
+      "terminalValuePct": 78.8,
+      "trailingPE": 5,
+      "marketCap": 3263891456,
+      "operatingMargin": 0.7599,
+      "analystTarget": 1.56,
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.02,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.03,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 4,
+      "ticker": "BFL.AX",
+      "name": "BSP Financial Group Limited",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 12.88,
+      "snapshotPrice": 7.81,
+      "marginOfSafety": 0.6489,
+      "wacc": 0.0742,
+      "terminalValuePct": 80.2,
+      "trailingPE": 9.6,
+      "marketCap": 3647269888,
+      "operatingMargin": 0,
+      "analystTarget": null,
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.02,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.02,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 5,
       "ticker": "MAD.AX",
       "name": "Mader Group Limited",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 8.71,
-      "snapshotPrice": 6.31,
-      "marginOfSafety": 0.3807,
-      "wacc": 0.0822,
-      "terminalValuePct": 80.1,
-      "trailingPE": 20.4,
-      "marketCap": 1283843456,
+      "intrinsic": 10.21,
+      "snapshotPrice": 6.21,
+      "marginOfSafety": 0.6446,
+      "wacc": 0.074,
+      "terminalValuePct": 82.7,
+      "trailingPE": 20,
+      "marketCap": 1263497344,
       "operatingMargin": 0.0946,
       "analystTarget": 8.88,
       "currency": "AUD",
       "altmanZ": {
-        "score": 10.64,
+        "score": 10.54,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 8,
         "maxScore": 9,
         "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": 0,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.05,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 9,
-      "ticker": "BFL.AX",
-      "name": "BSP Financial Group Limited",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 11,
-      "snapshotPrice": 7.99,
-      "marginOfSafety": 0.3761,
-      "wacc": 0.0825,
-      "terminalValuePct": 77.4,
-      "trailingPE": 10,
-      "marketCap": 3731329792,
-      "operatingMargin": 0,
-      "analystTarget": null,
+      "rank": 6,
+      "ticker": "NHC.AX",
+      "name": "New Hope Corporation Limited",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 9.24,
+      "snapshotPrice": 5.71,
+      "marginOfSafety": 0.6176,
+      "wacc": 0.0915,
+      "terminalValuePct": 73.7,
+      "trailingPE": 30.1,
+      "marketCap": 4817944064,
+      "operatingMargin": 0.1663,
+      "analystTarget": 5.54,
       "currency": "AUD",
-      "altmanZ": null,
-      "piotroskiF": null
+      "altmanZ": {
+        "score": 4.86,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.02,
+        "n": 245,
+        "band": "none"
+      }
     },
     {
-      "rank": 10,
+      "rank": 7,
       "ticker": "FMG.AX",
       "name": "Fortescue Ltd",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 21.72,
-      "snapshotPrice": 16.73,
-      "marginOfSafety": 0.2983,
-      "wacc": 0.0923,
-      "terminalValuePct": 73.5,
-      "trailingPE": 12.8,
-      "marketCap": 51511083008,
+      "intrinsic": 26.34,
+      "snapshotPrice": 16.37,
+      "marginOfSafety": 0.6092,
+      "wacc": 0.0807,
+      "terminalValuePct": 77.4,
+      "trailingPE": 12.5,
+      "marketCap": 50402660352,
       "operatingMargin": 0.2925,
-      "analystTarget": 17.41,
+      "analystTarget": 17.52,
       "currency": "AUD",
       "altmanZ": {
-        "score": 4.81,
+        "score": 4.75,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 5,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.09,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 11,
-      "ticker": "LNW.AX",
-      "name": "Light & Wonder, Inc.",
+      "rank": 8,
+      "ticker": "MGR.AX",
+      "name": "Mirvac Group",
+      "sector": "Real Estate",
+      "method": "DCF",
+      "intrinsic": 2.64,
+      "snapshotPrice": 1.72,
+      "marginOfSafety": 0.5413,
+      "wacc": 0.0814,
+      "terminalValuePct": 76.2,
+      "trailingPE": 10.1,
+      "marketCap": 6767150080,
+      "operatingMargin": 0.2877,
+      "analystTarget": 2.12,
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.1,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 9,
+      "ticker": "DMP.AX",
+      "name": "Domino's Pizza Enterprises Limited",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 139.93,
-      "snapshotPrice": 113,
-      "marginOfSafety": 0.2383,
-      "wacc": 0.0754,
-      "terminalValuePct": 80.9,
-      "trailingPE": 23.7,
-      "marketCap": 8449594880,
-      "operatingMargin": 0.2766,
-      "analystTarget": 164.78,
+      "intrinsic": 28.77,
+      "snapshotPrice": 19.2,
+      "marginOfSafety": 0.4984,
+      "wacc": 0.0773,
+      "terminalValuePct": 77.3,
+      "trailingPE": null,
+      "marketCap": 1819139840,
+      "operatingMargin": 0.0863,
+      "analystTarget": 20.61,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.16,
+        "score": 2,
         "zone": "grey"
       },
       "piotroskiF": {
         "score": 5,
         "maxScore": 9,
-        "trend": "Deteriorating"
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.16,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.11,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 12,
+      "rank": 10,
       "ticker": "HVN.AX",
       "name": "Harvey Norman Holdings Limited",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 5.04,
-      "snapshotPrice": 4.1,
-      "marginOfSafety": 0.2291,
-      "wacc": 0.0794,
-      "terminalValuePct": 76.5,
-      "trailingPE": 9.8,
-      "marketCap": 5108626944,
+      "intrinsic": 6.18,
+      "snapshotPrice": 4.14,
+      "marginOfSafety": 0.4926,
+      "wacc": 0.0716,
+      "terminalValuePct": 79.4,
+      "trailingPE": 9.9,
+      "marketCap": 5158467584,
       "operatingMargin": 0.2319,
       "analystTarget": 4.56,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.15,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.05,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 11,
+      "ticker": "SLC.AX",
+      "name": "Superloop Limited",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 3.78,
+      "snapshotPrice": 2.57,
+      "marginOfSafety": 0.4707,
+      "wacc": 0.0703,
+      "terminalValuePct": 83.9,
+      "trailingPE": 85.7,
+      "marketCap": 1324059136,
+      "operatingMargin": 0.0566,
+      "analystTarget": 3.78,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 3.32,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.08,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.05,
+        "n": 245,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "LNW.AX",
+      "name": "Light & Wonder, Inc.",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 162.41,
+      "snapshotPrice": 110.5,
+      "marginOfSafety": 0.4697,
+      "wacc": 0.0704,
+      "terminalValuePct": 82.6,
+      "trailingPE": 23.1,
+      "marketCap": 8262657024,
+      "operatingMargin": 0.2766,
+      "analystTarget": 167.54,
       "currency": "AUD",
       "altmanZ": {
         "score": 2.14,
         "zone": "grey"
       },
       "piotroskiF": {
-        "score": 6,
+        "score": 5,
         "maxScore": 9,
         "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.03,
+        "n": 245,
+        "band": "none"
       }
     },
     {
       "rank": 13,
-      "ticker": "MGR.AX",
-      "name": "Mirvac Group",
-      "sector": "Real Estate",
-      "method": "DCF",
-      "intrinsic": 2.12,
-      "snapshotPrice": 1.75,
-      "marginOfSafety": 0.2141,
-      "wacc": 0.0912,
-      "terminalValuePct": 72.8,
-      "trailingPE": 10.3,
-      "marketCap": 6885526016,
-      "operatingMargin": 0.2877,
-      "analystTarget": 2.12,
-      "currency": "AUD",
-      "altmanZ": null,
-      "piotroskiF": null
-    },
-    {
-      "rank": 14,
-      "ticker": "JDO.AX",
-      "name": "Judo Capital Holdings Limited",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 1.15,
-      "snapshotPrice": 0.96,
-      "marginOfSafety": 0.2028,
-      "wacc": 0.1339,
-      "terminalValuePct": null,
-      "trailingPE": 10.7,
-      "marketCap": 1077459456,
-      "operatingMargin": 0.448,
-      "analystTarget": 1.49,
-      "currency": "AUD",
-      "altmanZ": null,
-      "piotroskiF": null
-    },
-    {
-      "rank": 15,
       "ticker": "A2M.AX",
       "name": "The a2 Milk Company Limited",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 8.01,
-      "snapshotPrice": 6.7,
-      "marginOfSafety": 0.1955,
-      "wacc": 0.0823,
-      "terminalValuePct": 75.4,
-      "trailingPE": 29.1,
-      "marketCap": 4877974016,
+      "intrinsic": 9.16,
+      "snapshotPrice": 6.65,
+      "marginOfSafety": 0.3779,
+      "wacc": 0.0741,
+      "terminalValuePct": 78.5,
+      "trailingPE": 28.9,
+      "marketCap": 4841571840,
       "operatingMargin": 0.1474,
-      "analystTarget": 7.5,
+      "analystTarget": 7.53,
       "currency": "AUD",
       "altmanZ": {
-        "score": 5.94,
+        "score": 5.92,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 6,
         "maxScore": 9,
         "trend": "Stable"
-      }
-    },
-    {
-      "rank": 16,
-      "ticker": "DMP.AX",
-      "name": "Domino's Pizza Enterprises Limited",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 22.21,
-      "snapshotPrice": 18.87,
-      "marginOfSafety": 0.1772,
-      "wacc": 0.0879,
-      "terminalValuePct": 73.5,
-      "trailingPE": null,
-      "marketCap": 1787873408,
-      "operatingMargin": 0.0863,
-      "analystTarget": 20.2,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 1.99,
-        "zone": "grey"
       },
-      "piotroskiF": {
-        "score": 5,
-        "maxScore": 9,
-        "trend": "Stable"
-      }
-    },
-    {
-      "rank": 17,
-      "ticker": "MND.AX",
-      "name": "Monadelphous Group Limited",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 35.66,
-      "snapshotPrice": 30.62,
-      "marginOfSafety": 0.1647,
-      "wacc": 0.0868,
-      "terminalValuePct": 74.4,
-      "trailingPE": 24.3,
-      "marketCap": 3078002688,
-      "operatingMargin": 0.0528,
-      "analystTarget": 29.45,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 7.5,
-        "zone": "safe"
+      "aiCorrelation": {
+        "r": -0.06,
+        "n": 245,
+        "band": "none"
       },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Deteriorating"
+      "aiHardwareCorrelation": {
+        "r": 0,
+        "n": 245,
+        "band": "none"
       }
     },
     {
-      "rank": 18,
+      "rank": 14,
       "ticker": "FRW.AX",
       "name": "Freightways Group Limited",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 11.81,
-      "snapshotPrice": 10.67,
-      "marginOfSafety": 0.1067,
-      "wacc": 0.0789,
-      "terminalValuePct": 77.5,
-      "trailingPE": 25.4,
-      "marketCap": 1912174976,
+      "intrinsic": 14.47,
+      "snapshotPrice": 10.51,
+      "marginOfSafety": 0.3772,
+      "wacc": 0.071,
+      "terminalValuePct": 80.4,
+      "trailingPE": 25,
+      "marketCap": 1883501312,
       "operatingMargin": 0.1027,
       "analystTarget": 13.02,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.64,
+        "score": 2.62,
         "zone": "grey"
       },
       "piotroskiF": {
         "score": 5,
         "maxScore": 9,
         "trend": "Deteriorating"
-      }
-    },
-    {
-      "rank": 19,
-      "ticker": "SLC.AX",
-      "name": "Superloop Limited",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 3.04,
-      "snapshotPrice": 2.75,
-      "marginOfSafety": 0.1049,
-      "wacc": 0.0799,
-      "terminalValuePct": 80.8,
-      "trailingPE": 91.7,
-      "marketCap": 1416794752,
-      "operatingMargin": 0.0566,
-      "analystTarget": 3.78,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 3.56,
-        "zone": "safe"
       },
-      "piotroskiF": {
-        "score": 5,
-        "maxScore": 9,
-        "trend": "Deteriorating"
+      "aiCorrelation": {
+        "r": 0.06,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.06,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 20,
+      "rank": 15,
       "ticker": "EMR.AX",
       "name": "Emerald Resources NL",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 7.76,
-      "snapshotPrice": 7.07,
-      "marginOfSafety": 0.0982,
-      "wacc": 0.1048,
-      "terminalValuePct": 73.5,
-      "trailingPE": 18.1,
-      "marketCap": 4684707840,
+      "intrinsic": 9.52,
+      "snapshotPrice": 6.95,
+      "marginOfSafety": 0.3702,
+      "wacc": 0.0898,
+      "terminalValuePct": 77.8,
+      "trailingPE": 17.8,
+      "marketCap": 4608753152,
       "operatingMargin": 0.6781,
-      "analystTarget": 7.43,
+      "analystTarget": 7.76,
       "currency": "AUD",
       "altmanZ": {
-        "score": 17.36,
+        "score": 17.12,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 6,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.11,
+        "n": 245,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 16,
+      "ticker": "MND.AX",
+      "name": "Monadelphous Group Limited",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 41.79,
+      "snapshotPrice": 30.97,
+      "marginOfSafety": 0.3494,
+      "wacc": 0.0772,
+      "terminalValuePct": 77.8,
+      "trailingPE": 24.6,
+      "marketCap": 3115177472,
+      "operatingMargin": 0.0528,
+      "analystTarget": 29.09,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 7.55,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.05,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.03,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 17,
+      "ticker": "JDO.AX",
+      "name": "Judo Capital Holdings Limited",
+      "sector": "Financial Services",
+      "method": "ExcessReturn",
+      "intrinsic": 1.28,
+      "snapshotPrice": 0.95,
+      "marginOfSafety": 0.3424,
+      "wacc": 0.1102,
+      "terminalValuePct": null,
+      "trailingPE": 10.6,
+      "marketCap": 1071847744,
+      "operatingMargin": 0.448,
+      "analystTarget": 1.49,
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.02,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.03,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 18,
+      "ticker": "PRN.AX",
+      "name": "Perenti Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 2.77,
+      "snapshotPrice": 2.2,
+      "marginOfSafety": 0.2569,
+      "wacc": 0.0689,
+      "terminalValuePct": 81.4,
+      "trailingPE": 24.4,
+      "marketCap": 2053168768,
+      "operatingMargin": 0.1203,
+      "analystTarget": 2.8,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.77,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.16,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.09,
+        "n": 245,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 19,
+      "ticker": "DOW.AX",
+      "name": "Downer EDI Limited",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 8.32,
+      "snapshotPrice": 6.71,
+      "marginOfSafety": 0.2397,
+      "wacc": 0.0854,
+      "terminalValuePct": 74.3,
+      "trailingPE": 20.3,
+      "marketCap": 4421961728,
+      "operatingMargin": 0.0532,
+      "analystTarget": 7.82,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.27,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.01,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.02,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 20,
+      "ticker": "IGO.AX",
+      "name": "IGO Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 7.83,
+      "snapshotPrice": 6.58,
+      "marginOfSafety": 0.1895,
+      "wacc": 0.0801,
+      "terminalValuePct": 78.1,
+      "trailingPE": 34.6,
+      "marketCap": 4982822400,
+      "operatingMargin": -0.1198,
+      "analystTarget": 7.89,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 14.22,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": 0.03,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.02,
+        "n": 245,
+        "band": "none"
       }
     }
   ]

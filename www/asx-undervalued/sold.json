@@ -484,5 +484,29 @@
     "exitDate": "2026-09-18",
     "exitPrice": 0.87,
     "dollarPnl": -6.18
+  },
+  {
+    "ticker": "DRR.AX",
+    "entryDate": "2026-09-18",
+    "entryPrice": 4.31,
+    "exitDate": "2026-09-25",
+    "exitPrice": 4.05,
+    "dollarPnl": -32.63
+  },
+  {
+    "ticker": "SUL.AX",
+    "entryDate": "2026-09-18",
+    "entryPrice": 12.18,
+    "exitDate": "2026-09-25",
+    "exitPrice": 12.34,
+    "dollarPnl": 7.11
+  },
+  {
+    "ticker": "MTS.AX",
+    "entryDate": "2026-09-11",
+    "entryPrice": 2.83,
+    "exitDate": "2026-09-25",
+    "exitPrice": 2.86,
+    "dollarPnl": 7.67
   }
 ]

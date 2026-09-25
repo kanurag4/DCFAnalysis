@@ -32,8 +32,8 @@
     "firstPrice": 28.69
   },
   "DOW.AX": {
-    "firstSeen": "2026-09-04",
-    "firstPrice": 6.37
+    "firstSeen": "2026-09-25",
+    "firstPrice": 6.71
   },
   "WHC.AX": {
     "firstSeen": "2026-06-02",
@@ -68,8 +68,8 @@
     "firstPrice": 1.44
   },
   "PRN.AX": {
-    "firstSeen": "2026-06-02",
-    "firstPrice": 2.08
+    "firstSeen": "2026-09-25",
+    "firstPrice": 2.2
   },
   "TAH.AX": {
     "firstSeen": "2026-06-02",
@@ -262,5 +262,9 @@
   "EMR.AX": {
     "firstSeen": "2026-09-18",
     "firstPrice": 7.07
+  },
+  "IGO.AX": {
+    "firstSeen": "2026-09-25",
+    "firstPrice": 6.58
   }
 }
