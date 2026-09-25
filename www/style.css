@@ -613,14 +613,19 @@ html.dark .eval-scorecard-row.fail .value { color: #f87171; }
      this replaced). */
   background: linear-gradient(90deg, var(--kv-fail) 0%, var(--kv-fail) 33.333%, var(--kv-warn) 33.333%, var(--kv-warn) 66.667%, var(--kv-pass) 66.667%, var(--kv-pass) 100%);
 }
+/* Altman Z "score" marker: a grey overlay from the score (inline left:X% from
+   altmanBarPct()) to the right edge, so the RAG colours show only up to the
+   score. Replaced a down-pointing triangle that read as upside down. Class
+   name is a legacy from the triangle version -- it's baked into every
+   already-published ticker page's HTML, so keep it. */
 .solv-mbar-tri {
   position: absolute;
-  bottom: -3px;
-  width: 0; height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid var(--kv-primary);
-  transform: translateX(-50%);
+  top: 0;
+  right: 0;
+  height: 8px;
+  border-radius: 0 4px 4px 0;
+  background: #c1c6cb;
+  background: color-mix(in srgb, var(--kv-muted) 35%, var(--kv-card));
 }
 .solv-mseg-row { display: flex; gap: 2px; }
 .solv-mseg {
