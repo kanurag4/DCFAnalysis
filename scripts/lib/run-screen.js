@@ -20,6 +20,7 @@ const { mergeFirstSeen } = require('./firstSeen.js');
 const { tallyTickerMargin, updateSectorMarginLookup } = require('./sector-margin-tally.js');
 const { computeRebalance, checkIndexSeedConsistency, STARTING_VALUE } = require('./portfolio.js');
 const { prepareEurRebalanceInputs } = require('./fx.js');
+const { convertFinancials } = require('./convert-financials.js');
 const { addAiCorrelation } = require('./ai-correlation-batch.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -71,10 +72,12 @@ async function gather(config) {
   const failed = [];
   const marginTallies = []; // byproduct: every evaluated ticker's own multi-year margin, for
                              // scripts/lib/sector-margin-tally.js's cross-market lookup
+  const fxCache = new Map(); // one rate lookup per currency pair per run
   let done = 0;
   for (const ticker of tickers) {
-    const data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
+    let data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
     if (data) {
+      data = await convertFinancials(data, { proxyUrl, fxCache });
       raw.push(data);
       evaluated.push(evaluateStock(data, marketParamsFor(ticker, live)));
       marginTallies.push(tallyTickerMargin(data));
@@ -91,8 +94,9 @@ async function gather(config) {
     await sleep(65000);
     const stillFailed = [];
     for (const ticker of failed) {
-      const data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
+      let data = await fetchSymbol(ticker, { proxyUrl, retries: 2, backoffMs: 4000 });
       if (data) {
+        data = await convertFinancials(data, { proxyUrl, fxCache });
         raw.push(data);
         evaluated.push(evaluateStock(data, marketParamsFor(ticker, live)));
         marginTallies.push(tallyTickerMargin(data));

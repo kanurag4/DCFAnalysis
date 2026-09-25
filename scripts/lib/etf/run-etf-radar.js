@@ -19,6 +19,7 @@ const { evaluateStock: realEvaluateStock } = require('../evaluate.js');
 const { fetchSymbol: realFetchSymbol } = require('../../fetch-yahoo.js');
 const { fetchFxRate } = require('../../../www/data.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('../rf.js');
+const { convertFinancials } = require('../convert-financials.js');
 const { batchHeaders } = require('../batch-auth.js');
 const { renderEtfPage } = require('./etf-page.js');
 const { renderRadarPage } = require('./etf-radar-page.js');
@@ -36,38 +37,6 @@ const COOLDOWN_MS = 65000;
 const MAX_HOLDING_MARGIN = 1.0;   // > +100% "undervalued" — implausibly cheap
 const MIN_HOLDING_MARGIN = -2.0;  // trades at > 3x its intrinsic value — implausible
 
-// Convert a holding's financial-statement figures from its reporting currency
-// into its quote currency, mirroring www/data.js's fetchDCFData() exactly. ADRs
-// (Yahoo `currency` USD, `financialCurrency` INR/CNY/TWD/…) otherwise feed a
-// DCF that divides an INR-denominated intrinsic value by a USD price. Fail
-// closed: no rate -> null the figures so evaluateStock excludes the holding.
-async function convertFinancials(data, { proxyUrl, fxCache, fetchFx = fetchFxRate }) {
-  if (!data || !data.currency || !data.financialCurrency || data.currency === data.financialCurrency) return data;
-  const key = `${data.financialCurrency}>${data.currency}`;
-  let rate = fxCache.get(key);
-  if (rate === undefined) {
-    rate = await fetchFx(data.financialCurrency, data.currency, proxyUrl, batchHeaders());
-    fxCache.set(key, rate);
-  }
-  const FIELDS = ['freeCashflow', 'operatingCashflow', 'capitalExpenditures', 'totalCash', 'totalDebt',
-    'totalRevenue', 'ebit', 'interestExpense', 'annualFcf', 'netIncome', 'depreciationAndAmortization', 'ebitda'];
-  const out = { ...data };
-  if (rate == null) {
-    for (const f of FIELDS) out[f] = null;
-    out.annualFcfHistory = []; out.annualRevenueHistory = [];
-    out.annualNetIncomeHistory = []; out.annualStockholdersEquityHistory = []; out.annualDividendsPaidHistory = [];
-    out.fxConversionFailed = true;
-    return out;
-  }
-  const c = (v) => (v != null && Number.isFinite(v) ? v * rate : v);
-  for (const f of FIELDS) out[f] = c(data[f]);
-  out.annualFcfHistory = (data.annualFcfHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
-  out.annualRevenueHistory = (data.annualRevenueHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
-  out.annualNetIncomeHistory = (data.annualNetIncomeHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
-  out.annualStockholdersEquityHistory = (data.annualStockholdersEquityHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
-  out.annualDividendsPaidHistory = (data.annualDividendsPaidHistory || []).map(e => ({ date: e.date, value: c(e.value) }));
-  return out;
-}
 
 async function ensureHoldings(fund, { holdingsDir, overridesPath, offline, log, searchSymbol }) {
   const overrides = overridesPath && fs.existsSync(overridesPath)
