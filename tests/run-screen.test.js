@@ -211,12 +211,16 @@ test('applyAiCorrelation never throws when rankings.json is missing or unreadabl
 
 test('a full-fetch run finishes the portfolio accounting first, so an AI-correlation failure cannot strand it half-written', async () => {
   cleanAiFixtures();
-  const beforeMargins = fs.existsSync(SECTOR_MARGINS_PATH) ? fs.readFileSync(SECTOR_MARGINS_PATH, 'utf8') : null;
-  const beforeRaw = fs.existsSync(SECTOR_RAW_PATH) ? fs.readFileSync(SECTOR_RAW_PATH, 'utf8') : null;
   fs.writeFileSync(ORDER_TICKERS_PATH, JSON.stringify(['TESTGOLD1.AX', 'TESTGOLD2.AX']));
   let portfolioWrittenWhenAiRan = null;
-  let fetchYahooMock, aiBatchMock;
+  let fetchYahooMock, aiBatchMock, sectorMarginMock;
   try {
+    // gather() would otherwise rewrite the real www/sector-margins.json, which ticker-page.js and evaluate.js
+    // read at load time in OTHER test processes running in parallel: a half-written file there fails those
+    // files intermittently. This test has no business touching it, so the tally module is stubbed out.
+    sectorMarginMock = mock.module('../scripts/lib/sector-margin-tally.js', {
+      namedExports: { tallyTickerMargin: () => null, updateSectorMarginLookup: () => {} },
+    });
     fetchYahooMock = mock.module('../scripts/fetch-yahoo.js', {
       // intrinsic is ~34.6 at this fixture, so price 22 is a ~57% margin: it qualifies for the ranking.
       namedExports: { fetchSymbol: async (ticker) => ({ ticker, name: ticker, ...GOLD_FIXTURE, price: 22 }) },
@@ -245,9 +249,8 @@ test('a full-fetch run finishes the portfolio accounting first, so an AI-correla
   } finally {
     if (fetchYahooMock) fetchYahooMock.restore();
     if (aiBatchMock) aiBatchMock.restore();
+    if (sectorMarginMock) sectorMarginMock.restore();
     delete require.cache[require.resolve('../scripts/lib/run-screen.js')];   // drop the copy bound to the mocks
-    if (beforeMargins !== null) fs.writeFileSync(SECTOR_MARGINS_PATH, beforeMargins); else fs.writeFileSync(SECTOR_MARGINS_PATH, '{}\n');
-    if (beforeRaw !== null) fs.writeFileSync(SECTOR_RAW_PATH, beforeRaw); else if (fs.existsSync(SECTOR_RAW_PATH)) fs.unlinkSync(SECTOR_RAW_PATH);
     if (fs.existsSync(ORDER_TICKERS_PATH)) fs.unlinkSync(ORDER_TICKERS_PATH);
     cleanAiFixtures();
   }
