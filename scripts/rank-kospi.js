@@ -47,6 +47,11 @@ const config = {
     // HD Hyundai's shipbuilding group, and Hyundai Group / Hyundai Elevator's
     // group). Mobis is the group's auto-parts/component arm. Don't merge.
     '012330.KS': 'Hyundai Motor Group',  // Hyundai Mobis, added 2026-09-18
+    // Added 2026-09-25 -- the admin console flagged all four as untagged qualifiers.
+    '064350.KS': 'Hyundai Motor Group',  // Hyundai Rotem -- Hyundai Motor Group affiliate (same label as Mobis above)
+    '005300.KS': 'Lotte Group',          // Lotte Chilsung Beverage
+    '329180.KS': 'Hyundai Heavy Industries Group', // HD Hyundai Heavy Industries -- same group label as 071970.KS / 009540.KS above
+    '051900.KS': 'LG Group',             // LG H&H -- same group as LG CNS above
   },
   // Moved to scripts/blacklist-kospi.json (2026-08-01) — see rank-asx.js's comment.
   blacklist: blacklistEntries.map(e => e.ticker),

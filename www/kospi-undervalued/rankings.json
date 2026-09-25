@@ -378,7 +378,8 @@
         "r": 0.02,
         "n": 234,
         "band": "none"
-      }
+      },
+      "chaebolGroup": "Hyundai Motor Group"
     },
     {
       "rank": 11,
@@ -558,7 +559,8 @@
         "r": -0.06,
         "n": 234,
         "band": "none"
-      }
+      },
+      "chaebolGroup": "Lotte Group"
     },
     {
       "rank": 16,
@@ -630,7 +632,8 @@
         "r": 0.14,
         "n": 234,
         "band": "low"
-      }
+      },
+      "chaebolGroup": "Hyundai Heavy Industries Group"
     },
     {
       "rank": 18,
@@ -666,7 +669,8 @@
         "r": -0.05,
         "n": 234,
         "band": "none"
-      }
+      },
+      "chaebolGroup": "LG Group"
     }
   ]
 }
