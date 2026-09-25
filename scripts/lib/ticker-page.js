@@ -187,6 +187,23 @@ function pctSigned(v, decimals = 1) {
 // CTA got a different answer from the one the page had just given them. ──
 const r1 = x => +x.toFixed(1);
 const r2 = x => +x.toFixed(2);
+
+// The DCF base-case growth seed, in percent to 1dp. Pulled out of buildTickerPage() so the exact
+// object handed to deriveMultiYearGrowth() can be unit-tested without a network fetch.
+// sector/industry MUST be passed: deriveMultiYearGrowth() decides "cyclical -> retention x ROE
+// alone" from them, and omitting them (as this call once did) silently put every cyclical page on
+// the lower-of-two rule -- PSX read -5% here but +14.4% in the screens and the live tool.
+function deriveBaseGrowthPct(data, hist) {
+  return r1(deriveMultiYearGrowth({
+    sector: data.sector, industry: data.industry,
+    revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
+    annualRevenueHistory: hist.annualRevenueHistory, annualFcfHistory: hist.annualFcfHistory,
+    annualNetIncomeHistory: hist.annualNetIncomeHistory,
+    annualStockholdersEquityHistory: hist.annualStockholdersEquityHistory,
+    annualDividendsPaidHistory: hist.annualDividendsPaidHistory,
+  }) * 100);
+}
+
 function deriveScenarios({ method, baseGrowthPct, waccOrRePct }) {
   if (method === 'DDM') {
     return {
@@ -1010,13 +1027,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       }
       const waccPct = r2(waccResult.wacc * 100);
       waccOrRePct = waccPct;
-      const baseGrowthPct = r1(deriveMultiYearGrowth({
-        revenueGrowth: data.revenueGrowth, earningsGrowth: data.earningsGrowth,
-        annualRevenueHistory: hist.annualRevenueHistory, annualFcfHistory: hist.annualFcfHistory,
-        annualNetIncomeHistory: hist.annualNetIncomeHistory,
-        annualStockholdersEquityHistory: hist.annualStockholdersEquityHistory,
-        annualDividendsPaidHistory: hist.annualDividendsPaidHistory,
-      }) * 100);
+      const baseGrowthPct = deriveBaseGrowthPct(data, hist);
       const s = deriveScenarios({ method: 'DCF', baseGrowthPct, waccOrRePct: waccPct });
       method = 'DCF';
       // Fade growth toward the terminal rate instead of holding one flat
@@ -1630,4 +1641,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, deriveBaseGrowthPct, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };

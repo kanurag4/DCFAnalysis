@@ -1,6 +1,32 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, deriveBaseGrowthPct } = require('../scripts/lib/ticker-page.js');
+
+// Regression tests for a real bug (found 2026-09-25 generating PSX's page): the ticker-page
+// generator called deriveMultiYearGrowth() WITHOUT sector/industry, so isCyclical() was always
+// false inside it and every cyclical ticker skipped the "retention x ROE alone" rule that the
+// undervalued screens, /evaluate/ and the live DCF tool all apply. PSX came out at the -5%
+// clamp floor on its page but +14.4% everywhere else (-44.7% vs +24.9% margin of safety).
+// Fixture: retention x ROE is a steady 14%, but revenue and FCF have both been falling for
+// years -- exactly the shape where "lowest of the two measures" and "fundamental alone" disagree.
+const yearly = (vals) => vals.map((value, i) => ({ date: `${2022 + i}-12-31`, value }));
+const decliningHist = () => ({
+  annualNetIncomeHistory: yearly([100, 100, 100, 100]),
+  annualStockholdersEquityHistory: yearly([500, 500, 500, 500]),   // ROE 20%
+  annualDividendsPaidHistory: yearly([30, 30, 30, 30]),             // pays 30% out -> retention 70% -> 14%
+  annualRevenueHistory: yearly([1000, 900, 800, 700]),               // ~-11% a year
+  annualFcfHistory: yearly([200, 150, 100, 60]),                     // ~-33% a year
+});
+
+test('deriveBaseGrowthPct applies the cyclical rule (retention x ROE alone) for a refiner, like the screens and live tool do', () => {
+  const data = { sector: 'Energy', industry: 'Oil & Gas Refining & Marketing', revenueGrowth: -0.1, earningsGrowth: -0.2 };
+  assert.strictEqual(deriveBaseGrowthPct(data, decliningHist()), 14.0);
+});
+
+test('deriveBaseGrowthPct leaves a NON-cyclical ticker on the lower-of-two rule, clamped to the -5% floor (control: unchanged behaviour)', () => {
+  const data = { sector: 'Technology', industry: 'Software - Application', revenueGrowth: -0.1, earningsGrowth: -0.2 };
+  assert.strictEqual(deriveBaseGrowthPct(data, decliningHist()), -5.0);
+});
 
 // Regression test for a real bug (found live on RBLX's EPS chart, 2026-09-04):
 // an all-negative series left the area-fill polygon's baseline (y(0)) far
