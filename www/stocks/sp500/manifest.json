@@ -13,6 +13,19 @@
     "updatedAt": "2026-09-25T02:44:54.147Z"
   },
   {
+    "ticker": "ABBV",
+    "slug": "abbv",
+    "name": "AbbVie Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 184.75064531552945,
+    "price": 265.12,
+    "marginOfSafety": -0.303143311272143,
+    "marketCap": 468498120704,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:01:53.566Z"
+  },
+  {
     "ticker": "ABNB",
     "slug": "abnb",
     "name": "Airbnb, Inc.",
@@ -24,6 +37,19 @@
     "marketCap": 90650165248,
     "updated": "2026-09-25",
     "updatedAt": "2026-09-25T02:45:07.423Z"
+  },
+  {
+    "ticker": "ABT",
+    "slug": "abt",
+    "name": "Abbott Laboratories",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 65.50551615448273,
+    "price": 101.07,
+    "marginOfSafety": -0.3518797253934626,
+    "marketCap": 174889844736,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:03:07.784Z"
   },
   {
     "ticker": "ACN",
@@ -78,6 +104,19 @@
     "updatedAt": "2026-09-25T02:46:00.254Z"
   },
   {
+    "ticker": "ADP",
+    "slug": "adp",
+    "name": "Automatic Data Processing, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 256.160799123452,
+    "price": 263.11,
+    "marginOfSafety": -0.026411770273072063,
+    "marketCap": 104523800576,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:04:51.669Z"
+  },
+  {
     "ticker": "ADSK",
     "slug": "adsk",
     "name": "Autodesk, Inc.",
@@ -128,6 +167,32 @@
     "marketCap": 1027251240960,
     "updated": "2026-09-25",
     "updatedAt": "2026-09-25T02:46:53.206Z"
+  },
+  {
+    "ticker": "AMGN",
+    "slug": "amgn",
+    "name": "Amgen Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 255.16583385476235,
+    "price": 406.04,
+    "marginOfSafety": -0.37157463832439575,
+    "marketCap": 219518222336,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:02:22.935Z"
+  },
+  {
+    "ticker": "APH",
+    "slug": "aph",
+    "name": "Amphenol Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 56.50935476240237,
+    "price": 83.08,
+    "marginOfSafety": -0.3198199956379108,
+    "marketCap": 204872531968,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:02:38.080Z"
   },
   {
     "ticker": "AVAL",
@@ -728,6 +793,19 @@
     "updatedAt": "2026-09-25T02:57:08.564Z"
   },
   {
+    "ticker": "MCD",
+    "slug": "mcd",
+    "name": "McDonald's Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 182.43987942583655,
+    "price": 237.02,
+    "marginOfSafety": -0.23027643479100268,
+    "marketCap": 167725203456,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:03:37.497Z"
+  },
+  {
     "ticker": "MCK",
     "slug": "mck",
     "name": "McKesson Corporation",
@@ -884,6 +962,19 @@
     "updatedAt": "2026-09-25T02:59:47.389Z"
   },
   {
+    "ticker": "NEM",
+    "slug": "nem",
+    "name": "Newmont Corporation",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 110.78574260526591,
+    "price": 121.3,
+    "marginOfSafety": -0.08667978066557369,
+    "marketCap": 127812878336,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:04:07.535Z"
+  },
+  {
     "ticker": "NFLX",
     "slug": "nflx",
     "name": "Netflix, Inc.",
@@ -1027,6 +1118,19 @@
     "updatedAt": "2026-09-25T03:02:16.396Z"
   },
   {
+    "ticker": "PEP",
+    "slug": "pep",
+    "name": "PepsiCo, Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 128.37635251031438,
+    "price": 128.15,
+    "marginOfSafety": 0.0017663090933622368,
+    "marketCap": 175052898304,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:02:52.925Z"
+  },
+  {
     "ticker": "PFE",
     "slug": "pfe",
     "name": "Pfizer Inc.",
@@ -1051,6 +1155,45 @@
     "marketCap": 338623397888,
     "updated": "2026-09-25",
     "updatedAt": "2026-09-25T03:02:42.899Z"
+  },
+  {
+    "ticker": "PGR",
+    "slug": "pgr",
+    "name": "The Progressive Corporation",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 136.6182556037502,
+    "price": 202.17,
+    "marginOfSafety": -0.32424071027476764,
+    "marketCap": 117339463680,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:04:36.793Z"
+  },
+  {
+    "ticker": "PM",
+    "slug": "pm",
+    "name": "Philip Morris International Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 133.25115872079934,
+    "price": 191.5,
+    "marginOfSafety": -0.30417149493055173,
+    "marketCap": 298474471424,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:02:08.099Z"
+  },
+  {
+    "ticker": "PNC",
+    "slug": "pnc",
+    "name": "The PNC Financial Services Group, Inc.",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 144.5053747539406,
+    "price": 223.34,
+    "marginOfSafety": -0.35298032258466644,
+    "marketCap": 89100083200,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:05:50.752Z"
   },
   {
     "ticker": "QCOM",
@@ -1144,6 +1287,19 @@
     "updatedAt": "2026-09-25T03:04:15.567Z"
   },
   {
+    "ticker": "SCHW",
+    "slug": "schw",
+    "name": "The Charles Schwab Corporation",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 85.32433113048796,
+    "price": 99.49,
+    "marginOfSafety": -0.14238284118516467,
+    "marketCap": 172051595264,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:03:22.635Z"
+  },
+  {
     "ticker": "SNDK",
     "slug": "sndk",
     "name": "Sandisk Corporation",
@@ -1170,6 +1326,19 @@
     "updatedAt": "2026-09-25T03:04:42.125Z"
   },
   {
+    "ticker": "SYK",
+    "slug": "syk",
+    "name": "Stryker Corporation",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 228.7255994500047,
+    "price": 269.75,
+    "marginOfSafety": -0.15208304189062208,
+    "marketCap": 103468834816,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:05:06.211Z"
+  },
+  {
     "ticker": "T",
     "slug": "t",
     "name": "AT&T Inc.",
@@ -1194,6 +1363,19 @@
     "marketCap": 48757067776,
     "updated": "2026-09-25",
     "updatedAt": "2026-09-25T03:05:08.572Z"
+  },
+  {
+    "ticker": "TJX",
+    "slug": "tjx",
+    "name": "The TJX Companies, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 88.45290133640853,
+    "price": 131.63,
+    "marginOfSafety": -0.3280186785959999,
+    "marketCap": 144789585920,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:03:52.944Z"
   },
   {
     "ticker": "TMUS",
@@ -1287,6 +1469,32 @@
     "updatedAt": "2026-09-25T03:06:44.427Z"
   },
   {
+    "ticker": "UPS",
+    "slug": "ups",
+    "name": "United Parcel Service, Inc.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 67.76456434866803,
+    "price": 92.05,
+    "marginOfSafety": -0.26382874145933694,
+    "marketCap": 78314446848,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:06:20.924Z"
+  },
+  {
+    "ticker": "USB",
+    "slug": "usb",
+    "name": "U.S. Bancorp",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 36.96272416818977,
+    "price": 58.4,
+    "marginOfSafety": -0.36707664095565457,
+    "marketCap": 90990206976,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:05:35.902Z"
+  },
+  {
     "ticker": "VZ",
     "slug": "vz",
     "name": "Verizon Communications Inc.",
@@ -1324,6 +1532,19 @@
     "marketCap": 46028591104,
     "updated": "2026-09-25",
     "updatedAt": "2026-09-25T03:07:24.192Z"
+  },
+  {
+    "ticker": "WM",
+    "slug": "wm",
+    "name": "Waste Management, Inc.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 134.6650159192531,
+    "price": 207.96,
+    "marginOfSafety": -0.3524475095246533,
+    "marketCap": 83124772864,
+    "updated": "2026-09-25",
+    "updatedAt": "2026-09-25T11:06:06.055Z"
   },
   {
     "ticker": "YUM",
