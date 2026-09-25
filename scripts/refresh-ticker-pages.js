@@ -101,7 +101,7 @@ async function refreshMarket(folder, proxyUrl, dryRun, aiCorrelationCache) {
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
   const proxyUrl = readProxyUrl();
-  const aiCorrelationCache = new Map(); // shared AIQ/RSP daily series across this whole run, every market
+  const aiCorrelationCache = new Map(); // shared AIQ/RSP/SMH daily series across this whole run, every market
 
   const markets = MARKET_FOLDERS.filter(f => fs.existsSync(path.join(STOCKS_DIR, f, 'manifest.json')));
   if (!markets.length) { console.error('No market has a manifest.json -- generate at least one ticker first.'); process.exit(1); }

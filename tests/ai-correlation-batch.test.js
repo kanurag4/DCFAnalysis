@@ -167,3 +167,106 @@ test('addAiCorrelation adds rounded aiCorrelation AND aiHardwareCorrelation per 
   assert.strictEqual(out[3].aiHardwareCorrelation.band, 'high');
   for (const bench of ['AIQ', 'RSP', 'SMH']) assert.strictEqual(calls.filter(s => s === bench).length, 1, bench);
 });
+
+// --- carry-forward: a transient fetch failure must not wipe out last run's reading ---
+const PRIOR = { r: 0.55, n: 240, band: 'high' };
+const PRIOR_HW = { r: -0.31, n: 240, band: 'inverse' };
+
+test('addAiCorrelation keeps a row\'s existing readings when the fetch fails this run', async () => {
+  const { fetchImpl } = makeFetch(SERIES, { throwFor: ['LOWCO'] });
+  const rows = [{ ticker: 'LOWCO', aiCorrelation: PRIOR, aiHardwareCorrelation: PRIOR_HW }];
+  const out = await addAiCorrelation(rows, opts(fetchImpl));
+  assert.deepStrictEqual(out[0].aiCorrelation, PRIOR);
+  assert.deepStrictEqual(out[0].aiHardwareCorrelation, PRIOR_HW);
+});
+
+test('addAiCorrelation keeps only the reading that failed: one benchmark down keeps its own prior value and refreshes the other', async () => {
+  const { fetchImpl } = makeFetch(SERIES, { emptyFor: ['SMH'] });
+  const rows = [{ ticker: 'HIGHCO', aiCorrelation: { r: 0.1, n: 200, band: 'low' }, aiHardwareCorrelation: PRIOR_HW }];
+  const out = await addAiCorrelation(rows, opts(fetchImpl));
+  assert.strictEqual(out[0].aiCorrelation.band, 'high');                 // refreshed
+  assert.deepStrictEqual(out[0].aiHardwareCorrelation, PRIOR_HW);        // SMH fetch failed -> prior kept
+});
+
+test('addAiCorrelation replaces a prior reading when the new one is real, and stays null with no prior reading', async () => {
+  const { fetchImpl } = makeFetch(SERIES, { throwFor: ['LOWCO'] });
+  const rows = [
+    { ticker: 'HIGHCO', aiCorrelation: { r: 0.05, n: 100, band: 'low' }, aiHardwareCorrelation: null },
+    { ticker: 'LOWCO' },                                                  // no prior fields at all
+    { ticker: 'NEWIPO', aiCorrelation: null, aiHardwareCorrelation: null },
+  ];
+  const out = await addAiCorrelation(rows, opts(fetchImpl));
+  assert.strictEqual(out[0].aiCorrelation.band, 'high');
+  assert.strictEqual(out[1].aiCorrelation, null);
+  assert.strictEqual(out[1].aiHardwareCorrelation, null);
+  assert.strictEqual(out[2].aiCorrelation, null);
+});
+
+// --- adjusted closes ---
+test('fetchDailyCloses prefers the dividend-adjusted close when every point has one', async () => {
+  const fetchImpl = async () => [
+    { date: '2026-03-01', close: 100, adjClose: 90 },
+    { date: '2026-03-02', close: 97, adjClose: 90 },   // ex-dividend day: the raw close drops, the adjusted one does not
+  ];
+  assert.deepStrictEqual(await fetchDailyCloses('X', 'https://w.example', fetchImpl),
+    [{ date: '2026-03-01', close: 90 }, { date: '2026-03-02', close: 90 }]);
+});
+
+test('fetchDailyCloses uses the plain closes for the WHOLE series when any adjusted close is missing (never mixes the two)', async () => {
+  const fetchImpl = async () => [
+    { date: '2026-03-01', close: 100, adjClose: 90 },
+    { date: '2026-03-02', close: 101 },                // no adjClose (old Worker, or Yahoo omitted it)
+    { date: '2026-03-03', close: 102, adjClose: 92 },
+  ];
+  assert.deepStrictEqual((await fetchDailyCloses('X', 'https://w.example', fetchImpl)).map((p) => p.close), [100, 101, 102]);
+});
+
+// --- reusing a stock history the caller already fetched (the ticker-page generators fetch 730d for the price chart) ---
+const NOW = Date.parse('2026-07-06T00:00:00Z');
+const LONG_N = 400;
+const longMkt = Array.from({ length: LONG_N }, (_, i) => 0.004 * Math.sin(i * 0.7));
+const longAi = Array.from({ length: LONG_N }, (_, i) => 0.006 * Math.sin(i * 1.9 + 1));
+// 401 daily bars ending 2026-07-06 (start 2025-06-01), i.e. ~35 days more than the 365-day correlation window.
+const LONG = {
+  AIQ: closesFromReturns(longMkt.map((m, i) => m + longAi[i]), '2025-06-01'),
+  SMH: closesFromReturns(longMkt.map((m, i) => m + longAi[i] * 0.5), '2025-06-01'),
+  RSP: closesFromReturns(longMkt, '2025-06-01'),
+  STOCK: closesFromReturns(longMkt.map((m, i) => m + longAi[i]), '2025-06-01'),
+};
+
+test('getAiCorrelations reuses a supplied stockHistory: the stock is not fetched again and one throttle sleep is saved', async () => {
+  const sleeps = [];
+  const sleepImpl = async (ms) => { sleeps.push(ms); };
+  const { fetchImpl, calls } = makeFetch(SERIES);
+  const res = await getAiCorrelations('HIGHCO', {
+    proxyUrl: 'https://w.example', throttleMs: 1234, fetchImpl, sleepImpl, nowMs: Date.parse('2026-06-01T00:00:00Z'),
+    stockHistory: SERIES.HIGHCO,
+  });
+  assert.deepStrictEqual(calls, ['AIQ', 'RSP', 'SMH']);          // no HIGHCO fetch
+  assert.deepStrictEqual(sleeps, [1234, 1234, 1234]);
+  assert.strictEqual(res.ai.band, 'high');
+
+  const refetched = await getAiCorrelations('HIGHCO', opts(makeFetch(SERIES).fetchImpl));
+  assert.deepStrictEqual(res, refetched);                         // identical answer either way
+});
+
+test('a supplied stockHistory is trimmed to the trailing 365 days, so a 730-day chart series cannot widen the window', async () => {
+  const fetchImpl = async (url) => LONG[decodeURIComponent(url.match(/\/history\/([^?]+)\?/)[1])] || [];
+  const res = await getAiCorrelations('STOCK', { proxyUrl: 'https://w.example', fetchImpl, sleepImpl: noSleep, nowMs: NOW, stockHistory: LONG.STOCK });
+  assert.ok(res.ai.n <= 365, `n=${res.ai.n} should not exceed the 365-day window`);
+  assert.ok(res.ai.n >= 360, `n=${res.ai.n} should still cover almost the whole trailing year`);
+});
+
+test('an empty stockHistory (transient chart-fetch failure) falls back to the helper\'s own fetch instead of skipping the reading', async () => {
+  const { fetchImpl, calls } = makeFetch(SERIES);
+  const res = await getAiCorrelations('HIGHCO', opts(fetchImpl, { stockHistory: [] }));
+  assert.ok(calls.includes('HIGHCO'));
+  assert.strictEqual(res.ai.band, 'high');
+});
+
+test('a stockHistory that is entirely outside the window also falls back to a fetch', async () => {
+  const { fetchImpl, calls } = makeFetch(SERIES);
+  const res = await getAiCorrelations('HIGHCO', opts(fetchImpl, { stockHistory: SERIES.HIGHCO, nowMs: Date.parse('2030-01-01T00:00:00Z') }));
+  assert.ok(calls.includes('HIGHCO'));
+  assert.strictEqual(res.ai.band, 'high');
+});

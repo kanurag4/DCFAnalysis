@@ -285,7 +285,7 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
    The cells are plain numbers coloured by text, like Altman Z: they reuse .neg / .warn / .pos above.
    Reads as dependence on the AI sector, reversed traffic light: High and Inverse red, Moderate amber,
    Low green; None is cyan (neutral), which needs its own class. */
-.ai-none { color:#06b6d4; font-weight:600; }
+.ai-none { color:var(--kv-neutral-cyan, #0e7490); font-weight:600; }
 
 /* Column header that links to its glossary explanation (AI corr.). Reads as a header, with a dotted
    underline as the only cue that it is clickable. */

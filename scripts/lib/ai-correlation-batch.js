@@ -2,11 +2,16 @@
 // Fetch + compute AI Sector Correlation (see
 // docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md) for the
 // per-ticker page generators and the undervalued-screen batch. fetchImpl /
-// sleepImpl are injectable so tests never touch the network or wait.
+// sleepImpl / nowMs are injectable so tests never touch the network, wait, or
+// depend on today's date.
 //
 //   getAiCorrelations(symbol, opts) -> { ai, hardware }, each { r, n, band } (band null = not shown):
 //                                      ai = vs AIQ (broad AI basket), hardware = vs SMH (semiconductors)
+//                                      opts.stockHistory: raw /history points the caller already fetched
+//                                      for this symbol, reused instead of fetching the stock again
 //   addAiCorrelation(rows, opts)    -> rows + aiCorrelation / aiHardwareCorrelation: {r,n,band} | null
+//                                      (a reading that could not be computed this run keeps the row's
+//                                      existing value rather than blanking it)
 //
 // Both never throw. Every Worker call is preceded by a `throttleMs` sleep, so
 // a caller that just made its own Worker call is never hit back-to-back (see
@@ -15,6 +20,7 @@ const { partialCorrelationAgainst, AI_ETF_TICKER, AI_HARDWARE_ETF_TICKER, MARKET
 const { batchHeaders } = require('./batch-auth.js');
 
 const DEFAULT_THROTTLE_MS = 3200;
+const WINDOW_DAYS = 365;
 const DEFAULT_FETCH = async (url) => {
   const res = await fetch(url, { headers: batchHeaders() });
   if (!res || !res.ok) return null;
@@ -22,18 +28,34 @@ const DEFAULT_FETCH = async (url) => {
 };
 const DEFAULT_SLEEP = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Worker /history points ({ date, close, adjClose? }) -> [{ date, close }], ascending.
+// Returns are computed from the split- AND dividend-adjusted close (`adjClose`) when EVERY point has one:
+// an ex-dividend day otherwise shows up as an artificial negative return (spec section 2). If any point
+// lacks it (an older Worker, or Yahoo omitted it) the whole series uses plain closes; mixing the two in
+// one series would turn the switch point into a fake return.
+function toCloses(points) {
+  if (!Array.isArray(points)) return [];
+  const valid = points.filter((p) => p && p.date && p.close != null);
+  const useAdjusted = valid.length > 0 && valid.every((p) => p.adjClose != null);
+  return valid
+    .map((p) => ({ date: p.date, close: useAdjusted ? p.adjClose : p.close }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+// Keeps the trailing WINDOW_DAYS of an already-sorted daily series, so a longer series fetched for another
+// purpose (the ticker pages' 730-day price chart) cannot silently widen the statistic beyond "trailing year".
+function trailingWindow(closes, nowMs = Date.now()) {
+  const cutoff = new Date(nowMs - WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  return closes.filter((c) => c.date >= cutoff);
+}
+
 // Trailing 365 days of daily closes, ascending: [{ date: 'YYYY-MM-DD', close }].
 // `symbol` must be the resolved Yahoo symbol (with .AX/.KS/... suffix).
 async function fetchDailyCloses(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
   const now = Math.floor(Date.now() / 1000);
-  const period1 = now - 365 * 24 * 60 * 60;
+  const period1 = now - WINDOW_DAYS * 24 * 60 * 60;
   const url = `${proxyUrl.replace(/\/$/, '')}/history/${encodeURIComponent(symbol)}?period1=${period1}&period2=${now}`;
-  const points = await fetchImpl(url);
-  if (!Array.isArray(points)) return [];
-  return points
-    .filter((p) => p && p.date && p.close != null)
-    .map((p) => ({ date: p.date, close: p.close }))
-    .sort((a, b) => a.date.localeCompare(b.date));
+  return toCloses(await fetchImpl(url));
 }
 
 // `cache` (a Map) is shared across a whole batch run so AIQ/RSP/SMH are fetched
@@ -42,7 +64,7 @@ async function fetchDailyCloses(symbol, proxyUrl, fetchImpl = DEFAULT_FETCH) {
 // ticker in the run. A benchmark that fails only nulls ITS OWN reading.
 const NO_READING = () => ({ r: null, n: 0, band: null });
 
-async function getAiCorrelations(symbol, { proxyUrl, cache, throttleMs = DEFAULT_THROTTLE_MS, fetchImpl, sleepImpl = DEFAULT_SLEEP } = {}) {
+async function getAiCorrelations(symbol, { proxyUrl, cache, throttleMs = DEFAULT_THROTTLE_MS, fetchImpl, sleepImpl = DEFAULT_SLEEP, stockHistory, nowMs } = {}) {
   const load = async (sym, isBenchmark) => {
     if (isBenchmark && cache && cache.has(sym)) return cache.get(sym);
     await sleepImpl(throttleMs);
@@ -51,7 +73,10 @@ async function getAiCorrelations(symbol, { proxyUrl, cache, throttleMs = DEFAULT
     return closes;
   };
   try {
-    const stock = await load(symbol, false);
+    // A caller that already holds this stock's daily history reuses it. An empty or out-of-window
+    // history (a transient chart-fetch failure) falls back to fetching, rather than skipping the reading.
+    const supplied = Array.isArray(stockHistory) ? trailingWindow(toCloses(stockHistory), nowMs) : [];
+    const stock = supplied.length ? supplied : await load(symbol, false);
     const aiq = await load(AI_ETF_TICKER, true);
     const rsp = await load(MARKET_ETF_TICKER, true);
     const smh = await load(AI_HARDWARE_ETF_TICKER, true);
@@ -71,9 +96,17 @@ async function addAiCorrelation(rows, opts = {}) {
   const out = [];
   for (const row of rows) {
     const { ai, hardware } = await getAiCorrelations(row.ticker, { ...opts, cache });
-    out.push({ ...row, aiCorrelation: pack(ai), aiHardwareCorrelation: pack(hardware) });
+    // `?? row.x`: a reading that could not be computed this run (a Worker/Yahoo blip) keeps the value the row
+    // already carries instead of blanking it. Accepted trade-off: a reading that is legitimately null now
+    // (e.g. history fell below the sample minimum) also keeps its older value; it is display-only and at
+    // most one run old.
+    out.push({
+      ...row,
+      aiCorrelation: pack(ai) ?? row.aiCorrelation ?? null,
+      aiHardwareCorrelation: pack(hardware) ?? row.aiHardwareCorrelation ?? null,
+    });
   }
   return out;
 }
 
-module.exports = { fetchDailyCloses, getAiCorrelations, addAiCorrelation };
+module.exports = { fetchDailyCloses, getAiCorrelations, addAiCorrelation, toCloses, trailingWindow };

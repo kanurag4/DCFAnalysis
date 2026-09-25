@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { buildAiCorrelationCard, buildAiCorrelationFaqHtml } = require('../scripts/lib/ai-correlation-card.js');
+const { buildAiCorrelationCard, buildAiCorrelationFaqHtml, BAND_COLOR } = require('../scripts/lib/ai-correlation-card.js');
 
 const HIGH = { r: 0.684, n: 249, band: 'high' };
 const NONE = { r: -0.09, n: 249, band: 'none' };
@@ -13,30 +13,52 @@ test('buildAiCorrelationCard renders the badge with value and label for a HIGH b
   assert.match(html, /AI Sector Correlation/);
   assert.match(html, /0\.68/);
   assert.match(html, /High/);
-  assert.match(html, /#ef4444/);
+  assert.ok(html.includes(BAND_COLOR.high));
 });
 
 test('buildAiCorrelationCard renders cyan (neutral: not red, green or the old sky-blue) for a NONE band', () => {
   const html = buildAiCorrelationCard({ aiCorrelation: NONE });
   assert.match(html, /None/);
-  assert.match(html, /#06b6d4/);
-  assert.doesNotMatch(html, /#ef4444|#22c55e|#0ea5e9/);
+  assert.ok(html.includes(BAND_COLOR.none));
+  assert.ok(!html.includes(BAND_COLOR.high) && !html.includes(BAND_COLOR.low) && !html.includes('#0ea5e9'));
 });
 
 test('buildAiCorrelationCard colours run reversed traffic-light: Moderate amber, Low green', () => {
   const moderate = buildAiCorrelationCard({ aiCorrelation: { r: 0.25, n: 249, band: 'moderate' } });
   const low = buildAiCorrelationCard({ aiCorrelation: { r: 0.1, n: 249, band: 'low' } });
-  assert.match(moderate, /#f97316/);
-  assert.match(low, /#22c55e/);
-  assert.doesNotMatch(low, /#ef4444/);
+  assert.ok(moderate.includes(BAND_COLOR.moderate));
+  assert.ok(low.includes(BAND_COLOR.low));
+  assert.ok(!low.includes(BAND_COLOR.high));
 });
 
 test('buildAiCorrelationCard renders an Inverse (negative) reading red, with its label and the negative value', () => {
   const html = buildAiCorrelationCard({ aiCorrelation: { r: -0.41, n: 249, band: 'inverse' } });
   assert.match(html, /-0\.41/);
   assert.match(html, /Inverse/);
-  assert.match(html, /#ef4444/);
+  assert.ok(html.includes(BAND_COLOR.inverse));
   assert.match(html, /against the AI sector/);
+});
+
+// The badge is white text on a solid band colour, so each colour must clear WCAG AA (4.5:1) for it.
+const channel = (hex, i) => parseInt(hex.slice(1 + 2 * i, 3 + 2 * i), 16) / 255;
+const linear = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+const luminance = (hex) => 0.2126 * linear(channel(hex, 0)) + 0.7152 * linear(channel(hex, 1)) + 0.0722 * linear(channel(hex, 2));
+const contrastOnWhite = (hex) => 1.05 / (luminance(hex) + 0.05);
+
+test('every band colour gives the white badge text at least WCAG AA contrast (4.5:1)', () => {
+  for (const [band, hex] of Object.entries(BAND_COLOR)) {
+    assert.ok(contrastOnWhite(hex) >= 4.5, `${band} ${hex} is only ${contrastOnWhite(hex).toFixed(2)}:1 against white`);
+  }
+});
+
+test('the reversed traffic-light hues are unchanged: red (High, Inverse), orange, green, cyan', () => {
+  const ch = (hex) => [0, 1, 2].map((i) => channel(hex, i));
+  const red = ch(BAND_COLOR.high), orange = ch(BAND_COLOR.moderate), green = ch(BAND_COLOR.low), cyan = ch(BAND_COLOR.none);
+  assert.ok(red[0] > red[1] * 2 && red[0] > red[2] * 2, 'high is red');
+  assert.ok(orange[0] > orange[1] && orange[1] > orange[2] * 2, 'moderate is orange');
+  assert.ok(green[1] > green[0] * 1.5 && green[1] > green[2] * 1.5, 'low is green');
+  assert.ok(cyan[0] < cyan[1] * 0.5 && cyan[2] > cyan[0] * 2, 'none is cyan');
+  assert.strictEqual(BAND_COLOR.inverse, BAND_COLOR.high);
 });
 
 test('buildAiCorrelationCard returns empty string when band is null (insufficient history)', () => {
@@ -164,6 +186,12 @@ test('the colours FAQ says red means strong dependence in either direction, not 
   assert.match(answer, /red/i);
   assert.match(answer, /Inverse/);
   assert.match(answer, /not a (good|quality)/i);
+});
+
+test('DCF FAQ refers to the valuation and framework scores above', () => {
+  const html = buildAiCorrelationFaqHtml({ aiCorrelation: { r: 0.68, n: 249, band: 'high' } });
+  assert.match(html, /valuation and framework scores above/);
+  assert.doesNotMatch(html, /growth score and valuation above/);
 });
 
 test('the "AI hardware" FAQ answer links to its own glossary page', () => {

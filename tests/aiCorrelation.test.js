@@ -1,6 +1,9 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { partialCorrelation, partialCorrelationAgainst, bandFor, bandLabel, MIN_TRADING_DAYS, AI_HARDWARE_ETF_TICKER } = require('../www/calc/aiCorrelation.js');
+const { partialCorrelationAgainst, bandFor, bandLabel, MIN_TRADING_DAYS, AI_HARDWARE_ETF_TICKER } = require('../www/calc/aiCorrelation.js');
+
+// The three-series call shape every test below uses: a stock, an AI benchmark (AIQ here), and the RSP market control.
+const partialCorrelation = ({ stock, aiq, rsp }) => partialCorrelationAgainst({ stock, benchmark: aiq, market: rsp });
 
 // Converts a returns array into a closes array (deterministic, starts at
 // 100) so tests can construct known-shape return series without hand-typing
@@ -66,21 +69,50 @@ test('partialCorrelation returns ~0 when stock has market + idiosyncratic moves 
   assert.strictEqual(result.band, 'none');
 });
 
-test('partialCorrelation returns 0 (not NaN) when the stock is exactly the market (zero-variance residual guard)', () => {
+test('a stock that is exactly the market has no AI-specific movement left to correlate, so it gets no reading (not a fake "None")', () => {
   const mkt = marketFactor(N);
   const ai = aiFactor(N);
-  const rspRets = mkt;
-  const aiqRets = mkt.map((m, i) => m + ai[i]);
-  const stockRets = mkt; // identical to RSP -- its residual after regressing on RSP is exactly zero
-
   const result = partialCorrelation({
-    stock: closesFromReturns(stockRets, '2026-01-01'),
-    aiq: closesFromReturns(aiqRets, '2026-01-01'),
-    rsp: closesFromReturns(rspRets, '2026-01-01'),
+    stock: closesFromReturns(mkt, '2026-01-01'),                       // identical to RSP -- residual is exactly zero
+    aiq: closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01'),
+    rsp: closesFromReturns(mkt, '2026-01-01'),
   });
+  assert.deepStrictEqual([result.r, result.band], [null, null]);
+  assert.ok(result.n > MIN_TRADING_DAYS);                              // enough days, so it is the zero variance that nulls it
+});
 
-  assert.strictEqual(result.r, 0);
-  assert.strictEqual(result.band, 'none');
+test('a stock that is a scaled copy of the market gets no reading either (float noise in the residual must not be correlated)', () => {
+  const mkt = marketFactor(N);
+  const ai = aiFactor(N);
+  const result = partialCorrelation({
+    stock: closesFromReturns(mkt.map((m) => 1.7 * m), '2026-01-01'),
+    aiq: closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01'),
+    rsp: closesFromReturns(mkt, '2026-01-01'),
+  });
+  assert.deepStrictEqual([result.r, result.band], [null, null]);
+});
+
+test('a flat-price stock (suspended, or never trades) gets no reading instead of reading "None"', () => {
+  const mkt = marketFactor(N);
+  const ai = aiFactor(N);
+  const flat = closesFromReturns(new Array(N).fill(0), '2026-01-01');
+  const result = partialCorrelation({
+    stock: flat,
+    aiq: closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01'),
+    rsp: closesFromReturns(mkt, '2026-01-01'),
+  });
+  assert.deepStrictEqual([result.r, result.band], [null, null]);
+  assert.ok(result.n > MIN_TRADING_DAYS);
+});
+
+test('a flat benchmark gets no reading for the same reason', () => {
+  const mkt = marketFactor(N);
+  const result = partialCorrelationAgainst({
+    stock: closesFromReturns(mkt.map((m, i) => m + 0.003 * Math.sin(i * 2.2)), '2026-01-01'),
+    benchmark: closesFromReturns(new Array(N).fill(0), '2026-01-01'),
+    market: closesFromReturns(mkt, '2026-01-01'),
+  });
+  assert.deepStrictEqual([result.r, result.band], [null, null]);
 });
 
 test('partialCorrelation returns null r/band when overlapping days is at or below MIN_TRADING_DAYS', () => {
@@ -134,6 +166,7 @@ test('bandLabel maps band keys to display labels', () => {
   assert.strictEqual(bandLabel('none'), 'None');
   assert.strictEqual(bandLabel('inverse'), 'Inverse');
   assert.strictEqual(bandLabel('unknown'), null);
+  assert.strictEqual(bandLabel('constructor'), null); // an inherited Object key is not a band
 });
 
 test("partialCorrelation returns a strongly negative r and the inverse band when the stock moves against AIQ's AI-specific component", () => {
@@ -146,18 +179,6 @@ test("partialCorrelation returns a strongly negative r and the inverse band when
   });
   assert.ok(result.r < -0.95, `expected r < -0.95, got ${result.r}`);
   assert.strictEqual(result.band, 'inverse');
-});
-
-test('partialCorrelationAgainst gives the same answer as partialCorrelation for the same three series', () => {
-  const mkt = marketFactor(N);
-  const ai = aiFactor(N);
-  const stock = closesFromReturns(mkt.map((m, i) => m + 0.5 * ai[i]), '2026-01-01');
-  const bench = closesFromReturns(mkt.map((m, i) => m + ai[i]), '2026-01-01');
-  const market = closesFromReturns(mkt, '2026-01-01');
-  assert.deepStrictEqual(
-    partialCorrelationAgainst({ stock, benchmark: bench, market }),
-    partialCorrelation({ stock, aiq: bench, rsp: market }),
-  );
 });
 
 test('the AI-hardware benchmark is the VanEck semiconductor ETF (SMH)', () => {

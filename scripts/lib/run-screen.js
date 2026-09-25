@@ -166,8 +166,9 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
   // AI Sector Correlation (display-only, spec section 9) needs a Worker fetch
   // per row, which --rerank/--reeval never make -- so carry each ticker's
   // existing value forward from the rankings.json about to be overwritten. A
-  // full-fetch run then recomputes every row in applyAiCorrelation(); a ticker
-  // newly entering the ranking stays null until that next full run.
+  // full-fetch run then recomputes every row in applyAiCorrelation() (a reading
+  // it cannot compute keeps this carried-forward value); a ticker newly entering
+  // the ranking stays null until a full run can compute it.
   const prevAi = new Map();   // vs AIQ (broad AI basket)
   const prevHw = new Map();   // vs SMH (semiconductors)
   try {
@@ -253,18 +254,28 @@ function rankAndWrite(config, { asAt, tickerCount, evaluated, fx }) {
 // Fetch + compute AI Sector Correlation for the ranked rows just written to
 // rankings.json (only those ~20 rows, not the whole 200-500 ticker universe --
 // the column is display-only, so it never needs to gate qualification) and
-// write them back. Never throws: addAiCorrelation() turns any per-row failure
-// into a null value.
+// write them back.
+//
+// Never throws, and runScreen() calls it LAST, after updatePortfolio(): the rebalance,
+// sold.json, portfolio-value.json and portfolio-history.json are the real published
+// record, so a display-only column must not be able to strand them half-written. Any
+// failure here (a Worker outage, unreadable rankings.json, a bad write) is logged and
+// rankings.json is left exactly as rankAndWrite() wrote it, with each row's prior AI
+// reading already carried forward.
 async function applyAiCorrelation(config, { addAiCorrelationImpl = addAiCorrelation } = {}) {
-  const rankingsPath = path.join(__dirname, '../../www', config.outDir, 'rankings.json');
-  const json = JSON.parse(fs.readFileSync(rankingsPath, 'utf8'));
-  json.rows = await addAiCorrelationImpl(json.rows || [], {
-    proxyUrl: readProxyUrl(),
-    throttleMs: config.throttleMs ?? THROTTLE_MS,
-  });
-  fs.writeFileSync(rankingsPath, JSON.stringify(json, null, 2) + '\n');
-  const scored = json.rows.filter(r => r.aiCorrelation).length;
-  console.log(`AI Sector Correlation: ${scored}/${json.rows.length} rows scored`);
+  try {
+    const rankingsPath = path.join(__dirname, '../../www', config.outDir, 'rankings.json');
+    const json = JSON.parse(fs.readFileSync(rankingsPath, 'utf8'));
+    json.rows = await addAiCorrelationImpl(json.rows || [], {
+      proxyUrl: readProxyUrl(),
+      throttleMs: config.throttleMs ?? THROTTLE_MS,
+    });
+    fs.writeFileSync(rankingsPath, JSON.stringify(json, null, 2) + '\n');
+    const scored = json.rows.filter(r => r.aiCorrelation).length;
+    console.log(`AI Sector Correlation: ${scored}/${json.rows.length} rows scored`);
+  } catch (err) {
+    console.warn(`\n⚠ AI Sector Correlation skipped for ${config.outDir} (${err.message}); rankings.json keeps its carried-forward readings.`);
+  }
 }
 
 // Append (or seed) a { date, portfolioValue, indexPrice } snapshot for the
@@ -439,8 +450,8 @@ async function runScreen(config, argv = process.argv) {
       : null;
     data = await gather(config);
     rankAndWrite(config, data);
-    await applyAiCorrelation(config);
     await updatePortfolio(config, data, oldRankings);
+    await applyAiCorrelation(config);   // last, and never throws: display-only, see its comment
   }
 }
 

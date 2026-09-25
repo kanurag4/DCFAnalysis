@@ -1,4 +1,4 @@
-// DCFAnalysis/scripts/lib/ai-correlation-card.js — builds the "AI Sector
+// scripts/lib/ai-correlation-card.js — builds the "AI Sector
 // Correlation" card + FAQ block for a per-ticker SEO page. Pure: takes the
 // already-computed { r, n, band } readings (from www/calc/aiCorrelation.js's
 // partialCorrelationAgainst(), via scripts/lib/ai-correlation-batch.js) and
@@ -22,12 +22,17 @@ function escapeHtml(s) {
 // and Inverse (moves against it) are both red, told apart by their label.
 // "None" is neutral cyan, never red or green, since no AI linkage isn't a
 // verdict either way.
+//
+// These are the 600/700 shades of the four hues, not the 500s, because the badge
+// is white text on the solid colour: red-500/orange-500/green-500/cyan-500 give
+// 3.8/2.8/2.3/2.4:1, all below WCAG AA's 4.5:1 for text this size. Same hues;
+// tests/ai-correlation-card.test.js asserts the contrast so a lighter shade can't creep back.
 const BAND_COLOR = {
-  high: '#ef4444',
-  moderate: '#f97316',
-  low: '#22c55e',
-  none: '#06b6d4',
-  inverse: '#ef4444',
+  high: '#dc2626',      // red-600
+  moderate: '#c2410c',  // orange-700
+  low: '#15803d',       // green-700
+  none: '#0e7490',      // cyan-700
+  inverse: '#dc2626',   // red-600, same as High
 };
 
 const BAND_DESCRIPTION = {
@@ -57,6 +62,11 @@ const READING_GUIDE = {
   ai: '/glossary/ai-sector-correlation/',
   hardware: '/glossary/ai-hardware-correlation/',
 };
+
+// The only wording that differs between the DCF and growth generators' FAQ: what "above" refers to on that
+// page. Kept on one line of its own so scripts/shared-files-manifest.json can ignore just this line and
+// still catch any edit to the FAQ text itself.
+const SCORES_ABOVE = 'valuation and framework scores';
 
 function hasBand(reading) {
   return !!reading && reading.band != null;
@@ -112,7 +122,7 @@ function buildAiCorrelationFaqHtml({ aiCorrelation, aiHardwareCorrelation } = {}
     <p>The colour shows how strongly the stock's price has been tied to the AI sector, in either direction. It is not a good or bad rating. Red means a strong link: High (moves with the AI sector) or Inverse (moves against it). Amber is Moderate, green is Low, and cyan means no meaningful link (None). Red is not a quality or valuation warning.</p>
   </details>
   <details class="faq-item"><summary>Does a high score mean I should buy this stock?</summary>
-    <p>No. This is a descriptive statistic about historical price co-movement, not a valuation judgment or a recommendation. A stock can show high AI correlation and still be overvalued, and a stock with no AI correlation can still be a sound investment for other reasons. Use it alongside the valuation and framework scores above, not in place of them.</p>
+    <p>No. This is a descriptive statistic about historical price co-movement, not a valuation judgment or a recommendation. A stock can show high AI correlation and still be overvalued, and a stock with no AI correlation can still be a sound investment for other reasons. Use it alongside the ${SCORES_ABOVE} above, not in place of them.</p>
   </details>
   <details class="faq-item"><summary>Why might a genuinely AI-linked company still show "None"?</summary>
     <p>Correlation measures how the <em>market has priced</em> the stock recently, not the company's actual business exposure. A company can have a real AI-infrastructure story (for example, supplying power or components to data centres) without the market yet trading its shares in sync with AI-sector sentiment — the underlying business case and the price pattern are two different things.</p>

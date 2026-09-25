@@ -581,11 +581,19 @@ function fyLabel(dateStr, cadence) {
 // contradiction unless the card says which it is.
 const periodBadge = (cadence) => `<span class="chart-period">${cadence === 'Quarterly' ? 'Per quarter' : 'Per year'}</span>`;
 
-async function fetchPriceHistory(symbol, proxyUrl) {
+// 730 days of raw daily /history points ({ date, close, adjClose? }), ascending.
+// Kept separate from the monthly bucketing below so a caller can reuse the daily
+// series (the AI Sector Correlation reads the stock's trailing year from it
+// instead of fetching the same history a second time).
+async function fetchDailyHistory(symbol, proxyUrl) {
   const now = Math.floor(Date.now() / 1000);
   const period1 = now - 730 * 24 * 60 * 60;
   const url = `${proxyUrl.replace(/\/$/, '')}/history/${encodeURIComponent(symbol)}?period1=${period1}&period2=${now}`;
   const points = await getJSON(url);
+  return Array.isArray(points) ? points : [];
+}
+
+function bucketMonthly(points) {
   if (!Array.isArray(points) || !points.length) return [];
   const buckets = {};
   for (const p of points) {
@@ -595,6 +603,10 @@ async function fetchPriceHistory(symbol, proxyUrl) {
   // `k` is the month bucket key, kept so two series can be inner-joined on it
   // (see alignByBucket); `date` feeds the date-proportional x spacing.
   return Object.entries(buckets).map(([k, p]) => ({ y: p.date, v: p.close, k, date: p.date }));
+}
+
+async function fetchPriceHistory(symbol, proxyUrl) {
+  return bucketMonthly(await fetchDailyHistory(symbol, proxyUrl));
 }
 
 // Given the base-case scenario result (or null) and the raw inputs that fed
@@ -1050,7 +1062,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     }
 
     await sleep(FETCH_SPACING_MS);
-    const priceSeriesRaw = await fetchPriceHistory(t, proxyUrl);
+    const dailyHistory = await fetchDailyHistory(t, proxyUrl);
+    const priceSeriesRaw = bucketMonthly(dailyHistory);
     let indexSeriesRaw;
     if (market.indexTicker) {
       if (indexHistoryCache && indexHistoryCache.has(market.indexTicker)) {
@@ -1069,11 +1082,13 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     // docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md.
     // AIQ/RSP/SMH are identical for every ticker in a batch run, so the helper
     // fetches them once into aiCorrelationCache (shared across the whole run,
-    // every market -- unlike indexHistoryCache, which is per-market). It
-    // never throws (a failure just omits the card) and sleeps
-    // FETCH_SPACING_MS before each Worker call it makes.
+    // every market -- unlike indexHistoryCache, which is per-market). The
+    // stock's own daily history was just fetched above for the price chart, so
+    // it is handed over (`stockHistory`) rather than fetched a second time; the
+    // helper trims it to the trailing year. It never throws (a failure just
+    // omits the card) and sleeps FETCH_SPACING_MS before each Worker call it makes.
     const { ai: aiCorrelation, hardware: aiHardwareCorrelation } =
-      await getAiCorrelations(t, { proxyUrl, cache: aiCorrelationCache, throttleMs: FETCH_SPACING_MS });
+      await getAiCorrelations(t, { proxyUrl, cache: aiCorrelationCache, throttleMs: FETCH_SPACING_MS, stockHistory: dailyHistory });
     const aiCorrelationHtml = buildAiCorrelationCard({ aiCorrelation, aiHardwareCorrelation });
     const aiCorrelationFaqHtml = buildAiCorrelationFaqHtml({ aiCorrelation, aiHardwareCorrelation });
 
@@ -1615,4 +1630,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };

@@ -55,7 +55,7 @@ const GOLD_FIXTURE = {
 test('gather() updates the sector-margins lookup as a byproduct of a full-fetch run', async () => {
   fs.writeFileSync(TEST_TICKERS_PATH, JSON.stringify(['TESTGOLD1.AX', 'TESTGOLD2.AX', 'TESTGOLD3.AX']));
 
-  mock.module('../scripts/fetch-yahoo.js', {
+  const fetchYahooMock = mock.module('../scripts/fetch-yahoo.js', {
     namedExports: {
       fetchSymbol: async (ticker) => ({ ticker, name: ticker, ...GOLD_FIXTURE }),
     },
@@ -77,6 +77,7 @@ test('gather() updates the sector-margins lookup as a byproduct of a full-fetch 
     assert.ok(after.Gold);
     assert.ok(after.Gold.peerCount >= 3);
   } finally {
+    fetchYahooMock.restore();   // a module can only be mocked once at a time; later tests mock it again themselves
     if (beforeMargins !== null) fs.writeFileSync(SECTOR_MARGINS_PATH, beforeMargins); else fs.writeFileSync(SECTOR_MARGINS_PATH, '{}\n');
     if (beforeRaw !== null) fs.writeFileSync(SECTOR_RAW_PATH, beforeRaw); else if (fs.existsSync(SECTOR_RAW_PATH)) fs.unlinkSync(SECTOR_RAW_PATH);
     if (fs.existsSync(TEST_TICKERS_PATH)) fs.unlinkSync(TEST_TICKERS_PATH);
@@ -178,4 +179,76 @@ test('applyAiCorrelation runs the helper once over the written rows and persists
     assert.strictEqual(written.asAt, '2026-09-24');       // non-row content untouched
     assert.deepStrictEqual(written.summary, { shown: 2 });
   } finally { cleanAiFixtures(); }
+});
+
+// --- applyAiCorrelation is display-only: it must never take the portfolio accounting down with it ---
+const ORDER_TICKERS_FILE = '_test-tickers-ai-order.json';
+const ORDER_TICKERS_PATH = path.join(__dirname, '..', 'scripts', ORDER_TICKERS_FILE);
+
+test('applyAiCorrelation never throws: a failing helper leaves rankings.json byte-for-byte unchanged', async () => {
+  cleanAiFixtures();
+  try {
+    fs.mkdirSync(AI_OUT_PATH, { recursive: true });
+    const rankingsPath = path.join(AI_OUT_PATH, 'rankings.json');
+    const original = JSON.stringify({ asAt: '2026-09-24', rows: [{ ticker: 'AAA', rank: 1, aiCorrelation: { r: 0.5, n: 240, band: 'high' } }] }, null, 2) + '\n';
+    fs.writeFileSync(rankingsPath, original);
+    await assert.doesNotReject(applyAiCorrelation(AI_CONFIG, { addAiCorrelationImpl: async () => { throw new Error('worker down'); } }));
+    assert.strictEqual(fs.readFileSync(rankingsPath, 'utf8'), original);
+    JSON.parse(fs.readFileSync(rankingsPath, 'utf8'));            // still valid JSON
+  } finally { cleanAiFixtures(); }
+});
+
+test('applyAiCorrelation never throws when rankings.json is missing or unreadable either', async () => {
+  cleanAiFixtures();
+  try {
+    await assert.doesNotReject(applyAiCorrelation(AI_CONFIG, { addAiCorrelationImpl: async (rows) => rows }));   // no file at all
+    fs.mkdirSync(AI_OUT_PATH, { recursive: true });
+    fs.writeFileSync(path.join(AI_OUT_PATH, 'rankings.json'), '{ not json');
+    await assert.doesNotReject(applyAiCorrelation(AI_CONFIG, { addAiCorrelationImpl: async (rows) => rows }));
+    assert.strictEqual(fs.readFileSync(path.join(AI_OUT_PATH, 'rankings.json'), 'utf8'), '{ not json');
+  } finally { cleanAiFixtures(); }
+});
+
+test('a full-fetch run finishes the portfolio accounting first, so an AI-correlation failure cannot strand it half-written', async () => {
+  cleanAiFixtures();
+  const beforeMargins = fs.existsSync(SECTOR_MARGINS_PATH) ? fs.readFileSync(SECTOR_MARGINS_PATH, 'utf8') : null;
+  const beforeRaw = fs.existsSync(SECTOR_RAW_PATH) ? fs.readFileSync(SECTOR_RAW_PATH, 'utf8') : null;
+  fs.writeFileSync(ORDER_TICKERS_PATH, JSON.stringify(['TESTGOLD1.AX', 'TESTGOLD2.AX']));
+  let portfolioWrittenWhenAiRan = null;
+  let fetchYahooMock, aiBatchMock;
+  try {
+    fetchYahooMock = mock.module('../scripts/fetch-yahoo.js', {
+      // intrinsic is ~34.6 at this fixture, so price 22 is a ~57% margin: it qualifies for the ranking.
+      namedExports: { fetchSymbol: async (ticker) => ({ ticker, name: ticker, ...GOLD_FIXTURE, price: 22 }) },
+    });
+    aiBatchMock = mock.module('../scripts/lib/ai-correlation-batch.js', {
+      namedExports: {
+        addAiCorrelation: async () => {
+          portfolioWrittenWhenAiRan = fs.existsSync(path.join(AI_OUT_PATH, 'portfolio-value.json'));
+          throw new Error('worker down');
+        },
+      },
+    });
+    delete require.cache[require.resolve('../scripts/lib/run-screen.js')];
+    const { runScreen: freshRunScreen } = require('../scripts/lib/run-screen.js');
+
+    await freshRunScreen({
+      universe: 'Test', tickersFile: ORDER_TICKERS_FILE, outDir: AI_OUT_DIR, currency: 'USD', liveKey: 'testRf',
+      rfLabel: 'TEST RF', topN: 5, maxMargin: 1.0, cacheFile: AI_CACHE_FILE, throttleMs: 1,
+    }, []);   // no --rerank/--reeval: the full-fetch path
+
+    assert.strictEqual(portfolioWrittenWhenAiRan, true, 'AI correlation must run after the portfolio files are written');
+    for (const f of ['rankings.json', 'portfolio-value.json', 'portfolio-history.json', 'sold.json']) {
+      assert.ok(fs.existsSync(path.join(AI_OUT_PATH, f)), `${f} should exist`);
+      JSON.parse(fs.readFileSync(path.join(AI_OUT_PATH, f), 'utf8'));
+    }
+  } finally {
+    if (fetchYahooMock) fetchYahooMock.restore();
+    if (aiBatchMock) aiBatchMock.restore();
+    delete require.cache[require.resolve('../scripts/lib/run-screen.js')];   // drop the copy bound to the mocks
+    if (beforeMargins !== null) fs.writeFileSync(SECTOR_MARGINS_PATH, beforeMargins); else fs.writeFileSync(SECTOR_MARGINS_PATH, '{}\n');
+    if (beforeRaw !== null) fs.writeFileSync(SECTOR_RAW_PATH, beforeRaw); else if (fs.existsSync(SECTOR_RAW_PATH)) fs.unlinkSync(SECTOR_RAW_PATH);
+    if (fs.existsSync(ORDER_TICKERS_PATH)) fs.unlinkSync(ORDER_TICKERS_PATH);
+    cleanAiFixtures();
+  }
 });

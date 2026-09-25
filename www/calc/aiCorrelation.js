@@ -1,5 +1,6 @@
-// Pure: partial correlation of a stock's daily returns with the AI-sector
-// ETF (AIQ), controlling for the broad equal-weight market (RSP). See
+// Pure: partial correlation of a stock's daily returns with an AI-related
+// benchmark ETF (AIQ, the broad AI basket; SMH, semiconductors), controlling for
+// the broad equal-weight market (RSP). See
 // docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md.
 //
 // SPY was rejected as the market control: SPY and AIQ have ~0.84 raw
@@ -18,28 +19,33 @@ const MARKET_ETF_TICKER = 'RSP';
 const MIN_TRADING_DAYS = 90; // card/FAQ are omitted at or below this many overlapping days
 const INVERSE_MAX = -0.20;   // r at or below this = Inverse (moves AGAINST the benchmark)
 
-const BANDS = [
-  { key: 'high', label: 'High', min: 0.40 },
-  { key: 'moderate', label: 'Moderate', min: 0.20 },
-  { key: 'low', label: 'Low', min: 0.05 },
-  { key: 'none', label: 'None', min: -Infinity },
-  // Never matched by the loop below (None's -Infinity catches everything first); bandFor()
-  // checks INVERSE_MAX explicitly, this entry only supplies the label.
-  { key: 'inverse', label: 'Inverse', min: -Infinity },
+// Positive bands, checked top to bottom (first whose `min` <= r wins). Anything below the last one is None.
+// Inverse is not in this list: it is the negative side, decided first by INVERSE_MAX in bandFor().
+const BAND_THRESHOLDS = [
+  { key: 'high', min: 0.40 },
+  { key: 'moderate', min: 0.20 },
+  { key: 'low', min: 0.05 },
 ];
+
+const BAND_LABELS = {
+  high: 'High',
+  moderate: 'Moderate',
+  low: 'Low',
+  none: 'None',
+  inverse: 'Inverse',
+};
 
 function bandFor(r) {
   if (r == null) return null;
   if (r <= INVERSE_MAX) return 'inverse';
-  for (const b of BANDS) {
+  for (const b of BAND_THRESHOLDS) {
     if (r >= b.min) return b.key;
   }
   return 'none';
 }
 
 function bandLabel(bandKey) {
-  const b = BANDS.find(x => x.key === bandKey);
-  return b ? b.label : null;
+  return Object.prototype.hasOwnProperty.call(BAND_LABELS, bandKey) ? BAND_LABELS[bandKey] : null;
 }
 
 // [{date, close}] (ascending, one entry per trading day) -> [{date, ret}]
@@ -82,6 +88,21 @@ function pearson(xs, ys) {
   return denom === 0 ? 0 : num / denom;
 }
 
+function sumSquares(xs) {
+  const m = mean(xs);
+  return xs.reduce((acc, v) => acc + (v - m) ** 2, 0);
+}
+
+// True when `resid` has effectively no variance left relative to `original` (a flat series, or one that
+// is fully explained by the market control). Correlating such a series would be correlating float noise
+// (or 0/0), so the caller reports no reading instead of a misleading "None". The relative tolerance
+// covers the near-zero, not just exactly-zero, residual.
+const NO_VARIANCE_RATIO = 1e-12;
+function hasNoVariance(resid, original) {
+  const total = sumSquares(original);
+  return total === 0 || sumSquares(resid) / total < NO_VARIANCE_RATIO;
+}
+
 // Regresses y on x (simple OLS), returns y's residuals.
 function residualsAfterRegression(y, x) {
   const n = y.length;
@@ -93,15 +114,14 @@ function residualsAfterRegression(y, x) {
   return y.map((v, i) => v - (alpha + beta * x[i]));
 }
 
-// Main entry point. stock/aiq/rsp are each [{date: 'YYYY-MM-DD', close:
-// number}], ascending, one entry per trading day (the shape
-// fetchDailyPriceHistory() returns).
+// Main entry point. `stock`, `benchmark` and `market` are each [{date: 'YYYY-MM-DD', close: number}],
+// ascending, one entry per trading day (the shape ai-correlation-batch.js's fetchDailyCloses() returns).
 //
-// Returns { r: number|null, n: number, band: string|null }. r is rounded to 2dp
-// and band is derived from that rounded value. r/band are null
-// when MIN_TRADING_DAYS or fewer overlapping trading days exist after
-// alignment (too small a sample to trust -- covers recent IPOs and
-// thinly-traded tickers).
+// Returns { r: number|null, n: number, band: string|null }. r is rounded to 2dp and band is derived
+// from that rounded value. r/band are null when there is no reading to show: MIN_TRADING_DAYS or fewer
+// overlapping trading days after alignment (too small a sample to trust -- covers recent IPOs and
+// thinly-traded tickers), or the stock or benchmark has no variance left after removing the market
+// (a suspended/flat-price stock, or a series identical to the market).
 function partialCorrelationAgainst({ stock, benchmark, market }) {
   const stockRets = toDailyReturns(stock || []);
   const benchRets = toDailyReturns(benchmark || []);
@@ -114,18 +134,16 @@ function partialCorrelationAgainst({ stock, benchmark, market }) {
 
   const stockResid = residualsAfterRegression(stockAligned, marketAligned);
   const benchResid = residualsAfterRegression(benchAligned, marketAligned);
+  if (hasNoVariance(stockResid, stockAligned) || hasNoVariance(benchResid, benchAligned)) {
+    return { r: null, n, band: null };
+  }
   // Rounded BEFORE banding: r is shown to 2dp everywhere, so a raw 0.3985 must band as the "0.40" it displays as.
   const r = Math.round(pearson(stockResid, benchResid) * 100) / 100;
 
   return { r, n, band: bandFor(r) };
 }
 
-// The original AIQ-vs-RSP entry point; the generic form above serves any benchmark (e.g. SMH).
-function partialCorrelation({ stock, aiq, rsp }) {
-  return partialCorrelationAgainst({ stock, benchmark: aiq, market: rsp });
-}
-
 if (typeof module !== 'undefined') module.exports = {
-  AI_ETF_TICKER, AI_HARDWARE_ETF_TICKER, MARKET_ETF_TICKER, MIN_TRADING_DAYS, INVERSE_MAX, BANDS,
-  bandFor, bandLabel, toDailyReturns, innerJoinByDate, partialCorrelation, partialCorrelationAgainst,
+  AI_ETF_TICKER, AI_HARDWARE_ETF_TICKER, MARKET_ETF_TICKER, MIN_TRADING_DAYS, INVERSE_MAX, BAND_THRESHOLDS, BAND_LABELS,
+  bandFor, bandLabel, toDailyReturns, innerJoinByDate, partialCorrelationAgainst,
 };
