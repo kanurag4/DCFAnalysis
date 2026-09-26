@@ -96,8 +96,8 @@
     "firstPrice": 210.19
   },
   "ADBE": {
-    "firstSeen": "2026-07-25",
-    "firstPrice": 225.11
+    "firstSeen": "2026-09-25",
+    "firstPrice": 235.47
   },
   "HPE": {
     "firstSeen": "2026-08-29",
@@ -350,5 +350,21 @@
   "EG": {
     "firstSeen": "2026-09-18",
     "firstPrice": 374.85
+  },
+  "ROP": {
+    "firstSeen": "2026-09-25",
+    "firstPrice": 358.56
+  },
+  "EPAM": {
+    "firstSeen": "2026-09-25",
+    "firstPrice": 108.23
+  },
+  "CF": {
+    "firstSeen": "2026-09-25",
+    "firstPrice": 114.67
+  },
+  "FSLR": {
+    "firstSeen": "2026-09-25",
+    "firstPrice": 177.71
   }
 }

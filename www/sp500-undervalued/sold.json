@@ -705,5 +705,45 @@
     "exitDate": "2026-09-18",
     "exitPrice": 397.76,
     "dollarPnl": -14.94
+  },
+  {
+    "ticker": "HAL",
+    "entryDate": "2026-09-04",
+    "entryPrice": 37.07,
+    "exitDate": "2026-09-25",
+    "exitPrice": 32.76,
+    "dollarPnl": -14.95
+  },
+  {
+    "ticker": "TTD",
+    "entryDate": "2026-09-04",
+    "entryPrice": 14.43,
+    "exitDate": "2026-09-25",
+    "exitPrice": 12.6,
+    "dollarPnl": -54.19
+  },
+  {
+    "ticker": "VLO",
+    "entryDate": "2026-09-18",
+    "entryPrice": 413.28,
+    "exitDate": "2026-09-25",
+    "exitPrice": 387.18,
+    "dollarPnl": -36.09
+  },
+  {
+    "ticker": "INTU",
+    "entryDate": "2026-09-11",
+    "entryPrice": 321.57,
+    "exitDate": "2026-09-25",
+    "exitPrice": 275.79,
+    "dollarPnl": -51.64
+  },
+  {
+    "ticker": "EG",
+    "entryDate": "2026-09-18",
+    "entryPrice": 374.85,
+    "exitDate": "2026-09-25",
+    "exitPrice": 370.43,
+    "dollarPnl": -6.74
   }
 ]
