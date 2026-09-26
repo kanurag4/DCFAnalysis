@@ -1,136 +1,71 @@
 {
-  "asAt": "2026-09-18",
+  "asAt": "2026-09-26",
   "universe": "Europe (Eurozone + UK)",
   "summary": {
     "tickers": 200,
     "evaluated": 200,
-    "qualified": 29,
+    "qualified": 34,
     "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 0,
-      "unvaluable": 31,
-      "overvalued": 106,
-      "marginOverCap": 27,
-      "distressZone": 6,
-      "proxyFcf": 1
+      "unvaluable": 21,
+      "overvalued": 107,
+      "marginOverCap": 29,
+      "distressZone": 7,
+      "proxyFcf": 2
     }
   },
   "rows": [
     {
       "rank": 1,
-      "ticker": "OMV.VI",
-      "name": "OMV Aktiengesellschaft",
+      "ticker": "SHEL.L",
+      "name": "Shell plc",
       "sector": "Energy",
       "method": "DCF",
-      "intrinsic": 142.64,
-      "snapshotPrice": 72.05,
-      "marginOfSafety": 0.9798,
-      "wacc": 0.0553,
-      "terminalValuePct": 84,
-      "trailingPE": 15.1,
-      "marketCap": 23498717184,
-      "operatingMargin": 0.1486,
-      "analystTarget": 63.84,
-      "currency": "EUR",
-      "altmanZ": null,
+      "intrinsic": 7108.31,
+      "snapshotPrice": 3611,
+      "marginOfSafety": 0.9685,
+      "wacc": 0.0912,
+      "terminalValuePct": 73.9,
+      "trailingPE": 10.7,
+      "marketCap": 20601844531200,
+      "operatingMargin": 0.1669,
+      "analystTarget": 3920.15,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 2.46,
+        "zone": "grey"
+      },
       "piotroskiF": {
-        "score": 6,
+        "score": 5,
         "maxScore": 9,
-        "trend": "Improving"
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.12,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.09,
+        "n": 245,
+        "band": "none"
       }
     },
     {
       "rank": 2,
-      "ticker": "CCH.L",
-      "name": "Coca-Cola HBC AG",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 8015.94,
-      "snapshotPrice": 4248,
-      "marginOfSafety": 0.887,
-      "wacc": 0.0739,
-      "terminalValuePct": 77.4,
-      "trailingPE": 18.2,
-      "marketCap": 1548245401600,
-      "operatingMargin": 0.1218,
-      "analystTarget": 5121.45,
-      "currency": "GBp",
-      "altmanZ": {
-        "score": 3.7,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Stable"
-      }
-    },
-    {
-      "rank": 3,
-      "ticker": "KGF.L",
-      "name": "Kingfisher plc",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 568.27,
-      "snapshotPrice": 301.8,
-      "marginOfSafety": 0.8829,
-      "wacc": 0.0986,
-      "terminalValuePct": 68.7,
-      "trailingPE": 21.6,
-      "marketCap": 488857651200,
-      "operatingMargin": 0.0394,
-      "analystTarget": 315.28,
-      "currency": "GBp",
-      "altmanZ": {
-        "score": 2.3,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Stable"
-      }
-    },
-    {
-      "rank": 4,
-      "ticker": "IMB.L",
-      "name": "Imperial Brands PLC",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 4561.97,
-      "snapshotPrice": 2492,
-      "marginOfSafety": 0.8306,
-      "wacc": 0.0696,
-      "terminalValuePct": 78.7,
-      "trailingPE": 11.7,
-      "marketCap": 1879543808000,
-      "operatingMargin": 0.1603,
-      "analystTarget": 3250,
-      "currency": "GBp",
-      "altmanZ": {
-        "score": 1.82,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      }
-    },
-    {
-      "rank": 5,
       "ticker": "BAYN.DE",
       "name": "Bayer Aktiengesellschaft",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 82.97,
-      "snapshotPrice": 48.09,
-      "marginOfSafety": 0.7253,
-      "wacc": 0.0674,
-      "terminalValuePct": 78.3,
+      "intrinsic": 98.41,
+      "snapshotPrice": 50.02,
+      "marginOfSafety": 0.9674,
+      "wacc": 0.0616,
+      "terminalValuePct": 80.5,
       "trailingPE": null,
-      "marketCap": 47244775424,
+      "marketCap": 49140850688,
       "operatingMargin": 0.0919,
       "analystTarget": 58.22,
       "currency": "EUR",
@@ -139,71 +74,67 @@
         "score": 6,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 244,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0,
+        "n": 244,
+        "band": "none"
       }
     },
     {
-      "rank": 6,
-      "ticker": "BMW.DE",
-      "name": "Bayerische Motoren Werke Aktiengesellschaft",
-      "sector": "Consumer Cyclical",
+      "rank": 3,
+      "ticker": "AAF.L",
+      "name": "Airtel Africa Plc",
+      "sector": "Communication Services",
       "method": "DCF",
-      "intrinsic": 103.08,
-      "snapshotPrice": 60.4,
-      "marginOfSafety": 0.7066,
-      "wacc": 0.0418,
-      "terminalValuePct": 90.1,
-      "trailingPE": 5.8,
-      "marketCap": 36153958400,
-      "operatingMargin": 0.0515,
-      "analystTarget": 73.02,
-      "currency": "EUR",
-      "altmanZ": null,
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "highLeverage": true
-    },
-    {
-      "rank": 7,
-      "ticker": "SN.L",
-      "name": "Smith & Nephew plc",
-      "sector": "Healthcare",
-      "method": "DCF",
-      "intrinsic": 1687,
-      "snapshotPrice": 1027.5,
-      "marginOfSafety": 0.6419,
-      "wacc": 0.0803,
-      "terminalValuePct": 75,
-      "trailingPE": 18.7,
-      "marketCap": 860048896000,
-      "operatingMargin": 0.1447,
-      "analystTarget": 1266.38,
+      "intrinsic": 531.95,
+      "snapshotPrice": 299.6,
+      "marginOfSafety": 0.7755,
+      "wacc": 0.0734,
+      "terminalValuePct": 79.1,
+      "trailingPE": 21.4,
+      "marketCap": 1087199334400,
+      "operatingMargin": 0.338,
+      "analystTarget": 409.07,
       "currency": "GBp",
       "altmanZ": {
-        "score": 2.86,
+        "score": 1.95,
         "zone": "grey"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 9,
         "maxScore": 9,
-        "trend": "Stable"
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.01,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.05,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 8,
+      "rank": 4,
       "ticker": "HEIA.AS",
       "name": "Heineken N.V.",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 102.4,
-      "snapshotPrice": 70.74,
-      "marginOfSafety": 0.4475,
-      "wacc": 0.0556,
-      "terminalValuePct": 82.9,
-      "trailingPE": 17.3,
-      "marketCap": 39202451456,
+      "intrinsic": 121.48,
+      "snapshotPrice": 70.58,
+      "marginOfSafety": 0.7212,
+      "wacc": 0.0509,
+      "terminalValuePct": 84.8,
+      "trailingPE": 17.2,
+      "marketCap": 39090409472,
       "operatingMargin": 0.1046,
       "analystTarget": 89.14,
       "currency": "EUR",
@@ -215,85 +146,96 @@
         "score": 7,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.39,
+        "n": 246,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.33,
+        "n": 246,
+        "band": "inverse"
       }
     },
     {
-      "rank": 9,
+      "rank": 5,
       "ticker": "ACA.PA",
       "name": "Crédit Agricole S.A.",
       "sector": "Financial Services",
       "method": "DDM",
-      "intrinsic": 25.99,
-      "snapshotPrice": 18.19,
-      "marginOfSafety": 0.4289,
-      "wacc": 0.0795,
-      "terminalValuePct": 73.9,
+      "intrinsic": 31.3,
+      "snapshotPrice": 18.18,
+      "marginOfSafety": 0.721,
+      "wacc": 0.069,
+      "terminalValuePct": 77.7,
       "trailingPE": 9,
-      "marketCap": 55176462336,
+      "marketCap": 55161294848,
       "operatingMargin": 0.4359,
       "analystTarget": 20.79,
       "currency": "EUR",
       "altmanZ": null,
-      "piotroskiF": null
-    },
-    {
-      "rank": 10,
-      "ticker": "ABDN.L",
-      "name": "Aberdeen Group Plc",
-      "sector": "Financial Services",
-      "method": "DCF",
-      "intrinsic": 336.73,
-      "snapshotPrice": 239.6,
-      "marginOfSafety": 0.4054,
-      "wacc": 0.1253,
-      "terminalValuePct": 60.6,
-      "trailingPE": 11.4,
-      "marketCap": 429110041600,
-      "operatingMargin": 0.158,
-      "analystTarget": 241.73,
-      "currency": "GBp",
-      "altmanZ": null,
-      "piotroskiF": null
-    },
-    {
-      "rank": 11,
-      "ticker": "SGE.L",
-      "name": "The Sage Group plc",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 1404.4,
-      "snapshotPrice": 1008.5,
-      "marginOfSafety": 0.3926,
-      "wacc": 0.0762,
-      "terminalValuePct": 78.8,
-      "trailingPE": 25.2,
-      "marketCap": 905170022400,
-      "operatingMargin": 0.223,
-      "analystTarget": 1131.06,
-      "currency": "GBp",
-      "altmanZ": {
-        "score": 3,
-        "zone": "safe"
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.12,
+        "n": 246,
+        "band": "low"
       },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Stable"
+      "aiHardwareCorrelation": {
+        "r": 0.14,
+        "n": 246,
+        "band": "low"
       }
     },
     {
-      "rank": 12,
+      "rank": 6,
+      "ticker": "RTO.L",
+      "name": "Rentokil Initial plc",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 526.26,
+      "snapshotPrice": 308.7,
+      "marginOfSafety": 0.7048,
+      "wacc": 0.0726,
+      "terminalValuePct": 78.1,
+      "trailingPE": 30.9,
+      "marketCap": 776763289600,
+      "operatingMargin": 0.1279,
+      "analystTarget": 482.56,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 1.98,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.19,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.21,
+        "n": 245,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 7,
       "ticker": "SAN.PA",
       "name": "Sanofi",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 102.98,
-      "snapshotPrice": 74.05,
-      "marginOfSafety": 0.3907,
-      "wacc": 0.0559,
-      "terminalValuePct": 82.8,
-      "trailingPE": 22.9,
-      "marketCap": 88716992512,
+      "intrinsic": 121.48,
+      "snapshotPrice": 71.79,
+      "marginOfSafety": 0.6922,
+      "wacc": 0.0507,
+      "terminalValuePct": 84.9,
+      "trailingPE": 22.2,
+      "marketCap": 86009356288,
       "operatingMargin": 0.2103,
       "analystTarget": 94.06,
       "currency": "EUR",
@@ -302,6 +244,182 @@
         "score": 7,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.3,
+        "n": 246,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.3,
+        "n": 246,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 8,
+      "ticker": "CCH.L",
+      "name": "Coca-Cola HBC AG",
+      "sector": "Consumer Defensive",
+      "method": "DCF",
+      "intrinsic": 7312.11,
+      "snapshotPrice": 4372,
+      "marginOfSafety": 0.6725,
+      "wacc": 0.071,
+      "terminalValuePct": 78.5,
+      "trailingPE": 18.7,
+      "marketCap": 1593439027200,
+      "operatingMargin": 0.1218,
+      "analystTarget": 5184.05,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 3.94,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.28,
+        "n": 245,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.24,
+        "n": 245,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 9,
+      "ticker": "G24.DE",
+      "name": "Scout24 SE",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 111.19,
+      "snapshotPrice": 67.35,
+      "marginOfSafety": 0.6509,
+      "wacc": 0.0562,
+      "terminalValuePct": 84.4,
+      "trailingPE": 17,
+      "marketCap": 4690269696,
+      "operatingMargin": 0.4487,
+      "analystTarget": 106.07,
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 6.51,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": 0.01,
+        "n": 244,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.18,
+        "n": 244,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 10,
+      "ticker": "CS.PA",
+      "name": "AXA SA",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 68.66,
+      "snapshotPrice": 44,
+      "marginOfSafety": 0.5605,
+      "wacc": 0.0595,
+      "terminalValuePct": 83.1,
+      "trailingPE": 11.9,
+      "marketCap": 91999674368,
+      "operatingMargin": 0.1198,
+      "analystTarget": 51.93,
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.1,
+        "n": 246,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.11,
+        "n": 246,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 11,
+      "ticker": "SGE.L",
+      "name": "The Sage Group plc",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 1540.18,
+      "snapshotPrice": 1002.5,
+      "marginOfSafety": 0.5363,
+      "wacc": 0.0718,
+      "terminalValuePct": 80.3,
+      "trailingPE": 25.1,
+      "marketCap": 900878540800,
+      "operatingMargin": 0.223,
+      "analystTarget": 1131.06,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 2.99,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.26,
+        "n": 245,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "ABDN.L",
+      "name": "Aberdeen Group Plc",
+      "sector": "Financial Services",
+      "method": "DCF",
+      "intrinsic": 376.74,
+      "snapshotPrice": 245.6,
+      "marginOfSafety": 0.534,
+      "wacc": 0.1126,
+      "terminalValuePct": 64.2,
+      "trailingPE": 11.7,
+      "marketCap": 452087193600,
+      "operatingMargin": 0.158,
+      "analystTarget": 241.73,
+      "currency": "GBp",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.15,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.12,
+        "n": 245,
+        "band": "low"
       }
     },
     {
@@ -310,62 +428,99 @@
       "name": "Münchener Rückversicherungs-Gesellschaft Aktiengesellschaft in München",
       "sector": "Financial Services",
       "method": "DDM",
-      "intrinsic": 660.26,
-      "snapshotPrice": 505.8,
-      "marginOfSafety": 0.3054,
-      "wacc": 0.0626,
-      "terminalValuePct": 82,
-      "trailingPE": 9.4,
-      "marketCap": 63636955136,
+      "intrinsic": 774.52,
+      "snapshotPrice": 510.4,
+      "marginOfSafety": 0.5175,
+      "wacc": 0.0561,
+      "terminalValuePct": 84.3,
+      "trailingPE": 9.5,
+      "marketCap": 64215703552,
       "operatingMargin": 0.1733,
       "analystTarget": 549.78,
       "currency": "EUR",
       "altmanZ": null,
-      "piotroskiF": null
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.18,
+        "n": 244,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.19,
+        "n": 244,
+        "band": "none"
+      }
     },
     {
       "rank": 14,
-      "ticker": "CS.PA",
-      "name": "AXA SA",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 57.89,
-      "snapshotPrice": 44.73,
-      "marginOfSafety": 0.2943,
-      "wacc": 0.0671,
-      "terminalValuePct": 80.4,
-      "trailingPE": 12.1,
-      "marketCap": 93526032384,
-      "operatingMargin": 0.1198,
-      "analystTarget": 51.93,
+      "ticker": "BN.PA",
+      "name": "Danone S.A.",
+      "sector": "Consumer Defensive",
+      "method": "DCF",
+      "intrinsic": 84.39,
+      "snapshotPrice": 59.56,
+      "marginOfSafety": 0.4169,
+      "wacc": 0.0495,
+      "terminalValuePct": 85.7,
+      "trailingPE": 19.7,
+      "marketCap": 38362329088,
+      "operatingMargin": 0.133,
+      "analystTarget": 79.89,
       "currency": "EUR",
-      "altmanZ": null,
-      "piotroskiF": null
+      "altmanZ": {
+        "score": 2.24,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.28,
+        "n": 246,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.3,
+        "n": 246,
+        "band": "inverse"
+      }
     },
     {
       "rank": 15,
-      "ticker": "G24.DE",
-      "name": "Scout24 SE",
-      "sector": "Communication Services",
+      "ticker": "EL.PA",
+      "name": "EssilorLuxottica Société anonyme",
+      "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 92.09,
-      "snapshotPrice": 73.75,
-      "marginOfSafety": 0.2486,
-      "wacc": 0.0633,
-      "terminalValuePct": 81.9,
-      "trailingPE": 18.6,
-      "marketCap": 5135967232,
-      "operatingMargin": 0.4487,
-      "analystTarget": 106.07,
+      "intrinsic": 199.29,
+      "snapshotPrice": 143.9,
+      "marginOfSafety": 0.385,
+      "wacc": 0.0532,
+      "terminalValuePct": 85,
+      "trailingPE": 26.9,
+      "marketCap": 66011045888,
+      "operatingMargin": 0.1537,
+      "analystTarget": 233.48,
       "currency": "EUR",
       "altmanZ": {
-        "score": 6.97,
-        "zone": "safe"
+        "score": 2.31,
+        "zone": "grey"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 4,
         "maxScore": 9,
-        "trend": "Improving"
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.13,
+        "n": 246,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.16,
+        "n": 246,
+        "band": "none"
       }
     },
     {
@@ -374,13 +529,13 @@
       "name": "Reckitt Benckiser Group plc",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 6117.77,
-      "snapshotPrice": 4928,
-      "marginOfSafety": 0.2414,
-      "wacc": 0.0742,
-      "terminalValuePct": 76.5,
-      "trailingPE": 11.1,
-      "marketCap": 3125687910400,
+      "intrinsic": 6714.59,
+      "snapshotPrice": 4905,
+      "marginOfSafety": 0.3689,
+      "wacc": 0.0702,
+      "terminalValuePct": 78,
+      "trailingPE": 11,
+      "marketCap": 3110307635200,
       "operatingMargin": 0.1819,
       "analystTarget": 6239.05,
       "currency": "GBp",
@@ -392,99 +547,67 @@
         "score": 8,
         "maxScore": 9,
         "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.37,
+        "n": 245,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.35,
+        "n": 245,
+        "band": "inverse"
       }
     },
     {
       "rank": 17,
-      "ticker": "EL.PA",
-      "name": "EssilorLuxottica Société anonyme",
+      "ticker": "SN.L",
+      "name": "Smith & Nephew plc",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 167.77,
-      "snapshotPrice": 139,
-      "marginOfSafety": 0.207,
-      "wacc": 0.0588,
-      "terminalValuePct": 82.9,
-      "trailingPE": 26,
-      "marketCap": 63763275776,
-      "operatingMargin": 0.1537,
-      "analystTarget": 237.96,
-      "currency": "EUR",
+      "intrinsic": 1359.76,
+      "snapshotPrice": 1008,
+      "marginOfSafety": 0.349,
+      "wacc": 0.0772,
+      "terminalValuePct": 76,
+      "trailingPE": 18,
+      "marketCap": 843728742400,
+      "operatingMargin": 0.1447,
+      "analystTarget": 1279.63,
+      "currency": "GBp",
       "altmanZ": {
-        "score": 2.26,
-        "zone": "grey"
+        "score": 3.16,
+        "zone": "safe"
       },
       "piotroskiF": {
-        "score": 4,
+        "score": 7,
         "maxScore": 9,
         "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.28,
+        "n": 245,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.32,
+        "n": 245,
+        "band": "inverse"
       }
     },
     {
       "rank": 18,
-      "ticker": "BN.PA",
-      "name": "Danone S.A.",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 71.86,
-      "snapshotPrice": 60.54,
-      "marginOfSafety": 0.187,
-      "wacc": 0.0541,
-      "terminalValuePct": 83.8,
-      "trailingPE": 20,
-      "marketCap": 38993543168,
-      "operatingMargin": 0.133,
-      "analystTarget": 79.93,
-      "currency": "EUR",
-      "altmanZ": {
-        "score": 2.25,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      }
-    },
-    {
-      "rank": 19,
-      "ticker": "BRBY.L",
-      "name": "Burberry Group plc",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 1159.71,
-      "snapshotPrice": 996,
-      "marginOfSafety": 0.1644,
-      "wacc": 0.0892,
-      "terminalValuePct": 71.2,
-      "trailingPE": 166,
-      "marketCap": 356777779200,
-      "operatingMargin": 0.1016,
-      "analystTarget": 1280.76,
-      "currency": "GBp",
-      "altmanZ": {
-        "score": 2.45,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 7,
-        "trend": "Improving"
-      }
-    },
-    {
-      "rank": 20,
       "ticker": "DSY.PA",
       "name": "Dassault Systèmes SE",
       "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 23.94,
-      "snapshotPrice": 20.56,
-      "marginOfSafety": 0.1643,
-      "wacc": 0.0617,
-      "terminalValuePct": 81,
-      "trailingPE": 21.2,
-      "marketCap": 27016949760,
+      "intrinsic": 27.75,
+      "snapshotPrice": 21.07,
+      "marginOfSafety": 0.3171,
+      "wacc": 0.0553,
+      "terminalValuePct": 83.5,
+      "trailingPE": 21.7,
+      "marketCap": 27687116800,
       "operatingMargin": 0.234,
       "analystTarget": 23.71,
       "currency": "EUR",
@@ -493,12 +616,91 @@
         "score": 6,
         "maxScore": 9,
         "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.08,
+        "n": 246,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.25,
+        "n": 246,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 19,
+      "ticker": "FRES.L",
+      "name": "Fresnillo plc",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 3798.86,
+      "snapshotPrice": 2890,
+      "marginOfSafety": 0.3145,
+      "wacc": 0.0876,
+      "terminalValuePct": 74,
+      "trailingPE": 12.4,
+      "marketCap": 2129622425600,
+      "operatingMargin": 0.6305,
+      "analystTarget": 3293.78,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 10.54,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.27,
+        "n": 245,
+        "band": "moderate"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.25,
+        "n": 245,
+        "band": "moderate"
+      }
+    },
+    {
+      "rank": 20,
+      "ticker": "KER.PA",
+      "name": "Kering SA",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 293.35,
+      "snapshotPrice": 223.35,
+      "marginOfSafety": 0.3134,
+      "wacc": 0.0665,
+      "terminalValuePct": 78.6,
+      "trailingPE": null,
+      "marketCap": 27387033600,
+      "operatingMargin": 0.1276,
+      "analystTarget": 283.91,
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.16,
+        "n": 246,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.17,
+        "n": 246,
+        "band": "none"
       }
     }
   ],
   "fxRates": {
-    "GBP": 1.1632,
-    "USD": 0.8711
+    "GBP": 1.1609,
+    "USD": 0.8787
   },
   "fxSource": "live"
 }

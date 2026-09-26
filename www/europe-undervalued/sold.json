@@ -278,5 +278,45 @@
     "exitDate": "2026-09-18",
     "exitPrice": 1.4674,
     "dollarPnl": -9.77
+  },
+  {
+    "ticker": "OMV.VI",
+    "entryDate": "2026-09-18",
+    "entryPrice": 72.05,
+    "exitDate": "2026-09-26",
+    "exitPrice": 71.6,
+    "dollarPnl": -3.02
+  },
+  {
+    "ticker": "KGF.L",
+    "entryDate": "2026-09-18",
+    "entryPrice": 3.5036,
+    "exitDate": "2026-09-26",
+    "exitPrice": 3.8124,
+    "dollarPnl": 41.56
+  },
+  {
+    "ticker": "IMB.L",
+    "entryDate": "2026-09-18",
+    "entryPrice": 28.9296,
+    "exitDate": "2026-09-26",
+    "exitPrice": 28.3492,
+    "dollarPnl": -10.63
+  },
+  {
+    "ticker": "BMW.DE",
+    "entryDate": "2026-09-12",
+    "entryPrice": 63,
+    "exitDate": "2026-09-26",
+    "exitPrice": 55.72,
+    "dollarPnl": -37.45
+  },
+  {
+    "ticker": "BRBY.L",
+    "entryDate": "2026-09-18",
+    "entryPrice": 11.5626,
+    "exitDate": "2026-09-26",
+    "exitPrice": 11.8064,
+    "dollarPnl": 9.22
   }
 ]

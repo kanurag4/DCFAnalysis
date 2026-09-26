@@ -152,8 +152,8 @@
     "firstPrice": 27.74
   },
   "KER.PA": {
-    "firstSeen": "2026-09-05",
-    "firstPrice": 245.2
+    "firstSeen": "2026-09-26",
+    "firstPrice": 223.35
   },
   "CCH.L": {
     "firstSeen": "2026-09-12",
@@ -202,5 +202,21 @@
   "BRBY.L": {
     "firstSeen": "2026-09-18",
     "firstPrice": 996
+  },
+  "SHEL.L": {
+    "firstSeen": "2026-09-26",
+    "firstPrice": 3611
+  },
+  "AAF.L": {
+    "firstSeen": "2026-09-26",
+    "firstPrice": 299.6
+  },
+  "RTO.L": {
+    "firstSeen": "2026-09-26",
+    "firstPrice": 308.7
+  },
+  "FRES.L": {
+    "firstSeen": "2026-09-26",
+    "firstPrice": 2890
   }
 }
