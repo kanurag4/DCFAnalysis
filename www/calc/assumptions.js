@@ -102,7 +102,7 @@
 // (DCFAnalysis/scripts/lib/rf.js) -- the only spread with its own separate
 // hand-maintained copy, used by the still-404ing live G-Sec re-fetch path -- updated
 // to match. See docs/risk-free-rates.md.
-const FALLBACK_RF = { us: 0.0501, aus: 0.0532, ind: 0.0530, kor: 0.0402, jpn: 0.0244, uk: 0.0530, eu: 0.0351, hk: 0.0365, cn: 0.0112 };
+const FALLBACK_RF = { us: 0.0501, aus: 0.0535, ind: 0.0540, kor: 0.0401, jpn: 0.0251, uk: 0.0538, eu: 0.0359, hk: 0.0365, cn: 0.0112 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -119,13 +119,13 @@ const FALLBACK_RF = { us: 0.0501, aus: 0.0532, ind: 0.0530, kor: 0.0402, jpn: 0.
 // a replacement is found (see docs/TODO.md's P6).
 const FALLBACK_RF_META = {
   us:  { asOf: '2026-09-18', source: 'Yahoo ^TNX live pull via the Worker /history endpoint -- 5.006% close, still near the cusp-of-5% global selloff level', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
-  aus: { asOf: '2026-09-17', source: 'TradingEconomics, AU 10yr govt bond 5.32% (Sept 17, highest since mid-2011, selloff continuing)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: '2026-09-22', source: 'raw G-Sec 7.05% (Sept 17) minus Jul-2026 Damodaran spread 1.75% (Baa3, refreshed from the Jan-2026 1.87%)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
-  kor: { asOf: '2026-09-22', source: 'raw yield 4.413% (eased back from the 4.54% selloff peak) minus Jul-2026 Damodaran spread 0.39% (Aa2, refreshed from the Jan-2026 0.42%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  jpn: { asOf: '2026-09-22', source: 'raw JGB yield 3.00% (Sept 17, near highest since Sept 1996, ahead of an expected BOJ hike) minus Jul-2026 Damodaran spread 0.56% (A1, refreshed from the Jan-2026 0.60%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: '2026-09-11', source: 'raw gilt yield 5.295% (Sept 10, 19-year high on oil-driven global selloff) -- re-checked 09-18, still the latest available figure, no change', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  eu:  { asOf: '2026-09-17', source: 'raw German bund yield 3.51% (Sept 17, continuing the oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58% -- re-checked 09-18, no trustworthy current figure found (search surfaced only a stale June reading)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  aus: { asOf: '2026-09-30', source: 'TradingEconomics, AU 10yr govt bond 5.35% (Sept 30, selloff continuing)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  ind: { asOf: '2026-09-30', source: 'raw G-Sec 7.15% (Sept 30, TradingEconomics) minus Jul-2026 Damodaran spread 1.75% (Baa3, unchanged)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-09-30', source: 'raw yield 4.40% (Sept 30, TradingEconomics, eased back further off the selloff peak) minus Jul-2026 Damodaran spread 0.39% (Aa2, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-09-30', source: 'raw JGB yield 3.07% (Sept 30, TradingEconomics) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-09-30', source: 'raw gilt yield 5.38% (Sept 30, TradingEconomics, selloff continuing)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  eu:  { asOf: '2026-09-30', source: 'raw German bund yield 3.59% (Sept 30, TradingEconomics, continuing the oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58% -- re-checked 09-18 and 09-30, no trustworthy current figure found newer than mid-Sept', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   cn:  { asOf: '2026-09-22', source: 'raw yield 1.68% (Sept 18, unchanged from Sept 1) minus Jul-2026 Damodaran spread 0.56% (A1, refreshed from the Jan-2026 0.60%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 

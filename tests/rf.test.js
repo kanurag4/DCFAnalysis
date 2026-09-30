@@ -54,10 +54,11 @@ test('fetchIndRf subtracts the default spread from a live-fetched raw yield (6.8
 // fetchIndRf reads this straight from assumptions.js, so no code change was needed here.
 // Refreshed again 2026-09-18 (raw G-Sec 7.05%, same spread): 0.0515->0.0518. Refreshed
 // again 2026-09-22 against Damodaran's July 2026 table (Baa3 spread compressed
-// 1.87%->1.75%, net rf moved UP despite the same raw yield): 0.0518->0.0530.
-test('fetchIndRf falls back to the already-spread-adjusted static default (0.0530) when the live fetch fails, not raw-0.07-minus-spread', async () => {
-  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0530);
-  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0530);
+// 1.87%->1.75%, net rf moved UP despite the same raw yield): 0.0518->0.0530. Refreshed
+// again 2026-09-30 (raw G-Sec 7.15%, TradingEconomics, same unchanged spread): 0.0530->0.0540.
+test('fetchIndRf falls back to the already-spread-adjusted static default (0.0540) when the live fetch fails, not raw-0.07-minus-spread', async () => {
+  near(await fetchIndRf('x', { fetchImpl: async () => ({}) }), 0.0540);
+  near(await fetchIndRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), 0.0540);
 });
 
 test('fetchIndRf floors at 1% even if the live yield were implausibly close to the spread', async () => {
