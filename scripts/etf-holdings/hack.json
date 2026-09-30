@@ -1,21 +1,13 @@
 {
-  "asOf": "2026-09-15",
+  "asOf": "2026-09-29",
   "source": "https://www.betashares.com.au/files/csv/HACK_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-16T09:30:08.733Z",
+  "fetchedAt": "2026-09-30T09:42:39.123Z",
   "rows": [
-    {
-      "yahoo": "PANW",
-      "raw": "PANW UW",
-      "name": "PALO ALTO NETWORKS INC",
-      "weight": 0.09440445410000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
     {
       "yahoo": "CRWD",
       "raw": "CRWD UW",
       "name": "CROWDSTRIKE HOLDINGS INC",
-      "weight": 0.0940729556,
+      "weight": 0.08928492500000001,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -23,7 +15,15 @@
       "yahoo": "FTNT",
       "raw": "FTNT UW",
       "name": "FORTINET INC",
-      "weight": 0.0885738579,
+      "weight": 0.0808088551,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "PANW",
+      "raw": "PANW UW",
+      "name": "PALO ALTO NETWORKS INC",
+      "weight": 0.0797890724,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -31,7 +31,7 @@
       "yahoo": "CSCO",
       "raw": "CSCO UW",
       "name": "CISCO SYSTEMS INC",
-      "weight": 0.0648035049,
+      "weight": 0.0759767276,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -39,7 +39,7 @@
       "yahoo": "AVGO",
       "raw": "AVGO UW",
       "name": "BROADCOM INC",
-      "weight": 0.053838198899999995,
+      "weight": 0.0752684582,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -47,7 +47,7 @@
       "yahoo": "NET",
       "raw": "NET UN",
       "name": "CLOUDFLARE INC",
-      "weight": 0.047968880299999996,
+      "weight": 0.0453147883,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -55,7 +55,7 @@
       "yahoo": "OKTA",
       "raw": "OKTA UW",
       "name": "OKTA INC",
-      "weight": 0.043802875500000005,
+      "weight": 0.0437991723,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -63,7 +63,7 @@
       "yahoo": "ZS",
       "raw": "ZS UW",
       "name": "ZSCALER INC",
-      "weight": 0.0372882106,
+      "weight": 0.0361681966,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -71,7 +71,7 @@
       "yahoo": "FFIV",
       "raw": "FFIV UW",
       "name": "F5 INC",
-      "weight": 0.0315002978,
+      "weight": 0.035903930800000004,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -79,63 +79,15 @@
       "yahoo": "RBRK",
       "raw": "RBRK UN",
       "name": "RUBRIK INC",
-      "weight": 0.0306937943,
+      "weight": 0.027230598600000003,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "GEN",
-      "raw": "GEN UW",
-      "name": "GEN DIGITAL INC",
-      "weight": 0.023909554399999998,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "DT",
-      "raw": "DT UN",
-      "name": "DYNATRACE INC",
-      "weight": 0.022959557,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "AKAM",
-      "raw": "AKAM UW",
-      "name": "AKAMAI TECHNOLOGIES INC",
-      "weight": 0.022575928300000003,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "ANET",
-      "raw": "ANET UN",
-      "name": "ARISTA NETWORKS INC",
-      "weight": 0.0214331276,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "FROG",
-      "raw": "FROG UW",
-      "name": "JFROG LTD",
-      "weight": 0.020334668599999998,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "CHKP",
-      "raw": "CHKP UW",
-      "name": "CHECK POINT SOFTWARE TECHNOLOG",
-      "weight": 0.020064191,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "MSFT",
-      "raw": "MSFT UW",
-      "name": "MICROSOFT CORP",
-      "weight": 0.0195698074,
+      "yahoo": "DDOG",
+      "raw": "DDOG UW",
+      "name": "DATADOG INC",
+      "weight": 0.0222343799,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -143,39 +95,31 @@
       "yahoo": "NTAP",
       "raw": "NTAP UW",
       "name": "NETAPP INC",
-      "weight": 0.0193147465,
+      "weight": 0.0221549311,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "ACN",
-      "raw": "ACN UN",
-      "name": "ACCENTURE PLC",
-      "weight": 0.0183239478,
+      "yahoo": "DT",
+      "raw": "DT UN",
+      "name": "DYNATRACE INC",
+      "weight": 0.0206816499,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "LDOS",
-      "raw": "LDOS UN",
-      "name": "LEIDOS HOLDINGS INC",
-      "weight": 0.017924029100000002,
+      "yahoo": "AKAM",
+      "raw": "AKAM UW",
+      "name": "AKAMAI TECHNOLOGIES INC",
+      "weight": 0.020631567099999998,
       "country": "United States",
-      "sector": "Industrials"
+      "sector": "Information Technology"
     },
     {
-      "yahoo": "HO.PA",
-      "raw": "HO FP",
-      "name": "THALES SA",
-      "weight": 0.017555405399999998,
-      "country": "France",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "DDOG",
-      "raw": "DDOG UW",
-      "name": "DATADOG INC",
-      "weight": 0.0165002965,
+      "yahoo": "ANET",
+      "raw": "ANET UN",
+      "name": "ARISTA NETWORKS INC",
+      "weight": 0.0203438404,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -183,15 +127,15 @@
       "yahoo": "GOOGL",
       "raw": "GOOGL UW",
       "name": "ALPHABET INC",
-      "weight": 0.0160765551,
+      "weight": 0.019715627899999998,
       "country": "United States",
       "sector": "Communication Services"
     },
     {
-      "yahoo": "INFY",
-      "raw": "INFY UN",
-      "name": "INFOSYS LTD",
-      "weight": 0.0158607661,
+      "yahoo": "MSFT",
+      "raw": "MSFT UW",
+      "name": "MICROSOFT CORP",
+      "weight": 0.0196895167,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -199,23 +143,71 @@
       "yahoo": "IBM",
       "raw": "IBM UN",
       "name": "INTERNATIONAL BUSINESS MACHINE",
-      "weight": 0.014782417999999999,
+      "weight": 0.0184600985,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "BAH",
-      "raw": "BAH UN",
-      "name": "BOOZ ALLEN HAMILTON HOLDING CO",
-      "weight": 0.013225112,
+      "yahoo": "ACN",
+      "raw": "ACN UN",
+      "name": "ACCENTURE PLC",
+      "weight": 0.0183175374,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "HO.PA",
+      "raw": "HO FP",
+      "name": "THALES SA",
+      "weight": 0.0177852235,
+      "country": "France",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "FROG",
+      "raw": "FROG UW",
+      "name": "JFROG LTD",
+      "weight": 0.0177224589,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CHKP",
+      "raw": "CHKP UW",
+      "name": "CHECK POINT SOFTWARE TECHNOLOG",
+      "weight": 0.0173836239,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "INFY",
+      "raw": "INFY UN",
+      "name": "INFOSYS LTD",
+      "weight": 0.0173140218,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "LDOS",
+      "raw": "LDOS UN",
+      "name": "LEIDOS HOLDINGS INC",
+      "weight": 0.0172298749,
       "country": "United States",
       "sector": "Industrials"
+    },
+    {
+      "yahoo": "GEN",
+      "raw": "GEN UW",
+      "name": "GEN DIGITAL INC",
+      "weight": 0.014892997299999999,
+      "country": "United States",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "ESTC",
       "raw": "ESTC UN",
       "name": "ELASTIC NV",
-      "weight": 0.012971258699999998,
+      "weight": 0.013657732,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -223,7 +215,31 @@
       "yahoo": "S",
       "raw": "S UN",
       "name": "SENTINELONE INC",
-      "weight": 0.0129709672,
+      "weight": 0.012529292599999999,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BAH",
+      "raw": "BAH UN",
+      "name": "BOOZ ALLEN HAMILTON HOLDING CO",
+      "weight": 0.0116914295,
+      "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "4704.T",
+      "raw": "4704 JT",
+      "name": "TREND MICRO INC/JAPAN",
+      "weight": 0.0092850624,
+      "country": "Japan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BB",
+      "raw": "BB UN",
+      "name": "BLACKBERRY LTD",
+      "weight": 0.0090203282,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -231,47 +247,31 @@
       "yahoo": "QLYS",
       "raw": "QLYS UW",
       "name": "QUALYS INC",
-      "weight": 0.0097357452,
+      "weight": 0.0084940515,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "4704.T",
-      "raw": "4704 JT",
-      "name": "TREND MICRO INC/JAPAN",
-      "weight": 0.00964794,
-      "country": "Japan",
+      "yahoo": "CVLT",
+      "raw": "CVLT UW",
+      "name": "COMMVAULT SYSTEMS INC",
+      "weight": 0.0084570905,
+      "country": "United States",
       "sector": "Information Technology"
     },
     {
       "yahoo": "SAIC",
       "raw": "SAIC UW",
       "name": "SCIENCE APPLICATIONS INTERNATI",
-      "weight": 0.0089593365,
+      "weight": 0.0080586402,
       "country": "United States",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "CVLT",
-      "raw": "CVLT UW",
-      "name": "COMMVAULT SYSTEMS INC",
-      "weight": 0.0087054758,
-      "country": "United States",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "VRNS",
       "raw": "VRNS UW",
       "name": "VARONIS SYSTEMS INC",
-      "weight": 0.0086362276,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "BB",
-      "raw": "BB UN",
-      "name": "BLACKBERRY LTD",
-      "weight": 0.0085217377,
+      "weight": 0.0080222777,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -279,15 +279,23 @@
       "yahoo": "OTEX.TO",
       "raw": "OTEX CT",
       "name": "OPEN TEXT CORP",
-      "weight": 0.0072821505,
+      "weight": 0.0064821301,
       "country": "Canada",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "NTSK",
+      "raw": "NTSK UW",
+      "name": "NETSKOPE INC",
+      "weight": 0.005680039099999999,
+      "country": "United States",
       "sector": "Information Technology"
     },
     {
       "yahoo": "TENB",
       "raw": "TENB UW",
       "name": "TENABLE HOLDINGS INC",
-      "weight": 0.0064206862,
+      "weight": 0.005509454499999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -295,7 +303,7 @@
       "yahoo": "FSLY",
       "raw": "FSLY UW",
       "name": "FASTLY INC",
-      "weight": 0.0057424343,
+      "weight": 0.0053012695,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -303,7 +311,7 @@
       "yahoo": "NTCT",
       "raw": "NTCT UW",
       "name": "NETSCOUT SYSTEMS INC",
-      "weight": 0.003988908,
+      "weight": 0.0039036441,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -311,7 +319,7 @@
       "yahoo": "ATEN",
       "raw": "ATEN UN",
       "name": "A10 NETWORKS INC",
-      "weight": 0.0030158910999999997,
+      "weight": 0.0027453026000000005,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -319,7 +327,7 @@
       "yahoo": "ZD",
       "raw": "ZD UW",
       "name": "ZIFF DAVIS INC",
-      "weight": 0.0029274131,
+      "weight": 0.0024202855,
       "country": "United States",
       "sector": "Communication Services"
     },
@@ -327,7 +335,23 @@
       "yahoo": "RDWR",
       "raw": "RDWR UW",
       "name": "RADWARE LTD",
-      "weight": 0.0014012617999999998,
+      "weight": 0.0013686746,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "RPD",
+      "raw": "RPD UQ",
+      "name": "RAPID7 INC",
+      "weight": 0.0011000136000000002,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "OSPN",
+      "raw": "OSPN UR",
+      "name": "ONESPAN INC",
+      "weight": 0.0010584557999999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -335,7 +359,7 @@
       "yahoo": "ATO.PA",
       "raw": "ATO FP",
       "name": "ATOS SE",
-      "weight": 0.0010055691,
+      "weight": 0.0007560345,
       "country": "France",
       "sector": "Information Technology"
     }

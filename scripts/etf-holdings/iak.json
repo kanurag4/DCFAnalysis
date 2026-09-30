@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-09-14",
+  "asOf": "2026-09-28",
   "source": "https://www.ishares.com/us/products/239515/ishares-us-insurance-etf/latest-holdings.csv",
-  "fetchedAt": "2026-09-16T09:30:14.850Z",
+  "fetchedAt": "2026-09-30T09:42:45.777Z",
   "rows": [
     {
       "yahoo": "PGR",
       "raw": "PGR",
       "name": "PROGRESSIVE",
-      "weight": 0.1332,
+      "weight": 0.1343,
       "country": "United States",
       "sector": "Financials"
     },
@@ -15,7 +15,7 @@
       "yahoo": "CB",
       "raw": "CB",
       "name": "CHUBB",
-      "weight": 0.1272,
+      "weight": 0.1283,
       "country": "United States",
       "sector": "Financials"
     },
@@ -23,7 +23,7 @@
       "yahoo": "TRV",
       "raw": "TRV",
       "name": "TRAVELERS COMPANIES",
-      "weight": 0.08289999999999999,
+      "weight": 0.08349999999999999,
       "country": "United States",
       "sector": "Financials"
     },
@@ -31,7 +31,7 @@
       "yahoo": "ALL",
       "raw": "ALL",
       "name": "ALLSTATE CORP",
-      "weight": 0.0687,
+      "weight": 0.0635,
       "country": "United States",
       "sector": "Financials"
     },
@@ -39,15 +39,7 @@
       "yahoo": "MET",
       "raw": "MET",
       "name": "METLIFE",
-      "weight": 0.0472,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "PRU",
-      "raw": "PRU",
-      "name": "PRUDENTIAL FINANCIAL INC",
-      "weight": 0.0446,
+      "weight": 0.04650000000000001,
       "country": "United States",
       "sector": "Financials"
     },
@@ -55,7 +47,15 @@
       "yahoo": "AFL",
       "raw": "AFL",
       "name": "AFLAC",
-      "weight": 0.0437,
+      "weight": 0.045899999999999996,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "PRU",
+      "raw": "PRU",
+      "name": "PRUDENTIAL FINANCIAL INC",
+      "weight": 0.0458,
       "country": "United States",
       "sector": "Financials"
     },
@@ -63,7 +63,7 @@
       "yahoo": "AIG",
       "raw": "AIG",
       "name": "AMERICAN INTERNATIONAL GROUP",
-      "weight": 0.042300000000000004,
+      "weight": 0.0437,
       "country": "United States",
       "sector": "Financials"
     },
@@ -71,7 +71,7 @@
       "yahoo": "HIG",
       "raw": "HIG",
       "name": "HARTFORD INSURANCE GROUP",
-      "weight": 0.0406,
+      "weight": 0.0392,
       "country": "United States",
       "sector": "Financials"
     },
@@ -79,7 +79,7 @@
       "yahoo": "ACGL",
       "raw": "ACGL",
       "name": "ARCH CAPITAL GROUP",
-      "weight": 0.036699999999999997,
+      "weight": 0.037000000000000005,
       "country": "United States",
       "sector": "Financials"
     },
@@ -87,7 +87,7 @@
       "yahoo": "CINF",
       "raw": "CINF",
       "name": "CINCINNATI FINANCIAL",
-      "weight": 0.0286,
+      "weight": 0.0285,
       "country": "United States",
       "sector": "Financials"
     },
@@ -95,7 +95,7 @@
       "yahoo": "PFG",
       "raw": "PFG",
       "name": "PRINCIPAL FINANCIAL GROUP INC",
-      "weight": 0.024700000000000003,
+      "weight": 0.0256,
       "country": "United States",
       "sector": "Financials"
     },
@@ -103,15 +103,7 @@
       "yahoo": "MKL",
       "raw": "MKL",
       "name": "MARKEL GROUP",
-      "weight": 0.0242,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "WRB",
-      "raw": "WRB",
-      "name": "WR BERKLEY",
-      "weight": 0.022400000000000003,
+      "weight": 0.024700000000000003,
       "country": "United States",
       "sector": "Financials"
     },
@@ -119,15 +111,15 @@
       "yahoo": "L",
       "raw": "L",
       "name": "LOEWS",
-      "weight": 0.019799999999999998,
+      "weight": 0.0199,
       "country": "United States",
       "sector": "Financials"
     },
     {
-      "yahoo": "AIZ",
-      "raw": "AIZ",
-      "name": "ASSURANT INC",
-      "weight": 0.0151,
+      "yahoo": "WRB",
+      "raw": "WRB",
+      "name": "WR BERKLEY",
+      "weight": 0.0176,
       "country": "United States",
       "sector": "Financials"
     },
@@ -135,7 +127,15 @@
       "yahoo": "UNM",
       "raw": "UNM",
       "name": "UNUM",
-      "weight": 0.015,
+      "weight": 0.0151,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "AIZ",
+      "raw": "AIZ",
+      "name": "ASSURANT INC",
+      "weight": 0.0149,
       "country": "United States",
       "sector": "Financials"
     },
@@ -143,7 +143,7 @@
       "yahoo": "GL",
       "raw": "GL",
       "name": "GLOBE LIFE",
-      "weight": 0.0144,
+      "weight": 0.0147,
       "country": "United States",
       "sector": "Financials"
     },
@@ -151,15 +151,7 @@
       "yahoo": "AFG",
       "raw": "AFG",
       "name": "AMERICAN FINANCIAL GROUP",
-      "weight": 0.010700000000000001,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "ORI",
-      "raw": "ORI",
-      "name": "OLD REPUBLIC INTERNATIONAL",
-      "weight": 0.01,
+      "weight": 0.0109,
       "country": "United States",
       "sector": "Financials"
     },
@@ -167,7 +159,15 @@
       "yahoo": "PRI",
       "raw": "PRI",
       "name": "PRIMERICA",
-      "weight": 0.009899999999999999,
+      "weight": 0.0097,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "ORI",
+      "raw": "ORI",
+      "name": "OLD REPUBLIC INTERNATIONAL",
+      "weight": 0.0097,
       "country": "United States",
       "sector": "Financials"
     },
@@ -180,18 +180,10 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "KNSL",
-      "raw": "KNSL",
-      "name": "KINSALE CAPITAL GROUP INC",
-      "weight": 0.0086,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
       "yahoo": "FNF",
       "raw": "FNF",
       "name": "FIDELITY NATIONAL FINANCIAL INC",
-      "weight": 0.0084,
+      "weight": 0.0087,
       "country": "United States",
       "sector": "Financials"
     },
@@ -199,7 +191,15 @@
       "yahoo": "OSCR",
       "raw": "OSCR",
       "name": "OSCAR HEALTH CLASS A",
-      "weight": 0.008,
+      "weight": 0.0087,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "KNSL",
+      "raw": "KNSL",
+      "name": "KINSALE CAPITAL GROUP INC",
+      "weight": 0.008100000000000001,
       "country": "United States",
       "sector": "Financials"
     },
@@ -207,15 +207,7 @@
       "yahoo": "FAF",
       "raw": "FAF",
       "name": "FIRST AMERICAN FINANCIAL CORP",
-      "weight": 0.008,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "ERIE",
-      "raw": "ERIE",
-      "name": "ERIE INDEMNITY CLASS A",
-      "weight": 0.0069,
+      "weight": 0.0076,
       "country": "United States",
       "sector": "Financials"
     },
@@ -223,7 +215,15 @@
       "yahoo": "AXS",
       "raw": "AXS",
       "name": "AXIS CAPITAL HOLDINGS",
-      "weight": 0.0067,
+      "weight": 0.006999999999999999,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "ERIE",
+      "raw": "ERIE",
+      "name": "ERIE INDEMNITY CLASS A",
+      "weight": 0.0066,
       "country": "United States",
       "sector": "Financials"
     },
@@ -231,7 +231,7 @@
       "yahoo": "RLI",
       "raw": "RLI",
       "name": "RLI CORP",
-      "weight": 0.0060999999999999995,
+      "weight": 0.0059,
       "country": "United States",
       "sector": "Financials"
     },
@@ -244,18 +244,18 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "CNO",
-      "raw": "CNO",
-      "name": "CNO FINANCIAL GROUP",
-      "weight": 0.005600000000000001,
+      "yahoo": "LNC",
+      "raw": "LNC",
+      "name": "LINCOLN NATIONAL CORP",
+      "weight": 0.005699999999999999,
       "country": "United States",
       "sector": "Financials"
     },
     {
-      "yahoo": "LNC",
-      "raw": "LNC",
-      "name": "LINCOLN NATIONAL CORP",
-      "weight": 0.0055000000000000005,
+      "yahoo": "CNO",
+      "raw": "CNO",
+      "name": "CNO FINANCIAL GROUP",
+      "weight": 0.005699999999999999,
       "country": "United States",
       "sector": "Financials"
     },
@@ -271,7 +271,15 @@
       "yahoo": "PLMR",
       "raw": "PLMR",
       "name": "PALOMAR HOLDINGS",
-      "weight": 0.0039000000000000003,
+      "weight": 0.0037,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "BHF",
+      "raw": "BHF",
+      "name": "BRIGHTHOUSE FINANCIAL",
+      "weight": 0.0034000000000000002,
       "country": "United States",
       "sector": "Financials"
     },
@@ -279,7 +287,7 @@
       "yahoo": "LMND",
       "raw": "LMND",
       "name": "LEMONADE INC",
-      "weight": 0.0034999999999999996,
+      "weight": 0.0034000000000000002,
       "country": "United States",
       "sector": "Financials"
     },
@@ -292,22 +300,6 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "BHF",
-      "raw": "BHF",
-      "name": "BRIGHTHOUSE FINANCIAL",
-      "weight": 0.0031,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "GNW",
-      "raw": "GNW",
-      "name": "GENWORTH FINANCIAL INC",
-      "weight": 0.0031,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
       "yahoo": "MCY",
       "raw": "MCY",
       "name": "MERCURY GENERAL",
@@ -316,18 +308,18 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "SKWD",
-      "raw": "SKWD",
-      "name": "SKYWARD SPECIALTY INSURANCE GROUP",
-      "weight": 0.0024,
+      "yahoo": "GNW",
+      "raw": "GNW",
+      "name": "GENWORTH FINANCIAL INC",
+      "weight": 0.003,
       "country": "United States",
       "sector": "Financials"
     },
     {
-      "yahoo": "STC",
-      "raw": "STC",
-      "name": "STEWART INFO SERVICES CORP",
-      "weight": 0.0022,
+      "yahoo": "SKWD",
+      "raw": "SKWD",
+      "name": "SKYWARD SPECIALTY INSURANCE GROUP",
+      "weight": 0.0025,
       "country": "United States",
       "sector": "Financials"
     },
@@ -336,6 +328,14 @@
       "raw": "HCI",
       "name": "HCI GROUP INC",
       "weight": 0.0021,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "STC",
+      "raw": "STC",
+      "name": "STEWART INFO SERVICES CORP",
+      "weight": 0.002,
       "country": "United States",
       "sector": "Financials"
     },
@@ -351,7 +351,23 @@
       "yahoo": "SAFT",
       "raw": "SAFT",
       "name": "SAFETY INSURANCE GROUP INC",
-      "weight": 0.0016,
+      "weight": 0.0017000000000000001,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "PRCH",
+      "raw": "PRCH",
+      "name": "PORCH GROUP",
+      "weight": 0.0017000000000000001,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "SLDE",
+      "raw": "SLDE",
+      "name": "SLIDE INSURANCE HOLDINGS",
+      "weight": 0.0017000000000000001,
       "country": "United States",
       "sector": "Financials"
     },
@@ -359,7 +375,7 @@
       "yahoo": "KMPR",
       "raw": "KMPR",
       "name": "KEMPER",
-      "weight": 0.0014000000000000002,
+      "weight": 0.0015,
       "country": "United States",
       "sector": "Financials"
     },
@@ -391,7 +407,7 @@
       "yahoo": "EIG",
       "raw": "EIG",
       "name": "EMPLOYERS HOLDINGS",
-      "weight": 0.0011,
+      "weight": 0.001,
       "country": "United States",
       "sector": "Financials"
     },
@@ -407,15 +423,7 @@
       "yahoo": "HRTG",
       "raw": "HRTG",
       "name": "HERITAGE INSURANCE HOLDINGS INC",
-      "weight": 0.0008,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "ROOT",
-      "raw": "ROOT",
-      "name": "ROOT INC CLASS A",
-      "weight": 0.0008,
+      "weight": 0.0009,
       "country": "United States",
       "sector": "Financials"
     },
@@ -428,10 +436,18 @@
       "sector": "Financials"
     },
     {
+      "yahoo": "ROOT",
+      "raw": "ROOT",
+      "name": "ROOT INC CLASS A",
+      "weight": 0.0007000000000000001,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
       "yahoo": "HIPO",
       "raw": "HIPO",
       "name": "HIPPO HOLDINGS",
-      "weight": 0.0008,
+      "weight": 0.0007000000000000001,
       "country": "United States",
       "sector": "Financials"
     },
@@ -439,7 +455,7 @@
       "yahoo": "BOW",
       "raw": "BOW",
       "name": "BOWHEAD SPECIALTY HOLDINGS",
-      "weight": 0.0006,
+      "weight": 0.0007000000000000001,
       "country": "United States",
       "sector": "Financials"
     },

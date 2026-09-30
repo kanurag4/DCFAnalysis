@@ -29,6 +29,20 @@ main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 @media (max-width:640px) { .editorial.cross-link { grid-template-columns:1fr; } }
 .as-at { font-size:0.72rem; color:var(--kv-pass); font-weight:600; }
 .status { padding:24px; text-align:center; color:var(--kv-muted); }
+.top-dcf-cta { font-size:0.82rem; color:var(--kv-muted); margin:0 0 16px; }
+.top-dcf-cta a { color:var(--kv-accent); font-weight:600; }
+
+/* ── Methodology-update banner (highlights a recent rules change) ── */
+.methodology-update {
+  background: color-mix(in srgb, var(--kv-accent) 10%, var(--kv-card));
+  border-left: 4px solid var(--kv-accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.methodology-update p { margin:0; font-size:0.85rem; color:var(--kv-text); line-height:1.5; }
+.methodology-update strong { color: var(--kv-accent); }
+.methodology-update a { color: var(--kv-accent); font-weight:600; }
 
 /* ── Survivorship rules ── */
 .rules-card { background:var(--kv-card); border:1px solid var(--kv-border); border-radius:12px; padding:16px 20px; margin-bottom:16px; }
@@ -76,6 +90,7 @@ main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 .faq-item summary::after { content:'+'; position:absolute; right:0; color:var(--kv-muted); }
 .faq-item[open] summary::after { content:'−'; }
 .faq-item p { font-size:0.85rem; color:var(--kv-muted); line-height:1.6; margin-top:8px; }
+.faq-item a { color:var(--kv-accent); font-weight:600; }
 
 footer { max-width:900px; margin:40px auto 0; padding:20px 16px 40px; border-top:1px solid var(--kv-border); color:#7b8eaa; font-size:0.8rem; text-align:center; }
 footer a { color:var(--kv-accent); }
@@ -264,3 +279,15 @@ html:not(.dark) .sharesight-cta a, html:not(.dark) .simplywallst-cta a { color: 
 }
 .activity-table .pos { color: var(--kv-pass); }
 .activity-table .neg { color: var(--kv-fail); }
+
+/* AI Sector Correlation columns -- see
+   docs/superpowers/specs/2026-09-23-ai-sector-correlation-design.md.
+   The cells are plain numbers coloured by text, like Altman Z: they reuse .neg / .warn / .pos above.
+   Reads as dependence on the AI sector, reversed traffic light: High and Inverse red, Moderate amber,
+   Low green; None is cyan (neutral), which needs its own class. */
+.ai-none { color:var(--kv-neutral-cyan, #0e7490); font-weight:600; }
+
+/* Column header that links to its glossary explanation (AI corr.). Reads as a header, with a dotted
+   underline as the only cue that it is clickable. */
+.th-guide-link { color: inherit; text-decoration: underline dotted; text-underline-offset: 3px; }
+.th-guide-link:hover { color: var(--kv-primary); }

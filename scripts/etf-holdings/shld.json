@@ -1,85 +1,229 @@
 {
-  "asOf": "2026-09-15",
-  "source": "https://assets.globalxetfs.com/funds/holdings/shld_full-holdings_20260915.csv",
-  "fetchedAt": "2026-09-16T09:30:12.258Z",
+  "asOf": "2026-09-29",
+  "source": "https://assets.globalxetfs.com/funds/holdings/shld_full-holdings_20260929.csv",
+  "fetchedAt": "2026-09-30T09:42:42.883Z",
   "rows": [
     {
-      "yahoo": "DRO.AX",
-      "raw": "DRO AU",
-      "name": "DRONESHIELD LTD",
-      "weight": 0.0015,
-      "country": "Australia",
-      "sector": null
-    },
-    {
-      "yahoo": "PNG.TO",
-      "raw": "PNG CN",
-      "name": "KRAKEN ROBOTICS INC",
-      "weight": 0.0015,
-      "country": "Canada",
-      "sector": null
-    },
-    {
-      "yahoo": "YSS",
-      "raw": "YSS",
-      "name": "YORK SPACE SYSTEMS INC",
-      "weight": 0.0012,
+      "yahoo": "PLTR",
+      "raw": "PLTR",
+      "name": "PALANTIR TECHNOLOGIES INC-A",
+      "weight": 0.1173,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "ASB.AX",
-      "raw": "ASB AU",
-      "name": "AUSTAL LTD",
-      "weight": 0.001,
-      "country": "Australia",
-      "sector": null
-    },
-    {
-      "yahoo": "BKSY",
-      "raw": "BKSY",
-      "name": "BLACKSKY TECHNOLOGY INC",
-      "weight": 0.001,
+      "yahoo": "RTX",
+      "raw": "RTX",
+      "name": "RTX CORPORATION",
+      "weight": 0.0908,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "ELS.AX",
-      "raw": "ELS AU",
-      "name": "ELSIGHT LTD",
-      "weight": 0.0009,
-      "country": "Australia",
+      "yahoo": "GD",
+      "raw": "GD",
+      "name": "GENERAL DYNAMICS CORP",
+      "weight": 0.0832,
+      "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "ARYT.TA",
-      "raw": "ARYT IT",
-      "name": "ARYT INDUSTRIES LTD",
-      "weight": 0.0005,
+      "yahoo": "LMT",
+      "raw": "LMT",
+      "name": "LOCKHEED MARTIN CORP",
+      "weight": 0.0825,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "NOC",
+      "raw": "NOC",
+      "name": "NORTHROP GRUMMAN CORP",
+      "weight": 0.0781,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "BA.L",
+      "raw": "BA/ LN",
+      "name": "BAE SYSTEMS PLC",
+      "weight": 0.04650000000000001,
+      "country": "United Kingdom",
+      "sector": null
+    },
+    {
+      "yahoo": "012450.KS",
+      "raw": "012450 KS",
+      "name": "HANWHA AEROSPACE CO LTD",
+      "weight": 0.0383,
+      "country": "South Korea",
+      "sector": null
+    },
+    {
+      "yahoo": "RHM.DE",
+      "raw": "RHM GR",
+      "name": "RHEINMETALL AG",
+      "weight": 0.0369,
+      "country": "Germany",
+      "sector": null
+    },
+    {
+      "yahoo": "HO.PA",
+      "raw": "HO FP",
+      "name": "THALES SA",
+      "weight": 0.0366,
+      "country": "France",
+      "sector": null
+    },
+    {
+      "yahoo": "LHX",
+      "raw": "LHX",
+      "name": "L3HARRIS TECHNOLOGIES INC",
+      "weight": 0.0366,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "SAABB.ST",
+      "raw": "SAABB SS",
+      "name": "SAAB AB-B",
+      "weight": 0.036000000000000004,
+      "country": "Sweden",
+      "sector": null
+    },
+    {
+      "yahoo": "LDO.MI",
+      "raw": "LDO IM",
+      "name": "LEONARDO SPA",
+      "weight": 0.0356,
+      "country": "Italy",
+      "sector": null
+    },
+    {
+      "yahoo": "ESLT.TA",
+      "raw": "ESLT IT",
+      "name": "ELBIT SYSTEMS LTD",
+      "weight": 0.030600000000000002,
       "country": "Israel",
+      "sector": null
+    },
+    {
+      "yahoo": "LDOS",
+      "raw": "LDOS",
+      "name": "LEIDOS HOLDINGS INC",
+      "weight": 0.024399999999999998,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "KOG.OL",
+      "raw": "KOG NO",
+      "name": "KONGSBERG GRUPPEN ASA",
+      "weight": 0.0208,
+      "country": "Norway",
+      "sector": null
+    },
+    {
+      "yahoo": "BWXT",
+      "raw": "BWXT",
+      "name": "BWX TECHNOLOGIES INC",
+      "weight": 0.02,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "MOG-A",
+      "raw": "MOG/A",
+      "name": "MOOG INC-CLASS A",
+      "weight": 0.0171,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "HII",
+      "raw": "HII",
+      "name": "HUNTINGTON INGALLS INDUSTRIE",
+      "weight": 0.0161,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "KTOS",
+      "raw": "KTOS",
+      "name": "KRATOS DEFENSE & SECURITY",
+      "weight": 0.0126,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "047810.KS",
+      "raw": "047810 KS",
+      "name": "KOREA AEROSPACE INDUSTRIES",
+      "weight": 0.0098,
+      "country": "South Korea",
+      "sector": null
+    },
+    {
+      "yahoo": "079550.KS",
+      "raw": "079550 KS",
+      "name": "LIG DEFENSE&AEROSPACE CO LTD",
+      "weight": 0.0097,
+      "country": "South Korea",
+      "sector": null
+    },
+    {
+      "yahoo": "BAB.L",
+      "raw": "BAB LN",
+      "name": "BABCOCK INTL GROUP PLC",
+      "weight": 0.0097,
+      "country": "United Kingdom",
+      "sector": null
+    },
+    {
+      "yahoo": "AM.PA",
+      "raw": "AM FP",
+      "name": "DASSAULT AVIATION SA",
+      "weight": 0.0089,
+      "country": "France",
+      "sector": null
+    },
+    {
+      "yahoo": "AVAV",
+      "raw": "AVAV",
+      "name": "AEROVIRONMENT INC",
+      "weight": 0.0086,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "HAG.DE",
+      "raw": "HAG GR",
+      "name": "HENSOLDT AG",
+      "weight": 0.0083,
+      "country": "Germany",
+      "sector": null
+    },
+    {
+      "yahoo": "MRCY",
+      "raw": "MRCY",
+      "name": "MERCURY SYSTEMS INC",
+      "weight": 0.0078000000000000005,
+      "country": "United States",
       "sector": null
     },
     {
       "yahoo": "PL",
       "raw": "PL",
       "name": "PLANET LABS PBC",
-      "weight": 0.0067,
+      "weight": 0.0070999999999999995,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "ASELS.IS",
-      "raw": "ASELS TI",
-      "name": "ASELSAN ELEKTRONIK SANAYI",
-      "weight": 0.0066,
-      "country": "Turkey",
-      "sector": null
-    },
-    {
-      "yahoo": "AMTM",
-      "raw": "AMTM",
-      "name": "AMENTUM HOLDINGS INC",
-      "weight": 0.0060999999999999995,
+      "yahoo": "PSN",
+      "raw": "PSN",
+      "name": "PARSONS CORP",
+      "weight": 0.0069,
       "country": "United States",
       "sector": null
     },
@@ -87,15 +231,31 @@
       "yahoo": "272210.KS",
       "raw": "272210 KS",
       "name": "HANWHA SYSTEMS CO LTD",
-      "weight": 0.0058,
+      "weight": 0.0062,
       "country": "South Korea",
+      "sector": null
+    },
+    {
+      "yahoo": "ASELS.IS",
+      "raw": "ASELS TI",
+      "name": "ASELSAN ELEKTRONIK SANAYI",
+      "weight": 0.0060999999999999995,
+      "country": "Turkey",
+      "sector": null
+    },
+    {
+      "yahoo": "AMTM",
+      "raw": "AMTM",
+      "name": "AMENTUM HOLDINGS INC",
+      "weight": 0.005699999999999999,
+      "country": "United States",
       "sector": null
     },
     {
       "yahoo": "KRMN",
       "raw": "KRMN",
       "name": "KARMAN HOLDINGS INC",
-      "weight": 0.0053,
+      "weight": 0.0048,
       "country": "United States",
       "sector": null
     },
@@ -103,7 +263,7 @@
       "yahoo": "OSIS",
       "raw": "OSIS",
       "name": "OSI SYSTEMS INC",
-      "weight": 0.0049,
+      "weight": 0.0048,
       "country": "United States",
       "sector": null
     },
@@ -111,7 +271,7 @@
       "yahoo": "CSG.AS",
       "raw": "CSG NA",
       "name": "CSG NV",
-      "weight": 0.0043,
+      "weight": 0.0040999999999999995,
       "country": "Netherlands",
       "sector": null
     },
@@ -143,15 +303,7 @@
       "yahoo": "VOYG",
       "raw": "VOYG",
       "name": "VOYAGER TECHNOLOGIES INC-A",
-      "weight": 0.0027,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "BBAI",
-      "raw": "BBAI",
-      "name": "BIGBEAR.AI HOLDINGS INC",
-      "weight": 0.0021,
+      "weight": 0.0025,
       "country": "United States",
       "sector": null
     },
@@ -164,6 +316,22 @@
       "sector": null
     },
     {
+      "yahoo": "BBAI",
+      "raw": "BBAI",
+      "name": "BIGBEAR.AI HOLDINGS INC",
+      "weight": 0.002,
+      "country": "United States",
+      "sector": null
+    },
+    {
+      "yahoo": "EOS.AX",
+      "raw": "EOS AU",
+      "name": "ELECTRO OPTIC SYSTEMS HOLDIN",
+      "weight": 0.002,
+      "country": "Australia",
+      "sector": null
+    },
+    {
       "yahoo": "BITTI.HE",
       "raw": "BITTI FH",
       "name": "BITTIUM OYJ",
@@ -172,235 +340,67 @@
       "sector": null
     },
     {
-      "yahoo": "RCAT",
-      "raw": "RCAT",
-      "name": "RED CAT HOLDINGS INC",
-      "weight": 0.0016,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "EOS.AX",
-      "raw": "EOS AU",
-      "name": "ELECTRO OPTIC SYSTEMS HOLDIN",
+      "yahoo": "DRO.AX",
+      "raw": "DRO AU",
+      "name": "DRONESHIELD LTD",
       "weight": 0.0016,
       "country": "Australia",
       "sector": null
     },
     {
-      "yahoo": "PLTR",
-      "raw": "PLTR",
-      "name": "PALANTIR TECHNOLOGIES INC-A",
-      "weight": 0.1048,
+      "yahoo": "YSS",
+      "raw": "YSS",
+      "name": "YORK SPACE SYSTEMS INC",
+      "weight": 0.0015,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "RTX",
-      "raw": "RTX",
-      "name": "RTX CORPORATION",
-      "weight": 0.09179999999999999,
+      "yahoo": "PNG.TO",
+      "raw": "PNG CN",
+      "name": "KRAKEN ROBOTICS INC",
+      "weight": 0.0014000000000000002,
+      "country": "Canada",
+      "sector": null
+    },
+    {
+      "yahoo": "RCAT",
+      "raw": "RCAT",
+      "name": "RED CAT HOLDINGS INC",
+      "weight": 0.0014000000000000002,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "GD",
-      "raw": "GD",
-      "name": "GENERAL DYNAMICS CORP",
-      "weight": 0.08689999999999999,
+      "yahoo": "BKSY",
+      "raw": "BKSY",
+      "name": "BLACKSKY TECHNOLOGY INC",
+      "weight": 0.0011,
       "country": "United States",
       "sector": null
     },
     {
-      "yahoo": "LMT",
-      "raw": "LMT",
-      "name": "LOCKHEED MARTIN CORP",
-      "weight": 0.08310000000000001,
-      "country": "United States",
+      "yahoo": "ASB.AX",
+      "raw": "ASB AU",
+      "name": "AUSTAL LTD",
+      "weight": 0.0011,
+      "country": "Australia",
       "sector": null
     },
     {
-      "yahoo": "NOC",
-      "raw": "NOC",
-      "name": "NORTHROP GRUMMAN CORP",
-      "weight": 0.0795,
-      "country": "United States",
+      "yahoo": "ELS.AX",
+      "raw": "ELS AU",
+      "name": "ELSIGHT LTD",
+      "weight": 0.001,
+      "country": "Australia",
       "sector": null
     },
     {
-      "yahoo": "BA.L",
-      "raw": "BA/ LN",
-      "name": "BAE SYSTEMS PLC",
-      "weight": 0.0473,
-      "country": "United Kingdom",
-      "sector": null
-    },
-    {
-      "yahoo": "RHM.DE",
-      "raw": "RHM GR",
-      "name": "RHEINMETALL AG",
-      "weight": 0.039,
-      "country": "Germany",
-      "sector": null
-    },
-    {
-      "yahoo": "012450.KS",
-      "raw": "012450 KS",
-      "name": "HANWHA AEROSPACE CO LTD",
-      "weight": 0.0388,
-      "country": "South Korea",
-      "sector": null
-    },
-    {
-      "yahoo": "HO.PA",
-      "raw": "HO FP",
-      "name": "THALES SA",
-      "weight": 0.0382,
-      "country": "France",
-      "sector": null
-    },
-    {
-      "yahoo": "LHX",
-      "raw": "LHX",
-      "name": "L3HARRIS TECHNOLOGIES INC",
-      "weight": 0.0374,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "LDO.MI",
-      "raw": "LDO IM",
-      "name": "LEONARDO SPA",
-      "weight": 0.0355,
-      "country": "Italy",
-      "sector": null
-    },
-    {
-      "yahoo": "SAABB.ST",
-      "raw": "SAABB SS",
-      "name": "SAAB AB-B",
-      "weight": 0.034,
-      "country": "Sweden",
-      "sector": null
-    },
-    {
-      "yahoo": "ESLT.TA",
-      "raw": "ESLT IT",
-      "name": "ELBIT SYSTEMS LTD",
-      "weight": 0.030699999999999998,
+      "yahoo": "ARYT.TA",
+      "raw": "ARYT IT",
+      "name": "ARYT INDUSTRIES LTD",
+      "weight": 0.0005,
       "country": "Israel",
-      "sector": null
-    },
-    {
-      "yahoo": "LDOS",
-      "raw": "LDOS",
-      "name": "LEIDOS HOLDINGS INC",
-      "weight": 0.0248,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "KOG.OL",
-      "raw": "KOG NO",
-      "name": "KONGSBERG GRUPPEN ASA",
-      "weight": 0.0209,
-      "country": "Norway",
-      "sector": null
-    },
-    {
-      "yahoo": "BWXT",
-      "raw": "BWXT",
-      "name": "BWX TECHNOLOGIES INC",
-      "weight": 0.020499999999999997,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "HII",
-      "raw": "HII",
-      "name": "HUNTINGTON INGALLS INDUSTRIE",
-      "weight": 0.0168,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "MOG-A",
-      "raw": "MOG/A",
-      "name": "MOOG INC-CLASS A",
-      "weight": 0.015300000000000001,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "KTOS",
-      "raw": "KTOS",
-      "name": "KRATOS DEFENSE & SECURITY",
-      "weight": 0.013500000000000002,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "047810.KS",
-      "raw": "047810 KS",
-      "name": "KOREA AEROSPACE INDUSTRIES",
-      "weight": 0.0096,
-      "country": "South Korea",
-      "sector": null
-    },
-    {
-      "yahoo": "BAB.L",
-      "raw": "BAB LN",
-      "name": "BABCOCK INTL GROUP PLC",
-      "weight": 0.0095,
-      "country": "United Kingdom",
-      "sector": null
-    },
-    {
-      "yahoo": "079550.KS",
-      "raw": "079550 KS",
-      "name": "LIG DEFENSE&AEROSPACE CO LTD",
-      "weight": 0.009300000000000001,
-      "country": "South Korea",
-      "sector": null
-    },
-    {
-      "yahoo": "AVAV",
-      "raw": "AVAV",
-      "name": "AEROVIRONMENT INC",
-      "weight": 0.0091,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "AM.PA",
-      "raw": "AM FP",
-      "name": "DASSAULT AVIATION SA",
-      "weight": 0.0088,
-      "country": "France",
-      "sector": null
-    },
-    {
-      "yahoo": "HAG.DE",
-      "raw": "HAG GR",
-      "name": "HENSOLDT AG",
-      "weight": 0.0083,
-      "country": "Germany",
-      "sector": null
-    },
-    {
-      "yahoo": "MRCY",
-      "raw": "MRCY",
-      "name": "MERCURY SYSTEMS INC",
-      "weight": 0.0079,
-      "country": "United States",
-      "sector": null
-    },
-    {
-      "yahoo": "PSN",
-      "raw": "PSN",
-      "name": "PARSONS CORP",
-      "weight": 0.0076,
-      "country": "United States",
       "sector": null
     }
   ]

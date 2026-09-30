@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-09-14",
+  "asOf": "2026-09-28",
   "source": "https://www.ishares.com/us/products/239744/ishares-global-healthcare-etf/latest-holdings.csv",
-  "fetchedAt": "2026-09-16T09:30:09.451Z",
+  "fetchedAt": "2026-09-30T09:42:40.143Z",
   "rows": [
     {
       "yahoo": "LLY",
       "raw": "LLY",
       "name": "ELI LILLY",
-      "weight": 0.1001,
+      "weight": 0.1052,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -15,7 +15,7 @@
       "yahoo": "JNJ",
       "raw": "JNJ",
       "name": "JOHNSON & JOHNSON",
-      "weight": 0.0713,
+      "weight": 0.0727,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -23,7 +23,7 @@
       "yahoo": "ABBV",
       "raw": "ABBV",
       "name": "ABBVIE",
-      "weight": 0.051399999999999994,
+      "weight": 0.052199999999999996,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -31,15 +31,15 @@
       "yahoo": "MRK",
       "raw": "MRK",
       "name": "MERCK & CO INC",
-      "weight": 0.044800000000000006,
+      "weight": 0.0447,
       "country": "United States",
       "sector": "Health Care"
     },
     {
       "yahoo": "UNH",
       "raw": "UNH",
-      "name": "UNITEDHEALTH GROUP INC",
-      "weight": 0.0392,
+      "name": "UNITEDHEALTH GROUP",
+      "weight": 0.041299999999999996,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -47,7 +47,7 @@
       "yahoo": "ROP.SW",
       "raw": "ROP",
       "name": "ROCHE PS PAR AG",
-      "weight": 0.0388,
+      "weight": 0.0366,
       "country": "Switzerland",
       "sector": "Health Care"
     },
@@ -55,7 +55,7 @@
       "yahoo": "NOVN.SW",
       "raw": "NOVN",
       "name": "NOVARTIS AG",
-      "weight": 0.0319,
+      "weight": 0.0326,
       "country": "Switzerland",
       "sector": "Health Care"
     },
@@ -63,7 +63,7 @@
       "yahoo": "AZN.L",
       "raw": "AZN",
       "name": "ASTRAZENECA PLC",
-      "weight": 0.0318,
+      "weight": 0.0313,
       "country": "United Kingdom",
       "sector": "Health Care"
     },
@@ -71,7 +71,7 @@
       "yahoo": "TMO",
       "raw": "TMO",
       "name": "THERMO FISHER SCIENTIFIC INC",
-      "weight": 0.0286,
+      "weight": 0.030600000000000002,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -79,7 +79,7 @@
       "yahoo": "AMGN",
       "raw": "AMGN",
       "name": "AMGEN INC",
-      "weight": 0.0258,
+      "weight": 0.0276,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -87,7 +87,7 @@
       "yahoo": "GILD",
       "raw": "GILD",
       "name": "GILEAD SCIENCES",
-      "weight": 0.022799999999999997,
+      "weight": 0.023,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -95,7 +95,7 @@
       "yahoo": "ABT",
       "raw": "ABT",
       "name": "ABBOTT LABORATORIES",
-      "weight": 0.0225,
+      "weight": 0.0213,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -103,39 +103,15 @@
       "yahoo": "PFE",
       "raw": "PFE",
       "name": "PFIZER",
-      "weight": 0.019799999999999998,
+      "weight": 0.02,
       "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "NOVO-B.CO",
-      "raw": "NOVO B",
-      "name": "NOVO NORDISK CLASS B",
-      "weight": 0.0173,
-      "country": "Denmark",
       "sector": "Health Care"
     },
     {
       "yahoo": "ISRG",
       "raw": "ISRG",
       "name": "INTUITIVE SURGICAL",
-      "weight": 0.0168,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "VRTX",
-      "raw": "VRTX",
-      "name": "VERTEX PHARMACEUTICALS",
-      "weight": 0.0165,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "BMY",
-      "raw": "BMY",
-      "name": "BRISTOL MYERS SQUIBB",
-      "weight": 0.016399999999999998,
+      "weight": 0.0179,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -143,7 +119,39 @@
       "yahoo": "DHR",
       "raw": "DHR",
       "name": "DANAHER",
-      "weight": 0.016,
+      "weight": 0.0173,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "VRTX",
+      "raw": "VRTX",
+      "name": "VERTEX PHARMACEUTICALS",
+      "weight": 0.0163,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "BMY",
+      "raw": "BMY",
+      "name": "BRISTOL MYERS SQUIBB",
+      "weight": 0.0159,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "NOVO-B.CO",
+      "raw": "NOVO B",
+      "name": "NOVO NORDISK CLASS B",
+      "weight": 0.0149,
+      "country": "Denmark",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "MDT",
+      "raw": "MDT",
+      "name": "MEDTRONIC PLC",
+      "weight": 0.013999999999999999,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -151,15 +159,7 @@
       "yahoo": "CVS",
       "raw": "CVS",
       "name": "CVS HEALTH",
-      "weight": 0.015300000000000001,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "MDT",
-      "raw": "MDT",
-      "name": "MEDTRONIC PLC",
-      "weight": 0.0151,
+      "weight": 0.0137,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -167,7 +167,7 @@
       "yahoo": "MCK",
       "raw": "MCK",
       "name": "MCKESSON CORP",
-      "weight": 0.0137,
+      "weight": 0.012199999999999999,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -175,7 +175,7 @@
       "yahoo": "GSK.L",
       "raw": "GSK",
       "name": "GLAXOSMITHKLINE",
-      "weight": 0.0127,
+      "weight": 0.012199999999999999,
       "country": "United Kingdom",
       "sector": "Health Care"
     },
@@ -183,7 +183,7 @@
       "yahoo": "SYK",
       "raw": "SYK",
       "name": "STRYKER",
-      "weight": 0.012199999999999999,
+      "weight": 0.011699999999999999,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -191,7 +191,7 @@
       "yahoo": "SAN.PA",
       "raw": "SAN",
       "name": "SANOFI SA",
-      "weight": 0.0116,
+      "weight": 0.010700000000000001,
       "country": "France",
       "sector": "Health Care"
     },
@@ -199,7 +199,7 @@
       "yahoo": "ELV",
       "raw": "ELV",
       "name": "ELEVANCE HEALTH INC",
-      "weight": 0.0115,
+      "weight": 0.0104,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -207,7 +207,15 @@
       "yahoo": "REGN",
       "raw": "REGN",
       "name": "REGENERON PHARMACEUTICALS",
-      "weight": 0.009899999999999999,
+      "weight": 0.009000000000000001,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "MRNA",
+      "raw": "MRNA",
+      "name": "MODERNA",
+      "weight": 0.0089,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -215,7 +223,7 @@
       "yahoo": "CI",
       "raw": "CI",
       "name": "CIGNA",
-      "weight": 0.0096,
+      "weight": 0.0088,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -223,7 +231,7 @@
       "yahoo": "BSX",
       "raw": "BSX",
       "name": "BOSTON SCIENTIFIC CORP",
-      "weight": 0.0084,
+      "weight": 0.0078000000000000005,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -231,24 +239,8 @@
       "yahoo": "HCA",
       "raw": "HCA",
       "name": "HCA HEALTHCARE",
-      "weight": 0.0083,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "COR",
-      "raw": "COR",
-      "name": "CENCORA",
-      "weight": 0.008,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "ARGX.BR",
-      "raw": "ARGX",
-      "name": "ARGENX",
       "weight": 0.0078000000000000005,
-      "country": "Belgium",
+      "country": "United States",
       "sector": "Health Care"
     },
     {
@@ -268,10 +260,26 @@
       "sector": "Health Care"
     },
     {
+      "yahoo": "ARGX.BR",
+      "raw": "ARGX",
+      "name": "ARGENX",
+      "weight": 0.0073,
+      "country": "Belgium",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "COR",
+      "raw": "COR",
+      "name": "CENCORA",
+      "weight": 0.0070999999999999995,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
       "yahoo": "BAYN.DE",
       "raw": "BAYN",
       "name": "BAYER AG",
-      "weight": 0.006999999999999999,
+      "weight": 0.0069,
       "country": "Germany",
       "sector": "Health Care"
     },
@@ -279,15 +287,7 @@
       "yahoo": "CAH",
       "raw": "CAH",
       "name": "CARDINAL HEALTH",
-      "weight": 0.0069,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "MRNA",
-      "raw": "MRNA",
-      "name": "MODERNA",
-      "weight": 0.006500000000000001,
+      "weight": 0.0063,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -295,30 +295,14 @@
       "yahoo": "BDX",
       "raw": "BDX",
       "name": "BECTON DICKINSON",
-      "weight": 0.0063,
+      "weight": 0.0060999999999999995,
       "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "EL.PA",
-      "raw": "EL",
-      "name": "ESSILORLUXOTTICA SA",
-      "weight": 0.0062,
-      "country": "France",
       "sector": "Health Care"
     },
     {
       "yahoo": "EW",
       "raw": "EW",
       "name": "EDWARDS LIFESCIENCES",
-      "weight": 0.0062,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "HUM",
-      "raw": "HUM",
-      "name": "HUMANA",
       "weight": 0.0060999999999999995,
       "country": "United States",
       "sector": "Health Care"
@@ -332,41 +316,57 @@
       "sector": "Health Care"
     },
     {
+      "yahoo": "A",
+      "raw": "A",
+      "name": "AGILENT TECHNOLOGIES INC",
+      "weight": 0.006,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
       "yahoo": "LONN.SW",
       "raw": "LONN",
       "name": "LONZA GROUP AG",
-      "weight": 0.005699999999999999,
+      "weight": 0.006,
       "country": "Switzerland",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "EL.PA",
+      "raw": "EL",
+      "name": "ESSILORLUXOTTICA SA",
+      "weight": 0.0059,
+      "country": "France",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "HUM",
+      "raw": "HUM",
+      "name": "HUMANA",
+      "weight": 0.005699999999999999,
+      "country": "United States",
       "sector": "Health Care"
     },
     {
       "yahoo": "IQV",
       "raw": "IQV",
       "name": "IQVIA HOLDINGS",
-      "weight": 0.005600000000000001,
+      "weight": 0.0054,
       "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "A",
-      "raw": "A",
-      "name": "AGILENT TECHNOLOGIES INC",
-      "weight": 0.0052,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "HLN.L",
-      "raw": "HLN",
-      "name": "HALEON PLC",
-      "weight": 0.0051,
-      "country": "United Kingdom",
       "sector": "Health Care"
     },
     {
       "yahoo": "WAT",
       "raw": "WAT",
       "name": "WATERS CORP",
+      "weight": 0.0053,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "VEEV",
+      "raw": "VEEV",
+      "name": "VEEVA SYSTEMS CLASS A",
       "weight": 0.0051,
       "country": "United States",
       "sector": "Health Care"
@@ -375,31 +375,31 @@
       "yahoo": "IDXX",
       "raw": "IDXX",
       "name": "IDEXX LABORATORIES",
+      "weight": 0.0051,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "ILMN",
+      "raw": "ILMN",
+      "name": "ILLUMINA INC",
       "weight": 0.005,
       "country": "United States",
       "sector": "Health Care"
     },
     {
-      "yahoo": "VEEV",
-      "raw": "VEEV",
-      "name": "VEEVA SYSTEMS CLASS A",
-      "weight": 0.005,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "4578.T",
-      "raw": "4578",
-      "name": "OTSUKA HOLDINGS",
-      "weight": 0.004699999999999999,
-      "country": "Japan",
+      "yahoo": "HLN.L",
+      "raw": "HLN",
+      "name": "HALEON PLC",
+      "weight": 0.0049,
+      "country": "United Kingdom",
       "sector": "Health Care"
     },
     {
       "yahoo": "SDZ.SW",
       "raw": "SDZ",
       "name": "SANDOZ GROUP AG",
-      "weight": 0.0045000000000000005,
+      "weight": 0.0046,
       "country": "Switzerland",
       "sector": "Health Care"
     },
@@ -412,10 +412,34 @@
       "sector": "Health Care"
     },
     {
+      "yahoo": "BIIB",
+      "raw": "BIIB",
+      "name": "BIOGEN",
+      "weight": 0.0040999999999999995,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
       "yahoo": "4568.T",
       "raw": "4568",
       "name": "DAIICHI SANKYO LTD",
-      "weight": 0.0044,
+      "weight": 0.0040999999999999995,
+      "country": "Japan",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "DXCM",
+      "raw": "DXCM",
+      "name": "DEXCOM INC",
+      "weight": 0.004,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "4578.T",
+      "raw": "4578",
+      "name": "OTSUKA HOLDINGS",
+      "weight": 0.0039000000000000003,
       "country": "Japan",
       "sector": "Health Care"
     },
@@ -423,15 +447,23 @@
       "yahoo": "ALC.SW",
       "raw": "ALC",
       "name": "ALCON AG",
-      "weight": 0.0042,
+      "weight": 0.0039000000000000003,
       "country": "Switzerland",
       "sector": "Health Care"
     },
     {
-      "yahoo": "DXCM",
-      "raw": "DXCM",
-      "name": "DEXCOM INC",
-      "weight": 0.0040999999999999995,
+      "yahoo": "RMD",
+      "raw": "RMD",
+      "name": "RESMED",
+      "weight": 0.0039000000000000003,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "MTD",
+      "raw": "MTD",
+      "name": "METTLER TOLEDO",
+      "weight": 0.0038,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -439,40 +471,8 @@
       "yahoo": "CNC",
       "raw": "CNC",
       "name": "CENTENE CORP",
-      "weight": 0.0040999999999999995,
+      "weight": 0.0038,
       "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "RMD",
-      "raw": "RMD",
-      "name": "RESMED",
-      "weight": 0.0040999999999999995,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "BIIB",
-      "raw": "BIIB",
-      "name": "BIOGEN",
-      "weight": 0.004,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "ZTS",
-      "raw": "ZTS",
-      "name": "ZOETIS INC CLASS A",
-      "weight": 0.0039000000000000003,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "UCB.BR",
-      "raw": "UCB",
-      "name": "UCB SA",
-      "weight": 0.0037,
-      "country": "Belgium",
       "sector": "Health Care"
     },
     {
@@ -484,41 +484,33 @@
       "sector": "Health Care"
     },
     {
+      "yahoo": "ZTS",
+      "raw": "ZTS",
+      "name": "ZOETIS INC CLASS A",
+      "weight": 0.0036,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "UCB.BR",
+      "raw": "UCB",
+      "name": "UCB SA",
+      "weight": 0.0036,
+      "country": "Belgium",
+      "sector": "Health Care"
+    },
+    {
       "yahoo": "4503.T",
       "raw": "4503",
       "name": "ASTELLAS PHARMA",
-      "weight": 0.0034000000000000002,
-      "country": "Japan",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "4519.T",
-      "raw": "4519",
-      "name": "CHUGAI PHARMACEUTICAL LTD",
       "weight": 0.0033,
       "country": "Japan",
       "sector": "Health Care"
     },
     {
-      "yahoo": "DGX",
-      "raw": "DGX",
-      "name": "QUEST DIAGNOSTICS INC",
-      "weight": 0.0033,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "MTD",
-      "raw": "MTD",
-      "name": "METTLER TOLEDO",
-      "weight": 0.0033,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "LH",
-      "raw": "LH",
-      "name": "LABCORP HOLDINGS",
+      "yahoo": "WST",
+      "raw": "WST",
+      "name": "WEST PHARMACEUTICAL SERVICES",
       "weight": 0.0032,
       "country": "United States",
       "sector": "Health Care"
@@ -532,19 +524,27 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "WST",
-      "raw": "WST",
-      "name": "WEST PHARMACEUTICAL SERVICES",
-      "weight": 0.0031,
+      "yahoo": "DGX",
+      "raw": "DGX",
+      "name": "QUEST DIAGNOSTICS INC",
+      "weight": 0.0032,
       "country": "United States",
       "sector": "Health Care"
     },
     {
-      "yahoo": "4543.T",
-      "raw": "4543",
-      "name": "TERUMO",
-      "weight": 0.0027,
+      "yahoo": "4519.T",
+      "raw": "4519",
+      "name": "CHUGAI PHARMACEUTICAL LTD",
+      "weight": 0.0031,
       "country": "Japan",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "LH",
+      "raw": "LH",
+      "name": "LABCORP HOLDINGS",
+      "weight": 0.0031,
+      "country": "United States",
       "sector": "Health Care"
     },
     {
@@ -556,27 +556,19 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "068270.KS",
-      "raw": "068270",
-      "name": "CELLTRION",
-      "weight": 0.0026,
-      "country": "Korea (South)",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "STE",
-      "raw": "STE",
-      "name": "STERIS",
-      "weight": 0.0026,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
       "yahoo": "GMAB.CO",
       "raw": "GMAB",
       "name": "GENMAB",
-      "weight": 0.0026,
+      "weight": 0.0027,
       "country": "Denmark",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "4543.T",
+      "raw": "4543",
+      "name": "TERUMO",
+      "weight": 0.0026,
+      "country": "Japan",
       "sector": "Health Care"
     },
     {
@@ -588,6 +580,30 @@
       "sector": "Health Care"
     },
     {
+      "yahoo": "VTRS",
+      "raw": "VTRS",
+      "name": "VIATRIS",
+      "weight": 0.0026,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "STE",
+      "raw": "STE",
+      "name": "STERIS",
+      "weight": 0.0025,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "MRK.DE",
+      "raw": "MRK",
+      "name": "MERCK",
+      "weight": 0.0025,
+      "country": "Germany",
+      "sector": "Health Care"
+    },
+    {
       "yahoo": "PHIA.AS",
       "raw": "PHIA",
       "name": "KONINKLIJKE PHILIPS",
@@ -596,27 +612,35 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "MRK.DE",
-      "raw": "MRK",
-      "name": "MERCK",
-      "weight": 0.0024,
+      "yahoo": "ZBH",
+      "raw": "ZBH",
+      "name": "ZIMMER BIOMET HOLDINGS",
+      "weight": 0.0021,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "RVTY",
+      "raw": "RVTY",
+      "name": "REVVITY",
+      "weight": 0.002,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "SHL.DE",
+      "raw": "SHL",
+      "name": "SIEMENS HEALTHINEERS AG",
+      "weight": 0.0019,
       "country": "Germany",
       "sector": "Health Care"
     },
     {
-      "yahoo": "VTRS",
-      "raw": "VTRS",
-      "name": "VIATRIS",
-      "weight": 0.0024,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "ZBH",
-      "raw": "ZBH",
-      "name": "ZIMMER BIOMET HOLDINGS",
-      "weight": 0.0023,
-      "country": "United States",
+      "yahoo": "SOON.SW",
+      "raw": "SOON",
+      "name": "SONOVA HOLDING AG",
+      "weight": 0.0018,
+      "country": "Switzerland",
       "sector": "Health Care"
     },
     {
@@ -628,27 +652,11 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "RVTY",
-      "raw": "RVTY",
-      "name": "REVVITY",
-      "weight": 0.0018,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
       "yahoo": "7733.T",
       "raw": "7733",
       "name": "OLYMPUS",
       "weight": 0.0018,
       "country": "Japan",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "SOON.SW",
-      "raw": "SOON",
-      "name": "SONOVA HOLDING AG",
-      "weight": 0.0017000000000000001,
-      "country": "Switzerland",
       "sector": "Health Care"
     },
     {
@@ -660,27 +668,19 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "SOLV",
-      "raw": "SOLV",
-      "name": "SOLVENTUM",
-      "weight": 0.0017000000000000001,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "SHL.DE",
-      "raw": "SHL",
-      "name": "SIEMENS HEALTHINEERS AG",
-      "weight": 0.0016,
-      "country": "Germany",
-      "sector": "Health Care"
-    },
-    {
       "yahoo": "STMN.SW",
       "raw": "STMN",
       "name": "STRAUMANN HOLDING AG",
       "weight": 0.0016,
       "country": "Switzerland",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "SOLV",
+      "raw": "SOLV",
+      "name": "SOLVENTUM",
+      "weight": 0.0016,
+      "country": "United States",
       "sector": "Health Care"
     },
     {
@@ -700,14 +700,6 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "SN.L",
-      "raw": "SN.",
-      "name": "SMITH AND NEPHEW PLC",
-      "weight": 0.0015,
-      "country": "United Kingdom",
-      "sector": "Health Care"
-    },
-    {
       "yahoo": "TECH",
       "raw": "TECH",
       "name": "BIO TECHNE",
@@ -716,43 +708,27 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "SIG.AX",
-      "raw": "SIG",
-      "name": "SIGMA HEALTHCARE",
+      "yahoo": "SN.L",
+      "raw": "SN.",
+      "name": "SMITH AND NEPHEW PLC",
       "weight": 0.0014000000000000002,
-      "country": "Australia",
+      "country": "United Kingdom",
       "sector": "Health Care"
     },
     {
       "yahoo": "COO",
       "raw": "COO",
       "name": "COOPER",
+      "weight": 0.0014000000000000002,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "SIG.AX",
+      "raw": "SIG",
+      "name": "SIGMA HEALTHCARE",
       "weight": 0.0013,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "ALGN",
-      "raw": "ALGN",
-      "name": "ALIGN TECHNOLOGY",
-      "weight": 0.0013,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "PODD",
-      "raw": "PODD",
-      "name": "INSULET",
-      "weight": 0.0012,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "FME.DE",
-      "raw": "FME",
-      "name": "FRESENIUS MEDICAL CARE AG",
-      "weight": 0.0012,
-      "country": "Germany",
+      "country": "Australia",
       "sector": "Health Care"
     },
     {
@@ -764,26 +740,10 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "UHS",
-      "raw": "UHS",
-      "name": "UNIVERSAL HEALTH SERVICES INC CLAS",
+      "yahoo": "ALGN",
+      "raw": "ALGN",
+      "name": "ALIGN TECHNOLOGY",
       "weight": 0.0012,
-      "country": "United States",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "4523.T",
-      "raw": "4523",
-      "name": "EISAI",
-      "weight": 0.0011,
-      "country": "Japan",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "HSIC",
-      "raw": "HSIC",
-      "name": "HENRY SCHEIN",
-      "weight": 0.0011,
       "country": "United States",
       "sector": "Health Care"
     },
@@ -796,11 +756,59 @@
       "sector": "Health Care"
     },
     {
+      "yahoo": "UHS",
+      "raw": "UHS",
+      "name": "UNIVERSAL HEALTH SERVICES CLASS B",
+      "weight": 0.0011,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "PODD",
+      "raw": "PODD",
+      "name": "INSULET",
+      "weight": 0.0011,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "4523.T",
+      "raw": "4523",
+      "name": "EISAI",
+      "weight": 0.0011,
+      "country": "Japan",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "FME.DE",
+      "raw": "FME",
+      "name": "FRESENIUS MEDICAL CARE AG",
+      "weight": 0.0011,
+      "country": "Germany",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "HSIC",
+      "raw": "HSIC",
+      "name": "HENRY SCHEIN",
+      "weight": 0.001,
+      "country": "United States",
+      "sector": "Health Care"
+    },
+    {
       "yahoo": "COLO-B.CO",
       "raw": "COLO B",
       "name": "COLOPLAST B",
       "weight": 0.001,
       "country": "Denmark",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "SRT3.DE",
+      "raw": "SRT3",
+      "name": "SARTORIUS PREF AG",
+      "weight": 0.0009,
+      "country": "Germany",
       "sector": "Health Care"
     },
     {
@@ -820,19 +828,11 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "SHL.AX",
-      "raw": "SHL",
-      "name": "SONIC HEALTHCARE",
+      "yahoo": "DIM.PA",
+      "raw": "DIM",
+      "name": "SARTORIUS STEDIM BIOTECH SA",
       "weight": 0.0008,
-      "country": "Australia",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "SRT3.DE",
-      "raw": "SRT3",
-      "name": "SARTORIUS PREF AG",
-      "weight": 0.0008,
-      "country": "Germany",
+      "country": "France",
       "sector": "Health Care"
     },
     {
@@ -844,19 +844,19 @@
       "sector": "Health Care"
     },
     {
-      "yahoo": "DVA",
-      "raw": "DVA",
-      "name": "DAVITA INC",
+      "yahoo": "SHL.AX",
+      "raw": "SHL",
+      "name": "SONIC HEALTHCARE",
       "weight": 0.0008,
-      "country": "United States",
+      "country": "Australia",
       "sector": "Health Care"
     },
     {
-      "yahoo": "DIM.PA",
-      "raw": "DIM",
-      "name": "SARTORIUS STEDIM BIOTECH SA",
+      "yahoo": "DVA",
+      "raw": "DVA",
+      "name": "DAVITA INC",
       "weight": 0.0007000000000000001,
-      "country": "France",
+      "country": "United States",
       "sector": "Health Care"
     },
     {
@@ -865,14 +865,6 @@
       "name": "GETINGE B",
       "weight": 0.0007000000000000001,
       "country": "Sweden",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "GRF.MC",
-      "raw": "GRF",
-      "name": "GRIFOLS CLASS A",
-      "weight": 0.0004,
-      "country": "Spain",
       "sector": "Health Care"
     },
     {
