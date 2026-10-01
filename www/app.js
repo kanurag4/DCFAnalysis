@@ -1850,9 +1850,12 @@ async function fetchSectorMarginLookup() {
 // FALLBACK_RF/MARKET_ERP tables -- same defensive pattern as every other
 // live-fetch-with-fallback in this file.
 async function fetchNativeLiveRates() {
-  if (!isNative || typeof WATCHLIST_API === 'undefined') return;
+  if (!isNative) return;
   try {
-    const resp = await fetch(`${WATCHLIST_API}/rates`);
+    // Hardcoded URL, not WATCHLIST_API: that's a `var` inside kv-watchlist.js's IIFE, never
+    // a global, so the old `typeof WATCHLIST_API === 'undefined'` guard returned early on
+    // every native load and this fetch never ran (found 2026-10-01).
+    const resp = await fetch('https://kv-watchlist.anurag-kor.workers.dev/rates');
     if (!resp.ok) throw new Error('not ok');
     const body = await resp.json();
     if (body && body.ok && body.FALLBACK_RF && body.MARKET_ERP) {
