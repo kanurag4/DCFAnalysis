@@ -8,9 +8,10 @@ const { marketParamsFor } = require('../scripts/lib/market.js');
 // against Damodaran's July 2026 country risk premium table (mature-market ERP base fell
 // to 4.20%, Australia is Aaa-rated so its ERP equals that base directly): 0.06->0.0420.
 // Refreshed again 2026-09-30 (TradingEconomics, AU 10yr 5.35%, selloff continuing):
-// rf 0.0532->0.0535.
+// rf 0.0532->0.0535. Refreshed again 2026-10-01 (TradingEconomics, AU 10yr 5.42%): rf
+// 0.0535->0.0542.
 test('ASX ticker gets AUS rf fallback and 4.20% erp', () => {
-  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0535, erp: 0.0420, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0542, erp: 0.0420, terminalGrowth: 0.025 });
 });
 
 test('ASX ticker uses provided live rf when given', () => {
@@ -89,13 +90,14 @@ test('.TO (Toronto) does not match the .T Japan branch', () => {
 // Refreshed 2026-09-11 (global bond selloff -- UK gilt hit a 19-year high): rf 0.0507->0.0530.
 // erp refreshed 2026-09-22 against Damodaran's July 2026 table (UK is Aa3-rated):
 // 0.06->0.0494. Refreshed again 2026-09-30 (TradingEconomics gilt yield 5.38%, selloff
-// continuing): rf 0.0530->0.0538.
+// continuing): rf 0.0530->0.0538. Refreshed again 2026-10-01 (gilt yield 5.44%): rf
+// 0.0538->0.0544.
 test('UK (.L) ticker gets fixed Gilt-proxy rf/erp/terminalGrowth, no live override possible', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0538, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0544, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 test('UK (.L) ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0538, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0544, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 // Refreshed 2026-09-11 (global bond selloff -- German bund hit its highest since April

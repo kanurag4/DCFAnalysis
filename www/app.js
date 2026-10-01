@@ -208,7 +208,7 @@ if (!isNative) {
 let currentData   = null;
 let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best-effort
 let liveRfRate    = 4.8;   // updated when US 10-yr Treasury is fetched -- 4.8% default, corrected 2026-09-02 (was 4.5%, real ^TNX ~4.76%; the live fetch here works, so this default rarely shows, but see calc/assumptions.js's FALLBACK_RF.us)
-let liveAusRfRate = 5.35;  // updated when Australian 10-yr bond is fetched; 5.35% default -- refreshed 2026-09-30 (TradingEconomics, raw yield 5.35%, was 5.2%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
+let liveAusRfRate = 5.42;  // updated when Australian 10-yr bond is fetched; 5.42% default -- refreshed 2026-10-01 (TradingEconomics, raw yield 5.42%, was 5.35%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
 let liveIndRfRate = 5.40;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.40% default -- refreshed 2026-09-30, raw G-Sec 7.15% minus the unchanged Jul-2026 Damodaran spread 1.75% (was 5.30%); the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
 // Korea/Japan/UK/Eurozone/Hong Kong/China: no live govt-bond yield ticker exists on
 // Yahoo for any of these (see docs/japan-korea-market-research.md) -- rf/erp come

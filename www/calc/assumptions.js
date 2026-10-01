@@ -102,7 +102,15 @@
 // (DCFAnalysis/scripts/lib/rf.js) -- the only spread with its own separate
 // hand-maintained copy, used by the still-404ing live G-Sec re-fetch path -- updated
 // to match. See docs/risk-free-rates.md.
-const FALLBACK_RF = { us: 0.0501, aus: 0.0535, ind: 0.0540, kor: 0.0401, jpn: 0.0251, uk: 0.0538, eu: 0.0359, hk: 0.0365, cn: 0.0112 };
+//
+// aus/uk/hk refreshed 2026-10-01 (TradingEconomics, raw yields, same 'raw' convention):
+// aus 5.35%->5.42% (near the highest since mid-2011; RBA Nov-hike odds swung 20%->74%
+// intraday), uk 5.38%->5.44%, hk 3.65%->4.09% -- hk's first real re-verification since
+// 09-06 (+42bp over the month on TradingEconomics, consistent with the 3.65% Sept 4
+// reading it replaces). ind/kor/jpn/eu/cn/us deliberately NOT moved this pass (3-4bp
+// from the 09-30 values, within day-to-day noise). terminalGrowth still clears every
+// moved rf (aus 2.5, uk 2.0, hk 2.0 vs 5.42/5.44/4.09).
+const FALLBACK_RF = { us: 0.0501, aus: 0.0542, ind: 0.0540, kor: 0.0401, jpn: 0.0251, uk: 0.0544, eu: 0.0359, hk: 0.0409, cn: 0.0112 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -119,13 +127,13 @@ const FALLBACK_RF = { us: 0.0501, aus: 0.0535, ind: 0.0540, kor: 0.0401, jpn: 0.
 // a replacement is found (see docs/TODO.md's P6).
 const FALLBACK_RF_META = {
   us:  { asOf: '2026-09-18', source: 'Yahoo ^TNX live pull via the Worker /history endpoint -- 5.006% close, still near the cusp-of-5% global selloff level', method: 'raw', liveSymbol: '^TNX', liveSymbolWorks: true },
-  aus: { asOf: '2026-09-30', source: 'TradingEconomics, AU 10yr govt bond 5.35% (Sept 30, selloff continuing)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  aus: { asOf: '2026-10-01', source: 'TradingEconomics, AU 10yr govt bond 5.42% (Oct 1, near the highest since mid-2011; ABC had 5.40% at the ASX close)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
   ind: { asOf: '2026-09-30', source: 'raw G-Sec 7.15% (Sept 30, TradingEconomics) minus Jul-2026 Damodaran spread 1.75% (Baa3, unchanged)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
   kor: { asOf: '2026-09-30', source: 'raw yield 4.40% (Sept 30, TradingEconomics, eased back further off the selloff peak) minus Jul-2026 Damodaran spread 0.39% (Aa2, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
   jpn: { asOf: '2026-09-30', source: 'raw JGB yield 3.07% (Sept 30, TradingEconomics) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: '2026-09-30', source: 'raw gilt yield 5.38% (Sept 30, TradingEconomics, selloff continuing)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-10-01', source: 'raw gilt yield 5.44% (Oct 1, TradingEconomics, selloff continuing)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   eu:  { asOf: '2026-09-30', source: 'raw German bund yield 3.59% (Sept 30, TradingEconomics, continuing the oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  hk:  { asOf: '2026-09-06', source: 'TradingEconomics 3.65% (Sept 4, 2026), corroborated by an HKMA 10yr institutional bond tender (Aug 12, 2026) at 3.58% -- re-checked 09-18 and 09-30, no trustworthy current figure found newer than mid-Sept', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: '2026-10-01', source: 'TradingEconomics 4.09% (Oct 1, 2026; OTC interbank quote, +42bp over the month -- consistent with the 3.65% Sept 4 reading it replaces; single source, the Aug 12 HKMA 10yr tender at 3.58% is the only independent data point and predates the move)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   cn:  { asOf: '2026-09-22', source: 'raw yield 1.68% (Sept 18, unchanged from Sept 1) minus Jul-2026 Damodaran spread 0.56% (A1, refreshed from the Jan-2026 0.60%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
