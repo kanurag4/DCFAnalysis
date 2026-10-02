@@ -318,5 +318,21 @@
     "exitDate": "2026-09-26",
     "exitPrice": 11.8064,
     "dollarPnl": 9.22
+  },
+  {
+    "ticker": "BAYN.DE",
+    "entryDate": "2026-09-05",
+    "entryPrice": 48.85,
+    "exitDate": "2026-10-02",
+    "exitPrice": 44.94,
+    "dollarPnl": -49.02
+  },
+  {
+    "ticker": "FRES.L",
+    "entryDate": "2026-09-26",
+    "entryPrice": 33.9084,
+    "exitDate": "2026-10-02",
+    "exitPrice": 31.6322,
+    "dollarPnl": -27.59
   }
 ]

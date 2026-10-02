@@ -52,8 +52,8 @@
     "firstPrice": 74.47
   },
   "ISP.MI": {
-    "firstSeen": "2026-08-03",
-    "firstPrice": 6.54
+    "firstSeen": "2026-10-02",
+    "firstPrice": 6.33
   },
   "BNR.DE": {
     "firstSeen": "2026-08-03",
@@ -218,5 +218,9 @@
   "FRES.L": {
     "firstSeen": "2026-09-26",
     "firstPrice": 2890
+  },
+  "SGO.PA": {
+    "firstSeen": "2026-10-02",
+    "firstPrice": 67.1
   }
 }
