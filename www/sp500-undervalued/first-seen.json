@@ -60,8 +60,8 @@
     "firstPrice": 138.02
   },
   "VLO": {
-    "firstSeen": "2026-09-18",
-    "firstPrice": 413.28
+    "firstSeen": "2026-10-02",
+    "firstPrice": 406.3
   },
   "YUM": {
     "firstSeen": "2026-07-18",
@@ -132,8 +132,8 @@
     "firstPrice": 118.32
   },
   "INTU": {
-    "firstSeen": "2026-09-11",
-    "firstPrice": 321.57
+    "firstSeen": "2026-10-02",
+    "firstPrice": 281.08
   },
   "MDT": {
     "firstSeen": "2026-06-26",
@@ -366,5 +366,9 @@
   "FSLR": {
     "firstSeen": "2026-09-25",
     "firstPrice": 177.71
+  },
+  "NFLX": {
+    "firstSeen": "2026-10-02",
+    "firstPrice": 67.06
   }
 }

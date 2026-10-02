@@ -745,5 +745,29 @@
     "exitDate": "2026-09-25",
     "exitPrice": 370.43,
     "dollarPnl": -6.74
+  },
+  {
+    "ticker": "ACN",
+    "entryDate": "2026-08-22",
+    "entryPrice": 185.28,
+    "exitDate": "2026-10-02",
+    "exitPrice": 198.9,
+    "dollarPnl": 72.08
+  },
+  {
+    "ticker": "ROP",
+    "entryDate": "2026-09-25",
+    "entryPrice": 358.56,
+    "exitDate": "2026-10-02",
+    "exitPrice": 354.32,
+    "dollarPnl": -6.59
+  },
+  {
+    "ticker": "CF",
+    "entryDate": "2026-09-25",
+    "entryPrice": 114.67,
+    "exitDate": "2026-10-02",
+    "exitPrice": 115.01,
+    "dollarPnl": 1.65
   }
 ]
