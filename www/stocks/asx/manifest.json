@@ -637,6 +637,19 @@
     "updatedAt": "2026-09-25T02:33:56.494Z"
   },
   {
+    "ticker": "MND.AX",
+    "slug": "mnd-ax",
+    "name": "Monadelphous Group Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 41.04946320468157,
+    "price": 31.23,
+    "marginOfSafety": 0.31442405394433465,
+    "marketCap": 3141330176,
+    "updated": "2026-10-02",
+    "updatedAt": "2026-10-02T09:52:02.917Z"
+  },
+  {
     "ticker": "MPL.AX",
     "slug": "mpl-ax",
     "name": "Medibank Private Limited",
