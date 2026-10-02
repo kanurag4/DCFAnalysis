@@ -508,5 +508,53 @@
     "exitDate": "2026-09-25",
     "exitPrice": 2.86,
     "dollarPnl": 7.67
+  },
+  {
+    "ticker": "JHX.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 41.29,
+    "exitDate": "2026-10-02",
+    "exitPrice": 36.07,
+    "dollarPnl": -13.15
+  },
+  {
+    "ticker": "GQG.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 1.22,
+    "exitDate": "2026-10-02",
+    "exitPrice": 1.1,
+    "dollarPnl": 4.9
+  },
+  {
+    "ticker": "FMG.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 17.22,
+    "exitDate": "2026-10-02",
+    "exitPrice": 16.19,
+    "dollarPnl": -5.88
+  },
+  {
+    "ticker": "LNW.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 127.64,
+    "exitDate": "2026-10-02",
+    "exitPrice": 109.06,
+    "dollarPnl": -6.96
+  },
+  {
+    "ticker": "A2M.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 6.84,
+    "exitDate": "2026-10-02",
+    "exitPrice": 6.67,
+    "dollarPnl": 1.61
+  },
+  {
+    "ticker": "FRW.AX",
+    "entryDate": "2026-09-18",
+    "entryPrice": 10.67,
+    "exitDate": "2026-10-02",
+    "exitPrice": 10.22,
+    "dollarPnl": -14.74
   }
 ]
