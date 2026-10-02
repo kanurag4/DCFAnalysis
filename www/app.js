@@ -238,6 +238,11 @@ let liveIndRfRate = 5.40;  // updated when Indian 10-yr Govt bond is fetched (sp
 // always a safe, fully-offline-capable fallback.
 let nativeLiveRates = null;
 
+// worker-watchlist's public GET /rates -- serves the rate table AND the shared live US 10Y (live.us). Declared up
+// here, not beside its users below: fetchAndSetRiskFreeRate()/fetchNativeLiveRates() are CALLED at load (~line 296),
+// before execution reaches those later declarations, so a const placed there would still be in its TDZ.
+const WORKER_RATES_URL = 'https://kv-watchlist.anurag-kor.workers.dev/rates';
+
 function marketRf(market, staticFallback) {
   const live = nativeLiveRates && nativeLiveRates.FALLBACK_RF && nativeLiveRates.FALLBACK_RF[market];
   if (live != null) return +(live * 100).toFixed(2);
@@ -1855,7 +1860,7 @@ async function fetchNativeLiveRates() {
     // Hardcoded URL, not WATCHLIST_API: that's a `var` inside kv-watchlist.js's IIFE, never
     // a global, so the old `typeof WATCHLIST_API === 'undefined'` guard returned early on
     // every native load and this fetch never ran (found 2026-10-01).
-    const resp = await fetch('https://kv-watchlist.anurag-kor.workers.dev/rates');
+    const resp = await fetch(WORKER_RATES_URL);
     if (!resp.ok) throw new Error('not ok');
     const body = await resp.json();
     if (body && body.ok && body.FALLBACK_RF && body.MARKET_ERP) {
@@ -1867,18 +1872,39 @@ async function fetchNativeLiveRates() {
   }
 }
 
+// The shared live US 10Y from worker-watchlist's /rates (live.us, a fraction) as a percent rounded to 2dp, or
+// null on any failure / implausible value. This is the single value /evaluate/, the native app and the Watchlist
+// backend also use, so every surface values a US ticker on the same rate (docs/risk-free-rates.md, "Live US
+// rate"). Bounds mirror the Worker's own check (0.5%-15%) as defence in depth.
+async function fetchSharedUsRatePct() {
+  try {
+    const resp = await fetch(WORKER_RATES_URL);
+    if (!resp.ok) return null;
+    const v = (await resp.json())?.live?.us?.value;
+    return (typeof v === 'number' && isFinite(v) && v >= 0.005 && v <= 0.15) ? +(v * 100).toFixed(2) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
 async function fetchAndSetRiskFreeRate() {
   try {
-    const period2 = Math.floor(Date.now() / 1000);
-    const period1 = period2 - 10 * 24 * 60 * 60; // 10 days back -- crosses any weekend/holiday gap
-    const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/history/${encodeURIComponent('^TNX')}` +
-      `?period1=${period1}&period2=${period2}`;
-    const resp = await fetch(url);
-    if (!resp.ok) return;
-    const body = await resp.json();
-    const raw = Array.isArray(body) && body.length ? body[body.length - 1]?.close : null; // ascending by date -- last entry is most recent
-    if (raw != null && isFinite(raw) && raw > 0 && raw < 20) {
-      liveRfRate = +raw.toFixed(2);
+    // Prefer the shared value; if /rates is down or has no live value, fall back to fetching ^TNX directly,
+    // exactly as this tool always did (degraded mode: may differ from the other surfaces by a cent or so).
+    let pct = await fetchSharedUsRatePct();
+    if (pct == null) {
+      const period2 = Math.floor(Date.now() / 1000);
+      const period1 = period2 - 10 * 24 * 60 * 60; // 10 days back -- crosses any weekend/holiday gap
+      const url = `${CONFIG.YAHOO_PROXY_URL.replace(/\/$/, '')}/history/${encodeURIComponent('^TNX')}` +
+        `?period1=${period1}&period2=${period2}`;
+      const resp = await fetch(url);
+      if (!resp.ok) return;
+      const body = await resp.json();
+      const raw = Array.isArray(body) && body.length ? body[body.length - 1]?.close : null; // ascending by date -- last entry is most recent
+      if (raw != null && isFinite(raw) && raw > 0 && raw < 20) pct = +raw.toFixed(2);
+    }
+    if (pct != null) {
+      liveRfRate = pct;
       if (currentMarket === 'us' || currentMarket === 'other') {
         els.rfInput.value = liveRfRate;
         setRfBadge('us', liveRfRate);
