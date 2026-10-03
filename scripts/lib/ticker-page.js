@@ -1583,7 +1583,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       <section class="tool-info">
         <div class="tool-about">
           <h2>About this valuation</h2>
-          <p>Computed on ${today} from Yahoo Finance data, using the same engine as the <a href="/dcf/">full DCF tool</a>${market.screenUrl ? ` and the <a href="${market.screenUrl}">${escapeHtml(market.screenName)}</a> screen` : ''}. Every figure above is a point-in-time snapshot of that date — change any assumption yourself in the interactive tool for a live one.</p>
+          <p>Computed on ${today} from Yahoo Finance data, using the same engine as the <a href="/dcf/">DCF calculator</a>${market.screenUrl ? ` and the <a href="${market.screenUrl}">${escapeHtml(market.screenName)}</a> screen` : ''}. Every figure above is a point-in-time snapshot of that date — change any assumption yourself in the interactive tool for a live one.</p>
         </div>
         <div class="tool-faq">
           <h2>Frequently asked questions</h2>
