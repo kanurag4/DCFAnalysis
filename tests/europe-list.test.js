@@ -22,15 +22,15 @@ test('drops empty tokens', () => {
   assert.deepEqual(tickersOf('SAP.DE,,  ,MC.PA,'), ['SAP.DE', 'MC.PA']);
 });
 
-test('accepts every in-scope eurozone/UK suffix', () => {
-  const raw = 'SAP.DE,MC.PA,ASML.AS,ENI.MI,SAN.MC,ABI.BR,EDP.LS,OMV.VI,NOKIA.HE,RYA.IR,HSBA.L';
-  assert.equal(tickersOf(raw).length, 11);
+test('accepts every in-scope European venue suffix', () => {
+  const raw = 'SAP.DE,MC.PA,ASML.AS,ENI.MI,SAN.MC,ABI.BR,EDP.LS,OMV.VI,NOKIA.HE,RYA.IR,HSBA.L,NESN.SW,VOLV-B.ST,NOVO-B.CO,EQNR.OL';
+  assert.equal(tickersOf(raw).length, 15);
 });
 
-test('rejects a ticker with a non-eurozone/UK suffix and reports it as dropped', () => {
-  const out = normalizeEuropeTickers('SAP.DE,NESN.SW,MC.PA'); // NESN.SW = Swiss, out of scope
+test('rejects a ticker with an out-of-scope venue suffix and reports it as dropped', () => {
+  const out = normalizeEuropeTickers('SAP.DE,PKN.WA,MC.PA'); // PKN.WA = Poland, no sourced rate bucket yet
   assert.deepEqual(out.tickers, ['SAP.DE', 'MC.PA']);
-  assert.deepEqual(out.dropped, ['NESN.SW']);
+  assert.deepEqual(out.dropped, ['PKN.WA']);
 });
 
 test('rejects a bare US-style ticker with no suffix', () => {
@@ -50,7 +50,7 @@ test('is pure — no console output', () => {
   const calls = [];
   console.warn = console.log = console.error = (...a) => calls.push(a);
   try {
-    normalizeEuropeTickers('SAP.DE,NESN.SW,AAPL,SAP.DE');
+    normalizeEuropeTickers('SAP.DE,PKN.WA,AAPL,SAP.DE');
   } finally {
     Object.assign(console, orig);
   }

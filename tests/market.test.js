@@ -172,3 +172,9 @@ test('Israel .TA, Switzerland .SW, Sweden .ST, Norway .OL, Singapore .SI each re
     assert.ok(p.rf !== 0.0501 || p.erp !== 0.0442, `${t} still hitting the US fallback`);
   }
 });
+
+test('Denmark .CO uses the eurozone bucket (DKK is euro-pegged) -- not the US default', () => {
+  // Before 2026-10-07 a Danish ticker fell through to the US-seed default.
+  assert.deepEqual(marketParamsFor('NOVO-B.CO', {}), marketParamsFor('SAP.DE', {}));
+  assert.notEqual(marketParamsFor('DSV.CO', {}).rf, marketParamsFor('AAPL', {}).rf);
+});

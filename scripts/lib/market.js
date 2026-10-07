@@ -83,6 +83,12 @@ function marketParamsFor(ticker, live = {}) {
   if (t.endsWith('.ST')) return { rf: 0.0309, erp: 0.052, terminalGrowth: 0.015 };
   if (t.endsWith('.OL')) return { rf: 0.0447, erp: 0.052, terminalGrowth: 0.018 };
   if (t.endsWith('.SI')) return { rf: 0.0238, erp: 0.053, terminalGrowth: 0.016 };
+  // Denmark (.CO): added 2026-10-07 for the STOXX 600 Europe screen -- before this a Danish
+  // ticker fell through to the US-seed default below (a ~5% US risk-free rate on a market
+  // whose 10-yr yield tracks the Bund). DKK is pegged to the euro, Denmark is Aaa (same
+  // Damodaran tier as Germany), so it reuses the eurozone bucket as a PROXY rather than a
+  // separately sourced Danish yield -- revisit if a sourced DKK 10-yr reading is wanted.
+  if (t.endsWith('.CO')) return { rf: FALLBACK_RF.eu, erp: MARKET_ERP.eu, terminalGrowth: pct(MARKET_TGROWTH.eu) };
 
   // KOSDAQ (.KQ): same market as KOSPI (.KS) for valuation-parameter purposes -- reuses
   // the Korea branch's values directly rather than a separate hardcoded copy (that

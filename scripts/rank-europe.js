@@ -1,5 +1,5 @@
 // scripts/rank-europe.js
-// Weekly batch: evaluate the Europe (eurozone + UK) base case, rank by margin
+// Weekly batch: evaluate the Europe (STOXX Europe 600) base case, rank by margin
 // of safety, write www/europe-undervalued/rankings.json + merge first-seen.json.
 //
 //   node scripts/rank-europe.js            fetch all tickers, evaluate, rank, write
@@ -9,8 +9,8 @@ const { fetchEurFxRates } = require('./lib/rf.js');
 const blacklistEntries = require('./blacklist-europe.json');
 
 const config = {
-  universe: 'Europe (Eurozone + UK)',
-  tickersFile: 'europe200.json',
+  universe: 'Europe (STOXX Europe 600)',
+  tickersFile: 'europe600.json',
   outDir: 'europe-undervalued',
   currency: 'EUR',
   // No live-fetched rf — .L and eurozone tickers use FIXED rf constants in market.js

@@ -117,13 +117,17 @@ test('fetchFxRate returns null when the fetch throws or returns nothing usable',
 
 test('fetchEurFxRates marks source live when every rate is fetched', async () => {
   const orig = global.fetch;
-  global.fetch = async () => ({ ok: true, json: async () => detail('previousClose', 1.1) });
+  // Each currency has its own plausibility band, so serve a realistic rate per symbol.
+  const live = { GBPEUR: 1.1, USDEUR: 0.9, CHFEUR: 1.05, SEKEUR: 0.088, DKKEUR: 0.134, NOKEUR: 0.086 };
+  global.fetch = async (url) => {
+    const key = Object.keys(live).find(k => String(url).includes(k));
+    return { ok: true, json: async () => detail('previousClose', live[key]) };
+  };
   try {
     const out = await fetchEurFxRates('http://x');
     assert.strictEqual(out.source, 'live');
     assert.deepEqual(out.missing, []);
-    near(out.rates.GBP, 1.1);
-    near(out.rates.USD, 1.1);
+    for (const [k, v] of Object.entries(live)) near(out.rates[k.slice(0, 3)], v);
   } finally { global.fetch = orig; }
 });
 
@@ -133,8 +137,12 @@ test('fetchEurFxRates marks source fallback and lists missing when every fetch f
   try {
     const out = await fetchEurFxRates('http://x');
     assert.strictEqual(out.source, 'fallback');
-    assert.deepEqual(out.missing, ['GBP', 'USD']);
+    assert.deepEqual(out.missing, ['GBP', 'USD', 'CHF', 'SEK', 'DKK', 'NOK']);
     near(out.rates.GBP, 1.17);  // documented stand-ins, but flagged as such
     near(out.rates.USD, 0.92);
+    near(out.rates.CHF, 1.07);
+    near(out.rates.SEK, 0.09);
+    near(out.rates.DKK, 0.134);
+    near(out.rates.NOK, 0.087);
   } finally { global.fetch = orig; }
 });

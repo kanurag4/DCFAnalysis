@@ -334,6 +334,16 @@ doc `docs/japan-korea-market-research.md`).
 
 ## Feature: Most Undervalued Europe screen — ✅ LIVE (2026-08-03)
 
+> **UPDATE 2026-10-07 — universe is now the full STOXX Europe 600, not eurozone + UK.** Tickers come from
+> `scripts/europe600.json` (~574), built by `node scripts/build-europe600.js` from the iShares STOXX Europe 600
+> UCITS ETF (DE) holdings CSV (product 251931; the script scrapes the product page for the download link). Venue
+> (not issuer country) picks the Yahoo suffix. `.SW .ST .CO .OL` are now in `europe-list.js`'s scope; Poland
+> (`.WA`) and Greece (`.AT`) are excluded because `market.js` has no sourced bucket for them (they would silently
+> take the US rate) — add one first. `.CO` (Denmark) reuses the eurozone bucket as a euro-peg proxy. `rf.js`'s
+> `EUR_FX_SYMBOLS` gained CHF/SEK/DKK/NOK for the EUR paper portfolio. The paper portfolio / first-seen / sold
+> files were deliberately reset that day (old data: git history before this commit). The 200-name text below is
+> the original design, kept for history; `europe200.json` is unused.
+
 Sixth sibling screen at **kashvector.com/dcf/europe-undervalued/**. Ranks eurozone + UK
 equities by base-case DCF/DDM margin of safety. Top 20, 80% cap, EUR (+ GBp display rows).
 Built per spec `docs/superpowers/specs/2026-08-02-europe-undervalued-screener-design.md` and

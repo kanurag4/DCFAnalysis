@@ -141,9 +141,19 @@ async function fetchFxRate(symbol, { proxyUrl, fetchImpl = DEFAULT_FETCH, min = 
 // (verified 2026-08-03); without it they were silently pooled as if EUR.
 // Plausibility bands are wide enough to survive years of drift but tight
 // enough to reject a garbage quote.
+//
+// CHF/SEK/DKK/NOK added 2026-10-07 when the universe widened to the full STOXX Europe
+// 600 (Swiss, Swedish, Danish and Norwegian listings quote in their own currency).
+// Each band is centred on the pair's recent level but wide enough to survive years of
+// drift; the fallbacks are stand-ins only -- a run that uses one is flagged 'partial'
+// / 'fallback' and its FX-sensitive portfolio math is neutralised, never fabricated.
 const EUR_FX_SYMBOLS = {
   GBP: { symbol: 'GBPEUR=X', fallback: 1.17, min: 0.5, max: 2 },
   USD: { symbol: 'USDEUR=X', fallback: 0.92, min: 0.5, max: 2 },
+  CHF: { symbol: 'CHFEUR=X', fallback: 1.07, min: 0.7, max: 1.5 },
+  SEK: { symbol: 'SEKEUR=X', fallback: 0.09, min: 0.05, max: 0.15 },
+  DKK: { symbol: 'DKKEUR=X', fallback: 0.134, min: 0.1, max: 0.17 },
+  NOK: { symbol: 'NOKEUR=X', fallback: 0.087, min: 0.05, max: 0.13 },
 };
 
 // Fetch every rate the Europe screen needs. Returns
