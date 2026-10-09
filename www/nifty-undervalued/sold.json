@@ -279,5 +279,21 @@
     "exitDate": "2026-09-18",
     "exitPrice": 197.14,
     "dollarPnl": 266.04
+  },
+  {
+    "ticker": "COALINDIA.NS",
+    "entryDate": "2026-09-05",
+    "entryPrice": 415.35,
+    "exitDate": "2026-10-09",
+    "exitPrice": 411.55,
+    "dollarPnl": -104.52
+  },
+  {
+    "ticker": "WIPRO.NS",
+    "entryDate": "2026-09-11",
+    "entryPrice": 167.4,
+    "exitDate": "2026-10-09",
+    "exitPrice": 162.57,
+    "dollarPnl": 100.33
   }
 ]
