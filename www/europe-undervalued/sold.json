@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "ticker": "PNDORA.CO",
+    "entryDate": "2026-10-07",
+    "entryPrice": 105.6724,
+    "exitDate": "2026-10-09",
+    "exitPrice": 110.014,
+    "dollarPnl": 20.54
+  },
+  {
+    "ticker": "BPT.L",
+    "entryDate": "2026-10-07",
+    "entryPrice": 4.2682,
+    "exitDate": "2026-10-09",
+    "exitPrice": 4.7011,
+    "dollarPnl": 50.71
+  },
+  {
+    "ticker": "INCH.L",
+    "entryDate": "2026-10-07",
+    "entryPrice": 7.6874,
+    "exitDate": "2026-10-09",
+    "exitPrice": 8.032,
+    "dollarPnl": 22.42
+  }
+]
