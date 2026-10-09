@@ -556,5 +556,13 @@
     "exitDate": "2026-10-02",
     "exitPrice": 10.22,
     "dollarPnl": -14.74
+  },
+  {
+    "ticker": "MAH.AX",
+    "entryDate": "2026-10-02",
+    "entryPrice": 1,
+    "exitDate": "2026-10-09",
+    "exitPrice": 1.11,
+    "dollarPnl": 58.78
   }
 ]
