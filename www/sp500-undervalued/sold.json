@@ -769,5 +769,37 @@
     "exitDate": "2026-10-02",
     "exitPrice": 115.01,
     "dollarPnl": 1.65
+  },
+  {
+    "ticker": "EQT",
+    "entryDate": "2026-09-18",
+    "entryPrice": 50,
+    "exitDate": "2026-10-09",
+    "exitPrice": 52.83,
+    "dollarPnl": 29.32
+  },
+  {
+    "ticker": "EPAM",
+    "entryDate": "2026-09-25",
+    "entryPrice": 108.23,
+    "exitDate": "2026-10-09",
+    "exitPrice": 113.24,
+    "dollarPnl": 25.28
+  },
+  {
+    "ticker": "NFLX",
+    "entryDate": "2026-10-02",
+    "entryPrice": 67.06,
+    "exitDate": "2026-10-09",
+    "exitPrice": 70.3,
+    "dollarPnl": 26.72
+  },
+  {
+    "ticker": "CVX",
+    "entryDate": "2026-09-18",
+    "entryPrice": 209.51,
+    "exitDate": "2026-10-09",
+    "exitPrice": 211.98,
+    "dollarPnl": 14.15
   }
 ]

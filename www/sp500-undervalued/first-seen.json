@@ -248,8 +248,8 @@
     "firstPrice": 22.9
   },
   "HAL": {
-    "firstSeen": "2026-09-04",
-    "firstPrice": 37.07
+    "firstSeen": "2026-10-09",
+    "firstPrice": 32.55
   },
   "ACN": {
     "firstSeen": "2026-08-22",
@@ -352,8 +352,8 @@
     "firstPrice": 374.85
   },
   "ROP": {
-    "firstSeen": "2026-09-25",
-    "firstPrice": 358.56
+    "firstSeen": "2026-10-09",
+    "firstPrice": 364.09
   },
   "EPAM": {
     "firstSeen": "2026-09-25",
@@ -370,5 +370,13 @@
   "NFLX": {
     "firstSeen": "2026-10-02",
     "firstPrice": 67.06
+  },
+  "GIS": {
+    "firstSeen": "2026-10-09",
+    "firstPrice": 32.29
+  },
+  "INCY": {
+    "firstSeen": "2026-10-09",
+    "firstPrice": 112.79
   }
 }
