@@ -1602,17 +1602,32 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     // demand for "<company> saas valuation" sitting at position 28-85 with zero
     // clicks -- isSaas() is a manual allowlist, not the method dispatch above.
     const isSaasTicker = isSaas(t);
+    // Title-experiment subset (2026-10-10): the SaaS variant above shipped the
+    // title fix (26 Aug) and the question-led description fix (18 Sep), but 5
+    // consecutive weekly GSC reads still show 0 clicks sitewide despite several
+    // tickers holding position 5-10 (growth-radar-2026-10-10 dashboard finding).
+    // Hypothesis: the SERP for "<company> saas valuation" is dominated by
+    // investor-narrative content, and a technical "SaaS Valuation" title doesn't
+    // read like a match. Testing a "Fair Value" / method-led framing on 3
+    // tickers first -- widen SAAS_TITLE_EXPERIMENT to the rest of the SaaS
+    // allowlist if CTR moves on these.
+    const SAAS_TITLE_EXPERIMENT = new Set(['TWLO', 'OKTA', 'ADSK']);
+    const isSaasExperiment = SAAS_TITLE_EXPERIMENT.has(t);
     const html = pageShell({
-      title: isSaasTicker
-        ? `${name} (${t}) SaaS Valuation — Is It Undervalued? | KashVector`
-        : `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
+      title: isSaasExperiment
+        ? `${name} (${t}) Fair Value — SaaS DCF With Growth Assumptions | KashVector`
+        : isSaasTicker
+          ? `${name} (${t}) SaaS Valuation — Is It Undervalued? | KashVector`
+          : `${name} (${t}) — Is It Undervalued? | ${METHOD_SHORT[method]} Valuation | KashVector`,
       // Deliberately doesn't reveal Bear/Base/Bull numbers or the verdict --
       // leads with the question and teases the methodology instead, so the
       // search snippet gives a reason to click through rather than already
       // answering it (GSC: 17K impressions/179 clicks, 2026-09-18 CTR audit).
-      description: isSaasTicker
-        ? `Is ${name} (${t}) undervalued? SaaS valuation via ${METHOD_FULL[method]} with Bear, Base & Bull scenarios — adjust every assumption yourself. Free, no sign-up.`
-        : `Is ${name} (${t}) undervalued? ${METHOD_FULL[method]} valuation with Bear, Base & Bull scenarios — adjust every assumption yourself. Free, no sign-up.`,
+      description: isSaasExperiment
+        ? `${name} (${t}) fair value, by the numbers — SaaS DCF with Bear, Base & Bull growth scenarios you can adjust yourself. Free, no sign-up.`
+        : isSaasTicker
+          ? `Is ${name} (${t}) undervalued? SaaS valuation via ${METHOD_FULL[method]} with Bear, Base & Bull scenarios — adjust every assumption yourself. Free, no sign-up.`
+          : `Is ${name} (${t}) undervalued? ${METHOD_FULL[method]} valuation with Bear, Base & Bull scenarios — adjust every assumption yourself. Free, no sign-up.`,
       canonical,
       h1: `${name} (${t})`,
       subtitle: `${METHOD_SHORT[method]} Valuation · ${escapeHtml(sectorLine)}`,
