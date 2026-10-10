@@ -624,6 +624,19 @@
     "updatedAt": "2026-10-03T00:15:56.044Z"
   },
   {
+    "ticker": "HIMS",
+    "slug": "hims",
+    "name": "Hims & Hers Health, Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 45.55067180308196,
+    "price": 30.92,
+    "marginOfSafety": 0.4731782601255485,
+    "marketCap": 7214050816,
+    "updated": "2026-10-10",
+    "updatedAt": "2026-10-10T00:27:11.269Z"
+  },
+  {
     "ticker": "HON",
     "slug": "hon",
     "name": "Honeywell International Inc.",
