@@ -1534,6 +1534,19 @@
     "updatedAt": "2026-10-03T00:31:08.646Z"
   },
   {
+    "ticker": "VEEV",
+    "slug": "veev",
+    "name": "Veeva Systems Inc.",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 212.02101150101834,
+    "price": 296.13,
+    "marginOfSafety": -0.28402724647614785,
+    "marketCap": 47946067968,
+    "updated": "2026-10-10",
+    "updatedAt": "2026-10-10T00:46:37.883Z"
+  },
+  {
     "ticker": "VZ",
     "slug": "vz",
     "name": "Verizon Communications Inc.",
