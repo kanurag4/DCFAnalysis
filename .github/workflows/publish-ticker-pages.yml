@@ -108,12 +108,16 @@ jobs:
         working-directory: kv
         run: node scripts/generate-tickers-sitemap.js
 
+      - name: Regenerate homepage "Latest valuations"
+        working-directory: kv
+        run: node scripts/generate-latest-valuations.js
+
       - name: Assert only expected files changed
         working-directory: kv
         run: |
-          CHANGED=$(git status --porcelain -- www/dcf/stocks www/dcf/style.css www/sitemap-tickers.xml www/sitemap-index.xml)
+          CHANGED=$(git status --porcelain -- www/dcf/stocks www/dcf/style.css www/sitemap-tickers.xml www/sitemap-index.xml www/index.html)
           echo "$CHANGED"
-          UNEXPECTED=$(git status --porcelain | grep -vE '(www/dcf/stocks/|www/dcf/style\.css$|www/sitemap-tickers\.xml$|www/sitemap-index\.xml$)' || true)
+          UNEXPECTED=$(git status --porcelain | grep -vE '(www/dcf/stocks/|www/dcf/style\.css$|www/sitemap-tickers\.xml$|www/sitemap-index\.xml$|www/index\.html$)' || true)
           if [ -n "$UNEXPECTED" ]; then
             echo "::error::Unexpected changes outside the expected paths -- refusing to publish."
             echo "$UNEXPECTED"
@@ -129,7 +133,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add www/dcf/stocks www/dcf/style.css www/sitemap-tickers.xml www/sitemap-index.xml
+          git add www/dcf/stocks www/dcf/style.css www/sitemap-tickers.xml www/sitemap-index.xml www/index.html
           git commit -m "Deploy: ticker pages refresh $(date -u +%Y-%m-%d)"
           git push origin main
 
