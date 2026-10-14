@@ -351,6 +351,19 @@
     "updatedAt": "2026-10-10T00:36:38.036Z"
   },
   {
+    "ticker": "CELH",
+    "slug": "celh",
+    "name": "Celsius Holdings, Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 28.67153112334631,
+    "price": 27.93,
+    "marginOfSafety": 0.026549628476416374,
+    "marketCap": 7067268608,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:01:24.294Z"
+  },
+  {
     "ticker": "COP",
     "slug": "cop",
     "name": "ConocoPhillips",
@@ -375,6 +388,19 @@
     "marketCap": 419608035328,
     "updated": "2026-10-10",
     "updatedAt": "2026-10-10T00:37:04.406Z"
+  },
+  {
+    "ticker": "CPRT",
+    "slug": "cprt",
+    "name": "Copart, Inc.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 21.643130412428984,
+    "price": 26.37,
+    "marginOfSafety": -0.17925178564926114,
+    "marketCap": 24427333632,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:02:26.323Z"
   },
   {
     "ticker": "CRM",
@@ -611,6 +637,19 @@
     "updatedAt": "2026-10-10T00:41:02.701Z"
   },
   {
+    "ticker": "GRAB",
+    "slug": "grab",
+    "name": "Grab Holdings Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 4.358860445439597,
+    "price": 2.98,
+    "marginOfSafety": 0.4627048474629521,
+    "marketCap": 12192079872,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T10:59:55.230Z"
+  },
+  {
     "ticker": "HAL",
     "slug": "hal",
     "name": "Halliburton Company",
@@ -728,6 +767,19 @@
     "updatedAt": "2026-10-10T00:42:48.761Z"
   },
   {
+    "ticker": "JPM",
+    "slug": "jpm",
+    "name": "JPMorgan Chase & Co.",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 179.08140242964203,
+    "price": 331.43,
+    "marginOfSafety": -0.45967051133077264,
+    "marketCap": 881002676224,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:04:28.903Z"
+  },
+  {
     "ticker": "KO",
     "slug": "ko",
     "name": "The Coca-Cola Company",
@@ -752,6 +804,19 @@
     "marketCap": 15269892096,
     "updated": "2026-10-10",
     "updatedAt": "2026-10-10T00:43:15.180Z"
+  },
+  {
+    "ticker": "LEN",
+    "slug": "len",
+    "name": "Lennar Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 40.47401025492801,
+    "price": 74.92,
+    "marginOfSafety": -0.4597702849048584,
+    "marketCap": 17823485952,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:03:59.658Z"
   },
   {
     "ticker": "LLY",
@@ -804,6 +869,19 @@
     "marketCap": 10945555456,
     "updated": "2026-10-10",
     "updatedAt": "2026-10-10T00:44:08.284Z"
+  },
+  {
+    "ticker": "M",
+    "slug": "m",
+    "name": "Macy's, Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 18.681248303223498,
+    "price": 22.74,
+    "marginOfSafety": -0.17848512298929203,
+    "marketCap": 5939156480,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:01:54.872Z"
   },
   {
     "ticker": "MA",
@@ -1066,6 +1144,19 @@
     "updatedAt": "2026-10-10T00:48:33.151Z"
   },
   {
+    "ticker": "NVO",
+    "slug": "nvo",
+    "name": "Novo Nordisk A/S",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 23.08519534495658,
+    "price": 38.06,
+    "marginOfSafety": -0.3934525658182717,
+    "marketCap": 167962984448,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:03:29.267Z"
+  },
+  {
     "ticker": "NXPI",
     "slug": "nxpi",
     "name": "NXP Semiconductors N.V.",
@@ -1235,6 +1326,19 @@
     "updatedAt": "2026-10-10T00:51:29.500Z"
   },
   {
+    "ticker": "PYPL",
+    "slug": "pypl",
+    "name": "PayPal Holdings, Inc.",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 38.369430030710156,
+    "price": 56.17,
+    "marginOfSafety": -0.3169052869732926,
+    "marketCap": 48418537472,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:00:25.242Z"
+  },
+  {
     "ticker": "QCOM",
     "slug": "qcom",
     "name": "QUALCOMM Incorporated",
@@ -1274,6 +1378,19 @@
     "updatedAt": "2026-10-10T00:52:09.102Z"
   },
   {
+    "ticker": "RDDT",
+    "slug": "rddt",
+    "name": "Reddit, Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 60.901481313772905,
+    "price": 155.29,
+    "marginOfSafety": -0.6078209716416195,
+    "marketCap": 29877252096,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:04:58.001Z"
+  },
+  {
     "ticker": "REGN",
     "slug": "regn",
     "name": "Regeneron Pharmaceuticals, Inc.",
@@ -1298,6 +1415,19 @@
     "marketCap": 22121693184,
     "updated": "2026-10-10",
     "updatedAt": "2026-10-10T00:52:35.511Z"
+  },
+  {
+    "ticker": "RSG",
+    "slug": "rsg",
+    "name": "Republic Services, Inc.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 144.878253131789,
+    "price": 219.91,
+    "marginOfSafety": -0.34119297379933156,
+    "marketCap": 67339300864,
+    "updated": "2026-10-14",
+    "updatedAt": "2026-10-14T11:02:56.012Z"
   },
   {
     "ticker": "RTX",
