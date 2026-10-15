@@ -125,13 +125,20 @@
 // values only (neither has a live yield feed): uk 0.0544 raw - 0.0048 = 0.0496, hk 0.0409 raw - 0.0048 = 0.0361 (0.48%
 // = the 0.4772% spread at the same 2dp-of-percent rounding as ind/kor/jpn/cn). The raw yields were NOT re-verified.
 // terminalGrowth still clears both (uk 2.0 vs 4.96, hk 2.0 vs 3.61).
+// All 9 markets refreshed 2026-10-15 against same-day TradingEconomics 10Y yields during a sharp global bond rally (US 10Y
+// 5.34% high on Oct 5 -> 5.09%, AI-sector stress and safe-haven buying): us 4.79%->4.87% (the static fallback only -- the live
+// ^TNX path overrides it), aus 5.42%->5.22%, ind 5.40%->5.64% (the one market that rose: raw G-Sec 7.15%->7.387% since Sept 30,
+// single source), kor 4.01%->3.80%, jpn 2.51%->2.37%, uk 4.96%->4.86%, eu 3.59%->3.39%, hk 3.61%->3.53%, cn 1.12%->1.10%. Spreads
+// unchanged (Jul-2026 Damodaran). Intraday readings: an AU/UK/EU close can sit ~7bp off. terminalGrowth still clears every rate
+// (tightest: hk 2.0 vs 3.53, jpn 1.2 vs 2.37).
+//
 const US_DEFAULT_SPREAD = 0.0022;
 // Raw 10Y Treasury yield (fraction, e.g. 0.0529) -> the dollar risk-free rate valuations use (0.0507). Rounded
 // to 4dp so the double equals the decimal literal (same reason live-rate.js rounds the raw yield).
 function usRiskFreeFromYield(yieldFraction) {
   return Math.round((yieldFraction - US_DEFAULT_SPREAD) * 10000) / 10000;
 }
-const FALLBACK_RF = { us: 0.0479, aus: 0.0542, ind: 0.0540, kor: 0.0401, jpn: 0.0251, uk: 0.0496, eu: 0.0359, hk: 0.0361, cn: 0.0112 };
+const FALLBACK_RF = { us: 0.0487, aus: 0.0522, ind: 0.0564, kor: 0.0380, jpn: 0.0237, uk: 0.0486, eu: 0.0339, hk: 0.0353, cn: 0.0110 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -147,15 +154,15 @@ const FALLBACK_RF = { us: 0.0479, aus: 0.0542, ind: 0.0540, kor: 0.0401, jpn: 0.
 // field also doubles as "does the live path even work" documentation until
 // a replacement is found (see docs/TODO.md's P6).
 const FALLBACK_RF_META = {
-  us:  { asOf: '2026-10-15', source: 'raw ^TNX 5.006% close (Sept 18, Yahoo via the Worker /history endpoint) minus Jul-2026 Damodaran Aa1 default spread 0.22% (applied 2026-10-15; raw yield not re-verified). Live paths subtract the same spread', method: 'spread-adjusted', liveSymbol: '^TNX', liveSymbolWorks: true },
-  aus: { asOf: '2026-10-01', source: 'TradingEconomics, AU 10yr govt bond 5.42% (Oct 1, near the highest since mid-2011; ABC had 5.40% at the ASX close)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: '2026-09-30', source: 'raw G-Sec 7.15% (Sept 30, TradingEconomics) minus Jul-2026 Damodaran spread 1.75% (Baa3, unchanged)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
-  kor: { asOf: '2026-09-30', source: 'raw yield 4.40% (Sept 30, TradingEconomics, eased back further off the selloff peak) minus Jul-2026 Damodaran spread 0.39% (Aa2, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  jpn: { asOf: '2026-09-30', source: 'raw JGB yield 3.07% (Sept 30, TradingEconomics) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: '2026-10-15', source: 'raw gilt yield 5.44% (Oct 1, TradingEconomics, selloff continuing) minus Jul-2026 Damodaran Aa3 default spread 0.48% (applied 2026-10-15, docs/TODO.md P35; raw yield not re-verified)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  eu:  { asOf: '2026-09-30', source: 'raw German bund yield 3.59% (Sept 30, TradingEconomics, continuing the oil-driven global selloff)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  hk:  { asOf: '2026-10-15', source: 'TradingEconomics 4.09% (Oct 1, 2026; OTC interbank quote, single source -- the Aug 12 HKMA 10yr tender at 3.58% is the only independent data point and predates the move) minus Jul-2026 Damodaran Aa3 default spread 0.48% (applied 2026-10-15, docs/TODO.md P35; raw yield not re-verified)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  cn:  { asOf: '2026-09-22', source: 'raw yield 1.68% (Sept 18, unchanged from Sept 1) minus Jul-2026 Damodaran spread 0.56% (A1, refreshed from the Jan-2026 0.60%)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  us:  { asOf: '2026-10-15', source: 'raw ^TNX 5.09% (Oct 15, TradingEconomics; Reuters 5.106%, a three-week low off the 5.34% high of Oct 5) minus Jul-2026 Damodaran Aa1 default spread 0.22%. Live paths subtract the same spread', method: 'spread-adjusted', liveSymbol: '^TNX', liveSymbolWorks: true },
+  aus: { asOf: '2026-10-15', source: 'TradingEconomics, AU 10yr govt bond 5.22% (Oct 15, intraday, eased from 5.32%; single source, no news cross-check found)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  ind: { asOf: '2026-10-15', source: 'raw G-Sec 7.387% (Oct 15, TradingEconomics; single source -- up from 7.15% on Sept 30 while every other market fell, no independent quote found) minus Jul-2026 Damodaran spread 1.75% (Baa3, unchanged)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  kor: { asOf: '2026-10-15', source: 'raw yield 4.19% (Oct 15, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.39% (Aa2, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-10-15', source: 'raw JGB yield 2.93% (Oct 15, TradingEconomics; Reuters also 2.93%, lowest since Sept 10) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-10-15', source: 'raw gilt yield 5.34% (Oct 15, TradingEconomics; single source) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  eu:  { asOf: '2026-10-15', source: 'raw German bund yield 3.39% (Oct 15, TradingEconomics; single source)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: '2026-10-15', source: 'TradingEconomics 4.01% (Oct 15, 2026; OTC interbank quote, single source -- the Aug 12 HKMA 10yr tender at 3.58% is the only independent data point) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  cn:  { asOf: '2026-10-15', source: 'raw yield 1.66% (Oct 15, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
 // Total Equity Risk Premium (rating-based column), Damodaran July 2026 country risk

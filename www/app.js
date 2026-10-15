@@ -211,8 +211,8 @@ let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best
 // MARKET_ERP.us already carries that default risk, docs/TODO.md P31). Starts as the table's value instead of its own
 // hand-typed copy (was 4.8, a stale duplicate of FALLBACK_RF.us), and is replaced when the live rate arrives.
 let liveRfRate    = +(FALLBACK_RF.us * 100).toFixed(2);
-let liveAusRfRate = 5.42;  // updated when Australian 10-yr bond is fetched; 5.42% default -- refreshed 2026-10-01 (TradingEconomics, raw yield 5.42%, was 5.35%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
-let liveIndRfRate = 5.40;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.40% default -- refreshed 2026-09-30, raw G-Sec 7.15% minus the unchanged Jul-2026 Damodaran spread 1.75% (was 5.30%); the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
+let liveAusRfRate = +(FALLBACK_RF.aus * 100).toFixed(2);  // Australian 10-yr (percent). Derived from the table since 2026-10-15 -- it used to be a hand-typed copy that every rate refresh had to remember. Replaced if the live fetch below ever succeeds, but ^GSBG10.AX is 404ing on Yahoo (confirmed live), so this table value is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus.
+let liveIndRfRate = +(FALLBACK_RF.ind * 100).toFixed(2);  // Indian 10-yr, already spread-adjusted (percent). Derived from the table since 2026-10-15 (was a hand-typed copy); the live fetch below (^INBMKG10.NS) is 404ing -- confirmed live -- so this table value is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind.
 // Korea/Japan/UK/Eurozone/Hong Kong/China: no live govt-bond yield ticker exists on
 // Yahoo for any of these (see docs/japan-korea-market-research.md) -- rf/erp come
 // straight from calc/assumptions.js's FALLBACK_RF/MARKET_ERP tables (already loaded on
@@ -416,23 +416,23 @@ function prefillInputs(data) {
     fetchAndSetIndianRfRate();
   } else if (currentMarket === 'kor') {
     setRfBadge('kor', marketRf('kor'));   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP incl. governance-risk premium (7.5%)'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Korea has no live rate source to fetch.
   } else if (currentMarket === 'jpn') {
     setRfBadge('jpn', marketRf('jpn'));   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Japan has no live rate source to fetch.
   } else if (currentMarket === 'uk') {
     setRfBadge('uk', marketRf('uk'));   // fixed estimate — no live source exists, see setRfBadge's 'uk' label
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'UK MRP (near-US developed-market tier)'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'UK MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — UK has no live rate source to fetch.
   } else if (currentMarket === 'eu') {
     setRfBadge('eu', marketRf('eu'));   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (developed-market tier)'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
   } else if (currentMarket === 'hk') {
     setRfBadge('hk', marketRf('hk'));   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP — rougher estimate than other markets, see "About the Hong Kong numbers"'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Hong Kong has no live rate source to fetch.
   } else if (currentMarket === 'cn') {
     setRfBadge('cn', marketRf('cn'));   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
@@ -733,8 +733,8 @@ function koreaInfoBlock() {
   if (currentMarket !== 'kor') return '';
   return `<details class="wacc-franking">
        <summary>About the Korea numbers</summary>
-       <p><strong>Governance risk premium:</strong> Korea's equity risk premium is set to 7.5% (vs 5.5% for the US), partly reflecting a premium institutional investors typically add for Korean equities given historically weaker minority-shareholder protections.</p>
-       <p><strong>Static risk-free rate:</strong> fixed at ~3.9% — Korea's approximate 10-year government bond yield (~4.3%), minus Korea's ~0.42% sovereign default spread (Damodaran convention: the raw bond yield already prices in Korea's own default risk, which the equity risk premium above separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
+       <p><strong>Equity risk premium and governance:</strong> Korea's equity risk premium is 4.8% (Damodaran July 2026, Aa2 rating; 4.4% for the US). Korean equities have historically traded at a governance discount — weaker minority-shareholder protections — that a rating-based premium does not capture, so consider adjusting it upward if you want to reflect that.</p>
+       <p><strong>Static risk-free rate:</strong> fixed at ~3.8% — Korea's approximate 10-year government bond yield (~4.2%), minus Korea's ~0.39% sovereign default spread (Damodaran convention: the raw bond yield already prices in Korea's own default risk, which the equity risk premium above separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
        <p><strong>Lower terminal growth assumption:</strong> 1.75% vs the tool's 2.5% default, reflecting Korea's structurally lower long-run growth expectations.</p>
      </details>`;
 }
@@ -745,7 +745,7 @@ function japanInfoBlock() {
   if (currentMarket !== 'jpn') return '';
   return `<details class="wacc-franking">
        <summary>About the Japan numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~2.2% — Japan's approximate 10-year government bond yield (~2.8%, a 30-year high as the BOJ exits deflation-era policy), minus Japan's ~0.60% sovereign default spread (Damodaran convention: the raw bond yield already prices in Japan's own default risk, which the equity risk premium above separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~2.4% — Japan's approximate 10-year government bond yield (~2.9%, near multi-decade highs as the BOJ exits deflation-era policy), minus Japan's ~0.56% sovereign default spread (Damodaran convention: the raw bond yield already prices in Japan's own default risk, which the equity risk premium above separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate.</p>
        <p><strong>Lower terminal growth assumption:</strong> 1.2% vs the tool's 2.5% default. The old deflation-era convention of 0–0.5% is outdated, but Japan's demographic-constrained long-run growth still warrants a below-default cap.</p>
        <p><strong>Beta floor:</strong> historically low Japanese betas (0.5–0.7) partly reflect deflation-era price stagnation and are likely understated as volatility returns — floored at 0.6.</p>
        <p><strong>Cross-shareholding caveat:</strong> some Japanese companies are unwinding historic cross-shareholdings (keiretsu stakes) under the revised Corporate Governance Code. Sale proceeds can inflate reported cash flow — treat unusually high FCF with care.</p>
@@ -758,7 +758,7 @@ function ukInfoBlock() {
   if (currentMarket !== 'uk') return '';
   return `<details class="wacc-franking">
        <summary>About the UK numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~5.0% — the UK 10-year Gilt yield (~5.4%), minus the UK's ~0.48% sovereign default spread (Damodaran convention: the raw gilt yield already prices in the UK's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Gilt yields, so treat as a point-in-time estimate.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~4.9% — the UK 10-year Gilt yield (~5.3%), minus the UK's ~0.48% sovereign default spread (Damodaran convention: the raw gilt yield already prices in the UK's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Gilt yields, so treat as a point-in-time estimate.</p>
        <p><strong>Equity risk premium:</strong> 4.9% (Damodaran July 2026, Aa3 rating) — a mature, liquid developed market, with the UK's small sovereign default premium included.</p>
        <p><strong>Terminal growth:</strong> 2.0% vs the tool's 2.5% US default, reflecting the UK's somewhat lower long-run nominal growth expectations.</p>
        <p><strong>Currency:</strong> Yahoo quotes UK-listed prices in <em>pence</em> (GBp), not pounds — a price of "650" means £6.50. Displayed values already account for this.</p>
@@ -771,8 +771,8 @@ function euInfoBlock() {
   if (currentMarket !== 'eu') return '';
   return `<details class="wacc-franking">
        <summary>About the eurozone numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~3.2% (an approximate German 10-year Bund yield, used as the eurozone-wide proxy). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Bund yields, so treat as a point-in-time estimate.</p>
-       <p><strong>Equity risk premium:</strong> 5.5%, same tier as the US default.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~3.4% (an approximate German 10-year Bund yield, used as the eurozone-wide proxy). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Bund yields, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 4.2% (Damodaran July 2026 mature-market premium; Germany, the eurozone proxy, is Aaa-rated, so no country premium is added).</p>
        <p><strong>Terminal growth:</strong> 1.8% vs the tool's 2.5% US default, reflecting the eurozone's somewhat lower long-run nominal growth expectations.</p>
        <p><strong>One rate for every eurozone exchange:</strong> Germany, France, Netherlands, Italy, Spain, Belgium, Portugal, Austria, Finland, and Ireland all share this seed — it's a market-wide estimate, not a country-specific one, matching how every other market in this tool gets a single seed regardless of which exchange within it a ticker trades on.</p>
      </details>`;
@@ -784,7 +784,7 @@ function hkInfoBlock() {
   if (currentMarket !== 'hk') return '';
   return `<details class="wacc-franking">
        <summary>About the Hong Kong numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~3.6% — Hong Kong's 10-year Exchange Fund Note yield (~4.1%), minus Hong Kong's ~0.48% sovereign default spread (Damodaran convention: the raw yield already prices in Hong Kong's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~3.5% — Hong Kong's 10-year Exchange Fund Note yield (~4.0%), minus Hong Kong's ~0.48% sovereign default spread (Damodaran convention: the raw yield already prices in Hong Kong's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
        <p><strong>Equity risk premium:</strong> 4.9% (Damodaran July 2026, Aa3 rating — the same bucket as the UK), including Hong Kong's small sovereign default premium. The 10-year yield itself is a thin, single-source quote, so treat the risk-free rate as a rougher estimate than the other markets' — and adjust manually if you have a better source.</p>
        <p><strong>Terminal growth:</strong> 2.0% vs the tool's 2.5% US default, reflecting Hong Kong's slower long-run growth as a mature financial hub.</p>
        <p><strong>Currency:</strong> Yahoo quotes Hong Kong-listed prices in HKD (HK$), which is pegged to the US dollar — displayed values already account for this.</p>
@@ -797,8 +797,8 @@ function chinaInfoBlock() {
   if (currentMarket !== 'cn') return '';
   return `<details class="wacc-franking">
        <summary>About the China numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~1.1% — an approximate China 10-year Govt bond yield (~1.7%), minus China's ~0.60% sovereign default spread (Damodaran convention: the raw bond yield already prices in China's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
-       <p><strong>Equity risk premium:</strong> 5.2% (Damodaran country-risk-adjusted estimate for China), reflecting the lower risk-free rate together with China-specific market and political risk.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~1.1% — an approximate China 10-year Govt bond yield (~1.7%), minus China's ~0.56% sovereign default spread (Damodaran convention: the raw bond yield already prices in China's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 5.1% (Damodaran country-risk-adjusted estimate for China), reflecting the lower risk-free rate together with China-specific market and political risk.</p>
        <p><strong>Terminal growth:</strong> 0.6% — below the 2.5% US-tier default, kept under China's own 1.1% risk-free rate above per Damodaran's stable-growth ceiling (terminal growth can't exceed the risk-free rate proxy for long-run economy growth in perpetuity).</p>
        <p><strong>Currency:</strong> Yahoo quotes Shanghai (.SS) and Shenzhen (.SZ) A-share prices in CNY (renminbi) — displayed values already account for this. A-shares are a distinct market from Hong Kong-listed H-shares (.HK), which use HKD and get their own separate seed above.</p>
      </details>`;
