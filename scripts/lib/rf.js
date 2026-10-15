@@ -23,7 +23,7 @@ const { batchHeaders } = require('./batch-auth.js');
 // assumptions.js's FALLBACK_RF_META has no machine-readable spread field (only a
 // free-text `source` string), and restructuring that is a bigger, separate change than
 // this consolidation's scope.
-const { FALLBACK_RF } = require('../../www/calc/assumptions.js');
+const { FALLBACK_RF, usRiskFreeFromYield } = require('../../www/calc/assumptions.js');
 
 const DEFAULT_FETCH = async (url) => {
   const res = await fetch(url, { headers: batchHeaders() });
@@ -53,7 +53,18 @@ async function fetchRfRate(symbol, fallback, { proxyUrl, fetchImpl = DEFAULT_FET
 // 404ing (confirmed live), so fetchAusRf's fallback is what actually feeds every batch
 // consumer of this function. Same three-copy sync issue as market.js/assumptions.js's
 // FALLBACK_RF/app.js's inline defaults -- see docs/TODO.md P6.
-const fetchUsRf  = (proxyUrl) => fetchRfRate('^TNX',        FALLBACK_RF.us,  { proxyUrl });
+// US: ^TNX is the raw Treasury yield, which already prices the US's own (Aa1) default risk -- the same risk
+// MARKET_ERP.us carries, so using it raw counted it twice (docs/TODO.md P31, found 2026-10-14). Damodaran's
+// "dollar riskfree rate" nets that default spread out; usRiskFreeFromYield does it (US_DEFAULT_SPREAD, 0.22%).
+// Same shape as fetchIndRf below: pass null as the fallback so a failed fetch is distinguishable from a real
+// value, and return the already-net static FALLBACK_RF.us directly instead of subtracting from it twice.
+async function fetchUsRf(proxyUrl, opts = {}) {
+  const raw = await fetchRfRate('^TNX', null, { proxyUrl, ...opts });
+  if (raw == null) return FALLBACK_RF.us;
+  // Round the yield to 2dp of percent first -- exactly what the Worker's /rates and the web tool do -- so every
+  // surface lands on the identical figure.
+  return usRiskFreeFromYield(Math.round(raw * 10000) / 10000);
+}
 const fetchAusRf = (proxyUrl) => fetchRfRate('^GSBG10.AX',  FALLBACK_RF.aus, { proxyUrl });
 
 // India's ^INBMKG10.NS is the raw 10-yr G-Sec yield, which double-counts country risk

@@ -39,9 +39,10 @@ test('Indian ticker uses provided live rf when given (same override mechanism as
 // Refreshed 2026-09-11 (global bond selloff, live ^TNX close 4.944%): rf 0.048->0.0494.
 // Refreshed again 2026-09-18 (live ^TNX close 5.006%): rf 0.0494->0.0501. erp refreshed
 // 2026-09-22 against Damodaran's July 2026 table (mature-market ERP base fell to 4.20%,
-// US carries a small Aa1 default spread on top): 0.055->0.0442.
+// US carries a small Aa1 default spread on top): 0.055->0.0442. rf re-netted 2026-10-15 (docs/TODO.md P31):
+// the raw 0.0501 less that same 0.22% Aa1 default spread = 0.0479, since erp above already carries it.
 test('US ticker (no suffix) gets US defaults', () => {
-  assert.deepStrictEqual(marketParamsFor('AAPL'), { rf: 0.0501, erp: 0.0442, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('AAPL'), { rf: 0.0479, erp: 0.0442, terminalGrowth: 0.025 });
 });
 
 // Corrected 2026-08-15: rf was the raw KTB yield (double-counted Korea's country risk,
@@ -84,20 +85,21 @@ test('Japanese ticker ignores any live rf passed in (no live source exists)', ()
 });
 
 test('.TO (Toronto) does not match the .T Japan branch', () => {
-  assert.deepStrictEqual(marketParamsFor('SHOP.TO'), { rf: 0.0501, erp: 0.0442, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('SHOP.TO'), { rf: 0.0479, erp: 0.0442, terminalGrowth: 0.025 });
 });
 
 // Refreshed 2026-09-11 (global bond selloff -- UK gilt hit a 19-year high): rf 0.0507->0.0530.
 // erp refreshed 2026-09-22 against Damodaran's July 2026 table (UK is Aa3-rated):
 // 0.06->0.0494. Refreshed again 2026-09-30 (TradingEconomics gilt yield 5.38%, selloff
 // continuing): rf 0.0530->0.0538. Refreshed again 2026-10-01 (gilt yield 5.44%): rf
-// 0.0538->0.0544.
+// 0.0538->0.0544. Re-netted 2026-10-15 (docs/TODO.md P35): UK is Aa3, so the 0.0494 erp already carries a
+// 0.48% default spread -- the raw 0.0544 less that spread = 0.0496.
 test('UK (.L) ticker gets fixed Gilt-proxy rf/erp/terminalGrowth, no live override possible', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0544, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0496, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 test('UK (.L) ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0544, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0496, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 // Refreshed 2026-09-11 (global bond selloff -- German bund hit its highest since April
@@ -169,7 +171,7 @@ test('KOSDAQ .KQ reuses the Korea .KS parameters', () => {
 test('Israel .TA, Switzerland .SW, Sweden .ST, Norway .OL, Singapore .SI each resolve to a non-US bucket', () => {
   for (const t of ['ESLT.TA', 'ABBN.SW', 'SAAB-B.ST', 'KOG.OL', 'S63.SI']) {
     const p = marketParamsFor(t, {});
-    assert.ok(p.rf !== 0.0501 || p.erp !== 0.0442, `${t} still hitting the US fallback`);
+    assert.ok(p.rf !== 0.0479 || p.erp !== 0.0442, `${t} still hitting the US fallback`);
   }
 });
 

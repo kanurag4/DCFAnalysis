@@ -207,7 +207,10 @@ if (!isNative) {
 
 let currentData   = null;
 let sectorMarginLookup = {}; // updated by fetchSectorMarginLookup() below, best-effort
-let liveRfRate    = 4.8;   // updated when US 10-yr Treasury is fetched -- 4.8% default, corrected 2026-09-02 (was 4.5%, real ^TNX ~4.76%; the live fetch here works, so this default rarely shows, but see calc/assumptions.js's FALLBACK_RF.us)
+// US risk-free rate (percent): the 10-yr Treasury yield LESS the US default spread (Damodaran's dollar riskfree rate --
+// MARKET_ERP.us already carries that default risk, docs/TODO.md P31). Starts as the table's value instead of its own
+// hand-typed copy (was 4.8, a stale duplicate of FALLBACK_RF.us), and is replaced when the live rate arrives.
+let liveRfRate    = +(FALLBACK_RF.us * 100).toFixed(2);
 let liveAusRfRate = 5.42;  // updated when Australian 10-yr bond is fetched; 5.42% default -- refreshed 2026-10-01 (TradingEconomics, raw yield 5.42%, was 5.35%). The live fetch below (^GSBG10.AX) is currently 404ing on Yahoo -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.aus comment.
 let liveIndRfRate = 5.40;  // updated when Indian 10-yr Govt bond is fetched (spread-adjusted); 5.40% default -- refreshed 2026-09-30, raw G-Sec 7.15% minus the unchanged Jul-2026 Damodaran spread 1.75% (was 5.30%); the live fetch below (^INBMKG10.NS) is currently 404ing -- confirmed live -- so this default is what actually displays; see calc/assumptions.js's FALLBACK_RF.ind comment.
 // Korea/Japan/UK/Eurozone/Hong Kong/China: no live govt-bond yield ticker exists on
@@ -252,6 +255,21 @@ function marketErp(market, staticFallback) {
   const live = nativeLiveRates && nativeLiveRates.MARKET_ERP && nativeLiveRates.MARKET_ERP[market];
   if (live != null) return +(live * 100).toFixed(2);
   return staticFallback != null ? staticFallback : +(MARKET_ERP[market] * 100).toFixed(2);
+}
+// The risk-free rate / ERP (whole percent) the two input boxes show for a market. ONE helper shared by prefillInputs()
+// and resetRfErp(): they used to keep separate hand-typed copies, and the aus/ind/us ERPs there (6.0 / 7.5 / 5.5)
+// stayed on their pre-2026-09-22 values after Damodaran's July refresh while deriveDcfAssumptions() -- which seeds the
+// first valuation from MARKET_ERP -- moved to 4.20 / 6.92 / 4.42. Touching a box (or Reset) then recomputed the discount
+// rate from the stale ERP, silently cutting value 13-15% on US names (docs/TODO.md P36). An unrecognised market ('other')
+// uses the US numbers, exactly as assumptions.js's `FALLBACK_RF[m] ?? FALLBACK_RF.us` does.
+function rfErpForMarket(market) {
+  switch (market) {
+    case 'aus': return { rf: marketRf('aus', liveAusRfRate), erp: marketErp('aus') };
+    case 'ind': return { rf: marketRf('ind', liveIndRfRate), erp: marketErp('ind') };
+    case 'kor': case 'jpn': case 'uk': case 'eu': case 'hk': case 'cn':
+      return { rf: marketRf(market), erp: marketErp(market) };
+    default: return { rf: marketRf('us', liveRfRate), erp: marketErp('us') };
+  }
 }
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
 let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDiscount, read by buildScenarios()
@@ -381,59 +399,46 @@ function prefillInputs(data) {
     }
   }
 
-  // ── Market detection — still drives the RF/ERP input values and the
+  // ── RF/ERP input boxes -- one shared helper with resetRfErp() (see rfErpForMarket). ──
+  const seedRfErp = rfErpForMarket(currentMarket);
+  els.rfInput.value  = seedRfErp.rf;
+  els.erpInput.value = seedRfErp.erp;
+
+  // ── Market detection — still drives the badge/notes and the
   // "About the X numbers" panel, both DOM-only concerns that stay here ──
   if (currentMarket === 'aus') {
-    els.rfInput.value  = marketRf('aus', liveAusRfRate);
-    els.erpInput.value = 6.0;
     setRfBadge('aus', marketRf('aus', liveAusRfRate));   // immediate — async fetch may refine the value
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Australian MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Australian MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     fetchAndSetAustralianRfRate();
   } else if (currentMarket === 'ind') {
-    els.rfInput.value  = marketRf('ind', liveIndRfRate);
-    els.erpInput.value = 7.5;
     setRfBadge('ind', marketRf('ind', liveIndRfRate));   // immediate — async fetch may refine the value
-    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP (7.0–9.0%)'; els.erpMarketNote.hidden = false; }
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Indian MRP incl. country risk (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     fetchAndSetIndianRfRate();
   } else if (currentMarket === 'kor') {
-    els.rfInput.value  = marketRf('kor');
-    els.erpInput.value = marketErp('kor');
     setRfBadge('kor', marketRf('kor'));   // fixed estimate — no live source exists, see setRfBadge's 'kor' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Korean MRP incl. governance-risk premium (7.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Korea has no live rate source to fetch.
   } else if (currentMarket === 'jpn') {
-    els.rfInput.value  = marketRf('jpn');
-    els.erpInput.value = marketErp('jpn');
     setRfBadge('jpn', marketRf('jpn'));   // fixed estimate — no live source exists, see setRfBadge's 'jpn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Japanese MRP (5.5–6.5%)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Japan has no live rate source to fetch.
   } else if (currentMarket === 'uk') {
-    els.rfInput.value  = marketRf('uk');
-    els.erpInput.value = marketErp('uk');
     setRfBadge('uk', marketRf('uk'));   // fixed estimate — no live source exists, see setRfBadge's 'uk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'UK MRP (near-US developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — UK has no live rate source to fetch.
   } else if (currentMarket === 'eu') {
-    els.rfInput.value  = marketRf('eu');
-    els.erpInput.value = marketErp('eu');
     setRfBadge('eu', marketRf('eu'));   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (developed-market tier)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
   } else if (currentMarket === 'hk') {
-    els.rfInput.value  = marketRf('hk');
-    els.erpInput.value = marketErp('hk');
     setRfBadge('hk', marketRf('hk'));   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP — rougher estimate than other markets, see "About the Hong Kong numbers"'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — Hong Kong has no live rate source to fetch.
   } else if (currentMarket === 'cn') {
-    els.rfInput.value  = marketRf('cn');
-    els.erpInput.value = marketErp('cn');
     setRfBadge('cn', marketRf('cn'));   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'China A-share MRP (Damodaran country-risk estimate)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — China has no live rate source to fetch.
   } else {
-    els.rfInput.value  = marketRf('us', liveRfRate);
-    els.erpInput.value = 5.5;
     setRfBadge('us', marketRf('us', liveRfRate));
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
   }
@@ -753,8 +758,8 @@ function ukInfoBlock() {
   if (currentMarket !== 'uk') return '';
   return `<details class="wacc-franking">
        <summary>About the UK numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~5.0% (an approximate UK 10-year Gilt yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Gilt yields, so treat as a point-in-time estimate.</p>
-       <p><strong>Equity risk premium:</strong> 6.0%, near-US tier — a mature, liquid developed market.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~5.0% — the UK 10-year Gilt yield (~5.4%), minus the UK's ~0.48% sovereign default spread (Damodaran convention: the raw gilt yield already prices in the UK's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Gilt yields, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 4.9% (Damodaran July 2026, Aa3 rating) — a mature, liquid developed market, with the UK's small sovereign default premium included.</p>
        <p><strong>Terminal growth:</strong> 2.0% vs the tool's 2.5% US default, reflecting the UK's somewhat lower long-run nominal growth expectations.</p>
        <p><strong>Currency:</strong> Yahoo quotes UK-listed prices in <em>pence</em> (GBp), not pounds — a price of "650" means £6.50. Displayed values already account for this.</p>
      </details>`;
@@ -779,8 +784,8 @@ function hkInfoBlock() {
   if (currentMarket !== 'hk') return '';
   return `<details class="wacc-franking">
        <summary>About the Hong Kong numbers</summary>
-       <p><strong>Risk-free rate:</strong> fixed at ~3.5% (an approximate Hong Kong 10-year Exchange Fund Note yield). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
-       <p><strong>Equity risk premium:</strong> 6.0%, developed-market tier (same as UK/Japan). <strong>Unlike every other market seed in this tool, this figure is not backed by a clean, current Damodaran country-risk number specifically for Hong Kong</strong> — treat it as a rougher estimate than the other market ERPs, and adjust manually if you have a better source.</p>
+       <p><strong>Risk-free rate:</strong> fixed at ~3.6% — Hong Kong's 10-year Exchange Fund Note yield (~4.1%), minus Hong Kong's ~0.48% sovereign default spread (Damodaran convention: the raw yield already prices in Hong Kong's own default risk, which the equity risk premium below separately accounts for — using both would double-count it). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically, so treat as a point-in-time estimate.</p>
+       <p><strong>Equity risk premium:</strong> 4.9% (Damodaran July 2026, Aa3 rating — the same bucket as the UK), including Hong Kong's small sovereign default premium. The 10-year yield itself is a thin, single-source quote, so treat the risk-free rate as a rougher estimate than the other markets' — and adjust manually if you have a better source.</p>
        <p><strong>Terminal growth:</strong> 2.0% vs the tool's 2.5% US default, reflecting Hong Kong's slower long-run growth as a mature financial hub.</p>
        <p><strong>Currency:</strong> Yahoo quotes Hong Kong-listed prices in HKD (HK$), which is pegged to the US dollar — displayed values already account for this.</p>
      </details>`;
@@ -1717,34 +1722,9 @@ function parseMoney(el) {
 // update the scenario discount inputs and breakdown panel, then re-render.
 // Called whenever the user edits the RF or ERP fields.
 function resetRfErp() {
-  if (currentMarket === 'aus') {
-    els.rfInput.value  = marketRf('aus', liveAusRfRate);
-    els.erpInput.value = 6.0;
-  } else if (currentMarket === 'ind') {
-    els.rfInput.value  = marketRf('ind', liveIndRfRate);
-    els.erpInput.value = 7.5;
-  } else if (currentMarket === 'kor') {
-    els.rfInput.value  = marketRf('kor');
-    els.erpInput.value = marketErp('kor');
-  } else if (currentMarket === 'jpn') {
-    els.rfInput.value  = marketRf('jpn');
-    els.erpInput.value = marketErp('jpn');
-  } else if (currentMarket === 'uk') {
-    els.rfInput.value  = marketRf('uk');
-    els.erpInput.value = marketErp('uk');
-  } else if (currentMarket === 'eu') {
-    els.rfInput.value  = marketRf('eu');
-    els.erpInput.value = marketErp('eu');
-  } else if (currentMarket === 'hk') {
-    els.rfInput.value  = marketRf('hk');
-    els.erpInput.value = marketErp('hk');
-  } else if (currentMarket === 'cn') {
-    els.rfInput.value  = marketRf('cn');
-    els.erpInput.value = marketErp('cn');
-  } else {
-    els.rfInput.value  = marketRf('us', liveRfRate);
-    els.erpInput.value = 5.5;
-  }
+  const seed = rfErpForMarket(currentMarket);
+  els.rfInput.value  = seed.rf;
+  els.erpInput.value = seed.erp;
   recomputeDiscount();
   if (currentData) renderAll(currentData);
 }
@@ -1813,11 +1793,11 @@ function setRfBadge(market, rate) {
     ind: { badge: '● live IND', note: 'Indian 10-yr Govt Bond, minus India’s sovereign default spread', title: 'Indian 10-yr Govt Bond yield, adjusted for India’s sovereign default spread (Damodaran convention)' },
     kor: { badge: '○ fixed',    note: 'Fixed estimate — no live Korean bond-yield source available', title: 'Korea 10-yr Govt Bond yield (fixed estimate, not live)' },
     jpn: { badge: '○ fixed',    note: 'Fixed estimate — no live Japanese bond-yield source available', title: 'Japan 10-yr Govt Bond (JGB) yield (fixed estimate, not live)' },
-    uk:  { badge: '○ fixed',    note: 'Fixed estimate — no live UK Gilt-yield source available', title: 'UK 10-yr Gilt yield (fixed estimate, not live)' },
+    uk:  { badge: '○ fixed',    note: 'Fixed estimate — UK 10-yr Gilt yield minus the UK default spread; no live source available', title: 'UK 10-yr Gilt yield, adjusted for the UK sovereign default spread (Damodaran convention; fixed estimate, not live)' },
     eu:  { badge: '○ fixed',    note: 'Fixed estimate — no live eurozone Bund-yield source available', title: 'Eurozone 10-yr Bund yield (fixed estimate, not live)' },
-    hk:  { badge: '○ fixed',    note: 'Fixed estimate — no live Hong Kong bond-yield source available', title: 'Hong Kong 10-yr Exchange Fund Note yield (fixed estimate, not live)' },
+    hk:  { badge: '○ fixed',    note: 'Fixed estimate — Hong Kong 10-yr yield minus the HK default spread; no live source available', title: 'Hong Kong 10-yr Exchange Fund Note yield, adjusted for the Hong Kong sovereign default spread (Damodaran convention; fixed estimate, not live)' },
     cn:  { badge: '○ fixed',    note: 'Fixed estimate — no live China Govt bond-yield source available', title: 'China 10-yr Govt Bond yield (fixed estimate, not live)' },
-    us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX)',           title: 'Live US 10-yr Treasury yield' },
+    us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX), minus the US default spread', title: 'Live US 10-yr Treasury yield, adjusted for the US sovereign default spread (Damodaran convention)' },
   };
   const lbl = labels[market] || labels.us;
   badge.textContent = lbl.badge;
@@ -1872,15 +1852,17 @@ async function fetchNativeLiveRates() {
   }
 }
 
-// The shared live US 10Y from worker-watchlist's /rates (live.us, a fraction) as a percent rounded to 2dp, or
-// null on any failure / implausible value. This is the single value /evaluate/, the native app and the Watchlist
-// backend also use, so every surface values a US ticker on the same rate (docs/risk-free-rates.md, "Live US
-// rate"). Bounds mirror the Worker's own check (0.5%-15%) as defence in depth.
+// The shared live US risk-free rate from worker-watchlist's /rates (live.us.rf, a fraction: the 10Y yield less the
+// US default spread; live.us.value stays the raw yield) as a percent rounded to 2dp, or null on any failure /
+// implausible value. This is the single value /evaluate/, the native app and the Watchlist backend also use, so
+// every surface values a US ticker on the same rate (docs/risk-free-rates.md, "Live US rate"). An older Worker
+// without `.rf` returns null here (never fall back to the raw `.value`). Bounds mirror the Worker's own check
+// (0.5%-15%) as defence in depth.
 async function fetchSharedUsRatePct() {
   try {
     const resp = await fetch(WORKER_RATES_URL);
     if (!resp.ok) return null;
-    const v = (await resp.json())?.live?.us?.value;
+    const v = (await resp.json())?.live?.us?.rf;
     return (typeof v === 'number' && isFinite(v) && v >= 0.005 && v <= 0.15) ? +(v * 100).toFixed(2) : null;
   } catch (_) {
     return null;
@@ -1901,10 +1883,16 @@ async function fetchAndSetRiskFreeRate() {
       if (!resp.ok) return;
       const body = await resp.json();
       const raw = Array.isArray(body) && body.length ? body[body.length - 1]?.close : null; // ascending by date -- last entry is most recent
-      if (raw != null && isFinite(raw) && raw > 0 && raw < 20) pct = +raw.toFixed(2);
+      // Raw yield -> risk-free rate: less the US default spread, like every other path (usRiskFreeFromYield, assumptions.js).
+      if (raw != null && isFinite(raw) && raw > 0 && raw < 20) pct = +(usRiskFreeFromYield(+raw.toFixed(2) / 100) * 100).toFixed(2);
     }
     if (pct != null) {
       liveRfRate = pct;
+      // deriveDcfAssumptions() seeds the first Bear/Base/Bull from FALLBACK_RF.us, not from the box -- so without this the
+      // box showed the live rate while the valuation used the static one (docs/TODO.md P36). /evaluate/ does the same
+      // (it overlays live.us.rf onto FALLBACK_RF.us). Rounded to the decimal literal; a ticker analysed before this fetch
+      // resolves keeps the static seed, as before.
+      FALLBACK_RF.us = Math.round(pct * 100) / 10000;
       if (currentMarket === 'us' || currentMarket === 'other') {
         els.rfInput.value = liveRfRate;
         setRfBadge('us', liveRfRate);

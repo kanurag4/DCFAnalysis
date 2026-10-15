@@ -269,7 +269,7 @@
             </label>
             <label>
               <span class="label-row"><span class="kv-term" data-term="equity-risk-premium" tabindex="0" role="button" aria-expanded="false">Equity risk premium %</span>
-                <span class="tip" data-tip="Default 5.5% is the long-run US historical premium (Damodaran). Use 4–5% for stable developed markets, 7–9% for emerging markets.">?</span>
+                <span class="tip" data-tip="Defaults to Damodaran's current estimate for the stock's market (about 4.4% for the US, 6.9% for India). Use roughly 4–6% for stable developed markets, 6–9% for emerging markets.">?</span>
               </span>
               <input type="number" id="erp-input" step="0.1" min="1" max="15" value="5.5">
               <span id="erp-market-note" class="rf-note" hidden></span>
@@ -441,7 +441,7 @@
       </details>
       <details class="faq-item">
         <summary>What growth rate and equity risk premium should I use?</summary>
-        <p>The tool seeds growth from the company's own multi-year fundamentals — primarily how much of its earnings it reinvests and the return it earns on that reinvestment (retention × ROE), cross-checked against its multi-year revenue and free cash flow trend and capped at 15%. Cyclical companies (miners, oil &amp; gas, autos, and similar) skip that cross-check and use the reinvestment-and-return figure alone, since a short cash-flow history is too easily distorted by wherever a commodity cycle happens to sit when the data was pulled. You should still sanity-check the result — no company grows indefinitely, and terminal growth should never exceed long-run GDP (~2–3%). The equity risk premium (the extra return investors demand for holding stocks over bonds) defaults to 5.5%, the long-run US historical figure from Professor Aswath Damodaran's data. Use 4–6% for stable developed markets and 7–9% for emerging markets like India. A 1% change in this input can move the valuation by 15–25%, so it matters.</p>
+        <p>The tool seeds growth from the company's own multi-year fundamentals — primarily how much of its earnings it reinvests and the return it earns on that reinvestment (retention × ROE), cross-checked against its multi-year revenue and free cash flow trend and capped at 15%. Cyclical companies (miners, oil &amp; gas, autos, and similar) skip that cross-check and use the reinvestment-and-return figure alone, since a short cash-flow history is too easily distorted by wherever a commodity cycle happens to sit when the data was pulled. You should still sanity-check the result — no company grows indefinitely, and terminal growth should never exceed long-run GDP (~2–3%). The equity risk premium (the extra return investors demand for holding stocks over bonds) defaults to Professor Aswath Damodaran's current estimate for the stock's market (about 4.4% for the US and 6.9% for India). Use roughly 4–6% for stable developed markets and 6–9% for emerging markets like India. A 1% change in this input can move the valuation by 15–25%, so it matters.</p>
       </details>
       <details class="faq-item">
         <summary>How accurate is this? What are the limitations?</summary>

@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
-const { fetchRfRate, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchEurFxRates } = require('../scripts/lib/rf.js');
+const { fetchRfRate, fetchUsRf, fetchIndRf, fetchIndexPrice, fetchFxRate, fetchEurFxRates } = require('../scripts/lib/rf.js');
+const { FALLBACK_RF } = require('../www/calc/assumptions.js');
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `expected ~${b}, got ${a}`);
 // Minimal raw quoteSummary body with one summaryDetail field populated -- still used by
@@ -37,6 +38,32 @@ test('falls back when out of the plausible band', async () => {
 
 test('falls back when the fetch throws', async () => {
   near(await fetchRfRate('^TNX', 0.045, { proxyUrl: 'x', fetchImpl: async () => { throw new Error('boom'); } }), 0.045);
+});
+
+// fetchUsRf -- docs/TODO.md P31 (2026-10-15): ^TNX is the raw Treasury yield, which already prices the US's own
+// (Aa1) default risk, the same risk MARKET_ERP.us carries -- so using it raw counted it twice. fetchUsRf returns
+// Damodaran's "dollar riskfree rate": the yield less the 0.22% US default spread. This is the batch's actual live
+// US rf source (ticker pages, the 6 screens, the ETF radar). The SAME table is asserted against the Worker's /rates
+// path in StockAnalysis/tests/us-rf-default-spread.test.js -- keep the two identical.
+const YIELD_TO_RF = [
+  [5.29, 0.0507], // Damodaran's own worked example (Musings on Markets, 2026-10-08)
+  [5.09, 0.0487],
+  [5.27, 0.0505],
+  [5.0, 0.0478],
+  [4.944, 0.0472],
+  [4.75, 0.0453],
+];
+test('fetchUsRf returns the ^TNX yield less the US default spread (same table as the Worker path)', async () => {
+  for (const [closePct, expected] of YIELD_TO_RF) {
+    const r = await fetchUsRf('x', { fetchImpl: async () => history(closePct) });
+    assert.strictEqual(r, expected, `${closePct}%`); // exact: the decimal literal, no float noise
+  }
+});
+
+test('fetchUsRf falls back to the already-net static default when the live fetch fails -- never subtracts the spread from it a second time', async () => {
+  assert.strictEqual(await fetchUsRf('x', { fetchImpl: async () => ({}) }), FALLBACK_RF.us);
+  assert.strictEqual(await fetchUsRf('x', { fetchImpl: async () => { throw new Error('boom'); } }), FALLBACK_RF.us);
+  assert.strictEqual(await fetchUsRf('x', { fetchImpl: async () => history(99) }), FALLBACK_RF.us); // out of the plausible band
 });
 
 // fetchIndRf — corrected 2026-08-15: subtracts India's Damodaran default spread from
