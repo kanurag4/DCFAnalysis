@@ -715,6 +715,19 @@
     "updatedAt": "2026-10-10T00:41:55.826Z"
   },
   {
+    "ticker": "HSY",
+    "slug": "hsy",
+    "name": "The Hershey Company",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 267.79257529103654,
+    "price": 164.25,
+    "marginOfSafety": 0.630396196596874,
+    "marketCap": 33002039296,
+    "updated": "2026-10-15",
+    "updatedAt": "2026-10-15T10:24:49.814Z"
+  },
+  {
     "ticker": "IBM",
     "slug": "ibm",
     "name": "International Business Machines Corporation",
@@ -1415,6 +1428,19 @@
     "marketCap": 22121693184,
     "updated": "2026-10-10",
     "updatedAt": "2026-10-10T00:52:35.511Z"
+  },
+  {
+    "ticker": "ROP",
+    "slug": "rop",
+    "name": "Roper Technologies, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 538.9617711609791,
+    "price": 372.69,
+    "marginOfSafety": 0.44613960975872463,
+    "marketCap": 36859367424,
+    "updated": "2026-10-15",
+    "updatedAt": "2026-10-15T10:25:15.230Z"
   },
   {
     "ticker": "RSG",

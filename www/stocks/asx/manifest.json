@@ -351,6 +351,19 @@
     "updatedAt": "2026-10-10T00:12:42.147Z"
   },
   {
+    "ticker": "CWY.AX",
+    "slug": "cwy-ax",
+    "name": "Cleanaway Waste Management Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 1.1711209852415767,
+    "price": 2.63,
+    "marginOfSafety": -0.5547068497180316,
+    "marketCap": 5897705472,
+    "updated": "2026-10-15",
+    "updatedAt": "2026-10-15T10:22:07.840Z"
+  },
+  {
     "ticker": "DMP.AX",
     "slug": "dmp-ax",
     "name": "Domino's Pizza Enterprises Limited",

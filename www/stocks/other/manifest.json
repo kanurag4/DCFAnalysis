@@ -286,6 +286,19 @@
     "updatedAt": "2026-10-10T01:11:29.899Z"
   },
   {
+    "ticker": "0941.HK",
+    "slug": "0941-hk",
+    "name": "China Mobile Limited",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 143.3215862723183,
+    "price": 81,
+    "marginOfSafety": 0.7694022996582508,
+    "marketCap": 1756379348992,
+    "updated": "2026-10-15",
+    "updatedAt": "2026-10-15T10:22:59.616Z"
+  },
+  {
     "ticker": "112610.KS",
     "slug": "112610-ks",
     "name": "CS Wind Corporation",
