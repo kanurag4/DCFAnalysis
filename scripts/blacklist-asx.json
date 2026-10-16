@@ -23,5 +23,15 @@
     "ticker": "HDN.AX",
     "reason": "Excluded via admin console review, run 31852662305",
     "addedAt": "2026-08-15"
+  },
+  {
+    "ticker": "ARF.AX",
+    "reason": "Excluded via admin console review, run 38877096335",
+    "addedAt": "2026-10-16"
+  },
+  {
+    "ticker": "QRI.AX",
+    "reason": "Excluded via admin console review, run 38877096335",
+    "addedAt": "2026-10-16"
   }
 ]
