@@ -564,5 +564,61 @@
     "exitDate": "2026-10-09",
     "exitPrice": 1.11,
     "dollarPnl": 58.78
+  },
+  {
+    "ticker": "LNW.AX",
+    "entryDate": "2026-10-09",
+    "entryPrice": 116,
+    "exitDate": "2026-10-16",
+    "exitPrice": 120.16,
+    "dollarPnl": 19.34
+  },
+  {
+    "ticker": "RRL.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 8.48,
+    "exitDate": "2026-10-16",
+    "exitPrice": 7.1,
+    "dollarPnl": -7.49
+  },
+  {
+    "ticker": "BFL.AX",
+    "entryDate": "2026-06-02",
+    "entryPrice": 8.36,
+    "exitDate": "2026-10-16",
+    "exitPrice": 7.88,
+    "dollarPnl": 0
+  },
+  {
+    "ticker": "MAD.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 6.15,
+    "exitDate": "2026-10-16",
+    "exitPrice": 6.44,
+    "dollarPnl": 0
+  },
+  {
+    "ticker": "MGR.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 1.83,
+    "exitDate": "2026-10-16",
+    "exitPrice": 1.82,
+    "dollarPnl": -5.86
+  },
+  {
+    "ticker": "DOW.AX",
+    "entryDate": "2026-09-25",
+    "entryPrice": 6.71,
+    "exitDate": "2026-10-16",
+    "exitPrice": 6.84,
+    "dollarPnl": -3.14
+  },
+  {
+    "ticker": "COL.AX",
+    "entryDate": "2026-10-02",
+    "entryPrice": 23.03,
+    "exitDate": "2026-10-16",
+    "exitPrice": 23.9,
+    "dollarPnl": 13.65
   }
 ]
