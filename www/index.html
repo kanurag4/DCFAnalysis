@@ -32,15 +32,150 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "What is DCF analysis?", "acceptedAnswer": { "@type": "Answer", "text": "Discounted Cash Flow analysis estimates what a business is worth today based on the cash it is expected to generate in the future. Future cash flows are discounted back to present value because money received later is worth less than money received now." } },
-      { "@type": "Question", "name": "What discount rate should I use?", "acceptedAnswer": { "@type": "Answer", "text": "This tool calculates WACC automatically from Yahoo Finance data. As a guide: stable large-caps 7-9%, growth companies 10-12%, higher-risk businesses 12-15%." } },
-      { "@type": "Question", "name": "Why does terminal value matter so much?", "acceptedAnswer": { "@type": "Answer", "text": "Terminal value often represents 60-80% of the total DCF result, making the terminal growth rate assumption extremely important. When the tool flags terminal value over 70%, treat the result with extra caution." } },
-      { "@type": "Question", "name": "What is the margin of safety?", "acceptedAnswer": { "@type": "Answer", "text": "The margin of safety is the gap between a stock's estimated intrinsic value and its current market price. A positive margin means the stock trades below what the DCF says it's worth. Value investors insist on a margin of safety so that even if their assumptions are somewhat wrong, they don't overpay." } },
-      { "@type": "Question", "name": "Why do banks and insurers use a different valuation model instead of DCF?", "acceptedAnswer": { "@type": "Answer", "text": "Free cash flow is structurally meaningless for financial companies: bank deposits are a raw material not a funding source, and insurer cash flow is dominated by investment and reserve movements. The tool automatically switches banks, insurers, and NBFCs to the Dividend Discount Model (DDM), valuing them from dividends discounted at the cost of equity -- or, for ones that retain most of their earnings instead of paying them out, the Excess Return Model, which values book value plus the present value of (ROE minus cost of equity) times book value each year." } },
-      { "@type": "Question", "name": "Are regulated utilities valued differently too?", "acceptedAnswer": { "@type": "Answer", "text": "Yes -- regulated electric, gas, and water utilities earn a return set by their regulator on a fixed asset base rather than growing free cash flow, the same book-value-driven shape banks have. The tool automatically routes them to the same Excess Return Model banks use, valuing equity as book value per share plus the present value of (ROE minus cost of equity) times book value each year, using trailing reported ROE as a proxy for the regulator's allowed return. Merchant, unregulated power generators stay on standard DCF, since their cash flow is genuinely free-cash-flow-driven." } },
-      { "@type": "Question", "name": "How does the tool value international stocks like ASX or Indian shares?", "acceptedAnswer": { "@type": "Answer", "text": "Add the market suffix (.AX for Australia, .NS or .BO for India, .L for the UK). The tool uses the correct local 10-year government bond yield as the risk-free rate, a market-appropriate equity risk premium, and a sector WACC reference range. It also floors beta for non-US stocks, since Yahoo measures beta against the S&P 500 which understates international risk." } },
-      { "@type": "Question", "name": "What if a company has negative free cash flow?", "acceptedAnswer": { "@type": "Answer", "text": "For growth companies with negative or missing FCF, the tool lets you normalise free cash flow from revenue multiplied by a target FCF margin (your estimate of the margin at maturity), and estimates when FCF should turn positive. This is the standard approach for valuing pre-profit growth companies." } },
-      { "@type": "Question", "name": "Is this free and does it store my data?", "acceptedAnswer": { "@type": "Answer", "text": "Completely free, no sign-up required. No personal data is collected or stored. Only the ticker symbol is sent externally to Yahoo Finance via a Cloudflare Worker proxy. Recently viewed tickers are saved locally in your browser only." } }
+      {
+        "@type": "Question",
+        "name": "What is DCF analysis?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Discounted Cash Flow analysis estimates what a business is worth today based on the cash it is expected to generate in the future. Future cash flows are \"discounted\" back to present value because money received later is worth less than money received now. The result is an intrinsic value — what the stock should theoretically be worth if the market were perfectly rational."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What discount rate (WACC) should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This tool calculates WACC automatically from Yahoo Finance data using the CAPM formula for cost of equity (Risk-free rate + Beta × Equity risk premium) and interest expense for cost of debt. As a rough guide: stable large-caps sit around 7–9%, growth companies 10–12%, and higher-risk businesses 12–15%. You can override the calculated value directly in the input fields."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does terminal value matter so much?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Terminal value (the value beyond the forecast period) often represents 60–80% of the total DCF result. This makes the terminal growth rate assumption extremely important — a 0.5% change in terminal growth can shift intrinsic value by 10–20%. When the tool flags \"terminal value >70%\", treat the result with extra caution and test different terminal growth assumptions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does the tool show a warning for insurance and financial companies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Insurance and bank free cash flows include large investment portfolio movements and reserve changes that aren't true \"owner earnings.\" Raw DCF for these companies routinely overstates value significantly. The tool prompts you to enter a normalised FCF — a conservative estimate of sustainable cash earnings — and also shows P/E, P/B, and ROE as more reliable valuation cross-checks for this sector."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What do the Bear, Base, and Bull scenarios mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rather than producing a single false-precision number, the tool runs three cases so you can see a range. Base uses the seeded growth and discount-rate assumptions. Bear applies lower growth and a higher discount rate (more conservative). Bull applies higher growth and a lower discount rate (more optimistic). If the current price sits below even the Bear intrinsic value, that's a strong signal; if it's above the Bull value, the stock looks expensive on these assumptions. You can edit every input and recalculate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the margin of safety?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The margin of safety is the gap between a stock's estimated intrinsic value and its current market price, expressed as a percentage. A positive margin means the stock trades below what the DCF says it's worth; a negative margin means it trades above. Value investors like Benjamin Graham and Warren Buffett insist on buying with a margin of safety so that even if their assumptions are somewhat wrong, they don't overpay. The tool flags each scenario as Undervalued, Fairly Valued, or Overvalued based on this gap."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do banks and insurers use a different model (DDM or Excess Return)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Traditional FCF-based DCF is structurally broken for financial companies. For banks, \"debt\" is mostly customer deposits — a raw material, not a funding source — so there's no clean free cash flow and WACC can't be derived in the usual way. For insurers, cash flow is dominated by investment-portfolio movements and reserve changes, not owner earnings. So the tool automatically switches banks, insurers, and NBFCs to one of two dividend/earnings-based models instead — see the next question for how it picks between them. It also shows banking-specific metrics: P/B, P/E, ROE, and dividend yield."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Excess Return Model, and when does the tool use it instead of DDM?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Dividend Discount Model only sees the dividend a company actually pays out. For a bank or NBFC that retains most of its earnings and reinvests them at a high return on equity — common among fast-growing lenders — that understates value, since DDM never credits the reinvested portion. The Excess Return Model fixes this by valuing equity as today's book value per share plus the present value of each year's \"excess return\": (ROE − Cost of Equity) × Book Value. It has no terminal value — value creation is scoped to the explicit forecast years only, since assuming a company keeps earning more than its cost of equity forever is a stronger assumption than this model is built to make. The tool switches to it automatically whenever a bank/insurer/NBFC's actual dividend payout is well below what its ROE and growth could sustainably support; otherwise it stays on DDM."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why are regulated utilities valued with the Excess Return Model too?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Regulated electric, gas, and water utilities don't grow value by growing free cash flow — a regulator sets how much they're allowed to earn on their asset base (their \"rate base\"), so value tracks book equity plus whatever spread they earn above their cost of equity, the same shape banks have. The tool automatically routes regulated utilities (Yahoo's \"Utilities - Regulated Electric/Gas/Water/Diversified\" tags) to the same Excess Return Model banks use — see the previous question for the formula. Yahoo has no field for a regulator's actually-allowed ROE, so the tool uses the company's trailing reported ROE as a proxy; this is stated on the tool itself, not hidden. Merchant, unregulated generators (Yahoo's \"Independent Power Producers\" tag) are not included — with no rate-base regulation, their cash flow is genuinely FCF-driven, so they stay on standard DCF."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the tool handle international (ASX, India, UK) stocks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Add the market suffix to the ticker — .AX for Australia, .NS/.BO for India, .L for the UK — or tick the ASX / NSE box. The tool then uses the correct local 10-year government bond yield as the risk-free rate (US ~4.5%, Australia ~4.8%, India ~7.0%), a market-appropriate equity risk premium, and a sector WACC reference range for that market. Currencies are handled automatically, including the UK's pence-vs-pounds quirk. International betas are also floored (see below)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is beta, and why does the tool \"floor\" it for non-US stocks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Beta measures how much a stock moves relative to the overall market — it scales the equity risk premium in the CAPM cost-of-equity formula. Yahoo Finance computes beta against the S&P 500. For US stocks that's correct, but for Australian or Indian stocks it understates risk, because those markets don't move in lockstep with the S&P 500 — producing artificially low betas (e.g. an ASX insurer showing 0.17). The tool applies a minimum beta floor (0.5 for ASX and most international, 0.6 for India) when seeding the discount rate, and flags when it has done so. You can always override it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are franking credits and how do they affect Australian valuations?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Australia uses a dividend imputation system: companies pass on the corporate tax they've already paid as \"franking credits\" attached to dividends, which shareholders can use to reduce their own tax. In a professional DCF this is captured by a variable called Gamma (γ), which the ACCC values at 0.4–0.5. Including it effectively lowers the company's tax rate and therefore its WACC by roughly 0.3–0.8%. For ASX stocks the tool shows an explanation of this, but stays on the standard post-tax WACC by default — the conservative choice most retail investors make."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if a company has negative or no free cash flow?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fast-growing companies often reinvest everything and show negative FCF, which a naïve DCF can't value. The tool lets you normalise FCF from revenue × a target margin — your estimate of the FCF margin the business will earn at maturity (e.g. 15% for software, 8% for retail). It seeds this from the reported profit margin and estimates roughly when FCF should turn positive given your revenue growth. This is Damodaran's preferred approach for pre-profit growth companies. The result is clearly labelled as revenue-normalised."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does \"net debt exceeds firm value\" mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For some capital-heavy companies (large conglomerates reinvesting aggressively, or firms carrying huge debt loads), the DCF firm value comes out lower than the company's net debt, leaving negative equity. Rather than show a nonsensical negative share price, the tool tells you plainly that the equity is worth zero on a DCF basis with the current assumptions — meaning the market is pricing the stock on future growth or asset value that a DCF on today's cash flow can't justify. Try a higher growth rate, or sanity-check that the cash flow isn't distorted by one-off items."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What growth rate and equity risk premium should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The tool seeds growth from the company's own multi-year fundamentals — primarily how much of its earnings it reinvests and the return it earns on that reinvestment (retention × ROE), cross-checked against its multi-year revenue and free cash flow trend and capped at 15%. Cyclical companies (miners, oil & gas, autos, and similar) skip that cross-check and use the reinvestment-and-return figure alone, since a short cash-flow history is too easily distorted by wherever a commodity cycle happens to sit when the data was pulled. You should still sanity-check the result — no company grows indefinitely, and terminal growth should never exceed long-run GDP (~2–3%). The equity risk premium (the extra return investors demand for holding stocks over bonds) defaults to Professor Aswath Damodaran's current estimate for the stock's market (about 4.4% for the US and 6.9% for India). Use roughly 4–6% for stable developed markets and 6–9% for emerging markets like India. A 1% change in this input can move the valuation by 15–25%, so it matters."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How accurate is this? What are the limitations?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A DCF is only as good as its assumptions — small changes in growth or discount rate produce large swings in output, which is exactly why this tool shows three scenarios instead of one number. It works best for mature, stable, cash-generative businesses. Banks, insurers, REITs, airlines, and regulated utilities are automatically switched to a model built for their economics instead of plain DCF (DDM or Excess Return, FFO/AFFO, EV/EBITDA, and Excess Return respectively — see the FAQs above). It's still less reliable for cyclical commodities (volatile earnings) and conglomerates priced on future optionality. Treat the output as one input into your research, not a verdict. This tool is not financial advice — always do your own research and consult a licensed adviser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which markets and exchanges are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Any ticker Yahoo Finance covers — US (no suffix), Australia (.AX), India NSE (.NS) and BSE (.BO), UK (.L), Germany (.DE), Hong Kong (.HK), and more. US, Australian, and Indian stocks get the full market-specific treatment (local risk-free rate, equity risk premium, and sector WACC ranges). Other markets work too, with a sensible default discount rate you can adjust."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this free? Does it store my data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Completely free, no sign-up required. No personal data is collected or stored, and nothing runs on a server you log into — all the calculation happens in your browser. The only data sent externally is the ticker symbol you enter, which is forwarded to Yahoo Finance via a Cloudflare Worker proxy to retrieve the financial data. Your recently viewed tickers are saved locally in your own browser for convenience and never leave your device."
+        }
+      }
     ]
   }
   </script>
