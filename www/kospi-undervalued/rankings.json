@@ -1,16 +1,16 @@
 {
-  "asAt": "2026-10-09",
+  "asAt": "2026-10-16",
   "universe": "KOSPI 200",
   "summary": {
     "tickers": 200,
     "evaluated": 200,
-    "qualified": 18,
-    "shown": 18,
+    "qualified": 20,
+    "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 0,
       "unvaluable": 103,
-      "overvalued": 42,
+      "overvalued": 40,
       "marginOverCap": 34,
       "distressZone": 2,
       "proxyFcf": 1
@@ -23,18 +23,18 @@
       "name": "Nongshim Co., Ltd.",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 733989.77,
-      "snapshotPrice": 397500,
-      "marginOfSafety": 0.8465,
-      "wacc": 0.0664,
-      "terminalValuePct": 79.8,
+      "intrinsic": 756550.64,
+      "snapshotPrice": 410000,
+      "marginOfSafety": 0.8452,
+      "wacc": 0.0645,
+      "terminalValuePct": 80.5,
       "trailingPE": null,
-      "marketCap": 2319089664000,
+      "marketCap": 2392017076224,
       "operatingMargin": 0.062,
-      "analystTarget": 513312.5,
+      "analystTarget": 515187.5,
       "currency": "KRW",
       "altmanZ": {
-        "score": 3.78,
+        "score": 3.82,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -59,18 +59,18 @@
       "name": "ORION Corp.",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 185406.97,
-      "snapshotPrice": 104200,
-      "marginOfSafety": 0.7793,
-      "wacc": 0.0678,
-      "terminalValuePct": 77.9,
+      "intrinsic": 192094.22,
+      "snapshotPrice": 108500,
+      "marginOfSafety": 0.7705,
+      "wacc": 0.0657,
+      "terminalValuePct": 78.7,
       "trailingPE": null,
-      "marketCap": 4118899589120,
+      "marketCap": 4288873496576,
       "operatingMargin": 0.1484,
-      "analystTarget": 164133.33,
+      "analystTarget": 162133.33,
       "currency": "KRW",
       "altmanZ": {
-        "score": 5.79,
+        "score": 5.94,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -91,22 +91,59 @@
     },
     {
       "rank": 3,
+      "ticker": "064350.KS",
+      "name": "Hyundai Rotem Company",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 168079.4,
+      "snapshotPrice": 96900,
+      "marginOfSafety": 0.7346,
+      "wacc": 0.117,
+      "terminalValuePct": 63.7,
+      "trailingPE": null,
+      "marketCap": 10575888252928,
+      "operatingMargin": 0.1447,
+      "analystTarget": 254052.62,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 2.39,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.03,
+        "n": 237,
+        "band": "none"
+      },
+      "chaebolGroup": "Hyundai Motor Group"
+    },
+    {
+      "rank": 4,
       "ticker": "002840.KS",
       "name": "Miwon Commercial Co., Ltd.",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 221000.49,
-      "snapshotPrice": 140600,
-      "marginOfSafety": 0.5718,
-      "wacc": 0.0689,
-      "terminalValuePct": 81.5,
+      "intrinsic": 230663.66,
+      "snapshotPrice": 139000,
+      "marginOfSafety": 0.6595,
+      "wacc": 0.0668,
+      "terminalValuePct": 82.2,
       "trailingPE": null,
-      "marketCap": 627156451328,
+      "marketCap": 620019515392,
       "operatingMargin": 0.1562,
       "analystTarget": null,
       "currency": "KRW",
       "altmanZ": {
-        "score": 7.79,
+        "score": 7.73,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -120,133 +157,24 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.06,
-        "n": 237,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 4,
-      "ticker": "064350.KS",
-      "name": "Hyundai Rotem Company",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 164888.26,
-      "snapshotPrice": 105200,
-      "marginOfSafety": 0.5674,
-      "wacc": 0.1192,
-      "terminalValuePct": 63.1,
-      "trailingPE": null,
-      "marketCap": 11481769836544,
-      "operatingMargin": 0.1447,
-      "analystTarget": 269578.94,
-      "currency": "KRW",
-      "altmanZ": {
-        "score": 2.47,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": 0,
-        "n": 237,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.02,
-        "n": 237,
-        "band": "none"
-      },
-      "chaebolGroup": "Hyundai Motor Group"
-    },
-    {
-      "rank": 5,
-      "ticker": "268280.KS",
-      "name": "Miwon Specialty Chemical Co., Ltd.",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 202148.74,
-      "snapshotPrice": 129200,
-      "marginOfSafety": 0.5646,
-      "wacc": 0.0852,
-      "terminalValuePct": 75.3,
-      "trailingPE": null,
-      "marketCap": 619430412288,
-      "operatingMargin": 0.2279,
-      "analystTarget": null,
-      "currency": "KRW",
-      "altmanZ": {
-        "score": 6.43,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": 0,
-        "n": 237,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.04,
-        "n": 237,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 6,
-      "ticker": "030000.KS",
-      "name": "Cheil Worldwide Inc.",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 29085.18,
-      "snapshotPrice": 18820,
-      "marginOfSafety": 0.5454,
-      "wacc": 0.064,
-      "terminalValuePct": 80.1,
-      "trailingPE": null,
-      "marketCap": 1906065670144,
-      "operatingMargin": 0.0862,
-      "analystTarget": 23254.54,
-      "currency": "KRW",
-      "altmanZ": {
-        "score": 3.23,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
         "r": -0.07,
         "n": 237,
         "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.04,
-        "n": 237,
-        "band": "none"
       }
     },
     {
-      "rank": 7,
+      "rank": 5,
       "ticker": "017800.KS",
       "name": "Hyundai Elevator Co., Ltd",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 107897.39,
-      "snapshotPrice": 69900,
-      "marginOfSafety": 0.5436,
-      "wacc": 0.069,
-      "terminalValuePct": 79.2,
+      "intrinsic": 112903.13,
+      "snapshotPrice": 69300,
+      "marginOfSafety": 0.6292,
+      "wacc": 0.0669,
+      "terminalValuePct": 80,
       "trailingPE": null,
-      "marketCap": 2523743911936,
+      "marketCap": 2502080856064,
       "operatingMargin": 0.122,
       "analystTarget": 120000,
       "currency": "KRW",
@@ -260,7 +188,7 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0.03,
+        "r": 0.04,
         "n": 237,
         "band": "none"
       },
@@ -272,23 +200,59 @@
       "chaebolGroup": "Hyundai Group"
     },
     {
-      "rank": 8,
+      "rank": 6,
+      "ticker": "268280.KS",
+      "name": "Miwon Specialty Chemical Co., Ltd.",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 208162.48,
+      "snapshotPrice": 129600,
+      "marginOfSafety": 0.6062,
+      "wacc": 0.0831,
+      "terminalValuePct": 76,
+      "trailingPE": null,
+      "marketCap": 621348126720,
+      "operatingMargin": 0.2279,
+      "analystTarget": null,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 6.44,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.03,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 7,
       "ticker": "064400.KS",
       "name": "LG CNS Co., Ltd.",
       "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 101218.78,
-      "snapshotPrice": 67500,
-      "marginOfSafety": 0.4995,
-      "wacc": 0.0839,
-      "terminalValuePct": 75,
+      "intrinsic": 104394.43,
+      "snapshotPrice": 65200,
+      "marginOfSafety": 0.6011,
+      "wacc": 0.0817,
+      "terminalValuePct": 75.7,
       "trailingPE": null,
-      "marketCap": 6539801788416,
+      "marketCap": 6316964184064,
       "operatingMargin": 0.0841,
       "analystTarget": 99153.84,
       "currency": "KRW",
       "altmanZ": {
-        "score": 4.24,
+        "score": 4.19,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -297,7 +261,7 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.18,
+        "r": 0.19,
         "n": 237,
         "band": "low"
       },
@@ -309,23 +273,59 @@
       "chaebolGroup": "LG Group"
     },
     {
+      "rank": 8,
+      "ticker": "030000.KS",
+      "name": "Cheil Worldwide Inc.",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 30101.68,
+      "snapshotPrice": 19490,
+      "marginOfSafety": 0.5445,
+      "wacc": 0.0621,
+      "terminalValuePct": 80.8,
+      "trailingPE": null,
+      "marketCap": 1973922430976,
+      "operatingMargin": 0.0862,
+      "analystTarget": 23254.54,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 3.25,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.08,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.05,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
       "rank": 9,
       "ticker": "012330.KS",
       "name": "Hyundai Mobis Co.,Ltd",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 523642.97,
-      "snapshotPrice": 359000,
-      "marginOfSafety": 0.4586,
-      "wacc": 0.0986,
-      "terminalValuePct": 70.3,
+      "intrinsic": 535791.12,
+      "snapshotPrice": 352500,
+      "marginOfSafety": 0.52,
+      "wacc": 0.0964,
+      "terminalValuePct": 71,
       "trailingPE": null,
-      "marketCap": 31759139864576,
+      "marketCap": 31184113369088,
       "operatingMargin": 0.0597,
-      "analystTarget": 669500,
+      "analystTarget": 641500,
       "currency": "KRW",
       "altmanZ": {
-        "score": 3.12,
+        "score": 3.1,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -339,7 +339,7 @@
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.09,
+        "r": 0.1,
         "n": 237,
         "band": "low"
       },
@@ -347,94 +347,22 @@
     },
     {
       "rank": 10,
-      "ticker": "035250.KS",
-      "name": "Kangwon Land, Inc.",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 20397.97,
-      "snapshotPrice": 14190,
-      "marginOfSafety": 0.4375,
-      "wacc": 0.0683,
-      "terminalValuePct": 77.7,
-      "trailingPE": null,
-      "marketCap": 2812370223104,
-      "operatingMargin": 0.1267,
-      "analystTarget": 19046.67,
-      "currency": "KRW",
-      "altmanZ": {
-        "score": 4.13,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": -0.14,
-        "n": 237,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.1,
-        "n": 237,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 11,
-      "ticker": "021240.KS",
-      "name": "COWAY Co., Ltd.",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 135149.86,
-      "snapshotPrice": 101400,
-      "marginOfSafety": 0.3328,
-      "wacc": 0.0609,
-      "terminalValuePct": 83.1,
-      "trailingPE": null,
-      "marketCap": 7111071760384,
-      "operatingMargin": 0.1756,
-      "analystTarget": 127636.37,
-      "currency": "KRW",
-      "altmanZ": {
-        "score": 3.04,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 4,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": -0.07,
-        "n": 237,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.08,
-        "n": 237,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 12,
       "ticker": "329180.KS",
       "name": "HD Hyundai Heavy Industries Co., Ltd.",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 506643.47,
-      "snapshotPrice": 384000,
-      "marginOfSafety": 0.3194,
-      "wacc": 0.0906,
-      "terminalValuePct": 73,
+      "intrinsic": 521079.92,
+      "snapshotPrice": 351500,
+      "marginOfSafety": 0.4824,
+      "wacc": 0.0884,
+      "terminalValuePct": 73.7,
       "trailingPE": null,
-      "marketCap": 40294187794432,
+      "marketCap": 36883870515200,
       "operatingMargin": 0.1642,
-      "analystTarget": 796652.2,
+      "analystTarget": 784043.5,
       "currency": "KRW",
       "altmanZ": {
-        "score": 2.48,
+        "score": 2.36,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -455,23 +383,23 @@
       "chaebolGroup": "Hyundai Heavy Industries Group"
     },
     {
-      "rank": 13,
+      "rank": 11,
       "ticker": "204320.KS",
       "name": "HL Mando Corporation",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 56032.93,
-      "snapshotPrice": 44450,
-      "marginOfSafety": 0.2606,
-      "wacc": 0.0655,
-      "terminalValuePct": 83.1,
+      "intrinsic": 60690.44,
+      "snapshotPrice": 40950,
+      "marginOfSafety": 0.4821,
+      "wacc": 0.0631,
+      "terminalValuePct": 83.8,
       "trailingPE": null,
-      "marketCap": 2087244005376,
+      "marketCap": 1922894004224,
       "operatingMargin": 0.0429,
-      "analystTarget": 68269.23,
+      "analystTarget": 67423.08,
       "currency": "KRW",
       "altmanZ": {
-        "score": 2.15,
+        "score": 2.13,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -485,43 +413,115 @@
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.14,
+        "r": 0.15,
         "n": 237,
         "band": "low"
       }
     },
     {
-      "rank": 14,
-      "ticker": "012750.KS",
-      "name": "S-1 Corporation",
-      "sector": "Industrials",
+      "rank": 12,
+      "ticker": "035250.KS",
+      "name": "Kangwon Land, Inc.",
+      "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 105632.95,
-      "snapshotPrice": 84200,
-      "marginOfSafety": 0.2545,
-      "wacc": 0.0683,
-      "terminalValuePct": 79.6,
+      "intrinsic": 20639.39,
+      "snapshotPrice": 14260,
+      "marginOfSafety": 0.4474,
+      "wacc": 0.0663,
+      "terminalValuePct": 78.5,
       "trailingPE": null,
-      "marketCap": 2846822236160,
-      "operatingMargin": 0.089,
-      "analystTarget": 91375,
+      "marketCap": 2826243670016,
+      "operatingMargin": 0.1267,
+      "analystTarget": 18846.67,
       "currency": "KRW",
       "altmanZ": {
-        "score": 5.41,
+        "score": 4.14,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 6,
         "maxScore": 9,
-        "trend": "Improving"
+        "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": -0.13,
+        "r": -0.15,
         "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
+        "r": -0.11,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 13,
+      "ticker": "021240.KS",
+      "name": "COWAY Co., Ltd.",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 141388.3,
+      "snapshotPrice": 107800,
+      "marginOfSafety": 0.3116,
+      "wacc": 0.0594,
+      "terminalValuePct": 83.7,
+      "trailingPE": null,
+      "marketCap": 7559896891392,
+      "operatingMargin": 0.1756,
+      "analystTarget": 129454.55,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 3.12,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.08,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.09,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 14,
+      "ticker": "014820.KS",
+      "name": "Dongwon Systems Corporation",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 28108.19,
+      "snapshotPrice": 21700,
+      "marginOfSafety": 0.2953,
+      "wacc": 0.0632,
+      "terminalValuePct": 79.7,
+      "trailingPE": null,
+      "marketCap": 634841989120,
+      "operatingMargin": 0.078,
+      "analystTarget": null,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 2.1,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
         "r": -0.07,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.04,
         "n": 237,
         "band": "none"
       }
@@ -532,18 +532,18 @@
       "name": "Lotte Chilsung Beverage Co., Ltd.",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 117362.46,
-      "snapshotPrice": 95300,
-      "marginOfSafety": 0.2315,
-      "wacc": 0.0681,
-      "terminalValuePct": 78.5,
+      "intrinsic": 127031.14,
+      "snapshotPrice": 98300,
+      "marginOfSafety": 0.2923,
+      "wacc": 0.0663,
+      "terminalValuePct": 79.2,
       "trailingPE": null,
-      "marketCap": 958164697088,
+      "marketCap": 988327247872,
       "operatingMargin": 0.0502,
       "analystTarget": 146400,
       "currency": "KRW",
       "altmanZ": {
-        "score": 1.91,
+        "score": 1.92,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -552,7 +552,7 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.08,
+        "r": -0.09,
         "n": 237,
         "band": "none"
       },
@@ -565,22 +565,58 @@
     },
     {
       "rank": 16,
+      "ticker": "483650.KS",
+      "name": "d'Alba Global Co., Ltd.",
+      "sector": "Consumer Defensive",
+      "method": "DCF",
+      "intrinsic": 217357.58,
+      "snapshotPrice": 171900,
+      "marginOfSafety": 0.2644,
+      "wacc": 0.086,
+      "terminalValuePct": 76.9,
+      "trailingPE": null,
+      "marketCap": 2129119150080,
+      "operatingMargin": 0.2528,
+      "analystTarget": 301538.47,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 27.27,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.07,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.01,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 17,
       "ticker": "051900.KS",
       "name": "LG H&H Co., Ltd.",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 329702.76,
-      "snapshotPrice": 269500,
-      "marginOfSafety": 0.2234,
-      "wacc": 0.0723,
-      "terminalValuePct": 76.4,
+      "intrinsic": 340062.27,
+      "snapshotPrice": 274500,
+      "marginOfSafety": 0.2388,
+      "wacc": 0.0702,
+      "terminalValuePct": 77.1,
       "trailingPE": null,
-      "marketCap": 4515753361408,
+      "marketCap": 4599534059520,
       "operatingMargin": 0.062,
       "analystTarget": 285952.38,
       "currency": "KRW",
       "altmanZ": {
-        "score": 4.52,
+        "score": 4.56,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -601,75 +637,112 @@
       "chaebolGroup": "LG Group"
     },
     {
-      "rank": 17,
-      "ticker": "483650.KS",
-      "name": "d'Alba Global Co., Ltd.",
-      "sector": "Consumer Defensive",
+      "rank": 18,
+      "ticker": "012750.KS",
+      "name": "S-1 Corporation",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 211046.39,
-      "snapshotPrice": 175000,
-      "marginOfSafety": 0.206,
-      "wacc": 0.0881,
-      "terminalValuePct": 76.2,
+      "intrinsic": 108977.01,
+      "snapshotPrice": 97500,
+      "marginOfSafety": 0.1177,
+      "wacc": 0.0663,
+      "terminalValuePct": 80.3,
       "trailingPE": null,
-      "marketCap": 2167515119616,
-      "operatingMargin": 0.2528,
-      "analystTarget": 303846.16,
+      "marketCap": 3296498286592,
+      "operatingMargin": 0.089,
+      "analystTarget": 107500,
       "currency": "KRW",
       "altmanZ": {
-        "score": 27.68,
+        "score": 5.81,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 6,
+        "score": 7,
         "maxScore": 9,
-        "trend": "Stable"
+        "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.07,
+        "r": -0.16,
         "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.01,
+        "r": -0.1,
         "n": 237,
         "band": "none"
       }
     },
     {
-      "rank": 18,
-      "ticker": "014820.KS",
-      "name": "Dongwon Systems Corporation",
-      "sector": "Consumer Cyclical",
+      "rank": 19,
+      "ticker": "011780.KS",
+      "name": "Kumho Petro Chemical Co.,Ltd",
+      "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 26455.02,
-      "snapshotPrice": 22350,
-      "marginOfSafety": 0.1837,
-      "wacc": 0.0653,
-      "terminalValuePct": 78.9,
+      "intrinsic": 117508.59,
+      "snapshotPrice": 113500,
+      "marginOfSafety": 0.0353,
+      "wacc": 0.0768,
+      "terminalValuePct": 77.1,
       "trailingPE": null,
-      "marketCap": 653857980416,
-      "operatingMargin": 0.078,
-      "analystTarget": null,
+      "marketCap": 2883162472448,
+      "operatingMargin": 0.1495,
+      "analystTarget": 166266.67,
       "currency": "KRW",
       "altmanZ": {
-        "score": 2.11,
+        "score": 2.84,
         "zone": "grey"
       },
       "piotroskiF": {
         "score": 6,
         "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": 0.08,
+        "n": 237,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.09,
+        "n": 237,
+        "band": "low"
+      },
+      "chaebolGroup": "Kumho Asiana Group"
+    },
+    {
+      "rank": 20,
+      "ticker": "036570.KS",
+      "name": "NC Corporation",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 207526.51,
+      "snapshotPrice": 207000,
+      "marginOfSafety": 0.0025,
+      "wacc": 0.0813,
+      "terminalValuePct": 73,
+      "trailingPE": null,
+      "marketCap": 4030802165760,
+      "operatingMargin": 0.2257,
+      "analystTarget": 346391.3,
+      "currency": "KRW",
+      "altmanZ": {
+        "score": 4.51,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.07,
+        "r": 0.12,
         "n": 237,
-        "band": "none"
+        "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": -0.04,
+        "r": 0.17,
         "n": 237,
-        "band": "none"
+        "band": "low"
       }
     }
   ]
