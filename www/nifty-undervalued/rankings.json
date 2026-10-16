@@ -1,49 +1,56 @@
 {
-  "asAt": "2026-10-09",
+  "asAt": "2026-10-16",
   "universe": "NIFTY 500",
   "summary": {
     "tickers": 501,
     "evaluated": 498,
-    "qualified": 24,
-    "shown": 20,
+    "qualified": 19,
+    "shown": 19,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 3,
-      "unvaluable": 155,
-      "overvalued": 294,
-      "marginOverCap": 15,
-      "distressZone": 2,
+      "unvaluable": 147,
+      "overvalued": 307,
+      "marginOverCap": 14,
+      "distressZone": 3,
       "proxyFcf": 8
     }
   },
   "rows": [
     {
       "rank": 1,
-      "ticker": "GICRE.NS",
-      "name": "General Insurance Corporation of India",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 553.4,
-      "snapshotPrice": 312.6,
-      "marginOfSafety": 0.7703,
-      "wacc": 0.0955,
-      "terminalValuePct": null,
-      "trailingPE": 6.2,
-      "marketCap": 548425465856,
-      "operatingMargin": 0.151,
-      "analystTarget": 449.67,
+      "ticker": "IOC.NS",
+      "name": "Indian Oil Corporation Limited",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 260.03,
+      "snapshotPrice": 130.38,
+      "marginOfSafety": 0.9944,
+      "wacc": 0.0866,
+      "terminalValuePct": 77,
+      "trailingPE": 5.3,
+      "marketCap": 1841127096320,
+      "operatingMargin": -0.0013,
+      "analystTarget": 158.84,
       "currency": "INR",
-      "altmanZ": null,
-      "piotroskiF": null,
+      "altmanZ": {
+        "score": 2.22,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
       "aiCorrelation": {
-        "r": 0.05,
+        "r": -0.02,
         "n": 237,
-        "band": "low"
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.1,
+        "r": 0,
         "n": 237,
-        "band": "low"
+        "band": "none"
       }
     },
     {
@@ -52,42 +59,71 @@
       "name": "Power Finance Corporation Limited",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 577.74,
-      "snapshotPrice": 327.8,
-      "marginOfSafety": 0.7625,
-      "wacc": 0.0979,
+      "intrinsic": 572.75,
+      "snapshotPrice": 333.25,
+      "marginOfSafety": 0.7187,
+      "wacc": 0.1003,
       "terminalValuePct": null,
       "trailingPE": 4.2,
-      "marketCap": 1081773260800,
+      "marketCap": 1099758829568,
       "operatingMargin": 0.8553,
       "analystTarget": 464.64,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.02,
-        "n": 238,
+        "r": 0,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.06,
-        "n": 238,
+        "r": 0.05,
+        "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 3,
+      "ticker": "LICHSGFIN.NS",
+      "name": "LIC Housing Finance Limited",
+      "sector": "Financial Services",
+      "method": "ExcessReturn",
+      "intrinsic": 883.15,
+      "snapshotPrice": 521,
+      "marginOfSafety": 0.6951,
+      "wacc": 0.0979,
+      "terminalValuePct": null,
+      "trailingPE": 5,
+      "marketCap": 286582800384,
+      "operatingMargin": 0.8244,
+      "analystTarget": 588.24,
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.05,
+        "n": 237,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.08,
+        "n": 237,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 4,
       "ticker": "BANKINDIA.NS",
       "name": "Bank of India",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 226.2,
-      "snapshotPrice": 134.46,
-      "marginOfSafety": 0.6823,
-      "wacc": 0.1052,
+      "intrinsic": 224.05,
+      "snapshotPrice": 132.36,
+      "marginOfSafety": 0.6927,
+      "wacc": 0.1076,
       "terminalValuePct": null,
-      "trailingPE": 5.2,
-      "marketCap": 612151721984,
+      "trailingPE": 5.1,
+      "marketCap": 602591068160,
       "operatingMargin": 0.4854,
       "analystTarget": 149.75,
       "currency": "INR",
@@ -95,295 +131,259 @@
       "piotroskiF": null,
       "aiCorrelation": {
         "r": -0.02,
-        "n": 238,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.03,
-        "n": 238,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 4,
-      "ticker": "CENTRALBK.NS",
-      "name": "Central Bank of India",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 48.86,
-      "snapshotPrice": 30.1,
-      "marginOfSafety": 0.6233,
-      "wacc": 0.0955,
-      "terminalValuePct": null,
-      "trailingPE": 6,
-      "marketCap": 272447176704,
-      "operatingMargin": 0.3967,
-      "analystTarget": null,
-      "currency": "INR",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": 0.08,
-        "n": 238,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.11,
-        "n": 238,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 5,
-      "ticker": "LICHSGFIN.NS",
-      "name": "LIC Housing Finance Limited",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 891.71,
-      "snapshotPrice": 551.65,
-      "marginOfSafety": 0.6164,
-      "wacc": 0.0955,
-      "terminalValuePct": null,
-      "trailingPE": 5.3,
-      "marketCap": 303442264064,
-      "operatingMargin": 0.8244,
-      "analystTarget": 588.6,
-      "currency": "INR",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": 0.04,
         "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.08,
+        "r": 0.03,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 5,
+      "ticker": "GICRE.NS",
+      "name": "General Insurance Corporation of India",
+      "sector": "Financial Services",
+      "method": "ExcessReturn",
+      "intrinsic": 548.3,
+      "snapshotPrice": 327.55,
+      "marginOfSafety": 0.674,
+      "wacc": 0.0979,
+      "terminalValuePct": null,
+      "trailingPE": 6.5,
+      "marketCap": 574653726720,
+      "operatingMargin": 0.151,
+      "analystTarget": 449.67,
+      "currency": "INR",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.02,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.07,
         "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 6,
-      "ticker": "BANKBARODA.NS",
-      "name": "Bank of Baroda Limited",
+      "ticker": "CENTRALBK.NS",
+      "name": "Central Bank of India",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 348.07,
-      "snapshotPrice": 235.8,
-      "marginOfSafety": 0.4761,
-      "wacc": 0.0955,
+      "intrinsic": 48.4,
+      "snapshotPrice": 30.88,
+      "marginOfSafety": 0.5674,
+      "wacc": 0.0979,
       "terminalValuePct": null,
-      "trailingPE": 6.7,
-      "marketCap": 1219407249408,
-      "operatingMargin": 0.4554,
-      "analystTarget": 288.24,
+      "trailingPE": 6.1,
+      "marketCap": 279507271680,
+      "operatingMargin": 0.3967,
+      "analystTarget": null,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.04,
-        "n": 238,
-        "band": "none"
+        "r": 0.06,
+        "n": 237,
+        "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.08,
-        "n": 238,
+        "r": 0.09,
+        "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 7,
-      "ticker": "APOLLOTYRE.NS",
-      "name": "Apollo Tyres Limited",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 590.49,
-      "snapshotPrice": 400.05,
-      "marginOfSafety": 0.476,
-      "wacc": 0.0896,
-      "terminalValuePct": 75.3,
-      "trailingPE": 14.8,
-      "marketCap": 253064151040,
-      "operatingMargin": 0.0645,
-      "analystTarget": 495.13,
+      "ticker": "BANKBARODA.NS",
+      "name": "Bank of Baroda Limited",
+      "sector": "Financial Services",
+      "method": "ExcessReturn",
+      "intrinsic": 344.95,
+      "snapshotPrice": 230.4,
+      "marginOfSafety": 0.4972,
+      "wacc": 0.0979,
+      "terminalValuePct": null,
+      "trailingPE": 6.6,
+      "marketCap": 1191481835520,
+      "operatingMargin": 0.4554,
+      "analystTarget": 286.76,
       "currency": "INR",
-      "altmanZ": {
-        "score": 3.08,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
+      "altmanZ": null,
+      "piotroskiF": null,
       "aiCorrelation": {
-        "r": -0.02,
+        "r": 0.04,
         "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.01,
+        "r": 0.08,
         "n": 237,
-        "band": "none"
+        "band": "low"
       }
     },
     {
       "rank": 8,
-      "ticker": "RECLTD.NS",
-      "name": "REC Limited",
+      "ticker": "CANBK.NS",
+      "name": "Canara Bank",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 435.72,
-      "snapshotPrice": 300,
-      "marginOfSafety": 0.4524,
-      "wacc": 0.0955,
+      "intrinsic": 173.02,
+      "snapshotPrice": 118.29,
+      "marginOfSafety": 0.4627,
+      "wacc": 0.0979,
       "terminalValuePct": null,
-      "trailingPE": 4.9,
-      "marketCap": null,
-      "operatingMargin": 0.9685,
-      "analystTarget": 406.23,
+      "trailingPE": 5.3,
+      "marketCap": 1072967385088,
+      "operatingMargin": 0.4655,
+      "analystTarget": 149.29,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
         "r": 0.02,
-        "n": 238,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.05,
-        "n": 238,
+        "r": 0.07,
+        "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 9,
-      "ticker": "HINDZINC.NS",
-      "name": "Hindustan Zinc Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 786.77,
-      "snapshotPrice": 543.5,
-      "marginOfSafety": 0.4476,
-      "wacc": 0.0985,
-      "terminalValuePct": 75.1,
-      "trailingPE": 13.5,
-      "marketCap": 2296460869632,
-      "operatingMargin": 0.5471,
-      "analystTarget": 645.93,
-      "currency": "INR",
-      "altmanZ": {
-        "score": 9.91,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0.18,
-        "n": 238,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.18,
-        "n": 238,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 10,
       "ticker": "PNB.NS",
       "name": "Punjab National Bank",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 167.58,
-      "snapshotPrice": 116.98,
-      "marginOfSafety": 0.4325,
-      "wacc": 0.0955,
+      "intrinsic": 165.99,
+      "snapshotPrice": 116.3,
+      "marginOfSafety": 0.4272,
+      "wacc": 0.0979,
       "terminalValuePct": null,
       "trailingPE": 6.1,
-      "marketCap": 1344444432384,
+      "marketCap": 1336629264384,
       "operatingMargin": 0.4798,
       "analystTarget": 121.89,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.04,
-        "n": 238,
+        "r": 0.03,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
         "r": 0.09,
-        "n": 238,
+        "n": 237,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 10,
+      "ticker": "HINDZINC.NS",
+      "name": "Hindustan Zinc Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 760.94,
+      "snapshotPrice": 540,
+      "marginOfSafety": 0.4092,
+      "wacc": 0.1009,
+      "terminalValuePct": 74.4,
+      "trailingPE": 13.4,
+      "marketCap": 2281672278016,
+      "operatingMargin": 0.5471,
+      "analystTarget": 645.93,
+      "currency": "INR",
+      "altmanZ": {
+        "score": 9.86,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": 0.18,
+        "n": 237,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.19,
+        "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 11,
-      "ticker": "JINDALSAW.NS",
-      "name": "Jindal Saw Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 384.63,
-      "snapshotPrice": 269.6,
-      "marginOfSafety": 0.4267,
-      "wacc": 0.0873,
-      "terminalValuePct": 77.4,
-      "trailingPE": 26.4,
-      "marketCap": 171902664704,
-      "operatingMargin": 0.0523,
-      "analystTarget": 360,
-      "currency": "INR",
-      "altmanZ": {
-        "score": 2.84,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 5,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": 0.07,
-        "n": 237,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.07,
-        "n": 237,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 12,
-      "ticker": "CANBK.NS",
-      "name": "Canara Bank",
+      "ticker": "RECLTD.NS",
+      "name": "REC Limited",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 170.39,
-      "snapshotPrice": 119.59,
-      "marginOfSafety": 0.4248,
-      "wacc": 0.0955,
+      "intrinsic": 432.08,
+      "snapshotPrice": 307.8,
+      "marginOfSafety": 0.4038,
+      "wacc": 0.0979,
       "terminalValuePct": null,
-      "trailingPE": 5.5,
-      "marketCap": 1084759146496,
-      "operatingMargin": 0.4414,
-      "analystTarget": 149.29,
+      "trailingPE": 5.1,
+      "marketCap": 810506321920,
+      "operatingMargin": 0.9685,
+      "analystTarget": 406.23,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.03,
-        "n": 238,
+        "r": 0.01,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.07,
-        "n": 238,
-        "band": "low"
+        "r": 0.04,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "APOLLOTYRE.NS",
+      "name": "Apollo Tyres Limited",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 565.35,
+      "snapshotPrice": 408.85,
+      "marginOfSafety": 0.3828,
+      "wacc": 0.0921,
+      "terminalValuePct": 74.5,
+      "trailingPE": 15.1,
+      "marketCap": 258630877184,
+      "operatingMargin": 0.0645,
+      "analystTarget": 495.13,
+      "currency": "INR",
+      "altmanZ": {
+        "score": 3.11,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.01,
+        "n": 237,
+        "band": "none"
       }
     },
     {
@@ -392,26 +392,26 @@
       "name": "Jammu and Kashmir Bank Limited",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 184.18,
-      "snapshotPrice": 138.23,
-      "marginOfSafety": 0.3324,
-      "wacc": 0.0955,
+      "intrinsic": 182.58,
+      "snapshotPrice": 134.33,
+      "marginOfSafety": 0.3592,
+      "wacc": 0.0979,
       "terminalValuePct": null,
-      "trailingPE": 6.6,
-      "marketCap": 152216453120,
+      "trailingPE": 6.4,
+      "marketCap": 147921846272,
       "operatingMargin": 0.3803,
       "analystTarget": 218,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.1,
-        "n": 238,
+        "r": 0.09,
+        "n": 237,
         "band": "low"
       },
       "aiHardwareCorrelation": {
         "r": 0.08,
-        "n": 238,
+        "n": 237,
         "band": "low"
       }
     },
@@ -421,47 +421,83 @@
       "name": "Union Bank of India",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 212.47,
-      "snapshotPrice": 173.06,
-      "marginOfSafety": 0.2277,
-      "wacc": 0.1177,
+      "intrinsic": 210.53,
+      "snapshotPrice": 171.68,
+      "marginOfSafety": 0.2263,
+      "wacc": 0.1201,
       "terminalValuePct": null,
-      "trailingPE": 6.4,
-      "marketCap": 1321071804416,
+      "trailingPE": 6.3,
+      "marketCap": 1310537416704,
       "operatingMargin": 0.488,
       "analystTarget": 197.65,
       "currency": "INR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.03,
-        "n": 238,
+        "r": 0.02,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.06,
-        "n": 238,
+        "r": 0.05,
+        "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 15,
+      "ticker": "JINDALSAW.NS",
+      "name": "Jindal Saw Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 363.25,
+      "snapshotPrice": 301.55,
+      "marginOfSafety": 0.2046,
+      "wacc": 0.0903,
+      "terminalValuePct": 76.5,
+      "trailingPE": 29.5,
+      "marketCap": 192274644992,
+      "operatingMargin": 0.0523,
+      "analystTarget": 360,
+      "currency": "INR",
+      "altmanZ": {
+        "score": 2.97,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.04,
+        "n": 237,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.04,
+        "n": 237,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 16,
       "ticker": "SARDAEN.NS",
       "name": "Sarda Energy & Minerals Limited",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 575.08,
-      "snapshotPrice": 481.15,
-      "marginOfSafety": 0.1952,
-      "wacc": 0.0893,
-      "terminalValuePct": 77.6,
-      "trailingPE": 15,
-      "marketCap": 169548251136,
+      "intrinsic": 553.18,
+      "snapshotPrice": 488.85,
+      "marginOfSafety": 0.1316,
+      "wacc": 0.0917,
+      "terminalValuePct": 76.8,
+      "trailingPE": 15.3,
+      "marketCap": 172261588992,
       "operatingMargin": 0.3512,
       "analystTarget": null,
       "currency": "INR",
       "altmanZ": {
-        "score": 4.55,
+        "score": 4.59,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -470,49 +506,13 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.01,
-        "n": 238,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.02,
-        "n": 238,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 16,
-      "ticker": "BHARTIARTL.NS",
-      "name": "Bharti Airtel Limited",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 2137.21,
-      "snapshotPrice": 1805.1,
-      "marginOfSafety": 0.184,
-      "wacc": 0.0897,
-      "terminalValuePct": 76.7,
-      "trailingPE": 37.7,
-      "marketCap": 11261401104384,
-      "operatingMargin": 0.3257,
-      "analystTarget": 2317.71,
-      "currency": "INR",
-      "altmanZ": {
-        "score": 2.65,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
         "r": -0.01,
-        "n": 238,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.02,
-        "n": 238,
+        "r": -0.04,
+        "n": 237,
         "band": "none"
       }
     },
@@ -522,18 +522,18 @@
       "name": "Petronet LNG Limited",
       "sector": "Energy",
       "method": "DCF",
-      "intrinsic": 340.11,
-      "snapshotPrice": 291.5,
-      "marginOfSafety": 0.1668,
-      "wacc": 0.093,
-      "terminalValuePct": 75.8,
+      "intrinsic": 330.31,
+      "snapshotPrice": 293,
+      "marginOfSafety": 0.1273,
+      "wacc": 0.0953,
+      "terminalValuePct": 75.1,
       "trailingPE": 10.4,
-      "marketCap": 437250031616,
+      "marketCap": 439500046336,
       "operatingMargin": 0.24,
-      "analystTarget": 318.52,
+      "analystTarget": 318.68,
       "currency": "INR",
       "altmanZ": {
-        "score": 8.72,
+        "score": 8.75,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -542,12 +542,12 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.02,
+        "r": 0.01,
         "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.04,
+        "r": 0.02,
         "n": 237,
         "band": "none"
       }
@@ -558,18 +558,18 @@
       "name": "Adani Enterprises Limited",
       "sector": "Energy",
       "method": "DCF",
-      "intrinsic": 3071.72,
-      "snapshotPrice": 2634.4,
-      "marginOfSafety": 0.166,
-      "wacc": 0.1037,
-      "terminalValuePct": 72.2,
-      "trailingPE": 42.5,
-      "marketCap": 3566246821888,
+      "intrinsic": 2953.64,
+      "snapshotPrice": 2692,
+      "marginOfSafety": 0.0972,
+      "wacc": 0.1061,
+      "terminalValuePct": 71.5,
+      "trailingPE": 43.4,
+      "marketCap": 3644221292544,
       "operatingMargin": 0.094,
-      "analystTarget": 3773,
+      "analystTarget": 3684,
       "currency": "INR",
       "altmanZ": {
-        "score": 1.92,
+        "score": 1.95,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -578,86 +578,50 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.07,
-        "n": 238,
+        "r": 0.06,
+        "n": 237,
         "band": "low"
       },
       "aiHardwareCorrelation": {
         "r": 0.09,
-        "n": 238,
+        "n": 237,
         "band": "low"
       }
     },
     {
       "rank": 19,
-      "ticker": "INFY.NS",
-      "name": "Infosys Limited",
-      "sector": "Technology",
+      "ticker": "BHARTIARTL.NS",
+      "name": "Bharti Airtel Limited",
+      "sector": "Communication Services",
       "method": "DCF",
-      "intrinsic": 1191.48,
-      "snapshotPrice": 1023.4,
-      "marginOfSafety": 0.1642,
-      "wacc": 0.0945,
-      "terminalValuePct": 72.4,
-      "trailingPE": 13.9,
-      "marketCap": 4145121853440,
-      "operatingMargin": 0.2117,
-      "analystTarget": 1179.98,
+      "intrinsic": 2042.13,
+      "snapshotPrice": 1905,
+      "marginOfSafety": 0.072,
+      "wacc": 0.0923,
+      "terminalValuePct": 75.9,
+      "trailingPE": 39.2,
+      "marketCap": 11884643221504,
+      "operatingMargin": 0.3257,
+      "analystTarget": 2317.62,
       "currency": "INR",
       "altmanZ": {
-        "score": 7.48,
-        "zone": "safe"
+        "score": 2.75,
+        "zone": "grey"
       },
       "piotroskiF": {
-        "score": 6,
+        "score": 7,
         "maxScore": 9,
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.01,
-        "n": 238,
+        "r": -0.02,
+        "n": 237,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.11,
-        "n": 238,
+        "r": 0.01,
+        "n": 237,
         "band": "none"
-      }
-    },
-    {
-      "rank": 20,
-      "ticker": "HEROMOTOCO.NS",
-      "name": "Hero MotoCorp Limited",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 5235.79,
-      "snapshotPrice": 4895.5,
-      "marginOfSafety": 0.0695,
-      "wacc": 0.0951,
-      "terminalValuePct": 73.7,
-      "trailingPE": 18,
-      "marketCap": 979791249408,
-      "operatingMargin": 0.1163,
-      "analystTarget": 6219.72,
-      "currency": "INR",
-      "altmanZ": {
-        "score": 8.17,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0.06,
-        "n": 238,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.06,
-        "n": 238,
-        "band": "low"
       }
     }
   ]

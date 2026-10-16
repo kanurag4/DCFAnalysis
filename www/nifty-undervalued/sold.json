@@ -295,5 +295,21 @@
     "exitDate": "2026-10-09",
     "exitPrice": 162.57,
     "dollarPnl": 100.33
+  },
+  {
+    "ticker": "INFY.NS",
+    "entryDate": "2026-09-26",
+    "entryPrice": 1000.2,
+    "exitDate": "2026-10-16",
+    "exitPrice": 1161.2,
+    "dollarPnl": 673.88
+  },
+  {
+    "ticker": "HEROMOTOCO.NS",
+    "entryDate": "2026-10-09",
+    "entryPrice": 4895.5,
+    "exitDate": "2026-10-16",
+    "exitPrice": 5225,
+    "dollarPnl": 336.85
   }
 ]
