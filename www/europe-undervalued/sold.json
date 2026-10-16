@@ -22,5 +22,93 @@
     "exitDate": "2026-10-09",
     "exitPrice": 8.032,
     "dollarPnl": 22.42
+  },
+  {
+    "ticker": "AMUN.PA",
+    "entryDate": "2026-10-07",
+    "entryPrice": 89.6,
+    "exitDate": "2026-10-16",
+    "exitPrice": 89,
+    "dollarPnl": 4.26
+  },
+  {
+    "ticker": "UMI.BR",
+    "entryDate": "2026-10-07",
+    "entryPrice": 20.9,
+    "exitDate": "2026-10-16",
+    "exitPrice": 20.54,
+    "dollarPnl": -10.52
+  },
+  {
+    "ticker": "HOC.L",
+    "entryDate": "2026-10-07",
+    "entryPrice": 6.0786,
+    "exitDate": "2026-10-16",
+    "exitPrice": 6.114,
+    "dollarPnl": -4.33
+  },
+  {
+    "ticker": "A5G.IR",
+    "entryDate": "2026-10-07",
+    "entryPrice": 11.33,
+    "exitDate": "2026-10-16",
+    "exitPrice": 10.95,
+    "dollarPnl": 11.72
+  },
+  {
+    "ticker": "ACKB.BR",
+    "entryDate": "2026-10-07",
+    "entryPrice": 259.2,
+    "exitDate": "2026-10-16",
+    "exitPrice": 263,
+    "dollarPnl": 5.01
+  },
+  {
+    "ticker": "LOGN.SW",
+    "entryDate": "2026-10-07",
+    "entryPrice": 90.8501,
+    "exitDate": "2026-10-16",
+    "exitPrice": 92.984,
+    "dollarPnl": 26.32
+  },
+  {
+    "ticker": "NDA-FI.HE",
+    "entryDate": "2026-10-07",
+    "entryPrice": 16.91,
+    "exitDate": "2026-10-16",
+    "exitPrice": 15.735,
+    "dollarPnl": -29.84
+  },
+  {
+    "ticker": "AAF.L",
+    "entryDate": "2026-10-09",
+    "entryPrice": 3.4319,
+    "exitDate": "2026-10-16",
+    "exitPrice": 3.3728,
+    "dollarPnl": -8.64
+  },
+  {
+    "ticker": "AXFO.ST",
+    "entryDate": "2026-10-09",
+    "entryPrice": 23.0068,
+    "exitDate": "2026-10-16",
+    "exitPrice": 23.9509,
+    "dollarPnl": 20.59
+  },
+  {
+    "ticker": "BIM.PA",
+    "entryDate": "2026-10-07",
+    "entryPrice": 81.05,
+    "exitDate": "2026-10-16",
+    "exitPrice": 87.25,
+    "dollarPnl": 24.42
+  },
+  {
+    "ticker": "NEM.DE",
+    "entryDate": "2026-10-07",
+    "entryPrice": 65.5,
+    "exitDate": "2026-10-16",
+    "exitPrice": 73.55,
+    "dollarPnl": 45.78
   }
 ]
