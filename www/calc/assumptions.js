@@ -132,13 +132,21 @@
 // unchanged (Jul-2026 Damodaran). Intraday readings: an AU/UK/EU close can sit ~7bp off. terminalGrowth still clears every rate
 // (tightest: hk 2.0 vs 3.53, jpn 1.2 vs 2.37).
 //
+// br: added 2026-10-17 (lookups only -- no Brazil screen/ticker pages). Real Brazilian users were running
+// dozens of .SA tickers through /dcf/ on the 'other' bucket, i.e. the US rf/ERP against BRL cash flows.
+// Same 'spread-adjusted' recipe as ind: raw BRL 10Y 13.09% (2026-10-16 close, TradingEconomics; Investing.com
+// also 13.085%) minus Damodaran Jul-2026 Ba1 default spread 1.99% (1.9932%) = 11.09%; MARKET_ERP.br = his total
+// ERP 7.30% (7.2984%). MARKET_TGROWTH.br 5.0 = BCB 3% inflation target + ~2% real growth, 45% of rf (inside the
+// 40-57% band the other markets sit in). The yield swung ~12.6-14% in Oct 2026 around the 25 Oct presidential
+// runoff -- re-check on the next refresh.
+//
 const US_DEFAULT_SPREAD = 0.0022;
 // Raw 10Y Treasury yield (fraction, e.g. 0.0529) -> the dollar risk-free rate valuations use (0.0507). Rounded
 // to 4dp so the double equals the decimal literal (same reason live-rate.js rounds the raw yield).
 function usRiskFreeFromYield(yieldFraction) {
   return Math.round((yieldFraction - US_DEFAULT_SPREAD) * 10000) / 10000;
 }
-const FALLBACK_RF = { us: 0.0487, aus: 0.0522, ind: 0.0564, kor: 0.0380, jpn: 0.0237, uk: 0.0486, eu: 0.0339, hk: 0.0353, cn: 0.0110 };
+const FALLBACK_RF = { us: 0.0487, aus: 0.0522, ind: 0.0564, kor: 0.0380, jpn: 0.0237, uk: 0.0486, eu: 0.0339, hk: 0.0353, cn: 0.0110, br: 0.1109 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -163,18 +171,19 @@ const FALLBACK_RF_META = {
   eu:  { asOf: '2026-10-15', source: 'raw German bund yield 3.39% (Oct 15, TradingEconomics; single source)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
   hk:  { asOf: '2026-10-15', source: 'TradingEconomics 4.01% (Oct 15, 2026; OTC interbank quote, single source -- the Aug 12 HKMA 10yr tender at 3.58% is the only independent data point) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
   cn:  { asOf: '2026-10-15', source: 'raw yield 1.66% (Oct 15, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  br:  { asOf: '2026-10-16', source: 'raw BRL 10Y 13.09% (Oct 16 close, TradingEconomics; Investing.com 13.085%) minus Jul-2026 Damodaran Ba1 default spread 1.99%. Volatile around the 25 Oct 2026 presidential runoff', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
 // Total Equity Risk Premium (rating-based column), Damodaran July 2026 country risk
 // premium table -- see the FALLBACK_RF comment above for the full refresh narrative.
-const MARKET_ERP  = { us: 0.0442, aus: 0.0420, ind: 0.0692, kor: 0.0481, jpn: 0.0507, uk: 0.0494, eu: 0.0420, hk: 0.0494, cn: 0.0507 };
+const MARKET_ERP  = { us: 0.0442, aus: 0.0420, ind: 0.0692, kor: 0.0481, jpn: 0.0507, uk: 0.0494, eu: 0.0420, hk: 0.0494, cn: 0.0507, br: 0.0730 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
-const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6 };
+const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6, br: 5.0 };
 const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 
 // Same suffix-priority order as app.js's prefillInputs() (ASX, then
 // NSE/BSE, then KOSPI, then Nikkei, then UK, then eurozone, then Hong
-// Kong, then China A-shares, then bare-suffix-less US, else 'other') —
+// Kong, then China A-shares, then Brazil, then bare-suffix-less US, else 'other') —
 // must stay in this exact order if ever touched again.
 function detectMarket(ticker) {
   const t = (ticker || '').toUpperCase();
@@ -186,6 +195,7 @@ function detectMarket(ticker) {
   if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return 'eu';
   if (t.endsWith('.HK')) return 'hk';
   if (t.endsWith('.SS') || t.endsWith('.SZ')) return 'cn';
+  if (t.endsWith('.SA')) return 'br';
   return t.includes('.') ? 'other' : 'us';
 }
 

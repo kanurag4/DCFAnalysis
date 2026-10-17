@@ -266,12 +266,12 @@ function rfErpForMarket(market) {
   switch (market) {
     case 'aus': return { rf: marketRf('aus', liveAusRfRate), erp: marketErp('aus') };
     case 'ind': return { rf: marketRf('ind', liveIndRfRate), erp: marketErp('ind') };
-    case 'kor': case 'jpn': case 'uk': case 'eu': case 'hk': case 'cn':
+    case 'kor': case 'jpn': case 'uk': case 'eu': case 'hk': case 'cn': case 'br':
       return { rf: marketRf(market), erp: marketErp(market) };
     default: return { rf: marketRf('us', liveRfRate), erp: marketErp('us') };
   }
 }
-let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'other'
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'br' | 'other'
 let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDiscount, read by buildScenarios()
 let breakdownChart = null;
 let priceChart    = null;
@@ -438,6 +438,10 @@ function prefillInputs(data) {
     setRfBadge('cn', marketRf('cn'));   // fixed estimate — no live source exists, see setRfBadge's 'cn' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'China A-share MRP (Damodaran country-risk estimate)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — China has no live rate source to fetch.
+  } else if (currentMarket === 'br') {
+    setRfBadge('br', marketRf('br'));   // fixed estimate — no live source exists, see setRfBadge's 'br' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Brazilian MRP incl. country risk (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — Brazil has no live rate source to fetch.
   } else {
     setRfBadge('us', marketRf('us', liveRfRate));
     if (els.erpMarketNote) els.erpMarketNote.hidden = true;
@@ -1797,6 +1801,7 @@ function setRfBadge(market, rate) {
     eu:  { badge: '○ fixed',    note: 'Fixed estimate — no live eurozone Bund-yield source available', title: 'Eurozone 10-yr Bund yield (fixed estimate, not live)' },
     hk:  { badge: '○ fixed',    note: 'Fixed estimate — Hong Kong 10-yr yield minus the HK default spread; no live source available', title: 'Hong Kong 10-yr Exchange Fund Note yield, adjusted for the Hong Kong sovereign default spread (Damodaran convention; fixed estimate, not live)' },
     cn:  { badge: '○ fixed',    note: 'Fixed estimate — no live China Govt bond-yield source available', title: 'China 10-yr Govt Bond yield (fixed estimate, not live)' },
+    br:  { badge: '○ fixed',    note: 'Fixed estimate — Brazil 10-yr govt bond yield minus Brazil’s default spread; no live source available', title: 'Brazil 10-yr govt bond yield, adjusted for Brazil’s sovereign default spread (Damodaran convention; fixed estimate, not live)' },
     us:  { badge: '● live',     note: 'US 10-yr Treasury yield (^TNX), minus the US default spread', title: 'Live US 10-yr Treasury yield, adjusted for the US sovereign default spread (Damodaran convention)' },
   };
   const lbl = labels[market] || labels.us;
