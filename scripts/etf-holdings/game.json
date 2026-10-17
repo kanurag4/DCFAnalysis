@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-09-29",
+  "asOf": "2026-10-15",
   "source": "https://www.betashares.com.au/files/csv/GAME_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-09-30T09:42:43.742Z",
+  "fetchedAt": "2026-10-17T06:24:35.834Z",
   "rows": [
     {
       "yahoo": "RBLX",
       "raw": "RBLX UN",
       "name": "ROBLOX CORP",
-      "weight": 0.0883761935,
+      "weight": 0.0982202528,
       "country": "United States",
       "sector": "Communication Services"
     },
@@ -15,7 +15,7 @@
       "yahoo": "7832.T",
       "raw": "7832 JT",
       "name": "BANDAI NAMCO HOLDINGS INC",
-      "weight": 0.0853910798,
+      "weight": 0.086975618,
       "country": "Japan",
       "sector": "Consumer Discretionary"
     },
@@ -23,7 +23,7 @@
       "yahoo": "9766.T",
       "raw": "9766 JT",
       "name": "KONAMI GROUP CORP",
-      "weight": 0.08008213319999999,
+      "weight": 0.08697405420000001,
       "country": "Japan",
       "sector": "Communication Services"
     },
@@ -31,15 +31,7 @@
       "yahoo": "9999.HK",
       "raw": "9999 HK",
       "name": "NETEASE INC",
-      "weight": 0.0785446568,
-      "country": "Hong Kong",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "0700.HK",
-      "raw": "700 HK",
-      "name": "TENCENT HOLDINGS LTD",
-      "weight": 0.0777897513,
+      "weight": 0.0773206994,
       "country": "Hong Kong",
       "sector": "Communication Services"
     },
@@ -47,15 +39,23 @@
       "yahoo": "7974.T",
       "raw": "7974 JT",
       "name": "NINTENDO CO LTD",
-      "weight": 0.07636213060000001,
+      "weight": 0.0767313156,
       "country": "Japan",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "0700.HK",
+      "raw": "700 HK",
+      "name": "TENCENT HOLDINGS LTD",
+      "weight": 0.0733805552,
+      "country": "Hong Kong",
       "sector": "Communication Services"
     },
     {
       "yahoo": "9697.T",
       "raw": "9697 JT",
       "name": "CAPCOM CO LTD",
-      "weight": 0.074107086,
+      "weight": 0.0723813701,
       "country": "Japan",
       "sector": "Communication Services"
     },
@@ -63,7 +63,7 @@
       "yahoo": "U",
       "raw": "U UN",
       "name": "UNITY SOFTWARE INC",
-      "weight": 0.0696948752,
+      "weight": 0.0699325325,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -71,7 +71,7 @@
       "yahoo": "TTWO",
       "raw": "TTWO UW",
       "name": "TAKE-TWO INTERACTIVE SOFTWARE",
-      "weight": 0.069687956,
+      "weight": 0.06657468080000001,
       "country": "United States",
       "sector": "Communication Services"
     },
@@ -79,79 +79,79 @@
       "yahoo": "3659.T",
       "raw": "3659 JT",
       "name": "NEXON CO LTD",
-      "weight": 0.0489026702,
+      "weight": 0.0563504034,
       "country": "Japan",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "259960.KS",
-      "raw": "259960 KP",
-      "name": "KRAFTON INC",
-      "weight": 0.0366284531,
-      "country": "South Korea",
       "sector": "Communication Services"
     },
     {
       "yahoo": "CDR.WA",
       "raw": "CDR PW",
       "name": "CD PROJEKT SA",
-      "weight": 0.0359378802,
+      "weight": 0.0367904042,
       "country": "Poland",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "259960.KS",
+      "raw": "259960 KP",
+      "name": "KRAFTON INC",
+      "weight": 0.0343350029,
+      "country": "South Korea",
       "sector": "Communication Services"
     },
     {
       "yahoo": "9684.T",
       "raw": "9684 JT",
       "name": "SQUARE ENIX HOLDINGS CO LTD",
-      "weight": 0.0186805367,
+      "weight": 0.0178829927,
       "country": "Japan",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "9626.HK",
-      "raw": "9626 HK",
-      "name": "BILIBILI INC",
-      "weight": 0.017717156,
-      "country": "Hong Kong",
       "sector": "Communication Services"
     },
     {
       "yahoo": "6460.T",
       "raw": "6460 JT",
       "name": "SEGA SAMMY HOLDINGS INC",
-      "weight": 0.017615758699999998,
+      "weight": 0.0171152019,
       "country": "Japan",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "9626.HK",
+      "raw": "9626 HK",
+      "name": "BILIBILI INC",
+      "weight": 0.0165260584,
+      "country": "Hong Kong",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "036570.KS",
       "raw": "036570 KP",
       "name": "NCSOFT CORP",
-      "weight": 0.0152807217,
+      "weight": 0.014552627700000001,
       "country": "South Korea",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "MTGB.ST",
-      "raw": "MTGB SS",
-      "name": "MODERN TIMES GROUP MTG AB",
-      "weight": 0.0095784042,
-      "country": "Sweden",
       "sector": "Communication Services"
     },
     {
       "yahoo": "3635.T",
       "raw": "3635 JT",
       "name": "KOEI TECMO HOLDINGS CO LTD",
-      "weight": 0.009435353399999999,
+      "weight": 0.0089335284,
       "country": "Japan",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "MTGB.ST",
+      "raw": "MTGB SS",
+      "name": "MODERN TIMES GROUP MTG AB",
+      "weight": 0.0085667396,
+      "country": "Sweden",
       "sector": "Communication Services"
     },
     {
       "yahoo": "2400.HK",
       "raw": "2400 HK",
       "name": "XD INC",
-      "weight": 0.0076151008,
+      "weight": 0.0077776796,
       "country": "Hong Kong",
       "sector": "Communication Services"
     },
@@ -159,7 +159,7 @@
       "yahoo": "263750.KQ",
       "raw": "263750 KQ",
       "name": "PEARL ABYSS CORP",
-      "weight": 0.0071940672,
+      "weight": 0.0070327487,
       "country": "South Korea",
       "sector": "Communication Services"
     },
@@ -167,7 +167,7 @@
       "yahoo": "EMBRACB.ST",
       "raw": "EMBRACB SS",
       "name": "EMBRACER GROUP AB",
-      "weight": 0.0064105352,
+      "weight": 0.0064125102,
       "country": "Sweden",
       "sector": "Communication Services"
     },
@@ -175,7 +175,7 @@
       "yahoo": "2432.T",
       "raw": "2432 JT",
       "name": "DENA CO LTD",
-      "weight": 0.0059707999000000005,
+      "weight": 0.0057412361999999995,
       "country": "Japan",
       "sector": "Communication Services"
     },
@@ -183,23 +183,15 @@
       "yahoo": "EVPL.L",
       "raw": "EVPL LN",
       "name": "TEAM17 GROUP PLC",
-      "weight": 0.0052288022,
+      "weight": 0.0049699717999999995,
       "country": "United Kingdom",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "PDX.ST",
-      "raw": "PDX SS",
-      "name": "PARADOX INTERACTIVE AB",
-      "weight": 0.0049413281,
-      "country": "Sweden",
       "sector": "Communication Services"
     },
     {
       "yahoo": "3765.T",
       "raw": "3765 JT",
       "name": "GUNGHO ONLINE ENTERTAINMENT IN",
-      "weight": 0.0048385907,
+      "weight": 0.004602603,
       "country": "Japan",
       "sector": "Communication Services"
     },
@@ -207,7 +199,7 @@
       "yahoo": "251270.KS",
       "raw": "251270 KP",
       "name": "NETMARBLE CORP",
-      "weight": 0.0047369715,
+      "weight": 0.0045228519,
       "country": "South Korea",
       "sector": "Communication Services"
     },
@@ -215,15 +207,23 @@
       "yahoo": "2121.T",
       "raw": "2121 JT",
       "name": "MIXI INC",
-      "weight": 0.004345273,
+      "weight": 0.0043335557,
       "country": "Japan",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "PDX.ST",
+      "raw": "PDX SS",
+      "name": "PARADOX INTERACTIVE AB",
+      "weight": 0.0042288031,
+      "country": "Sweden",
       "sector": "Communication Services"
     },
     {
       "yahoo": "293490.KQ",
       "raw": "293490 KQ",
       "name": "KAKAO GAMES CORP",
-      "weight": 0.0040600532,
+      "weight": 0.0039259599000000004,
       "country": "South Korea",
       "sector": "Communication Services"
     },
@@ -231,23 +231,23 @@
       "yahoo": "UBI.PA",
       "raw": "UBI FP",
       "name": "UBISOFT ENTERTAINMENT SA",
-      "weight": 0.0038965961,
+      "weight": 0.0034853743999999996,
       "country": "France",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "078340.KQ",
-      "raw": "078340 KQ",
-      "name": "COM2USCORP",
-      "weight": 0.0037159076000000003,
-      "country": "South Korea",
       "sector": "Communication Services"
     },
     {
       "yahoo": "069080.KQ",
       "raw": "069080 KQ",
       "name": "WEBZEN INC",
-      "weight": 0.0033704487,
+      "weight": 0.0034148199000000002,
+      "country": "South Korea",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "078340.KQ",
+      "raw": "078340 KQ",
+      "name": "COM2USCORP",
+      "weight": 0.0033114167,
       "country": "South Korea",
       "sector": "Communication Services"
     },
@@ -255,23 +255,7 @@
       "yahoo": "3632.T",
       "raw": "3632 JT",
       "name": "GREE INC",
-      "weight": 0.0031408763,
-      "country": "Japan",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "112040.KQ",
-      "raw": "112040 KQ",
-      "name": "WEMADE CO LTD",
-      "weight": 0.0031266652,
-      "country": "South Korea",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "3668.T",
-      "raw": "3668 JT",
-      "name": "COLOPL INC",
-      "weight": 0.0030617049,
+      "weight": 0.0030432467,
       "country": "Japan",
       "sector": "Communication Services"
     },
@@ -279,8 +263,24 @@
       "yahoo": "SF.ST",
       "raw": "SF SS",
       "name": "STILLFRONT GROUP AB",
-      "weight": 0.002962791,
+      "weight": 0.0030422638,
       "country": "Sweden",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "112040.KQ",
+      "raw": "112040 KQ",
+      "name": "WEMADE CO LTD",
+      "weight": 0.0029925986999999998,
+      "country": "South Korea",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "3668.T",
+      "raw": "3668 JT",
+      "name": "COLOPL INC",
+      "weight": 0.0026796461,
+      "country": "Japan",
       "sector": "Communication Services"
     }
   ]

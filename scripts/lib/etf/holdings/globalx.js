@@ -74,14 +74,64 @@ function parse(csvText) {
   return { asOf, rows: out };
 }
 
+const MONTHS = { jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06', jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12' };
+
+// Global X's fund pages moved to Next.js (seen 2026-10-17): the static
+// assets.globalxetfs.com CSV link is gone -- "Download Full CSV" now builds the
+// file client-side via a server action. The full holdings list is still
+// embedded in the page's React Server Components payload (the
+// self.__next_f.push([1,"..."]) string chunks), one JSON object per holding
+// with the same "TICKER EXCH" ticker convention as the old CSV.
+function parsePage(html) {
+  const chunks = [];
+  const pushRe = /self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)/g;
+  let m;
+  while ((m = pushRe.exec(html))) chunks.push(JSON.parse(m[1]));
+  const flight = chunks.join('');
+
+  const asOfM = /"As of"," ","([A-Za-z]{3}) (\d{1,2}), (\d{4})"/.exec(flight);
+  const asOf = asOfM && MONTHS[asOfM[1].toLowerCase()]
+    ? `${asOfM[3]}-${MONTHS[asOfM[1].toLowerCase()]}-${asOfM[2].padStart(2, '0')}`
+    : null;
+
+  // The same holding can appear in both the top-10 table and the "All Holdings"
+  // dialog -- key on ticker+name+shares so each line is counted once.
+  const seen = new Set();
+  const out = [];
+  for (const s of flight.match(/\{"exposurePercent":"[^"]*"[^{}]*\}/g) || []) {
+    let h;
+    try { h = JSON.parse(s); } catch { continue; }
+    const rawSymbol = (h.ticker || '').trim();
+    if (!rawSymbol) continue; // currency / cash lines carry no ticker
+    const key = `${rawSymbol}|${h.name}|${h.shares}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const weight = parseFloat(String(h.netAssets || '').replace(/[,%\s]/g, ''));
+    if (!Number.isFinite(weight)) continue;
+    const bbg = rawSymbol.split(/\s+/)[1];
+    out.push({
+      rawSymbol,
+      name: (h.name || '').trim(),
+      weight: weight / 100,
+      sector: null,
+      country: bbg ? (BBG_COUNTRY[bbg.toUpperCase()] || null) : 'United States',
+    });
+  }
+  return { asOf, rows: out };
+}
+
 async function fetchHoldings(fund, { httpGet = httpGetReal } = {}) {
   const pageHtml = await httpGet(fundPageUrl(fund));
   const m = CSV_LINK_RE.exec(pageHtml);
-  if (!m) throw new Error(`globalx: could not find holdings CSV link on ${fundPageUrl(fund)}`);
-  const csvUrl = m[0];
-  const text = await httpGet(csvUrl);
-  const { asOf, rows } = parse(text);
-  return { asOf, source: csvUrl, rows };
+  if (m) {
+    const csvUrl = m[0];
+    const text = await httpGet(csvUrl);
+    const { asOf, rows } = parse(text);
+    return { asOf, source: csvUrl, rows };
+  }
+  const { asOf, rows } = parsePage(pageHtml);
+  if (rows.length === 0) throw new Error(`globalx: no holdings CSV link or embedded holdings on ${fundPageUrl(fund)}`);
+  return { asOf, source: fundPageUrl(fund), rows };
 }
 
-module.exports = { issuer: 'globalx', fundPageUrl, parse, fetchHoldings };
+module.exports = { issuer: 'globalx', fundPageUrl, parse, parsePage, fetchHoldings };

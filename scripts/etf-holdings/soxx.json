@@ -1,29 +1,21 @@
 {
-  "asOf": "2026-09-28",
+  "asOf": "2026-10-15",
   "source": "https://www.ishares.com/us/products/239705/ishares-semiconductor-etf/latest-holdings.csv",
-  "fetchedAt": "2026-09-30T09:42:39.770Z",
+  "fetchedAt": "2026-10-17T06:24:32.403Z",
   "rows": [
-    {
-      "yahoo": "INTC",
-      "raw": "INTC",
-      "name": "INTEL CORPORATION",
-      "weight": 0.09380000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
     {
       "yahoo": "AMD",
       "raw": "AMD",
       "name": "ADVANCED MICRO DEVICES",
-      "weight": 0.0934,
+      "weight": 0.0942,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "MU",
-      "raw": "MU",
-      "name": "MICRON TECHNOLOGY",
-      "weight": 0.0795,
+      "yahoo": "INTC",
+      "raw": "INTC",
+      "name": "INTEL CORPORATION",
+      "weight": 0.084,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -31,7 +23,15 @@
       "yahoo": "NVDA",
       "raw": "NVDA",
       "name": "NVIDIA",
-      "weight": 0.075,
+      "weight": 0.0776,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "MU",
+      "raw": "MU",
+      "name": "MICRON TECHNOLOGY",
+      "weight": 0.0766,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -39,7 +39,7 @@
       "yahoo": "AVGO",
       "raw": "AVGO",
       "name": "BROADCOM INC",
-      "weight": 0.0683,
+      "weight": 0.0733,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -47,15 +47,7 @@
       "yahoo": "MRVL",
       "raw": "MRVL",
       "name": "MARVELL TECHNOLOGY",
-      "weight": 0.0431,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "QCOM",
-      "raw": "QCOM",
-      "name": "QUALCOMM",
-      "weight": 0.0398,
+      "weight": 0.0449,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -63,15 +55,7 @@
       "yahoo": "ADI",
       "raw": "ADI",
       "name": "ANALOG DEVICES",
-      "weight": 0.0395,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "KLAC",
-      "raw": "KLAC",
-      "name": "KLA",
-      "weight": 0.039,
+      "weight": 0.044000000000000004,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -79,7 +63,23 @@
       "yahoo": "TXN",
       "raw": "TXN",
       "name": "TEXAS INSTRUMENT INC",
-      "weight": 0.038599999999999995,
+      "weight": 0.042199999999999994,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "QCOM",
+      "raw": "QCOM",
+      "name": "QUALCOMM",
+      "weight": 0.041299999999999996,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "KLAC",
+      "raw": "KLAC",
+      "name": "KLA",
+      "weight": 0.0392,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -87,7 +87,7 @@
       "yahoo": "AMAT",
       "raw": "AMAT",
       "name": "APPLIED MATERIAL INC",
-      "weight": 0.0384,
+      "weight": 0.037000000000000005,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -95,7 +95,7 @@
       "yahoo": "LRCX",
       "raw": "LRCX",
       "name": "LAM RESEARCH",
-      "weight": 0.0377,
+      "weight": 0.0363,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -103,31 +103,7 @@
       "yahoo": "MPWR",
       "raw": "MPWR",
       "name": "MONOLITHIC POWER SYSTEMS INC",
-      "weight": 0.032,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "TER",
-      "raw": "TER",
-      "name": "TERADYNE",
-      "weight": 0.031200000000000002,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "SKHY",
-      "raw": "SKHY",
-      "name": "SK HYNIX AMERICAN DEPOSITARY SHARE",
-      "weight": 0.030600000000000002,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "TSM",
-      "raw": "TSM",
-      "name": "TAIWAN SEMICONDUCTOR MANUFACTURING",
-      "weight": 0.0302,
+      "weight": 0.0323,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -135,7 +111,31 @@
       "yahoo": "NXPI",
       "raw": "NXPI",
       "name": "NXP SEMICONDUCTORS NV",
-      "weight": 0.0298,
+      "weight": 0.0317,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TSM",
+      "raw": "TSM",
+      "name": "TAIWAN SEMICONDUCTOR MANUFACTURING",
+      "weight": 0.030699999999999998,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TER",
+      "raw": "TER",
+      "name": "TERADYNE",
+      "weight": 0.028999999999999998,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "SKHY",
+      "raw": "SKHY",
+      "name": "SK HYNIX AMERICAN DEPOSITARY SHARE",
+      "weight": 0.0268,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -143,7 +143,7 @@
       "yahoo": "ALAB",
       "raw": "ALAB",
       "name": "ASTERA LABS",
-      "weight": 0.025,
+      "weight": 0.023399999999999997,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -151,7 +151,7 @@
       "yahoo": "MCHP",
       "raw": "MCHP",
       "name": "MICROCHIP TECHNOLOGY INC",
-      "weight": 0.0208,
+      "weight": 0.0216,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -159,7 +159,7 @@
       "yahoo": "CRDO",
       "raw": "CRDO",
       "name": "CREDO TECHNOLOGY GROUP HOLDING LTD",
-      "weight": 0.0163,
+      "weight": 0.016399999999999998,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -167,7 +167,7 @@
       "yahoo": "ON",
       "raw": "ON",
       "name": "ON SEMICONDUCTOR CORP",
-      "weight": 0.0146,
+      "weight": 0.0155,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -175,15 +175,7 @@
       "yahoo": "ASML",
       "raw": "ASML",
       "name": "ASML HOLDING ADR REPRESENTING",
-      "weight": 0.014499999999999999,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "TSEM",
-      "raw": "TSEM",
-      "name": "TOWER SEMICONDUCTOR",
-      "weight": 0.011899999999999999,
+      "weight": 0.0147,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -191,7 +183,15 @@
       "yahoo": "ENTG",
       "raw": "ENTG",
       "name": "ENTEGRIS INC",
-      "weight": 0.011399999999999999,
+      "weight": 0.012199999999999999,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TSEM",
+      "raw": "TSEM",
+      "name": "TOWER SEMICONDUCTOR",
+      "weight": 0.012,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -199,15 +199,7 @@
       "yahoo": "MTSI",
       "raw": "MTSI",
       "name": "MACOM TECHNOLOGY SOLUTIONS",
-      "weight": 0.009899999999999999,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "CBRS",
-      "raw": "CBRS",
-      "name": "CEREBRAS SYSTEMS INC CLASS A",
-      "weight": 0.0095,
+      "weight": 0.0105,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -215,7 +207,15 @@
       "yahoo": "ASX",
       "raw": "ASX",
       "name": "ASE TECHNOLOGY HOLDING ADR REPRESE",
-      "weight": 0.0089,
+      "weight": 0.009300000000000001,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CBRS",
+      "raw": "CBRS",
+      "name": "CEREBRAS SYSTEMS INC CLASS A",
+      "weight": 0.0074,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -223,7 +223,7 @@
       "yahoo": "UMC",
       "raw": "UMC",
       "name": "UNITED MICRO ELECTRONICS ADR REP",
-      "weight": 0.0067,
+      "weight": 0.0064,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -231,7 +231,7 @@
       "yahoo": "ARM",
       "raw": "ARM",
       "name": "ARM HOLDINGS AMERICAN DEPOSITARY S",
-      "weight": 0.0049,
+      "weight": 0.0046,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -239,7 +239,7 @@
       "yahoo": "STM",
       "raw": "STM",
       "name": "STMICROELECTRONICS ADR",
-      "weight": 0.0042,
+      "weight": 0.004,
       "country": "United States",
       "sector": "Information Technology"
     }

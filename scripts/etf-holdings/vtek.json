@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-08-31",
+  "asOf": "2026-09-30",
   "source": "https://www.vanguard.com.au/personal/api/data/products/holdings/F109?limit=1000",
-  "fetchedAt": "2026-09-30T09:42:45.568Z",
+  "fetchedAt": "2026-10-17T06:24:39.008Z",
   "rows": [
     {
       "yahoo": "NVDA",
       "raw": "NVDA",
       "name": "NVIDIA Corp",
-      "weight": 0.1404002,
+      "weight": 0.1385492,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -15,7 +15,7 @@
       "yahoo": "AAPL",
       "raw": "AAPL",
       "name": "Apple Inc",
-      "weight": 0.1248749,
+      "weight": 0.12518390000000001,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -23,7 +23,7 @@
       "yahoo": "MSFT",
       "raw": "MSFT",
       "name": "Microsoft Corp",
-      "weight": 0.1027201,
+      "weight": 0.0991051,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -31,7 +31,7 @@
       "yahoo": "GOOGL",
       "raw": "GOOGL",
       "name": "Alphabet Inc",
-      "weight": 0.0536102,
+      "weight": 0.0521863,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -39,7 +39,7 @@
       "yahoo": "2330.TW",
       "raw": "2330",
       "name": "Taiwan Semiconductor Manufacturing Co Ltd",
-      "weight": 0.050408499999999995,
+      "weight": 0.0494043,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -47,7 +47,7 @@
       "yahoo": "AVGO",
       "raw": "AVGO",
       "name": "Broadcom Inc",
-      "weight": 0.0469843,
+      "weight": 0.0425355,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -55,7 +55,7 @@
       "yahoo": "GOOG",
       "raw": "GOOG",
       "name": "Alphabet Inc",
-      "weight": 0.043769,
+      "weight": 0.041927700000000005,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -63,7 +63,7 @@
       "yahoo": "META",
       "raw": "META",
       "name": "Meta Platforms Inc",
-      "weight": 0.034308399999999996,
+      "weight": 0.0414876,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -71,7 +71,7 @@
       "yahoo": "MU",
       "raw": "MU",
       "name": "Micron Technology Inc",
-      "weight": 0.0294735,
+      "weight": 0.0312584,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -79,7 +79,7 @@
       "yahoo": "AMD",
       "raw": "AMD",
       "name": "Advanced Micro Devices Inc",
-      "weight": 0.0208908,
+      "weight": 0.0259129,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -87,7 +87,7 @@
       "yahoo": "000660.KS",
       "raw": "000660",
       "name": "SK hynix Inc",
-      "weight": 0.018526400000000002,
+      "weight": 0.019624600000000002,
       "country": "South Korea",
       "sector": "Technology Hardware & Equipment"
     },
@@ -95,31 +95,31 @@
       "yahoo": "ASML.AS",
       "raw": "ASML",
       "name": "ASML Holding NV",
-      "weight": 0.0178045,
+      "weight": 0.0182906,
       "country": "Netherlands",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "INTC",
+      "raw": "INTC",
+      "name": "Intel Corp",
+      "weight": 0.0143103,
+      "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "PLTR",
       "raw": "PLTR",
       "name": "Palantir Technologies Inc",
-      "weight": 0.011292,
+      "weight": 0.0107567,
       "country": "United States",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "INTC",
-      "raw": "INTC",
-      "name": "Intel Corp",
-      "weight": 0.0111635,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "LRCX",
       "raw": "LRCX",
       "name": "Lam Research Corp",
-      "weight": 0.0103085,
+      "weight": 0.010636300000000001,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -127,7 +127,7 @@
       "yahoo": "AMAT",
       "raw": "AMAT",
       "name": "Applied Materials Inc",
-      "weight": 0.0099364,
+      "weight": 0.0106103,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -135,7 +135,7 @@
       "yahoo": "0700.HK",
       "raw": "700",
       "name": "Tencent Holdings Ltd",
-      "weight": 0.0099068,
+      "weight": 0.0090429,
       "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
@@ -143,15 +143,15 @@
       "yahoo": "PANW",
       "raw": "PANW",
       "name": "Palo Alto Networks Inc",
-      "weight": 0.0084121,
+      "weight": 0.0083733,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "ORCL",
-      "raw": "ORCL",
-      "name": "Oracle Corp",
-      "weight": 0.0069769,
+      "yahoo": "CRWD",
+      "raw": "CRWD",
+      "name": "Crowdstrike Holdings Inc",
+      "weight": 0.006849699999999999,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -159,79 +159,39 @@
       "yahoo": "TXN",
       "raw": "TXN",
       "name": "Texas Instruments Inc",
-      "weight": 0.0065097,
+      "weight": 0.006634999999999999,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "CRWD",
-      "raw": "CRWD",
-      "name": "Crowdstrike Holdings Inc",
-      "weight": 0.0063342,
-      "country": "United States",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "KLAC",
       "raw": "KLAC",
       "name": "KLA Corp",
-      "weight": 0.0062861,
+      "weight": 0.006609500000000001,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "SAP.DE",
-      "raw": "SAP",
-      "name": "SAP SE",
-      "weight": 0.0062371,
-      "country": "Germany",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "SNDK",
       "raw": "SNDK",
       "name": "Sandisk Corp",
-      "weight": 0.0062342,
+      "weight": 0.0065377,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "IBM",
-      "raw": "IBM",
-      "name": "International Business Machines Corp",
-      "weight": 0.006015200000000001,
+      "yahoo": "ORCL",
+      "raw": "ORCL",
+      "name": "Oracle Corp",
+      "weight": 0.006184800000000001,
       "country": "United States",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "CRM",
-      "raw": "CRM",
-      "name": "Salesforce Inc",
-      "weight": 0.0056157,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "APH",
-      "raw": "APH",
-      "name": "Amphenol Corp",
-      "weight": 0.005339699999999999,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "STX",
-      "raw": "STX",
-      "name": "Seagate Technology Holdings PLC",
-      "weight": 0.0050906,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "MRVL",
       "raw": "MRVL",
       "name": "Marvell Technology Inc",
-      "weight": 0.0050568,
+      "weight": 0.0060548,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -239,23 +199,39 @@
       "yahoo": "2454.TW",
       "raw": "2454",
       "name": "MediaTek Inc",
-      "weight": 0.0050525,
+      "weight": 0.0058426,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "SHOP.TO",
-      "raw": "SHOP",
-      "name": "Shopify Inc",
-      "weight": 0.0049412,
-      "country": "Canada",
+      "yahoo": "APH",
+      "raw": "APH",
+      "name": "Amphenol Corp",
+      "weight": 0.005446299999999999,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "SAP.DE",
+      "raw": "SAP",
+      "name": "SAP SE",
+      "weight": 0.0053808,
+      "country": "Germany",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "QCOM",
-      "raw": "QCOM",
-      "name": "QUALCOMM Inc",
-      "weight": 0.0049346,
+      "yahoo": "IBM",
+      "raw": "IBM",
+      "name": "International Business Machines Corp",
+      "weight": 0.0053373000000000006,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "STX",
+      "raw": "STX",
+      "name": "Seagate Technology Holdings PLC",
+      "weight": 0.0053151000000000006,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -263,23 +239,55 @@
       "yahoo": "ADI",
       "raw": "ADI",
       "name": "Analog Devices Inc",
-      "weight": 0.004869200000000001,
+      "weight": 0.0051201,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "QCOM",
+      "raw": "QCOM",
+      "name": "QUALCOMM Inc",
+      "weight": 0.0049939,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "CRM",
+      "raw": "CRM",
+      "name": "Salesforce Inc",
+      "weight": 0.004828,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "SHOP.TO",
+      "raw": "SHOP",
+      "name": "Shopify Inc",
+      "weight": 0.0046843,
+      "country": "Canada",
+      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "8035.T",
       "raw": "8035",
       "name": "Tokyo Electron Ltd",
-      "weight": 0.0042927,
+      "weight": 0.0042268,
       "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "DELL",
+      "raw": "DELL",
+      "name": "Dell Technologies Inc",
+      "weight": 0.004146599999999999,
+      "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "6857.T",
       "raw": "6857",
       "name": "Advantest Corp",
-      "weight": 0.0042549,
+      "weight": 0.0040704,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -287,7 +295,7 @@
       "yahoo": "WDC",
       "raw": "WDC",
       "name": "Western Digital Corp",
-      "weight": 0.0041712,
+      "weight": 0.0040160000000000005,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -295,39 +303,7 @@
       "yahoo": "NOW",
       "raw": "NOW",
       "name": "ServiceNow Inc",
-      "weight": 0.0041696,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "DELL",
-      "raw": "DELL",
-      "name": "Dell Technologies Inc",
-      "weight": 0.0037974000000000003,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "ADBE",
-      "raw": "ADBE",
-      "name": "Adobe Inc",
-      "weight": 0.0031757,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "GLW",
-      "raw": "GLW",
-      "name": "Corning Inc",
-      "weight": 0.0031476,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "SNOW",
-      "raw": "SNOW",
-      "name": "Snowflake Inc",
-      "weight": 0.0030418,
+      "weight": 0.0036382999999999997,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -335,47 +311,55 @@
       "yahoo": "285A.T",
       "raw": "285A",
       "name": "Kioxia Holdings Corp",
-      "weight": 0.002883,
+      "weight": 0.0034582000000000002,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "FTNT",
-      "raw": "FTNT",
-      "name": "Fortinet Inc",
-      "weight": 0.002866,
+      "yahoo": "GLW",
+      "raw": "GLW",
+      "name": "Corning Inc",
+      "weight": 0.0031309,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "SNOW",
+      "raw": "SNOW",
+      "name": "Snowflake Inc",
+      "weight": 0.0030108,
       "country": "United States",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "VRT",
-      "raw": "VRT",
-      "name": "Vertiv Holdings Co",
-      "weight": 0.0027439,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2317.TW",
-      "raw": "2317",
-      "name": "Hon Hai Precision Industry Co Ltd",
-      "weight": 0.0027056999999999997,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "NET",
       "raw": "NET",
       "name": "Cloudflare Inc",
-      "weight": 0.0026534,
+      "weight": 0.0028626000000000003,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "INTU",
-      "raw": "INTU",
-      "name": "Intuit Inc",
-      "weight": 0.0026288,
+      "yahoo": "FTNT",
+      "raw": "FTNT",
+      "name": "Fortinet Inc",
+      "weight": 0.0027744,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2317.TW",
+      "raw": "2317",
+      "name": "Hon Hai Precision Industry Co Ltd",
+      "weight": 0.0026284000000000004,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "ADBE",
+      "raw": "ADBE",
+      "name": "Adobe Inc",
+      "weight": 0.0025515,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -383,23 +367,7 @@
       "yahoo": "CDNS",
       "raw": "CDNS",
       "name": "Cadence Design Systems Inc",
-      "weight": 0.0025004,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "DASH",
-      "raw": "DASH",
-      "name": "DoorDash Inc",
-      "weight": 0.0023871,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "SNPS",
-      "raw": "SNPS",
-      "name": "Synopsys Inc",
-      "weight": 0.0022500000000000003,
+      "weight": 0.0024078,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -407,7 +375,7 @@
       "yahoo": "IFX.DE",
       "raw": "IFX",
       "name": "Infineon Technologies AG",
-      "weight": 0.0022084,
+      "weight": 0.0022755,
       "country": "Germany",
       "sector": "Technology Hardware & Equipment"
     },
@@ -415,23 +383,7 @@
       "yahoo": "DDOG",
       "raw": "DDOG",
       "name": "Datadog Inc",
-      "weight": 0.0021260000000000003,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6981.T",
-      "raw": "6981",
-      "name": "Murata Manufacturing Co Ltd",
-      "weight": 0.0021097,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "APP",
-      "raw": "APP",
-      "name": "AppLovin Corp",
-      "weight": 0.0020479,
+      "weight": 0.0022736,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -439,7 +391,23 @@
       "yahoo": "HPE",
       "raw": "HPE",
       "name": "Hewlett Packard Enterprise Co",
-      "weight": 0.0018734000000000001,
+      "weight": 0.0022574,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6981.T",
+      "raw": "6981",
+      "name": "Murata Manufacturing Co Ltd",
+      "weight": 0.002241,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "SNPS",
+      "raw": "SNPS",
+      "name": "Synopsys Inc",
+      "weight": 0.0020607,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -447,79 +415,127 @@
       "yahoo": "402340.KS",
       "raw": "402340",
       "name": "SK Square Co Ltd",
-      "weight": 0.0018357999999999998,
+      "weight": 0.0019622,
       "country": "South Korea",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "PDD",
-      "raw": "PDD",
-      "name": "PDD HOLDINGS INC",
-      "weight": 0.0018074,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "REL.L",
-      "raw": "REL",
-      "name": "RELX PLC",
-      "weight": 0.0017438,
-      "country": "United Kingdom",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "TEL",
-      "raw": "TEL",
-      "name": "TE Connectivity PLC",
-      "weight": 0.0016993,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "3711.TW",
       "raw": "3711",
       "name": "ASE Technology Holding Co Ltd",
-      "weight": 0.0016917,
+      "weight": 0.0018786,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "009150.KS",
-      "raw": "009150",
-      "name": "Samsung Electro-Mechanics Co Ltd",
-      "weight": 0.0016409,
-      "country": "South Korea",
+      "yahoo": "INTU",
+      "raw": "INTU",
+      "name": "Intuit Inc",
+      "weight": 0.0018673000000000001,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "APP",
+      "raw": "APP",
+      "name": "AppLovin Corp",
+      "weight": 0.0017641999999999998,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "DASH",
+      "raw": "DASH",
+      "name": "DoorDash Inc",
+      "weight": 0.0017502000000000001,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "TER",
+      "raw": "TER",
+      "name": "Teradyne Inc",
+      "weight": 0.001697,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "TEL",
+      "raw": "TEL",
+      "name": "TE Connectivity PLC",
+      "weight": 0.0016175999999999999,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "NXPI",
+      "raw": "NXPI",
+      "name": "NXP Semiconductors NV",
+      "weight": 0.0016122,
+      "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "MPWR",
       "raw": "MPWR",
       "name": "Monolithic Power Systems Inc",
-      "weight": 0.0016273000000000001,
+      "weight": 0.0016006999999999998,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "ADSK",
-      "raw": "ADSK",
-      "name": "Autodesk Inc",
-      "weight": 0.0015141,
+      "yahoo": "009150.KS",
+      "raw": "009150",
+      "name": "Samsung Electro-Mechanics Co Ltd",
+      "weight": 0.0015938,
+      "country": "South Korea",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "PDD",
+      "raw": "PDD",
+      "name": "PDD HOLDINGS INC",
+      "weight": 0.0015523000000000002,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "PRX.AS",
-      "raw": "PRX",
-      "name": "Prosus NV",
-      "weight": 0.0015109,
-      "country": "Netherlands",
+      "yahoo": "2303.TW",
+      "raw": "2303",
+      "name": "United Microelectronics Corp",
+      "weight": 0.0015124000000000001,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "REL.L",
+      "raw": "REL",
+      "name": "RELX PLC",
+      "weight": 0.0014774,
+      "country": "United Kingdom",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "NXPI",
-      "raw": "NXPI",
-      "name": "NXP Semiconductors NV",
-      "weight": 0.0014705999999999999,
+      "yahoo": "ALAB",
+      "raw": "ALAB",
+      "name": "Astera Labs Inc",
+      "weight": 0.001438,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "MSTR",
+      "raw": "MSTR",
+      "name": "Strategy Inc",
+      "weight": 0.001387,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "COHR",
+      "raw": "COHR",
+      "name": "Coherent Corp",
+      "weight": 0.0013807,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -527,103 +543,15 @@
       "yahoo": "3690.HK",
       "raw": "3690",
       "name": "Meituan",
-      "weight": 0.0014413000000000002,
+      "weight": 0.0013197999999999999,
       "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "TER",
-      "raw": "TER",
-      "name": "Teradyne Inc",
-      "weight": 0.0014369,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2383.TW",
-      "raw": "2383",
-      "name": "Elite Material Co Ltd",
-      "weight": 0.0013899000000000001,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2303.TW",
-      "raw": "2303",
-      "name": "United Microelectronics Corp",
-      "weight": 0.0013688,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "COHR",
-      "raw": "COHR",
-      "name": "Coherent Corp",
-      "weight": 0.0013017,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "ALAB",
-      "raw": "ALAB",
-      "name": "Astera Labs Inc",
-      "weight": 0.0012961000000000001,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "CSU.TO",
-      "raw": "CSU",
-      "name": "Constellation Software Inc/Canada",
-      "weight": 0.0012715,
-      "country": "Canada",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "MSTR",
-      "raw": "MSTR",
-      "name": "Strategy Inc",
-      "weight": 0.0012286,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "ROP",
-      "raw": "ROP",
-      "name": "Roper Technologies Inc",
-      "weight": 0.001206,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "ASM.AS",
-      "raw": "ASM",
-      "name": "ASM International NV",
-      "weight": 0.0012048,
-      "country": "Netherlands",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "6702.T",
-      "raw": "6702",
-      "name": "Fujitsu Ltd",
-      "weight": 0.0011852,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "FLEX",
-      "raw": "FLEX",
-      "name": "Flex Ltd",
-      "weight": 0.0011499,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "WDAY",
-      "raw": "WDAY",
-      "name": "Workday Inc",
-      "weight": 0.0011405,
+      "yahoo": "NBIS",
+      "raw": "NBIS",
+      "name": "Nebius Group NV",
+      "weight": 0.0012822,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -631,183 +559,55 @@
       "yahoo": "3037.TW",
       "raw": "3037",
       "name": "Unimicron Technology Corp",
-      "weight": 0.0010839,
+      "weight": 0.0012813,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "NPN.JO",
-      "raw": "NPN",
-      "name": "Naspers Ltd",
-      "weight": 0.0010834,
-      "country": "South Africa",
+      "yahoo": "PRX.AS",
+      "raw": "PRX",
+      "name": "Prosus NV",
+      "weight": 0.0012673,
+      "country": "Netherlands",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "INFO.NS",
-      "raw": "INFO",
-      "name": "Infosys Ltd",
-      "weight": 0.0010730000000000002,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "NTAP",
-      "raw": "NTAP",
-      "name": "NetApp Inc",
-      "weight": 0.0010227,
-      "country": "United States",
+      "yahoo": "ASM.AS",
+      "raw": "ASM",
+      "name": "ASM International NV",
+      "weight": 0.0011984,
+      "country": "Netherlands",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "6701.T",
-      "raw": "6701",
-      "name": "NEC Corp",
-      "weight": 0.0010143,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3017.TW",
-      "raw": "3017",
-      "name": "Asia Vital Components Co Ltd",
-      "weight": 0.0010082000000000001,
+      "yahoo": "2383.TW",
+      "raw": "2383",
+      "name": "Elite Material Co Ltd",
+      "weight": 0.0011537,
       "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "MCHP",
-      "raw": "MCHP",
-      "name": "Microchip Technology Inc",
-      "weight": 0.0010053,
-      "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "CLS.TO",
       "raw": "CLS",
       "name": "Celestica Inc",
-      "weight": 0.0009626,
+      "weight": 0.0011474,
       "country": "Canada",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "TWLO",
-      "raw": "TWLO",
-      "name": "Twilio Inc",
-      "weight": 0.0009263,
-      "country": "United States",
+      "yahoo": "6702.T",
+      "raw": "6702",
+      "name": "Fujitsu Ltd",
+      "weight": 0.0011403000000000001,
+      "country": "Japan",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "MDB",
-      "raw": "MDB",
-      "name": "MongoDB Inc",
-      "weight": 0.0009238,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "TEAM",
-      "raw": "TEAM",
-      "name": "Atlassian Corp",
-      "weight": 0.0009222,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6723.T",
-      "raw": "6723",
-      "name": "Renesas Electronics Corp",
-      "weight": 0.0008935999999999999,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "CTSH",
-      "raw": "CTSH",
-      "name": "Cognizant Technology Solutions Corp",
-      "weight": 0.0008808,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6971.T",
-      "raw": "6971",
-      "name": "Kyocera Corp",
-      "weight": 0.0008771,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "6146.T",
-      "raw": "6146",
-      "name": "Disco Corp",
-      "weight": 0.0008759,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "0992.HK",
-      "raw": "992",
-      "name": "Lenovo Group Ltd",
-      "weight": 0.0008724999999999999,
-      "country": "Hong Kong",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "4062.T",
-      "raw": "4062",
-      "name": "Ibiden Co Ltd",
-      "weight": 0.0008652,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "CRWV",
-      "raw": "CRWV",
-      "name": "CoreWeave Inc",
-      "weight": 0.0007954,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "STMMI.MI",
-      "raw": "STMMI",
-      "name": "STMicroelectronics NV",
-      "weight": 0.000794,
-      "country": "Italy",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "7751.T",
-      "raw": "7751",
-      "name": "Canon Inc",
-      "weight": 0.0007731000000000001,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2327.TW",
-      "raw": "2327",
-      "name": "Yageo Corp",
-      "weight": 0.0007614,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2382.TW",
-      "raw": "2382",
-      "name": "Quanta Computer Inc",
-      "weight": 0.0007609,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "OKTA",
-      "raw": "OKTA",
-      "name": "Okta Inc",
-      "weight": 0.0007524,
+      "yahoo": "ADSK",
+      "raw": "ADSK",
+      "name": "Autodesk Inc",
+      "weight": 0.001133,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -815,7 +615,143 @@
       "yahoo": "P",
       "raw": "P",
       "name": "Everpure Inc",
-      "weight": 0.0007352999999999999,
+      "weight": 0.0011246000000000001,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "NTAP",
+      "raw": "NTAP",
+      "name": "NetApp Inc",
+      "weight": 0.0010733,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "FLEX",
+      "raw": "FLEX",
+      "name": "Flex Ltd",
+      "weight": 0.0010716,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "TWLO",
+      "raw": "TWLO",
+      "name": "Twilio Inc",
+      "weight": 0.0010642,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "CSU.TO",
+      "raw": "CSU",
+      "name": "Constellation Software Inc/Canada",
+      "weight": 0.0010599,
+      "country": "Canada",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "MCHP",
+      "raw": "MCHP",
+      "name": "Microchip Technology Inc",
+      "weight": 0.0010569000000000002,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "WDAY",
+      "raw": "WDAY",
+      "name": "Workday Inc",
+      "weight": 0.0010183,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "STMMI.MI",
+      "raw": "STMMI",
+      "name": "STMicroelectronics NV",
+      "weight": 0.0009534,
+      "country": "Italy",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3017.TW",
+      "raw": "3017",
+      "name": "Asia Vital Components Co Ltd",
+      "weight": 0.0009328,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "0992.HK",
+      "raw": "992",
+      "name": "Lenovo Group Ltd",
+      "weight": 0.0009278,
+      "country": "Hong Kong",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6723.T",
+      "raw": "6723",
+      "name": "Renesas Electronics Corp",
+      "weight": 0.0009274,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6701.T",
+      "raw": "6701",
+      "name": "NEC Corp",
+      "weight": 0.0009253,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "INFO.NS",
+      "raw": "INFO",
+      "name": "Infosys Ltd",
+      "weight": 0.0009246,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "ROP",
+      "raw": "ROP",
+      "name": "Roper Technologies Inc",
+      "weight": 0.0009185,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "4062.T",
+      "raw": "4062",
+      "name": "Ibiden Co Ltd",
+      "weight": 0.0008778,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "NPN.JO",
+      "raw": "NPN",
+      "name": "Naspers Ltd",
+      "weight": 0.0008763,
+      "country": "South Africa",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "OKTA",
+      "raw": "OKTA",
+      "name": "Okta Inc",
+      "weight": 0.0008416,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "CRDO",
+      "raw": "CRDO",
+      "name": "Credo Technology Group Holding Ltd",
+      "weight": 0.0008303000000000001,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -823,23 +759,47 @@
       "yahoo": "ON",
       "raw": "ON",
       "name": "ON Semiconductor Corp",
-      "weight": 0.0007228,
+      "weight": 0.0008265999999999999,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "AMS.MC",
-      "raw": "AMS",
-      "name": "Amadeus IT Group SA",
-      "weight": 0.0007205,
-      "country": "Spain",
-      "sector": "Software & Computer Services"
+      "yahoo": "6971.T",
+      "raw": "6971",
+      "name": "Kyocera Corp",
+      "weight": 0.0008226,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6146.T",
+      "raw": "6146",
+      "name": "Disco Corp",
+      "weight": 0.0008144999999999999,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "HPQ",
       "raw": "HPQ",
       "name": "HP Inc",
-      "weight": 0.0007003,
+      "weight": 0.0008060000000000001,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "4901.T",
+      "raw": "4901",
+      "name": "FUJIFILM Holdings Corp",
+      "weight": 0.0007432999999999999,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "JBL",
+      "raw": "JBL",
+      "name": "Jabil Inc",
+      "weight": 0.0007371,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
@@ -847,63 +807,87 @@
       "yahoo": "TSEM.TA",
       "raw": "TSEM",
       "name": "Tower Semiconductor Ltd",
-      "weight": 0.0006913999999999999,
+      "weight": 0.000732,
       "country": "Israel",
       "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "CTSH",
+      "raw": "CTSH",
+      "name": "Cognizant Technology Solutions Corp",
+      "weight": 0.0007251,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "7751.T",
+      "raw": "7751",
+      "name": "Canon Inc",
+      "weight": 0.0007164,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6274.TW",
+      "raw": "6274",
+      "name": "Taiwan Union Technology Corp",
+      "weight": 0.0007093000000000001,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2327.TW",
+      "raw": "2327",
+      "name": "Yageo Corp",
+      "weight": 0.0007063,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "AMS.MC",
+      "raw": "AMS",
+      "name": "Amadeus IT Group SA",
+      "weight": 0.0006959,
+      "country": "Spain",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2382.TW",
+      "raw": "2382",
+      "name": "Quanta Computer Inc",
+      "weight": 0.0006916,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "CRWV",
+      "raw": "CRWV",
+      "name": "CoreWeave Inc",
+      "weight": 0.0006897,
+      "country": "United States",
+      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "Q",
       "raw": "Q",
       "name": "Qnity Electronics Inc",
-      "weight": 0.0006802999999999999,
+      "weight": 0.000663,
       "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "9888.HK",
-      "raw": "9888",
-      "name": "Baidu Inc",
-      "weight": 0.0006726,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "TCS.NS",
-      "raw": "TCS",
-      "name": "Tata Consultancy Services Ltd",
-      "weight": 0.0006686,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "ZM",
-      "raw": "ZM",
-      "name": "Zoom Communications Inc",
-      "weight": 0.0006593,
+      "yahoo": "MDB",
+      "raw": "MDB",
+      "name": "MongoDB Inc",
+      "weight": 0.0006575999999999999,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "035420.KS",
-      "raw": "035420",
-      "name": "NAVER Corp",
-      "weight": 0.0006411,
-      "country": "South Korea",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "4901.T",
-      "raw": "4901",
-      "name": "FUJIFILM Holdings Corp",
-      "weight": 0.0006297999999999999,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "6669.TW",
-      "raw": "6669",
-      "name": "Wiwynn Corp",
-      "weight": 0.000628,
+      "yahoo": "2408.TW",
+      "raw": "2408",
+      "name": "Nanya Technology Corp",
+      "weight": 0.0006422,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -911,7 +895,23 @@
       "yahoo": "FFIV",
       "raw": "FFIV",
       "name": "F5 Inc",
-      "weight": 0.0006206,
+      "weight": 0.0006281,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "SMCI",
+      "raw": "SMCI",
+      "name": "Super Micro Computer Inc",
+      "weight": 0.000577,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "ZM",
+      "raw": "ZM",
+      "name": "Zoom Communications Inc",
+      "weight": 0.0005729999999999999,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
@@ -919,167 +919,199 @@
       "yahoo": "VRSN",
       "raw": "VRSN",
       "name": "VeriSign Inc",
-      "weight": 0.0006152,
+      "weight": 0.0005571,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "HEXA-B.ST",
-      "raw": "HEXAB",
-      "name": "Hexagon AB",
-      "weight": 0.0005750999999999999,
-      "country": "Sweden",
+      "yahoo": "9888.HK",
+      "raw": "9888",
+      "name": "Baidu Inc",
+      "weight": 0.0005548,
+      "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "SMCI",
-      "raw": "SMCI",
-      "name": "Super Micro Computer Inc",
-      "weight": 0.0005659,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3008.TW",
-      "raw": "3008",
-      "name": "Largan Precision Co Ltd",
-      "weight": 0.0005572,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "DELTA.BK",
-      "raw": "DELTA/F",
-      "name": "DELTA ELECTRONICS THAI-FORGN",
-      "weight": 0.0005545,
-      "country": "Thailand",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "LDOS",
-      "raw": "LDOS",
-      "name": "Leidos Holdings Inc",
-      "weight": 0.0005467,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "DSY.PA",
-      "raw": "DSY",
-      "name": "Dassault Systemes SE",
-      "weight": 0.0005466,
-      "country": "France",
+      "yahoo": "035420.KS",
+      "raw": "035420",
+      "name": "NAVER Corp",
+      "weight": 0.0005356,
+      "country": "South Korea",
       "sector": "Software & Computer Services"
     },
     {
       "yahoo": "ZS",
       "raw": "ZS",
       "name": "Zscaler Inc",
-      "weight": 0.0005441,
+      "weight": 0.0005331,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "2301.TW",
-      "raw": "2301",
-      "name": "Lite-On Technology Corp",
-      "weight": 0.0005321,
+      "yahoo": "DELTA.BK",
+      "raw": "DELTA/F",
+      "name": "DELTA ELECTRONICS THAI-FORGN",
+      "weight": 0.0005256,
+      "country": "Thailand",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "TCS.NS",
+      "raw": "TCS",
+      "name": "Tata Consultancy Services Ltd",
+      "weight": 0.0005254000000000001,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6669.TW",
+      "raw": "6669",
+      "name": "Wiwynn Corp",
+      "weight": 0.0005081,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "1347.HK",
-      "raw": "1347",
-      "name": "Hua Hong Grace Semiconductor Ltd",
-      "weight": 0.0005309,
-      "country": "Hong Kong",
-      "sector": "Technology Hardware & Equipment"
+      "yahoo": "HEXA-B.ST",
+      "raw": "HEXAB",
+      "name": "Hexagon AB",
+      "weight": 0.0005038999999999999,
+      "country": "Sweden",
+      "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "2357.TW",
-      "raw": "2357",
-      "name": "Asustek Computer Inc",
-      "weight": 0.0005164,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "GIB-A.TO",
-      "raw": "GIB/A",
-      "name": "CGI Inc",
-      "weight": 0.0005109,
-      "country": "Canada",
+      "yahoo": "CAP.PA",
+      "raw": "CAP",
+      "name": "Capgemini SE",
+      "weight": 0.0005019,
+      "country": "France",
       "sector": "Software & Computer Services"
     },
     {
       "yahoo": "RDDT",
       "raw": "RDDT",
       "name": "Reddit Inc",
-      "weight": 0.0004957000000000001,
+      "weight": 0.0005013999999999999,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "3034.TW",
-      "raw": "3034",
-      "name": "Novatek Microelectronics Corp",
-      "weight": 0.0004925,
+      "yahoo": "3653.TW",
+      "raw": "3653",
+      "name": "Jentech Precision Industrial Co Ltd",
+      "weight": 0.0005013,
       "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "PTC",
-      "raw": "PTC",
-      "name": "PTC Inc",
-      "weight": 0.0004923,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "CDW",
-      "raw": "CDW",
-      "name": "CDW Corp/DE",
-      "weight": 0.00046699999999999997,
-      "country": "United States",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "5274.TW",
       "raw": "5274",
       "name": "ASPEED Technology Inc",
-      "weight": 0.0004632,
+      "weight": 0.0004986999999999999,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6920.T",
+      "raw": "6920",
+      "name": "Lasertec Corp",
+      "weight": 0.0004821,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "CDW",
+      "raw": "CDW",
+      "name": "CDW Corp/DE",
+      "weight": 0.000474,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2357.TW",
+      "raw": "2357",
+      "name": "Asustek Computer Inc",
+      "weight": 0.0004583,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3443.TW",
+      "raw": "3443",
+      "name": "Global Unichip Corp",
+      "weight": 0.00045769999999999996,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3189.TW",
+      "raw": "3189",
+      "name": "Kinsus Interconnect Technology Corp",
+      "weight": 0.0004526,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2301.TW",
+      "raw": "2301",
+      "name": "Lite-On Technology Corp",
+      "weight": 0.0004498,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "DSY.PA",
+      "raw": "DSY",
+      "name": "Dassault Systemes SE",
+      "weight": 0.00044380000000000005,
+      "country": "France",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "GIB-A.TO",
+      "raw": "GIB/A",
+      "name": "CGI Inc",
+      "weight": 0.0004281,
+      "country": "Canada",
+      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "2344.TW",
       "raw": "2344",
       "name": "Winbond Electronics Corp",
-      "weight": 0.0004594,
+      "weight": 0.0004169,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "CAP.PA",
-      "raw": "CAP",
-      "name": "Capgemini SE",
-      "weight": 0.00045379999999999997,
-      "country": "France",
-      "sector": "Software & Computer Services"
+      "yahoo": "3231.TW",
+      "raw": "3231",
+      "name": "Wistron Corp",
+      "weight": 0.0004084,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "2408.TW",
-      "raw": "2408",
-      "name": "Nanya Technology Corp",
-      "weight": 0.0004537,
+      "yahoo": "3008.TW",
+      "raw": "3008",
+      "name": "Largan Precision Co Ltd",
+      "weight": 0.0003995,
       "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "7735.T",
+      "raw": "7735",
+      "name": "SCREEN Holdings Co Ltd",
+      "weight": 0.0003985,
+      "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "BESI.AS",
       "raw": "BESI",
       "name": "BE Semiconductor Industries NV",
-      "weight": 0.0004372,
+      "weight": 0.00038830000000000006,
       "country": "Netherlands",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1087,23 +1119,7 @@
       "yahoo": "2368.TW",
       "raw": "2368",
       "name": "Gold Circuit Electronics Ltd",
-      "weight": 0.00043369999999999997,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "SSNC",
-      "raw": "SSNC",
-      "name": "SS&C Technologies Holdings Inc",
-      "weight": 0.00043,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "3231.TW",
-      "raw": "3231",
-      "name": "Wistron Corp",
-      "weight": 0.0004271,
+      "weight": 0.0003846,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1111,95 +1127,63 @@
       "yahoo": "ETERNAL.NS",
       "raw": "ETERNAL",
       "name": "Eternal Ltd",
-      "weight": 0.0004267,
+      "weight": 0.00038260000000000003,
       "country": "India",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6920.T",
-      "raw": "6920",
-      "name": "Lasertec Corp",
-      "weight": 0.00041910000000000005,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "TRI.TO",
-      "raw": "TRI",
-      "name": "Thomson Reuters Corp",
-      "weight": 0.0004179,
-      "country": "Canada",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "SGE.L",
-      "raw": "SGE",
-      "name": "Sage Group PLC/The",
-      "weight": 0.0004129,
-      "country": "United Kingdom",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "GEN",
-      "raw": "GEN",
-      "name": "Gen Digital Inc",
-      "weight": 0.0004014,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "TYL",
-      "raw": "TYL",
-      "name": "Tyler Technologies Inc",
-      "weight": 0.00040009999999999997,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "7735.T",
-      "raw": "7735",
-      "name": "SCREEN Holdings Co Ltd",
-      "weight": 0.0003963,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "LOGN.SW",
       "raw": "LOGN",
       "name": "Logitech International SA",
-      "weight": 0.00039260000000000006,
+      "weight": 0.0003739,
       "country": "Switzerland",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "SSNC",
+      "raw": "SSNC",
+      "name": "SS&C Technologies Holdings Inc",
+      "weight": 0.00036970000000000004,
+      "country": "United States",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "TRI.TO",
+      "raw": "TRI",
+      "name": "Thomson Reuters Corp",
+      "weight": 0.00035200000000000005,
+      "country": "Canada",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6525.T",
+      "raw": "6525",
+      "name": "Kokusai Electric Corp",
+      "weight": 0.0003476,
+      "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "4307.T",
       "raw": "4307",
       "name": "Nomura Research Institute Ltd",
-      "weight": 0.0003907,
+      "weight": 0.000344,
       "country": "Japan",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "6963.T",
-      "raw": "6963",
-      "name": "Rohm Co Ltd",
-      "weight": 0.0003904,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
+      "yahoo": "SGE.L",
+      "raw": "SGE",
+      "name": "Sage Group PLC/The",
+      "weight": 0.0003331,
+      "country": "United Kingdom",
+      "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "3443.TW",
-      "raw": "3443",
-      "name": "Global Unichip Corp",
-      "weight": 0.0003764,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3653.TW",
-      "raw": "3653",
-      "name": "Jentech Precision Industrial Co Ltd",
-      "weight": 0.00037269999999999995,
+      "yahoo": "3665.TW",
+      "raw": "3665",
+      "name": "Bizlink Holding Inc",
+      "weight": 0.00031969999999999996,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1207,55 +1191,15 @@
       "yahoo": "HCLT.NS",
       "raw": "HCLT",
       "name": "HCL Technologies Ltd",
-      "weight": 0.0003701,
+      "weight": 0.0003189,
       "country": "India",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "HUBS",
-      "raw": "HUBS",
-      "name": "HubSpot Inc",
-      "weight": 0.000369,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "GDDY",
-      "raw": "GDDY",
-      "name": "GoDaddy Inc",
-      "weight": 0.0003644,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "1024.HK",
-      "raw": "1024",
-      "name": "Kuaishou Technology",
-      "weight": 0.00035749999999999996,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "035720.KS",
-      "raw": "035720",
-      "name": "Kakao Corp",
-      "weight": 0.0003492,
-      "country": "South Korea",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6525.T",
-      "raw": "6525",
-      "name": "Kokusai Electric Corp",
-      "weight": 0.000339,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "010120.KS",
       "raw": "010120",
       "name": "LS Electric Co Ltd",
-      "weight": 0.00033329999999999997,
+      "weight": 0.0003082,
       "country": "South Korea",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1263,39 +1207,79 @@
       "yahoo": "6223.TW",
       "raw": "6223",
       "name": "MPI Corp",
-      "weight": 0.00033210000000000005,
+      "weight": 0.00030609999999999996,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "DOCU",
-      "raw": "DOCU",
-      "name": "Docusign Inc",
-      "weight": 0.0003286,
-      "country": "United States",
+      "yahoo": "1024.HK",
+      "raw": "1024",
+      "name": "Kuaishou Technology",
+      "weight": 0.00030460000000000003,
+      "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "IT",
-      "raw": "IT",
-      "name": "Gartner Inc",
-      "weight": 0.0003147,
-      "country": "United States",
+      "yahoo": "NVMI.TA",
+      "raw": "NVMI",
+      "name": "Nova Ltd",
+      "weight": 0.0003019,
+      "country": "Israel",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "035720.KS",
+      "raw": "035720",
+      "name": "Kakao Corp",
+      "weight": 0.0003,
+      "country": "South Korea",
       "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2379.TW",
+      "raw": "2379",
+      "name": "Realtek Semiconductor Corp",
+      "weight": 0.000294,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2395.TW",
+      "raw": "2395",
+      "name": "Advantech Co Ltd",
+      "weight": 0.0002913,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "4684.T",
       "raw": "4684",
       "name": "Obic Co Ltd",
-      "weight": 0.0003117,
+      "weight": 0.0002859,
       "country": "Japan",
       "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "3481.TW",
+      "raw": "3481",
+      "name": "Innolux Corp",
+      "weight": 0.0002837,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6963.T",
+      "raw": "6963",
+      "name": "Rohm Co Ltd",
+      "weight": 0.0002792,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "TECHM.NS",
       "raw": "TECHM",
       "name": "Tech Mahindra Ltd",
-      "weight": 0.0003082,
+      "weight": 0.0002653,
       "country": "India",
       "sector": "Software & Computer Services"
     },
@@ -1303,151 +1287,79 @@
       "yahoo": "4689.T",
       "raw": "4689",
       "name": "LY Corp",
-      "weight": 0.0003047,
+      "weight": 0.00026440000000000003,
       "country": "Japan",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "2379.TW",
-      "raw": "2379",
-      "name": "Realtek Semiconductor Corp",
-      "weight": 0.0003023,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "XRO.AX",
-      "raw": "XRO",
-      "name": "Xero Ltd",
-      "weight": 0.0002992,
-      "country": "Australia",
+      "yahoo": "GEN",
+      "raw": "GEN",
+      "name": "Gen Digital Inc",
+      "weight": 0.0002639,
+      "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "2395.TW",
-      "raw": "2395",
-      "name": "Advantech Co Ltd",
-      "weight": 0.0002945,
+      "yahoo": "7769.TW",
+      "raw": "7769",
+      "name": "Hon Precision Inc",
+      "weight": 0.0002543,
       "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3665.TW",
-      "raw": "3665",
-      "name": "Bizlink Holding Inc",
-      "weight": 0.0002898,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3481.TW",
-      "raw": "3481",
-      "name": "Innolux Corp",
-      "weight": 0.0002802,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "298040.KS",
-      "raw": "298040",
-      "name": "Hyosung Heavy Industries Corp",
-      "weight": 0.0002779,
-      "country": "South Korea",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "4958.TW",
       "raw": "4958",
       "name": "Zhen Ding Technology Holding Ltd",
-      "weight": 0.0002698,
+      "weight": 0.0002524,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "CHKP",
-      "raw": "CHKP",
-      "name": "Check Point Software Technologies Ltd",
-      "weight": 0.0002697,
-      "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "8299.TW",
-      "raw": "8299",
-      "name": "Phison Electronics Corp",
-      "weight": 0.0002694,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "PINS",
-      "raw": "PINS",
-      "name": "Pinterest Inc",
-      "weight": 0.0002626,
-      "country": "United States",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "6239.TW",
       "raw": "6239",
       "name": "Powertech Technology Inc",
-      "weight": 0.000257,
+      "weight": 0.0002477,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "COFORGE.NS",
-      "raw": "COFORGE",
-      "name": "Coforge Ltd",
-      "weight": 0.0002433,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "NXT.AX",
-      "raw": "NXT",
-      "name": "NEXTDC Ltd",
-      "weight": 0.0002358,
-      "country": "Australia",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "NVMI.TA",
-      "raw": "NVMI",
-      "name": "Nova Ltd",
-      "weight": 0.00023539999999999998,
-      "country": "Israel",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "007660.KS",
-      "raw": "007660",
-      "name": "IsuPetasys Co Ltd",
-      "weight": 0.00023390000000000002,
-      "country": "South Korea",
+      "yahoo": "8299.TW",
+      "raw": "8299",
+      "name": "Phison Electronics Corp",
+      "weight": 0.0002468,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "6479.T",
       "raw": "6479",
       "name": "MINEBEA MITSUMI Inc",
-      "weight": 0.00023359999999999999,
+      "weight": 0.0002437,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "NEM.DE",
-      "raw": "NEM",
-      "name": "Nemetschek SE",
-      "weight": 0.0002332,
-      "country": "Germany",
-      "sector": "Software & Computer Services"
+      "yahoo": "298040.KS",
+      "raw": "298040",
+      "name": "Hyosung Heavy Industries Corp",
+      "weight": 0.0002434,
+      "country": "South Korea",
+      "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "3661.TW",
-      "raw": "3661",
-      "name": "Alchip Technologies Ltd",
-      "weight": 0.00023290000000000002,
+      "yahoo": "6976.T",
+      "raw": "6976",
+      "name": "Taiyo Yuden Co Ltd",
+      "weight": 0.00023970000000000003,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2449.TW",
+      "raw": "2449",
+      "name": "King Yuan Electronics Co Ltd",
+      "weight": 0.00023390000000000002,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1455,23 +1367,31 @@
       "yahoo": "8046.TW",
       "raw": "8046",
       "name": "Nan Ya Printed Circuit Board Corp",
-      "weight": 0.00022769999999999998,
+      "weight": 0.0002288,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "2382.HK",
-      "raw": "2382",
-      "name": "Sunny Optical Technology Group Co Ltd",
-      "weight": 0.0002244,
+      "yahoo": "1347.HK",
+      "raw": "1347",
+      "name": "Hua Hong Grace Semiconductor Ltd",
+      "weight": 0.0002212,
       "country": "Hong Kong",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "2449.TW",
-      "raw": "2449",
-      "name": "King Yuan Electronics Co Ltd",
-      "weight": 0.0002212,
+      "yahoo": "042700.KS",
+      "raw": "042700",
+      "name": "Hanmi Semiconductor Co Ltd",
+      "weight": 0.00021669999999999998,
+      "country": "South Korea",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2313.TW",
+      "raw": "2313",
+      "name": "Compeq Manufacturing Co Ltd",
+      "weight": 0.0002114,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1479,63 +1399,143 @@
       "yahoo": "6770.TW",
       "raw": "6770",
       "name": "Powerchip Semiconductor Manufacturing Corp",
-      "weight": 0.0002195,
+      "weight": 0.00020889999999999998,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "6448.T",
-      "raw": "6448",
-      "name": "Brother Industries Ltd",
-      "weight": 0.0002179,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "IDR.MC",
-      "raw": "IDR",
-      "name": "Indra Sistemas SA",
-      "weight": 0.0002099,
-      "country": "Spain",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "3436.T",
-      "raw": "3436",
-      "name": "SUMCO Corp",
-      "weight": 0.0002029,
-      "country": "Japan",
+      "yahoo": "3034.TW",
+      "raw": "3034",
+      "name": "Novatek Microelectronics Corp",
+      "weight": 0.00020459999999999999,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "6488.TW",
       "raw": "6488",
       "name": "Globalwafers Co Ltd",
-      "weight": 0.0001937,
+      "weight": 0.0002028,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "CAMBRI80.BK",
-      "raw": "CAMBRI80",
-      "name": "CAMBRICON TECHNOLOGIES CO-DR",
-      "weight": 0.0001896,
-      "country": "Thailand",
+      "yahoo": "5347.TW",
+      "raw": "5347",
+      "name": "Vanguard International Semiconductor Corp",
+      "weight": 0.00020240000000000001,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "G24.DE",
-      "raw": "G24",
-      "name": "Scout24 SE",
-      "weight": 0.0001889,
-      "country": "Germany",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "3702.TW",
       "raw": "3702",
       "name": "WPG Holdings Ltd",
-      "weight": 0.00018859999999999998,
+      "weight": 0.00019910000000000001,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3661.TW",
+      "raw": "3661",
+      "name": "Alchip Technologies Ltd",
+      "weight": 0.00019720000000000002,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "COFORGE.NS",
+      "raw": "COFORGE",
+      "name": "Coforge Ltd",
+      "weight": 0.0001971,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "1888.HK",
+      "raw": "1888",
+      "name": "Kingboard Laminates Holdings Ltd",
+      "weight": 0.00019449999999999998,
+      "country": "Hong Kong",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6448.T",
+      "raw": "6448",
+      "name": "Brother Industries Ltd",
+      "weight": 0.0001918,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3436.T",
+      "raw": "3436",
+      "name": "SUMCO Corp",
+      "weight": 0.0001862,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2382.HK",
+      "raw": "2382",
+      "name": "Sunny Optical Technology Group Co Ltd",
+      "weight": 0.0001849,
+      "country": "Hong Kong",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "XRO.AX",
+      "raw": "XRO",
+      "name": "Xero Ltd",
+      "weight": 0.0001847,
+      "country": "Australia",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "CAMBRI80.BK",
+      "raw": "CAMBRI80",
+      "name": "CAMBRICON TECHNOLOGIES CO-DR",
+      "weight": 0.000182,
+      "country": "Thailand",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "NEM.DE",
+      "raw": "NEM",
+      "name": "Nemetschek SE",
+      "weight": 0.00018180000000000003,
+      "country": "Germany",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "IDR.MC",
+      "raw": "IDR",
+      "name": "Indra Sistemas SA",
+      "weight": 0.00017999999999999998,
+      "country": "Spain",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "3044.TW",
+      "raw": "3044",
+      "name": "Tripod Technology Corp",
+      "weight": 0.0001771,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "011070.KS",
+      "raw": "011070",
+      "name": "LG Innotek Co Ltd",
+      "weight": 0.0001733,
+      "country": "South Korea",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2337.TW",
+      "raw": "2337",
+      "name": "Macronix International Co Ltd",
+      "weight": 0.0001715,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1543,31 +1543,15 @@
       "yahoo": "NICE.TA",
       "raw": "NICE",
       "name": "Nice Ltd",
-      "weight": 0.00018370000000000002,
+      "weight": 0.000167,
       "country": "Israel",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "3044.TW",
-      "raw": "3044",
-      "name": "Tripod Technology Corp",
-      "weight": 0.0001816,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "WTC.AX",
-      "raw": "WTC",
-      "name": "WiseTech Global Ltd",
-      "weight": 0.0001815,
-      "country": "Australia",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "CAR.AX",
-      "raw": "CAR",
-      "name": "CAR Group Ltd",
-      "weight": 0.000179,
+      "yahoo": "NXT.AX",
+      "raw": "NXT",
+      "name": "NEXTDC Ltd",
+      "weight": 0.0001662,
       "country": "Australia",
       "sector": "Software & Computer Services"
     },
@@ -1575,175 +1559,295 @@
       "yahoo": "DSG.TO",
       "raw": "DSG",
       "name": "Descartes Systems Group Inc/The",
-      "weight": 0.00017680000000000001,
+      "weight": 0.000165,
       "country": "Canada",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "TNE.AX",
-      "raw": "TNE",
-      "name": "Technology One Ltd",
-      "weight": 0.0001761,
-      "country": "Australia",
-      "sector": "Software & Computer Services"
+      "yahoo": "688041.SS",
+      "raw": "688041 C1",
+      "name": "Hygon Information Technology Co Ltd",
+      "weight": 0.0001618,
+      "country": "CN",
+      "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "TME",
-      "raw": "TME",
-      "name": "TENCENT MUSIC ENTERTAINM-ADR",
-      "weight": 0.0001742,
-      "country": "United States",
+      "yahoo": "1698.HK",
+      "raw": "1698",
+      "name": "Tencent Music Entertainment Group",
+      "weight": 0.0001566,
+      "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
     {
       "yahoo": "PSYS.NS",
       "raw": "PSYS",
       "name": "Persistent Systems Ltd",
-      "weight": 0.00016979999999999998,
+      "weight": 0.0001473,
       "country": "India",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "4755.T",
-      "raw": "4755",
-      "name": "Rakuten Group Inc",
-      "weight": 0.0001667,
-      "country": "Japan",
+      "yahoo": "G24.DE",
+      "raw": "G24",
+      "name": "Scout24 SE",
+      "weight": 0.0001435,
+      "country": "Germany",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2409.TW",
+      "raw": "2409",
+      "name": "AUO Corp",
+      "weight": 0.0001423,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "TNE.AX",
+      "raw": "TNE",
+      "name": "Technology One Ltd",
+      "weight": 0.0001406,
+      "country": "Australia",
       "sector": "Software & Computer Services"
     },
     {
       "yahoo": "8069.TW",
       "raw": "8069",
       "name": "E Ink Holdings Inc",
-      "weight": 0.0001646,
+      "weight": 0.0001397,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "6976.T",
-      "raw": "6976",
-      "name": "Taiyo Yuden Co Ltd",
-      "weight": 0.00015869999999999998,
+      "yahoo": "4755.T",
+      "raw": "4755",
+      "name": "Rakuten Group Inc",
+      "weight": 0.0001395,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6871.T",
+      "raw": "6871",
+      "name": "Micronics Japan Co Ltd",
+      "weight": 0.0001319,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "1888.HK",
-      "raw": "1888",
-      "name": "Kingboard Laminates Holdings Ltd",
-      "weight": 0.00015350000000000002,
-      "country": "Hong Kong",
-      "sector": "Technology Hardware & Equipment"
+      "yahoo": "WTC.AX",
+      "raw": "WTC",
+      "name": "WiseTech Global Ltd",
+      "weight": 0.0001311,
+      "country": "Australia",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "CAR.AX",
+      "raw": "CAR",
+      "name": "CAR Group Ltd",
+      "weight": 0.00013010000000000002,
+      "country": "Australia",
+      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "0522.HK",
       "raw": "522",
       "name": "ASMPT Ltd",
-      "weight": 0.0001427,
+      "weight": 0.00012869999999999998,
       "country": "Hong Kong",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "0020.HK",
-      "raw": "20",
-      "name": "SenseTime Group Inc",
-      "weight": 0.0001365,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "9626.HK",
       "raw": "9626",
       "name": "Bilibili Inc",
-      "weight": 0.0001324,
+      "weight": 0.0001269,
       "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "018260.KS",
-      "raw": "018260",
-      "name": "Samsung SDS Co Ltd",
-      "weight": 0.00013220000000000001,
+      "yahoo": "3529.TW",
+      "raw": "3529",
+      "name": "eMemory Technology Inc",
+      "weight": 0.00012649999999999998,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "007660.KS",
+      "raw": "007660",
+      "name": "IsuPetasys Co Ltd",
+      "weight": 0.0001263,
       "country": "South Korea",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2327.T",
+      "raw": "2327",
+      "name": "NS Solutions Corp",
+      "weight": 0.0001237,
+      "country": "Japan",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "042700.KS",
-      "raw": "042700",
-      "name": "Hanmi Semiconductor Co Ltd",
-      "weight": 0.0001318,
-      "country": "South Korea",
+      "yahoo": "6515.TW",
+      "raw": "6515",
+      "name": "WinWay Technology Co Ltd",
+      "weight": 0.0001217,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "7752.T",
       "raw": "7752",
       "name": "Ricoh Co Ltd",
-      "weight": 0.0001305,
+      "weight": 0.00011939999999999999,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "011070.KS",
-      "raw": "011070",
-      "name": "LG Innotek Co Ltd",
-      "weight": 0.000128,
-      "country": "South Korea",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "0772.HK",
-      "raw": "772",
-      "name": "China Literature Ltd",
-      "weight": 0.0001272,
-      "country": "Hong Kong",
+      "yahoo": "MBGL",
+      "raw": "MBGL",
+      "name": "Mobility Global Inc",
+      "weight": 0.0001179,
+      "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "TELX.NS",
-      "raw": "TELX",
-      "name": "Tata Elxsi Ltd",
-      "weight": 0.0001243,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "2377.TW",
-      "raw": "2377",
-      "name": "Micro-Star International Co Ltd",
-      "weight": 0.0001226,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "688041.SS",
-      "raw": "688041 C1",
-      "name": "Hygon Information Technology Co Ltd",
-      "weight": 0.0001212,
-      "country": "CN",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "REY.MI",
-      "raw": "REY",
-      "name": "Reply SpA",
-      "weight": 0.0001207,
-      "country": "Italy",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "4768.T",
-      "raw": "4768",
-      "name": "Otsuka Corp",
+      "yahoo": "4704.T",
+      "raw": "4704",
+      "name": "Trend Micro Inc/Japan",
       "weight": 0.0001179,
       "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "0100.HK",
+      "raw": "100",
+      "name": "Minimax Group Inc",
+      "weight": 0.0001137,
+      "country": "Hong Kong",
       "sector": "Software & Computer Services"
     },
     {
       "yahoo": "3533.TW",
       "raw": "3533",
       "name": "Lotes Co Ltd",
-      "weight": 0.0001171,
+      "weight": 0.00011310000000000001,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "018260.KS",
+      "raw": "018260",
+      "name": "Samsung SDS Co Ltd",
+      "weight": 0.00011289999999999999,
+      "country": "South Korea",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "4768.T",
+      "raw": "4768",
+      "name": "Otsuka Corp",
+      "weight": 0.000112,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "4716.T",
+      "raw": "4716",
+      "name": "Oracle Corp Japan",
+      "weight": 0.00011169999999999999,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2377.TW",
+      "raw": "2377",
+      "name": "Micro-Star International Co Ltd",
+      "weight": 0.00011020000000000001,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "0020.HK",
+      "raw": "20",
+      "name": "SenseTime Group Inc",
+      "weight": 0.00010779999999999999,
+      "country": "Hong Kong",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "GFS",
+      "raw": "GFS",
+      "name": "GLOBALFOUNDRIES Inc",
+      "weight": 0.00010680000000000001,
+      "country": "United States",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2376.TW",
+      "raw": "2376",
+      "name": "Gigabyte Technology Co Ltd",
+      "weight": 0.0001064,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "4938.TW",
+      "raw": "4938",
+      "name": "Pegatron Corp",
+      "weight": 0.0001021,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "2492.TW",
+      "raw": "2492",
+      "name": "Walsin Technology Corp",
+      "weight": 0.00010200000000000001,
+      "country": "Taiwan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "1357.HK",
+      "raw": "1357",
+      "name": "Meitu Inc",
+      "weight": 0.00010070000000000001,
+      "country": "Hong Kong",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "688012.SS",
+      "raw": "688012 C1",
+      "name": "Advanced Micro-Fabrication Equipment Inc China",
+      "weight": 0.0000995,
+      "country": "CN",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "TELX.NS",
+      "raw": "TELX",
+      "name": "Tata Elxsi Ltd",
+      "weight": 0.00009860000000000001,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6724.T",
+      "raw": "6724",
+      "name": "Seiko Epson Corp",
+      "weight": 0.00009690000000000001,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3105.TW",
+      "raw": "3105",
+      "name": "Win Semiconductors Corp",
+      "weight": 0.0000966,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1751,127 +1855,31 @@
       "yahoo": "2356.TW",
       "raw": "2356",
       "name": "Inventec Corp",
-      "weight": 0.0001162,
+      "weight": 0.0000956,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "2376.TW",
-      "raw": "2376",
-      "name": "Gigabyte Technology Co Ltd",
-      "weight": 0.00011520000000000001,
+      "yahoo": "3036.TW",
+      "raw": "3036",
+      "name": "WT Microelectronics Co Ltd",
+      "weight": 0.0000944,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "4704.T",
-      "raw": "4704",
-      "name": "Trend Micro Inc/Japan",
-      "weight": 0.00011509999999999999,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "NAURA23.BK",
-      "raw": "NAURA23",
-      "name": "NAURA TECHNOLOGY GROUP CO-DR",
-      "weight": 0.0001123,
-      "country": "Thailand",
+      "yahoo": "TPRO.MI",
+      "raw": "TPRO",
+      "name": "Technoprobe SpA",
+      "weight": 0.0000941,
+      "country": "Italy",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "4938.TW",
-      "raw": "4938",
-      "name": "Pegatron Corp",
-      "weight": 0.0001122,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "9660.HK",
-      "raw": "9660",
-      "name": "Horizon Robotics",
-      "weight": 0.0001094,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "2324.TW",
       "raw": "2324",
       "name": "Compal Electronics Inc",
-      "weight": 0.0001093,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "OTEX.TO",
-      "raw": "OTEX",
-      "name": "Open Text Corp",
-      "weight": 0.0001093,
-      "country": "Canada",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "WPRO.NS",
-      "raw": "WPRO",
-      "name": "Wipro Ltd",
-      "weight": 0.0001081,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "GFS",
-      "raw": "GFS",
-      "name": "GLOBALFOUNDRIES Inc",
-      "weight": 0.0001076,
-      "country": "United States",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "5347.TW",
-      "raw": "5347",
-      "name": "Vanguard International Semiconductor Corp",
-      "weight": 0.0001071,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2409.TW",
-      "raw": "2409",
-      "name": "AUO Corp",
-      "weight": 0.0001067,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "INFOE.NS",
-      "raw": "INFOE",
-      "name": "Info Edge India Ltd",
-      "weight": 0.0001056,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "AUTO.L",
-      "raw": "AUTO",
-      "name": "Autotrader Group PLC",
-      "weight": 0.00010510000000000001,
-      "country": "United Kingdom",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6724.T",
-      "raw": "6724",
-      "name": "Seiko Epson Corp",
-      "weight": 0.00010149999999999999,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3529.TW",
-      "raw": "3529",
-      "name": "eMemory Technology Inc",
-      "weight": 0.0000995,
+      "weight": 0.0000927,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -1879,39 +1887,55 @@
       "yahoo": "3626.T",
       "raw": "3626",
       "name": "TISI Inc",
-      "weight": 0.0000988,
+      "weight": 0.0000922,
       "country": "Japan",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "3036.TW",
-      "raw": "3036",
-      "name": "WT Microelectronics Co Ltd",
-      "weight": 0.0000976,
-      "country": "Taiwan",
+      "yahoo": "OTEX.TO",
+      "raw": "OTEX",
+      "name": "Open Text Corp",
+      "weight": 0.0000911,
+      "country": "Canada",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "INFOE.NS",
+      "raw": "INFOE",
+      "name": "Info Edge India Ltd",
+      "weight": 0.0000902,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "NAURA23.BK",
+      "raw": "NAURA23",
+      "name": "NAURA TECHNOLOGY GROUP CO-DR",
+      "weight": 0.0000896,
+      "country": "Thailand",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "603986.SS",
-      "raw": "603986 C1",
-      "name": "GigaDevice Semiconductor Inc",
-      "weight": 0.00009690000000000001,
+      "yahoo": "9660.HK",
+      "raw": "9660",
+      "name": "Horizon Robotics",
+      "weight": 0.0000896,
+      "country": "Hong Kong",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "600183.SS",
+      "raw": "600183 C1",
+      "name": "Shengyi Technology Co Ltd",
+      "weight": 0.0000864,
       "country": "CN",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "VEND.OL",
-      "raw": "VEND",
-      "name": "Vend Marketplaces ASA",
-      "weight": 0.0000915,
-      "country": "Norway",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "LTM.NS",
-      "raw": "LTM",
-      "name": "LTM Ltd",
-      "weight": 0.0000911,
+      "yahoo": "WPRO.NS",
+      "raw": "WPRO",
+      "name": "Wipro Ltd",
+      "weight": 0.0000854,
       "country": "India",
       "sector": "Software & Computer Services"
     },
@@ -1919,231 +1943,295 @@
       "yahoo": "2353.TW",
       "raw": "2353",
       "name": "Acer Inc",
-      "weight": 0.0000907,
+      "weight": 0.00008410000000000001,
       "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "TEMN.SW",
-      "raw": "TEMN",
-      "name": "Temenos AG",
-      "weight": 0.00008869999999999999,
-      "country": "Switzerland",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6806.T",
-      "raw": "6806",
-      "name": "Hirose Electric Co Ltd",
-      "weight": 0.0000886,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2018.HK",
-      "raw": "2018",
-      "name": "AAC Technologies Holdings Inc",
-      "weight": 0.00008779999999999999,
-      "country": "Hong Kong",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "3105.TW",
-      "raw": "3105",
-      "name": "Win Semiconductors Corp",
-      "weight": 0.0000865,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "6965.T",
-      "raw": "6965",
-      "name": "Hamamatsu Photonics KK",
-      "weight": 0.0000856,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "TPRO.MI",
-      "raw": "TPRO",
-      "name": "Technoprobe SpA",
-      "weight": 0.000085,
-      "country": "Italy",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "7729.T",
       "raw": "7729",
       "name": "Tokyo Seimitsu Co Ltd",
-      "weight": 0.0000838,
+      "weight": 0.0000828,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "6415.TW",
-      "raw": "6415",
-      "name": "Silergy Corp",
-      "weight": 0.00008319999999999999,
-      "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "BC8.DE",
-      "raw": "BC8",
-      "name": "Bechtle AG",
-      "weight": 0.0000814,
-      "country": "Germany",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "OFSS.NS",
-      "raw": "OFSS",
-      "name": "Oracle Financial Services Software Ltd",
-      "weight": 0.0000803,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "4385.T",
-      "raw": "4385",
-      "name": "Mercari Inc",
-      "weight": 0.0000782,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "4751.T",
-      "raw": "4751",
-      "name": "CyberAgent Inc",
-      "weight": 0.0000779,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "TOTS3.SA",
-      "raw": "TOTS3",
-      "name": "TOTVS SA",
-      "weight": 0.0000777,
-      "country": "Brazil",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "3132.T",
       "raw": "3132",
       "name": "Macnica Holdings Inc",
-      "weight": 0.0000772,
+      "weight": 0.0000828,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "3888.HK",
-      "raw": "3888",
-      "name": "Kingsoft Corp Ltd",
-      "weight": 0.0000767,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "MPHL.NS",
-      "raw": "MPHL",
-      "name": "Mphasis Ltd",
-      "weight": 0.0000757,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "0268.HK",
-      "raw": "268",
-      "name": "Kingdee International Software Group Co Ltd",
-      "weight": 0.0000756,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "2347.TW",
-      "raw": "2347",
-      "name": "Synnex Technology International Corp",
-      "weight": 0.00007400000000000001,
-      "country": "Taiwan",
+      "yahoo": "002916.SZ",
+      "raw": "002916 C2",
+      "name": "Shennan Circuits Co Ltd",
+      "weight": 0.0000826,
+      "country": "CN",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "VMS.SI",
-      "raw": "VMS",
-      "name": "Venture Corp Ltd",
-      "weight": 0.0000728,
-      "country": "Singapore",
+      "yahoo": "AUTO.L",
+      "raw": "AUTO",
+      "name": "Autotrader Group PLC",
+      "weight": 0.00008170000000000001,
+      "country": "United Kingdom",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6965.T",
+      "raw": "6965",
+      "name": "Hamamatsu Photonics KK",
+      "weight": 0.00007979999999999999,
+      "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "2474.TW",
-      "raw": "2474",
-      "name": "Catcher Technology Co Ltd",
-      "weight": 0.0000727,
-      "country": "Taiwan",
+      "yahoo": "6806.T",
+      "raw": "6806",
+      "name": "Hirose Electric Co Ltd",
+      "weight": 0.0000797,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "603986.SS",
+      "raw": "603986 C1",
+      "name": "GigaDevice Semiconductor Inc",
+      "weight": 0.0000784,
+      "country": "CN",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "5483.TW",
       "raw": "5483",
       "name": "Sino-American Silicon Products Inc",
-      "weight": 0.0000724,
+      "weight": 0.0000778,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "5214.T",
-      "raw": "5214",
-      "name": "Nippon Electric Glass Co Ltd",
-      "weight": 0.0000721,
-      "country": "Japan",
+      "yahoo": "6415.TW",
+      "raw": "6415",
+      "name": "Silergy Corp",
+      "weight": 0.00007609999999999999,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "2371.T",
-      "raw": "2371",
-      "name": "Kakaku.com Inc",
-      "weight": 0.0000693,
-      "country": "Japan",
+      "yahoo": "MEESHO.NS",
+      "raw": "MEESHO",
+      "name": "Meesho Ltd",
+      "weight": 0.0000759,
+      "country": "India",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "6323.T",
-      "raw": "6323",
-      "name": "Rorze Corp",
-      "weight": 0.000069,
-      "country": "Japan",
+      "yahoo": "LTM.NS",
+      "raw": "LTM",
+      "name": "LTM Ltd",
+      "weight": 0.0000746,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2347.TW",
+      "raw": "2347",
+      "name": "Synnex Technology International Corp",
+      "weight": 0.0000745,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "064400.KS",
-      "raw": "064400",
-      "name": "LG CNS Co Ltd",
-      "weight": 0.000067,
-      "country": "South Korea",
-      "sector": "Software & Computer Services"
+      "yahoo": "002384.SZ",
+      "raw": "002384 C2",
+      "name": "Suzhou Dongshan Precision Manufacturing Co Ltd",
+      "weight": 0.0000742,
+      "country": "CN",
+      "sector": "Technology Hardware & Equipment"
     },
     {
-      "yahoo": "9698.HK",
-      "raw": "9698",
-      "name": "GDS Holdings Ltd",
-      "weight": 0.0000669,
+      "yahoo": "2018.HK",
+      "raw": "2018",
+      "name": "AAC Technologies Holdings Inc",
+      "weight": 0.000072,
       "country": "Hong Kong",
-      "sector": "Software & Computer Services"
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6082.HK",
+      "raw": "6082",
+      "name": "Shanghai Biren Technology Co Ltd",
+      "weight": 0.0000708,
+      "country": "Hong Kong",
+      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "CAMT.TA",
       "raw": "CAMT",
       "name": "Camtek Ltd/Israel",
-      "weight": 0.00006649999999999999,
+      "weight": 0.0000708,
       "country": "Israel",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "3888.HK",
+      "raw": "3888",
+      "name": "Kingsoft Corp Ltd",
+      "weight": 0.0000708,
+      "country": "Hong Kong",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "TEMN.SW",
+      "raw": "TEMN",
+      "name": "Temenos AG",
+      "weight": 0.0000703,
+      "country": "Switzerland",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "5214.T",
+      "raw": "5214",
+      "name": "Nippon Electric Glass Co Ltd",
+      "weight": 0.0000695,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "TOTS3.SA",
+      "raw": "TOTS3",
+      "name": "TOTVS SA",
+      "weight": 0.000068,
+      "country": "Brazil",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2371.T",
+      "raw": "2371",
+      "name": "Kakaku.com Inc",
+      "weight": 0.0000676,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "VEND.OL",
+      "raw": "VEND",
+      "name": "Vend Marketplaces ASA",
+      "weight": 0.0000675,
+      "country": "Norway",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "4751.T",
+      "raw": "4751",
+      "name": "CyberAgent Inc",
+      "weight": 0.0000666,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "2474.TW",
+      "raw": "2474",
+      "name": "Catcher Technology Co Ltd",
+      "weight": 0.0000664,
+      "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "4980.T",
       "raw": "4980",
       "name": "Dexerials Corp",
-      "weight": 0.0000664,
+      "weight": 0.0000646,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "VMS.SI",
+      "raw": "VMS",
+      "name": "Venture Corp Ltd",
+      "weight": 0.0000645,
+      "country": "Singapore",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6323.T",
+      "raw": "6323",
+      "name": "Rorze Corp",
+      "weight": 0.000064,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "OFSS.NS",
+      "raw": "OFSS",
+      "name": "Oracle Financial Services Software Ltd",
+      "weight": 0.0000626,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "MPHL.NS",
+      "raw": "MPHL",
+      "name": "Mphasis Ltd",
+      "weight": 0.0000618,
+      "country": "India",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "9698.HK",
+      "raw": "9698",
+      "name": "GDS Holdings Ltd",
+      "weight": 0.0000606,
+      "country": "Hong Kong",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "0268.HK",
+      "raw": "268",
+      "name": "Kingdee International Software Group Co Ltd",
+      "weight": 0.000059300000000000005,
+      "country": "Hong Kong",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "4385.T",
+      "raw": "4385",
+      "name": "Mercari Inc",
+      "weight": 0.0000572,
+      "country": "Japan",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "064400.KS",
+      "raw": "064400",
+      "name": "LG CNS Co Ltd",
+      "weight": 0.000055900000000000004,
+      "country": "South Korea",
+      "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "6728.T",
+      "raw": "6728",
+      "name": "Ulvac Inc",
+      "weight": 0.0000532,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "002463.SZ",
+      "raw": "002463 C2",
+      "name": "WUS Printed Circuit Kunshan Co Ltd",
+      "weight": 0.000051399999999999996,
+      "country": "CN",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "6526.T",
+      "raw": "6526",
+      "name": "Socionext Inc",
+      "weight": 0.000048599999999999995,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -2151,7 +2239,7 @@
       "yahoo": "300476.SZ",
       "raw": "300476 C2",
       "name": "Victory Giant Technology Huizhou Co Ltd",
-      "weight": 0.0000581,
+      "weight": 0.0000466,
       "country": "CN",
       "sector": "Technology Hardware & Equipment"
     },
@@ -2159,47 +2247,23 @@
       "yahoo": "300033.SZ",
       "raw": "300033 C2",
       "name": "Hithink RoyalFlush Information Network Co Ltd",
-      "weight": 0.0000547,
+      "weight": 0.0000436,
       "country": "CN",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6728.T",
-      "raw": "6728",
-      "name": "Ulvac Inc",
-      "weight": 0.0000535,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "688012.SS",
-      "raw": "688012 C1",
-      "name": "Advanced Micro-Fabrication Equipment Inc China",
-      "weight": 0.0000519,
-      "country": "CN",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "307950.KS",
       "raw": "307950",
       "name": "Hyundai Autoever Corp",
-      "weight": 0.0000494,
+      "weight": 0.000040499999999999995,
       "country": "South Korea",
       "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "6526.T",
-      "raw": "6526",
-      "name": "Socionext Inc",
-      "weight": 0.000049199999999999997,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "034220.KS",
       "raw": "034220",
       "name": "LG Display Co Ltd",
-      "weight": 0.000047000000000000004,
+      "weight": 0.0000388,
       "country": "South Korea",
       "sector": "Technology Hardware & Equipment"
     },
@@ -2207,7 +2271,7 @@
       "yahoo": "2577.HK",
       "raw": "2577",
       "name": "InnoScience Suzhou Technology Holding Co Ltd",
-      "weight": 0.0000413,
+      "weight": 0.0000329,
       "country": "Hong Kong",
       "sector": "Technology Hardware & Equipment"
     },
@@ -2215,31 +2279,7 @@
       "yahoo": "6770.T",
       "raw": "6770",
       "name": "Alps Alpine Co Ltd",
-      "weight": 0.0000281,
-      "country": "Japan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "000725.SZ",
-      "raw": "000725 C2",
-      "name": "BOE Technology Group Co Ltd",
-      "weight": 0.000025799999999999997,
-      "country": "CN",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "8056.T",
-      "raw": "8056",
-      "name": "BIPROGY Inc",
-      "weight": 0.000025799999999999997,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "8060.T",
-      "raw": "8060",
-      "name": "Canon Marketing Japan Inc",
-      "weight": 0.0000248,
+      "weight": 0.000026099999999999997,
       "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -2247,79 +2287,63 @@
       "yahoo": "JOYY",
       "raw": "JOYY",
       "name": "JOYY INC-ADR",
-      "weight": 0.000023999999999999997,
+      "weight": 0.000023800000000000003,
       "country": "United States",
       "sector": "Software & Computer Services"
     },
     {
-      "yahoo": "1357.HK",
-      "raw": "1357",
-      "name": "Meitu Inc",
+      "yahoo": "8056.T",
+      "raw": "8056",
+      "name": "BIPROGY Inc",
       "weight": 0.0000237,
-      "country": "Hong Kong",
+      "country": "Japan",
       "sector": "Software & Computer Services"
+    },
+    {
+      "yahoo": "8060.T",
+      "raw": "8060",
+      "name": "Canon Marketing Japan Inc",
+      "weight": 0.000023,
+      "country": "Japan",
+      "sector": "Technology Hardware & Equipment"
+    },
+    {
+      "yahoo": "000725.SZ",
+      "raw": "000725 C2",
+      "name": "BOE Technology Group Co Ltd",
+      "weight": 0.0000228,
+      "country": "CN",
+      "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "2354.TW",
       "raw": "2354",
       "name": "Foxconn Technology Co Ltd",
-      "weight": 0.0000233,
+      "weight": 0.0000218,
       "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "4902.T",
-      "raw": "4902",
-      "name": "Konica Minolta Inc",
-      "weight": 0.0000227,
-      "country": "Japan",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "2385.TW",
       "raw": "2385",
       "name": "Chicony Electronics Co Ltd",
-      "weight": 0.0000224,
+      "weight": 0.000020300000000000002,
       "country": "Taiwan",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "4716.T",
-      "raw": "4716",
-      "name": "Oracle Corp Japan",
-      "weight": 0.0000218,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "603501.SS",
-      "raw": "603501 C1",
-      "name": "OmniVision Integrated Circuits Group Inc",
-      "weight": 0.0000199,
-      "country": "CN",
       "sector": "Technology Hardware & Equipment"
     },
     {
       "yahoo": "5269.TW",
       "raw": "5269",
       "name": "ASMedia Technology Inc",
-      "weight": 0.0000187,
+      "weight": 0.0000177,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "2327.T",
-      "raw": "2327",
-      "name": "NS Solutions Corp",
-      "weight": 0.0000187,
-      "country": "Japan",
-      "sector": "Software & Computer Services"
     },
     {
       "yahoo": "4733.T",
       "raw": "4733",
       "name": "OBIC Business Consultants Co Ltd",
-      "weight": 0.0000176,
+      "weight": 0.000015100000000000001,
       "country": "Japan",
       "sector": "Software & Computer Services"
     },
@@ -2327,7 +2351,7 @@
       "yahoo": "4966.TW",
       "raw": "4966",
       "name": "Parade Technologies Ltd",
-      "weight": 0.0000158,
+      "weight": 0.000014400000000000001,
       "country": "Taiwan",
       "sector": "Technology Hardware & Equipment"
     },
@@ -2335,40 +2359,8 @@
       "yahoo": "ATHM",
       "raw": "ATHM",
       "name": "AUTOHOME INC-ADR",
-      "weight": 0.0000155,
+      "weight": 0.000013899999999999999,
       "country": "United States",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "KAYNES.NS",
-      "raw": "KAYNES",
-      "name": "Kaynes Technology India Ltd",
-      "weight": 0.000013,
-      "country": "India",
-      "sector": "Technology Hardware & Equipment"
-    },
-    {
-      "yahoo": "0696.HK",
-      "raw": "696",
-      "name": "TravelSky Technology Ltd",
-      "weight": 0.000011999999999999999,
-      "country": "Hong Kong",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "KPITTECH.NS",
-      "raw": "KPITTECH",
-      "name": "KPIT Technologies Ltd",
-      "weight": 0.0000105,
-      "country": "India",
-      "sector": "Software & Computer Services"
-    },
-    {
-      "yahoo": "002230.SZ",
-      "raw": "002230 C2",
-      "name": "Iflytek Co Ltd",
-      "weight": 0.0000096,
-      "country": "CN",
       "sector": "Software & Computer Services"
     }
   ]

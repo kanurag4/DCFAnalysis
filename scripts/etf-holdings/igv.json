@@ -1,29 +1,21 @@
 {
-  "asOf": "2026-09-28",
+  "asOf": "2026-10-15",
   "source": "https://www.ishares.com/us/products/239771/ishares-north-american-techsoftware-etf/latest-holdings.csv",
-  "fetchedAt": "2026-09-30T09:42:40.109Z",
+  "fetchedAt": "2026-10-17T06:24:32.758Z",
   "rows": [
-    {
-      "yahoo": "PANW",
-      "raw": "PANW",
-      "name": "PALO ALTO NETWORKS",
-      "weight": 0.09630000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
     {
       "yahoo": "PLTR",
       "raw": "PLTR",
       "name": "PALANTIR TECHNOLOGIES CLASS A",
-      "weight": 0.091,
+      "weight": 0.0935,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "CRWD",
-      "raw": "CRWD",
-      "name": "CROWDSTRIKE HOLDINGS CLASS A",
-      "weight": 0.0876,
+      "yahoo": "PANW",
+      "raw": "PANW",
+      "name": "PALO ALTO NETWORKS",
+      "weight": 0.0874,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -31,7 +23,15 @@
       "yahoo": "MSFT",
       "raw": "MSFT",
       "name": "MICROSOFT",
-      "weight": 0.0852,
+      "weight": 0.0868,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CRWD",
+      "raw": "CRWD",
+      "name": "CROWDSTRIKE HOLDINGS CLASS A",
+      "weight": 0.0795,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -39,7 +39,7 @@
       "yahoo": "ORCL",
       "raw": "ORCL",
       "name": "ORACLE",
-      "weight": 0.0675,
+      "weight": 0.0658,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -47,7 +47,7 @@
       "yahoo": "NOW",
       "raw": "NOW",
       "name": "SERVICENOW",
-      "weight": 0.0437,
+      "weight": 0.0475,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -55,7 +55,7 @@
       "yahoo": "CRM",
       "raw": "CRM",
       "name": "SALESFORCE",
-      "weight": 0.0405,
+      "weight": 0.042300000000000004,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -63,7 +63,7 @@
       "yahoo": "FTNT",
       "raw": "FTNT",
       "name": "FORTINET",
-      "weight": 0.038,
+      "weight": 0.0377,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -71,39 +71,7 @@
       "yahoo": "ADBE",
       "raw": "ADBE",
       "name": "ADOBE INC",
-      "weight": 0.0321,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "DDOG",
-      "raw": "DDOG",
-      "name": "DATADOG INC CLASS A",
-      "weight": 0.0315,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "CDNS",
-      "raw": "CDNS",
-      "name": "CADENCE DESIGN SYSTEMS",
-      "weight": 0.0315,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "APP",
-      "raw": "APP",
-      "name": "APPLOVIN CLASS A",
-      "weight": 0.0292,
-      "country": "United States",
-      "sector": "Communication"
-    },
-    {
-      "yahoo": "SNPS",
-      "raw": "SNPS",
-      "name": "SYNOPSYS",
-      "weight": 0.027999999999999997,
+      "weight": 0.0336,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -111,15 +79,47 @@
       "yahoo": "INTU",
       "raw": "INTU",
       "name": "INTUIT",
-      "weight": 0.0258,
+      "weight": 0.0304,
       "country": "United States",
       "sector": "Information Technology"
+    },
+    {
+      "yahoo": "SNPS",
+      "raw": "SNPS",
+      "name": "SYNOPSYS",
+      "weight": 0.0301,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CDNS",
+      "raw": "CDNS",
+      "name": "CADENCE DESIGN SYSTEMS",
+      "weight": 0.03,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DDOG",
+      "raw": "DDOG",
+      "name": "DATADOG INC CLASS A",
+      "weight": 0.03,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "APP",
+      "raw": "APP",
+      "name": "APPLOVIN CLASS A",
+      "weight": 0.0254,
+      "country": "United States",
+      "sector": "Communication"
     },
     {
       "yahoo": "MSTR",
       "raw": "MSTR",
       "name": "STRATEGY INC CLASS A",
-      "weight": 0.02,
+      "weight": 0.018500000000000003,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -127,7 +127,7 @@
       "yahoo": "ADSK",
       "raw": "ADSK",
       "name": "AUTODESK",
-      "weight": 0.015300000000000001,
+      "weight": 0.0174,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -140,6 +140,14 @@
       "sector": "Information Technology"
     },
     {
+      "yahoo": "ROP",
+      "raw": "ROP",
+      "name": "ROPER TECHNOLOGIES",
+      "weight": 0.0127,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
       "yahoo": "TTWO",
       "raw": "TTWO",
       "name": "TAKE TWO INTERACTIVE SOFTWARE",
@@ -148,18 +156,10 @@
       "sector": "Communication"
     },
     {
-      "yahoo": "ROP",
-      "raw": "ROP",
-      "name": "ROPER TECHNOLOGIES",
-      "weight": 0.012199999999999999,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
       "yahoo": "TEAM",
       "raw": "TEAM",
       "name": "ATLASSIAN CORP CLASS A",
-      "weight": 0.01,
+      "weight": 0.011699999999999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -167,7 +167,7 @@
       "yahoo": "ZM",
       "raw": "ZM",
       "name": "ZOOM COMMUNICATIONS CLASS A",
-      "weight": 0.008100000000000001,
+      "weight": 0.0088,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -175,15 +175,15 @@
       "yahoo": "ZS",
       "raw": "ZS",
       "name": "ZSCALER",
-      "weight": 0.0073,
+      "weight": 0.0078000000000000005,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "NTNX",
-      "raw": "NTNX",
-      "name": "NUTANIX CLASS A",
-      "weight": 0.006500000000000001,
+      "yahoo": "PTC",
+      "raw": "PTC",
+      "name": "PTC",
+      "weight": 0.006999999999999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -196,18 +196,10 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "FICO",
-      "raw": "FICO",
-      "name": "FAIR ISAAC",
+      "yahoo": "NTNX",
+      "raw": "NTNX",
+      "name": "NUTANIX CLASS A",
       "weight": 0.0064,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "CRCL",
-      "raw": "CRCL",
-      "name": "CIRCLE INTERNET GROUP INC CLASS A",
-      "weight": 0.0060999999999999995,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -215,22 +207,30 @@
       "yahoo": "DT",
       "raw": "DT",
       "name": "DYNATRACE INC",
-      "weight": 0.0058,
+      "weight": 0.0062,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "BMNR",
-      "raw": "BMNR",
-      "name": "BITMINE IMMERSION TECHNOLOGIES",
-      "weight": 0.005699999999999999,
+      "yahoo": "CRCL",
+      "raw": "CRCL",
+      "name": "CIRCLE INTERNET GROUP INC CLASS A",
+      "weight": 0.0059,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "PTC",
-      "raw": "PTC",
-      "name": "PTC",
+      "yahoo": "FICO",
+      "raw": "FICO",
+      "name": "FAIR ISAAC",
+      "weight": 0.005600000000000001,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "IOT",
+      "raw": "IOT",
+      "name": "SAMSARA CLASS A",
       "weight": 0.0053,
       "country": "United States",
       "sector": "Information Technology"
@@ -239,14 +239,22 @@
       "yahoo": "U",
       "raw": "U",
       "name": "UNITY SOFTWARE",
+      "weight": 0.0053,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DOCU",
+      "raw": "DOCU",
+      "name": "DOCUSIGN",
       "weight": 0.005,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "IOT",
-      "raw": "IOT",
-      "name": "SAMSARA CLASS A",
+      "yahoo": "GWRE",
+      "raw": "GWRE",
+      "name": "GUIDEWIRE SOFTWARE",
       "weight": 0.0049,
       "country": "United States",
       "sector": "Information Technology"
@@ -255,15 +263,15 @@
       "yahoo": "TRMB",
       "raw": "TRMB",
       "name": "TRIMBLE INC",
-      "weight": 0.004699999999999999,
+      "weight": 0.0048,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "DOCU",
-      "raw": "DOCU",
-      "name": "DOCUSIGN",
-      "weight": 0.0045000000000000005,
+      "yahoo": "BMNR",
+      "raw": "BMNR",
+      "name": "BITMINE IMMERSION TECHNOLOGIES",
+      "weight": 0.004699999999999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -271,23 +279,7 @@
       "yahoo": "TYL",
       "raw": "TYL",
       "name": "TYLER TECHNOLOGIES",
-      "weight": 0.0043,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "GWRE",
-      "raw": "GWRE",
-      "name": "GUIDEWIRE SOFTWARE",
-      "weight": 0.0042,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "MANH",
-      "raw": "MANH",
-      "name": "MANHATTAN ASSOCIATES",
-      "weight": 0.0040999999999999995,
+      "weight": 0.004699999999999999,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -295,15 +287,15 @@
       "yahoo": "GEN",
       "raw": "GEN",
       "name": "GEN DIGITAL",
-      "weight": 0.0039000000000000003,
+      "weight": 0.0045000000000000005,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "HUT",
-      "raw": "HUT",
-      "name": "HUT CORP",
-      "weight": 0.0036,
+      "yahoo": "MANH",
+      "raw": "MANH",
+      "name": "MANHATTAN ASSOCIATES",
+      "weight": 0.0044,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -311,15 +303,7 @@
       "yahoo": "HUBS",
       "raw": "HUBS",
       "name": "HUBSPOT",
-      "weight": 0.0034999999999999996,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "IDCC",
-      "raw": "IDCC",
-      "name": "INTERDIGITAL INC",
-      "weight": 0.0029,
+      "weight": 0.004,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -327,6 +311,30 @@
       "yahoo": "ESTC",
       "raw": "ESTC",
       "name": "ELASTIC",
+      "weight": 0.003,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "HUT",
+      "raw": "HUT",
+      "name": "HUT CORP",
+      "weight": 0.0029,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "IDCC",
+      "raw": "IDCC",
+      "name": "INTERDIGITAL INC",
+      "weight": 0.0028000000000000004,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "GTLB",
+      "raw": "GTLB",
+      "name": "GITLAB CLASS A",
       "weight": 0.0028000000000000004,
       "country": "United States",
       "sector": "Information Technology"
@@ -335,7 +343,7 @@
       "yahoo": "S",
       "raw": "S",
       "name": "SENTINELONE INC CLASS A",
-      "weight": 0.0027,
+      "weight": 0.0026,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -343,39 +351,7 @@
       "yahoo": "AUR",
       "raw": "AUR",
       "name": "AURORA INNOVATION CLASS A",
-      "weight": 0.0027,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "RIOT",
-      "raw": "RIOT",
-      "name": "RIOT PLATFORMS",
       "weight": 0.0026,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "GTLB",
-      "raw": "GTLB",
-      "name": "GITLAB CLASS A",
-      "weight": 0.0024,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "DSGX",
-      "raw": "DSGX",
-      "name": "DESCARTES SYSTEMS GROUP",
-      "weight": 0.0024,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "WULF",
-      "raw": "WULF",
-      "name": "TERAWULF",
-      "weight": 0.0023,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -383,14 +359,38 @@
       "yahoo": "ZETA",
       "raw": "ZETA",
       "name": "ZETA GLOBAL HOLDINGS CLASS A",
-      "weight": 0.0023,
+      "weight": 0.0026,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "QBTS",
-      "raw": "QBTS",
-      "name": "D WAVE QUANTUM",
+      "yahoo": "DSGX",
+      "raw": "DSGX",
+      "name": "DESCARTES SYSTEMS GROUP",
+      "weight": 0.0025,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "SNAP",
+      "raw": "SNAP",
+      "name": "SNAP INC CLASS A",
+      "weight": 0.0024,
+      "country": "United States",
+      "sector": "Communication"
+    },
+    {
+      "yahoo": "PCOR",
+      "raw": "PCOR",
+      "name": "PROCORE TECHNOLOGIES INC",
+      "weight": 0.0024,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "QLYS",
+      "raw": "QLYS",
+      "name": "QUALYS",
       "weight": 0.0022,
       "country": "United States",
       "sector": "Information Technology"
@@ -399,39 +399,15 @@
       "yahoo": "CVLT",
       "raw": "CVLT",
       "name": "COMMVAULT SYSTEMS",
-      "weight": 0.0021,
+      "weight": 0.0022,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "PCOR",
-      "raw": "PCOR",
-      "name": "PROCORE TECHNOLOGIES INC",
+      "yahoo": "OTEX",
+      "raw": "OTEX",
+      "name": "OPEN TEXT",
       "weight": 0.0021,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "QLYS",
-      "raw": "QLYS",
-      "name": "QUALYS",
-      "weight": 0.0021,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "SNAP",
-      "raw": "SNAP",
-      "name": "SNAP INC CLASS A",
-      "weight": 0.002,
-      "country": "United States",
-      "sector": "Communication"
-    },
-    {
-      "yahoo": "CIFR",
-      "raw": "CIFR",
-      "name": "CIPHER DIGITAL INC",
-      "weight": 0.002,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -444,34 +420,10 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "VRNS",
-      "raw": "VRNS",
-      "name": "VARONIS SYSTEMS",
+      "yahoo": "BSY",
+      "raw": "BSY",
+      "name": "BENTLEY SYSTEMS INC CLASS B",
       "weight": 0.0019,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "OTEX",
-      "raw": "OTEX",
-      "name": "OPEN TEXT",
-      "weight": 0.0019,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "CORZ",
-      "raw": "CORZ",
-      "name": "CORE SCIENTIFIC INC",
-      "weight": 0.0019,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "BB",
-      "raw": "BB",
-      "name": "BLACKBERRY",
-      "weight": 0.0018,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -479,47 +431,15 @@
       "yahoo": "PATH",
       "raw": "PATH",
       "name": "UIPATH INC CLASS A",
-      "weight": 0.0018,
+      "weight": 0.0019,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "BSY",
-      "raw": "BSY",
-      "name": "BENTLEY SYSTEMS INC CLASS B",
-      "weight": 0.0017000000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "ACIW",
-      "raw": "ACIW",
-      "name": "ACI WORLDWIDE",
-      "weight": 0.0017000000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "APPF",
-      "raw": "APPF",
-      "name": "APPFOLIO CLASS A",
-      "weight": 0.0017000000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "MARA",
-      "raw": "MARA",
-      "name": "MARA HOLDINGS",
-      "weight": 0.0016,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "DBX",
-      "raw": "DBX",
-      "name": "DROPBOX INC CLASS A",
-      "weight": 0.0016,
+      "yahoo": "WULF",
+      "raw": "WULF",
+      "name": "TERAWULF",
+      "weight": 0.0019,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -527,6 +447,86 @@
       "yahoo": "BOX",
       "raw": "BOX",
       "name": "BOX INC CLASS A",
+      "weight": 0.0018,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "VRNS",
+      "raw": "VRNS",
+      "name": "VARONIS SYSTEMS",
+      "weight": 0.0018,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "RIOT",
+      "raw": "RIOT",
+      "name": "RIOT PLATFORMS",
+      "weight": 0.0018,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "ACIW",
+      "raw": "ACIW",
+      "name": "ACI WORLDWIDE",
+      "weight": 0.0018,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "APPF",
+      "raw": "APPF",
+      "name": "APPFOLIO CLASS A",
+      "weight": 0.0018,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DBX",
+      "raw": "DBX",
+      "name": "DROPBOX INC CLASS A",
+      "weight": 0.0018,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BB",
+      "raw": "BB",
+      "name": "BLACKBERRY",
+      "weight": 0.0017000000000000001,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "QBTS",
+      "raw": "QBTS",
+      "name": "D WAVE QUANTUM",
+      "weight": 0.0016,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CORZ",
+      "raw": "CORZ",
+      "name": "CORE SCIENTIFIC INC",
+      "weight": 0.0016,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TTAN",
+      "raw": "TTAN",
+      "name": "SERVICETITAN CLASS A",
+      "weight": 0.0015,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TENB",
+      "raw": "TENB",
+      "name": "TENABLE HOLDINGS INC",
       "weight": 0.0015,
       "country": "United States",
       "sector": "Information Technology"
@@ -535,15 +535,7 @@
       "yahoo": "YOU",
       "raw": "YOU",
       "name": "CLEAR SECURE CLASS A",
-      "weight": 0.0014000000000000002,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "TENB",
-      "raw": "TENB",
-      "name": "TENABLE HOLDINGS",
-      "weight": 0.0013,
+      "weight": 0.0015,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -551,15 +543,7 @@
       "yahoo": "CCC",
       "raw": "CCC",
       "name": "CCC INTELLIGENT SOLUTIONS HOLDINGS",
-      "weight": 0.0013,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "TTAN",
-      "raw": "TTAN",
-      "name": "SERVICETITAN CLASS A",
-      "weight": 0.0013,
+      "weight": 0.0014000000000000002,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -567,7 +551,23 @@
       "yahoo": "WK",
       "raw": "WK",
       "name": "WORKIVA CLASS A",
-      "weight": 0.0012,
+      "weight": 0.0013,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "QTWO",
+      "raw": "QTWO",
+      "name": "Q2 HOLDINGS INC",
+      "weight": 0.0013,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BILL",
+      "raw": "BILL",
+      "name": "BILL HOLDINGS",
+      "weight": 0.0013,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -580,25 +580,9 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "QTWO",
-      "raw": "QTWO",
-      "name": "Q2 HOLDINGS INC",
-      "weight": 0.0012,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "CLSK",
-      "raw": "CLSK",
-      "name": "CLEANSPARK",
-      "weight": 0.0012,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "BILL",
-      "raw": "BILL",
-      "name": "BILL HOLDINGS",
+      "yahoo": "CIFR",
+      "raw": "CIFR",
+      "name": "CIPHER DIGITAL INC",
       "weight": 0.0012,
       "country": "United States",
       "sector": "Information Technology"
@@ -607,6 +591,30 @@
       "yahoo": "LIF",
       "raw": "LIF",
       "name": "LIFE360",
+      "weight": 0.0012,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "MARA",
+      "raw": "MARA",
+      "name": "MARA HOLDINGS",
+      "weight": 0.0011,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "FRSH",
+      "raw": "FRSH",
+      "name": "FRESHWORKS CLASS A",
+      "weight": 0.0011,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "PEGA",
+      "raw": "PEGA",
+      "name": "PEGASYSTEMS",
       "weight": 0.0011,
       "country": "United States",
       "sector": "Information Technology"
@@ -615,31 +623,7 @@
       "yahoo": "SPSC",
       "raw": "SPSC",
       "name": "SPS COMMERCE",
-      "weight": 0.001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "PEGA",
-      "raw": "PEGA",
-      "name": "PEGASYSTEMS",
-      "weight": 0.001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "FRSH",
-      "raw": "FRSH",
-      "name": "FRESHWORKS CLASS A",
-      "weight": 0.001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "ADEA",
-      "raw": "ADEA",
-      "name": "ADEIA",
-      "weight": 0.001,
+      "weight": 0.0011,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -647,7 +631,15 @@
       "yahoo": "TDC",
       "raw": "TDC",
       "name": "TERADATA",
-      "weight": 0.0009,
+      "weight": 0.001,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AGYS",
+      "raw": "AGYS",
+      "name": "AGILYSYS INC",
+      "weight": 0.001,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -655,7 +647,15 @@
       "yahoo": "ALRM",
       "raw": "ALRM",
       "name": "ALARM.COM HOLDINGS",
-      "weight": 0.0009,
+      "weight": 0.001,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "BRZE",
+      "raw": "BRZE",
+      "name": "BRAZE CLASS A",
+      "weight": 0.001,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -668,18 +668,42 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "AGYS",
-      "raw": "AGYS",
-      "name": "AGILYSYS INC",
-      "weight": 0.0009,
+      "yahoo": "CLSK",
+      "raw": "CLSK",
+      "name": "CLEANSPARK",
+      "weight": 0.0008,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "SOUN",
-      "raw": "SOUN",
-      "name": "SOUNDHOUND AI CLASS A",
-      "weight": 0.0009,
+      "yahoo": "ADEA",
+      "raw": "ADEA",
+      "name": "ADEIA",
+      "weight": 0.0008,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "NCNO",
+      "raw": "NCNO",
+      "name": "NCINO",
+      "weight": 0.0008,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AVPT",
+      "raw": "AVPT",
+      "name": "AVEPOINT CLASS A",
+      "weight": 0.0008,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "KVYO",
+      "raw": "KVYO",
+      "name": "KLAVIYO SERIES A",
+      "weight": 0.0008,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -692,41 +716,17 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "BRZE",
-      "raw": "BRZE",
-      "name": "BRAZE CLASS A",
+      "yahoo": "INTA",
+      "raw": "INTA",
+      "name": "INTAPP",
       "weight": 0.0008,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "AVPT",
-      "raw": "AVPT",
-      "name": "AVEPOINT CLASS A",
-      "weight": 0.0007000000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "NCNO",
-      "raw": "NCNO",
-      "name": "NCINO",
-      "weight": 0.0007000000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "KVYO",
-      "raw": "KVYO",
-      "name": "KLAVIYO SERIES A",
-      "weight": 0.0007000000000000001,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "NN",
-      "raw": "NN",
-      "name": "NEXTNAV",
+      "yahoo": "SOUN",
+      "raw": "SOUN",
+      "name": "SOUNDHOUND AI CLASS A",
       "weight": 0.0007000000000000001,
       "country": "United States",
       "sector": "Information Technology"
@@ -740,9 +740,17 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "INTA",
-      "raw": "INTA",
-      "name": "INTAPP",
+      "yahoo": "BLKB",
+      "raw": "BLKB",
+      "name": "BLACKBAUD",
+      "weight": 0.0006,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AI",
+      "raw": "AI",
+      "name": "C3 AI CLASS A",
       "weight": 0.0006,
       "country": "United States",
       "sector": "Information Technology"
@@ -756,17 +764,9 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "AI",
-      "raw": "AI",
-      "name": "C3 AI CLASS A",
-      "weight": 0.0005,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "BLKB",
-      "raw": "BLKB",
-      "name": "BLACKBAUD",
+      "yahoo": "APPN",
+      "raw": "APPN",
+      "name": "APPIAN CORP CLASS A",
       "weight": 0.0005,
       "country": "United States",
       "sector": "Information Technology"
@@ -775,14 +775,22 @@
       "yahoo": "BL",
       "raw": "BL",
       "name": "BLACKLINE",
-      "weight": 0.0004,
+      "weight": 0.0005,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "APPN",
-      "raw": "APPN",
-      "name": "APPIAN CORP CLASS A",
+      "yahoo": "NN",
+      "raw": "NN",
+      "name": "NEXTNAV",
+      "weight": 0.0005,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "PD",
+      "raw": "PD",
+      "name": "PAGERDUTY",
       "weight": 0.0004,
       "country": "United States",
       "sector": "Information Technology"
@@ -796,33 +804,17 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "PD",
-      "raw": "PD",
-      "name": "PAGERDUTY",
+      "yahoo": "VYX",
+      "raw": "VYX",
+      "name": "NCR VOYIX",
       "weight": 0.0004,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "VYX",
-      "raw": "VYX",
-      "name": "NCR VOYIX",
-      "weight": 0.0003,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "AIP",
-      "raw": "AIP",
-      "name": "ARTERIS INC",
-      "weight": 0.0003,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "ALKT",
-      "raw": "ALKT",
-      "name": "ALKAMI TECHNOLOGY",
+      "yahoo": "VERX",
+      "raw": "VERX",
+      "name": "VERTEX CLASS A",
       "weight": 0.0003,
       "country": "United States",
       "sector": "Information Technology"
@@ -836,9 +828,17 @@
       "sector": "Information Technology"
     },
     {
-      "yahoo": "VERX",
-      "raw": "VERX",
-      "name": "VERTEX CLASS A",
+      "yahoo": "ALKT",
+      "raw": "ALKT",
+      "name": "ALKAMI TECHNOLOGY",
+      "weight": 0.0003,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "AIP",
+      "raw": "AIP",
+      "name": "ARTERIS INC",
       "weight": 0.0003,
       "country": "United States",
       "sector": "Information Technology"
