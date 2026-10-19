@@ -3,7 +3,7 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const path = require('node:path');
 const { readProxyUrl, runScreen, applyAiCorrelation } = require('../scripts/lib/run-screen.js');
-const { PUBLISHED_PATH: SECTOR_MARGINS_PATH, RAW_PATH: SECTOR_RAW_PATH } = require('../scripts/lib/sector-margin-tally.js');
+const { SLICE_FILE: SECTOR_SLICE_FILE } = require('../scripts/lib/sector-margin-tally.js');
 
 test('readProxyUrl prefers YAHOO_PROXY_URL env var over www/config.js', () => {
   const prev = process.env.YAHOO_PROXY_URL;
@@ -52,7 +52,7 @@ const GOLD_FIXTURE = {
   ],
 };
 
-test('gather() updates the sector-margins lookup as a byproduct of a full-fetch run', async () => {
+test('gather() writes the market sector-margins slice as a byproduct of a full-fetch run', async () => {
   fs.writeFileSync(TEST_TICKERS_PATH, JSON.stringify(['TESTGOLD1.AX', 'TESTGOLD2.AX', 'TESTGOLD3.AX']));
 
   const fetchYahooMock = mock.module('../scripts/fetch-yahoo.js', {
@@ -62,9 +62,9 @@ test('gather() updates the sector-margins lookup as a byproduct of a full-fetch 
   });
   delete require.cache[require.resolve('../scripts/lib/run-screen.js')];
   const { gather } = require('../scripts/lib/run-screen.js');
-
-  const beforeMargins = fs.existsSync(SECTOR_MARGINS_PATH) ? fs.readFileSync(SECTOR_MARGINS_PATH, 'utf8') : null;
-  const beforeRaw = fs.existsSync(SECTOR_RAW_PATH) ? fs.readFileSync(SECTOR_RAW_PATH, 'utf8') : null;
+  // The fixture outDir is not one of the 6 screen markets, so the rebuilt www/sector-margins.json ignores this
+  // slice (and the rebuild is an atomic rename) -- other test files reading that file in parallel are unaffected.
+  const fixtureDir = path.join(__dirname, '..', 'www', 'sector-margin-test-fixture');
 
   try {
     const testConfig = {
@@ -73,13 +73,12 @@ test('gather() updates the sector-margins lookup as a byproduct of a full-fetch 
       cacheFile: TEST_CACHE_FILE, throttleMs: 1, // skip the real 3200ms per-ticker delay in tests
     };
     await gather(testConfig);
-    const after = JSON.parse(fs.readFileSync(SECTOR_MARGINS_PATH, 'utf8'));
-    assert.ok(after.Gold);
-    assert.ok(after.Gold.peerCount >= 3);
+    const slice = JSON.parse(fs.readFileSync(path.join(fixtureDir, SECTOR_SLICE_FILE), 'utf8'));
+    assert.deepStrictEqual(slice.industries.Gold.map(e => e.ticker), ['TESTGOLD1.AX', 'TESTGOLD2.AX', 'TESTGOLD3.AX']);
+    assert.match(slice.asAt, /^\d{4}-\d{2}-\d{2}$/);
   } finally {
     fetchYahooMock.restore();   // a module can only be mocked once at a time; later tests mock it again themselves
-    if (beforeMargins !== null) fs.writeFileSync(SECTOR_MARGINS_PATH, beforeMargins); else fs.writeFileSync(SECTOR_MARGINS_PATH, '{}\n');
-    if (beforeRaw !== null) fs.writeFileSync(SECTOR_RAW_PATH, beforeRaw); else if (fs.existsSync(SECTOR_RAW_PATH)) fs.unlinkSync(SECTOR_RAW_PATH);
+    fs.rmSync(fixtureDir, { recursive: true, force: true });
     if (fs.existsSync(TEST_TICKERS_PATH)) fs.unlinkSync(TEST_TICKERS_PATH);
     if (fs.existsSync(TEST_CACHE_PATH)) fs.unlinkSync(TEST_CACHE_PATH);
   }

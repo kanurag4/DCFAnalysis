@@ -125,7 +125,7 @@ async function gather(config) {
   // Byproduct of this full-fetch run: refresh this market's slice of the
   // cross-market sector-average FCF-margin lookup. Not run on --rerank/
   // --reeval (no fresh fetch happened, nothing new to tally).
-  updateSectorMarginLookup(config.outDir, marginTallies);
+  updateSectorMarginLookup(config.outDir, marginTallies, asAt);
   return out;
 }
 

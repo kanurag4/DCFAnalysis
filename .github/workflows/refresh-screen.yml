@@ -80,7 +80,8 @@ jobs:
             "www/$OUTDIR/first-seen.json" \
             "www/$OUTDIR/sold.json" \
             "www/$OUTDIR/portfolio-value.json" \
-            "www/$OUTDIR/portfolio-history.json"
+            "www/$OUTDIR/portfolio-history.json" \
+            "www/$OUTDIR/sector-margins-slice.json"
           git commit -m "data: ${MARKET} undervalued snapshot ${ASAT} (staged via admin console)"
           git push --force origin "staging/$MARKET"
 

@@ -1,0 +1,209 @@
+{
+ "asAt": "2026-10-19",
+ "industries": {
+  "Semiconductors": [
+   {
+    "ticker": "NVDA",
+    "margin": 0.37468178785940054
+   },
+   {
+    "ticker": "AVGO",
+    "margin": 0.4453166473550428
+   },
+   {
+    "ticker": "MU",
+    "margin": -0.06073590108420346
+   },
+   {
+    "ticker": "AMD",
+    "margin": 0.1172795104425981
+   },
+   {
+    "ticker": "INTC",
+    "margin": -0.20025965433858645
+   },
+   {
+    "ticker": "TXN",
+    "margin": 0.15393096574903029
+   },
+   {
+    "ticker": "QCOM",
+    "margin": 0.25138179662128224
+   },
+   {
+    "ticker": "ADI",
+    "margin": 0.3306872397761859
+   },
+   {
+    "ticker": "NXPI",
+    "margin": 0.1820155910947069
+   },
+   {
+    "ticker": "ON",
+    "margin": 0.1631845840817681
+   },
+   {
+    "ticker": "MCHP",
+    "margin": 0.26831395503954136
+   },
+   {
+    "ticker": "SWKS",
+    "margin": 0.2906177273384857
+   }
+  ],
+  "Auto Manufacturers": [
+   {
+    "ticker": "TSLA",
+    "margin": 0.05999464856774031
+   },
+   {
+    "ticker": "GM",
+    "margin": -0.019141490123491055
+   },
+   {
+    "ticker": "F",
+    "margin": 0.0352111252075854
+   }
+  ],
+  "Oil & Gas Integrated": [
+   {
+    "ticker": "XOM",
+    "margin": 0.10246022683555203
+   },
+   {
+    "ticker": "CVX",
+    "margin": 0.10695664743312203
+   }
+  ],
+  "Specialty Chemicals": [
+   {
+    "ticker": "LIN",
+    "margin": 0.15937912739270502
+   },
+   {
+    "ticker": "SHW",
+    "margin": 0.09364827616547898
+   },
+   {
+    "ticker": "ECL",
+    "margin": 0.10416558862529056
+   },
+   {
+    "ticker": "APD",
+    "margin": -0.16548805991136878
+   },
+   {
+    "ticker": "PPG",
+    "margin": 0.0661492589122828
+   },
+   {
+    "ticker": "LYB",
+    "margin": 0.06454321555984215
+   },
+   {
+    "ticker": "ALB",
+    "margin": -0.011939267954738653
+   },
+   {
+    "ticker": "DD",
+    "margin": -0.022533431136287255
+   },
+   {
+    "ticker": "IFF",
+    "margin": 0.03747922638133882
+   }
+  ],
+  "Oil & Gas E&P": [
+   {
+    "ticker": "COP",
+    "margin": 0.16392058497264894
+   },
+   {
+    "ticker": "EOG",
+    "margin": 0.2071504426681529
+   },
+   {
+    "ticker": "OXY",
+    "margin": 0.261706923806398
+   },
+   {
+    "ticker": "FANG",
+    "margin": -0.02662247621357016
+   },
+   {
+    "ticker": "EQT",
+    "margin": 0.21208196706025625
+   },
+   {
+    "ticker": "TPL",
+    "margin": 0.3426376510974764
+   },
+   {
+    "ticker": "EXE",
+    "margin": 0.10220254546760346
+   }
+  ],
+  "Gold": [
+   {
+    "ticker": "NEM",
+    "margin": 0.14502143865115852
+   }
+  ],
+  "Copper": [
+   {
+    "ticker": "FCX",
+    "margin": 0.05717006250662884
+   }
+  ],
+  "Oil & Gas Refining & Marketing": [
+   {
+    "ticker": "MPC",
+    "margin": 0.0602618025727652
+   },
+   {
+    "ticker": "VLO",
+    "margin": 0.05117150297224185
+   },
+   {
+    "ticker": "PSX",
+    "margin": 0.030618895199575853
+   }
+  ],
+  "Auto Parts": [
+   {
+    "ticker": "ORLY",
+    "margin": 0.12962260406698867
+   },
+   {
+    "ticker": "AZO",
+    "margin": 0.11950167307460999
+   },
+   {
+    "ticker": "GPC",
+    "margin": 0.03435785265604492
+   }
+  ],
+  "Oil & Gas Equipment & Services": [
+   {
+    "ticker": "BKR",
+    "margin": 0.0699606735088446
+   },
+   {
+    "ticker": "HAL",
+    "margin": 0.0829861406632855
+   }
+  ],
+  "Steel": [
+   {
+    "ticker": "STLD",
+    "margin": 0.07121505867969806
+   }
+  ],
+  "Chemicals": [
+   {
+    "ticker": "DOW",
+    "margin": 0.02910357441835014
+   }
+  ]
+ }
+}

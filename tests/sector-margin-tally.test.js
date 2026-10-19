@@ -1,7 +1,11 @@
 const { test } = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { isCyclical } = require('../www/utils.js');
 const {
-  tallyTickerMargin, mergeMarketTallies, flatten,
+  tallyTickerMargin, buildSlice, flatten, median, rebuildLookup, updateSectorMarginLookup, INDUSTRY_MARKETS,
 } = require('../scripts/lib/sector-margin-tally.js');
 
 test('tallyTickerMargin computes the own multi-year margin for a ticker with enough history', () => {
@@ -128,54 +132,123 @@ test('tallyTickerMargin respects a custom minRevenueToMarketCapRatio', () => {
   assert.ok(tallyTickerMargin(data, { minRevenueToMarketCapRatio: 0.005 }) !== null); // 1% >= 0.5% floor
 });
 
-test('mergeMarketTallies aggregates multiple tickers in the same industry into one sum/count', () => {
-  const raw = mergeMarketTallies({}, 'asx-undervalued', [
-    { industry: 'Gold', margin: 0.10 },
-    { industry: 'Gold', margin: 0.20 },
-    { industry: 'Steel', margin: -0.05 },
-  ]);
-  // sum is computed as 0.10 + 0.20 internally, which is 0.30000000000000004
-  // in floating point -- assert with a tolerance instead of exact equality.
-  assert.ok(Math.abs(raw.Gold['asx-undervalued'].sum - 0.30) < 1e-9);
-  assert.strictEqual(raw.Gold['asx-undervalued'].count, 2);
-  assert.deepStrictEqual(raw.Steel, { 'asx-undervalued': { sum: -0.05, count: 1 } });
+// ── Margin floor (2026-10-19) ──
+// WBT.AX sat at 1.95% revenue/marketCap on 2026-10-19 -- just under the 2% ratio guard, so it got in on any
+// run where its share price was a little lower. Its own yearly "margins" ran -2498% to -127%. Together with
+// SLX.AX it dragged the Semiconductors lookup to -293%, which made MU's normalized FCF -$390B.
+const WBT_LIKE = {
+  ticker: 'WBT.AX', industry: 'Semiconductors',
+  totalRevenue: 15276000, marketCap: 700e6, // 2.18%: clears the ratio guard
+  annualFcfHistory: [
+    { date: '2024-06-30', value: -25422826 }, { date: '2025-06-30', value: -23372311 }, { date: '2026-06-30', value: -19471000 },
+  ],
+  annualRevenueHistory: [
+    { date: '2024-06-30', value: 1017788 }, { date: '2025-06-30', value: 4409329 }, { date: '2026-06-30', value: 15276000 },
+  ],
+};
+
+test('tallyTickerMargin excludes a peer whose own margin is below -100%, even when it clears the ratio guard (WBT.AX)', () => {
+  assert.strictEqual(tallyTickerMargin(WBT_LIKE), null);
 });
 
-test('mergeMarketTallies overwrites only the given market\'s own sub-block, leaving other markets untouched', () => {
-  const existing = {
-    Gold: {
-      'asx-undervalued': { sum: 0.30, count: 2 },
-      'sp500-undervalued': { sum: 0.05, count: 1 },
-    },
+test('tallyTickerMargin keeps a genuinely loss-making operator above the -100% floor (MU-like trough)', () => {
+  const data = {
+    ticker: 'MU', industry: 'Semiconductors', totalRevenue: 133e9, marketCap: 990e9,
+    annualFcfHistory: [{ date: '2023-08-31', value: -6117000000 }, { date: '2024-08-31', value: 121000000 }],
+    annualRevenueHistory: [{ date: '2023-08-31', value: 15540000000 }, { date: '2024-08-31', value: 25111000000 }],
   };
-  const raw = mergeMarketTallies(existing, 'asx-undervalued', [{ industry: 'Gold', margin: 0.50 }]);
-  assert.deepStrictEqual(raw.Gold, {
-    'asx-undervalued': { sum: 0.50, count: 1 }, // this market's re-run replaced its own contribution
-    'sp500-undervalued': { sum: 0.05, count: 1 }, // untouched
+  const r = tallyTickerMargin(data);
+  assert.ok(r !== null);
+  assert.strictEqual(r.ticker, 'MU');
+  assert.ok(r.margin < 0 && r.margin > -1);
+});
+
+test('tallyTickerMargin respects a custom minMargin', () => {
+  assert.ok(tallyTickerMargin(WBT_LIKE, { minMargin: -20 }) !== null);
+});
+
+// ── Slices, median, per-industry market pools ──
+
+test('buildSlice groups by industry, keeps the ticker and drops null tallies', () => {
+  const slice = buildSlice([
+    { ticker: 'A', industry: 'Gold', margin: 0.1 }, null,
+    { ticker: 'B', industry: 'Gold', margin: 0.2 }, { ticker: 'C', industry: 'Steel', margin: -0.05 },
+  ], '2026-10-19');
+  assert.deepStrictEqual(slice, {
+    asAt: '2026-10-19',
+    industries: { Gold: [{ ticker: 'A', margin: 0.1 }, { ticker: 'B', margin: 0.2 }], Steel: [{ ticker: 'C', margin: -0.05 }] },
   });
 });
 
-test('mergeMarketTallies ignores null entries from tallyTickerMargin (tickers with too little history)', () => {
-  const raw = mergeMarketTallies({}, 'asx-undervalued', [{ industry: 'Gold', margin: 0.1 }, null, null]);
-  assert.deepStrictEqual(raw, { Gold: { 'asx-undervalued': { sum: 0.1, count: 1 } } });
+test('median handles odd and even counts', () => {
+  assert.strictEqual(median([3, -100, 1]), 1);
+  assert.strictEqual(median([4, 1, 3, 2]), 2.5);
 });
 
-test('flatten computes a peer-pooled average across markets for each industry', () => {
-  const raw = {
-    Gold: {
-      'asx-undervalued': { sum: 0.30, count: 2 },
-      'sp500-undervalued': { sum: 0.10, count: 1 },
-    },
-    Steel: { 'nifty-undervalued': { sum: -0.09, count: 3 } },
+test('flatten pools markets and takes the median, so one extreme peer cannot dominate', () => {
+  const slices = {
+    'asx-undervalued': { industries: { Gold: [{ margin: 0.10 }, { margin: -9.0 }] } },
+    'sp500-undervalued': { industries: { Gold: [{ margin: 0.20 }] } },
   };
-  const flat = flatten(raw);
-  assert.deepStrictEqual(flat, {
-    Gold: { avgMargin: 0.4 / 3, peerCount: 3 },
-    Steel: { avgMargin: -0.03, peerCount: 3 },
-  });
+  assert.deepStrictEqual(flatten(slices), { Gold: { avgMargin: 0.10, peerCount: 3 } });
 });
 
-test('flatten omits an industry with zero total peers rather than dividing by zero', () => {
-  const flat = flatten({ Gold: {} });
-  assert.deepStrictEqual(flat, {});
+test('flatten pools Semiconductors from US, KOSPI and Nikkei only -- ASX peers are ignored', () => {
+  assert.deepStrictEqual(INDUSTRY_MARKETS.Semiconductors, ['sp500-undervalued', 'kospi-undervalued', 'nikkei-undervalued']);
+  const slices = {
+    'asx-undervalued': { industries: { Semiconductors: [{ margin: -7.4 }, { margin: -7.5 }], 'Software - Application': [{ margin: 0.3 }] } },
+    'kospi-undervalued': { industries: { Semiconductors: [{ margin: 0.05 }, { margin: 0.09 }] } },
+    'sp500-undervalued': { industries: { Semiconductors: [{ margin: 0.20 }] } },
+  };
+  const flat = flatten(slices);
+  assert.deepStrictEqual(flat.Semiconductors, { avgMargin: 0.09, peerCount: 3 });
+  assert.deepStrictEqual(flat['Software - Application'], { avgMargin: 0.3, peerCount: 1 }); // non-cyclical industries pool every market
+});
+
+test('flatten omits an industry with no peers', () => {
+  assert.deepStrictEqual(flatten({ 'asx-undervalued': { industries: { Gold: [] } } }), {});
+});
+
+test('rebuildLookup reads only the known screen markets, so a fixture slice never leaks into the lookup', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sector-margins-'));
+  try {
+    updateSectorMarginLookup('kospi-undervalued', [{ ticker: 'X', industry: 'Software - Application', margin: 0.2 }], '2026-10-19', dir);
+    const flat = updateSectorMarginLookup('some-test-fixture', [{ ticker: 'Y', industry: 'Software - Application', margin: -0.9 }], '2026-10-19', dir);
+    assert.deepStrictEqual(flat, { 'Software - Application': { avgMargin: 0.2, peerCount: 1 } });
+    assert.ok(fs.existsSync(path.join(dir, 'some-test-fixture', 'sector-margins-slice.json'))); // slice still written
+    assert.deepStrictEqual(JSON.parse(fs.readFileSync(path.join(dir, 'sector-margins.json'), 'utf8')), flat);
+    assert.deepStrictEqual(rebuildLookup(dir), flat);
+    assert.deepStrictEqual(fs.readdirSync(dir).filter(f => f.endsWith('.tmp')), []); // atomic write left no temp file
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+// ── One methodology for every cyclical industry (2026-10-19) ──
+const CYCLICAL_NAMES = ['Gold', 'Silver', 'Copper', 'Steel', 'Coking Coal', 'Thermal Coal', 'Aluminum',
+  'Other Industrial Metals & Mining', 'Oil & Gas E&P', 'Oil & Gas Integrated', 'Oil & Gas Equipment & Services',
+  'Oil & Gas Refining & Marketing', 'Auto Manufacturers', 'Auto Parts', 'Chemicals', 'Specialty Chemicals',
+  'Marine Shipping', 'Semiconductors'];
+
+test('every cyclical industry has an explicit market pool, and every pool is a cyclical industry', () => {
+  assert.ok(CYCLICAL_NAMES.every(i => isCyclical('', i)), 'CYCLICAL_NAMES is out of date with www/utils.js');
+  assert.deepStrictEqual(Object.keys(INDUSTRY_MARKETS).sort(), [...CYCLICAL_NAMES].sort());
+});
+
+test('NIFTY pools only for Autos and Steel; Semiconductors excludes ASX and Europe', () => {
+  const withNifty = Object.keys(INDUSTRY_MARKETS).filter(i => INDUSTRY_MARKETS[i].includes('nifty-undervalued')).sort();
+  assert.deepStrictEqual(withNifty, ['Auto Manufacturers', 'Auto Parts', 'Steel']);
+  assert.ok(!INDUSTRY_MARKETS.Semiconductors.includes('asx-undervalued'));
+  assert.ok(!INDUSTRY_MARKETS.Semiconductors.includes('europe-undervalued'));
+});
+
+test('flatten leaves out a cyclical industry with no pool instead of pooling every market', () => {
+  const slices = { 'asx-undervalued': { industries: { Gold: [{ margin: 0.1 }] } } };
+  assert.deepStrictEqual(flatten(slices, {}), {});
+});
+
+test('flatten drops a market outside the pool (NIFTY gold peers are ignored)', () => {
+  const slices = {
+    'asx-undervalued': { industries: { Gold: [{ margin: 0.05 }] } },
+    'nifty-undervalued': { industries: { Gold: [{ margin: -0.5 }] } },
+  };
+  assert.deepStrictEqual(flatten(slices).Gold, { avgMargin: 0.05, peerCount: 1 });
 });

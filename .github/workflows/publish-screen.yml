@@ -87,6 +87,15 @@ jobs:
             echo "Cherry-pick would be empty -- master already has this change (likely a prior publish attempt for this SHA got partway through). Skipping."
             git cherry-pick --skip
           fi
+          # This market's sector-margins slice just landed -- rebuild the pooled
+          # lookup from every market's committed slice (scripts/lib/
+          # sector-margin-tally.js). Before 2026-10-19 CI runs discarded their
+          # tally, so only local ASX/KOSPI runs ever reached the lookup.
+          node scripts/build-sector-margins.js
+          if ! git diff --quiet -- www/sector-margins.json; then
+            git add www/sector-margins.json
+            git commit -m "data: rebuild sector-margins.json after $MARKET publish"
+          fi
           git push origin master
 
       - name: Checkout stock-evaluator with the cross-repo publish PAT
@@ -102,7 +111,7 @@ jobs:
       # copies it drags in -- that exact pattern clobbered the 2026-07-17
       # consolidation on 2026-07-18. Copying only the 5 files this workflow is
       # supposed to touch makes that class of incident structurally impossible.
-      - name: Copy only the 5 snapshot files
+      - name: Copy only the 5 snapshot files + the sector-margins lookup
         env:
           OUTDIR: ${{ steps.market.outputs.outdir }}
         run: |
@@ -110,6 +119,8 @@ jobs:
           for f in rankings.json first-seen.json sold.json portfolio-value.json portfolio-history.json; do
             cp "dcf/www/$OUTDIR/$f" "kv/www/dcf/$OUTDIR/$f"
           done
+          # The pooled lookup rebuilt above (read by /dcf/, /evaluate/ and the native shells).
+          cp dcf/www/sector-margins.json kv/www/dcf/sector-margins.json
 
       # Derives the market's meta description (top-3 names + as-at date), its
       # www/sitemap.xml <lastmod> and its scripts/tools.json lastmod from the
@@ -135,7 +146,7 @@ jobs:
         run: |
           CHANGED=$(git status --porcelain -- www/dcf www/sitemap.xml scripts/tools.json)
           echo "$CHANGED"
-          UNEXPECTED=$(echo "$CHANGED" | grep -vE "www/dcf/$OUTDIR/(rankings|first-seen|sold|portfolio-value|portfolio-history)\.json\$|www/dcf/$OUTDIR/index\.html\$|www/sitemap\.xml\$|scripts/tools\.json\$" || true)
+          UNEXPECTED=$(echo "$CHANGED" | grep -vE "www/dcf/$OUTDIR/(rankings|first-seen|sold|portfolio-value|portfolio-history)\.json\$|www/dcf/$OUTDIR/index\.html\$|www/dcf/sector-margins\.json\$|www/sitemap\.xml\$|scripts/tools\.json\$" || true)
           if [ -n "$UNEXPECTED" ]; then
             echo "::error::Unexpected changes under www/dcf -- refusing to publish. The source repo may have drifted from the deploy target; reconcile before retrying."
             exit 1
@@ -162,7 +173,7 @@ jobs:
           ASAT=$(node -e "console.log(require('./www/dcf/$OUTDIR/rankings.json').asAt)")
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "www/dcf/$OUTDIR" www/sitemap.xml scripts/tools.json
+          git add "www/dcf/$OUTDIR" www/dcf/sector-margins.json www/sitemap.xml scripts/tools.json
           git commit -m "Deploy: $MARKET undervalued snapshot $ASAT"
           git push origin main
           echo "asat=$ASAT" >> "$GITHUB_OUTPUT"

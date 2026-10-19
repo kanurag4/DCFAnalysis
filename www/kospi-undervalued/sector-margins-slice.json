@@ -1,0 +1,887 @@
+{
+ "asAt": "2026-08-25",
+ "industries": {
+  "Household & Personal Products": [
+   {
+    "ticker": "090430.KS",
+    "margin": 0.0565221415080123
+   },
+   {
+    "ticker": "002790.KS",
+    "margin": 0.055147586207039384
+   },
+   {
+    "ticker": "278470.KS",
+    "margin": 0.12505125003642803
+   },
+   {
+    "ticker": "192820.KS",
+    "margin": 0.0005819936405693539
+   },
+   {
+    "ticker": "483650.KS",
+    "margin": 0.09832235529161726
+   },
+   {
+    "ticker": "161890.KS",
+    "margin": 0.0086779708946031
+   },
+   {
+    "ticker": "051900.KS",
+    "margin": 0.05751375357218707
+   }
+  ],
+  "Building Materials": [
+   {
+    "ticker": "002030.KS",
+    "margin": 0.021213333538700203
+   },
+   {
+    "ticker": "300720.KS",
+    "margin": -0.0025841962121712753
+   }
+  ],
+  "Grocery Stores": [
+   {
+    "ticker": "282330.KS",
+    "margin": 0.051678150881935184
+   }
+  ],
+  "Banks - Regional": [
+   {
+    "ticker": "138930.KS",
+    "margin": -0.009173887226919225
+   },
+   {
+    "ticker": "086790.KS",
+    "margin": 0.08469553755103264
+   },
+   {
+    "ticker": "139130.KS",
+    "margin": -0.00026491010887724764
+   },
+   {
+    "ticker": "175330.KS",
+    "margin": -0.47841077835166
+   },
+   {
+    "ticker": "323410.KS",
+    "margin": 2.066541034132305
+   },
+   {
+    "ticker": "105560.KS",
+    "margin": 0.1944439311597711
+   },
+   {
+    "ticker": "055550.KS",
+    "margin": 0.27924976891185127
+   },
+   {
+    "ticker": "316140.KS",
+    "margin": 0.5433653151317254
+   }
+  ],
+  "Biotechnology": [
+   {
+    "ticker": "068270.KS",
+    "margin": 0.04583472101836014
+   },
+   {
+    "ticker": "207940.KS",
+    "margin": 0.09580789202667594
+   },
+   {
+    "ticker": "326030.KS",
+    "margin": -0.14797004306017777
+   },
+   {
+    "ticker": "302440.KS",
+    "margin": -0.465589847989455
+   }
+  ],
+  "Advertising Agencies": [
+   {
+    "ticker": "030000.KS",
+    "margin": 0.05117005529271671
+   }
+  ],
+  "Drug Manufacturers - Specialty & Generic": [
+   {
+    "ticker": "185750.KS",
+    "margin": 0.023009097259342283
+   },
+   {
+    "ticker": "003090.KS",
+    "margin": -0.03194992804336665
+   },
+   {
+    "ticker": "006280.KS",
+    "margin": -0.03162561817319803
+   },
+   {
+    "ticker": "009420.KS",
+    "margin": 0.026684116475730567
+   },
+   {
+    "ticker": "128940.KS",
+    "margin": 0.08761245190226906
+   },
+   {
+    "ticker": "000100.KS",
+    "margin": -0.021325938085748338
+   },
+   {
+    "ticker": "069620.KS",
+    "margin": -0.04856712666945506
+   }
+  ],
+  "Conglomerates": [
+   {
+    "ticker": "001040.KS",
+    "margin": 0.037393751223864104
+   },
+   {
+    "ticker": "000150.KS",
+    "margin": 0.0006593968962107773
+   },
+   {
+    "ticker": "078930.KS",
+    "margin": 0.04875035678495329
+   },
+   {
+    "ticker": "000880.KS",
+    "margin": 0.010844982692079626
+   },
+   {
+    "ticker": "047050.KS",
+    "margin": 0.011542806329602128
+   },
+   {
+    "ticker": "034730.KS",
+    "margin": -0.05237916753349289
+   }
+  ],
+  "Packaged Foods": [
+   {
+    "ticker": "097950.KS",
+    "margin": 0.027599780829198978
+   },
+   {
+    "ticker": "001680.KS",
+    "margin": -0.00035781875182163076
+   },
+   {
+    "ticker": "006040.KS",
+    "margin": 0.01379792638550719
+   },
+   {
+    "ticker": "004370.KS",
+    "margin": 0.04621919964055854
+   },
+   {
+    "ticker": "007310.KS",
+    "margin": 0.034386586910915375
+   },
+   {
+    "ticker": "003230.KS",
+    "margin": 0.013586803549563188
+   }
+  ],
+  "Integrated Freight & Logistics": [
+   {
+    "ticker": "000120.KS",
+    "margin": 0.03107754137102372
+   },
+   {
+    "ticker": "086280.KS",
+    "margin": 0.056077375413061376
+   }
+  ],
+  "Specialty Chemicals": [
+   {
+    "ticker": "005420.KS",
+    "margin": -0.13838944150264196
+   },
+   {
+    "ticker": "000210.KS",
+    "margin": -0.0015436667103799328
+   },
+   {
+    "ticker": "093370.KS",
+    "margin": -0.06568942565678831
+   },
+   {
+    "ticker": "011780.KS",
+    "margin": 0.01907587499865962
+   },
+   {
+    "ticker": "456040.KS",
+    "margin": 0.022934641849883693
+   },
+   {
+    "ticker": "285130.KS",
+    "margin": -0.2037566398398898
+   },
+   {
+    "ticker": "011790.KS",
+    "margin": -0.5546143398508478
+   }
+  ],
+  "Furnishings, Fixtures & Appliances": [
+   {
+    "ticker": "021240.KS",
+    "margin": -0.0016855884615163547
+   },
+   {
+    "ticker": "009240.KS",
+    "margin": 0.013625476482152357
+   }
+  ],
+  "Specialty Industrial Machinery": [
+   {
+    "ticker": "112610.KS",
+    "margin": 0.020289298560495703
+   },
+   {
+    "ticker": "034020.KS",
+    "margin": 0.016609555855599357
+   },
+   {
+    "ticker": "082740.KS",
+    "margin": 0.06187743566743267
+   },
+   {
+    "ticker": "071970.KS",
+    "margin": 0.1623550730843666
+   },
+   {
+    "ticker": "017800.KS",
+    "margin": 0.022372387406187244
+   }
+  ],
+  "Engineering & Construction": [
+   {
+    "ticker": "047040.KS",
+    "margin": -0.05221322970311306
+   },
+   {
+    "ticker": "375500.KS",
+    "margin": 0.02334498813240543
+   },
+   {
+    "ticker": "000720.KS",
+    "margin": -0.02108960757871999
+   },
+   {
+    "ticker": "052690.KS",
+    "margin": 0.04613052507209955
+   },
+   {
+    "ticker": "051600.KS",
+    "margin": 0.0834255164399436
+   },
+   {
+    "ticker": "028260.KS",
+    "margin": 0.03194946226264459
+   },
+   {
+    "ticker": "028050.KS",
+    "margin": 0.04406457447314979
+   }
+  ],
+  "Semiconductors": [
+   {
+    "ticker": "000990.KS",
+    "margin": 0.14875453045455536
+   },
+   {
+    "ticker": "000660.KS",
+    "margin": 0.051223717100328935
+   },
+   {
+    "ticker": "402340.KS",
+    "margin": 0.011756243773551965
+   }
+  ],
+  "Insurance - Property & Casualty": [
+   {
+    "ticker": "005830.KS",
+    "margin": 0.15472376257103776
+   },
+   {
+    "ticker": "001450.KS",
+    "margin": 0.13491009004578378
+   },
+   {
+    "ticker": "000810.KS",
+    "margin": 0.07577023481170242
+   }
+  ],
+  "Auto Parts": [
+   {
+    "ticker": "007340.KS",
+    "margin": 0.03759601503721035
+   },
+   {
+    "ticker": "161390.KS",
+    "margin": 0.06325907691757537
+   },
+   {
+    "ticker": "000240.KS",
+    "margin": 0.0540790323690009
+   },
+   {
+    "ticker": "018880.KS",
+    "margin": -0.028004939483290175
+   },
+   {
+    "ticker": "012330.KS",
+    "margin": 0.03930359824772634
+   },
+   {
+    "ticker": "011210.KS",
+    "margin": 0.03264399613956533
+   },
+   {
+    "ticker": "073240.KS",
+    "margin": 0.027412711037630735
+   },
+   {
+    "ticker": "005850.KS",
+    "margin": 0.04035714097609685
+   }
+  ],
+  "Food Distribution": [
+   {
+    "ticker": "026960.KS",
+    "margin": 0.20219376630961883
+   }
+  ],
+  "Packaging & Containers": [
+   {
+    "ticker": "014820.KS",
+    "margin": 0.061376768968973955
+   },
+   {
+    "ticker": "008730.KS",
+    "margin": -0.08318803222050063
+   }
+  ],
+  "Electronic Gaming & Multimedia": [
+   {
+    "ticker": "192080.KS",
+    "margin": 0.27777729463534173
+   },
+   {
+    "ticker": "259960.KS",
+    "margin": 0.2994769203146011
+   },
+   {
+    "ticker": "251270.KS",
+    "margin": -0.01919206806887822
+   },
+   {
+    "ticker": "036570.KS",
+    "margin": 0.05383999054443183
+   }
+  ],
+  "Electrical Equipment & Parts": [
+   {
+    "ticker": "450080.KS",
+    "margin": -0.6094271641402196
+   },
+   {
+    "ticker": "267260.KS",
+    "margin": 0.08151173465609499
+   },
+   {
+    "ticker": "298040.KS",
+    "margin": 0.042009610595372636
+   },
+   {
+    "ticker": "373220.KS",
+    "margin": -0.2501619919438561
+   },
+   {
+    "ticker": "006260.KS",
+    "margin": -0.012014274881675262
+   },
+   {
+    "ticker": "010120.KS",
+    "margin": -0.005448796241545971
+   },
+   {
+    "ticker": "003670.KS",
+    "margin": -0.37514412635627414
+   },
+   {
+    "ticker": "062040.KS",
+    "margin": 0.0000858371611022618
+   },
+   {
+    "ticker": "006400.KS",
+    "margin": -0.1668646895816039
+   },
+   {
+    "ticker": "001440.KS",
+    "margin": -0.04725580304022333
+   }
+  ],
+  "Discount Stores": [
+   {
+    "ticker": "139480.KS",
+    "margin": 0.009404857025300044
+   }
+  ],
+  "Apparel Manufacturing": [
+   {
+    "ticker": "383220.KS",
+    "margin": 0.12366934271029414
+   },
+   {
+    "ticker": "111770.KS",
+    "margin": 0.08774213527538774
+   },
+   {
+    "ticker": "009970.KS",
+    "margin": 0.09849796525993257
+   }
+  ],
+  "Department Stores": [
+   {
+    "ticker": "007070.KS",
+    "margin": 0.03443967431652309
+   },
+   {
+    "ticker": "069960.KS",
+    "margin": 0.07356372004371522
+   },
+   {
+    "ticker": "023530.KS",
+    "margin": 0.06081261811803574
+   },
+   {
+    "ticker": "004170.KS",
+    "margin": 0.03565081325556687
+   }
+  ],
+  "Lodging": [
+   {
+    "ticker": "180640.KS",
+    "margin": 0.2509635485244113
+   }
+  ],
+  "Medical Distribution": [
+   {
+    "ticker": "008930.KS",
+    "margin": 0.02439540958270829
+   }
+  ],
+  "Semiconductor Equipment & Materials": [
+   {
+    "ticker": "042700.KS",
+    "margin": 0.20144180255114658
+   }
+  ],
+  "Chemicals": [
+   {
+    "ticker": "014680.KS",
+    "margin": 0.06194290591854716
+   },
+   {
+    "ticker": "017960.KS",
+    "margin": 0.025764359777043503
+   },
+   {
+    "ticker": "002380.KS",
+    "margin": 0.045672819439624854
+   },
+   {
+    "ticker": "120110.KS",
+    "margin": 0.0024027150201553814
+   },
+   {
+    "ticker": "006650.KS",
+    "margin": -0.031515903102877524
+   },
+   {
+    "ticker": "051910.KS",
+    "margin": -0.13495802058609968
+   },
+   {
+    "ticker": "011170.KS",
+    "margin": -0.09131034223248835
+   },
+   {
+    "ticker": "004000.KS",
+    "margin": 0.06610371145324014
+   },
+   {
+    "ticker": "002840.KS",
+    "margin": 0.06716211224147713
+   },
+   {
+    "ticker": "268280.KS",
+    "margin": 0.07507501257566711
+   },
+   {
+    "ticker": "003240.KS",
+    "margin": -0.03623303277308815
+   },
+   {
+    "ticker": "069260.KS",
+    "margin": 0.04544176776502875
+   }
+  ],
+  "Aerospace & Defense": [
+   {
+    "ticker": "012450.KS",
+    "margin": 0.10118569859982468
+   },
+   {
+    "ticker": "042660.KS",
+    "margin": -0.1955273716263257
+   },
+   {
+    "ticker": "272210.KS",
+    "margin": -0.015328193380609624
+   },
+   {
+    "ticker": "329180.KS",
+    "margin": 0.06396448193194909
+   },
+   {
+    "ticker": "443060.KS",
+    "margin": 0.09338104328476451
+   },
+   {
+    "ticker": "009540.KS",
+    "margin": 0.07178117978058147
+   },
+   {
+    "ticker": "047810.KS",
+    "margin": -0.08510209089867622
+   },
+   {
+    "ticker": "079550.KS",
+    "margin": 0.06575907719379791
+   },
+   {
+    "ticker": "010140.KS",
+    "margin": -0.05119856963739613
+   }
+  ],
+  "Insurance - Life": [
+   {
+    "ticker": "088350.KS",
+    "margin": 0.18325138741784086
+   },
+   {
+    "ticker": "032830.KS",
+    "margin": 0.11865809170589893
+   }
+  ],
+  "Solar": [
+   {
+    "ticker": "009830.KS",
+    "margin": -0.1581150141843363
+   }
+  ],
+  "Farm & Heavy Construction Machinery": [
+   {
+    "ticker": "267270.KS",
+    "margin": 0.031677679207312986
+   }
+  ],
+  "Oil & Gas Refining & Marketing": [
+   {
+    "ticker": "267250.KS",
+    "margin": 0.04592712161420782
+   },
+   {
+    "ticker": "096770.KS",
+    "margin": -0.0784908280589542
+   },
+   {
+    "ticker": "010950.KS",
+    "margin": -0.0021260071355776603
+   }
+  ],
+  "Beverages - Wineries & Distilleries": [
+   {
+    "ticker": "000080.KS",
+    "margin": -0.01453585609887628
+   }
+  ],
+  "Marine Shipping": [
+   {
+    "ticker": "011200.KS",
+    "margin": 0.22962900661989644
+   },
+   {
+    "ticker": "028670.KS",
+    "margin": 0.10250466826024537
+   }
+  ],
+  "Specialty Retail": [
+   {
+    "ticker": "008770.KS",
+    "margin": 0.02299353702755559
+   }
+  ],
+  "Textile Manufacturing": [
+   {
+    "ticker": "298050.KS",
+    "margin": 0.004198357104476774
+   },
+   {
+    "ticker": "298020.KS",
+    "margin": 0.018654961376095187
+   }
+  ],
+  "Entertainment": [
+   {
+    "ticker": "352820.KS",
+    "margin": 0.08209717404744775
+   }
+  ],
+  "Information Technology Services": [
+   {
+    "ticker": "307950.KS",
+    "margin": 0.04021566180526116
+   },
+   {
+    "ticker": "064400.KS",
+    "margin": 0.051259384066431025
+   },
+   {
+    "ticker": "022100.KS",
+    "margin": 0.044287392386276894
+   },
+   {
+    "ticker": "018260.KS",
+    "margin": 0.055710323409518606
+   }
+  ],
+  "Auto Manufacturers": [
+   {
+    "ticker": "005380.KS",
+    "margin": -0.05463709025826746
+   },
+   {
+    "ticker": "000270.KS",
+    "margin": 0.06858984073327266
+   }
+  ],
+  "Railroads": [
+   {
+    "ticker": "064350.KS",
+    "margin": 0.13192729635650566
+   }
+  ],
+  "Steel": [
+   {
+    "ticker": "004020.KS",
+    "margin": 0.028123205257117947
+   },
+   {
+    "ticker": "005490.KS",
+    "margin": -0.012333349950363146
+   },
+   {
+    "ticker": "001430.KS",
+    "margin": 0.0039372264819312755
+   },
+   {
+    "ticker": "003030.KS",
+    "margin": -0.06662125932986837
+   }
+  ],
+  "Electronic Components": [
+   {
+    "ticker": "007660.KS",
+    "margin": 0.0008590341848503458
+   },
+   {
+    "ticker": "011070.KS",
+    "margin": 0.00755309814159844
+   },
+   {
+    "ticker": "009150.KS",
+    "margin": 0.023992202510455335
+   },
+   {
+    "ticker": "000670.KS",
+    "margin": 0.006572810809835784
+   }
+  ],
+  "Internet Content & Information": [
+   {
+    "ticker": "035720.KS",
+    "margin": 0.06984493198547932
+   },
+   {
+    "ticker": "035420.KS",
+    "margin": 0.13876093995796399
+   }
+  ],
+  "Software - Infrastructure": [
+   {
+    "ticker": "377300.KS",
+    "margin": 0.10365154929124265
+   }
+  ],
+  "Resorts & Casinos": [
+   {
+    "ticker": "035250.KS",
+    "margin": 0.218556896682327
+   },
+   {
+    "ticker": "034230.KS",
+    "margin": 0.13909589458713334
+   }
+  ],
+  "Utilities - Regulated Electric": [
+   {
+    "ticker": "015760.KS",
+    "margin": -0.14582142909868895
+   }
+  ],
+  "Utilities - Renewable": [
+   {
+    "ticker": "071320.KS",
+    "margin": -0.07478665633880083
+   }
+  ],
+  "Utilities - Regulated Gas": [
+   {
+    "ticker": "036460.KS",
+    "margin": -0.008883944626470863
+   }
+  ],
+  "Other Industrial Metals & Mining": [
+   {
+    "ticker": "010130.KS",
+    "margin": -0.01762883360177933
+   }
+  ],
+  "Telecom Services": [
+   {
+    "ticker": "030200.KS",
+    "margin": 0.03294355527507539
+   },
+   {
+    "ticker": "032640.KS",
+    "margin": 0.044195506364199014
+   },
+   {
+    "ticker": "017670.KS",
+    "margin": 0.11565511931220912
+   }
+  ],
+  "Tobacco": [
+   {
+    "ticker": "033780.KS",
+    "margin": 0.0549654738621551
+   }
+  ],
+  "Consumer Electronics": [
+   {
+    "ticker": "003550.KS",
+    "margin": 0.11265643938368966
+   },
+   {
+    "ticker": "034220.KS",
+    "margin": -0.05905328876411884
+   },
+   {
+    "ticker": "066570.KS",
+    "margin": 0.0050089594500129855
+   },
+   {
+    "ticker": "005930.KS",
+    "margin": 0.032497806291787126
+   }
+  ],
+  "Confectioners": [
+   {
+    "ticker": "004990.KS",
+    "margin": 0.0007787597106003381
+   },
+   {
+    "ticker": "280360.KS",
+    "margin": -0.005468009832284158
+   },
+   {
+    "ticker": "271560.KS",
+    "margin": 0.13452568523569122
+   },
+   {
+    "ticker": "001800.KS",
+    "margin": 0.12616059418206035
+   }
+  ],
+  "Beverages - Non-Alcoholic": [
+   {
+    "ticker": "005300.KS",
+    "margin": 0.023876301447721827
+   }
+  ],
+  "Capital Markets": [
+   {
+    "ticker": "138040.KS",
+    "margin": -0.22432933004906433
+   },
+   {
+    "ticker": "005940.KS",
+    "margin": -0.013846734269700456
+   },
+   {
+    "ticker": "016360.KS",
+    "margin": 0.5000896319074006
+   }
+  ],
+  "Leisure": [
+   {
+    "ticker": "081660.KS",
+    "margin": 0.04033230682806657
+   }
+  ],
+  "Asset Management": [
+   {
+    "ticker": "010060.KS",
+    "margin": 0.04723316620945987
+   }
+  ],
+  "Security & Protection Services": [
+   {
+    "ticker": "012750.KS",
+    "margin": 0.0687470476490109
+   }
+  ],
+  "Credit Services": [
+   {
+    "ticker": "029780.KS",
+    "margin": -0.3610821878379268
+   }
+  ],
+  "Medical Devices": [
+   {
+    "ticker": "137310.KS",
+    "margin": 0.035399742700897255
+   }
+  ],
+  "Airlines": [
+   {
+    "ticker": "003490.KS",
+    "margin": 0.13995927877443515
+   }
+  ],
+  "Metal Fabrication": [
+   {
+    "ticker": "103140.KS",
+    "margin": 0.008616813900083255
+   }
+  ]
+ }
+}
