@@ -1092,6 +1092,19 @@
     "updatedAt": "2026-10-17T00:51:10.571Z"
   },
   {
+    "ticker": "MU",
+    "slug": "mu",
+    "name": "Micron Technology, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 250.48184512941558,
+    "price": 878.84,
+    "marginOfSafety": -0.7149858391408953,
+    "marketCap": 994340044800,
+    "updated": "2026-10-19",
+    "updatedAt": "2026-10-19T09:59:55.377Z"
+  },
+  {
     "ticker": "NEE",
     "slug": "nee",
     "name": "NextEra Energy, Inc.",
