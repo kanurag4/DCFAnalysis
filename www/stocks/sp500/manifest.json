@@ -182,6 +182,19 @@
     "updatedAt": "2026-10-17T00:36:07.796Z"
   },
   {
+    "ticker": "ANET",
+    "slug": "anet",
+    "name": "Arista Networks, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 64.72915766169018,
+    "price": 176.98,
+    "marginOfSafety": -0.6342572174161477,
+    "marketCap": 223211536384,
+    "updated": "2026-10-19",
+    "updatedAt": "2026-10-19T09:08:18.498Z"
+  },
+  {
     "ticker": "APH",
     "slug": "aph",
     "name": "Amphenol Corporation",
@@ -596,6 +609,19 @@
     "marketCap": 16655881216,
     "updated": "2026-10-17",
     "updatedAt": "2026-10-17T02:21:17.586Z"
+  },
+  {
+    "ticker": "FSLR",
+    "slug": "fslr",
+    "name": "First Solar, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 257.09914922183714,
+    "price": 172.64,
+    "marginOfSafety": 0.48922120726272683,
+    "marketCap": 18553585664,
+    "updated": "2026-10-19",
+    "updatedAt": "2026-10-19T09:08:48.004Z"
   },
   {
     "ticker": "GD",
@@ -1740,6 +1766,19 @@
     "marketCap": 45985210368,
     "updated": "2026-10-17",
     "updatedAt": "2026-10-17T01:02:48.175Z"
+  },
+  {
+    "ticker": "WDC",
+    "slug": "wdc",
+    "name": "Western Digital Corporation",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 83.70051328226519,
+    "price": 332,
+    "marginOfSafety": -0.747890020234141,
+    "marketCap": 124275326976,
+    "updated": "2026-10-19",
+    "updatedAt": "2026-10-19T09:07:18.042Z"
   },
   {
     "ticker": "WM",
