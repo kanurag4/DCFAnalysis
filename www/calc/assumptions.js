@@ -212,27 +212,35 @@ function applyWorkerRates(body) {
       if (typeof v === 'number' && isFinite(v) && v >= lo && v <= hi) targets[name][key] = v;
     }
   }
+  applyWorkerSuffixes(body.MARKET_SUFFIXES);
   return true;
 }
-// .PA (France) has its own bucket since 2026-10-23 -- see FALLBACK_RF.fr.
-const EUROZONE_SUFFIXES = ['.DE', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 
-// Same suffix-priority order as app.js's prefillInputs() (ASX, then
-// NSE/BSE, then KOSPI, then Nikkei, then UK, then France, then eurozone, then Hong
-// Kong, then China A-shares, then Brazil, then bare-suffix-less US, else 'other') —
-// must stay in this exact order if ever touched again.
+// Exchange suffix -> rate market, checked in order (first match wins). DATA, not code, since 2026-10-23: /rates
+// serves it and applyWorkerRates() swaps it in, so a new market (France .PA that day, Brazil .SA before it) reaches
+// installed apps with a worker-watchlist deploy -- before, /rates delivered the new market's rates but the bundled
+// detectMarket() never routed a ticker to them. ASX stays in code (isAsxTicker, ahead of this list).
+const MARKET_SUFFIXES = [
+  ['.NS', 'ind'], ['.BO', 'ind'], ['.KS', 'kor'], ['.T', 'jpn'], ['.L', 'uk'],
+  ['.PA', 'fr'],  // own bucket since 2026-10-23 -- see FALLBACK_RF.fr
+  ['.DE', 'eu'], ['.AS', 'eu'], ['.MI', 'eu'], ['.MC', 'eu'], ['.BR', 'eu'], ['.LS', 'eu'], ['.VI', 'eu'], ['.HE', 'eu'], ['.IR', 'eu'],
+  ['.HK', 'hk'], ['.SS', 'cn'], ['.SZ', 'cn'], ['.SA', 'br'],
+];
+// All or nothing: a Worker map is used only if EVERY entry is a well-formed upper-case suffix pointing at a market
+// with both a rate and an ERP (after the tables above are applied) -- a partial or bad map is ignored whole, since a
+// suffix routed to a market with no rates would silently fall back to the US rate. Copied, never aliased.
+function applyWorkerSuffixes(map) {
+  if (!Array.isArray(map) || map.length === 0) return;
+  const ok = map.every((e) => Array.isArray(e) && e.length === 2 && typeof e[0] === 'string' && /^\.[A-Z]{1,3}$/.test(e[0])
+    && typeof e[1] === 'string' && FALLBACK_RF[e[1]] != null && MARKET_ERP[e[1]] != null);
+  if (ok) MARKET_SUFFIXES.splice(0, MARKET_SUFFIXES.length, ...map.map((e) => [e[0], e[1]]));
+}
+
+// ASX first (in code), then MARKET_SUFFIXES in order, then bare-suffix-less US, else 'other'.
 function detectMarket(ticker) {
   const t = (ticker || '').toUpperCase();
   if (isAsxTicker(ticker)) return 'aus';
-  if (t.endsWith('.NS') || t.endsWith('.BO')) return 'ind';
-  if (t.endsWith('.KS')) return 'kor';
-  if (t.endsWith('.T')) return 'jpn';
-  if (t.endsWith('.L')) return 'uk';
-  if (t.endsWith('.PA')) return 'fr';
-  if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return 'eu';
-  if (t.endsWith('.HK')) return 'hk';
-  if (t.endsWith('.SS') || t.endsWith('.SZ')) return 'cn';
-  if (t.endsWith('.SA')) return 'br';
+  for (const [suffix, market] of MARKET_SUFFIXES) if (t.endsWith(suffix)) return market;
   return t.includes('.') ? 'other' : 'us';
 }
 
@@ -555,5 +563,5 @@ function computeScenarios(data, valuationModel, seeds, options) {
 // 2026-08-15 Damodaran rf fix and caused a real live valuation mismatch (see
 // kashvector-native-apps.md / the Watchlist bug investigation). Single source of
 // truth now; a future rate change here flows to Watchlist automatically.
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, US_DEFAULT_SPREAD, usRiskFreeFromYield, applyWorkerRates, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, US_DEFAULT_SPREAD, usRiskFreeFromYield, applyWorkerRates, MARKET_SUFFIXES, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
 if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.roeOffsetSpread = roeOffsetSpread; window.discountRateSpread = discountRateSpread; }
