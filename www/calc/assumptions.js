@@ -177,11 +177,19 @@ const FALLBACK_RF_META = {
   br:  { asOf: '2026-10-16', source: 'raw BRL 10Y 13.09% (Oct 16 close, TradingEconomics; Investing.com 13.085%) minus Jul-2026 Damodaran Ba1 default spread 1.99%. Volatile around the 25 Oct 2026 presidential runoff', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
+// fr: France, split out of the eurozone bucket 2026-10-23 when the 10Y OAT traded ~174bp over the Bund (5.08% vs 3.33%,
+// Oct 22). Damodaran's euro convention: ONE euro risk-free rate (the Bund) for every euro asset, with each country's
+// extra risk carried in its ERP -- so France gets the eu rate itself plus its own Aa3 ERP (MARKET_ERP.fr). Aliased, not
+// typed: a Bund refresh can never leave France behind, and fr must exist as a key because every lookup falls back to
+// the US rate (`FALLBACK_RF[m] ?? FALLBACK_RF.us`) for a market with no entry. Other euro members stay on the eu bucket.
+FALLBACK_RF.fr = FALLBACK_RF.eu;
+FALLBACK_RF_META.fr = { ...FALLBACK_RF_META.eu, source: 'the euro risk-free rate: FALLBACK_RF.eu (German Bund) by construction -- see the eu entry' };
+
 // Total Equity Risk Premium (rating-based column), Damodaran July 2026 country risk
 // premium table -- see the FALLBACK_RF comment above for the full refresh narrative.
-const MARKET_ERP  = { us: 0.0442, aus: 0.0420, ind: 0.0692, kor: 0.0481, jpn: 0.0507, uk: 0.0494, eu: 0.0420, hk: 0.0494, cn: 0.0507, br: 0.0730 };
+const MARKET_ERP  = { us: 0.0442, aus: 0.0420, ind: 0.0692, kor: 0.0481, jpn: 0.0507, uk: 0.0494, eu: 0.0420, fr: 0.0494, hk: 0.0494, cn: 0.0507, br: 0.0730 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
-const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6, br: 5.0 };
+const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, fr: 1.8, hk: 2.0, cn: 0.6, br: 5.0 };
 
 // The ONE place a worker-watchlist GET /rates body is applied (native-compare spec Part 1, 2026-10-21): web
 // /evaluate/, web /dcf/, native Home and the native DCF tab all call this, so one /rates body gives one set of
@@ -206,10 +214,11 @@ function applyWorkerRates(body) {
   }
   return true;
 }
-const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
+// .PA (France) has its own bucket since 2026-10-23 -- see FALLBACK_RF.fr.
+const EUROZONE_SUFFIXES = ['.DE', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 
 // Same suffix-priority order as app.js's prefillInputs() (ASX, then
-// NSE/BSE, then KOSPI, then Nikkei, then UK, then eurozone, then Hong
+// NSE/BSE, then KOSPI, then Nikkei, then UK, then France, then eurozone, then Hong
 // Kong, then China A-shares, then Brazil, then bare-suffix-less US, else 'other') —
 // must stay in this exact order if ever touched again.
 function detectMarket(ticker) {
@@ -219,6 +228,7 @@ function detectMarket(ticker) {
   if (t.endsWith('.KS')) return 'kor';
   if (t.endsWith('.T')) return 'jpn';
   if (t.endsWith('.L')) return 'uk';
+  if (t.endsWith('.PA')) return 'fr';
   if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return 'eu';
   if (t.endsWith('.HK')) return 'hk';
   if (t.endsWith('.SS') || t.endsWith('.SZ')) return 'cn';

@@ -52,7 +52,9 @@ function marketParamsFor(ticker, live = {}) {
   // suffix (Germany/France/Netherlands/Italy/Spain/Belgium/Portugal/Austria/Finland/
   // Ireland), matching how ASX/NIFTY/etc. each get one rf regardless of which
   // state/exchange within that market a ticker is on.
-  const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
+  // France (.PA): the Bund rate plus France's own Aa3 ERP since 2026-10-23 -- see calc/assumptions.js's FALLBACK_RF.fr.
+  if (t.endsWith('.PA')) return { rf: FALLBACK_RF.fr, erp: MARKET_ERP.fr, terminalGrowth: pct(MARKET_TGROWTH.fr) };
+  const EUROZONE_SUFFIXES = ['.DE', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
   if (EUROZONE_SUFFIXES.some(sfx => t.endsWith(sfx))) return { rf: FALLBACK_RF.eu, erp: MARKET_ERP.eu, terminalGrowth: pct(MARKET_TGROWTH.eu) };
 
   // Hong Kong: same "no live source" situation. Unlike every other market seed, erp

@@ -113,9 +113,14 @@ test('German (.DE) ticker gets fixed Bund-proxy rf/erp/terminalGrowth', () => {
   assert.deepStrictEqual(marketParamsFor('SAP.DE'), { rf: 0.0333, erp: 0.0420, terminalGrowth: 0.018 });
 });
 
-test('French (.PA), Dutch (.AS), Italian (.MI), Spanish (.MC) tickers all get the same eurozone bucket', () => {
+// France split out 2026-10-23: the OAT traded ~174bp over the Bund (Oct 22). Damodaran values every euro asset off one
+// euro risk-free rate (the Bund) and puts country risk in the ERP -- France is Aa3, total ERP 4.94% (Jul 2026).
+test('French (.PA) tickers get the Bund rate plus France’s own Aa3 ERP, same as the live tool', () => {
+  assert.deepStrictEqual(marketParamsFor('MC.PA'), { rf: 0.0333, erp: 0.0494, terminalGrowth: 0.018 });
+});
+
+test('Dutch (.AS), Italian (.MI), Spanish (.MC) tickers all get the same eurozone bucket', () => {
   const expected = { rf: 0.0333, erp: 0.0420, terminalGrowth: 0.018 };
-  assert.deepStrictEqual(marketParamsFor('MC.PA'), expected);
   assert.deepStrictEqual(marketParamsFor('ASML.AS'), expected);
   assert.deepStrictEqual(marketParamsFor('ENI.MI'), expected);
   assert.deepStrictEqual(marketParamsFor('SAN.MC'), expected);

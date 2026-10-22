@@ -272,12 +272,12 @@ function rfErpForMarket(market) {
   switch (market) {
     case 'aus': return { rf: marketRf('aus', liveAusRfRate), erp: marketErp('aus') };
     case 'ind': return { rf: marketRf('ind', liveIndRfRate), erp: marketErp('ind') };
-    case 'kor': case 'jpn': case 'uk': case 'eu': case 'hk': case 'cn': case 'br':
+    case 'kor': case 'jpn': case 'uk': case 'eu': case 'fr': case 'hk': case 'cn': case 'br':
       return { rf: marketRf(market), erp: marketErp(market) };
     default: return { rf: marketRf('us', liveRfRate), erp: marketErp('us') };
   }
 }
-let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'hk' | 'cn' | 'br' | 'other'
+let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'fr' | 'hk' | 'cn' | 'br' | 'other'
 let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDiscount, read by buildScenarios()
 let breakdownChart = null;
 let priceChart    = null;
@@ -437,6 +437,10 @@ function prefillInputs(data) {
     setRfBadge('eu', marketRf('eu'));   // fixed estimate — no live source exists, see setRfBadge's 'eu' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Eurozone MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
     // No fetchAndSet*RfRate() call — eurozone has no live rate source to fetch.
+  } else if (currentMarket === 'fr') {
+    setRfBadge('fr', marketRf('fr'));   // the eurozone (Bund) rate itself — see setRfBadge's 'fr' label
+    if (els.erpMarketNote) { els.erpMarketNote.textContent = 'French MRP incl. country risk (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
+    // No fetchAndSet*RfRate() call — no live Bund source to fetch.
   } else if (currentMarket === 'hk') {
     setRfBadge('hk', marketRf('hk'));   // fixed estimate — no live source exists, see setRfBadge's 'hk' label
     if (els.erpMarketNote) { els.erpMarketNote.textContent = 'Hong Kong MRP (Damodaran, July 2026)'; els.erpMarketNote.hidden = false; }
@@ -785,7 +789,18 @@ function euInfoBlock() {
        <p><strong>Risk-free rate:</strong> fixed at ~3.4% (an approximate German 10-year Bund yield, used as the eurozone-wide proxy). Not live — no accessible Yahoo Finance data source exists for this rate; re-checked periodically against real Bund yields, so treat as a point-in-time estimate.</p>
        <p><strong>Equity risk premium:</strong> 4.2% (Damodaran July 2026 mature-market premium; Germany, the eurozone proxy, is Aaa-rated, so no country premium is added).</p>
        <p><strong>Terminal growth:</strong> 1.8% vs the tool's 2.5% US default, reflecting the eurozone's somewhat lower long-run nominal growth expectations.</p>
-       <p><strong>One rate for every eurozone exchange:</strong> Germany, France, Netherlands, Italy, Spain, Belgium, Portugal, Austria, Finland, and Ireland all share this seed — it's a market-wide estimate, not a country-specific one, matching how every other market in this tool gets a single seed regardless of which exchange within it a ticker trades on.</p>
+       <p><strong>One rate for every eurozone exchange except France:</strong> Germany, Netherlands, Italy, Spain, Belgium, Portugal, Austria, Finland, and Ireland all share this seed — it's a market-wide estimate, not a country-specific one. France has its own (same Bund rate, higher risk premium).</p>
+     </details>`;
+}
+
+// Informational-only panel for French (.PA) tickers — same collapsible pattern as the other market panels.
+function frInfoBlock() {
+  if (currentMarket !== 'fr') return '';
+  return `<details class="wacc-franking">
+       <summary>About the French numbers</summary>
+       <p><strong>Risk-free rate:</strong> the euro risk-free rate — the German 10-year Bund yield (~3.3%), the same rate every eurozone stock here uses. France's own 10-year bond (OAT) yields more (~5.1% in Oct 2026), but that extra yield is French default risk, which the equity risk premium below carries instead (Damodaran convention). Not live; re-checked periodically.</p>
+       <p><strong>Equity risk premium:</strong> 4.9% (Damodaran July 2026: France is rated Aa3, so its premium includes a country risk premium on top of Germany's 4.2%).</p>
+       <p><strong>Terminal growth:</strong> 1.8%, the same as the rest of the eurozone.</p>
      </details>`;
 }
 
@@ -853,6 +868,7 @@ function renderDiscountBreakdown() {
       ${japanInfoBlock()}
       ${ukInfoBlock()}
       ${euInfoBlock()}
+      ${frInfoBlock()}
       ${hkInfoBlock()}
       ${chinaInfoBlock()}
     `;
@@ -1019,6 +1035,7 @@ function renderWACCBreakdown(w, betaWasFloored, rawBeta, flooredBeta) {
     ${japanInfoBlock()}
     ${ukInfoBlock()}
     ${euInfoBlock()}
+    ${frInfoBlock()}
     ${hkInfoBlock()}
     ${chinaInfoBlock()}
   `;
@@ -1806,6 +1823,7 @@ function setRfBadge(market, rate) {
     jpn: { badge: '○ fixed',    note: 'Fixed estimate — no live Japanese bond-yield source available', title: 'Japan 10-yr Govt Bond (JGB) yield (fixed estimate, not live)' },
     uk:  { badge: '○ fixed',    note: 'Fixed estimate — UK 10-yr Gilt yield minus the UK default spread; no live source available', title: 'UK 10-yr Gilt yield, adjusted for the UK sovereign default spread (Damodaran convention; fixed estimate, not live)' },
     eu:  { badge: '○ fixed',    note: 'Fixed estimate — no live eurozone Bund-yield source available', title: 'Eurozone 10-yr Bund yield (fixed estimate, not live)' },
+    fr:  { badge: '○ fixed',    note: 'Fixed estimate — the euro risk-free rate (German Bund); France’s own risk is in the ERP', title: 'Euro risk-free rate: German 10-yr Bund yield (fixed estimate, not live). France’s extra risk is in its equity risk premium (Damodaran convention)' },
     hk:  { badge: '○ fixed',    note: 'Fixed estimate — Hong Kong 10-yr yield minus the HK default spread; no live source available', title: 'Hong Kong 10-yr Exchange Fund Note yield, adjusted for the Hong Kong sovereign default spread (Damodaran convention; fixed estimate, not live)' },
     cn:  { badge: '○ fixed',    note: 'Fixed estimate — no live China Govt bond-yield source available', title: 'China 10-yr Govt Bond yield (fixed estimate, not live)' },
     br:  { badge: '○ fixed',    note: 'Fixed estimate — Brazil 10-yr govt bond yield minus Brazil’s default spread; no live source available', title: 'Brazil 10-yr govt bond yield, adjusted for Brazil’s sovereign default spread (Damodaran convention; fixed estimate, not live)' },
