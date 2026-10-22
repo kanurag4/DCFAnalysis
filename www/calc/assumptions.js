@@ -179,6 +179,30 @@ const FALLBACK_RF_META = {
 const MARKET_ERP  = { us: 0.0442, aus: 0.0420, ind: 0.0692, kor: 0.0481, jpn: 0.0507, uk: 0.0494, eu: 0.0420, hk: 0.0494, cn: 0.0507, br: 0.0730 };
 const MARKET_TGROWTH_DEFAULT = 2.5;
 const MARKET_TGROWTH = { kor: 1.75, jpn: 1.2, uk: 2.0, eu: 1.8, hk: 2.0, cn: 0.6, br: 5.0 };
+
+// The ONE place a worker-watchlist GET /rates body is applied (native-compare spec Part 1, 2026-10-21): web
+// /evaluate/, web /dcf/, native Home and the native DCF tab all call this, so one /rates body gives one set of
+// tables on every surface. Mutates the three tables in place (other scripts hold references to them). Each value
+// is checked on its own -- an out-of-bounds or non-number value keeps the bundled one, the rest still apply.
+// Unknown market keys are applied too: the Worker may add a market before this bundle has it.
+// MARKET_TGROWTH is in PERCENT units (1.75 = 1.75%), unlike the other two.
+const WORKER_RATE_BOUNDS = { FALLBACK_RF: [0.005, 0.15], MARKET_ERP: [0.01, 0.20], MARKET_TGROWTH: [0, 8] };
+function applyWorkerRates(body) {
+  if (!body || typeof body !== 'object' || !body.ok) return false;
+  const isTable = (t) => !!t && typeof t === 'object';
+  if (!isTable(body.FALLBACK_RF) || !isTable(body.MARKET_ERP)) return false;
+  const targets = { FALLBACK_RF, MARKET_ERP, MARKET_TGROWTH };
+  for (const name of Object.keys(targets)) {
+    const src = body[name];
+    if (!isTable(src)) continue;
+    const [lo, hi] = WORKER_RATE_BOUNDS[name];
+    for (const key of Object.keys(src)) {
+      const v = src[key];
+      if (typeof v === 'number' && isFinite(v) && v >= lo && v <= hi) targets[name][key] = v;
+    }
+  }
+  return true;
+}
 const EUROZONE_SUFFIXES = ['.DE', '.PA', '.AS', '.MI', '.MC', '.BR', '.LS', '.VI', '.HE', '.IR'];
 
 // Same suffix-priority order as app.js's prefillInputs() (ASX, then
@@ -518,5 +542,5 @@ function computeScenarios(data, valuationModel, seeds, options) {
 // 2026-08-15 Damodaran rf fix and caused a real live valuation mismatch (see
 // kashvector-native-apps.md / the Watchlist bug investigation). Single source of
 // truth now; a future rate change here flows to Watchlist automatically.
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, US_DEFAULT_SPREAD, usRiskFreeFromYield, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, US_DEFAULT_SPREAD, usRiskFreeFromYield, applyWorkerRates, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
 if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.roeOffsetSpread = roeOffsetSpread; window.discountRateSpread = discountRateSpread; }
