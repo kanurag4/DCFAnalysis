@@ -1157,6 +1157,19 @@
     "updatedAt": "2026-10-17T00:52:03.513Z"
   },
   {
+    "ticker": "NOC",
+    "slug": "noc",
+    "name": "Northrop Grumman Corporation",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 419.65493459289615,
+    "price": 539.31,
+    "marginOfSafety": -0.2218669511173607,
+    "marketCap": 76616007680,
+    "updated": "2026-10-22",
+    "updatedAt": "2026-10-22T10:07:19.450Z"
+  },
+  {
     "ticker": "NOW",
     "slug": "now",
     "name": "ServiceNow, Inc.",
@@ -1534,6 +1547,19 @@
     "updatedAt": "2026-10-17T00:58:33.713Z"
   },
   {
+    "ticker": "SLGN",
+    "slug": "slgn",
+    "name": "Silgan Holdings Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 17.651168591554192,
+    "price": 38.96,
+    "marginOfSafety": -0.5469412579169869,
+    "marketCap": 4117371136,
+    "updated": "2026-10-22",
+    "updatedAt": "2026-10-22T10:08:20.344Z"
+  },
+  {
     "ticker": "SNDK",
     "slug": "sndk",
     "name": "Sandisk Corporation",
@@ -1662,6 +1688,19 @@
     "marketCap": 100966440960,
     "updated": "2026-10-17",
     "updatedAt": "2026-10-17T01:00:49.195Z"
+  },
+  {
+    "ticker": "TW",
+    "slug": "tw",
+    "name": "Tradeweb Markets Inc.",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 74.64424654911498,
+    "price": 120.01,
+    "marginOfSafety": -0.37801644405370405,
+    "marketCap": 25925552128,
+    "updated": "2026-10-22",
+    "updatedAt": "2026-10-22T10:08:50.482Z"
   },
   {
     "ticker": "TWLO",
