@@ -233,26 +233,32 @@ let liveIndRfRate = +(FALLBACK_RF.ind * 100).toFixed(2);  // Indian 10-yr, alrea
 // `staticFallback`, when given, is used instead of the assumptions.js table entirely
 // (used by the aus/ind/us branches below, which have their own live-Yahoo-refined
 // value to prefer over the static table).
-// Native-only: overrides the static FALLBACK_RF/MARKET_ERP tables with a fresh
-// fetch from worker-watchlist's /rates endpoint (see fetchNativeLiveRates()
-// below), so a hand-updated rate reaches installed native apps without an
-// app-store release. Stays null on web (isNative gates the fetch itself) and on
-// native until/unless that fetch succeeds -- the static table underneath is
-// always a safe, fully-offline-capable fallback.
-let nativeLiveRates = null;
+// The Worker's rate table as APPLIED (a copy of FALLBACK_RF/MARKET_ERP right after applyWorkerRates(), so a value
+// the bounds rejected never reaches the boxes) -- see fetchWorkerRates() below. Web and native alike since the
+// native-compare alignment (user decision 2026-10-21: the Worker is the rate source on every surface). Stays null
+// until/unless that fetch succeeds -- the static table underneath is always a safe, offline-capable fallback.
+let workerRates = null;
+// One rate snapshot per page: once the first valuation has been seeded, a late /rates reply changes nothing (it
+// would otherwise rewrite the RF/ERP boxes under the user, and value later tickers on different rates).
+let ratesClosed = false;
+// Same bounded wait as /evaluate/ and the native shells: a slow or dead Worker costs the first valuation at most this.
+const RATES_WAIT_MS = 2500;
+function boundedWait(promise, ms) {
+  return Promise.race([promise, new Promise((resolve) => setTimeout(resolve, ms))]);
+}
 
 // worker-watchlist's public GET /rates -- serves the rate table AND the shared live US 10Y (live.us). Declared up
-// here, not beside its users below: fetchAndSetRiskFreeRate()/fetchNativeLiveRates() are CALLED at load (~line 296),
+// here, not beside its users below: fetchAndSetRiskFreeRate()/fetchWorkerRates() are CALLED at load (~line 296),
 // before execution reaches those later declarations, so a const placed there would still be in its TDZ.
 const WORKER_RATES_URL = 'https://kv-watchlist.anurag-kor.workers.dev/rates';
 
 function marketRf(market, staticFallback) {
-  const live = nativeLiveRates && nativeLiveRates.FALLBACK_RF && nativeLiveRates.FALLBACK_RF[market];
+  const live = workerRates && workerRates.FALLBACK_RF && workerRates.FALLBACK_RF[market];
   if (live != null) return +(live * 100).toFixed(2);
   return staticFallback != null ? staticFallback : +(FALLBACK_RF[market] * 100).toFixed(2);
 }
 function marketErp(market, staticFallback) {
-  const live = nativeLiveRates && nativeLiveRates.MARKET_ERP && nativeLiveRates.MARKET_ERP[market];
+  const live = workerRates && workerRates.MARKET_ERP && workerRates.MARKET_ERP[market];
   if (live != null) return +(live * 100).toFixed(2);
   return staticFallback != null ? staticFallback : +(MARKET_ERP[market] * 100).toFixed(2);
 }
@@ -318,7 +324,7 @@ if (els.fcfNorm) els.fcfNorm.addEventListener('input', () => formatMoneyInput(el
 
 fetchAndSetRiskFreeRate();
 fetchSectorMarginLookup();
-fetchNativeLiveRates();
+const ratesReady = boundedWait(fetchWorkerRates(), RATES_WAIT_MS);
 
 // Ticker input, autocomplete, recents, market checkboxes, and ?ticker= URL
 // read/write are all owned by the shared kv-ticker-input.js module.
@@ -347,7 +353,8 @@ async function onAnalyse(req) {
   hideResults();
 
   try {
-    const data = await fetchDCFData(req.symbol, isASX, '', '', CONFIG.YAHOO_PROXY_URL);
+    const [data] = await Promise.all([fetchDCFData(req.symbol, isASX, '', '', CONFIG.YAHOO_PROXY_URL), ratesReady]);
+    ratesClosed = true; // the first valuation is seeded from the tables as they are now
     currentData = data;
     prefillInputs(data);
     renderAll(data);
@@ -1832,15 +1839,12 @@ async function fetchSectorMarginLookup() {
   }
 }
 
-// Native-only: fetches the current hand-maintained rate table from
-// worker-watchlist's /rates endpoint (added specifically so a rate fix
-// reaches installed native apps without an app-store release -- see
-// docs/risk-free-rates.md). No-ops on web. On any failure (offline, Worker
-// down, unexpected shape), silently keeps using the bundled static
-// FALLBACK_RF/MARKET_ERP tables -- same defensive pattern as every other
-// live-fetch-with-fallback in this file.
-async function fetchNativeLiveRates() {
-  if (!isNative) return;
+// Fetches worker-watchlist's /rates table and applies it through assumptions.js's applyWorkerRates() -- the one
+// shared applier every surface uses, so web /dcf/, /evaluate/ and both native shells value a ticker on the same
+// table (native-compare alignment, 2026-10-21; a rate fix reaches installed apps without a release). Runs on web
+// and native. Ignored once the first valuation has started (ratesClosed). On any failure (offline, Worker down,
+// unexpected shape), silently keeps using the bundled static FALLBACK_RF/MARKET_ERP tables.
+async function fetchWorkerRates() {
   try {
     // Hardcoded URL, not WATCHLIST_API: that's a `var` inside kv-watchlist.js's IIFE, never
     // a global, so the old `typeof WATCHLIST_API === 'undefined'` guard returned early on
@@ -1848,8 +1852,8 @@ async function fetchNativeLiveRates() {
     const resp = await fetch(WORKER_RATES_URL);
     if (!resp.ok) throw new Error('not ok');
     const body = await resp.json();
-    if (body && body.ok && body.FALLBACK_RF && body.MARKET_ERP) {
-      nativeLiveRates = body;
+    if (!ratesClosed && applyWorkerRates(body)) {
+      workerRates = { FALLBACK_RF: { ...FALLBACK_RF }, MARKET_ERP: { ...MARKET_ERP } };
       resetRfErp();
     }
   } catch (_) {
@@ -1891,7 +1895,7 @@ async function fetchAndSetRiskFreeRate() {
       // Raw yield -> risk-free rate: less the US default spread, like every other path (usRiskFreeFromYield, assumptions.js).
       if (raw != null && isFinite(raw) && raw > 0 && raw < 20) pct = +(usRiskFreeFromYield(+raw.toFixed(2) / 100) * 100).toFixed(2);
     }
-    if (pct != null) {
+    if (pct != null && !ratesClosed) {
       liveRfRate = pct;
       // deriveDcfAssumptions() seeds the first Bear/Base/Bull from FALLBACK_RF.us, not from the box -- so without this the
       // box showed the live rate while the valuation used the static one (docs/TODO.md P36). /evaluate/ does the same
