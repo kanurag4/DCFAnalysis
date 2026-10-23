@@ -495,13 +495,16 @@ function prefillInputs(data) {
   }
 
   if (els.cyclicalNote) {
+    const revenueNote = fcfInfo.revenueCapped
+      ? ` That margin is applied to the ${fcfInfo.yearsUsed}-year average revenue, not the latest year's, which sits above it — so a peak in commodity prices doesn't inflate the starting cash flow.`
+      : '';
     const growthNote = ` Growth is seeded the same way — this company's reinvestment-and-return figure (retention × ROE) alone, skipping the usual cross-check against its own multi-year revenue/cash-flow trend, since that trend is just as easily distorted by wherever the commodity cycle sits.`;
     if (fcfInfo.method === 'normalized' && fcfInfo.source === 'sector') {
       els.cyclicalNote.hidden = false;
-      els.cyclicalNote.textContent = `📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.${growthNote}`;
+      els.cyclicalNote.textContent = `📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.${revenueNote}${growthNote}`;
     } else if (fcfInfo.method === 'normalized') {
       els.cyclicalNote.hidden = false;
-      els.cyclicalNote.textContent = `📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.${growthNote}`;
+      els.cyclicalNote.textContent = `📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.${revenueNote}${growthNote}`;
     } else if (assumptions.isCyclical) {
       els.cyclicalNote.hidden = false;
       els.cyclicalNote.textContent = `📊 Cyclical company — not enough multi-year FCF history to normalize the base cash flow, so that stays the standard trailing figure.${growthNote}`;

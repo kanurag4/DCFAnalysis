@@ -14,7 +14,7 @@ const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
 const { deriveFfo, deriveAffo, calculateReitValue } = require('../../www/calc/reit.js');
 const { calculateAirlineValue } = require('../../www/calc/airline.js');
-const { normalizeCyclicalFcf, resolveCyclicalMargin } = require('../../www/calc/cyclicalNormalization.js');
+const { cyclicalBaseFcf } = require('../../www/calc/cyclicalNormalization.js');
 const sectorMarginLookup = require('../../www/sector-margins.json');
 const { applyHoldcoDiscountToScenarios } = require('../../www/calc/holdcoDiscount.js');
 const { REIT_SECTOR_MULTIPLES, AIRLINE_EV_EBITDA_MULTIPLE, HOLDCO_DISCOUNT } = require('../../www/config.js');
@@ -965,34 +965,21 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       fcfInfo = deriveFcf(data.freeCashflow, data.operatingCashflow, data.capitalExpenditures, hist.fcfAnnualLatest);
       // Cyclical/commodity companies get a normalized base-year FCF (average
       // FCF margin across whatever real multi-year /timeseries history is
-      // available, applied to trailing revenue) instead of the trailing
+      // available, applied to the lower of trailing and average revenue) instead of the trailing
       // figure above, same as www/dcf/calc/assumptions.js's isCyclical
       // dispatch -- falls back to the standard fcfInfo untouched when
       // there's too little history.
       const isCyclicalTicker = isCyclical(data.sector, data.industry);
       if (isCyclicalTicker) {
-        const normalized = normalizeCyclicalFcf({
+        const cyclicalFcf = cyclicalBaseFcf({
           fcfHistory: hist.annualFcfHistory,
           revenueHistory: hist.annualRevenueHistory,
           trailingRevenue: data.totalRevenue,
+          sectorLookup: sectorMarginLookup,
+          industry: data.industry,
+          operatingMargin: data.operatingMargins,
         });
-        if (normalized.value !== null) {
-          const resolved = resolveCyclicalMargin({
-            ownMargin: normalized.marginUsed,
-            sectorLookup: sectorMarginLookup,
-            industry: data.industry,
-          });
-          if (resolved.marginUsed !== null) {
-            fcfInfo = {
-              value: resolved.marginUsed * data.totalRevenue,
-              method: 'normalized',
-              marginUsed: resolved.marginUsed,
-              yearsUsed: normalized.yearsUsed,
-              source: resolved.source,
-              peerCount: resolved.peerCount,
-            };
-          }
-        }
+        if (cyclicalFcf) fcfInfo = cyclicalFcf;
       }
       baseFcf = fcfInfo.value;
       if (baseFcf != null) {
@@ -1166,8 +1153,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       // Yahoo's /timeseries typically covers ~4 fiscal years, shorter than a
       // full commodity cycle (5-10yr) -- a real data-availability limitation
       // surfaced here, not hidden.
-      : (fcfInfo.method === 'normalized' && fcfInfo.source === 'sector') ? `Cyclical company — this company's own multi-year FCF margin was negative, so this uses the ${fcfInfo.peerCount}-company industry average margin (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead`
-      : fcfInfo.method === 'normalized' ? `Cyclical company — average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue), not the latest year alone, to avoid over/under-valuing at a cycle extreme`
+      : (fcfInfo.method === 'normalized' && fcfInfo.source === 'sector') ? `Cyclical company — this company's own multi-year FCF margin was negative, so this uses the ${fcfInfo.peerCount}-company industry average margin (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead${fcfInfo.revenueCapped ? `, applied to ${fcfInfo.yearsUsed}-year average revenue` : ''}`
+      : fcfInfo.method === 'normalized' ? `Cyclical company — average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue), not the latest year alone, to avoid over/under-valuing at a cycle extreme${fcfInfo.revenueCapped ? `, applied to ${fcfInfo.yearsUsed}-year average revenue` : ''}`
       : 'Rough estimate: operating cash flow × 0.8';
 
     const stats = isReitTicker
@@ -1373,10 +1360,13 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     // visibility -- user-requested 2026-08-24 after confirming the live
     // asymmetry (Utility/Holdco got a prominent standalone note, Cyclical's
     // was only visible by scrolling to the assumptions table).
+    const cyclicalRevenueNote = (fcfInfo && fcfInfo.revenueCapped)
+      ? ` That margin is applied to the ${fcfInfo.yearsUsed}-year average revenue, not the latest year's, which sits above it — so a peak in commodity prices doesn't inflate the starting cash flow.`
+      : '';
     const cyclicalNoteHtml = (fcfInfo && fcfInfo.method === 'normalized' && fcfInfo.source === 'sector')
-      ? `<p class="cyclical-note">📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.</p>`
+      ? `<p class="cyclical-note">📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.${cyclicalRevenueNote}</p>`
       : (fcfInfo && fcfInfo.method === 'normalized')
-      ? `<p class="cyclical-note">📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.</p>`
+      ? `<p class="cyclical-note">📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.${cyclicalRevenueNote}</p>`
       : '';
 
     // Independent of bankMetricsHtml above (a conglomerate can stack with

@@ -8,7 +8,7 @@
 //
 // Depends on the already-pure helpers in utils.js, calc/wacc.js,
 // calc/dcf.js, calc/ddm.js, calc/fadingGrowthDcf.js, calc/excessReturn.js,
-// calc/reit.js, calc/cyclicalNormalization.js's resolveCyclicalMargin, and
+// calc/reit.js, calc/cyclicalNormalization.js's cyclicalBaseFcf, and
 // config.js's REIT_SECTOR_MULTIPLES -- all loaded as
 // plain globals via <script> tags (same convention as the rest of this
 // tool's calc layer), so this file reads them as bare identifiers, not
@@ -419,28 +419,15 @@ function deriveDcfAssumptions(data, opts) {
   // posture deriveFcf() itself already uses for its own tiers.
   let finalFcfInfo = fcfInfo;
   if (isCyclicalFlag) {
-    const normalized = normalizeCyclicalFcf({
+    const cyclicalFcf = cyclicalBaseFcf({
       fcfHistory: data.annualFcfHistory,
       revenueHistory: data.annualRevenueHistory,
       trailingRevenue: data.totalRevenue,
+      sectorLookup: opts && opts.sectorMarginLookup,
+      industry: data.industry,
+      operatingMargin: data.operatingMargins,
     });
-    if (normalized.value !== null) {
-      const resolved = resolveCyclicalMargin({
-        ownMargin: normalized.marginUsed,
-        sectorLookup: opts && opts.sectorMarginLookup,
-        industry: data.industry,
-      });
-      if (resolved.marginUsed !== null) {
-        finalFcfInfo = {
-          value: resolved.marginUsed * data.totalRevenue,
-          method: 'normalized',
-          marginUsed: resolved.marginUsed,
-          yearsUsed: normalized.yearsUsed,
-          source: resolved.source,
-          peerCount: resolved.peerCount,
-        };
-      }
-    }
+    if (cyclicalFcf) finalFcfInfo = cyclicalFcf;
   }
 
   const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));

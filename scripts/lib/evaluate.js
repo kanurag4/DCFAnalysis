@@ -11,7 +11,7 @@ const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
 const { calculateDDM } = require('../../www/calc/ddm.js');
 const { calculateExcessReturn } = require('../../www/calc/excessReturn.js');
-const { normalizeCyclicalFcf, resolveCyclicalMargin } = require('../../www/calc/cyclicalNormalization.js');
+const { cyclicalBaseFcf } = require('../../www/calc/cyclicalNormalization.js');
 const sectorMarginLookup = require('../../www/sector-margins.json');
 const { applyHoldcoDiscount } = require('../../www/calc/holdcoDiscount.js');
 const { HOLDCO_DISCOUNT } = require('../../www/config.js');
@@ -190,32 +190,19 @@ function evaluateStockCore(data, params) {
 
   // Cyclical/commodity companies get a normalized base-year FCF (average FCF
   // margin across whatever real multi-year /timeseries history is available,
-  // applied to trailing revenue) instead of the trailing figure above, same
+  // applied to the lower of trailing and average revenue) instead of the trailing figure above, same
   // as www/dcf/calc/assumptions.js's isCyclical dispatch -- falls back to the
   // standard fcfInfo untouched when there's too little history.
   if (isCyclical(data.sector, data.industry)) {
-    const normalized = normalizeCyclicalFcf({
+    const cyclicalFcf = cyclicalBaseFcf({
       fcfHistory: data.annualFcfHistory,
       revenueHistory: data.annualRevenueHistory,
       trailingRevenue: data.totalRevenue,
+      sectorLookup: sectorMarginLookup,
+      industry: data.industry,
+      operatingMargin: data.operatingMargins,
     });
-    if (normalized.value !== null) {
-      const resolved = resolveCyclicalMargin({
-        ownMargin: normalized.marginUsed,
-        sectorLookup: sectorMarginLookup,
-        industry: data.industry,
-      });
-      if (resolved.marginUsed !== null) {
-        fcfInfo = {
-          value: resolved.marginUsed * data.totalRevenue,
-          method: 'normalized',
-          marginUsed: resolved.marginUsed,
-          yearsUsed: normalized.yearsUsed,
-          source: resolved.source,
-          peerCount: resolved.peerCount,
-        };
-      }
-    }
+    if (cyclicalFcf) fcfInfo = cyclicalFcf;
   }
 
   // Non-bank financial-sector stocks (exchanges, asset managers, card networks):
