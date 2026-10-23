@@ -152,8 +152,8 @@
     "firstPrice": 135.84
   },
   "BKNG": {
-    "firstSeen": "2026-07-08",
-    "firstPrice": 181.95
+    "firstSeen": "2026-10-23",
+    "firstPrice": 155.83
   },
   "RTX": {
     "firstSeen": "2026-07-08",
@@ -368,8 +368,8 @@
     "firstPrice": 177.71
   },
   "NFLX": {
-    "firstSeen": "2026-10-02",
-    "firstPrice": 67.06
+    "firstSeen": "2026-10-23",
+    "firstPrice": 65.85
   },
   "GIS": {
     "firstSeen": "2026-10-09",
@@ -378,5 +378,17 @@
   "INCY": {
     "firstSeen": "2026-10-09",
     "firstPrice": 112.79
+  },
+  "EXE": {
+    "firstSeen": "2026-10-23",
+    "firstPrice": 93.23
+  },
+  "PHM": {
+    "firstSeen": "2026-10-23",
+    "firstPrice": 121.19
+  },
+  "GEV": {
+    "firstSeen": "2026-10-23",
+    "firstPrice": 815
   }
 }

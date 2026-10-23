@@ -801,5 +801,45 @@
     "exitDate": "2026-10-09",
     "exitPrice": 211.98,
     "dollarPnl": 14.15
+  },
+  {
+    "ticker": "LMT",
+    "entryDate": "2026-09-04",
+    "entryPrice": 525.28,
+    "exitDate": "2026-10-23",
+    "exitPrice": 604.18,
+    "dollarPnl": 56.1
+  },
+  {
+    "ticker": "SLB",
+    "entryDate": "2026-09-18",
+    "entryPrice": 51.12,
+    "exitDate": "2026-10-23",
+    "exitPrice": 53.06,
+    "dollarPnl": 42.76
+  },
+  {
+    "ticker": "MO",
+    "entryDate": "2026-08-07",
+    "entryPrice": 68.35,
+    "exitDate": "2026-10-23",
+    "exitPrice": 74.31,
+    "dollarPnl": -6.33
+  },
+  {
+    "ticker": "ADBE",
+    "entryDate": "2026-09-25",
+    "entryPrice": 235.47,
+    "exitDate": "2026-10-23",
+    "exitPrice": 263.82,
+    "dollarPnl": 45.15
+  },
+  {
+    "ticker": "ROP",
+    "entryDate": "2026-10-09",
+    "entryPrice": 364.09,
+    "exitDate": "2026-10-23",
+    "exitPrice": 438.14,
+    "dollarPnl": 86.11
   }
 ]
