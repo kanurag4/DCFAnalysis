@@ -1,5 +1,5 @@
 {
- "asAt": "2026-08-25",
+ "asAt": "2026-10-23",
  "industries": {
   "Household & Personal Products": [
    {
@@ -115,6 +115,10 @@
     "margin": -0.03194992804336665
    },
    {
+    "ticker": "069620.KS",
+    "margin": -0.04856712666945506
+   },
+   {
     "ticker": "006280.KS",
     "margin": -0.03162561817319803
    },
@@ -129,10 +133,6 @@
    {
     "ticker": "000100.KS",
     "margin": -0.021325938085748338
-   },
-   {
-    "ticker": "069620.KS",
-    "margin": -0.04856712666945506
    }
   ],
   "Conglomerates": [
@@ -367,6 +367,16 @@
     "margin": -0.08318803222050063
    }
   ],
+  "Farm & Heavy Construction Machinery": [
+   {
+    "ticker": "241560.KS",
+    "margin": 0.07465423395826236
+   },
+   {
+    "ticker": "267270.KS",
+    "margin": 0.031677679207312986
+   }
+  ],
   "Electronic Gaming & Multimedia": [
    {
     "ticker": "192080.KS",
@@ -377,12 +387,12 @@
     "margin": 0.2994769203146011
    },
    {
-    "ticker": "251270.KS",
-    "margin": -0.01919206806887822
-   },
-   {
     "ticker": "036570.KS",
     "margin": 0.05383999054443183
+   },
+   {
+    "ticker": "251270.KS",
+    "margin": -0.01919206806887822
    }
   ],
   "Electrical Equipment & Parts": [
@@ -397,6 +407,10 @@
    {
     "ticker": "298040.KS",
     "margin": 0.042009610595372636
+   },
+   {
+    "ticker": "066970.KS",
+    "margin": -0.13084970028749066
    },
    {
     "ticker": "373220.KS",
@@ -465,7 +479,7 @@
     "margin": 0.03565081325556687
    }
   ],
-  "Lodging": [
+  "Real Estate Services": [
    {
     "ticker": "180640.KS",
     "margin": 0.2509635485244113
@@ -585,12 +599,6 @@
    {
     "ticker": "009830.KS",
     "margin": -0.1581150141843363
-   }
-  ],
-  "Farm & Heavy Construction Machinery": [
-   {
-    "ticker": "267270.KS",
-    "margin": 0.031677679207312986
    }
   ],
   "Oil & Gas Refining & Marketing": [
@@ -762,7 +770,13 @@
   "Other Industrial Metals & Mining": [
    {
     "ticker": "010130.KS",
-    "margin": -0.01762883360177933
+    "margin": -0.017563934994741896
+   }
+  ],
+  "Airlines": [
+   {
+    "ticker": "003490.KS",
+    "margin": 0.13995927877443515
    }
   ],
   "Telecom Services": [
@@ -853,6 +867,12 @@
     "margin": 0.04723316620945987
    }
   ],
+  "Metal Fabrication": [
+   {
+    "ticker": "103140.KS",
+    "margin": 0.008616813900083255
+   }
+  ],
   "Security & Protection Services": [
    {
     "ticker": "012750.KS",
@@ -869,18 +889,6 @@
    {
     "ticker": "137310.KS",
     "margin": 0.035399742700897255
-   }
-  ],
-  "Airlines": [
-   {
-    "ticker": "003490.KS",
-    "margin": 0.13995927877443515
-   }
-  ],
-  "Metal Fabrication": [
-   {
-    "ticker": "103140.KS",
-    "margin": 0.008616813900083255
    }
   ]
  }
