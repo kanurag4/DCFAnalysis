@@ -1,7 +1,7 @@
 {
   "Advertising Agencies": {
-    "avgMargin": 0.15786056931774137,
-    "peerCount": 2
+    "avgMargin": 0.043901419336009814,
+    "peerCount": 4
   },
   "Aerospace & Defense": {
     "avgMargin": -0.021515906865927928,
@@ -13,7 +13,7 @@
   },
   "Airlines": {
     "avgMargin": 0.11501016574599188,
-    "peerCount": 3
+    "peerCount": 5
   },
   "Airports & Air Services": {
     "avgMargin": -0.39234814235177373,
@@ -28,8 +28,8 @@
     "peerCount": 3
   },
   "Apparel Retail": {
-    "avgMargin": 0.20604220027688125,
-    "peerCount": 2
+    "avgMargin": 0.18653832277825627,
+    "peerCount": 3
   },
   "Asset Management": {
     "avgMargin": 0.21013748982754837,
@@ -48,12 +48,16 @@
     "peerCount": 17
   },
   "Banks - Diversified": {
-    "avgMargin": -0.3429318242832299,
-    "peerCount": 4
+    "avgMargin": -0.4947251531141817,
+    "peerCount": 6
   },
   "Banks - Regional": {
     "avgMargin": 0.11191838444191232,
-    "peerCount": 12
+    "peerCount": 20
+  },
+  "Beverages - Brewers": {
+    "avgMargin": 0.03561249764434799,
+    "peerCount": 3
   },
   "Beverages - Non-Alcoholic": {
     "avgMargin": 0.023876301447721827,
@@ -68,40 +72,48 @@
     "peerCount": 8
   },
   "Building Materials": {
-    "avgMargin": 0.02255483664411294,
-    "peerCount": 4
+    "avgMargin": 0.023896339749525673,
+    "peerCount": 5
   },
   "Building Products & Equipment": {
-    "avgMargin": 0.14574328821030072,
-    "peerCount": 2
+    "avgMargin": 0.07877071139499352,
+    "peerCount": 4
+  },
+  "Business Equipment & Supplies": {
+    "avgMargin": 0.0046627011625439575,
+    "peerCount": 1
   },
   "Capital Markets": {
-    "avgMargin": 0.22034087033454497,
-    "peerCount": 7
+    "avgMargin": 0.017333638656151576,
+    "peerCount": 9
   },
   "Chemicals": {
-    "avgMargin": 0.02910357441835014,
-    "peerCount": 19
+    "avgMargin": 0.03169175854495054,
+    "peerCount": 20
   },
   "Coking Coal": {
     "avgMargin": 0.20622980300706803,
     "peerCount": 1
+  },
+  "Computer Hardware": {
+    "avgMargin": 0.0462795236934188,
+    "peerCount": 2
   },
   "Confectioners": {
     "avgMargin": 0.06346967694633035,
     "peerCount": 4
   },
   "Conglomerates": {
-    "avgMargin": 0.011193894510840876,
-    "peerCount": 8
+    "avgMargin": 0.015942902064856015,
+    "peerCount": 28
   },
   "Consulting Services": {
-    "avgMargin": 0.0895322000249957,
-    "peerCount": 1
+    "avgMargin": 0.17371751514924189,
+    "peerCount": 2
   },
   "Consumer Electronics": {
-    "avgMargin": 0.018753382870900056,
-    "peerCount": 4
+    "avgMargin": 0.011968920488375336,
+    "peerCount": 7
   },
   "Copper": {
     "avgMargin": 0.05717006250662884,
@@ -109,75 +121,79 @@
   },
   "Credit Services": {
     "avgMargin": -0.0607246850418943,
-    "peerCount": 3
+    "peerCount": 5
   },
   "Department Stores": {
-    "avgMargin": 0.048231715686801305,
-    "peerCount": 4
+    "avgMargin": 0.061299982177030365,
+    "peerCount": 10
   },
   "Diagnostics & Research": {
     "avgMargin": 0.1148886878719991,
     "peerCount": 3
   },
   "Discount Stores": {
-    "avgMargin": 0.009404857025300044,
-    "peerCount": 1
+    "avgMargin": 0.020574462831022305,
+    "peerCount": 2
+  },
+  "Drug Manufacturers - General": {
+    "avgMargin": 0.10672747297229074,
+    "peerCount": 4
   },
   "Drug Manufacturers - Specialty & Generic": {
-    "avgMargin": -0.021325938085748338,
-    "peerCount": 7
+    "avgMargin": 0.01484103290916675,
+    "peerCount": 12
   },
   "Education & Training Services": {
     "avgMargin": 0.10107678125690828,
     "peerCount": 1
   },
   "Electrical Equipment & Parts": {
-    "avgMargin": -0.029635038960949295,
-    "peerCount": 12
+    "avgMargin": -0.003404679777365193,
+    "peerCount": 17
   },
   "Electronic Components": {
-    "avgMargin": 0.007062954475717111,
-    "peerCount": 4
+    "avgMargin": 0.011352139091799641,
+    "peerCount": 11
   },
   "Electronic Gaming & Multimedia": {
-    "avgMargin": 0.16580864258988678,
-    "peerCount": 4
+    "avgMargin": 0.1667315485367546,
+    "peerCount": 8
   },
   "Electronics & Computer Distribution": {
     "avgMargin": 0.022504189602631133,
     "peerCount": 1
   },
   "Engineering & Construction": {
-    "avgMargin": 0.04170517695321392,
-    "peerCount": 15
+    "avgMargin": 0.040921670848183454,
+    "peerCount": 21
   },
   "Entertainment": {
-    "avgMargin": 0.07561081035442838,
-    "peerCount": 4
+    "avgMargin": 0.08209717404744775,
+    "peerCount": 5
   },
   "Farm & Heavy Construction Machinery": {
-    "avgMargin": 0.07465423395826236,
-    "peerCount": 3
+    "avgMargin": 0.040786032079112446,
+    "peerCount": 6
   },
   "Farm Products": {
     "avgMargin": 0.03603278060458241,
     "peerCount": 3
   },
   "Financial Conglomerates": {
-    "avgMargin": 0.05027289195410134,
-    "peerCount": 1
+    "avgMargin": 0.013509706335324917,
+    "peerCount": 2
   },
   "Financial Data & Stock Exchanges": {
-    "avgMargin": -0.6047222039110277,
-    "peerCount": 1
+    "avgMargin": -0.07986869694225707,
+    "peerCount": 2
   },
   "Food Distribution": {
     "avgMargin": 0.1123434046652326,
     "peerCount": 2
   },
   "Furnishings, Fixtures & Appliances": {
-    "avgMargin": 0.013625476482152357,
-    "peerCount": 3
+    "avgMargin": 0.028491884462939952,
+    "peerCount": 4
   },
   "Gambling": {
     "avgMargin": 0.07054109462640215,
@@ -188,8 +204,12 @@
     "peerCount": 22
   },
   "Grocery Stores": {
-    "avgMargin": 0.03275366389763165,
-    "peerCount": 3
+    "avgMargin": 0.03210489420107817,
+    "peerCount": 4
+  },
+  "Health Information Services": {
+    "avgMargin": 0.19555348957399807,
+    "peerCount": 1
   },
   "Home Improvement Retail": {
     "avgMargin": 0.07170308840602636,
@@ -197,27 +217,27 @@
   },
   "Household & Personal Products": {
     "avgMargin": 0.0565221415080123,
-    "peerCount": 7
+    "peerCount": 9
   },
   "Industrial Distribution": {
     "avgMargin": 0.052246668533078515,
     "peerCount": 1
   },
   "Information Technology Services": {
-    "avgMargin": 0.04354309886855631,
-    "peerCount": 6
+    "avgMargin": 0.044287392386276894,
+    "peerCount": 9
   },
   "Infrastructure Operations": {
     "avgMargin": 0.17434229182996175,
     "peerCount": 3
   },
   "Insurance - Life": {
-    "avgMargin": 0.18325138741784086,
-    "peerCount": 3
+    "avgMargin": 0.11865809170589893,
+    "peerCount": 5
   },
   "Insurance - Property & Casualty": {
-    "avgMargin": 0.13491009004578378,
-    "peerCount": 5
+    "avgMargin": 0.13082977154446562,
+    "peerCount": 8
   },
   "Insurance - Specialty": {
     "avgMargin": 0.05038977841818208,
@@ -228,36 +248,40 @@
     "peerCount": 2
   },
   "Integrated Freight & Logistics": {
-    "avgMargin": 0.056077375413061376,
-    "peerCount": 3
+    "avgMargin": 0.06186788971020538,
+    "peerCount": 4
   },
   "Internet Content & Information": {
-    "avgMargin": 0.15688435510817558,
-    "peerCount": 5
+    "avgMargin": 0.14782264753306978,
+    "peerCount": 6
+  },
+  "Internet Retail": {
+    "avgMargin": 0.08005957574382772,
+    "peerCount": 3
   },
   "Leisure": {
     "avgMargin": 0.04033230682806657,
-    "peerCount": 1
+    "peerCount": 5
   },
   "Marine Shipping": {
-    "avgMargin": 0.1134903778516719,
-    "peerCount": 3
+    "avgMargin": 0.21044250810534298,
+    "peerCount": 5
   },
   "Medical Care Facilities": {
     "avgMargin": 0.10640083929241735,
     "peerCount": 2
   },
   "Medical Devices": {
-    "avgMargin": 0.035399742700897255,
-    "peerCount": 3
+    "avgMargin": 0.03777824562392463,
+    "peerCount": 5
   },
   "Medical Distribution": {
     "avgMargin": 0.023608773566773173,
     "peerCount": 3
   },
   "Medical Instruments & Supplies": {
-    "avgMargin": 0.13973542162482727,
-    "peerCount": 4
+    "avgMargin": 0.15481182697822918,
+    "peerCount": 5
   },
   "Metal Fabrication": {
     "avgMargin": 0.008616813900083255,
@@ -284,12 +308,16 @@
     "peerCount": 21
   },
   "Packaged Foods": {
-    "avgMargin": 0.01379792638550719,
-    "peerCount": 11
+    "avgMargin": 0.020119888012558363,
+    "peerCount": 18
   },
   "Packaging & Containers": {
     "avgMargin": 0.043074430512762094,
     "peerCount": 4
+  },
+  "Paper & Paper Products": {
+    "avgMargin": -0.0020419196640551213,
+    "peerCount": 1
   },
   "REIT - Diversified": {
     "avgMargin": 0.5781588608502165,
@@ -316,24 +344,28 @@
     "peerCount": 4
   },
   "Railroads": {
-    "avgMargin": 0.13192729635650566,
-    "peerCount": 3
+    "avgMargin": 0.0948962987014695,
+    "peerCount": 9
   },
   "Real Estate - Development": {
-    "avgMargin": 0.24584099181300625,
-    "peerCount": 1
+    "avgMargin": 0.10916931268828542,
+    "peerCount": 2
   },
   "Real Estate - Diversified": {
-    "avgMargin": -0.05978112865028831,
-    "peerCount": 3
+    "avgMargin": -0.015386960323867068,
+    "peerCount": 6
   },
   "Real Estate Services": {
-    "avgMargin": 0.2509635485244113,
-    "peerCount": 1
+    "avgMargin": 0.03840903920220789,
+    "peerCount": 3
   },
   "Rental & Leasing Services": {
     "avgMargin": -0.19832175666314067,
     "peerCount": 1
+  },
+  "Residential Construction": {
+    "avgMargin": 0.013052327583121344,
+    "peerCount": 2
   },
   "Resorts & Casinos": {
     "avgMargin": 0.17882639563473018,
@@ -344,28 +376,28 @@
     "peerCount": 3
   },
   "Scientific & Technical Instruments": {
-    "avgMargin": 0.05595106172530148,
-    "peerCount": 2
+    "avgMargin": 0.14280164481392055,
+    "peerCount": 3
   },
   "Security & Protection Services": {
-    "avgMargin": 0.0687470476490109,
-    "peerCount": 1
+    "avgMargin": 0.07055213921515957,
+    "peerCount": 2
   },
   "Semiconductor Equipment & Materials": {
-    "avgMargin": 0.20144180255114658,
-    "peerCount": 1
+    "avgMargin": 0.1182870108264873,
+    "peerCount": 9
   },
   "Semiconductors": {
     "avgMargin": 0.15855777491539919,
     "peerCount": 18
   },
   "Software - Application": {
-    "avgMargin": 0.1738823811772539,
-    "peerCount": 10
+    "avgMargin": 0.16433804962401571,
+    "peerCount": 11
   },
   "Software - Infrastructure": {
-    "avgMargin": 0.051710711011352765,
-    "peerCount": 5
+    "avgMargin": 0.07768113015129771,
+    "peerCount": 6
   },
   "Solar": {
     "avgMargin": -0.1581150141843363,
@@ -376,12 +408,12 @@
     "peerCount": 3
   },
   "Specialty Chemicals": {
-    "avgMargin": 0.022334847710336184,
-    "peerCount": 21
+    "avgMargin": 0.020705361354497902,
+    "peerCount": 22
   },
   "Specialty Industrial Machinery": {
-    "avgMargin": 0.022372387406187244,
-    "peerCount": 5
+    "avgMargin": 0.027589628698440588,
+    "peerCount": 17
   },
   "Specialty Retail": {
     "avgMargin": 0.11582301627490045,
@@ -397,47 +429,55 @@
   },
   "Telecom Services": {
     "avgMargin": 0.0694474709241788,
-    "peerCount": 10
+    "peerCount": 14
   },
   "Textile Manufacturing": {
-    "avgMargin": 0.01142665924028598,
-    "peerCount": 2
+    "avgMargin": 0.018654961376095187,
+    "peerCount": 3
   },
   "Thermal Coal": {
     "avgMargin": 0.23808812174778315,
     "peerCount": 3
   },
   "Tobacco": {
-    "avgMargin": 0.0549654738621551,
+    "avgMargin": 0.09763986184413068,
+    "peerCount": 2
+  },
+  "Tools & Accessories": {
+    "avgMargin": 0.028132535142739185,
     "peerCount": 1
   },
   "Travel Services": {
     "avgMargin": 0.1579493303789609,
     "peerCount": 2
   },
+  "Trucking": {
+    "avgMargin": 0.01578113322230837,
+    "peerCount": 1
+  },
   "Uranium": {
     "avgMargin": -0.2013232267946635,
     "peerCount": 2
   },
   "Utilities - Diversified": {
-    "avgMargin": -0.009645930899784112,
-    "peerCount": 1
+    "avgMargin": 0.03841887812608931,
+    "peerCount": 2
   },
   "Utilities - Independent Power Producers": {
     "avgMargin": 0.021437438572378714,
     "peerCount": 1
   },
   "Utilities - Regulated Electric": {
-    "avgMargin": -0.14582142909868895,
-    "peerCount": 1
-  },
-  "Utilities - Regulated Gas": {
-    "avgMargin": 0.028616317550082565,
+    "avgMargin": 0.0033876667265343857,
     "peerCount": 2
   },
+  "Utilities - Regulated Gas": {
+    "avgMargin": 0.0337805977944592,
+    "peerCount": 4
+  },
   "Utilities - Renewable": {
-    "avgMargin": -0.07478665633880083,
-    "peerCount": 1
+    "avgMargin": -0.008701434347331463,
+    "peerCount": 2
   },
   "Waste Management": {
     "avgMargin": 0.03596299932619019,
