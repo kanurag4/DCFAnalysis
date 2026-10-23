@@ -1,0 +1,2009 @@
+{
+ "asAt": "2026-10-23",
+ "industries": {
+  "Asset Management": [
+   {
+    "ticker": "360ONE.NS",
+    "margin": -0.7623634964777454
+   },
+   {
+    "ticker": "ABSLAMC.NS",
+    "margin": 0.4102065300632913
+   },
+   {
+    "ticker": "ANANDRATHI.NS",
+    "margin": 0.2371495034614883
+   },
+   {
+    "ticker": "HDFCAMC.NS",
+    "margin": 0.5823381608997029
+   },
+   {
+    "ticker": "ICICIAMC.NS",
+    "margin": 0.5056935271184902
+   },
+   {
+    "ticker": "JIOFIN.NS",
+    "margin": 20.99923124909918
+   },
+   {
+    "ticker": "NAM-INDIA.NS",
+    "margin": 0.4245629416934602
+   },
+   {
+    "ticker": "NUVAMA.NS",
+    "margin": -0.9979230339925513
+   },
+   {
+    "ticker": "UTIAMC.NS",
+    "margin": 0.23672206987333128
+   }
+  ],
+  "Specialty Industrial Machinery": [
+   {
+    "ticker": "ABB.NS",
+    "margin": 0.0869248826539142
+   },
+   {
+    "ticker": "AIAENG.NS",
+    "margin": 0.15922094327336805
+   },
+   {
+    "ticker": "BHEL.NS",
+    "margin": 0.004275705598768956
+   },
+   {
+    "ticker": "CUMMINSIND.NS",
+    "margin": 0.1162999160982344
+   },
+   {
+    "ticker": "ELECON.NS",
+    "margin": 0.14906919713926164
+   },
+   {
+    "ticker": "ELGIEQUIP.NS",
+    "margin": 0.06668066632886041
+   },
+   {
+    "ticker": "GVT&D.NS",
+    "margin": 0.14268820426311896
+   },
+   {
+    "ticker": "INOXWIND.NS",
+    "margin": -0.7538715185483694
+   },
+   {
+    "ticker": "JYOTICNC.NS",
+    "margin": -0.1176393356099164
+   },
+   {
+    "ticker": "KIRLOSENG.NS",
+    "margin": -0.11375303116865706
+   },
+   {
+    "ticker": "SIEMENS.NS",
+    "margin": 0.05037095908262236
+   },
+   {
+    "ticker": "SUZLON.NS",
+    "margin": 0.03709819436281016
+   },
+   {
+    "ticker": "TEGA.NS",
+    "margin": 0.08762411962429655
+   },
+   {
+    "ticker": "TRITURBINE.NS",
+    "margin": 0.0907886988192631
+   },
+   {
+    "ticker": "AZAD.NS",
+    "margin": -0.5875815526609305
+   },
+   {
+    "ticker": "INOXINDIA.NS",
+    "margin": 0.04115865082107304
+   },
+   {
+    "ticker": "KIRLOSBROS.NS",
+    "margin": 0.057558747997699604
+   },
+   {
+    "ticker": "KSB.NS",
+    "margin": 0.004409462176673216
+   },
+   {
+    "ticker": "MTARTECH.NS",
+    "margin": -0.04225142748714286
+   },
+   {
+    "ticker": "TDPOWERSYS.NS",
+    "margin": 0.029291430882890573
+   }
+  ],
+  "Building Materials": [
+   {
+    "ticker": "ACC.NS",
+    "margin": -0.06230775651591004
+   },
+   {
+    "ticker": "AMBUJACEM.NS",
+    "margin": -0.08861198055750841
+   },
+   {
+    "ticker": "DALBHARAT.NS",
+    "margin": -0.018222336117502784
+   },
+   {
+    "ticker": "GRASIM.NS",
+    "margin": -0.2177494551869415
+   },
+   {
+    "ticker": "INDIACEM.NS",
+    "margin": -0.025884859185162368
+   },
+   {
+    "ticker": "JKCEMENT.NS",
+    "margin": 0.008818116902185757
+   },
+   {
+    "ticker": "JSWCEMENT.NS",
+    "margin": -0.07102299238089088
+   },
+   {
+    "ticker": "NUVOCO.NS",
+    "margin": 0.09520222754127008
+   },
+   {
+    "ticker": "SHREECEM.NS",
+    "margin": 0.02477551850432188
+   },
+   {
+    "ticker": "RAMCOCEM.NS",
+    "margin": 0.01664278632640951
+   },
+   {
+    "ticker": "ULTRACEMCO.NS",
+    "margin": 0.03956055697131392
+   }
+  ],
+  "Utilities - Renewable": [
+   {
+    "ticker": "ACMESOLAR.NS",
+    "margin": -0.9775093567815176
+   },
+   {
+    "ticker": "ADANIGREEN.NS",
+    "margin": -0.7752380785408299
+   },
+   {
+    "ticker": "NHPC.NS",
+    "margin": -0.27707281363767017
+   },
+   {
+    "ticker": "ENRIN.NS",
+    "margin": 0.22388950775786146
+   }
+  ],
+  "Steel": [
+   {
+    "ticker": "APLAPOLLO.NS",
+    "margin": 0.025096925650561607
+   },
+   {
+    "ticker": "GALLANTT.NS",
+    "margin": 0.035867353714637784
+   },
+   {
+    "ticker": "GPIL.NS",
+    "margin": 0.07197126406099644
+   },
+   {
+    "ticker": "JSWSTEEL.NS",
+    "margin": 0.03438369674119506
+   },
+   {
+    "ticker": "JINDALSAW.NS",
+    "margin": 0.0667593799341315
+   },
+   {
+    "ticker": "JSL.NS",
+    "margin": 0.054248144245257965
+   },
+   {
+    "ticker": "JINDALSTEL.NS",
+    "margin": -0.023859527382621877
+   },
+   {
+    "ticker": "LLOYDSME.NS",
+    "margin": -0.2637256314662446
+   },
+   {
+    "ticker": "NMDC.NS",
+    "margin": 0.07371296139614376
+   },
+   {
+    "ticker": "NSLNISP.NS",
+    "margin": -0.2751186824912082
+   },
+   {
+    "ticker": "SARDAEN.NS",
+    "margin": 0.1434625949843306
+   },
+   {
+    "ticker": "SHYAMMETL.NS",
+    "margin": -0.024955882113273733
+   },
+   {
+    "ticker": "SAIL.NS",
+    "margin": 0.005943870741732315
+   },
+   {
+    "ticker": "TATASTEEL.NS",
+    "margin": 0.04097385502394228
+   },
+   {
+    "ticker": "USHAMART.NS",
+    "margin": 0.06355628973211616
+   },
+   {
+    "ticker": "WELCORP.NS",
+    "margin": 0.0011350360599315604
+   },
+   {
+    "ticker": "VISL.NS",
+    "margin": -0.000002412409704108116
+   }
+  ],
+  "Banks - Regional": [
+   {
+    "ticker": "AUBANK.NS",
+    "margin": 0.46435008408114653
+   },
+   {
+    "ticker": "AXISBANK.NS",
+    "margin": 0.14997962809081247
+   },
+   {
+    "ticker": "BANDHANBNK.NS",
+    "margin": 0.23995384472491435
+   },
+   {
+    "ticker": "BANKBARODA.NS",
+    "margin": 0.07314496403860431
+   },
+   {
+    "ticker": "BANKINDIA.NS",
+    "margin": 0.05322885200245353
+   },
+   {
+    "ticker": "MAHABANK.NS",
+    "margin": 0.13573579957547385
+   },
+   {
+    "ticker": "CANBK.NS",
+    "margin": 0.10785583432139444
+   },
+   {
+    "ticker": "CENTRALBK.NS",
+    "margin": -0.24253581391578344
+   },
+   {
+    "ticker": "CUB.NS",
+    "margin": 0.17743389411758653
+   },
+   {
+    "ticker": "FEDERALBNK.NS",
+    "margin": 0.32908544017976055
+   },
+   {
+    "ticker": "HDFCBANK.NS",
+    "margin": 0.5326882072796946
+   },
+   {
+    "ticker": "ICICIBANK.NS",
+    "margin": 0.4420146261461232
+   },
+   {
+    "ticker": "IDBI.NS",
+    "margin": 0.4989069571024165
+   },
+   {
+    "ticker": "IDFCFIRSTB.NS",
+    "margin": 0.32716737795997036
+   },
+   {
+    "ticker": "INDIANB.NS",
+    "margin": -0.08275199289432185
+   },
+   {
+    "ticker": "IOB.NS",
+    "margin": -0.22447127196111813
+   },
+   {
+    "ticker": "INDUSINDBK.NS",
+    "margin": -0.10898612961434039
+   },
+   {
+    "ticker": "J&KBANK.NS",
+    "margin": -0.03275007552180552
+   },
+   {
+    "ticker": "KARURVYSYA.NS",
+    "margin": 0.364484600595983
+   },
+   {
+    "ticker": "KOTAKBANK.NS",
+    "margin": 0.22730993358070195
+   },
+   {
+    "ticker": "PNB.NS",
+    "margin": 0.16679767643826982
+   },
+   {
+    "ticker": "RBLBANK.NS",
+    "margin": -0.1004214688200582
+   },
+   {
+    "ticker": "SBIN.NS",
+    "margin": -0.02182091829822971
+   },
+   {
+    "ticker": "UCOBANK.NS",
+    "margin": -0.10952389193466208
+   },
+   {
+    "ticker": "UNIONBANK.NS",
+    "margin": -0.16017274122850478
+   },
+   {
+    "ticker": "YESBANK.NS",
+    "margin": -0.19346844162327792
+   }
+  ],
+  "Packaged Foods": [
+   {
+    "ticker": "AWL.NS",
+    "margin": 0.011694338217377576
+   },
+   {
+    "ticker": "BRITANNIA.NS",
+    "margin": 0.12096574234247927
+   },
+   {
+    "ticker": "CCL.NS",
+    "margin": -0.028427662150214583
+   },
+   {
+    "ticker": "LTFOODS.NS",
+    "margin": 0.04078714054236385
+   },
+   {
+    "ticker": "NESTLEIND.NS",
+    "margin": 0.09292335897295871
+   },
+   {
+    "ticker": "PATANJALI.NS",
+    "margin": 0.0017513326757534562
+   },
+   {
+    "ticker": "TATACONSUM.NS",
+    "margin": 0.09482662088548847
+   },
+   {
+    "ticker": "ZYDUSWELL.NS",
+    "margin": 0.06578900742301172
+   },
+   {
+    "ticker": "AVANTIFEED.NS",
+    "margin": 0.05781819506708017
+   }
+  ],
+  "Mortgage Finance": [
+   {
+    "ticker": "AADHARHFC.NS",
+    "margin": -0.9042270711354389
+   },
+   {
+    "ticker": "APTUS.NS",
+    "margin": -0.9973821601989312
+   }
+  ],
+  "Specialty Chemicals": [
+   {
+    "ticker": "AARTIIND.NS",
+    "margin": -0.020655311588152567
+   },
+   {
+    "ticker": "ACUTAAS.NS",
+    "margin": -0.10484718282813432
+   },
+   {
+    "ticker": "ANURAS.NS",
+    "margin": -0.20467566666369447
+   },
+   {
+    "ticker": "ASIANPAINT.NS",
+    "margin": 0.1040305668936235
+   },
+   {
+    "ticker": "ATUL.NS",
+    "margin": 0.0502135916795839
+   },
+   {
+    "ticker": "BERGEPAINT.NS",
+    "margin": 0.0750949329016618
+   },
+   {
+    "ticker": "CLEAN.NS",
+    "margin": 0.06585852062409583
+   },
+   {
+    "ticker": "FLUOROCHEM.NS",
+    "margin": -0.05338864038422994
+   },
+   {
+    "ticker": "HSCL.NS",
+    "margin": 0.030648750317385693
+   },
+   {
+    "ticker": "JUBLINGREA.NS",
+    "margin": 0.012132889795858618
+   },
+   {
+    "ticker": "LINDEINDIA.NS",
+    "margin": -0.05251939497422899
+   },
+   {
+    "ticker": "PCBL.NS",
+    "margin": 0.031003048661943037
+   },
+   {
+    "ticker": "PIDILITIND.NS",
+    "margin": 0.1396982120960174
+   },
+   {
+    "ticker": "SOLARINDS.NS",
+    "margin": 0.06291540341166889
+   },
+   {
+    "ticker": "AETHER.NS",
+    "margin": -0.5535475079568064
+   }
+  ],
+  "Drug Manufacturers - Specialty & Generic": [
+   {
+    "ticker": "ABBOTINDIA.NS",
+    "margin": 0.17353147372101338
+   },
+   {
+    "ticker": "AJANTPHARM.NS",
+    "margin": 0.13297499428474505
+   },
+   {
+    "ticker": "ALKEM.NS",
+    "margin": 0.11292474244363665
+   },
+   {
+    "ticker": "AUROPHARMA.NS",
+    "margin": 0.016125690125531555
+   },
+   {
+    "ticker": "CAPLIPOINT.NS",
+    "margin": 0.10209784028710203
+   },
+   {
+    "ticker": "CIPLA.NS",
+    "margin": 0.08981591317548221
+   },
+   {
+    "ticker": "COHANCE.NS",
+    "margin": 0.16477457294862924
+   },
+   {
+    "ticker": "DIVISLAB.NS",
+    "margin": 0.08401486703530736
+   },
+   {
+    "ticker": "DRREDDY.NS",
+    "margin": 0.07967707869388137
+   },
+   {
+    "ticker": "EMCURE.NS",
+    "margin": 0.06958544522630453
+   },
+   {
+    "ticker": "GLAND.NS",
+    "margin": 0.08059930690652342
+   },
+   {
+    "ticker": "GLENMARK.NS",
+    "margin": -0.023409912254605522
+   },
+   {
+    "ticker": "GRANULES.NS",
+    "margin": 0.04906662575430148
+   },
+   {
+    "ticker": "IPCALAB.NS",
+    "margin": 0.05814834216155202
+   },
+   {
+    "ticker": "LAURUSLABS.NS",
+    "margin": 0.018328217414763474
+   },
+   {
+    "ticker": "LUPIN.NS",
+    "margin": 0.1035579610675263
+   },
+   {
+    "ticker": "MANKIND.NS",
+    "margin": 0.1513029396591933
+   },
+   {
+    "ticker": "NATCOPHARM.NS",
+    "margin": 0.26553389326126653
+   },
+   {
+    "ticker": "NEULANDLAB.NS",
+    "margin": 0.06903283913170907
+   },
+   {
+    "ticker": "PPLPHARMA.NS",
+    "margin": 0.019980478492590204
+   },
+   {
+    "ticker": "SUNPHARMA.NS",
+    "margin": 0.16380207712609082
+   },
+   {
+    "ticker": "TORNTPHARM.NS",
+    "margin": 0.20068036502320066
+   },
+   {
+    "ticker": "WOCKPHARMA.NS",
+    "margin": -0.03625288416300926
+   },
+   {
+    "ticker": "ZYDUSLIFE.NS",
+    "margin": 0.10580098825453772
+   }
+  ],
+  "Farm & Heavy Construction Machinery": [
+   {
+    "ticker": "ACE.NS",
+    "margin": 0.08449410463675422
+   },
+   {
+    "ticker": "ASHOKLEY.NS",
+    "margin": -0.11611960713718313
+   },
+   {
+    "ticker": "ESCORTS.NS",
+    "margin": 0.05502974338187456
+   },
+   {
+    "ticker": "OLECTRA.NS",
+    "margin": -0.014344879843825811
+   }
+  ],
+  "Utilities - Independent Power Producers": [
+   {
+    "ticker": "ADANIENSOL.NS",
+    "margin": -0.0435167785146265
+   },
+   {
+    "ticker": "ADANIPOWER.NS",
+    "margin": 0.12306806934503128
+   },
+   {
+    "ticker": "JSWENERGY.NS",
+    "margin": -0.16221492947878183
+   },
+   {
+    "ticker": "JPPOWER.NS",
+    "margin": 0.21741599736888376
+   },
+   {
+    "ticker": "RPOWER.NS",
+    "margin": 0.39793405165982354
+   },
+   {
+    "ticker": "TATAPOWER.NS",
+    "margin": -0.054757915025144925
+   },
+   {
+    "ticker": "TORNTPOWER.NS",
+    "margin": -0.006259392046960126
+   },
+   {
+    "ticker": "VEDPOWER.NS",
+    "margin": 0.15568585420987494
+   }
+  ],
+  "Thermal Coal": [
+   {
+    "ticker": "ADANIENT.NS",
+    "margin": -0.1678169237802892
+   },
+   {
+    "ticker": "COALINDIA.NS",
+    "margin": 0.11262691306073316
+   },
+   {
+    "ticker": "GMDCLTD.NS",
+    "margin": 0.03707815048324557
+   }
+  ],
+  "Marine Shipping": [
+   {
+    "ticker": "ADANIPORTS.NS",
+    "margin": 0.21200395372301223
+   },
+   {
+    "ticker": "GESHIP.NS",
+    "margin": 0.2976090201632914
+   },
+   {
+    "ticker": "JSWINFRA.NS",
+    "margin": 0.2028460517292415
+   },
+   {
+    "ticker": "SCI.NS",
+    "margin": 0.08276895073020019
+   }
+  ],
+  "Utilities - Regulated Gas": [
+   {
+    "ticker": "ATGL.NS",
+    "margin": -0.0017487041292298805
+   },
+   {
+    "ticker": "GAIL.NS",
+    "margin": 0.008544447367297313
+   },
+   {
+    "ticker": "IGL.NS",
+    "margin": 0.05137975609590414
+   },
+   {
+    "ticker": "MGL.NS",
+    "margin": 0.05184418969124389
+   }
+  ],
+  "Financial Conglomerates": [
+   {
+    "ticker": "ABCAPITAL.NS",
+    "margin": -0.7286932786238713
+   },
+   {
+    "ticker": "BAJAJFINSV.NS",
+    "margin": -0.5405367938402594
+   }
+  ],
+  "Real Estate Services": [
+   {
+    "ticker": "ABREL.NS",
+    "margin": -0.10089942369869798
+   }
+  ],
+  "Building Products & Equipment": [
+   {
+    "ticker": "CPPLUS.NS",
+    "margin": -0.01981221441540581
+   },
+   {
+    "ticker": "ASTRAL.NS",
+    "margin": 0.05265783359886425
+   },
+   {
+    "ticker": "BLUESTARCO.NS",
+    "margin": -0.004578885035498536
+   },
+   {
+    "ticker": "KAJARIACER.NS",
+    "margin": 0.06325046993685485
+   },
+   {
+    "ticker": "SUPREMEIND.NS",
+    "margin": 0.046100820450574426
+   }
+  ],
+  "Oil & Gas Refining & Marketing": [
+   {
+    "ticker": "AEGISLOG.NS",
+    "margin": 0.017891622852585245
+   },
+   {
+    "ticker": "BPCL.NS",
+    "margin": 0.039135957007273375
+   },
+   {
+    "ticker": "CASTROLIND.NS",
+    "margin": 0.16783291702186132
+   },
+   {
+    "ticker": "CHENNPETRO.NS",
+    "margin": 0.03612308042026797
+   },
+   {
+    "ticker": "HINDPETRO.NS",
+    "margin": 0.019139257589202666
+   },
+   {
+    "ticker": "IOC.NS",
+    "margin": 0.025282683292050835
+   },
+   {
+    "ticker": "MRPL.NS",
+    "margin": 0.033689241342790735
+   },
+   {
+    "ticker": "PETRONET.NS",
+    "margin": 0.05296781931559964
+   },
+   {
+    "ticker": "RELIANCE.NS",
+    "margin": 0.020647694697463637
+   }
+  ],
+  "Oil & Gas Equipment & Services": [
+   {
+    "ticker": "AEGISVOPAK.NS",
+    "margin": -0.009720340487651894
+   }
+  ],
+  "Engineering & Construction": [
+   {
+    "ticker": "AFCONS.NS",
+    "margin": -0.01428835267426954
+   },
+   {
+    "ticker": "CEMPRO.NS",
+    "margin": 0.018543008226187555
+   },
+   {
+    "ticker": "ENGINERSIN.NS",
+    "margin": 0.025241187327830462
+   },
+   {
+    "ticker": "IRCON.NS",
+    "margin": -0.11168665156218327
+   },
+   {
+    "ticker": "KPIL.NS",
+    "margin": 0.015102221732270106
+   },
+   {
+    "ticker": "KEC.NS",
+    "margin": 0.0021220899400761512
+   },
+   {
+    "ticker": "LT.NS",
+    "margin": 0.05647966665495524
+   },
+   {
+    "ticker": "NBCC.NS",
+    "margin": 0.0031025691946235303
+   },
+   {
+    "ticker": "NCC.NS",
+    "margin": 0.012983955648082718
+   },
+   {
+    "ticker": "RITES.NS",
+    "margin": 0.15625915379077476
+   },
+   {
+    "ticker": "RVNL.NS",
+    "margin": -0.02666542820572341
+   },
+   {
+    "ticker": "TECHNOE.NS",
+    "margin": -0.07506864062816934
+   }
+  ],
+  "Advertising Agencies": [
+   {
+    "ticker": "AFFLE.NS",
+    "margin": 0.10546976812834724
+   }
+  ],
+  "Beverages - Wineries & Distilleries": [
+   {
+    "ticker": "ABDL.NS",
+    "margin": -0.031150362499286186
+   },
+   {
+    "ticker": "RADICO.NS",
+    "margin": -0.014132023956527143
+   },
+   {
+    "ticker": "UNITDSPR.NS",
+    "margin": 0.0984533366072032
+   }
+  ],
+  "Electrical Equipment & Parts": [
+   {
+    "ticker": "ARE&M.NS",
+    "margin": 0.017864320748052172
+   },
+   {
+    "ticker": "APARINDS.NS",
+    "margin": 0.011431093349295936
+   },
+   {
+    "ticker": "CGPOWER.NS",
+    "margin": 0.06708696633752577
+   },
+   {
+    "ticker": "FINCABLES.NS",
+    "margin": 0.04198637773913776
+   },
+   {
+    "ticker": "GRAPHITE.NS",
+    "margin": 0.028575296842571804
+   },
+   {
+    "ticker": "HEG.NS",
+    "margin": -0.0047958225723730465
+   },
+   {
+    "ticker": "HBLENGINE.NS",
+    "margin": 0.09365360484262603
+   },
+   {
+    "ticker": "HAVELLS.NS",
+    "margin": 0.02519485427757174
+   },
+   {
+    "ticker": "POWERINDIA.NS",
+    "margin": 0.08563133153490174
+   },
+   {
+    "ticker": "HONAUT.NS",
+    "margin": 0.10126501944305874
+   },
+   {
+    "ticker": "KEI.NS",
+    "margin": -0.006219889841388033
+   },
+   {
+    "ticker": "POLYCAB.NS",
+    "margin": 0.05328663686592276
+   },
+   {
+    "ticker": "RRKABEL.NS",
+    "margin": 0.02566696912477498
+   },
+   {
+    "ticker": "SCHNEIDER.NS",
+    "margin": 0.055804749800808566
+   },
+   {
+    "ticker": "TARIL.NS",
+    "margin": -0.025736478342248854
+   }
+  ],
+  "Furnishings, Fixtures & Appliances": [
+   {
+    "ticker": "AMBER.NS",
+    "margin": -0.010231975288525968
+   },
+   {
+    "ticker": "CROMPTON.NS",
+    "margin": 0.0837503842898694
+   },
+   {
+    "ticker": "VOLTAS.NS",
+    "margin": 0.00072804204276166
+   },
+   {
+    "ticker": "WHIRLPOOL.NS",
+    "margin": 0.03857241478138656
+   }
+  ],
+  "Real Estate - Development": [
+   {
+    "ticker": "ANANTRAJ.NS",
+    "margin": -0.05609884704194295
+   },
+   {
+    "ticker": "BRIGADE.NS",
+    "margin": -0.014427788121078242
+   },
+   {
+    "ticker": "DLF.NS",
+    "margin": 0.5586706805485725
+   },
+   {
+    "ticker": "GODREJPROP.NS",
+    "margin": -0.7318626654256492
+   },
+   {
+    "ticker": "LODHA.NS",
+    "margin": 0.159498970733271
+   },
+   {
+    "ticker": "OBEROIRLTY.NS",
+    "margin": 0.041067674793816955
+   },
+   {
+    "ticker": "SIGNATURE.NS",
+    "margin": 0.019035186238198134
+   },
+   {
+    "ticker": "SOBHA.NS",
+    "margin": 0.13606392403055378
+   }
+  ],
+  "Capital Markets": [
+   {
+    "ticker": "ANGELONE.NS",
+    "margin": -0.33409797088968995
+   },
+   {
+    "ticker": "AIIL.NS",
+    "margin": 0.7363826240415635
+   },
+   {
+    "ticker": "CDSL.NS",
+    "margin": 0.2807455571724359
+   },
+   {
+    "ticker": "CHOICEIN.NS",
+    "margin": -0.2039821258779999
+   },
+   {
+    "ticker": "IEX.NS",
+    "margin": 0.5031565199994554
+   },
+   {
+    "ticker": "JMFINANCIL.NS",
+    "margin": 0.5837957450360924
+   },
+   {
+    "ticker": "MOTILALOFS.NS",
+    "margin": -0.3858524115076085
+   }
+  ],
+  "Biotechnology": [
+   {
+    "ticker": "ANTHEM.NS",
+    "margin": 0.07449762704695642
+   },
+   {
+    "ticker": "BIOCON.NS",
+    "margin": 0.05064757624177503
+   },
+   {
+    "ticker": "CONCORDBIO.NS",
+    "margin": 0.14469150014040338
+   }
+  ],
+  "Medical Care Facilities": [
+   {
+    "ticker": "APOLLOHOSP.NS",
+    "margin": 0.028049121770273838
+   },
+   {
+    "ticker": "ASTERDM.NS",
+    "margin": 0.05293023656401505
+   },
+   {
+    "ticker": "FORTIS.NS",
+    "margin": 0.05765600280084933
+   },
+   {
+    "ticker": "MEDANTA.NS",
+    "margin": 0.04683975862255396
+   },
+   {
+    "ticker": "KIMS.NS",
+    "margin": -0.12393236124743909
+   },
+   {
+    "ticker": "MAXHEALTH.NS",
+    "margin": 0.09100800621259633
+   },
+   {
+    "ticker": "NH.NS",
+    "margin": 0.055567590864525236
+   },
+   {
+    "ticker": "RAINBOW.NS",
+    "margin": 0.10620538699563255
+   }
+  ],
+  "Auto Parts": [
+   {
+    "ticker": "APOLLOTYRE.NS",
+    "margin": 0.07144907182906178
+   },
+   {
+    "ticker": "ASAHIINDIA.NS",
+    "margin": -0.0481705303341793
+   },
+   {
+    "ticker": "BALKRISIND.NS",
+    "margin": 0.007490761255496643
+   },
+   {
+    "ticker": "BELRISE.NS",
+    "margin": 0.02811884290866724
+   },
+   {
+    "ticker": "BOSCHLTD.NS",
+    "margin": 0.07678987375301109
+   },
+   {
+    "ticker": "CIEINDIA.NS",
+    "margin": 0.08138799657075392
+   },
+   {
+    "ticker": "CEATLTD.NS",
+    "margin": 0.03856932587624594
+   },
+   {
+    "ticker": "CRAFTSMAN.NS",
+    "margin": -0.03811722639383121
+   },
+   {
+    "ticker": "ENDURANCE.NS",
+    "margin": 0.03220451792151593
+   },
+   {
+    "ticker": "EXIDEIND.NS",
+    "margin": -0.0011549731884809046
+   },
+   {
+    "ticker": "GABRIEL.NS",
+    "margin": 0.010457121063209864
+   },
+   {
+    "ticker": "JBMA.NS",
+    "margin": -0.01379943104954607
+   },
+   {
+    "ticker": "JKTYRE.NS",
+    "margin": 0.028854387951604124
+   },
+   {
+    "ticker": "MRF.NS",
+    "margin": 0.03600283340092243
+   },
+   {
+    "ticker": "MINDACORP.NS",
+    "margin": 0.0313644378423962
+   },
+   {
+    "ticker": "MSUMI.NS",
+    "margin": 0.020395898235031275
+   },
+   {
+    "ticker": "MOTHERSON.NS",
+    "margin": 0.030870914966896562
+   },
+   {
+    "ticker": "SCHAEFFLER.NS",
+    "margin": 0.0472724454363431
+   },
+   {
+    "ticker": "SONACOMS.NS",
+    "margin": 0.08548869257921901
+   },
+   {
+    "ticker": "TENNIND.NS",
+    "margin": 0.1292116550739813
+   },
+   {
+    "ticker": "UNOMINDA.NS",
+    "margin": -0.012034622668163375
+   },
+   {
+    "ticker": "ZFCVINDIA.NS",
+    "margin": 0.06060843436627974
+   },
+   {
+    "ticker": "SANSERA.NS",
+    "margin": -0.024025834488480773
+   },
+   {
+    "ticker": "SHRIPISTON.NS",
+    "margin": 0.09725200354094692
+   }
+  ],
+  "Auto Manufacturers": [
+   {
+    "ticker": "ATHERENERG.NS",
+    "margin": -0.3457468642658821
+   },
+   {
+    "ticker": "BAJAJ-AUTO.NS",
+    "margin": 0.058911863134839294
+   },
+   {
+    "ticker": "EICHERMOT.NS",
+    "margin": 0.16054073503402191
+   },
+   {
+    "ticker": "FORCEMOT.NS",
+    "margin": 0.10065060188651007
+   },
+   {
+    "ticker": "HEROMOTOCO.NS",
+    "margin": 0.10185180312183881
+   },
+   {
+    "ticker": "HYUNDAI.NS",
+    "margin": 0.047558638182729276
+   },
+   {
+    "ticker": "M&M.NS",
+    "margin": -0.06570463620475585
+   },
+   {
+    "ticker": "MARUTI.NS",
+    "margin": 0.04167488759918031
+   },
+   {
+    "ticker": "OLAELEC.NS",
+    "margin": -0.713853655324983
+   },
+   {
+    "ticker": "TVSMOTOR.NS",
+    "margin": -0.07094242463690756
+   },
+   {
+    "ticker": "TMCV.NS",
+    "margin": 0.22366455797936433
+   },
+   {
+    "ticker": "TMPV.NS",
+    "margin": 0.03357793754526389
+   }
+  ],
+  "Discount Stores": [
+   {
+    "ticker": "DMART.NS",
+    "margin": -0.003886537480252601
+   }
+  ],
+  "Conglomerates": [
+   {
+    "ticker": "BEML.NS",
+    "margin": 0.03455610658299124
+   },
+   {
+    "ticker": "CARBORUNIV.NS",
+    "margin": 0.030903404014435597
+   },
+   {
+    "ticker": "CYIENT.NS",
+    "margin": 0.08964416403182178
+   },
+   {
+    "ticker": "GODREJIND.NS",
+    "margin": -0.34867901316859334
+   },
+   {
+    "ticker": "NAVA.NS",
+    "margin": 0.3904344420747001
+   },
+   {
+    "ticker": "SRF.NS",
+    "margin": 0.03207459429556761
+   },
+   {
+    "ticker": "SWANCORP.NS",
+    "margin": -0.7056228186562723
+   },
+   {
+    "ticker": "THERMAX.NS",
+    "margin": -0.027855042462417746
+   },
+   {
+    "ticker": "TIINDIA.NS",
+    "margin": 0.02032660528429002
+   }
+  ],
+  "Specialty Business Services": [
+   {
+    "ticker": "BLS.NS",
+    "margin": 0.21432018940794162
+   }
+  ],
+  "Financial Data & Stock Exchanges": [
+   {
+    "ticker": "BSE.NS",
+    "margin": 0.5398838025002497
+   },
+   {
+    "ticker": "CRISIL.NS",
+    "margin": 0.18674752096023423
+   },
+   {
+    "ticker": "MCX.NS",
+    "margin": 0.7316794035005088
+   }
+  ],
+  "Confectioners": [
+   {
+    "ticker": "BALRAMCHIN.NS",
+    "margin": -0.06115890449907538
+   }
+  ],
+  "Footwear & Accessories": [
+   {
+    "ticker": "BATAINDIA.NS",
+    "margin": 0.14929646130907204
+   }
+  ],
+  "Aerospace & Defense": [
+   {
+    "ticker": "BDL.NS",
+    "margin": 0.26911709365435066
+   },
+   {
+    "ticker": "BEL.NS",
+    "margin": 0.059423172677260765
+   },
+   {
+    "ticker": "COCHINSHIP.NS",
+    "margin": 0.00959825924855913
+   },
+   {
+    "ticker": "DATAPATTNS.NS",
+    "margin": -0.07327790827823069
+   },
+   {
+    "ticker": "GRSE.NS",
+    "margin": 0.06991676184017044
+   },
+   {
+    "ticker": "HAL.NS",
+    "margin": 0.28869051726158734
+   },
+   {
+    "ticker": "MAZDOCK.NS",
+    "margin": 0.03849747092387279
+   },
+   {
+    "ticker": "ZENTEC.NS",
+    "margin": 0.17452564388877834
+   }
+  ],
+  "Metal Fabrication": [
+   {
+    "ticker": "BHARATFORG.NS",
+    "margin": 0.01968612361124225
+   },
+   {
+    "ticker": "GRAVITA.NS",
+    "margin": 0.012450726982569691
+   },
+   {
+    "ticker": "RHIM.NS",
+    "margin": 0.06509853493903892
+   },
+   {
+    "ticker": "RKFORGE.NS",
+    "margin": -0.03420930643310431
+   }
+  ],
+  "Telecom Services": [
+   {
+    "ticker": "BHARTIARTL.NS",
+    "margin": 0.30868834462663425
+   },
+   {
+    "ticker": "BHARTIHEXA.NS",
+    "margin": 0.3507713766150327
+   },
+   {
+    "ticker": "INDUSTOWER.NS",
+    "margin": 0.22174509133337536
+   },
+   {
+    "ticker": "RAILTEL.NS",
+    "margin": 0.045117113049737416
+   },
+   {
+    "ticker": "TATACOMM.NS",
+    "margin": 0.08205409514984596
+   },
+   {
+    "ticker": "TTML.NS",
+    "margin": 0.3959038414055979
+   },
+   {
+    "ticker": "IDEA.NS",
+    "margin": 0.22317591550427313
+   }
+  ],
+  "Information Technology Services": [
+   {
+    "ticker": "BSOFT.NS",
+    "margin": 0.1046339333684205
+   },
+   {
+    "ticker": "COFORGE.NS",
+    "margin": 0.07131344045191804
+   },
+   {
+    "ticker": "CAMS.NS",
+    "margin": 0.2866141400719282
+   },
+   {
+    "ticker": "FSL.NS",
+    "margin": 0.09392566198458585
+   },
+   {
+    "ticker": "HCLTECH.NS",
+    "margin": 0.16977518303559944
+   },
+   {
+    "ticker": "HEXT.NS",
+    "margin": 0.11280429372963924
+   },
+   {
+    "ticker": "INFY.NS",
+    "margin": 0.17291392151135487
+   },
+   {
+    "ticker": "LTTS.NS",
+    "margin": 0.12860408408641197
+   },
+   {
+    "ticker": "LTM.NS",
+    "margin": 0.09672150708618567
+   },
+   {
+    "ticker": "MPHASIS.NS",
+    "margin": 0.11081000527406455
+   },
+   {
+    "ticker": "PERSISTENT.NS",
+    "margin": 0.08536075965305097
+   },
+   {
+    "ticker": "REDINGTON.NS",
+    "margin": -0.0075914772487280305
+   },
+   {
+    "ticker": "TCS.NS",
+    "margin": 0.17525959210764408
+   },
+   {
+    "ticker": "TATATECH.NS",
+    "margin": 0.0949213936413473
+   },
+   {
+    "ticker": "TECHM.NS",
+    "margin": 0.0968257820754987
+   },
+   {
+    "ticker": "WIPRO.NS",
+    "margin": 0.15755151241729762
+   },
+   {
+    "ticker": "ZENSARTECH.NS",
+    "margin": 0.12337006898488301
+   },
+   {
+    "ticker": "ECLERX.NS",
+    "margin": 0.16251206280886007
+   }
+  ],
+  "Internet Retail": [
+   {
+    "ticker": "FIRSTCRY.NS",
+    "margin": -0.05047356948388281
+   },
+   {
+    "ticker": "ETERNAL.NS",
+    "margin": -0.03766013144586534
+   },
+   {
+    "ticker": "NYKAA.NS",
+    "margin": 0.001732880724464812
+   },
+   {
+    "ticker": "INDIAMART.NS",
+    "margin": 0.4504000221344544
+   },
+   {
+    "ticker": "MEESHO.NS",
+    "margin": -0.16119263682031057
+   },
+   {
+    "ticker": "SWIGGY.NS",
+    "margin": -0.2577661553273024
+   }
+  ],
+  "Utilities - Regulated Electric": [
+   {
+    "ticker": "CESC.NS",
+    "margin": 0.06080797925933752
+   },
+   {
+    "ticker": "NLCINDIA.NS",
+    "margin": 0.05638171703427929
+   },
+   {
+    "ticker": "NTPC.NS",
+    "margin": 0.06680140136447019
+   },
+   {
+    "ticker": "POWERGRID.NS",
+    "margin": 0.416899873984146
+   }
+  ],
+  "Insurance - Life": [
+   {
+    "ticker": "CANHLIFE.NS",
+    "margin": 0.2137960403400864
+   },
+   {
+    "ticker": "HDFCLIFE.NS",
+    "margin": 0.15522135259674597
+   },
+   {
+    "ticker": "ICICIPRULI.NS",
+    "margin": -0.07830395271762157
+   },
+   {
+    "ticker": "LICI.NS",
+    "margin": 0.014669994555847771
+   },
+   {
+    "ticker": "MFSL.NS",
+    "margin": 0.2122280935184896
+   },
+   {
+    "ticker": "SBILIFE.NS",
+    "margin": 0.27684388642074637
+   },
+   {
+    "ticker": "STARHEALTH.NS",
+    "margin": 0.09006428515170511
+   }
+  ],
+  "Auto & Truck Dealerships": [
+   {
+    "ticker": "CARTRADE.NS",
+    "margin": 0.17382922009545437
+   }
+  ],
+  "Agricultural Inputs": [
+   {
+    "ticker": "CHAMBLFERT.NS",
+    "margin": 0.06844144044626302
+   },
+   {
+    "ticker": "COROMANDEL.NS",
+    "margin": 0.041558674604228386
+   },
+   {
+    "ticker": "EIDPARRY.NS",
+    "margin": 0.014532823939622236
+   },
+   {
+    "ticker": "FACT.NS",
+    "margin": -0.03700740914610987
+   },
+   {
+    "ticker": "PIIND.NS",
+    "margin": 0.08565505168015934
+   },
+   {
+    "ticker": "PARADEEP.NS",
+    "margin": -0.11145730110307125
+   },
+   {
+    "ticker": "SUMICHEM.NS",
+    "margin": 0.14601433163207989
+   },
+   {
+    "ticker": "UPL.NS",
+    "margin": 0.09952758493770401
+   }
+  ],
+  "Household & Personal Products": [
+   {
+    "ticker": "COLPAL.NS",
+    "margin": 0.23047366185896162
+   },
+   {
+    "ticker": "DABUR.NS",
+    "margin": 0.12093101190500967
+   },
+   {
+    "ticker": "EMAMILTD.NS",
+    "margin": 0.21204039161766702
+   },
+   {
+    "ticker": "GILLETTE.NS",
+    "margin": 0.16445162026210772
+   },
+   {
+    "ticker": "GODREJCP.NS",
+    "margin": 0.1352567934738934
+   },
+   {
+    "ticker": "HINDUNILVR.NS",
+    "margin": 0.17589904675577184
+   },
+   {
+    "ticker": "HONASA.NS",
+    "margin": 0.04240474183301371
+   },
+   {
+    "ticker": "MARICO.NS",
+    "margin": 0.12471083783880449
+   }
+  ],
+  "Railroads": [
+   {
+    "ticker": "CONCOR.NS",
+    "margin": 0.07832856100186324
+   },
+   {
+    "ticker": "JWL.NS",
+    "margin": -0.08045372089548837
+   },
+   {
+    "ticker": "TITAGARH.NS",
+    "margin": -0.030307745567976198
+   }
+  ],
+  "Credit Services": [
+   {
+    "ticker": "CREDITACC.NS",
+    "margin": -0.5632902179009986
+   },
+   {
+    "ticker": "FIVESTAR.NS",
+    "margin": -0.5790782257874951
+   },
+   {
+    "ticker": "HDBFS.NS",
+    "margin": -0.7800462984933592
+   },
+   {
+    "ticker": "IFCI.NS",
+    "margin": -0.24889976035977437
+   },
+   {
+    "ticker": "IRFC.NS",
+    "margin": -0.40135337434018326
+   },
+   {
+    "ticker": "LTF.NS",
+    "margin": -0.5024175629055712
+   },
+   {
+    "ticker": "PIRAMALFIN.NS",
+    "margin": -0.679033043744347
+   },
+   {
+    "ticker": "SBICARD.NS",
+    "margin": -0.3017996161874788
+   }
+  ],
+  "Business Equipment & Supplies": [
+   {
+    "ticker": "DOMS.NS",
+    "margin": 0.004298126248442701
+   }
+  ],
+  "Chemicals": [
+   {
+    "ticker": "DEEPAKFERT.NS",
+    "margin": -0.04018651561272912
+   },
+   {
+    "ticker": "DEEPAKNTR.NS",
+    "margin": -0.024386055668972093
+   },
+   {
+    "ticker": "NAVINFLUOR.NS",
+    "margin": -0.06585903992294057
+   },
+   {
+    "ticker": "TATACHEM.NS",
+    "margin": 0.03717224555243789
+   }
+  ],
+  "Integrated Freight & Logistics": [
+   {
+    "ticker": "DELHIVERY.NS",
+    "margin": -0.010629377268566125
+   }
+  ],
+  "Restaurants": [
+   {
+    "ticker": "DEVYANI.NS",
+    "margin": 0.06630979985968312
+   },
+   {
+    "ticker": "JUBLFOOD.NS",
+    "margin": 0.06621135118332466
+   }
+  ],
+  "Consumer Electronics": [
+   {
+    "ticker": "DIXON.NS",
+    "margin": 0.010475797260406185
+   }
+  ],
+  "Diagnostics & Research": [
+   {
+    "ticker": "LALPATHLAB.NS",
+    "margin": 0.19880740057898497
+   },
+   {
+    "ticker": "SAILIFE.NS",
+    "margin": 0.018055656851568038
+   },
+   {
+    "ticker": "SYNGENE.NS",
+    "margin": 0.1303538552769569
+   },
+   {
+    "ticker": "VIJAYA.NS",
+    "margin": 0.13951022293503595
+   }
+  ],
+  "Lodging": [
+   {
+    "ticker": "EIHOTEL.NS",
+    "margin": 0.16395626292509397
+   },
+   {
+    "ticker": "INDHOTEL.NS",
+    "margin": 0.17199561347874828
+   },
+   {
+    "ticker": "LEMONTREE.NS",
+    "margin": 0.2685107731472457
+   }
+  ],
+  "Solar": [
+   {
+    "ticker": "EMMVEE.NS",
+    "margin": -0.3376614426808025
+   },
+   {
+    "ticker": "PREMIERENE.NS",
+    "margin": -0.0983573465053951
+   },
+   {
+    "ticker": "WAAREEENER.NS",
+    "margin": 0.014084476205134873
+   }
+  ],
+  "Airports & Air Services": [
+   {
+    "ticker": "GMRAIRPORT.NS",
+    "margin": -0.08516057494047706
+   }
+  ],
+  "Insurance - Reinsurance": [
+   {
+    "ticker": "GICRE.NS",
+    "margin": 0.07044363065810771
+   }
+  ],
+  "Drug Manufacturers - General": [
+   {
+    "ticker": "GLAXO.NS",
+    "margin": 0.2146841114229713
+   }
+  ],
+  "Tobacco": [
+   {
+    "ticker": "GODFRYPHLP.NS",
+    "margin": 0.06334379712629531
+   },
+   {
+    "ticker": "ITC.NS",
+    "margin": 0.2113751166703806
+   }
+  ],
+  "Communication Equipment": [
+   {
+    "ticker": "HFCL.NS",
+    "margin": -0.06864525268442664
+   },
+   {
+    "ticker": "ITI.NS",
+    "margin": 0.09532878519673847
+   },
+   {
+    "ticker": "TEJASNET.NS",
+    "margin": -0.6395369255343046
+   },
+   {
+    "ticker": "STLTECH.NS",
+    "margin": 0.05755126073463816
+   }
+  ],
+  "Aluminum": [
+   {
+    "ticker": "HINDALCO.NS",
+    "margin": 0.006130064486193586
+   },
+   {
+    "ticker": "NATIONALUM.NS",
+    "margin": 0.14057692062645674
+   }
+  ],
+  "Copper": [
+   {
+    "ticker": "HINDCOPPER.NS",
+    "margin": 0.11874117996615263
+   }
+  ],
+  "Other Industrial Metals & Mining": [
+   {
+    "ticker": "HINDZINC.NS",
+    "margin": 0.32298749968358836
+   },
+   {
+    "ticker": "JAINREC.NS",
+    "margin": -0.020476435207752268
+   },
+   {
+    "ticker": "VEDL.NS",
+    "margin": 0.21873411739849224
+   }
+  ],
+  "Insurance - Diversified": [
+   {
+    "ticker": "ICICIGI.NS",
+    "margin": 0.08498609902622273
+   },
+   {
+    "ticker": "NIACL.NS",
+    "margin": -0.1048142276440848
+   }
+  ],
+  "Infrastructure Operations": [
+   {
+    "ticker": "IRB.NS",
+    "margin": 0.29969344717758184
+   }
+  ],
+  "Resorts & Casinos": [
+   {
+    "ticker": "ITCHOTELS.NS",
+    "margin": 0.14399582460232385
+   }
+  ],
+  "Health Information Services": [
+   {
+    "ticker": "INDGN.NS",
+    "margin": 0.1395095228726018
+   },
+   {
+    "ticker": "IKS.NS",
+    "margin": 0.16593495717547066
+   },
+   {
+    "ticker": "SAGILITY.NS",
+    "margin": 0.16787402437431007
+   }
+  ],
+  "Travel Services": [
+   {
+    "ticker": "IRCTC.NS",
+    "margin": 0.1899984304486098
+   },
+   {
+    "ticker": "TBOTEK.NS",
+    "margin": 0.12304245002598299
+   }
+  ],
+  "Internet Content & Information": [
+   {
+    "ticker": "NAUKRI.NS",
+    "margin": 0.26044563369440155
+   }
+  ],
+  "Software - Application": [
+   {
+    "ticker": "INTELLECT.NS",
+    "margin": 0.07450727242725495
+   },
+   {
+    "ticker": "KPITTECH.NS",
+    "margin": 0.16284173000921964
+   },
+   {
+    "ticker": "KFINTECH.NS",
+    "margin": 0.2423171992228054
+   },
+   {
+    "ticker": "TATAELXSI.NS",
+    "margin": 0.1739262407633369
+   },
+   {
+    "ticker": "URBANCO.NS",
+    "margin": -0.14099349703641254
+   }
+  ],
+  "Airlines": [
+   {
+    "ticker": "INDIGO.NS",
+    "margin": 0.2697165164466462
+   }
+  ],
+  "Other Precious Metals & Mining": [
+   {
+    "ticker": "IGIL.NS",
+    "margin": 0.3532587641897101
+   }
+  ],
+  "Textile Manufacturing": [
+   {
+    "ticker": "KPRMILL.NS",
+    "margin": 0.09315576133215822
+   },
+   {
+    "ticker": "TRIDENT.NS",
+    "margin": 0.057819545915514296
+   },
+   {
+    "ticker": "VTL.NS",
+    "margin": -0.0052463971309659775
+   },
+   {
+    "ticker": "WELSPUNLIV.NS",
+    "margin": 0.04509008612397432
+   }
+  ],
+  "Luxury Goods": [
+   {
+    "ticker": "KALYANKJIL.NS",
+    "margin": 0.041449438278614685
+   },
+   {
+    "ticker": "TITAN.NS",
+    "margin": 0.019858478462311313
+   },
+   {
+    "ticker": "THANGAMAYL.NS",
+    "margin": 0.00020630739757997955
+   }
+  ],
+  "Electronic Components": [
+   {
+    "ticker": "KAYNES.NS",
+    "margin": -0.28459467184630016
+   },
+   {
+    "ticker": "PGEL.NS",
+    "margin": -0.08092053373574046
+   },
+   {
+    "ticker": "SYRMA.NS",
+    "margin": -0.058575218029869196
+   }
+  ],
+  "Computer Hardware": [
+   {
+    "ticker": "NETWEB.NS",
+    "margin": 0.01728351951244443
+   }
+  ],
+  "Oil & Gas Integrated": [
+   {
+    "ticker": "ONGC.NS",
+    "margin": 0.07216647821334657
+   },
+   {
+    "ticker": "OIL.NS",
+    "margin": -0.019611736786816377
+   }
+  ],
+  "Software - Infrastructure": [
+   {
+    "ticker": "PAYTM.NS",
+    "margin": -0.0672100670413324
+   },
+   {
+    "ticker": "OFSS.NS",
+    "margin": 0.3078284464947185
+   },
+   {
+    "ticker": "PINELABS.NS",
+    "margin": -0.17908599559240582
+   },
+   {
+    "ticker": "FRACTAL.NS",
+    "margin": 0.050067512274880016
+   }
+  ],
+  "Insurance Brokers": [
+   {
+    "ticker": "POLICYBZR.NS",
+    "margin": -0.05511577401419974
+   }
+  ],
+  "Entertainment": [
+   {
+    "ticker": "PVRINOX.NS",
+    "margin": 0.21481528144231282
+   }
+  ],
+  "Apparel Manufacturing": [
+   {
+    "ticker": "PAGEIND.NS",
+    "margin": 0.13521330353921818
+   }
+  ],
+  "Real Estate - Diversified": [
+   {
+    "ticker": "PHOENIXLTD.NS",
+    "margin": 0.009832735116581455
+   },
+   {
+    "ticker": "PRESTIGE.NS",
+    "margin": -0.06650770470909673
+   }
+  ],
+  "Education & Training Services": [
+   {
+    "ticker": "PWL.NS",
+    "margin": 0.09943523339657959
+   }
+  ],
+  "Medical Instruments & Supplies": [
+   {
+    "ticker": "POLYMED.NS",
+    "margin": -0.035811958442545325
+   }
+  ],
+  "Broadcasting": [
+   {
+    "ticker": "SUNTV.NS",
+    "margin": 0.2538826695611729
+   },
+   {
+    "ticker": "ZEEL.NS",
+    "margin": 0.06258903489243386
+   }
+  ],
+  "Tools & Accessories": [
+   {
+    "ticker": "TIMKEN.NS",
+    "margin": 0.04416056493922521
+   }
+  ],
+  "Apparel Retail": [
+   {
+    "ticker": "TRENT.NS",
+    "margin": 0.0325686997249482
+   }
+  ],
+  "Beverages - Brewers": [
+   {
+    "ticker": "UBL.NS",
+    "margin": -0.01674345331059999
+   }
+  ],
+  "Beverages - Non-Alcoholic": [
+   {
+    "ticker": "VBL.NS",
+    "margin": -0.010061274789816842
+   }
+  ],
+  "Department Stores": [
+   {
+    "ticker": "VMM.NS",
+    "margin": 0.08167511548395487
+   }
+  ]
+ }
+}
