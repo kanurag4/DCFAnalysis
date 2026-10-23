@@ -620,5 +620,29 @@
     "exitDate": "2026-10-16",
     "exitPrice": 23.9,
     "dollarPnl": 13.65
+  },
+  {
+    "ticker": "CUV.AX",
+    "entryDate": "2026-10-16",
+    "entryPrice": 7.56,
+    "exitDate": "2026-10-23",
+    "exitPrice": 7.12,
+    "dollarPnl": -31.04
+  },
+  {
+    "ticker": "EMR.AX",
+    "entryDate": "2026-09-18",
+    "entryPrice": 7.07,
+    "exitDate": "2026-10-23",
+    "exitPrice": 5.78,
+    "dollarPnl": -69.08
+  },
+  {
+    "ticker": "DPM.AX",
+    "entryDate": "2026-10-16",
+    "entryPrice": 61.36,
+    "exitDate": "2026-10-23",
+    "exitPrice": 55.99,
+    "dollarPnl": -46.68
   }
 ]

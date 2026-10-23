@@ -244,16 +244,16 @@
     "firstPrice": 4.32
   },
   "RRL.AX": {
-    "firstSeen": "2026-09-04",
-    "firstPrice": 8.48
+    "firstSeen": "2026-10-23",
+    "firstPrice": 6.05
   },
   "MGR.AX": {
     "firstSeen": "2026-09-04",
     "firstPrice": 1.83
   },
   "LNW.AX": {
-    "firstSeen": "2026-10-09",
-    "firstPrice": 116
+    "firstSeen": "2026-10-23",
+    "firstPrice": 130
   },
   "PXA.AX": {
     "firstSeen": "2026-09-11",
@@ -302,5 +302,9 @@
   "QRI.AX": {
     "firstSeen": "2026-10-16",
     "firstPrice": 1.46
+  },
+  "MLX.AX": {
+    "firstSeen": "2026-10-23",
+    "firstPrice": 1.48
   }
 }
