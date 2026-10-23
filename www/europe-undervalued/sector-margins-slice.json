@@ -1,0 +1,2327 @@
+{
+ "asAt": "2026-10-23",
+ "industries": {
+  "Utilities - Diversified": [
+   {
+    "ticker": "A2A.MI",
+    "margin": -0.011268123499036841
+   },
+   {
+    "ticker": "EDP.LS",
+    "margin": -0.08430001323435506
+   },
+   {
+    "ticker": "ENEL.MI",
+    "margin": 0.021164153639028006
+   },
+   {
+    "ticker": "ENGI.PA",
+    "margin": 0.0057569878636386275
+   },
+   {
+    "ticker": "EOAN.DE",
+    "margin": 0.0038447376491972498
+   },
+   {
+    "ticker": "HER.MI",
+    "margin": 0.007459220609397697
+   },
+   {
+    "ticker": "IBE.MC",
+    "margin": 0.07795295360313376
+   },
+   {
+    "ticker": "RWE.DE",
+    "margin": -0.1218279150118589
+   },
+   {
+    "ticker": "SSE.L",
+    "margin": -0.015122677500445957
+   }
+  ],
+  "Banks - Regional": [
+   {
+    "ticker": "A5G.IR",
+    "margin": 0.1629551547815592
+   },
+   {
+    "ticker": "ACA.PA",
+    "margin": -0.39075688433707845
+   },
+   {
+    "ticker": "ALSYDB.CO",
+    "margin": 0.4400394711485261
+   },
+   {
+    "ticker": "AZA.ST",
+    "margin": 3.2683747368502396
+   },
+   {
+    "ticker": "BAMI.MI",
+    "margin": -0.9438931091367473
+   },
+   {
+    "ticker": "BCP.LS",
+    "margin": 0.7724856939629633
+   },
+   {
+    "ticker": "BCVN.SW",
+    "margin": 2.393822755050365
+   },
+   {
+    "ticker": "BG.VI",
+    "margin": -0.051690827325741484
+   },
+   {
+    "ticker": "BGN.MI",
+    "margin": -0.0947588689170204
+   },
+   {
+    "ticker": "BIRG.IR",
+    "margin": 0.16061720457917933
+   },
+   {
+    "ticker": "BKT.MC",
+    "margin": -0.7632530851084357
+   },
+   {
+    "ticker": "BMED.MI",
+    "margin": 0.31003176246222863
+   },
+   {
+    "ticker": "BMPS.MI",
+    "margin": 0.7669310460469192
+   },
+   {
+    "ticker": "BNP.PA",
+    "margin": -0.6123095960835213
+   },
+   {
+    "ticker": "BPE.MI",
+    "margin": 0.5418552742881717
+   },
+   {
+    "ticker": "CBK.DE",
+    "margin": 0.4282885284142497
+   },
+   {
+    "ticker": "CMBN.SW",
+    "margin": 0.4085678811033119
+   },
+   {
+    "ticker": "DANSKE.CO",
+    "margin": -0.2980038532285926
+   },
+   {
+    "ticker": "DBK.DE",
+    "margin": 0.14278786646123368
+   },
+   {
+    "ticker": "DNB.OL",
+    "margin": -0.252618667591157
+   },
+   {
+    "ticker": "FBK.MI",
+    "margin": 0.34843312491075096
+   },
+   {
+    "ticker": "GLE.PA",
+    "margin": 0.10796517872708628
+   },
+   {
+    "ticker": "ISP.MI",
+    "margin": 0.6571780149801839
+   },
+   {
+    "ticker": "JYSK.CO",
+    "margin": 1.2357827779288615
+   },
+   {
+    "ticker": "LLOY.L",
+    "margin": 0.1580818103100764
+   },
+   {
+    "ticker": "NDA-FI.HE",
+    "margin": 0.33379880126607947
+   },
+   {
+    "ticker": "SBNOR.OL",
+    "margin": 0.552619258951643
+   },
+   {
+    "ticker": "SEB-A.ST",
+    "margin": -0.4002172547059263
+   },
+   {
+    "ticker": "SWED-A.ST",
+    "margin": -0.4959945307031557
+   },
+   {
+    "ticker": "UCG.MI",
+    "margin": -0.31917228626607796
+   }
+  ],
+  "Telecom Services": [
+   {
+    "ticker": "AAF.L",
+    "margin": 0.2682612886992697
+   },
+   {
+    "ticker": "BT-A.L",
+    "margin": 0.07782884324111443
+   },
+   {
+    "ticker": "DTE.DE",
+    "margin": 0.15951152525652262
+   },
+   {
+    "ticker": "ELISA.HE",
+    "margin": 0.16164376406762992
+   },
+   {
+    "ticker": "FNTN.DE",
+    "margin": 0.1391519530608071
+   },
+   {
+    "ticker": "KPN.AS",
+    "margin": 0.1793218178629891
+   },
+   {
+    "ticker": "ORA.PA",
+    "margin": 0.08165723551641227
+   },
+   {
+    "ticker": "SCMN.SW",
+    "margin": 0.17311177269585515
+   },
+   {
+    "ticker": "SUNN.SW",
+    "margin": 0.25032390596902304
+   },
+   {
+    "ticker": "TEF.MC",
+    "margin": 0.14386203989848667
+   },
+   {
+    "ticker": "TEL.OL",
+    "margin": 0.23246435203983407
+   },
+   {
+    "ticker": "TEL2-B.ST",
+    "margin": 0.2055153273573853
+   },
+   {
+    "ticker": "TELIA.ST",
+    "margin": 0.11115420358168748
+   },
+   {
+    "ticker": "VOD.L",
+    "margin": 0.23535681864450617
+   }
+  ],
+  "Packaged Foods": [
+   {
+    "ticker": "AAK.ST",
+    "margin": 0.01940767610944223
+   },
+   {
+    "ticker": "ABF.L",
+    "margin": 0.04856601791367013
+   },
+   {
+    "ticker": "BN.PA",
+    "margin": 0.09390441943073335
+   },
+   {
+    "ticker": "CWK.L",
+    "margin": 0.035961688753042
+   },
+   {
+    "ticker": "GL9.IR",
+    "margin": 0.067621642979151
+   },
+   {
+    "ticker": "KRZ.IR",
+    "margin": 0.0842772885674408
+   },
+   {
+    "ticker": "LOTB.BR",
+    "margin": 0.04763509108092895
+   },
+   {
+    "ticker": "MICC.AS",
+    "margin": 0.06379718138866051
+   },
+   {
+    "ticker": "NESN.SW",
+    "margin": 0.10311803027858478
+   },
+   {
+    "ticker": "ORK.OL",
+    "margin": 0.07729465921560472
+   }
+  ],
+  "Other Industrial Metals & Mining": [
+   {
+    "ticker": "AAL.L",
+    "margin": 0.1142280206641331
+   },
+   {
+    "ticker": "BOL.ST",
+    "margin": 0.029132474754657543
+   },
+   {
+    "ticker": "GLEN.L",
+    "margin": 0.02129780647621812
+   },
+   {
+    "ticker": "RIO.L",
+    "margin": 0.1269381377732098
+   }
+  ],
+  "Specialty Industrial Machinery": [
+   {
+    "ticker": "AALB.AS",
+    "margin": 0.04856067918685376
+   },
+   {
+    "ticker": "ACLN.SW",
+    "margin": 0.14723567951379474
+   },
+   {
+    "ticker": "ALFA.ST",
+    "margin": 0.0919470358581632
+   },
+   {
+    "ticker": "ANDR.VI",
+    "margin": 0.05247551026021367
+   },
+   {
+    "ticker": "ATCO-A.ST",
+    "margin": 0.14450867623631133
+   },
+   {
+    "ticker": "ENR.DE",
+    "margin": 0.04849520081337065
+   },
+   {
+    "ticker": "FLS.CO",
+    "margin": 0.014662437419246051
+   },
+   {
+    "ticker": "GF.SW",
+    "margin": 0.0332806454192955
+   },
+   {
+    "ticker": "IMI.L",
+    "margin": 0.12420572099381322
+   },
+   {
+    "ticker": "IP.MI",
+    "margin": 0.0813043377305178
+   },
+   {
+    "ticker": "KNEBV.HE",
+    "margin": 0.0824096578427623
+   },
+   {
+    "ticker": "MRO.L",
+    "margin": -0.004213671174659914
+   },
+   {
+    "ticker": "MYCR.ST",
+    "margin": 0.19388465948346645
+   },
+   {
+    "ticker": "NDX1.DE",
+    "margin": 0.013735672875886819
+   },
+   {
+    "ticker": "RAA.DE",
+    "margin": 0.1760716925801897
+   },
+   {
+    "ticker": "ROR.L",
+    "margin": 0.13601548209686257
+   },
+   {
+    "ticker": "SAND.ST",
+    "margin": 0.1037169720912354
+   },
+   {
+    "ticker": "SCHP.SW",
+    "margin": 0.10236875470778553
+   },
+   {
+    "ticker": "SIE.DE",
+    "margin": 0.12781312587035037
+   },
+   {
+    "ticker": "SMIN.L",
+    "margin": 0.08791702888786355
+   },
+   {
+    "ticker": "SPX.L",
+    "margin": 0.1144217106456718
+   },
+   {
+    "ticker": "SU.PA",
+    "margin": 0.11131389284684805
+   },
+   {
+    "ticker": "SUN.SW",
+    "margin": 0.057580303165010754
+   },
+   {
+    "ticker": "VACN.SW",
+    "margin": 0.2054002695404026
+   },
+   {
+    "ticker": "VALMT.HE",
+    "margin": 0.05036072186986526
+   },
+   {
+    "ticker": "VWS.CO",
+    "margin": 0.015096643726637706
+   },
+   {
+    "ticker": "WEIR.L",
+    "margin": 0.12414459284714739
+   },
+   {
+    "ticker": "WRT1V.HE",
+    "margin": 0.11128063531227932
+   }
+  ],
+  "Electrical Equipment & Parts": [
+   {
+    "ticker": "ABBN.SW",
+    "margin": 0.0970654225809155
+   },
+   {
+    "ticker": "LR.PA",
+    "margin": 0.15004137132527687
+   },
+   {
+    "ticker": "NEX.PA",
+    "margin": 0.049084431028946204
+   },
+   {
+    "ticker": "PRY.MI",
+    "margin": 0.05616446376166638
+   }
+  ],
+  "Asset Management": [
+   {
+    "ticker": "ABDN.L",
+    "margin": 0.1304734122208409
+   },
+   {
+    "ticker": "ALLFG.AS",
+    "margin": 0.497095324371491
+   },
+   {
+    "ticker": "AMUN.PA",
+    "margin": 0.1852542688412679
+   },
+   {
+    "ticker": "AZM.MI",
+    "margin": 0.11000221748828687
+   },
+   {
+    "ticker": "BAER.SW",
+    "margin": -0.02349954271032008
+   },
+   {
+    "ticker": "BPT.L",
+    "margin": 0.14717062826649824
+   },
+   {
+    "ticker": "CVC.AS",
+    "margin": 0.3706544692530091
+   },
+   {
+    "ticker": "EMG.L",
+    "margin": 0.3064738290636742
+   },
+   {
+    "ticker": "EQT.ST",
+    "margin": 0.2699651802949361
+   },
+   {
+    "ticker": "GBLB.BR",
+    "margin": 0.05930836612924946
+   },
+   {
+    "ticker": "ICG.L",
+    "margin": 0.42121881629404045
+   },
+   {
+    "ticker": "III.L",
+    "margin": 0.14320619084548972
+   },
+   {
+    "ticker": "INDU-C.ST",
+    "margin": 0.3781921333074261
+   },
+   {
+    "ticker": "LGEN.L",
+    "margin": -0.18543960956861624
+   },
+   {
+    "ticker": "MNG.L",
+    "margin": 0.050120706810492834
+   },
+   {
+    "ticker": "PGHN.SW",
+    "margin": 0.45628790670433744
+   },
+   {
+    "ticker": "QLT.L",
+    "margin": 0.6548655612677869
+   },
+   {
+    "ticker": "SDR.L",
+    "margin": 0.19656392984451654
+   },
+   {
+    "ticker": "STJ.L",
+    "margin": 0.0032105495940960133
+   },
+   {
+    "ticker": "VONN.SW",
+    "margin": -0.4158897340766826
+   },
+   {
+    "ticker": "VZN.SW",
+    "margin": 0.04164221474834348
+   }
+  ],
+  "Beverages - Brewers": [
+   {
+    "ticker": "ABI.BR",
+    "margin": 0.16565839837864987
+   },
+   {
+    "ticker": "HEIA.AS",
+    "margin": 0.08422809540431508
+   },
+   {
+    "ticker": "HEIO.AS",
+    "margin": 0.08422809540431508
+   },
+   {
+    "ticker": "RBREW.CO",
+    "margin": 0.08382888621300427
+   }
+  ],
+  "Banks - Diversified": [
+   {
+    "ticker": "ABN.AS",
+    "margin": -0.8071956309941399
+   },
+   {
+    "ticker": "BARC.L",
+    "margin": 0.4561717761972821
+   },
+   {
+    "ticker": "BBVA.MC",
+    "margin": 0.12529316304167273
+   },
+   {
+    "ticker": "HSBA.L",
+    "margin": 0.5229699447730752
+   },
+   {
+    "ticker": "INGA.AS",
+    "margin": -0.6048987184958551
+   },
+   {
+    "ticker": "SAN.MC",
+    "margin": -0.19803969543881375
+   },
+   {
+    "ticker": "SHB-A.ST",
+    "margin": -0.1521398201084522
+   },
+   {
+    "ticker": "STAN.L",
+    "margin": 0.47480164054819207
+   },
+   {
+    "ticker": "UBSG.SW",
+    "margin": 0.7205207157872853
+   }
+  ],
+  "Lodging": [
+   {
+    "ticker": "AC.PA",
+    "margin": 0.09099305462237228
+   },
+   {
+    "ticker": "IHG.L",
+    "margin": 0.15134352271297236
+   },
+   {
+    "ticker": "WTB.L",
+    "margin": 0.08527497698368607
+   }
+  ],
+  "Engineering & Construction": [
+   {
+    "ticker": "ACKB.BR",
+    "margin": 0.08832875561996806
+   },
+   {
+    "ticker": "ACS.MC",
+    "margin": 0.04224016303725041
+   },
+   {
+    "ticker": "ANA.MC",
+    "margin": -0.031553212219262626
+   },
+   {
+    "ticker": "ARCAD.AS",
+    "margin": 0.06230345433988389
+   },
+   {
+    "ticker": "BAB.L",
+    "margin": 0.03851287666939406
+   },
+   {
+    "ticker": "BAMNB.AS",
+    "margin": 0.005208423404260537
+   },
+   {
+    "ticker": "BBY.L",
+    "margin": 0.033556076076478265
+   },
+   {
+    "ticker": "DG.PA",
+    "margin": 0.10210964255609824
+   },
+   {
+    "ticker": "EN.PA",
+    "margin": 0.038151264788729336
+   },
+   {
+    "ticker": "FER.MC",
+    "margin": 0.13890462641002793
+   },
+   {
+    "ticker": "FGR.PA",
+    "margin": 0.10139806431625079
+   },
+   {
+    "ticker": "GBF.DE",
+    "margin": 0.034274613302892366
+   },
+   {
+    "ticker": "HILS.L",
+    "margin": 0.09950224202888167
+   },
+   {
+    "ticker": "HOT.DE",
+    "margin": 0.04133607200616939
+   },
+   {
+    "ticker": "SCYR.MC",
+    "margin": 0.15170975668369885
+   },
+   {
+    "ticker": "SKA-B.ST",
+    "margin": 0.013270584872928886
+   },
+   {
+    "ticker": "SPIE.PA",
+    "margin": 0.07492120259130974
+   },
+   {
+    "ticker": "SWEC-B.ST",
+    "margin": 0.09959421371872111
+   }
+  ],
+  "Steel": [
+   {
+    "ticker": "ACX.MC",
+    "margin": 0.0337259581900113
+   },
+   {
+    "ticker": "MT.AS",
+    "margin": 0.03589909927712001
+   },
+   {
+    "ticker": "VK.PA",
+    "margin": 0.05762949055195489
+   },
+   {
+    "ticker": "VOE.VI",
+    "margin": 0.022476148748945303
+   }
+  ],
+  "Grocery Stores": [
+   {
+    "ticker": "AD.AS",
+    "margin": 0.04472386455451815
+   },
+   {
+    "ticker": "AXFO.ST",
+    "margin": 0.04898255075937136
+   },
+   {
+    "ticker": "CA.PA",
+    "margin": 0.02950124129287521
+   },
+   {
+    "ticker": "KESKOB.HE",
+    "margin": 0.04114308866431573
+   },
+   {
+    "ticker": "SBRY.L",
+    "margin": 0.02191409444375836
+   },
+   {
+    "ticker": "TSCO.L",
+    "margin": 0.03098610226774157
+   }
+  ],
+  "Industrial Distribution": [
+   {
+    "ticker": "ADDT-B.ST",
+    "margin": 0.11205876634708514
+   },
+   {
+    "ticker": "BEIJ-B.ST",
+    "margin": 0.053317382199738306
+   },
+   {
+    "ticker": "DPLM.L",
+    "margin": 0.1358833775021679
+   },
+   {
+    "ticker": "INDT.ST",
+    "margin": 0.1022435681852326
+   },
+   {
+    "ticker": "RS1.L",
+    "margin": 0.07051337178861564
+   }
+  ],
+  "Staffing & Employment Services": [
+   {
+    "ticker": "ADEN.SW",
+    "margin": 0.01840418412890431
+   },
+   {
+    "ticker": "RAND.AS",
+    "margin": 0.03396111726871021
+   }
+  ],
+  "Insurance - Property & Casualty": [
+   {
+    "ticker": "ADM.L",
+    "margin": 0.0752326834215073
+   },
+   {
+    "ticker": "HSX.L",
+    "margin": 0.04544171951846355
+   },
+   {
+    "ticker": "UNI.MI",
+    "margin": 0.13167068534979978
+   }
+  ],
+  "Airports & Air Services": [
+   {
+    "ticker": "ADP.PA",
+    "margin": 0.10362131349287003
+   },
+   {
+    "ticker": "AENA.MC",
+    "margin": 0.2609859751650058
+   },
+   {
+    "ticker": "FHZN.SW",
+    "margin": 0.1616511210805327
+   }
+  ],
+  "Footwear & Accessories": [
+   {
+    "ticker": "ADS.DE",
+    "margin": 0.03861249787372688
+   }
+  ],
+  "Software - Infrastructure": [
+   {
+    "ticker": "ADYEN.AS",
+    "margin": 0.5608737201129484
+   },
+   {
+    "ticker": "NEXI.MI",
+    "margin": 0.08749570456586594
+   }
+  ],
+  "REIT - Healthcare Facilities": [
+   {
+    "ticker": "AED.BR",
+    "margin": 0.1174328925441439
+   },
+   {
+    "ticker": "PHP.L",
+    "margin": 1.4210960661392886
+   }
+  ],
+  "Auto & Truck Dealerships": [
+   {
+    "ticker": "AG1.DE",
+    "margin": -0.044925058550736224
+   },
+   {
+    "ticker": "DIE.BR",
+    "margin": 0.04735479732316983
+   },
+   {
+    "ticker": "INCH.L",
+    "margin": 0.04935989780848715
+   }
+  ],
+  "Insurance - Diversified": [
+   {
+    "ticker": "AGN.AS",
+    "margin": 0.029032820473223194
+   },
+   {
+    "ticker": "ASRNL.AS",
+    "margin": -0.10420329666370018
+   },
+   {
+    "ticker": "AV.L",
+    "margin": 0.027722320654121974
+   },
+   {
+    "ticker": "CS.PA",
+    "margin": 0.11527063779045525
+   },
+   {
+    "ticker": "G.MI",
+    "margin": 0.20601562855483194
+   },
+   {
+    "ticker": "HBAN.SW",
+    "margin": 0.031042642680102372
+   },
+   {
+    "ticker": "MAP.MC",
+    "margin": 0.04287543002386876
+   },
+   {
+    "ticker": "NN.AS",
+    "margin": -0.10133300226481029
+   },
+   {
+    "ticker": "SAMPO.HE",
+    "margin": 0.10036169516477461
+   },
+   {
+    "ticker": "SLHN.SW",
+    "margin": 0.05591248674615805
+   },
+   {
+    "ticker": "TLX.DE",
+    "margin": 0.17242329350617833
+   },
+   {
+    "ticker": "TRYG.CO",
+    "margin": 0.10721976896609606
+   },
+   {
+    "ticker": "ZURN.SW",
+    "margin": 0.08365028290574691
+   }
+  ],
+  "Specialty Chemicals": [
+   {
+    "ticker": "AI.PA",
+    "margin": 0.09784196150055802
+   },
+   {
+    "ticker": "AKE.PA",
+    "margin": 0.050883307832092634
+   },
+   {
+    "ticker": "AKZA.AS",
+    "margin": 0.042496903619158595
+   },
+   {
+    "ticker": "BNR.DE",
+    "margin": 0.0486273309112058
+   },
+   {
+    "ticker": "DSFIR.AS",
+    "margin": 0.06729305738477531
+   },
+   {
+    "ticker": "EMSN.SW",
+    "margin": 0.2069411910050999
+   },
+   {
+    "ticker": "EVK.DE",
+    "margin": 0.050480653989037824
+   },
+   {
+    "ticker": "FPE3.DE",
+    "margin": 0.08566041019199008
+   },
+   {
+    "ticker": "GIVN.SW",
+    "margin": 0.1476294494231297
+   },
+   {
+    "ticker": "IMCD.AS",
+    "margin": 0.06577109197912825
+   },
+   {
+    "ticker": "JMAT.L",
+    "margin": 0.01025012498967065
+   },
+   {
+    "ticker": "NSIS-B.CO",
+    "margin": 0.1333583200132249
+   },
+   {
+    "ticker": "SIKA.SW",
+    "margin": 0.11092317729752656
+   },
+   {
+    "ticker": "SY1.DE",
+    "margin": 0.09075959137495292
+   }
+  ],
+  "Aerospace & Defense": [
+   {
+    "ticker": "AIR.PA",
+    "margin": 0.05571409000269015
+   },
+   {
+    "ticker": "AM.PA",
+    "margin": 0.24172756952931163
+   },
+   {
+    "ticker": "BA.L",
+    "margin": 0.10239281897714332
+   },
+   {
+    "ticker": "CSG.AS",
+    "margin": 0.11112992297461143
+   },
+   {
+    "ticker": "HAG.DE",
+    "margin": 0.07974598008962198
+   },
+   {
+    "ticker": "HO.PA",
+    "margin": 0.10090759409144114
+   },
+   {
+    "ticker": "KOG.OL",
+    "margin": 0.21566515593314903
+   },
+   {
+    "ticker": "LDO.MI",
+    "margin": 0.03173272679954421
+   },
+   {
+    "ticker": "MTX.DE",
+    "margin": 0.04528698840855641
+   },
+   {
+    "ticker": "QQ.L",
+    "margin": 0.0698094664194971
+   },
+   {
+    "ticker": "R3NK.DE",
+    "margin": 0.08678634677554722
+   },
+   {
+    "ticker": "RHM.DE",
+    "margin": 0.07281595374583912
+   },
+   {
+    "ticker": "RR.L",
+    "margin": 0.124522739822535
+   },
+   {
+    "ticker": "SAAB-B.ST",
+    "margin": 0.05096202365591297
+   },
+   {
+    "ticker": "SAF.PA",
+    "margin": 0.12546330575379577
+   }
+  ],
+  "Semiconductor Equipment & Materials": [
+   {
+    "ticker": "AIXA.DE",
+    "margin": 0.012912625717555554
+   },
+   {
+    "ticker": "ASM.AS",
+    "margin": 0.16634079743659877
+   },
+   {
+    "ticker": "ASML.AS",
+    "margin": 0.27882162023191925
+   },
+   {
+    "ticker": "BESI.AS",
+    "margin": 0.289628901689497
+   },
+   {
+    "ticker": "SOI.PA",
+    "margin": 0.024626203129142776
+   }
+  ],
+  "Conglomerates": [
+   {
+    "ticker": "AKER.OL",
+    "margin": -0.07959301018998077
+   },
+   {
+    "ticker": "LAGR-B.ST",
+    "margin": 0.12879156458871105
+   },
+   {
+    "ticker": "LATO-B.ST",
+    "margin": 0.11025176947405817
+   },
+   {
+    "ticker": "LIFCO-B.ST",
+    "margin": 0.15192744988562018
+   },
+   {
+    "ticker": "LUND-B.ST",
+    "margin": 0.21979707373732257
+   },
+   {
+    "ticker": "TKA.DE",
+    "margin": -0.003586678878618546
+   }
+  ],
+  "Oil & Gas E&P": [
+   {
+    "ticker": "AKRBP.OL",
+    "margin": 0.1340003399131974
+   },
+   {
+    "ticker": "VAR.OL",
+    "margin": 0.1725095330684445
+   }
+  ],
+  "Medical Instruments & Supplies": [
+   {
+    "ticker": "ALC.SW",
+    "margin": 0.10187660235775331
+   },
+   {
+    "ticker": "COLO-B.CO",
+    "margin": 0.11664410608578946
+   },
+   {
+    "ticker": "CTEC.L",
+    "margin": 0.10362992017815789
+   },
+   {
+    "ticker": "DIM.PA",
+    "margin": 0.10551020601176467
+   },
+   {
+    "ticker": "EL.PA",
+    "margin": 0.13021399703438316
+   },
+   {
+    "ticker": "SRT3.DE",
+    "margin": 0.10410417679898404
+   },
+   {
+    "ticker": "STMN.SW",
+    "margin": 0.11686452126151017
+   }
+  ],
+  "Biotechnology": [
+   {
+    "ticker": "ALK-B.CO",
+    "margin": 0.07206080730114961
+   },
+   {
+    "ticker": "ARGX.BR",
+    "margin": -0.6656797952928578
+   },
+   {
+    "ticker": "GMAB.CO",
+    "margin": 0.33102114907910385
+   },
+   {
+    "ticker": "UCB.BR",
+    "margin": 0.15195229366968904
+   }
+  ],
+  "Real Estate - Diversified": [
+   {
+    "ticker": "ALLN.SW",
+    "margin": 0.22569963427907885
+   },
+   {
+    "ticker": "BALD-B.ST",
+    "margin": 0.37803706081178856
+   },
+   {
+    "ticker": "SPSN.SW",
+    "margin": 0.6058608626229476
+   },
+   {
+    "ticker": "TEG.DE",
+    "margin": 0.1715167587710822
+   }
+  ],
+  "Information Technology Services": [
+   {
+    "ticker": "AMS.MC",
+    "margin": 0.21204527641887794
+   },
+   {
+    "ticker": "CAP.PA",
+    "margin": 0.09990848083129367
+   },
+   {
+    "ticker": "CCC.L",
+    "margin": 0.04238831976979575
+   },
+   {
+    "ticker": "IDR.MC",
+    "margin": 0.07234525751149506
+   },
+   {
+    "ticker": "REY.MI",
+    "margin": 0.1055785250755607
+   },
+   {
+    "ticker": "SOP.PA",
+    "margin": 0.09080654215713084
+   },
+   {
+    "ticker": "WISE.L",
+    "margin": 2.8293128483119365
+   }
+  ],
+  "Copper": [
+   {
+    "ticker": "ANTO.L",
+    "margin": -0.014704823561114962
+   }
+  ],
+  "Electronic Components": [
+   {
+    "ticker": "ATS.VI",
+    "margin": -0.16474936073342283
+   }
+  ],
+  "Internet Content & Information": [
+   {
+    "ticker": "AUTO.L",
+    "margin": 0.4992442700076323
+   },
+   {
+    "ticker": "G24.DE",
+    "margin": 0.3646409413435403
+   },
+   {
+    "ticker": "RMV.L",
+    "margin": 0.5489189060224657
+   },
+   {
+    "ticker": "VEND.OL",
+    "margin": 0.10760121318287491
+   }
+  ],
+  "Specialty Retail": [
+   {
+    "ticker": "AVOL.SW",
+    "margin": 0.17130401550095337
+   }
+  ],
+  "Rental & Leasing Services": [
+   {
+    "ticker": "AYV.PA",
+    "margin": -0.042668600792075205
+   }
+  ],
+  "Drug Manufacturers - General": [
+   {
+    "ticker": "AZN.L",
+    "margin": 0.1471669687389587
+   },
+   {
+    "ticker": "BAYN.DE",
+    "margin": 0.07634278188730347
+   },
+   {
+    "ticker": "GRF.MC",
+    "margin": 0.019322988396375498
+   },
+   {
+    "ticker": "GSK.L",
+    "margin": 0.1451901708025496
+   },
+   {
+    "ticker": "NOVN.SW",
+    "margin": 0.2656956270530006
+   },
+   {
+    "ticker": "NOVO-B.CO",
+    "margin": 0.249384034735812
+   },
+   {
+    "ticker": "ORNBV.HE",
+    "margin": 0.13030680955665078
+   },
+   {
+    "ticker": "REC.MI",
+    "margin": 0.0803724238845594
+   },
+   {
+    "ticker": "SAN.PA",
+    "margin": 0.1679013352426625
+   }
+  ],
+  "Confectioners": [
+   {
+    "ticker": "BARN.SW",
+    "margin": -0.052016813291306335
+   },
+   {
+    "ticker": "LISP.SW",
+    "margin": 0.09708743919896883
+   }
+  ],
+  "Chemicals": [
+   {
+    "ticker": "BAS.DE",
+    "margin": 0.028070733656632235
+   },
+   {
+    "ticker": "SYENS.BR",
+    "margin": 0.056562607187724
+   }
+  ],
+  "Tobacco": [
+   {
+    "ticker": "BATS.L",
+    "margin": 0.32771591666339606
+   },
+   {
+    "ticker": "IMB.L",
+    "margin": 0.09397400631480349
+   }
+  ],
+  "Luxury Goods": [
+   {
+    "ticker": "BC.MI",
+    "margin": 0.10686069243705462
+   },
+   {
+    "ticker": "CFR.SW",
+    "margin": 0.16899948342236548
+   },
+   {
+    "ticker": "KER.PA",
+    "margin": 0.12242166674414573
+   },
+   {
+    "ticker": "MC.PA",
+    "margin": 0.15443930916567847
+   },
+   {
+    "ticker": "PNDORA.CO",
+    "margin": 0.18045681853683349
+   },
+   {
+    "ticker": "RMS.PA",
+    "margin": 0.2765219569222301
+   },
+   {
+    "ticker": "UHR.SW",
+    "margin": 0.0000583822674783724
+   }
+  ],
+  "Building Products & Equipment": [
+   {
+    "ticker": "BEAN.SW",
+    "margin": 0.10592330147728418
+   },
+   {
+    "ticker": "GEBN.SW",
+    "margin": 0.2047228725807026
+   },
+   {
+    "ticker": "KRX.IR",
+    "margin": 0.06892024595457706
+   },
+   {
+    "ticker": "NIBE-B.ST",
+    "margin": 0.02442909463474657
+   },
+   {
+    "ticker": "ROCK-B.CO",
+    "margin": 0.06687143018994501
+   },
+   {
+    "ticker": "SGO.PA",
+    "margin": 0.07695611020095966
+   }
+  ],
+  "Household & Personal Products": [
+   {
+    "ticker": "BEI.DE",
+    "margin": 0.04661837487856442
+   },
+   {
+    "ticker": "ESSITY-B.ST",
+    "margin": 0.07046558772890583
+   },
+   {
+    "ticker": "HEN3.DE",
+    "margin": 0.08941248246129704
+   },
+   {
+    "ticker": "OR.PA",
+    "margin": 0.14821353247704266
+   },
+   {
+    "ticker": "PUIG.MC",
+    "margin": 0.10190431075203474
+   },
+   {
+    "ticker": "RKT.L",
+    "margin": 0.13994923448050492
+   },
+   {
+    "ticker": "ULVR.L",
+    "margin": 0.13296509762409503
+   }
+  ],
+  "Insurance - Specialty": [
+   {
+    "ticker": "BEZ.L",
+    "margin": -0.1823719915932709
+   }
+  ],
+  "Diagnostics & Research": [
+   {
+    "ticker": "BIM.PA",
+    "margin": 0.06843823417175095
+   },
+   {
+    "ticker": "ERF.PA",
+    "margin": 0.08344486554756786
+   },
+   {
+    "ticker": "LONN.SW",
+    "margin": -0.060000510044437225
+   },
+   {
+    "ticker": "QIA.DE",
+    "margin": 0.22077532222934412
+   }
+  ],
+  "Residential Construction": [
+   {
+    "ticker": "BKG.L",
+    "margin": 0.1028582877211043
+   },
+   {
+    "ticker": "BTRW.L",
+    "margin": 0.04491111589214576
+   },
+   {
+    "ticker": "BWY.L",
+    "margin": 0.017672842990510227
+   },
+   {
+    "ticker": "PSN.L",
+    "margin": 0.012745284386612104
+   },
+   {
+    "ticker": "TW.L",
+    "margin": 0.05571450850543935
+   }
+  ],
+  "Utilities - Renewable": [
+   {
+    "ticker": "BKW.SW",
+    "margin": 0.07681281341466742
+   },
+   {
+    "ticker": "DRX.L",
+    "margin": 0.05688340458350027
+   },
+   {
+    "ticker": "FORTUM.HE",
+    "margin": -0.19428993840971776
+   },
+   {
+    "ticker": "ORSTED.CO",
+    "margin": -0.3089242390296267
+   }
+  ],
+  "REIT - Diversified": [
+   {
+    "ticker": "BLND.L",
+    "margin": 0.17888238809025775
+   },
+   {
+    "ticker": "COV.PA",
+    "margin": 0.26453216650517525
+   },
+   {
+    "ticker": "LAND.L",
+    "margin": 0.18737132364082787
+   },
+   {
+    "ticker": "UTG.L",
+    "margin": -0.26235506534288827
+   }
+  ],
+  "Discount Stores": [
+   {
+    "ticker": "BME.L",
+    "margin": 0.11261738703427687
+   }
+  ],
+  "Auto Manufacturers": [
+   {
+    "ticker": "BMW.DE",
+    "margin": 0.02281180143857936
+   },
+   {
+    "ticker": "MBG.DE",
+    "margin": 0.0581215393547231
+   },
+   {
+    "ticker": "P911.DE",
+    "margin": 0.10552103335121765
+   },
+   {
+    "ticker": "RACE.MI",
+    "margin": 0.14917292065300147
+   },
+   {
+    "ticker": "RNO.PA",
+    "margin": 0.026920145081968935
+   },
+   {
+    "ticker": "STLAM.MI",
+    "margin": -0.012168029547236602
+   },
+   {
+    "ticker": "VOW3.DE",
+    "margin": -0.014955048461074323
+   }
+  ],
+  "Food Distribution": [
+   {
+    "ticker": "BNZL.L",
+    "margin": 0.07265461983921709
+   },
+   {
+    "ticker": "JMT.LS",
+    "margin": 0.0339662292487955
+   }
+  ],
+  "Entertainment": [
+   {
+    "ticker": "BOL.PA",
+    "margin": 0.05668526404113985
+   },
+   {
+    "ticker": "EVD.DE",
+    "margin": 0.12304309456515625
+   },
+   {
+    "ticker": "UMG.AS",
+    "margin": 0.11819934387289648
+   }
+  ],
+  "Oil & Gas Integrated": [
+   {
+    "ticker": "BP.L",
+    "margin": 0.0817560541030443
+   },
+   {
+    "ticker": "ENI.MI",
+    "margin": 0.058922259392159185
+   },
+   {
+    "ticker": "EQNR.OL",
+    "margin": 0.11986370098067106
+   },
+   {
+    "ticker": "GALP.LS",
+    "margin": 0.055502448735055714
+   },
+   {
+    "ticker": "OMV.VI",
+    "margin": 0.06599181262845286
+   },
+   {
+    "ticker": "REP.MC",
+    "margin": 0.030478369187188964
+   },
+   {
+    "ticker": "SHELL.AS",
+    "margin": 0.10792504884204965
+   },
+   {
+    "ticker": "TTE.PA",
+    "margin": 0.09091258312069936
+   }
+  ],
+  "Consulting Services": [
+   {
+    "ticker": "BVI.PA",
+    "margin": 0.12703485907479584
+   },
+   {
+    "ticker": "DKSH.SW",
+    "margin": 0.026539887031224875
+   },
+   {
+    "ticker": "EXPN.L",
+    "margin": 0.1699498751387387
+   },
+   {
+    "ticker": "SGSN.SW",
+    "margin": 0.12818016702702198
+   }
+  ],
+  "Building Materials": [
+   {
+    "ticker": "BZU.MI",
+    "margin": 0.09295971894070526
+   },
+   {
+    "ticker": "HEI.DE",
+    "margin": 0.07796015421971104
+   },
+   {
+    "ticker": "HOLN.SW",
+    "margin": 0.1606702216373805
+   }
+  ],
+  "Real Estate - Development": [
+   {
+    "ticker": "CAST.ST",
+    "margin": 0.44806211622839326
+   }
+  ],
+  "Beverages - Non-Alcoholic": [
+   {
+    "ticker": "CCH.L",
+    "margin": 0.07282203711138946
+   }
+  ],
+  "Real Estate Services": [
+   {
+    "ticker": "CLNX.MC",
+    "margin": -0.016324057848069
+   },
+   {
+    "ticker": "LEG.DE",
+    "margin": 0.315387017311266
+   },
+   {
+    "ticker": "MOBN.SW",
+    "margin": 0.40535928383606223
+   },
+   {
+    "ticker": "PSPN.SW",
+    "margin": 0.38866410781771843
+   },
+   {
+    "ticker": "SAGA-B.ST",
+    "margin": 0.7320840499893732
+   },
+   {
+    "ticker": "VNA.DE",
+    "margin": 0.4018404370397172
+   }
+  ],
+  "Utilities - Independent Power Producers": [
+   {
+    "ticker": "CNA.L",
+    "margin": 0.043779127005481894
+   }
+  ],
+  "Scientific & Technical Instruments": [
+   {
+    "ticker": "COTN.SW",
+    "margin": 0.03913622552460898
+   },
+   {
+    "ticker": "HEXA-B.ST",
+    "margin": 0.15468753720990114
+   },
+   {
+    "ticker": "IFCN.SW",
+    "margin": 0.09787439731978761
+   }
+  ],
+  "Restaurants": [
+   {
+    "ticker": "CPG.L",
+    "margin": 0.04991984478616571
+   }
+  ],
+  "Beverages - Wineries & Distilleries": [
+   {
+    "ticker": "CPR.MI",
+    "margin": 0.037674790481149606
+   },
+   {
+    "ticker": "DGE.L",
+    "margin": 0.1328152485586918
+   },
+   {
+    "ticker": "RI.PA",
+    "margin": 0.10513830866001475
+   }
+  ],
+  "Financial Data & Stock Exchanges": [
+   {
+    "ticker": "DB1.DE",
+    "margin": 0.35209884596916297
+   },
+   {
+    "ticker": "LSEG.L",
+    "margin": 0.22591558259584246
+   }
+  ],
+  "Oil & Gas Refining & Marketing": [
+   {
+    "ticker": "DCC.L",
+    "margin": 0.024608919128101363
+   },
+   {
+    "ticker": "NESTE.HE",
+    "margin": 0.009972031082641764
+   },
+   {
+    "ticker": "RUI.PA",
+    "margin": 0.04565223267606048
+   }
+  ],
+  "Medical Devices": [
+   {
+    "ticker": "DEMANT.CO",
+    "margin": 0.13287942604108408
+   },
+   {
+    "ticker": "GETI-B.ST",
+    "margin": 0.074657471892679
+   },
+   {
+    "ticker": "PHIA.AS",
+    "margin": 0.026253779606526098
+   },
+   {
+    "ticker": "SECT-B.ST",
+    "margin": 0.1700256146455278
+   },
+   {
+    "ticker": "SHL.DE",
+    "margin": 0.07680442566534144
+   },
+   {
+    "ticker": "SN.L",
+    "margin": 0.07405908764391145
+   },
+   {
+    "ticker": "SOON.SW",
+    "margin": 0.1745397828143044
+   }
+  ],
+  "Internet Retail": [
+   {
+    "ticker": "DHER.DE",
+    "margin": -0.031574055294813545
+   },
+   {
+    "ticker": "PRX.AS",
+    "margin": 0.1349581728906499
+   },
+   {
+    "ticker": "ZAL.DE",
+    "margin": 0.04841084327298197
+   }
+  ],
+  "Integrated Freight & Logistics": [
+   {
+    "ticker": "DHL.DE",
+    "margin": 0.07290540538244317
+   },
+   {
+    "ticker": "DSV.CO",
+    "margin": 0.08281884125250488
+   },
+   {
+    "ticker": "KNIN.SW",
+    "margin": 0.0685829261248104
+   },
+   {
+    "ticker": "PST.MI",
+    "margin": 0.03615119329718178
+   }
+  ],
+  "Furnishings, Fixtures & Appliances": [
+   {
+    "ticker": "DLG.MI",
+    "margin": 0.0990267079399502
+   },
+   {
+    "ticker": "HWDN.L",
+    "margin": 0.11881658243899655
+   }
+  ],
+  "REIT - Office": [
+   {
+    "ticker": "DLN.L",
+    "margin": -0.08812643104555515
+   },
+   {
+    "ticker": "GFC.PA",
+    "margin": -0.019087563090255347
+   },
+   {
+    "ticker": "MRL.MC",
+    "margin": 0.5852222297899172
+   }
+  ],
+  "Software - Application": [
+   {
+    "ticker": "DSY.PA",
+    "margin": 0.2390194018523455
+   },
+   {
+    "ticker": "NEM.DE",
+    "margin": 0.2865132455213
+   },
+   {
+    "ticker": "SAP.DE",
+    "margin": 0.17358609432812905
+   },
+   {
+    "ticker": "SGE.L",
+    "margin": 0.1670270083911259
+   },
+   {
+    "ticker": "TEMN.SW",
+    "margin": 0.24392745968022092
+   }
+  ],
+  "Farm & Heavy Construction Machinery": [
+   {
+    "ticker": "DTG.DE",
+    "margin": 0.0018732265909757132
+   },
+   {
+    "ticker": "EPI-A.ST",
+    "margin": 0.11428377258501736
+   },
+   {
+    "ticker": "HIAB.HE",
+    "margin": 0.1485863582391786
+   },
+   {
+    "ticker": "IVG.MI",
+    "margin": 0.03705122413018877
+   },
+   {
+    "ticker": "KCR.HE",
+    "margin": 0.0897221356628479
+   },
+   {
+    "ticker": "KGX.DE",
+    "margin": 0.06773491655411978
+   },
+   {
+    "ticker": "METSO.HE",
+    "margin": 0.04385324833910343
+   },
+   {
+    "ticker": "VOLV-B.ST",
+    "margin": 0.028734038609345723
+   }
+  ],
+  "Credit Services": [
+   {
+    "ticker": "EDEN.PA",
+    "margin": 0.3534137292155166
+   }
+  ],
+  "Gold": [
+   {
+    "ticker": "EDV.L",
+    "margin": 0.14855209215103352
+   },
+   {
+    "ticker": "PAF.L",
+    "margin": 0.011563649594741779
+   }
+  ],
+  "Utilities - Regulated Electric": [
+   {
+    "ticker": "ELE.MC",
+    "margin": 0.0673426479281215
+   },
+   {
+    "ticker": "ELI.BR",
+    "margin": -0.6721125485672441
+   },
+   {
+    "ticker": "NG.L",
+    "margin": -0.07919896108528732
+   },
+   {
+    "ticker": "RED.MC",
+    "margin": -0.19372298365082471
+   },
+   {
+    "ticker": "TRN.MI",
+    "margin": -0.17958891312725672
+   }
+  ],
+  "Specialty Business Services": [
+   {
+    "ticker": "ELIS.PA",
+    "margin": 0.11791487988694992
+   },
+   {
+    "ticker": "ISS.CO",
+    "margin": 0.036077561851606835
+   },
+   {
+    "ticker": "MTO.L",
+    "margin": 0.03211755704197397
+   },
+   {
+    "ticker": "REL.L",
+    "margin": 0.22800021162061085
+   },
+   {
+    "ticker": "RTO.L",
+    "margin": 0.10105109789922793
+   },
+   {
+    "ticker": "SRP.L",
+    "margin": 0.0771713081677109
+   },
+   {
+    "ticker": "SW.PA",
+    "margin": 0.040776365899932214
+   },
+   {
+    "ticker": "TEP.PA",
+    "margin": 0.13684173826114307
+   },
+   {
+    "ticker": "WKL.AS",
+    "margin": 0.2259280842514807
+   }
+  ],
+  "Utilities - Regulated Gas": [
+   {
+    "ticker": "ENG.MC",
+    "margin": 0.40254944572999596
+   },
+   {
+    "ticker": "IG.MI",
+    "margin": 0.004668138590295148
+   },
+   {
+    "ticker": "NTGY.MC",
+    "margin": 0.09952272759778392
+   },
+   {
+    "ticker": "SRG.MI",
+    "margin": 0.013654754393833547
+   }
+  ],
+  "Gambling": [
+   {
+    "ticker": "ENT.L",
+    "margin": 0.05875045576956982
+   },
+   {
+    "ticker": "EVO.ST",
+    "margin": 0.5598943778976877
+   },
+   {
+    "ticker": "FDJU.PA",
+    "margin": 0.15218902321331024
+   },
+   {
+    "ticker": "LTMC.MI",
+    "margin": 0.1890034138738695
+   }
+  ],
+  "Communication Equipment": [
+   {
+    "ticker": "ERIC-B.ST",
+    "margin": 0.09814325234938913
+   },
+   {
+    "ticker": "HUBN.SW",
+    "margin": 0.06385238240006165
+   },
+   {
+    "ticker": "NOKIA.HE",
+    "margin": 0.06175262469094873
+   }
+  ],
+  "Airlines": [
+   {
+    "ticker": "EZJ.L",
+    "margin": 0.06487649286442156
+   },
+   {
+    "ticker": "IAG.L",
+    "margin": 0.07319033799459451
+   },
+   {
+    "ticker": "LHA.DE",
+    "margin": 0.025032375045218214
+   },
+   {
+    "ticker": "RYA.IR",
+    "margin": 0.12248145957633338
+   }
+  ],
+  "Medical Care Facilities": [
+   {
+    "ticker": "FME.DE",
+    "margin": 0.08788553871838309
+   }
+  ],
+  "Auto Parts": [
+   {
+    "ticker": "FR.PA",
+    "margin": 0.022156616472916862
+   },
+   {
+    "ticker": "KBX.DE",
+    "margin": 0.06727701563672261
+   },
+   {
+    "ticker": "PIRC.MI",
+    "margin": 0.13160795096647546
+   }
+  ],
+  "Capital Markets": [
+   {
+    "ticker": "FTK.DE",
+    "margin": 0.5983947040476383
+   },
+   {
+    "ticker": "IGG.L",
+    "margin": 0.45655901900821017
+   },
+   {
+    "ticker": "INVP.L",
+    "margin": -0.04530510329537228
+   },
+   {
+    "ticker": "PLUS.L",
+    "margin": 0.4766929736858289
+   },
+   {
+    "ticker": "SAVE.ST",
+    "margin": 0.6242134791982265
+   },
+   {
+    "ticker": "SQN.SW",
+    "margin": 1.6949231358469397
+   },
+   {
+    "ticker": "TCAP.L",
+    "margin": 0.10289021693597379
+   }
+  ],
+  "Drug Manufacturers - Specialty & Generic": [
+   {
+    "ticker": "GALD.SW",
+    "margin": 0.05875024203345728
+   },
+   {
+    "ticker": "HIK.L",
+    "margin": 0.10607370288425101
+   },
+   {
+    "ticker": "HLN.L",
+    "margin": 0.1734404856260967
+   },
+   {
+    "ticker": "IPN.PA",
+    "margin": 0.16891510858925604
+   },
+   {
+    "ticker": "MRK.DE",
+    "margin": 0.10032618068218303
+   },
+   {
+    "ticker": "SDZ.SW",
+    "margin": 0.034389787121825624
+   },
+   {
+    "ticker": "SFZN.SW",
+    "margin": 0.01662373423501828
+   },
+   {
+    "ticker": "SOBI.ST",
+    "margin": 0.12590159160987321
+   }
+  ],
+  "Medical Distribution": [
+   {
+    "ticker": "GALE.SW",
+    "margin": 0.04861931191722985
+   }
+  ],
+  "Leisure": [
+   {
+    "ticker": "GAW.L",
+    "margin": 0.3314294789910146
+   }
+  ],
+  "Railroads": [
+   {
+    "ticker": "GET.PA",
+    "margin": 0.47587601863131884
+   }
+  ],
+  "Oil & Gas Equipment & Services": [
+   {
+    "ticker": "GTT.PA",
+    "margin": 0.43395029549949526
+   },
+   {
+    "ticker": "SBMO.AS",
+    "margin": 0.04509372179899938
+   },
+   {
+    "ticker": "SUBC.OL",
+    "margin": 0.07895450224474701
+   },
+   {
+    "ticker": "TE.PA",
+    "margin": 0.06737213858035121
+   },
+   {
+    "ticker": "TEN.MI",
+    "margin": 0.16436458722838623
+   },
+   {
+    "ticker": "TGS.OL",
+    "margin": 0.18642594543707725
+   }
+  ],
+  "Apparel Manufacturing": [
+   {
+    "ticker": "HM-B.ST",
+    "margin": 0.09145127220634092
+   },
+   {
+    "ticker": "MONC.MI",
+    "margin": 0.2321577423197363
+   }
+  ],
+  "Insurance - Reinsurance": [
+   {
+    "ticker": "HNR1.DE",
+    "margin": 0.2400832519790823
+   },
+   {
+    "ticker": "MUV2.DE",
+    "margin": 0.05441881842596273
+   },
+   {
+    "ticker": "SCR.PA",
+    "margin": 0.06244727732447805
+   },
+   {
+    "ticker": "SREN.SW",
+    "margin": 0.07327080378349725
+   }
+  ],
+  "Other Precious Metals & Mining": [
+   {
+    "ticker": "HOC.L",
+    "margin": -0.05645627154463597
+   }
+  ],
+  "Paper & Paper Products": [
+   {
+    "ticker": "HOLM-B.ST",
+    "margin": 0.12029557804476983
+   },
+   {
+    "ticker": "MNDI.L",
+    "margin": 0.043749864936632375
+   },
+   {
+    "ticker": "SCA-B.ST",
+    "margin": 0.045830637348634407
+   },
+   {
+    "ticker": "UPM.HE",
+    "margin": 0.051323437978653255
+   }
+  ],
+  "Packaging & Containers": [
+   {
+    "ticker": "HUH1V.HE",
+    "margin": 0.046180987421848244
+   },
+   {
+    "ticker": "SIGN.SW",
+    "margin": 0.08866929894346355
+   },
+   {
+    "ticker": "STERV.HE",
+    "margin": 0.004554047096455738
+   }
+  ],
+  "Semiconductors": [
+   {
+    "ticker": "IFX.DE",
+    "margin": 0.06433982497915647
+   },
+   {
+    "ticker": "NOD.OL",
+    "margin": -0.0031394847301251354
+   },
+   {
+    "ticker": "STMMI.MI",
+    "margin": 0.04016072584427047
+   },
+   {
+    "ticker": "TPRO.MI",
+    "margin": 0.11042105097992841
+   }
+  ],
+  "Publishing": [
+   {
+    "ticker": "INF.L",
+    "margin": 0.17705229793885202
+   },
+   {
+    "ticker": "PSON.L",
+    "margin": 0.11296458585025515
+   }
+  ],
+  "Broadcasting": [
+   {
+    "ticker": "ITV.L",
+    "margin": 0.06777952461093803
+   }
+  ],
+  "Apparel Retail": [
+   {
+    "ticker": "ITX.MC",
+    "margin": 0.17132848433039588
+   },
+   {
+    "ticker": "NXT.L",
+    "margin": 0.14826948669937418
+   }
+  ],
+  "Home Improvement Retail": [
+   {
+    "ticker": "KGF.L",
+    "margin": 0.06443785230204321
+   }
+  ],
+  "REIT - Retail": [
+   {
+    "ticker": "LI.PA",
+    "margin": 0.5184583464672812
+   },
+   {
+    "ticker": "SHC.L",
+    "margin": 0.17802265127398634
+   },
+   {
+    "ticker": "URW.PA",
+    "margin": 0.36080519401860217
+   }
+  ],
+  "REIT - Industrial": [
+   {
+    "ticker": "LMP.L",
+    "margin": 0.7228227917579138
+   },
+   {
+    "ticker": "SGRO.L",
+    "margin": 0.4501228328650977
+   },
+   {
+    "ticker": "WDP.BR",
+    "margin": 0.7997232201044796
+   }
+  ],
+  "Computer Hardware": [
+   {
+    "ticker": "LOGN.SW",
+    "margin": 0.18122678804989126
+   }
+  ],
+  "Security & Protection Services": [
+   {
+    "ticker": "LOOMIS.ST",
+    "margin": 0.10894123438166493
+   },
+   {
+    "ticker": "SECU-B.ST",
+    "margin": 0.03437748296778245
+   },
+   {
+    "ticker": "VSURE.ST",
+    "margin": 0.10513687008489411
+   }
+  ],
+  "Marine Shipping": [
+   {
+    "ticker": "MAERSK-B.CO",
+    "margin": 0.1777630519816952
+   }
+  ],
+  "Financial Conglomerates": [
+   {
+    "ticker": "MANTA.HE",
+    "margin": 0.12973302568248446
+   },
+   {
+    "ticker": "STB.OL",
+    "margin": 0.015557081701159837
+   }
+  ],
+  "Department Stores": [
+   {
+    "ticker": "MKS.L",
+    "margin": 0.05223769939227965
+   }
+  ],
+  "Farm Products": [
+   {
+    "ticker": "MOWI.OL",
+    "margin": 0.08906699199529133
+   },
+   {
+    "ticker": "SALM.OL",
+    "margin": 0.11886876410241777
+   }
+  ],
+  "Metal Fabrication": [
+   {
+    "ticker": "NDA.DE",
+    "margin": -0.007104912750511019
+   }
+  ],
+  "Aluminum": [
+   {
+    "ticker": "NHY.OL",
+    "margin": 0.05118440346430954
+   }
+  ],
+  "Utilities - Regulated Water": [
+   {
+    "ticker": "PNN.L",
+    "margin": -0.3711230095266777
+   },
+   {
+    "ticker": "SVT.L",
+    "margin": -0.07893379131730563
+   },
+   {
+    "ticker": "UU.L",
+    "margin": -0.013421566090986423
+   }
+  ],
+  "Insurance - Life": [
+   {
+    "ticker": "PRU.L",
+    "margin": 0.11439723818559011
+   },
+   {
+    "ticker": "SDLF.L",
+    "margin": 0.02937916073482598
+   }
+  ],
+  "Electronics & Computer Distribution": [
+   {
+    "ticker": "RXL.PA",
+    "margin": 0.03773467825895756
+   },
+   {
+    "ticker": "SCT.L",
+    "margin": 0.09616946566276996
+   }
+  ],
+  "Tools & Accessories": [
+   {
+    "ticker": "SFSN.SW",
+    "margin": 0.0626771440781517
+   },
+   {
+    "ticker": "SKF-B.ST",
+    "margin": 0.047315844199806986
+   }
+  ],
+  "Waste Management": [
+   {
+    "ticker": "TOM.OL",
+    "margin": 0.12624157595845023
+   },
+   {
+    "ticker": "UMI.BR",
+    "margin": 0.013366964011500622
+   },
+   {
+    "ticker": "VIE.PA",
+    "margin": 0.1089697673324378
+   }
+  ],
+  "Travel Services": [
+   {
+    "ticker": "TUI1.DE",
+    "margin": 0.06192364382444659
+   }
+  ],
+  "Oil & Gas Midstream": [
+   {
+    "ticker": "VPK.AS",
+    "margin": 0.37213362289247703
+   }
+  ],
+  "Advertising Agencies": [
+   {
+    "ticker": "WPP.L",
+    "margin": 0.05526168162774339
+   }
+  ],
+  "Agricultural Inputs": [
+   {
+    "ticker": "YAR.OL",
+    "margin": 0.05361078309815798
+   }
+  ]
+ }
+}

@@ -110,5 +110,69 @@
     "exitDate": "2026-10-16",
     "exitPrice": 73.55,
     "dollarPnl": 45.78
+  },
+  {
+    "ticker": "AIXA.DE",
+    "entryDate": "2026-10-16",
+    "entryPrice": 32.89,
+    "exitDate": "2026-10-23",
+    "exitPrice": 28.45,
+    "dollarPnl": -68.99
+  },
+  {
+    "ticker": "UNI.MC",
+    "entryDate": "2026-10-07",
+    "entryPrice": 3.32,
+    "exitDate": "2026-10-23",
+    "exitPrice": 3.098,
+    "dollarPnl": -25.4
+  },
+  {
+    "ticker": "INCH.L",
+    "entryDate": "2026-10-16",
+    "entryPrice": 8.2551,
+    "exitDate": "2026-10-23",
+    "exitPrice": 7.6284,
+    "dollarPnl": -34.33
+  },
+  {
+    "ticker": "VAR.OL",
+    "entryDate": "2026-10-16",
+    "entryPrice": 5.3228,
+    "exitDate": "2026-10-23",
+    "exitPrice": 5.6264,
+    "dollarPnl": 37.01
+  },
+  {
+    "ticker": "RTO.L",
+    "entryDate": "2026-10-16",
+    "entryPrice": 3.7712,
+    "exitDate": "2026-10-23",
+    "exitPrice": 4.047,
+    "dollarPnl": 42.57
+  },
+  {
+    "ticker": "TEMN.SW",
+    "entryDate": "2026-10-07",
+    "entryPrice": 72.7486,
+    "exitDate": "2026-10-23",
+    "exitPrice": 81.1636,
+    "dollarPnl": 26.12
+  },
+  {
+    "ticker": "CCH.L",
+    "entryDate": "2026-10-16",
+    "entryPrice": 52.8376,
+    "exitDate": "2026-10-23",
+    "exitPrice": 54.4373,
+    "dollarPnl": 20.46
+  },
+  {
+    "ticker": "SAN.PA",
+    "entryDate": "2026-10-16",
+    "entryPrice": 71.94,
+    "exitDate": "2026-10-23",
+    "exitPrice": 74.12,
+    "dollarPnl": 15.49
   }
 ]
