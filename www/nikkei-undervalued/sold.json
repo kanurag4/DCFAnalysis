@@ -422,5 +422,21 @@
     "exitDate": "2026-10-16",
     "exitPrice": 1043.5,
     "dollarPnl": -1492.14
+  },
+  {
+    "ticker": "6701.T",
+    "entryDate": "2026-09-04",
+    "entryPrice": 4828,
+    "exitDate": "2026-10-23",
+    "exitPrice": 5390,
+    "dollarPnl": 0
+  },
+  {
+    "ticker": "285A.T",
+    "entryDate": "2026-10-16",
+    "entryPrice": 13375,
+    "exitDate": "2026-10-23",
+    "exitPrice": 12755,
+    "dollarPnl": -2561.45
   }
 ]

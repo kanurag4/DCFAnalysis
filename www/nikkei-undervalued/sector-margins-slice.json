@@ -1,6 +1,16 @@
 {
- "asAt": "2026-10-19",
+ "asAt": "2026-10-23",
  "industries": {
+  "Airlines": [
+   {
+    "ticker": "9202.T",
+    "margin": 0.1014315779835398
+   },
+   {
+    "ticker": "9201.T",
+    "margin": 0.20908910591938115
+   }
+  ],
   "Auto Manufacturers": [
    {
     "ticker": "7267.T",
@@ -39,6 +49,132 @@
     "margin": 0.003981643447710948
    }
   ],
+  "Banks - Regional": [
+   {
+    "ticker": "8304.T",
+    "margin": 0.24613148774558213
+   },
+   {
+    "ticker": "8331.T",
+    "margin": -0.2444856210274693
+   },
+   {
+    "ticker": "8354.T",
+    "margin": 0.6205210109801567
+   },
+   {
+    "ticker": "8411.T",
+    "margin": 0.3589805248183936
+   },
+   {
+    "ticker": "5831.T",
+    "margin": -0.7713731862467611
+   },
+   {
+    "ticker": "8309.T",
+    "margin": 2.253977418816716
+   },
+   {
+    "ticker": "7186.T",
+    "margin": -0.8665759492618051
+   },
+   {
+    "ticker": "6178.T",
+    "margin": -0.42352426417725897
+   }
+  ],
+  "Banks - Diversified": [
+   {
+    "ticker": "8306.T",
+    "margin": -0.7059658922544706
+   },
+   {
+    "ticker": "8316.T",
+    "margin": -0.6455449243617701
+   }
+  ],
+  "Conglomerates": [
+   {
+    "ticker": "3407.T",
+    "margin": 0.017975471193178293
+   },
+   {
+    "ticker": "4901.T",
+    "margin": -0.03103340329977347
+   },
+   {
+    "ticker": "6501.T",
+    "margin": 0.07183462237614927
+   },
+   {
+    "ticker": "6971.T",
+    "margin": 0.027839774576359607
+   },
+   {
+    "ticker": "5201.T",
+    "margin": 0.012064023536218127
+   },
+   {
+    "ticker": "5803.T",
+    "margin": 0.07825564929531478
+   },
+   {
+    "ticker": "5706.T",
+    "margin": 0.05364204872800751
+   },
+   {
+    "ticker": "7912.T",
+    "margin": 0.00009439061970586537
+   },
+   {
+    "ticker": "7911.T",
+    "margin": -0.008380325255965649
+   },
+   {
+    "ticker": "9008.T",
+    "margin": -0.04400810747286868
+   },
+   {
+    "ticker": "2432.T",
+    "margin": 0.013910332936533737
+   },
+   {
+    "ticker": "7012.T",
+    "margin": -0.015117833751253607
+   },
+   {
+    "ticker": "3401.T",
+    "margin": 0.0036742245351933673
+   },
+   {
+    "ticker": "8001.T",
+    "margin": 0.055018357001243585
+   },
+   {
+    "ticker": "8002.T",
+    "margin": 0.048667515027619596
+   },
+   {
+    "ticker": "8058.T",
+    "margin": 0.05979637736930334
+   },
+   {
+    "ticker": "8031.T",
+    "margin": 0.0343415523798637
+   },
+   {
+    "ticker": "2768.T",
+    "margin": 0.012867704278870202
+   },
+   {
+    "ticker": "8053.T",
+    "margin": 0.06618236569811985
+   },
+   {
+    "ticker": "8015.T",
+    "margin": 0.028694856378103546
+   }
+  ],
   "Chemicals": [
    {
     "ticker": "4061.T",
@@ -47,6 +183,10 @@
    {
     "ticker": "3405.T",
     "margin": 0.03427994267155094
+   },
+   {
+    "ticker": "4021.T",
+    "margin": 0.11008099120178264
    },
    {
     "ticker": "4004.T",
@@ -65,10 +205,24 @@
     "margin": 0.07832287461150052
    }
   ],
+  "Household & Personal Products": [
+   {
+    "ticker": "4452.T",
+    "margin": 0.06857981729480084
+   },
+   {
+    "ticker": "4911.T",
+    "margin": 0.020299255033078258
+   }
+  ],
   "Specialty Chemicals": [
    {
     "ticker": "4188.T",
     "margin": 0.039028560866396875
+   },
+   {
+    "ticker": "4183.T",
+    "margin": 0.006346179478701513
    },
    {
     "ticker": "6988.T",
@@ -85,6 +239,140 @@
    {
     "ticker": "5301.T",
     "margin": 0.022334847710336184
+   }
+  ],
+  "Telecom Services": [
+   {
+    "ticker": "9433.T",
+    "margin": 0.1316717836106948
+   },
+   {
+    "ticker": "9432.T",
+    "margin": 0.004068378422416504
+   },
+   {
+    "ticker": "9434.T",
+    "margin": 0.10001967827093876
+   },
+   {
+    "ticker": "9984.T",
+    "margin": -0.10145729152300872
+   }
+  ],
+  "Engineering & Construction": [
+   {
+    "ticker": "1721.T",
+    "margin": 0.04868336695525258
+   },
+   {
+    "ticker": "1963.T",
+    "margin": 0.0685391592791727
+   },
+   {
+    "ticker": "1812.T",
+    "margin": -0.00222080659927369
+   },
+   {
+    "ticker": "1802.T",
+    "margin": 0.029214035857844184
+   },
+   {
+    "ticker": "1803.T",
+    "margin": 0.0012798440574373106
+   },
+   {
+    "ticker": "1801.T",
+    "margin": -0.0064213856475363665
+   }
+  ],
+  "Real Estate - Development": [
+   {
+    "ticker": "1925.T",
+    "margin": -0.027502366436435423
+   }
+  ],
+  "Residential Construction": [
+   {
+    "ticker": "1808.T",
+    "margin": 0.02270251577185387
+   },
+   {
+    "ticker": "1928.T",
+    "margin": 0.003402139394388818
+   }
+  ],
+  "Semiconductor Equipment & Materials": [
+   {
+    "ticker": "6857.T",
+    "margin": 0.17877035773237876
+   },
+   {
+    "ticker": "6920.T",
+    "margin": 0.1182870108264873
+   },
+   {
+    "ticker": "7735.T",
+    "margin": 0.10028156308120899
+   },
+   {
+    "ticker": "8035.T",
+    "margin": 0.15725565366233415
+   },
+   {
+    "ticker": "3436.T",
+    "margin": -0.18229942444059485
+   },
+   {
+    "ticker": "6146.T",
+    "margin": 0.215706131694437
+   },
+   {
+    "ticker": "6525.T",
+    "margin": 0.05515480662499811
+   },
+   {
+    "ticker": "5016.T",
+    "margin": 0.05356024917872201
+   }
+  ],
+  "Electronic Components": [
+   {
+    "ticker": "6770.T",
+    "margin": 0.011352139091799641
+   },
+   {
+    "ticker": "6479.T",
+    "margin": -0.005472323277978951
+   },
+   {
+    "ticker": "6981.T",
+    "margin": 0.11126699286849008
+   },
+   {
+    "ticker": "6645.T",
+    "margin": 0.0071732825589404855
+   },
+   {
+    "ticker": "6976.T",
+    "margin": 0.1362131370451514
+   },
+   {
+    "ticker": "6762.T",
+    "margin": 0.07153509912920188
+   },
+   {
+    "ticker": "5214.T",
+    "margin": 0.10847308530561356
+   }
+  ],
+  "Computer Hardware": [
+   {
+    "ticker": "7751.T",
+    "margin": 0.04985670370566491
+   },
+   {
+    "ticker": "6724.T",
+    "margin": 0.04270234368117269
    }
   ],
   "Auto Parts": [
@@ -113,6 +401,98 @@
     "margin": 0.029620675691683352
    }
   ],
+  "Specialty Industrial Machinery": [
+   {
+    "ticker": "6954.T",
+    "margin": 0.18665333621681712
+   },
+   {
+    "ticker": "6594.T",
+    "margin": 0.029705181946547393
+   },
+   {
+    "ticker": "6841.T",
+    "margin": 0.08523986725189486
+   },
+   {
+    "ticker": "5333.T",
+    "margin": 0.09996205145127657
+   },
+   {
+    "ticker": "6113.T",
+    "margin": 0.06930363573841745
+   },
+   {
+    "ticker": "6361.T",
+    "margin": 0.017386515401946835
+   },
+   {
+    "ticker": "7013.T",
+    "margin": 0.021189253035556025
+   },
+   {
+    "ticker": "5631.T",
+    "margin": -0.05448068865368628
+   },
+   {
+    "ticker": "7011.T",
+    "margin": 0.027589628698440588
+   },
+   {
+    "ticker": "6103.T",
+    "margin": -0.002788585494847626
+   },
+   {
+    "ticker": "6302.T",
+    "margin": 0.004741386256842214
+   },
+   {
+    "ticker": "6273.T",
+    "margin": 0.0445834177291486
+   }
+  ],
+  "Electrical Equipment & Parts": [
+   {
+    "ticker": "6504.T",
+    "margin": 0.037052033272735464
+   },
+   {
+    "ticker": "6503.T",
+    "margin": 0.033927667334251455
+   },
+   {
+    "ticker": "6526.T",
+    "margin": 0.03274848329656624
+   },
+   {
+    "ticker": "6506.T",
+    "margin": 0.011053639186383279
+   },
+   {
+    "ticker": "5801.T",
+    "margin": -0.003404679777365193
+   }
+  ],
+  "Information Technology Services": [
+   {
+    "ticker": "6702.T",
+    "margin": 0.03809151654767921
+   },
+   {
+    "ticker": "6701.T",
+    "margin": 0.0563005935314666
+   },
+   {
+    "ticker": "4307.T",
+    "margin": 0.11201503190154047
+   }
+  ],
+  "Scientific & Technical Instruments": [
+   {
+    "ticker": "6861.T",
+    "margin": 0.34768028805645673
+   }
+  ],
   "Semiconductors": [
    {
     "ticker": "285A.T",
@@ -127,7 +507,185 @@
     "margin": -0.08571045184897054
    }
   ],
+  "Consumer Electronics": [
+   {
+    "ticker": "6752.T",
+    "margin": 0.011968920488375336
+   },
+   {
+    "ticker": "6753.T",
+    "margin": -0.005556159892327632
+   },
+   {
+    "ticker": "6758.T",
+    "margin": 0.07536440295703944
+   }
+  ],
+  "Business Equipment & Supplies": [
+   {
+    "ticker": "7752.T",
+    "margin": 0.0046627011625439575
+   }
+  ],
+  "Utilities - Diversified": [
+   {
+    "ticker": "9502.T",
+    "margin": 0.08648368715196274
+   }
+  ],
+  "Utilities - Regulated Electric": [
+   {
+    "ticker": "9503.T",
+    "margin": 0.15259676255175772
+   }
+  ],
+  "Utilities - Renewable": [
+   {
+    "ticker": "9501.T",
+    "margin": 0.0573837876441379
+   }
+  ],
+  "Packaged Foods": [
+   {
+    "ticker": "1332.T",
+    "margin": 0.007216917549831855
+   },
+   {
+    "ticker": "2802.T",
+    "margin": 0.0581867082889296
+   },
+   {
+    "ticker": "2801.T",
+    "margin": 0.054114271936217914
+   },
+   {
+    "ticker": "2269.T",
+    "margin": 0.007973346105915552
+   },
+   {
+    "ticker": "2282.T",
+    "margin": 0.009010709683742435
+   },
+   {
+    "ticker": "2871.T",
+    "margin": 0.031424811087878236
+   },
+   {
+    "ticker": "2002.T",
+    "margin": 0.026441849639609535
+   }
+  ],
+  "Beverages - Brewers": [
+   {
+    "ticker": "2502.T",
+    "margin": 0.056442251843807544
+   },
+   {
+    "ticker": "2503.T",
+    "margin": 0.029049480210472493
+   },
+   {
+    "ticker": "2501.T",
+    "margin": 0.03561249764434799
+   }
+  ],
+  "Tobacco": [
+   {
+    "ticker": "2914.T",
+    "margin": 0.14031424982610627
+   }
+  ],
+  "Utilities - Regulated Gas": [
+   {
+    "ticker": "9532.T",
+    "margin": 0.01582530685249913
+   },
+   {
+    "ticker": "9531.T",
+    "margin": 0.05173588873641927
+   }
+  ],
+  "Building Materials": [
+   {
+    "ticker": "5233.T",
+    "margin": 0.10421827505913425
+   }
+  ],
+  "Building Products & Equipment": [
+   {
+    "ticker": "5332.T",
+    "margin": 0.021430015018870093
+   },
+   {
+    "ticker": "6367.T",
+    "margin": 0.03483292864715829
+   }
+  ],
+  "Insurance - Life": [
+   {
+    "ticker": "8750.T",
+    "margin": 0.04220313432687363
+   },
+   {
+    "ticker": "8795.T",
+    "margin": -0.03997614050418647
+   }
+  ],
+  "Insurance - Property & Casualty": [
+   {
+    "ticker": "8725.T",
+    "margin": 0.04607355248037444
+   },
+   {
+    "ticker": "8630.T",
+    "margin": 0.09862877631846129
+   },
+   {
+    "ticker": "8766.T",
+    "margin": 0.17334892775327923
+   }
+  ],
+  "Integrated Freight & Logistics": [
+   {
+    "ticker": "9147.T",
+    "margin": 0.06765840400734939
+   }
+  ],
+  "Trucking": [
+   {
+    "ticker": "9064.T",
+    "margin": 0.01578113322230837
+   }
+  ],
+  "Farm & Heavy Construction Machinery": [
+   {
+    "ticker": "6305.T",
+    "margin": 0.024758120773548015
+   },
+   {
+    "ticker": "6301.T",
+    "margin": 0.049894384950911905
+   },
+   {
+    "ticker": "6326.T",
+    "margin": -0.014862241060112337
+   }
+  ],
+  "Tools & Accessories": [
+   {
+    "ticker": "6472.T",
+    "margin": 0.028132535142739185
+   }
+  ],
   "Marine Shipping": [
+   {
+    "ticker": "9107.T",
+    "margin": 0.21044250810534298
+   },
+   {
+    "ticker": "9104.T",
+    "margin": 0.2460727852771845
+   },
    {
     "ticker": "9101.T",
     "margin": 0.1134903778516719
@@ -153,6 +711,46 @@
     "margin": 0.019077799539805446
    }
   ],
+  "Credit Services": [
+   {
+    "ticker": "8253.T",
+    "margin": -0.4411401507582977
+   },
+   {
+    "ticker": "8252.T",
+    "margin": 0.013667988490902304
+   }
+  ],
+  "Financial Data & Stock Exchanges": [
+   {
+    "ticker": "8697.T",
+    "margin": 0.4449848100265136
+   }
+  ],
+  "Financial Conglomerates": [
+   {
+    "ticker": "8591.T",
+    "margin": -0.023253479283451506
+   }
+  ],
+  "Leisure": [
+   {
+    "ticker": "7832.T",
+    "margin": 0.07968816230364778
+   },
+   {
+    "ticker": "7951.T",
+    "margin": 0.026099843350783837
+   },
+   {
+    "ticker": "7731.T",
+    "margin": -0.0388528818071761
+   },
+   {
+    "ticker": "4661.T",
+    "margin": 0.16593507300786242
+   }
+  ],
   "Oil & Gas Refining & Marketing": [
    {
     "ticker": "5020.T",
@@ -161,6 +759,262 @@
    {
     "ticker": "5019.T",
     "margin": 0.022684450528322866
+   }
+  ],
+  "Drug Manufacturers - General": [
+   {
+    "ticker": "4503.T",
+    "margin": 0.12691667592110384
+   },
+   {
+    "ticker": "4519.T",
+    "margin": 0.24816465052108033
+   },
+   {
+    "ticker": "4568.T",
+    "margin": 0.057423545548633805
+   },
+   {
+    "ticker": "4578.T",
+    "margin": 0.08653827002347762
+   }
+  ],
+  "Drug Manufacturers - Specialty & Generic": [
+   {
+    "ticker": "4523.T",
+    "margin": 0.0066729685589912175
+   },
+   {
+    "ticker": "4151.T",
+    "margin": 0.04316395376352441
+   },
+   {
+    "ticker": "4506.T",
+    "margin": -0.27058287286618804
+   },
+   {
+    "ticker": "4507.T",
+    "margin": 0.32780406551864294
+   },
+   {
+    "ticker": "4502.T",
+    "margin": 0.10688363481837142
+   }
+  ],
+  "Medical Instruments & Supplies": [
+   {
+    "ticker": "7741.T",
+    "margin": 0.22318062008286793
+   }
+  ],
+  "Medical Devices": [
+   {
+    "ticker": "7733.T",
+    "margin": 0.03777824562392463
+   },
+   {
+    "ticker": "4543.T",
+    "margin": 0.09160351656996861
+   }
+  ],
+  "Paper & Paper Products": [
+   {
+    "ticker": "3861.T",
+    "margin": -0.0020419196640551213
+   }
+  ],
+  "Railroads": [
+   {
+    "ticker": "9022.T",
+    "margin": 0.0948962987014695
+   },
+   {
+    "ticker": "9020.T",
+    "margin": -0.013051717136501738
+   },
+   {
+    "ticker": "9009.T",
+    "margin": 0.16081921627448514
+   },
+   {
+    "ticker": "9007.T",
+    "margin": -0.02933399038421497
+   },
+   {
+    "ticker": "9001.T",
+    "margin": 0.012298405275716545
+   },
+   {
+    "ticker": "9021.T",
+    "margin": 0.18792400026273356
+   }
+  ],
+  "Department Stores": [
+   {
+    "ticker": "9005.T",
+    "margin": 0.12677811287918297
+   },
+   {
+    "ticker": "8267.T",
+    "margin": 0.06178734623602499
+   },
+   {
+    "ticker": "3099.T",
+    "margin": 0.09389604974905633
+   },
+   {
+    "ticker": "3086.T",
+    "margin": 0.15694949826930918
+   },
+   {
+    "ticker": "7453.T",
+    "margin": 0.03352819341928315
+   },
+   {
+    "ticker": "8233.T",
+    "margin": 0.049174598320215694
+   }
+  ],
+  "Real Estate - Diversified": [
+   {
+    "ticker": "8802.T",
+    "margin": -0.04860064965460099
+   },
+   {
+    "ticker": "8801.T",
+    "margin": 0.01782672900686685
+   },
+   {
+    "ticker": "3289.T",
+    "margin": 0.0952947599738195
+   }
+  ],
+  "Real Estate Services": [
+   {
+    "ticker": "8830.T",
+    "margin": -0.04705997193169991
+   },
+   {
+    "ticker": "8804.T",
+    "margin": 0.03840903920220789
+   }
+  ],
+  "Apparel Retail": [
+   {
+    "ticker": "9983.T",
+    "margin": 0.1446296035111892
+   }
+  ],
+  "Furnishings, Fixtures & Appliances": [
+   {
+    "ticker": "9843.T",
+    "margin": 0.04335829244372755
+   }
+  ],
+  "Discount Stores": [
+   {
+    "ticker": "7532.T",
+    "margin": 0.03174406863674457
+   }
+  ],
+  "Grocery Stores": [
+   {
+    "ticker": "3382.T",
+    "margin": 0.02898461888034454
+   }
+  ],
+  "Internet Retail": [
+   {
+    "ticker": "3092.T",
+    "margin": 0.19243818952276479
+   },
+   {
+    "ticker": "4385.T",
+    "margin": -0.2218704795306098
+   },
+   {
+    "ticker": "4755.T",
+    "margin": 0.08005957574382772
+   }
+  ],
+  "Capital Markets": [
+   {
+    "ticker": "8601.T",
+    "margin": 0.017333638656151576
+   },
+   {
+    "ticker": "8604.T",
+    "margin": -0.48452601333520795
+   }
+  ],
+  "Consulting Services": [
+   {
+    "ticker": "6532.T",
+    "margin": 0.25790283027348804
+   }
+  ],
+  "Advertising Agencies": [
+   {
+    "ticker": "4751.T",
+    "margin": 0.020367250656502436
+   },
+   {
+    "ticker": "4324.T",
+    "margin": 0.03663278337930292
+   }
+  ],
+  "Electronic Gaming & Multimedia": [
+   {
+    "ticker": "9766.T",
+    "margin": 0.11388155507115556
+   },
+   {
+    "ticker": "3659.T",
+    "margin": 0.28361223565915944
+   },
+   {
+    "ticker": "7974.T",
+    "margin": 0.1405113774698842
+   },
+   {
+    "ticker": "9697.T",
+    "margin": 0.19295171960362495
+   }
+  ],
+  "Health Information Services": [
+   {
+    "ticker": "2413.T",
+    "margin": 0.19555348957399807
+   }
+  ],
+  "Internet Content & Information": [
+   {
+    "ticker": "6098.T",
+    "margin": 0.13161648961667985
+   }
+  ],
+  "Security & Protection Services": [
+   {
+    "ticker": "9735.T",
+    "margin": 0.07235723078130823
+   }
+  ],
+  "Software - Application": [
+   {
+    "ticker": "3697.T",
+    "margin": 0.08599074411273293
+   }
+  ],
+  "Entertainment": [
+   {
+    "ticker": "9602.T",
+    "margin": 0.09808398247238365
+   }
+  ],
+  "Software - Infrastructure": [
+   {
+    "ticker": "4704.T",
+    "margin": 0.1290328108136816
    }
   ],
   "Steel": [
@@ -175,6 +1029,12 @@
    {
     "ticker": "5401.T",
     "margin": 0.02739651997418154
+   }
+  ],
+  "Textile Manufacturing": [
+   {
+    "ticker": "3402.T",
+    "margin": 0.023250007597093003
    }
   ]
  }
