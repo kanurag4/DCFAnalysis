@@ -132,8 +132,8 @@
     "peerCount": 1
   },
   "Electrical Equipment & Parts": {
-    "avgMargin": -0.012014274881675262,
-    "peerCount": 11
+    "avgMargin": -0.029635038960949295,
+    "peerCount": 12
   },
   "Electronic Components": {
     "avgMargin": 0.007062954475717111,
@@ -156,8 +156,8 @@
     "peerCount": 4
   },
   "Farm & Heavy Construction Machinery": {
-    "avgMargin": 0.08635687848782496,
-    "peerCount": 2
+    "avgMargin": 0.07465423395826236,
+    "peerCount": 3
   },
   "Farm Products": {
     "avgMargin": 0.03603278060458241,
@@ -237,10 +237,6 @@
   },
   "Leisure": {
     "avgMargin": 0.04033230682806657,
-    "peerCount": 1
-  },
-  "Lodging": {
-    "avgMargin": 0.2509635485244113,
     "peerCount": 1
   },
   "Marine Shipping": {
@@ -330,6 +326,10 @@
   "Real Estate - Diversified": {
     "avgMargin": -0.05978112865028831,
     "peerCount": 3
+  },
+  "Real Estate Services": {
+    "avgMargin": 0.2509635485244113,
+    "peerCount": 1
   },
   "Rental & Leasing Services": {
     "avgMargin": -0.19832175666314067,
