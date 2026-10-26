@@ -65,9 +65,16 @@ test('compareTicker: a store miss is recorded as such and never passes', () => {
 
 test('compareTicker: input diffs are reported, history diffs are appended', () => {
   const r = compareTicker({ ticker: 'X', market: 'us', yahoo: { data: { beta: 1 }, result: dcf(100) }, store: { data: { beta: 2 }, result: dcf(100) },
-    sources: STORE, extraDiffs: [{ field: 'history', yahoo: 250, other: 249, note: 'x' }] });
-  assert.deepEqual(r.diffs.map(d => d.field), ['beta', 'history']);
-  assert.equal(r.pass, true, 'pass bar is model + Base + solvency; input diffs are evidence');
+    sources: STORE, extraDiffs: [{ field: 'history.tail', yahoo: '2026-10-27', other: '2026-10-26', note: '1 newer Yahoo bar(s)' }] });
+  assert.deepEqual(r.diffs.map(d => d.field), ['beta', 'history.tail']);
+  assert.equal(r.pass, true, 'input diffs and newer Yahoo bars are evidence, not failures');
+});
+
+test('compareTicker: a stored price that disagrees with Yahoo, or no store history, fails', () => {
+  const base = { ticker: 'X', market: 'us', yahoo: { data: {}, result: dcf(100) }, store: { data: {}, result: dcf(100) }, sources: STORE };
+  assert.equal(compareTicker({ ...base, extraDiffs: [{ field: 'history[2026-03-02].close', yahoo: 10, other: 5 }] }).pass, false);
+  assert.equal(compareTicker({ ...base, extraDiffs: [{ field: 'history', yahoo: 250, other: null, note: 'no store history' }] }).pass, false);
+  assert.equal(compareTicker({ ...base, extraDiffs: [{ field: 'source.history', yahoo: 'yahoo', other: 'store-miss' }] }).pass, false);
 });
 
 test('historyDiffs: compares overlapping dates, notes a missing tail, caps the list', () => {

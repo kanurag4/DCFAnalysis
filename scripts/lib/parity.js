@@ -1,8 +1,8 @@
 // Pure helpers for the data-parity job (scripts/data-parity.js): compare a ticker valued from the own
 // market-data store (staging Worker) with the same ticker valued from Yahoo (production Worker).
 // Pass bar (spec docs/superpowers/specs/2026-10-25-own-market-data-store-design.md in StockAnalysis): same
-// valuation model, Base value per share within 0.5%, same solvency readings, and the store actually answered.
-// Input differences are recorded as evidence; they don't fail a ticker on their own.
+// valuation model, Base value per share within 0.5%, same solvency readings, the store actually answered, and
+// its stored prices agree with Yahoo's (newer Yahoo bars are fine). Other input differences are evidence only.
 
 const BASE_TOLERANCE_PCT = 0.5;
 const HISTORY_DIFF_CAP = 5;
@@ -93,7 +93,10 @@ function compareTicker({ ticker, market, yahoo, store, sources = {}, extraDiffs 
   }
   const solvencyOk = !diffs.some(d => d.field.startsWith('solvency.'));
   const sourcesOk = sources.timeseries === 'store';
-  row.pass = sameModel && baseOk && solvencyOk && sourcesOk;
+  // Prices aren't a valuation input, so a broken price store would otherwise pass unseen (the panel lists
+  // failures only). Only 'history.tail' -- Yahoo already has newer bars -- is allowed.
+  const historyOk = !diffs.some(d => d.field === 'source.history' || (d.field.startsWith('history') && d.field !== 'history.tail'));
+  row.pass = sameModel && baseOk && solvencyOk && sourcesOk && historyOk;
   return row;
 }
 
