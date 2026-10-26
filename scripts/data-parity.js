@@ -46,8 +46,9 @@ function marketOf(ticker) {
   return 'europe';
 }
 
-function runIdFor(date, kind) {
-  return `${date.toISOString().slice(0, 16)}Z-${kind}`;
+// A bulk run is one per screen universe (a matrix job each), so the universe is part of its id.
+function runIdFor(date, kind, universe) {
+  return `${date.toISOString().slice(0, 16)}Z-${kind}${universe ? `-${universe}` : ''}`;
 }
 
 // A fetch wrapper that remembers which source answered each route (staging's X-KV-Source header).
@@ -81,7 +82,7 @@ async function valueFrom(proxyUrl, ticker, { fetchImpl, fetchSymbolImpl, convert
   return { data, result, history };
 }
 
-async function runParity({ tickers, kind, stagingUrl, prodUrl, chunkSize = CHUNK_SIZE }, deps = {}) {
+async function runParity({ tickers, kind, universe, stagingUrl, prodUrl, chunkSize = CHUNK_SIZE }, deps = {}) {
   const {
     fetchImpl = fetch, fetchSymbolImpl = fetchSymbol, convertImpl = convertFinancials, evaluateImpl = evaluateStock,
     sleepImpl = sleep, now = () => new Date(), log = () => {},
@@ -109,7 +110,7 @@ async function runParity({ tickers, kind, stagingUrl, prodUrl, chunkSize = CHUNK
 
   const passed = results.filter(r => r.pass).length;
   const run = {
-    run_id: runIdFor(started, kind), run_date: started.toISOString().slice(0, 10), kind,
+    run_id: runIdFor(started, kind, universe), run_date: started.toISOString().slice(0, 10), kind,
     tickers: results.length, passed, failed: results.length - passed, summary: summarise(results),
   };
   let posted = true;
@@ -158,7 +159,7 @@ async function main() {
   if (!stagingUrl || !prodUrl) throw new Error('STAGING_PROXY_URL and PROD_PROXY_URL must be set');
   const tickers = loadTickers(args);
   console.log(`data-parity: ${tickers.length} ticker(s), kind=${kind}`);
-  const { run, posted } = await runParity({ tickers, kind, stagingUrl, prodUrl }, { log: console.log });
+  const { run, posted } = await runParity({ tickers, kind, universe: args.universe, stagingUrl, prodUrl }, { log: console.log });
   console.log(`\n${run.run_id}: ${run.passed} passed, ${run.failed} failed`);
   console.log(JSON.stringify(run.summary, null, 2));
   if (!posted) {

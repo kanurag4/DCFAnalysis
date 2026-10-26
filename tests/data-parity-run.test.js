@@ -63,7 +63,8 @@ test('a staging store-miss is recorded, not passed', async () => {
 test('results are posted in chunks, each repeating the run row', async () => {
   const h = harness();
   const tickers = Array.from({ length: 5 }, (_, i) => ({ ticker: `T${i}`, market: 'us' }));
-  await runParity({ tickers, kind: 'bulk', stagingUrl: STAGING, prodUrl: PROD, chunkSize: 2 }, h.deps);
+  await runParity({ tickers, kind: 'bulk', universe: 'sp500', stagingUrl: STAGING, prodUrl: PROD, chunkSize: 2 }, h.deps);
+  assert.equal(h.posts[0].run.run_id, '2026-10-27T21:00Z-bulk-sp500');
   assert.deepEqual(h.posts.map(p => p.results.length), [2, 2, 1]);
   assert.ok(h.posts.every(p => p.run.run_id === h.posts[0].run.run_id && p.run.tickers === 5));
 });
@@ -84,4 +85,5 @@ test('marketOf and runIdFor', () => {
   assert.equal(marketOf('PETR4.SA'), 'brazil');
   assert.equal(marketOf('0700.HK'), 'hk');
   assert.equal(runIdFor(new Date('2026-10-27T21:05:59Z'), 'daily'), '2026-10-27T21:05Z-daily');
+  assert.equal(runIdFor(new Date('2026-10-27T22:00:00Z'), 'bulk', 'asx'), '2026-10-27T22:00Z-bulk-asx', 'bulk universes never share a run_id');
 });
