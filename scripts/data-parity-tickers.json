@@ -1,0 +1,272 @@
+[
+  {
+    "ticker": "AAPL",
+    "market": "us",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "MSFT",
+    "market": "us",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "NKE",
+    "market": "us",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "INTC",
+    "market": "us",
+    "path": "fading-growth-dcf"
+  },
+  {
+    "ticker": "XOM",
+    "market": "us",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "FCX",
+    "market": "us",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "MU",
+    "market": "us",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "F",
+    "market": "us",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "MMM",
+    "market": "us",
+    "path": "conglomerate"
+  },
+  {
+    "ticker": "HON",
+    "market": "us",
+    "path": "conglomerate"
+  },
+  {
+    "ticker": "JPM",
+    "market": "us",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "BRK-B",
+    "market": "us",
+    "path": "excess-return-insurer"
+  },
+  {
+    "ticker": "NEE",
+    "market": "us",
+    "path": "utility"
+  },
+  {
+    "ticker": "DUK",
+    "market": "us",
+    "path": "utility"
+  },
+  {
+    "ticker": "O",
+    "market": "us",
+    "path": "reit"
+  },
+  {
+    "ticker": "PLD",
+    "market": "us",
+    "path": "reit"
+  },
+  {
+    "ticker": "DAL",
+    "market": "us",
+    "path": "airline"
+  },
+  {
+    "ticker": "RIVN",
+    "market": "us",
+    "path": "negative-fcf-growth"
+  },
+  {
+    "ticker": "LCID",
+    "market": "us",
+    "path": "negative-fcf-growth"
+  },
+  {
+    "ticker": "KO",
+    "market": "us",
+    "path": "dividend-payer"
+  },
+  {
+    "ticker": "PG",
+    "market": "us",
+    "path": "dividend-payer"
+  },
+  {
+    "ticker": "BHP.AX",
+    "market": "asx",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "CBA.AX",
+    "market": "asx",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "WES.AX",
+    "market": "asx",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "CSL.AX",
+    "market": "asx",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "QAN.AX",
+    "market": "asx",
+    "path": "airline"
+  },
+  {
+    "ticker": "GMG.AX",
+    "market": "asx",
+    "path": "reit"
+  },
+  {
+    "ticker": "AGL.AX",
+    "market": "asx",
+    "path": "utility"
+  },
+  {
+    "ticker": "FMG.AX",
+    "market": "asx",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "RELIANCE.NS",
+    "market": "nse",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "TCS.NS",
+    "market": "nse",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "HDFCBANK.NS",
+    "market": "nse",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "INFY.NS",
+    "market": "nse",
+    "path": "dividend-payer"
+  },
+  {
+    "ticker": "005930.KS",
+    "market": "kospi",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "000660.KS",
+    "market": "kospi",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "105560.KS",
+    "market": "kospi",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "7203.T",
+    "market": "nikkei",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "6758.T",
+    "market": "nikkei",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "8306.T",
+    "market": "nikkei",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "9201.T",
+    "market": "nikkei",
+    "path": "airline"
+  },
+  {
+    "ticker": "MC.PA",
+    "market": "europe",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "AIR.PA",
+    "market": "europe",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "ASML.AS",
+    "market": "europe",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "SAP.DE",
+    "market": "europe",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "LHA.DE",
+    "market": "europe",
+    "path": "airline"
+  },
+  {
+    "ticker": "ENEL.MI",
+    "market": "europe",
+    "path": "utility"
+  },
+  {
+    "ticker": "HSBA.L",
+    "market": "europe",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "ULVR.L",
+    "market": "europe",
+    "path": "dividend-payer"
+  },
+  {
+    "ticker": "PETR4.SA",
+    "market": "brazil",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "ITUB4.SA",
+    "market": "brazil",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "VALE3.SA",
+    "market": "brazil",
+    "path": "cyclical"
+  },
+  {
+    "ticker": "0700.HK",
+    "market": "hk",
+    "path": "plain-dcf"
+  },
+  {
+    "ticker": "0005.HK",
+    "market": "hk",
+    "path": "ddm-bank"
+  },
+  {
+    "ticker": "0016.HK",
+    "market": "hk",
+    "path": "plain-dcf"
+  }
+]

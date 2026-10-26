@@ -1,0 +1,68 @@
+name: Data parity (own market-data store)
+
+# Values each ticker from the staging Worker (own market-data store) and the production Worker (Yahoo) with
+# the real screen pipeline and records the comparison in D1 (shown in the admin console's Data parity panel).
+# See StockAnalysis docs/superpowers/specs/2026-10-25-own-market-data-store-design.md.
+#   daily  — scripts/data-parity-tickers.json, 07:00 AEST
+#   bulk   — every screen universe, Sunday after the Saturday screen refresh
+#   adhoc  — the admin console's "Check a ticker" box (workflow_dispatch with tickers)
+
+on:
+  schedule:
+    - cron: '0 21 * * *'
+    - cron: '0 22 * * 0'
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: Comma-separated tickers to check now (adhoc). Empty = the daily list.
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: data-parity-${{ github.event.schedule || 'dispatch' }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  STAGING_PROXY_URL: ${{ secrets.STAGING_PROXY_URL }}
+  PROD_PROXY_URL: ${{ secrets.PROD_PROXY_URL }}
+  KV_BATCH_KEY: ${{ secrets.KV_BATCH_KEY }}
+
+jobs:
+  daily:
+    if: github.event.schedule == '0 21 * * *' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run parity check
+        env:
+          TICKERS: ${{ inputs.tickers }}
+        run: |
+          if [ -n "$TICKERS" ]; then
+            node scripts/data-parity.js --kind=adhoc --tickers="$TICKERS"
+          else
+            node scripts/data-parity.js --kind=daily
+          fi
+
+  bulk:
+    if: github.event.schedule == '0 22 * * 0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        universe: [asx, sp500, nifty, kospi, nikkei, europe]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run parity check over the ${{ matrix.universe }} screen universe
+        run: node scripts/data-parity.js --kind=bulk --universe=${{ matrix.universe }}
