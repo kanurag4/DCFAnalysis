@@ -87,3 +87,17 @@ test('marketOf and runIdFor', () => {
   assert.equal(runIdFor(new Date('2026-10-27T21:05:59Z'), 'daily'), '2026-10-27T21:05Z-daily');
   assert.equal(runIdFor(new Date('2026-10-27T22:00:00Z'), 'bulk', 'asx'), '2026-10-27T22:00Z-bulk-asx', 'bulk universes never share a run_id');
 });
+
+test('a refused Worker call stops the run and posts nothing (no fake store-misses saved)', async () => {
+  const { createRefusalGuard, ParityRefused } = require('../scripts/lib/parity-guard.js');
+  const h = harness();
+  const guard = createRefusalGuard();
+  const base = h.deps.fetchImpl;
+  // Staging rate-limits the second ticker, as when it rejects the batch key.
+  const limited = async (url, opts) => (String(url).startsWith(`${STAGING}/quoteSummary/MSFT`) ? new Response('{}', { status: 429 }) : base(url, opts));
+  const tickers = ['AAPL', 'MSFT', 'KO'].map(ticker => ({ ticker, market: 'us' }));
+  await assert.rejects(runParity({ tickers, kind: 'daily', stagingUrl: STAGING, prodUrl: PROD }, { ...h.deps, fetchImpl: guard.wrap(limited), guard }),
+    err => err instanceof ParityRefused && /HTTP 429/.test(err.message));
+  assert.equal(h.posts.length, 0, 'nothing posted');
+  assert.ok(!h.log.some(u => u.includes('/KO')), 'stopped at the refused ticker');
+});
