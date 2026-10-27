@@ -351,6 +351,19 @@
     "updatedAt": "2026-10-24T02:06:15.036Z"
   },
   {
+    "ticker": "CART",
+    "slug": "cart",
+    "name": "Maplebear Inc.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 90.67162363168497,
+    "price": 60.88,
+    "marginOfSafety": 0.48934992824712487,
+    "marketCap": 14448858112,
+    "updated": "2026-10-27",
+    "updatedAt": "2026-10-27T06:19:44.923Z"
+  },
+  {
     "ticker": "CB",
     "slug": "cb",
     "name": "Chubb Limited",
@@ -492,6 +505,19 @@
     "marketCap": 14253837312,
     "updated": "2026-10-24",
     "updatedAt": "2026-10-24T02:08:40.740Z"
+  },
+  {
+    "ticker": "DLTR",
+    "slug": "dltr",
+    "name": "Dollar Tree, Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 116.51852086272211,
+    "price": 124.92,
+    "marginOfSafety": -0.06725487621900327,
+    "marketCap": 23438776320,
+    "updated": "2026-10-27",
+    "updatedAt": "2026-10-27T06:20:15.641Z"
   },
   {
     "ticker": "DRI",
