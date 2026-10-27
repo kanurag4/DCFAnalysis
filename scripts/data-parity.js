@@ -21,6 +21,7 @@ const { evaluateStock } = require('./lib/evaluate.js');
 const { marketParamsFor } = require('./lib/market.js');
 const { batchHeaders } = require('./lib/batch-auth.js');
 const { compareTicker, historyDiffs, summarise } = require('./lib/parity.js');
+const { assertBatchKeyAccepted, createRefusalGuard } = require('./lib/parity-guard.js');
 
 const UNIVERSES = {
   asx: 'asx300.json', sp500: 'sp500.json', nifty: 'nifty500.json',
@@ -86,6 +87,8 @@ async function runParity({ tickers, kind, universe, stagingUrl, prodUrl, chunkSi
   const {
     fetchImpl = fetch, fetchSymbolImpl = fetchSymbol, convertImpl = convertFinancials, evaluateImpl = evaluateStock,
     sleepImpl = sleep, now = () => new Date(), log = () => {},
+    // guard (scripts/lib/parity-guard.js): a refused Worker call stops the run before anything is posted.
+    guard = null,
   } = deps;
   const spacing = batchHeaders()['X-KV-Batch-Key'] ? 250 : TICKER_GAP_MS;
   const started = now();
@@ -99,6 +102,7 @@ async function runParity({ tickers, kind, universe, stagingUrl, prodUrl, chunkSi
     const store = await valueFrom(stagingUrl, ticker, { ...common, fetchImpl: recordingFetch(fetchImpl, sources) });
     await sleepImpl(spacing);
     const yahoo = await valueFrom(prodUrl, ticker, { ...common, fetchImpl });
+    if (guard) guard.check();
     const row = compareTicker({
       ticker, market: market || marketOf(ticker), yahoo, store, sources,
       extraDiffs: sources.history === 'store' ? historyDiffs(yahoo.history, store.history) : [{ field: 'source.history', yahoo: 'yahoo', other: sources.history || null }],
@@ -159,7 +163,11 @@ async function main() {
   if (!stagingUrl || !prodUrl) throw new Error('STAGING_PROXY_URL and PROD_PROXY_URL must be set');
   const tickers = loadTickers(args);
   console.log(`data-parity: ${tickers.length} ticker(s), kind=${kind}`);
-  const { run, posted } = await runParity({ tickers, kind, universe: args.universe, stagingUrl, prodUrl }, { log: console.log });
+  await assertBatchKeyAccepted(fetch, [{ label: 'Staging Worker', url: stagingUrl }, { label: 'Production Worker', url: prodUrl }],
+    batchHeaders()['X-KV-Batch-Key']);
+  const guard = createRefusalGuard();
+  const { run, posted } = await runParity({ tickers, kind, universe: args.universe, stagingUrl, prodUrl },
+    { log: console.log, guard, fetchImpl: guard.wrap(fetch) });
   console.log(`\n${run.run_id}: ${run.passed} passed, ${run.failed} failed`);
   console.log(JSON.stringify(run.summary, null, 2));
   if (!posted) {
@@ -169,7 +177,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch(err => { console.error(err); process.exitCode = 1; });
+  main().catch(err => { console.error(err && err.name === 'ParityRefused' ? err.message : err); process.exitCode = 1; });
 }
 
 module.exports = { runParity, marketOf, runIdFor, loadTickers };
