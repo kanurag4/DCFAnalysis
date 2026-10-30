@@ -174,5 +174,45 @@
     "exitDate": "2026-10-23",
     "exitPrice": 74.12,
     "dollarPnl": 15.49
+  },
+  {
+    "ticker": "SECU-B.ST",
+    "entryDate": "2026-10-07",
+    "entryPrice": 14.1021,
+    "exitDate": "2026-10-30",
+    "exitPrice": 14.0388,
+    "dollarPnl": 1.24
+  },
+  {
+    "ticker": "AMUN.PA",
+    "entryDate": "2026-10-23",
+    "entryPrice": 87.2,
+    "exitDate": "2026-10-30",
+    "exitPrice": 91.15,
+    "dollarPnl": 23.33
+  },
+  {
+    "ticker": "ARCAD.AS",
+    "entryDate": "2026-10-07",
+    "entryPrice": 41.74,
+    "exitDate": "2026-10-30",
+    "exitPrice": 45.3,
+    "dollarPnl": 32.38
+  },
+  {
+    "ticker": "EVO.ST",
+    "entryDate": "2026-10-07",
+    "entryPrice": 73.7536,
+    "exitDate": "2026-10-30",
+    "exitPrice": 74.4582,
+    "dollarPnl": -5.74
+  },
+  {
+    "ticker": "NN.AS",
+    "entryDate": "2026-10-23",
+    "entryPrice": 76.08,
+    "exitDate": "2026-10-30",
+    "exitPrice": 77.78,
+    "dollarPnl": 11.51
   }
 ]

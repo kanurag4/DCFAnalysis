@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-23",
+ "asAt": "2026-10-30",
  "industries": {
   "Utilities - Diversified": [
    {
@@ -43,10 +43,6 @@
    {
     "ticker": "A5G.IR",
     "margin": 0.1629551547815592
-   },
-   {
-    "ticker": "ACA.PA",
-    "margin": -0.39075688433707845
    },
    {
     "ticker": "ALSYDB.CO",
@@ -276,7 +272,7 @@
    },
    {
     "ticker": "RIO.L",
-    "margin": 0.1269381377732098
+    "margin": 0.12693813777320984
    }
   ],
   "Specialty Industrial Machinery": [
@@ -286,7 +282,7 @@
    },
    {
     "ticker": "ACLN.SW",
-    "margin": 0.14723567951379474
+    "margin": 0.1472356795137947
    },
    {
     "ticker": "ALFA.ST",
@@ -307,10 +303,6 @@
    {
     "ticker": "FLS.CO",
     "margin": 0.014662437419246051
-   },
-   {
-    "ticker": "GF.SW",
-    "margin": 0.0332806454192955
    },
    {
     "ticker": "IMI.L",
@@ -358,7 +350,7 @@
    },
    {
     "ticker": "SMIN.L",
-    "margin": 0.08791702888786355
+    "margin": 0.09304860065227466
    },
    {
     "ticker": "SPX.L",
@@ -521,6 +513,10 @@
     "margin": -0.8071956309941399
    },
    {
+    "ticker": "ACA.PA",
+    "margin": -0.39075688433707845
+   },
+   {
     "ticker": "BARC.L",
     "margin": 0.4561717761972821
    },
@@ -546,11 +542,11 @@
    },
    {
     "ticker": "STAN.L",
-    "margin": 0.47480164054819207
+    "margin": 0.474801640548192
    },
    {
     "ticker": "UBSG.SW",
-    "margin": 0.7205207157872853
+    "margin": 0.7205207157872852
    }
   ],
   "Lodging": [
@@ -652,7 +648,7 @@
    },
    {
     "ticker": "VK.PA",
-    "margin": 0.05762949055195489
+    "margin": 0.0576294905519549
    },
    {
     "ticker": "VOE.VI",
@@ -724,7 +720,7 @@
    },
    {
     "ticker": "HSX.L",
-    "margin": 0.04544171951846355
+    "margin": 0.045441719518463555
    },
    {
     "ticker": "UNI.MI",
@@ -1014,13 +1010,13 @@
    },
    {
     "ticker": "VAR.OL",
-    "margin": 0.1725095330684445
+    "margin": 0.17250953306844446
    }
   ],
   "Medical Instruments & Supplies": [
    {
     "ticker": "ALC.SW",
-    "margin": 0.10187660235775331
+    "margin": 0.1018766023577533
    },
    {
     "ticker": "COLO-B.CO",
@@ -1054,7 +1050,7 @@
    },
    {
     "ticker": "ARGX.BR",
-    "margin": -0.6656797952928578
+    "margin": -0.6656797952928579
    },
    {
     "ticker": "GMAB.CO",
@@ -1116,7 +1112,7 @@
   "Copper": [
    {
     "ticker": "ANTO.L",
-    "margin": -0.014704823561114962
+    "margin": -0.014704823561114966
    }
   ],
   "Electronic Components": [
@@ -1158,7 +1154,7 @@
   "Drug Manufacturers - General": [
    {
     "ticker": "AZN.L",
-    "margin": 0.1471669687389587
+    "margin": 0.14716696873895868
    },
    {
     "ticker": "BAYN.DE",
@@ -1340,11 +1336,11 @@
    },
    {
     "ticker": "BTRW.L",
-    "margin": 0.04491111589214576
+    "margin": 0.04396446212611546
    },
    {
     "ticker": "BWY.L",
-    "margin": 0.017672842990510227
+    "margin": 0.03940731075784061
    },
    {
     "ticker": "PSN.L",
@@ -1427,14 +1423,46 @@
     "margin": -0.014955048461074323
    }
   ],
-  "Food Distribution": [
+  "Specialty Business Services": [
    {
     "ticker": "BNZL.L",
     "margin": 0.07265461983921709
    },
    {
-    "ticker": "JMT.LS",
-    "margin": 0.0339662292487955
+    "ticker": "ELIS.PA",
+    "margin": 0.11791487988694992
+   },
+   {
+    "ticker": "ISS.CO",
+    "margin": 0.036077561851606835
+   },
+   {
+    "ticker": "MTO.L",
+    "margin": 0.03211755704197397
+   },
+   {
+    "ticker": "REL.L",
+    "margin": 0.22800021162061085
+   },
+   {
+    "ticker": "RTO.L",
+    "margin": 0.10105109789922793
+   },
+   {
+    "ticker": "SRP.L",
+    "margin": 0.0771713081677109
+   },
+   {
+    "ticker": "SW.PA",
+    "margin": 0.036247257941203384
+   },
+   {
+    "ticker": "TEP.PA",
+    "margin": 0.13684173826114307
+   },
+   {
+    "ticker": "WKL.AS",
+    "margin": 0.2259280842514807
    }
   ],
   "Entertainment": [
@@ -1572,7 +1600,7 @@
    },
    {
     "ticker": "IFCN.SW",
-    "margin": 0.09787439731978761
+    "margin": 0.09787439731978763
    }
   ],
   "Restaurants": [
@@ -1799,44 +1827,6 @@
     "margin": -0.17958891312725672
    }
   ],
-  "Specialty Business Services": [
-   {
-    "ticker": "ELIS.PA",
-    "margin": 0.11791487988694992
-   },
-   {
-    "ticker": "ISS.CO",
-    "margin": 0.036077561851606835
-   },
-   {
-    "ticker": "MTO.L",
-    "margin": 0.03211755704197397
-   },
-   {
-    "ticker": "REL.L",
-    "margin": 0.22800021162061085
-   },
-   {
-    "ticker": "RTO.L",
-    "margin": 0.10105109789922793
-   },
-   {
-    "ticker": "SRP.L",
-    "margin": 0.0771713081677109
-   },
-   {
-    "ticker": "SW.PA",
-    "margin": 0.040776365899932214
-   },
-   {
-    "ticker": "TEP.PA",
-    "margin": 0.13684173826114307
-   },
-   {
-    "ticker": "WKL.AS",
-    "margin": 0.2259280842514807
-   }
-  ],
   "Utilities - Regulated Gas": [
    {
     "ticker": "ENG.MC",
@@ -2026,7 +2016,7 @@
    },
    {
     "ticker": "TEN.MI",
-    "margin": 0.16436458722838623
+    "margin": 0.1643645872283862
    },
    {
     "ticker": "TGS.OL",
@@ -2064,7 +2054,7 @@
   "Other Precious Metals & Mining": [
    {
     "ticker": "HOC.L",
-    "margin": -0.05645627154463597
+    "margin": -0.05645627154463598
    }
   ],
   "Paper & Paper Products": [
@@ -2106,7 +2096,7 @@
    },
    {
     "ticker": "NOD.OL",
-    "margin": -0.0031394847301251354
+    "margin": -0.003139484730125132
    },
    {
     "ticker": "STMMI.MI",
@@ -2141,6 +2131,12 @@
    {
     "ticker": "NXT.L",
     "margin": 0.14826948669937418
+   }
+  ],
+  "Food Distribution": [
+   {
+    "ticker": "JMT.LS",
+    "margin": 0.0339662292487955
    }
   ],
   "Home Improvement Retail": [
@@ -2258,7 +2254,7 @@
   "Insurance - Life": [
    {
     "ticker": "PRU.L",
-    "margin": 0.11439723818559011
+    "margin": 0.1143972381855901
    },
    {
     "ticker": "SDLF.L",
@@ -2272,7 +2268,7 @@
    },
    {
     "ticker": "SCT.L",
-    "margin": 0.09616946566276996
+    "margin": 0.09455333275891495
    }
   ],
   "Tools & Accessories": [
