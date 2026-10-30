@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-23",
+ "asAt": "2026-10-30",
  "industries": {
   "Household & Personal Products": [
    {
@@ -370,7 +370,7 @@
   "Farm & Heavy Construction Machinery": [
    {
     "ticker": "241560.KS",
-    "margin": 0.07465423395826236
+    "margin": 0.07465423395826234
    },
    {
     "ticker": "267270.KS",
@@ -588,7 +588,7 @@
   "Insurance - Life": [
    {
     "ticker": "088350.KS",
-    "margin": 0.18325138741784086
+    "margin": 0.18838676370210883
    },
    {
     "ticker": "032830.KS",
@@ -749,12 +749,6 @@
     "margin": 0.13909589458713334
    }
   ],
-  "Utilities - Regulated Electric": [
-   {
-    "ticker": "015760.KS",
-    "margin": -0.14582142909868895
-   }
-  ],
   "Utilities - Renewable": [
    {
     "ticker": "071320.KS",
@@ -783,10 +777,6 @@
    {
     "ticker": "030200.KS",
     "margin": 0.03294355527507539
-   },
-   {
-    "ticker": "032640.KS",
-    "margin": 0.044195506364199014
    },
    {
     "ticker": "017670.KS",
