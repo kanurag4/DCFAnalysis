@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-23",
+ "asAt": "2026-10-30",
  "industries": {
   "Semiconductors": [
    {
@@ -12,7 +12,7 @@
    },
    {
     "ticker": "MU",
-    "margin": -0.06073590108420346
+    "margin": 0.02462987271327377
    },
    {
     "ticker": "AMD",
@@ -232,7 +232,7 @@
    },
    {
     "ticker": "COST",
-    "margin": 0.024447596531384293
+    "margin": 0.028328079924013524
    },
    {
     "ticker": "TGT",
@@ -568,7 +568,7 @@
    },
    {
     "ticker": "ACN",
-    "margin": 0.14309613283033126
+    "margin": 0.14644635619979837
    },
    {
     "ticker": "CTSH",
@@ -828,7 +828,7 @@
    },
    {
     "ticker": "JBL",
-    "margin": 0.024956716881477846
+    "margin": 0.03252421216189575
    }
   ],
   "Utilities - Regulated Electric": [
@@ -846,7 +846,7 @@
    },
    {
     "ticker": "AEP",
-    "margin": -0.08273157913930637
+    "margin": -0.14466036287324746
    },
    {
     "ticker": "D",
@@ -1350,13 +1350,13 @@
    },
    {
     "ticker": "FDS",
-    "margin": 0.27238287825578955
+    "margin": 0.27776403895116697
    }
   ],
   "Insurance - Property & Casualty": [
    {
     "ticker": "CB",
-    "margin": 0.25457244466695494
+    "margin": 0.2538689751443634
    },
    {
     "ticker": "PGR",
@@ -1754,7 +1754,7 @@
    },
    {
     "ticker": "AZO",
-    "margin": 0.11950167307460999
+    "margin": 0.10276579149337012
    },
    {
     "ticker": "APTV",
@@ -1792,7 +1792,7 @@
    },
    {
     "ticker": "CPRT",
-    "margin": 0.2376415527639936
+    "margin": 0.24560053430710957
    },
    {
     "ticker": "GPN",

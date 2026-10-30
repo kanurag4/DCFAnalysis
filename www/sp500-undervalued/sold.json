@@ -841,5 +841,61 @@
     "exitDate": "2026-10-23",
     "exitPrice": 438.14,
     "dollarPnl": 86.11
+  },
+  {
+    "ticker": "BMY",
+    "entryDate": "2026-09-04",
+    "entryPrice": 66.82,
+    "exitDate": "2026-10-30",
+    "exitPrice": 62.48,
+    "dollarPnl": 9.96
+  },
+  {
+    "ticker": "GIS",
+    "entryDate": "2026-10-09",
+    "entryPrice": 32.29,
+    "exitDate": "2026-10-30",
+    "exitPrice": 34.29,
+    "dollarPnl": -1.78
+  },
+  {
+    "ticker": "DECK",
+    "entryDate": "2026-09-04",
+    "entryPrice": 85.81,
+    "exitDate": "2026-10-30",
+    "exitPrice": 81.99,
+    "dollarPnl": 6.79
+  },
+  {
+    "ticker": "HSY",
+    "entryDate": "2026-09-04",
+    "entryPrice": 173.15,
+    "exitDate": "2026-10-30",
+    "exitPrice": 165.61,
+    "dollarPnl": -14.54
+  },
+  {
+    "ticker": "PHM",
+    "entryDate": "2026-10-23",
+    "entryPrice": 121.19,
+    "exitDate": "2026-10-30",
+    "exitPrice": 124.74,
+    "dollarPnl": 17.93
+  },
+  {
+    "ticker": "INCY",
+    "entryDate": "2026-10-09",
+    "entryPrice": 112.79,
+    "exitDate": "2026-10-30",
+    "exitPrice": 120.39,
+    "dollarPnl": 24.76
+  },
+  {
+    "ticker": "VLO",
+    "entryDate": "2026-10-02",
+    "entryPrice": 406.3,
+    "exitDate": "2026-10-30",
+    "exitPrice": 399.66,
+    "dollarPnl": -28.64
   }
 ]

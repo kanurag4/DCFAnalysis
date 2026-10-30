@@ -1,5 +1,5 @@
 {
-  "asAt": "2026-10-23",
+  "asAt": "2026-10-30",
   "universe": "S&P 500",
   "summary": {
     "tickers": 502,
@@ -9,101 +9,65 @@
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 0,
-      "unvaluable": 41,
-      "overvalued": 352,
-      "marginOverCap": 28,
-      "distressZone": 14,
-      "proxyFcf": 4
+      "unvaluable": 42,
+      "overvalued": 346,
+      "marginOverCap": 33,
+      "distressZone": 11,
+      "proxyFcf": 7
     }
   },
   "rows": [
     {
       "rank": 1,
-      "ticker": "BMY",
-      "name": "Bristol-Myers Squibb Company",
-      "sector": "Healthcare",
+      "ticker": "GEV",
+      "name": "GE Vernova Inc.",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 122.75,
-      "snapshotPrice": 61.48,
-      "marginOfSafety": 0.9965,
-      "wacc": 0.0528,
-      "terminalValuePct": 87.2,
-      "trailingPE": 13.5,
-      "marketCap": 125586096128,
-      "operatingMargin": 0.3442,
-      "analystTarget": 65.42,
+      "intrinsic": 1714.46,
+      "snapshotPrice": 857.87,
+      "marginOfSafety": 0.9985,
+      "wacc": 0.089,
+      "terminalValuePct": 76.1,
+      "trailingPE": 22.5,
+      "marketCap": 227058515968,
+      "operatingMargin": 0.1277,
+      "analystTarget": 1197.39,
       "currency": "USD",
       "altmanZ": {
-        "score": 2.43,
-        "zone": "grey"
+        "score": 3.49,
+        "zone": "safe"
       },
       "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.33,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.29,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 2,
-      "ticker": "GIS",
-      "name": "General Mills, Inc.",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 68.11,
-      "snapshotPrice": 34.39,
-      "marginOfSafety": 0.9806,
-      "wacc": 0.0473,
-      "terminalValuePct": 89.4,
-      "trailingPE": null,
-      "marketCap": 18387890176,
-      "operatingMargin": 0.1524,
-      "analystTarget": 37,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 2.28,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 5,
+        "score": 7,
         "maxScore": 9,
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": -0.54,
+        "r": 0.45,
         "n": 251,
-        "band": "inverse"
+        "band": "high"
       },
       "aiHardwareCorrelation": {
-        "r": -0.59,
+        "r": 0.59,
         "n": 251,
-        "band": "inverse"
+        "band": "high"
       }
     },
     {
-      "rank": 3,
+      "rank": 2,
       "ticker": "DG",
       "name": "Dollar General Corporation",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 256.22,
-      "snapshotPrice": 132.69,
-      "marginOfSafety": 0.931,
-      "wacc": 0.0521,
-      "terminalValuePct": 88.1,
+      "intrinsic": 262.27,
+      "snapshotPrice": 132.3,
+      "marginOfSafety": 0.9824,
+      "wacc": 0.0516,
+      "terminalValuePct": 88.3,
       "trailingPE": 17.2,
-      "marketCap": 29273640960,
+      "marketCap": 29187600384,
       "operatingMargin": 0.0681,
-      "analystTarget": 142.83,
+      "analystTarget": 142.9,
       "currency": "USD",
       "altmanZ": {
         "score": 2.63,
@@ -115,34 +79,106 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.2,
+        "r": -0.22,
         "n": 251,
         "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.31,
+        "r": -0.32,
+        "n": 251,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 3,
+      "ticker": "MCK",
+      "name": "McKesson Corporation",
+      "sector": "Healthcare",
+      "method": "DCF",
+      "intrinsic": 1872.99,
+      "snapshotPrice": 994.58,
+      "marginOfSafety": 0.8832,
+      "wacc": 0.0584,
+      "terminalValuePct": 85.9,
+      "trailingPE": 26.7,
+      "marketCap": 115958439936,
+      "operatingMargin": 0.0135,
+      "analystTarget": 1009.64,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 6.23,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.36,
+        "n": 251,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.33,
         "n": 251,
         "band": "inverse"
       }
     },
     {
       "rank": 4,
+      "ticker": "EXE",
+      "name": "Expand Energy Corporation",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 170.43,
+      "snapshotPrice": 90.55,
+      "marginOfSafety": 0.8822,
+      "wacc": 0.0603,
+      "terminalValuePct": 87.2,
+      "trailingPE": 7.8,
+      "marketCap": 20913188864,
+      "operatingMargin": 0.2318,
+      "analystTarget": 123.04,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.29,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.07,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.1,
+        "n": 251,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 5,
       "ticker": "HAL",
       "name": "Halliburton Company",
       "sector": "Energy",
       "method": "DCF",
-      "intrinsic": 66.48,
-      "snapshotPrice": 34.92,
-      "marginOfSafety": 0.9038,
-      "wacc": 0.0757,
-      "terminalValuePct": 82.1,
-      "trailingPE": 26.3,
-      "marketCap": 29172088832,
+      "intrinsic": 67.09,
+      "snapshotPrice": 36.17,
+      "marginOfSafety": 0.8549,
+      "wacc": 0.0753,
+      "terminalValuePct": 82.3,
+      "trailingPE": 15.2,
+      "marketCap": 29917157376,
       "operatingMargin": 0.1243,
       "analystTarget": 43.68,
       "currency": "USD",
       "altmanZ": {
-        "score": 3.62,
+        "score": 3.65,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -151,7 +187,7 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0,
+        "r": -0.01,
         "n": 251,
         "band": "none"
       },
@@ -162,32 +198,32 @@
       }
     },
     {
-      "rank": 5,
-      "ticker": "DECK",
-      "name": "Deckers Outdoor Corporation",
-      "sector": "Consumer Cyclical",
+      "rank": 6,
+      "ticker": "LYB",
+      "name": "LyondellBasell Industries N.V.",
+      "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 152.75,
-      "snapshotPrice": 81.09,
-      "marginOfSafety": 0.8838,
-      "wacc": 0.0949,
-      "terminalValuePct": 76.3,
-      "trailingPE": 10.7,
-      "marketCap": 11042985984,
-      "operatingMargin": 0.1523,
-      "analystTarget": 109.35,
+      "intrinsic": 121.66,
+      "snapshotPrice": 68.64,
+      "marginOfSafety": 0.7725,
+      "wacc": 0.0665,
+      "terminalValuePct": 82.1,
+      "trailingPE": null,
+      "marketCap": 22173325312,
+      "operatingMargin": 0.1792,
+      "analystTarget": 67.89,
       "currency": "USD",
       "altmanZ": {
-        "score": 9.71,
-        "zone": "safe"
+        "score": 1.97,
+        "zone": "grey"
       },
       "piotroskiF": {
-        "score": 6,
+        "score": 3,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.16,
+        "r": -0.15,
         "n": 251,
         "band": "none"
       },
@@ -198,104 +234,29 @@
       }
     },
     {
-      "rank": 6,
-      "ticker": "MCK",
-      "name": "McKesson Corporation",
+      "rank": 7,
+      "ticker": "ELV",
+      "name": "Elevance Health, Inc.",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 1838.72,
-      "snapshotPrice": 1000.77,
-      "marginOfSafety": 0.8373,
-      "wacc": 0.059,
-      "terminalValuePct": 85.7,
-      "trailingPE": 26.8,
-      "marketCap": 116680138752,
-      "operatingMargin": 0.0135,
-      "analystTarget": 1009.64,
+      "intrinsic": 734.39,
+      "snapshotPrice": 420.07,
+      "marginOfSafety": 0.7482,
+      "wacc": 0.0683,
+      "terminalValuePct": 80.7,
+      "trailingPE": 17.8,
+      "marketCap": 91100282880,
+      "operatingMargin": 0.0422,
+      "analystTarget": 482.38,
       "currency": "USD",
-      "altmanZ": {
-        "score": 6.24,
-        "zone": "safe"
-      },
+      "altmanZ": null,
       "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": -0.35,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.31,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 7,
-      "ticker": "EXE",
-      "name": "Expand Energy Corporation",
-      "sector": "Energy",
-      "method": "DCF",
-      "intrinsic": 168.66,
-      "snapshotPrice": 93.23,
-      "marginOfSafety": 0.8091,
-      "wacc": 0.0618,
-      "terminalValuePct": 86.7,
-      "trailingPE": 8,
-      "marketCap": 22303305728,
-      "operatingMargin": 0.2632,
-      "analystTarget": 123.37,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 2.37,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
+        "score": 5,
+        "maxScore": 7,
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.08,
-        "n": 251,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.11,
-        "n": 251,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 8,
-      "ticker": "LYB",
-      "name": "LyondellBasell Industries N.V.",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 119.41,
-      "snapshotPrice": 66.45,
-      "marginOfSafety": 0.797,
-      "wacc": 0.0671,
-      "terminalValuePct": 81.9,
-      "trailingPE": null,
-      "marketCap": 21465870336,
-      "operatingMargin": 0.1792,
-      "analystTarget": 67.89,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 1.96,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 3,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": -0.14,
+        "r": -0.16,
         "n": 251,
         "band": "none"
       },
@@ -306,23 +267,23 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 8,
       "ticker": "PFE",
       "name": "Pfizer Inc.",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 51.73,
-      "snapshotPrice": 30.03,
-      "marginOfSafety": 0.7225,
-      "wacc": 0.0557,
-      "terminalValuePct": 85.8,
-      "trailingPE": 39,
-      "marketCap": 171161206784,
+      "intrinsic": 52.73,
+      "snapshotPrice": 30.52,
+      "marginOfSafety": 0.7277,
+      "wacc": 0.0552,
+      "terminalValuePct": 86,
+      "trailingPE": 40.2,
+      "marketCap": 173954039808,
       "operatingMargin": 0.2788,
       "analystTarget": 29.26,
       "currency": "USD",
       "altmanZ": {
-        "score": 2.23,
+        "score": 2.24,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -331,110 +292,110 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.27,
+        "r": -0.28,
         "n": 251,
         "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.27,
+        "r": -0.29,
         "n": 251,
         "band": "inverse"
       }
     },
     {
-      "rank": 10,
-      "ticker": "HSY",
-      "name": "The Hershey Company",
-      "sector": "Consumer Defensive",
+      "rank": 9,
+      "ticker": "CNC",
+      "name": "Centene Corporation",
+      "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 289.49,
-      "snapshotPrice": 169.64,
-      "marginOfSafety": 0.7065,
-      "wacc": 0.0506,
-      "terminalValuePct": 88.2,
-      "trailingPE": 23.2,
-      "marketCap": 34085029888,
-      "operatingMargin": 0.2312,
-      "analystTarget": 197.05,
+      "intrinsic": 117.41,
+      "snapshotPrice": 68.45,
+      "marginOfSafety": 0.7153,
+      "wacc": 0.078,
+      "terminalValuePct": 77,
+      "trailingPE": 23.5,
+      "marketCap": 33887404032,
+      "operatingMargin": 0.0074,
+      "analystTarget": 74.5,
       "currency": "USD",
       "altmanZ": {
-        "score": 4.06,
+        "score": 3.1,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
+        "score": 4,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.48,
+        "r": -0.11,
         "n": 251,
-        "band": "inverse"
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.42,
+        "r": -0.14,
+        "n": 251,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 10,
+      "ticker": "INTU",
+      "name": "Intuit Inc.",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 567.94,
+      "snapshotPrice": 341.09,
+      "marginOfSafety": 0.6651,
+      "wacc": 0.0873,
+      "terminalValuePct": 77.8,
+      "trailingPE": 20.7,
+      "marketCap": 91151523840,
+      "operatingMargin": 0.1764,
+      "analystTarget": 407.76,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 5.1,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.1,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.37,
         "n": 251,
         "band": "inverse"
       }
     },
     {
       "rank": 11,
-      "ticker": "PHM",
-      "name": "PulteGroup, Inc.",
-      "sector": "Consumer Cyclical",
+      "ticker": "NFLX",
+      "name": "Netflix, Inc.",
+      "sector": "Communication Services",
       "method": "DCF",
-      "intrinsic": 201.86,
-      "snapshotPrice": 121.19,
-      "marginOfSafety": 0.6657,
-      "wacc": 0.0874,
-      "terminalValuePct": 74.5,
-      "trailingPE": 12.9,
-      "marketCap": 23085041664,
-      "operatingMargin": 0.1531,
-      "analystTarget": 134.47,
+      "intrinsic": 100.13,
+      "snapshotPrice": 62.08,
+      "marginOfSafety": 0.6129,
+      "wacc": 0.1134,
+      "terminalValuePct": 70.3,
+      "trailingPE": 17.9,
+      "marketCap": 258497380352,
+      "operatingMargin": 0.3463,
+      "analystTarget": 84.76,
       "currency": "USD",
       "altmanZ": {
-        "score": 6.04,
+        "score": 8.06,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": -0.31,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.2,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 12,
-      "ticker": "INTU",
-      "name": "Intuit Inc.",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 562.26,
-      "snapshotPrice": 343.39,
-      "marginOfSafety": 0.6374,
-      "wacc": 0.0879,
-      "terminalValuePct": 77.7,
-      "trailingPE": 20.9,
-      "marketCap": 91766177792,
-      "operatingMargin": 0.1764,
-      "analystTarget": 406.92,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 5.12,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 8,
+        "score": 7,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
@@ -444,7 +405,43 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.36,
+        "r": -0.27,
+        "n": 251,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "BKNG",
+      "name": "Booking Holdings Inc.",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 237.57,
+      "snapshotPrice": 148.13,
+      "marginOfSafety": 0.6038,
+      "wacc": 0.089,
+      "terminalValuePct": 77.7,
+      "trailingPE": 16.4,
+      "marketCap": 114782748672,
+      "operatingMargin": 0.3441,
+      "analystTarget": 232.71,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 6.12,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 8,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.13,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.24,
         "n": 251,
         "band": "inverse"
       }
@@ -455,18 +452,18 @@
       "name": "Leidos Holdings, Inc.",
       "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 221.24,
-      "snapshotPrice": 136.08,
-      "marginOfSafety": 0.6258,
-      "wacc": 0.0649,
-      "terminalValuePct": 83.6,
-      "trailingPE": 12.7,
-      "marketCap": 17116886016,
+      "intrinsic": 223.28,
+      "snapshotPrice": 142.98,
+      "marginOfSafety": 0.5616,
+      "wacc": 0.0646,
+      "terminalValuePct": 83.7,
+      "trailingPE": 13.4,
+      "marketCap": 17984804864,
       "operatingMargin": 0.1172,
       "analystTarget": 151.73,
       "currency": "USD",
       "altmanZ": {
-        "score": 3.65,
+        "score": 3.71,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -487,28 +484,64 @@
     },
     {
       "rank": 14,
-      "ticker": "INCY",
-      "name": "Incyte Corporation",
-      "sector": "Healthcare",
+      "ticker": "LMT",
+      "name": "Lockheed Martin Corporation",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 181.17,
-      "snapshotPrice": 115.71,
-      "marginOfSafety": 0.5658,
-      "wacc": 0.0803,
-      "terminalValuePct": 79.7,
-      "trailingPE": 14.7,
-      "marketCap": 23454154752,
-      "operatingMargin": 0.419,
-      "analystTarget": 129.54,
+      "intrinsic": 988.21,
+      "snapshotPrice": 636.95,
+      "marginOfSafety": 0.5515,
+      "wacc": 0.0504,
+      "terminalValuePct": 88.8,
+      "trailingPE": 22.6,
+      "marketCap": 147138412544,
+      "operatingMargin": 0.114,
+      "analystTarget": 652.57,
       "currency": "USD",
       "altmanZ": {
-        "score": 9.88,
+        "score": 3.71,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.22,
+        "n": 251,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.2,
+        "n": 251,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 15,
+      "ticker": "ADBE",
+      "name": "Adobe Inc.",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 378.9,
+      "snapshotPrice": 250.23,
+      "marginOfSafety": 0.5142,
+      "wacc": 0.1051,
+      "terminalValuePct": 71.7,
+      "trailingPE": 14,
+      "marketCap": 97389510656,
+      "operatingMargin": 0.3482,
+      "analystTarget": 272.31,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 7.2,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 7,
         "maxScore": 9,
-        "trend": "Improving"
+        "trend": "Stable"
       },
       "aiCorrelation": {
         "r": -0.12,
@@ -516,43 +549,7 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.1,
-        "n": 251,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 15,
-      "ticker": "NFLX",
-      "name": "Netflix, Inc.",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 100.6,
-      "snapshotPrice": 65.85,
-      "marginOfSafety": 0.5278,
-      "wacc": 0.1149,
-      "terminalValuePct": 69.9,
-      "trailingPE": 19,
-      "marketCap": 274195415040,
-      "operatingMargin": 0.3463,
-      "analystTarget": 84.83,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 8.39,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": -0.08,
-        "n": 251,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.26,
+        "r": -0.44,
         "n": 251,
         "band": "inverse"
       }
@@ -563,18 +560,18 @@
       "name": "First Solar, Inc.",
       "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 259.93,
-      "snapshotPrice": 171.99,
-      "marginOfSafety": 0.5113,
-      "wacc": 0.1261,
-      "terminalValuePct": 67.8,
-      "trailingPE": 10.6,
-      "marketCap": 18483730432,
+      "intrinsic": 261.5,
+      "snapshotPrice": 174.4,
+      "marginOfSafety": 0.4994,
+      "wacc": 0.1255,
+      "terminalValuePct": 68,
+      "trailingPE": 10.8,
+      "marketCap": 18742730752,
       "operatingMargin": 0.4264,
-      "analystTarget": 273.67,
+      "analystTarget": 274.24,
       "currency": "USD",
       "altmanZ": {
-        "score": 4.77,
+        "score": 4.81,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -583,7 +580,7 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.32,
+        "r": 0.31,
         "n": 251,
         "band": "moderate"
       },
@@ -595,74 +592,74 @@
     },
     {
       "rank": 17,
-      "ticker": "BKNG",
-      "name": "Booking Holdings Inc.",
+      "ticker": "DASH",
+      "name": "DoorDash, Inc.",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 234.06,
-      "snapshotPrice": 155.83,
-      "marginOfSafety": 0.502,
-      "wacc": 0.0899,
-      "terminalValuePct": 77.4,
-      "trailingPE": 17.3,
-      "marketCap": 120749309952,
-      "operatingMargin": 0.3441,
-      "analystTarget": 232.97,
+      "intrinsic": 265.34,
+      "snapshotPrice": 178.99,
+      "marginOfSafety": 0.4824,
+      "wacc": 0.0892,
+      "terminalValuePct": 74.9,
+      "trailingPE": 94.2,
+      "marketCap": 77555998720,
+      "operatingMargin": 0.096,
+      "analystTarget": 256.18,
       "currency": "USD",
       "altmanZ": {
-        "score": 6.22,
+        "score": 5.5,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 6,
-        "maxScore": 8,
-        "trend": "Stable"
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.12,
+        "r": 0.08,
         "n": 251,
-        "band": "none"
+        "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": -0.23,
+        "r": -0.1,
         "n": 251,
-        "band": "inverse"
+        "band": "none"
       }
     },
     {
       "rank": 18,
-      "ticker": "GEV",
-      "name": "GE Vernova Inc.",
+      "ticker": "HON",
+      "name": "Honeywell International Inc.",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 1208.51,
-      "snapshotPrice": 815,
-      "marginOfSafety": 0.4828,
-      "wacc": 0.0896,
-      "terminalValuePct": 76,
-      "trailingPE": 23.4,
-      "marketCap": 217061867520,
-      "operatingMargin": 0.0747,
-      "analystTarget": 1223.98,
+      "intrinsic": 318.29,
+      "snapshotPrice": 218.33,
+      "marginOfSafety": 0.4579,
+      "wacc": 0.0781,
+      "terminalValuePct": 77.4,
+      "trailingPE": 10.8,
+      "marketCap": 69197512704,
+      "operatingMargin": 0.1692,
+      "analystTarget": 253.91,
       "currency": "USD",
       "altmanZ": {
-        "score": 3.37,
-        "zone": "safe"
+        "score": 2.59,
+        "zone": "grey"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 5,
         "maxScore": 9,
-        "trend": "Stable"
+        "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.45,
+        "r": 0.06,
         "n": 251,
-        "band": "high"
+        "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.59,
+        "r": 0.07,
         "n": 251,
-        "band": "high"
+        "band": "low"
       }
     },
     {
@@ -671,13 +668,13 @@
       "name": "The Allstate Corporation",
       "sector": "Financial Services",
       "method": "ExcessReturn",
-      "intrinsic": 368.83,
-      "snapshotPrice": 253.19,
-      "marginOfSafety": 0.4567,
-      "wacc": 0.0538,
+      "intrinsic": 369.61,
+      "snapshotPrice": 259.87,
+      "marginOfSafety": 0.4223,
+      "wacc": 0.0532,
       "terminalValuePct": null,
-      "trailingPE": 5.1,
-      "marketCap": 64021106688,
+      "trailingPE": 5.2,
+      "marketCap": 65710194688,
       "operatingMargin": 0.2283,
       "analystTarget": 269.27,
       "currency": "USD",
@@ -696,38 +693,38 @@
     },
     {
       "rank": 20,
-      "ticker": "VLO",
-      "name": "Valero Energy Corporation",
-      "sector": "Energy",
+      "ticker": "CL",
+      "name": "Colgate-Palmolive Company",
+      "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 610.73,
-      "snapshotPrice": 419.28,
-      "marginOfSafety": 0.4566,
-      "wacc": 0.0919,
-      "terminalValuePct": 77.2,
-      "trailingPE": 9.5,
-      "marketCap": 120722227200,
-      "operatingMargin": 0.1968,
-      "analystTarget": 418.79,
+      "intrinsic": 130.37,
+      "snapshotPrice": 95.29,
+      "marginOfSafety": 0.3681,
+      "wacc": 0.0593,
+      "terminalValuePct": 85.3,
+      "trailingPE": 37.5,
+      "marketCap": 75962597376,
+      "operatingMargin": 0.2097,
+      "analystTarget": 98.15,
       "currency": "USD",
       "altmanZ": {
-        "score": 6.02,
+        "score": 7.15,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 6,
+        "score": 5,
         "maxScore": 9,
-        "trend": "Improving"
+        "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.03,
+        "r": -0.52,
         "n": 251,
-        "band": "none"
+        "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.05,
+        "r": -0.52,
         "n": 251,
-        "band": "none"
+        "band": "inverse"
       }
     }
   ]
