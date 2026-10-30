@@ -319,5 +319,29 @@
     "exitDate": "2026-10-23",
     "exitPrice": 443.95,
     "dollarPnl": -493.63
+  },
+  {
+    "ticker": "CHENNPETRO.NS",
+    "entryDate": "2026-10-23",
+    "entryPrice": 1475.6,
+    "exitDate": "2026-10-30",
+    "exitPrice": 1511.5,
+    "dollarPnl": 200.46
+  },
+  {
+    "ticker": "IOC.NS",
+    "entryDate": "2026-10-16",
+    "entryPrice": 130.38,
+    "exitDate": "2026-10-30",
+    "exitPrice": 130.15,
+    "dollarPnl": 39.88
+  },
+  {
+    "ticker": "BHARTIARTL.NS",
+    "entryDate": "2026-10-09",
+    "entryPrice": 1805.1,
+    "exitDate": "2026-10-30",
+    "exitPrice": 1973.7,
+    "dollarPnl": 209.48
   }
 ]

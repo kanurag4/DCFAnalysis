@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-23",
+ "asAt": "2026-10-30",
  "industries": {
   "Asset Management": [
    {
@@ -43,10 +43,6 @@
    {
     "ticker": "ABB.NS",
     "margin": 0.0869248826539142
-   },
-   {
-    "ticker": "AIAENG.NS",
-    "margin": 0.15922094327336805
    },
    {
     "ticker": "BHEL.NS",
@@ -298,7 +294,7 @@
    },
    {
     "ticker": "HDFCBANK.NS",
-    "margin": 0.5326882072796946
+    "margin": 0.43758813386212353
    },
    {
     "ticker": "ICICIBANK.NS",
@@ -334,7 +330,7 @@
    },
    {
     "ticker": "KOTAKBANK.NS",
-    "margin": 0.22730993358070195
+    "margin": 0.25654896321793075
    },
    {
     "ticker": "PNB.NS",
@@ -575,10 +571,6 @@
     "margin": 0.08449410463675422
    },
    {
-    "ticker": "ASHOKLEY.NS",
-    "margin": -0.11611960713718313
-   },
-   {
     "ticker": "ESCORTS.NS",
     "margin": 0.05502974338187456
    },
@@ -603,10 +595,6 @@
    {
     "ticker": "JPPOWER.NS",
     "margin": 0.21741599736888376
-   },
-   {
-    "ticker": "RPOWER.NS",
-    "margin": 0.39793405165982354
    },
    {
     "ticker": "TATAPOWER.NS",
@@ -731,20 +719,12 @@
     "margin": 0.019139257589202666
    },
    {
-    "ticker": "IOC.NS",
-    "margin": 0.025282683292050835
-   },
-   {
     "ticker": "MRPL.NS",
     "margin": 0.033689241342790735
    },
    {
     "ticker": "PETRONET.NS",
     "margin": 0.05296781931559964
-   },
-   {
-    "ticker": "RELIANCE.NS",
-    "margin": 0.020647694697463637
    }
   ],
   "Oil & Gas Equipment & Services": [
@@ -1033,10 +1013,6 @@
     "margin": 0.02811884290866724
    },
    {
-    "ticker": "BOSCHLTD.NS",
-    "margin": 0.07678987375301109
-   },
-   {
     "ticker": "CIEINDIA.NS",
     "margin": 0.08138799657075392
    },
@@ -1151,10 +1127,6 @@
     "margin": -0.713853655324983
    },
    {
-    "ticker": "TVSMOTOR.NS",
-    "margin": -0.07094242463690756
-   },
-   {
     "ticker": "TMCV.NS",
     "margin": 0.22366455797936433
    },
@@ -1221,10 +1193,6 @@
    {
     "ticker": "CRISIL.NS",
     "margin": 0.18674752096023423
-   },
-   {
-    "ticker": "MCX.NS",
-    "margin": 0.7316794035005088
    }
   ],
   "Confectioners": [
@@ -1318,7 +1286,7 @@
    },
    {
     "ticker": "IDEA.NS",
-    "margin": 0.22317591550427313
+    "margin": 0.23245466391820754
    }
   ],
   "Information Technology Services": [
@@ -1340,7 +1308,7 @@
    },
    {
     "ticker": "HCLTECH.NS",
-    "margin": 0.16977518303559944
+    "margin": 0.16977518303559946
    },
    {
     "ticker": "HEXT.NS",
@@ -1369,10 +1337,6 @@
    {
     "ticker": "REDINGTON.NS",
     "margin": -0.0075914772487280305
-   },
-   {
-    "ticker": "TCS.NS",
-    "margin": 0.17525959210764408
    },
    {
     "ticker": "TATATECH.NS",
@@ -1568,7 +1532,7 @@
    },
    {
     "ticker": "HDBFS.NS",
-    "margin": -0.7800462984933592
+    "margin": -0.8386241755801903
    },
    {
     "ticker": "IFCI.NS",
@@ -1625,10 +1589,6 @@
    {
     "ticker": "DEVYANI.NS",
     "margin": 0.06630979985968312
-   },
-   {
-    "ticker": "JUBLFOOD.NS",
-    "margin": 0.06621135118332466
    }
   ],
   "Consumer Electronics": [
@@ -1718,7 +1678,7 @@
    },
    {
     "ticker": "ITI.NS",
-    "margin": 0.09532878519673847
+    "margin": 0.10700286655559989
    },
    {
     "ticker": "TEJASNET.NS",
@@ -1962,7 +1922,7 @@
   "Medical Instruments & Supplies": [
    {
     "ticker": "POLYMED.NS",
-    "margin": -0.035811958442545325
+    "margin": -0.0360133562875655
    }
   ],
   "Broadcasting": [
