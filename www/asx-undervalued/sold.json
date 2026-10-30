@@ -644,5 +644,37 @@
     "exitDate": "2026-10-23",
     "exitPrice": 55.99,
     "dollarPnl": -46.68
+  },
+  {
+    "ticker": "UNI.AX",
+    "entryDate": "2026-10-16",
+    "entryPrice": 7.92,
+    "exitDate": "2026-10-30",
+    "exitPrice": 7.42,
+    "dollarPnl": -36.76
+  },
+  {
+    "ticker": "MTS.AX",
+    "entryDate": "2026-10-02",
+    "entryPrice": 2.89,
+    "exitDate": "2026-10-30",
+    "exitPrice": 3.21,
+    "dollarPnl": 1.61
+  },
+  {
+    "ticker": "SLC.AX",
+    "entryDate": "2026-08-22",
+    "entryPrice": 3.06,
+    "exitDate": "2026-10-30",
+    "exitPrice": 2.7,
+    "dollarPnl": -5.66
+  },
+  {
+    "ticker": "SHL.AX",
+    "entryDate": "2026-10-02",
+    "entryPrice": 18.46,
+    "exitDate": "2026-10-30",
+    "exitPrice": 19.57,
+    "dollarPnl": 18.55
   }
 ]

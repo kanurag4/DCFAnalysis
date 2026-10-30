@@ -212,8 +212,8 @@
     "firstPrice": 10.05
   },
   "COL.AX": {
-    "firstSeen": "2026-10-02",
-    "firstPrice": 23.03
+    "firstSeen": "2026-10-30",
+    "firstPrice": 21.66
   },
   "MAD.AX": {
     "firstSeen": "2026-08-28",
@@ -256,8 +256,8 @@
     "firstPrice": 130
   },
   "PXA.AX": {
-    "firstSeen": "2026-09-11",
-    "firstPrice": 6.8
+    "firstSeen": "2026-10-30",
+    "firstPrice": 7.03
   },
   "EMR.AX": {
     "firstSeen": "2026-09-18",
@@ -280,8 +280,8 @@
     "firstPrice": 5.37
   },
   "CUV.AX": {
-    "firstSeen": "2026-10-16",
-    "firstPrice": 7.56
+    "firstSeen": "2026-10-30",
+    "firstPrice": 7.22
   },
   "UNI.AX": {
     "firstSeen": "2026-10-16",
@@ -306,5 +306,9 @@
   "MLX.AX": {
     "firstSeen": "2026-10-23",
     "firstPrice": 1.48
+  },
+  "ELS.AX": {
+    "firstSeen": "2026-10-30",
+    "firstPrice": 1.81
   }
 }
