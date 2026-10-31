@@ -357,11 +357,11 @@
     "sector": "Energy",
     "method": "DCF",
     "intrinsic": 120.15564415835898,
-    "price": 1169.9,
-    "marginOfSafety": -0.8972940899578093,
-    "marketCap": 15831639523328,
-    "updated": "2026-10-28",
-    "updatedAt": "2026-10-28T07:34:46.163Z"
+    "price": 1164.9,
+    "marginOfSafety": -0.8968532542206551,
+    "marketCap": 15763977011200,
+    "updated": "2026-10-31",
+    "updatedAt": "2026-10-31T01:16:54.928Z"
   },
   {
     "ticker": "RPOWER.NS",
@@ -369,12 +369,12 @@
     "name": "Reliance Power Limited",
     "sector": "Utilities",
     "method": "DCF",
-    "intrinsic": 33.4980324394253,
-    "price": 17.13,
-    "marginOfSafety": 0.9555185311982081,
-    "marketCap": 70845751296,
-    "updated": "2026-10-28",
-    "updatedAt": "2026-10-28T07:35:15.269Z"
+    "intrinsic": 33.34955620499357,
+    "price": 17.91,
+    "marginOfSafety": 0.8620634396981334,
+    "marketCap": 74071654400,
+    "updated": "2026-10-31",
+    "updatedAt": "2026-10-31T01:17:25.305Z"
   },
   {
     "ticker": "SBILIFE.NS",
@@ -421,12 +421,12 @@
     "name": "Tata Consultancy Services Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 1868.937880636846,
-    "price": 2446.9,
-    "marginOfSafety": -0.23620177341254403,
-    "marketCap": 8853097807872,
-    "updated": "2026-10-28",
-    "updatedAt": "2026-10-28T07:35:44.475Z"
+    "intrinsic": 1866.4893319375526,
+    "price": 2502.6,
+    "marginOfSafety": -0.25417992010806656,
+    "marketCap": 9054625726464,
+    "updated": "2026-10-31",
+    "updatedAt": "2026-10-31T01:17:55.054Z"
   },
   {
     "ticker": "TECHM.NS",
@@ -435,11 +435,11 @@
     "sector": "Technology",
     "method": "DCF",
     "intrinsic": 738.5527394108057,
-    "price": 1763.6,
-    "marginOfSafety": -0.5812243482587856,
-    "marketCap": 1728689602560,
-    "updated": "2026-10-28",
-    "updatedAt": "2026-10-28T06:30:22.309Z"
+    "price": 1790.8,
+    "marginOfSafety": -0.5875850237822171,
+    "marketCap": 1755351220224,
+    "updated": "2026-10-31",
+    "updatedAt": "2026-10-31T01:18:25.651Z"
   },
   {
     "ticker": "UNIONBANK.NS",
@@ -460,11 +460,11 @@
     "name": "Wipro Limited",
     "sector": "Technology",
     "method": "DCF",
-    "intrinsic": 160.2898334400298,
-    "price": 185.74,
-    "marginOfSafety": -0.13702038634634542,
-    "marketCap": 1837623541760,
-    "updated": "2026-10-28",
-    "updatedAt": "2026-10-28T06:30:48.591Z"
+    "intrinsic": 159.68285969603184,
+    "price": 198.31,
+    "marginOfSafety": -0.1947816060913124,
+    "marketCap": 1962029875200,
+    "updated": "2026-10-31",
+    "updatedAt": "2026-10-31T01:18:54.972Z"
   }
 ]
