@@ -46,6 +46,23 @@
     el.hidden = false;
   }
 
+  // When banks, lenders and insurers fill much of the top 20 (12 of 20 on 30 Oct 2026, almost all on the
+  // Excess Return model), say so and say what the model can't see. Counted from this week's rows, so the
+  // note appears and disappears with the data.
+  function financialsNote(rows) {
+    const fin = rows.filter(r => r.method === 'ExcessReturn' || r.method === 'DDM' || r.sector === 'Financial Services');
+    if (rows.length < 10 || fin.length * 5 < rows.length * 2) return null; // under 40% of the list: no note
+    const pes = fin.map(r => r.trailingPE).filter(v => typeof v === 'number' && v > 0).sort((a, b) => a - b);
+    const medianPe = pes.length ? pes[Math.floor(pes.length / 2)] : null;
+    const allEr = fin.every(r => r.method === 'ExcessReturn');
+    return `<strong>${fin.length} of these ${rows.length}</strong> are banks, lenders and insurers, ${allEr ? '' : 'mostly '}valued with the Excess Return model: ` +
+      `book value plus five years of returns above their cost of equity.` +
+      (medianPe ? ` As a group they trade at a median of ${medianPe.toFixed(1)} times earnings.` : '') +
+      ` Many of India's listed lenders are government-owned, and the market has long priced them at a discount for things ` +
+      `this model can't see: lending steered by policy, past bad-loan cycles that needed new capital and diluted existing shareholders, ` +
+      `and returns that may be near a cycle high today.`;
+  }
+
   function row(r, livePrice, firstSeen) {
     const price = (typeof livePrice === 'number' && livePrice > 0) ? livePrice : r.snapshotPrice;
     const liveMargin = (price > 0) ? (r.intrinsic - price) / price : null;
@@ -329,6 +346,14 @@
     asAtEl.hidden = false;
     renderScreenSummary({ ...rankings.summary, universe: rankings.universe });
     const rows = rankings.rows || [];
+    const finNote = financialsNote(rows);
+    if (finNote) {
+      const p = document.createElement('p');
+      p.className = 'financials-note';
+      p.style.cssText = 'margin:10px 0 0;padding:10px 14px;background:var(--kv-card-2);border-left:3px solid var(--kv-accent);border-radius:4px;font-size:0.88rem;line-height:1.55;color:var(--kv-text);';
+      p.innerHTML = finNote;
+      $('screen-summary').insertAdjacentElement('afterend', p);
+    }
     if (!rows.length) { statusEl.textContent = 'No stocks passed the screen this week.'; return; }
 
     const tickersForLive = rows.map(r => r.ticker);
