@@ -3,7 +3,8 @@
 // /timeseries's annualFreeCashFlow/annualTotalRevenue -- see data.js's
 // fetchDCFData()), then applies that average margin to a normalized revenue
 // base -- the lower of trailing revenue and the average revenue over the
-// same years (see normalizeCyclicalFcf) -- to produce a normalized base-year
+// same years for commodity-priced industries, trailing revenue for chipmakers
+// and car makers (see cyclicalBaseFcf) -- to produce a normalized base-year
 // FCF. Feeds the existing calc/dcf.js /
 // calc/fadingGrowthDcf.js unmodified -- this is NOT a new valuation engine,
 // just a different base-year input (Damodaran's rule for cyclicals: never
@@ -14,7 +15,7 @@
 // genuine multi-year commodity cycle (5-10yr), a real data-availability
 // limitation surfaced to the user (see calc/assumptions.js's isCyclical
 // dispatch and app.js's cyclical-note UI), not hidden.
-function normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue, minYears = 2 }) {
+function normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue, minYears = 2, capRevenue = true }) {
   if (!Array.isArray(fcfHistory) || !Array.isArray(revenueHistory)) {
     return { value: null, marginUsed: null, yearsUsed: 0 };
   }
@@ -48,8 +49,9 @@ function normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue, min
   // sales. Cap the revenue base at its own average over the same years.
   // Deliberately one-sided -- a trough year keeps its (lower) trailing revenue,
   // so the screens never value a cyclical above what today's sales support.
+  // capRevenue false (chipmakers, car makers -- see cyclicalBaseFcf) skips the cap.
   const avgRevenue = revenues.reduce((a, b) => a + b, 0) / revenues.length;
-  const revenueCapped = avgRevenue < trailingRevenue;
+  const revenueCapped = capRevenue && avgRevenue < trailingRevenue;
   const baseRevenue = revenueCapped ? avgRevenue : trailingRevenue;
   return { value: marginUsed * baseRevenue, marginUsed, yearsUsed: margins.length, baseRevenue, revenueCapped };
 }
@@ -96,8 +98,15 @@ function resolveCyclicalMargin({ ownMargin, sectorLookup, industry, operatingMar
 // of repeating the normalize -> resolve -> margin x revenue steps. Returns the
 // fcfInfo-shaped object, or null when the caller should keep its standard
 // (trailing) fcfInfo untouched.
+// The revenue cap is for industries whose revenue follows a commodity price (metals, energy, chemicals,
+// shipping rates). Chipmakers and car makers are cyclical in margin and volume, but their revenue can grow
+// for years on real demand: capping it at a multi-year average valued NVDA off $109B of revenue against
+// $303B trailing (2026-10-31). They keep the averaged margin and use trailing revenue.
+const REVENUE_CAP_EXEMPT_INDUSTRIES = /^(Semiconductors|Auto Manufacturers|Auto Parts)$/i;
+
 function cyclicalBaseFcf({ fcfHistory, revenueHistory, trailingRevenue, sectorLookup, industry, operatingMargin = null }) {
-  const normalized = normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue });
+  const capRevenue = !REVENUE_CAP_EXEMPT_INDUSTRIES.test(industry || '');
+  const normalized = normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue, capRevenue });
   if (normalized.value === null) return null;
   const resolved = resolveCyclicalMargin({ ownMargin: normalized.marginUsed, sectorLookup, industry, operatingMargin });
   if (resolved.marginUsed === null) return null;
