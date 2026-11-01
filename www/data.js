@@ -26,6 +26,14 @@ async function fetchDCFData(ticker, isASX = false, _u1 = '', _u2 = '', yahooProx
   try { body = await res.json(); }
   catch (_) { throw new Error('The data service returned an unreadable response. Please try again.'); }
 
+  return fetchDCFDataFromBody(body, symbol, base, extraHeaders);
+}
+
+// Everything fetchDCFData does after its /quoteSummary call, for a caller that already has that body: /evaluate/
+// and the native Home/Compare screens fetch /quoteSummary ONCE per lookup and build both the Stock Evaluator and
+// the DCF shapes from it (www/evaluate/load-ticker.js), instead of fetching the same URL twice (2026-11-01).
+// `symbol` must be the resolved symbol (.AX etc. applied), `base` the proxy URL without a trailing slash.
+async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
   const data = mapQuoteSummary(body, symbol);
   // GBp tickers (LSE, quoted in pence): /timeseries reports financial-
   // statement aggregates in pounds, same as quoteSummary's financialData
@@ -501,6 +509,7 @@ async function fetchTickerPageUrl(ticker, currentMarket) {
 }
 
 if (typeof module !== 'undefined') module.exports = {
+  fetchDCFDataFromBody,
   fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER,
   gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair,
 };
