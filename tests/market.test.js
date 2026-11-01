@@ -12,7 +12,7 @@ const { marketParamsFor } = require('../scripts/lib/market.js');
 // rf 0.0532->0.0535. Refreshed again 2026-10-01 (TradingEconomics, AU 10yr 5.42%): rf
 // 0.0535->0.0542.
 test('ASX ticker gets AUS rf fallback and 4.20% erp', () => {
-  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0522, erp: 0.0420, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0513, erp: 0.0420, terminalGrowth: 0.025 });
 });
 
 test('ASX ticker uses provided live rf when given', () => {
@@ -29,8 +29,8 @@ test('ASX ticker uses provided live rf when given', () => {
 // 0.075->0.0692. Refreshed again 2026-09-30 (raw G-Sec 7.15%, TradingEconomics, same
 // unchanged spread): net rf 0.0530->0.0540.
 test('Indian (.NS/.BO) ticker gets the spread-adjusted rf (not the raw G-Sec yield), refreshed erp', () => {
-  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.0572, erp: 0.0692, terminalGrowth: 0.025 });
-  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.0572, erp: 0.0692, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.0565, erp: 0.0692, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.0565, erp: 0.0692, terminalGrowth: 0.025 });
 });
 
 test('Indian ticker uses provided live rf when given (same override mechanism as ASX)', () => {
@@ -60,11 +60,11 @@ test('US ticker (no suffix) gets US defaults', () => {
 // 2026-09-30 (raw yield eased further to 4.40%, TradingEconomics, same unchanged spread):
 // net rf 0.0402->0.0401.
 test('Korean ticker gets the spread-adjusted rf (not the raw KTB yield), corrected erp', () => {
-  assert.deepStrictEqual(marketParamsFor('005930.KS'), { rf: 0.0371, erp: 0.0481, terminalGrowth: 0.0175 });
+  assert.deepStrictEqual(marketParamsFor('005930.KS'), { rf: 0.0362, erp: 0.0481, terminalGrowth: 0.0175 });
 });
 
 test('Korean ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('005930.KS', { krRf: 0.09 }), { rf: 0.0371, erp: 0.0481, terminalGrowth: 0.0175 });
+  assert.deepStrictEqual(marketParamsFor('005930.KS', { krRf: 0.09 }), { rf: 0.0362, erp: 0.0481, terminalGrowth: 0.0175 });
 });
 
 // Corrected 2026-08-15: rf was the raw JGB yield (same double-counting as Korea/India).
@@ -78,11 +78,11 @@ test('Korean ticker ignores any live rf passed in (no live source exists)', () =
 // 0.06->0.0507. Refreshed again 2026-09-30 (raw JGB 3.07%, TradingEconomics, same
 // unchanged spread): net rf 0.0244->0.0251.
 test('Japanese ticker gets the spread-adjusted rf and the ratio-consistent lower terminalGrowth', () => {
-  assert.deepStrictEqual(marketParamsFor('7203.T'), { rf: 0.0227, erp: 0.0507, terminalGrowth: 0.012 });
+  assert.deepStrictEqual(marketParamsFor('7203.T'), { rf: 0.0221, erp: 0.0507, terminalGrowth: 0.012 });
 });
 
 test('Japanese ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('7203.T', { jpRf: 0.05 }), { rf: 0.0227, erp: 0.0507, terminalGrowth: 0.012 });
+  assert.deepStrictEqual(marketParamsFor('7203.T', { jpRf: 0.05 }), { rf: 0.0221, erp: 0.0507, terminalGrowth: 0.012 });
 });
 
 test('.TO (Toronto) does not match the .T Japan branch', () => {
