@@ -70,4 +70,15 @@ function createRefusalGuard() {
   };
 }
 
-module.exports = { checkBatchKey, assertBatchKeyAccepted, createRefusalGuard, ParityRefused, PREFLIGHT_ORIGIN };
+// Store-first reads (2026-11-02): once production answers from the store, the Yahoo side of a parity run must
+// still be Yahoo. Adds X-KV-Source-Pref: yahoo (honoured by the Worker only with the batch key) to every request
+// to `proxyUrl`; other URLs pass through untouched.
+function preferYahoo(fetchImpl, proxyUrl) {
+  const base = String(proxyUrl).replace(/\/$/, '');
+  return (url, opts = {}) => {
+    if (!String(url).startsWith(base)) return fetchImpl(url, opts);
+    return fetchImpl(url, { ...opts, headers: { ...(opts.headers || {}), 'X-KV-Source-Pref': 'yahoo' } });
+  };
+}
+
+module.exports = { checkBatchKey, assertBatchKeyAccepted, createRefusalGuard, preferYahoo, ParityRefused, PREFLIGHT_ORIGIN };

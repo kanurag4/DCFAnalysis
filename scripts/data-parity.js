@@ -21,7 +21,7 @@ const { evaluateStock } = require('./lib/evaluate.js');
 const { marketParamsFor } = require('./lib/market.js');
 const { batchHeaders } = require('./lib/batch-auth.js');
 const { compareTicker, historyDiffs, summarise } = require('./lib/parity.js');
-const { assertBatchKeyAccepted, createRefusalGuard } = require('./lib/parity-guard.js');
+const { assertBatchKeyAccepted, createRefusalGuard, preferYahoo } = require('./lib/parity-guard.js');
 
 const UNIVERSES = {
   asx: 'asx300.json', sp500: 'sp500.json', nifty: 'nifty500.json',
@@ -101,7 +101,8 @@ async function runParity({ tickers, kind, universe, stagingUrl, prodUrl, chunkSi
     const common = { fetchSymbolImpl, convertImpl, evaluateImpl, fxUrl: prodUrl, fxCache, nowSec, spacing, sleepImpl };
     const store = await valueFrom(stagingUrl, ticker, { ...common, fetchImpl: recordingFetch(fetchImpl, sources) });
     await sleepImpl(spacing);
-    const yahoo = await valueFrom(prodUrl, ticker, { ...common, fetchImpl });
+    // Production serves from the store once STORE_FIRST is on: ask it for Yahoo's own answer.
+    const yahoo = await valueFrom(prodUrl, ticker, { ...common, fetchImpl: preferYahoo(fetchImpl, prodUrl) });
     if (guard) guard.check();
     const row = compareTicker({
       ticker, market: market || marketOf(ticker), yahoo, store, sources,
