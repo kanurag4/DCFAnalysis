@@ -101,3 +101,18 @@ test('a refused Worker call stops the run and posts nothing (no fake store-misse
   assert.equal(h.posts.length, 0, 'nothing posted');
   assert.ok(!h.log.some(u => u.includes('/KO')), 'stopped at the refused ticker');
 });
+
+test('the production side asks for Yahoo (X-KV-Source-Pref: yahoo); the staging side does not', async () => {
+  const h = harness();
+  const seen = [];
+  const inner = h.deps.fetchImpl;
+  h.deps.fetchImpl = async (url, opts = {}) => {
+    seen.push({ url: String(url), pref: (opts.headers || {})['X-KV-Source-Pref'] || null });
+    return inner(url, opts);
+  };
+  await runParity({ tickers: [{ ticker: 'AAPL', market: 'us' }], kind: 'adhoc', stagingUrl: STAGING, prodUrl: PROD }, h.deps);
+  const data = seen.filter(s => !s.url.endsWith('/store/parity'));
+  assert.ok(data.filter(s => s.url.startsWith(PROD)).every(s => s.pref === 'yahoo'));
+  assert.ok(data.filter(s => s.url.startsWith(STAGING)).every(s => s.pref === null));
+  assert.ok(data.some(s => s.url.startsWith(PROD)));
+});
