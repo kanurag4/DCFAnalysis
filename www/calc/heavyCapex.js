@@ -128,8 +128,45 @@ function heavyCapexValuation(data, check, dcfScenarios) {
   };
 }
 
-if (typeof module !== 'undefined') module.exports = { HEAVY_CAPEX, heavyCapexCheck, heavyCapexValuation, heavyCapexExistingFcf };
+// The card's wording, written once for every surface (web /evaluate/, /dcf/, native, ticker pages). Plain text: the
+// renderer escapes it. headline is [lead, emphasised figure, tail]. fmt: { money(perShare), moneyBig(total), pct(ratio) }.
+// Never judges the implied return (AFSL): it says what the price assumes, not whether that is achievable.
+function heavyCapexCardText(hc, fmt) {
+  const m = hc.check.metrics, v = hc.valuation, i = v.implied;
+  const base = (v.scenarios || []).find(s => s.key === 'base');
+  const existingValue = i ? i.existingValue : (base ? base.existingValue : null);
+  let headline;
+  if (!i) {
+    headline = ['', 'The implied return could not be worked out', ' for this company.'];
+  } else if (i.status === 'not-meaningful') {
+    headline = ['Implied return on the new spending: ', 'not meaningful',
+      '. Our value for the existing business alone (' + fmt.money(existingValue) + ' a share) is already above today\'s price ('
+      + fmt.money(fmt.price) + '), so the price says nothing positive about returns on the new spending.'];
+  } else {
+    let tail = ', against a cost of capital of ' + fmt.pct(i.costOfCapital) + '.';
+    if (i.status === 'high') {
+      tail += ' That is far above the cost of capital. Part of the gap is likely the market expecting faster growth from the '
+        + 'existing business than this model assumes, not only returns on the new spending.';
+    }
+    headline = ['Today\'s price of ' + fmt.money(fmt.price) + ' assumes the new spending earns about ', fmt.pct(i.returnOnCapex) + ' a year', tail];
+  }
+  let facts = 'Capex of ' + fmt.moneyBig(m.capex) + ' over the last 12 months is ' + fmt.pct(m.capexPctRevenue) + ' of revenue, '
+    + m.capexToDepreciation.toFixed(1) + 'x depreciation and ' + m.capexToOcf.toFixed(2) + 'x operating cash flow. '
+    + 'Free cash flow used in the valuation: ' + fmt.moneyBig(m.fcfNow)
+    + (m.bestFcf != null ? ', against ' + fmt.moneyBig(m.bestFcf) + ' in its best recent year.' : '.');
+  if (v.lastQuarterRunRate != null) facts += ' The latest quarter runs at ' + fmt.moneyBig(v.lastQuarterRunRate) + ' a year.';
+  const existing = 'Existing business: ' + fmt.money(existingValue) + ' a share, valued on operating cash flow minus the capex '
+    + 'needed to keep it running (' + fmt.moneyBig(v.existingFcf) + ' a year). New spending above that: '
+    + fmt.moneyBig(v.growthCapex) + ' a year, assumed for ' + HEAVY_CAPEX.PROGRAM_YEARS + ' years.';
+  const method = 'Base assumes the new spending earns exactly its cost of capital, so it pays for itself and nothing more; '
+    + 'Bear assumes ' + Math.round(HEAVY_CAPEX.RETURN_SPREAD * 100) + ' points less, Bull ' + Math.round(HEAVY_CAPEX.RETURN_SPREAD * 100)
+    + ' points more. This shows what the price implies; it is not a view on whether that return is achievable.';
+  return { title: 'Heavy capex spending', headline, facts, existing, method, tests: (hc.check.tests || []).map(t => ({ label: t.label, pass: t.pass })) };
+}
+
+if (typeof module !== 'undefined') module.exports = { HEAVY_CAPEX, heavyCapexCheck, heavyCapexValuation, heavyCapexExistingFcf, heavyCapexCardText };
 if (typeof window !== 'undefined') {
   window.HEAVY_CAPEX = HEAVY_CAPEX; window.heavyCapexCheck = heavyCapexCheck;
   window.heavyCapexValuation = heavyCapexValuation; window.heavyCapexExistingFcf = heavyCapexExistingFcf;
+  window.heavyCapexCardText = heavyCapexCardText;
 }
