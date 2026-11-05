@@ -282,6 +282,10 @@ function rfErpForMarket(market) {
 }
 let currentMarket = 'us';  // 'us' | 'aus' | 'ind' | 'kor' | 'jpn' | 'uk' | 'eu' | 'fr' | 'hk' | 'cn' | 'br' | 'other'
 let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDiscount, read by buildScenarios()
+// Heavy capex spending (calc/heavyCapex.js): the check when the method applies, else null. Set in prefillInputs(),
+// read by buildScenarios(); lastHeavyCapexValuation is the latest wrapped result, for the card.
+let heavyCapexState = null;
+let lastHeavyCapexValuation = null;
 let breakdownChart = null;
 let priceChart    = null;
 
@@ -399,6 +403,7 @@ function prefillInputs(data) {
   valuationModel = assumptions.valuationModel;
   currentMarket = assumptions.currentMarket;
   holdcoDiscount = assumptions.holdcoDiscount;
+  heavyCapexState = heavyCapexStateFor(data, assumptions);
 
   if (els.holdcoNote) {
     if (assumptions.isHoldco) {
@@ -464,7 +469,13 @@ function prefillInputs(data) {
   const fcf = fcfInfo.value;
   const isFcfNegative = fcf !== null && fcf <= 0;
 
-  if (fcf !== null) {
+  if (heavyCapexState) {
+    // Heavy capex spending: the box holds the existing business's cash flow (operating cash flow minus the capex
+    // needed to keep it running); the growth capex is valued on top in buildScenarios().
+    els.fcfInput.value = heavyCapexPrefillFcf(heavyCapexState).toLocaleString('en-AU');
+    els.fcfSource.textContent = '≈ existing business (OCF − maintenance capex)';
+    els.fcfSource.className = 'fcf-source confirmed';
+  } else if (fcf !== null) {
     // Use raw display — don't run formatMoneyInput here as it strips the minus sign
     els.fcfInput.value = Math.round(fcf).toLocaleString('en-AU');
     if (isFcfNegative) {
@@ -522,10 +533,10 @@ function prefillInputs(data) {
   // for them) — pointing those to the Growth tool on top of that is wrong,
   // not a fallback (seen live on QAN.AX after the 2026-08-20 Airline model
   // shipped, since this check never looked at which model was selected).
-  renderGrowthSuggestion(data, valuationModel === 'dcf' && (fcf === null || fcf < 0));
+  renderGrowthSuggestion(data, valuationModel === 'dcf' && !heavyCapexState && (fcf === null || fcf < 0));
 
   // Target FCF margin (revenue normalisation) — shown for negative/null FCF non-bank stocks
-  const showTargetMargin = !isBankIns && !isReitTicker && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
+  const showTargetMargin = !isBankIns && !isReitTicker && !heavyCapexState && (isFcfNegative || fcf === null) && data.totalRevenue > 0;
   if (els.targetMarginRow) {
     els.targetMarginRow.hidden = !showTargetMargin;
     if (showTargetMargin && els.targetMarginInput && !els.targetMarginInput.value) {
@@ -901,6 +912,7 @@ function renderAll(data) {
   renderScenarios(scenarios, data, sym);
   renderCharts(scenarios, data.price, sym);
   renderSensitivityGrid(buildSensitivityGrid(data), data.price, sym);
+  renderHeavyCapexCard(data, sym);
   // Show the explainer matching the active model. Excess Return has no
   // explainer section of its own yet (out of scope this pass) -- hide both
   // rather than show DCF's or DDM's, which would describe the wrong method.
@@ -1324,12 +1336,48 @@ function buildScenarios(data) {
     tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
     discount: { bear: parseFloat(els.waccBear.value) || 10, base: parseFloat(els.waccBase.value) || 10, bull: parseFloat(els.waccBull.value) || 10 },
   };
-  return computeScenarios(data, 'dcf', seeds, {
+  const scenarios = computeScenarios(data, 'dcf', seeds, {
     years,
     useMultiStage: !!(els.multistageToggle && els.multistageToggle.checked),
     useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
     fcfRaw, normFcf, holdcoDiscount,
   });
+  // Heavy capex spending: the box above is the existing business; add the growth capex at its return per scenario.
+  if (!heavyCapexState) { lastHeavyCapexValuation = null; return scenarios; }
+  lastHeavyCapexValuation = heavyCapexValuation(data, heavyCapexState, scenarios);
+  return lastHeavyCapexValuation.scenarios;
+}
+
+// Heavy capex spending (calc/heavyCapex.js): the shared six tests, from the same derive prefillInputs() uses.
+function heavyCapexStateFor(data, assumptions) {
+  if (typeof heavyCapexForAssumptions !== 'function') return null;
+  const check = heavyCapexForAssumptions(data, assumptions);
+  return check.applies ? check : null;
+}
+
+// What the free-cash-flow box shows when the method applies: the existing business's cash flow, rounded like the
+// box's other prefills.
+function heavyCapexPrefillFcf(check) {
+  return Math.round(heavyCapexExistingFcf(check));
+}
+
+// The card under the scenarios -- calc/heavyCapex.js's wording, shared with /evaluate/, native and ticker pages.
+function renderHeavyCapexCard(data, sym) {
+  const el = document.getElementById('heavy-capex-card');
+  if (!el) return;
+  if (!lastHeavyCapexValuation || valuationModel !== 'dcf') { el.hidden = true; el.innerHTML = ''; return; }
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const t = heavyCapexCardText({ check: heavyCapexState, valuation: lastHeavyCapexValuation }, {
+    price: data.price,
+    money: (v) => fmt(v, 2, '', sym),
+    moneyBig: (v) => formatMarketCap(v, sym),
+    pct: (v) => (v == null || !isFinite(v) ? 'N/A' : (v * 100).toFixed(1) + '%'),
+  });
+  el.innerHTML = '<h3>' + esc(t.title) + '</h3>'
+    + '<p class="hc-headline">' + esc(t.headline[0]) + '<strong>' + esc(t.headline[1]) + '</strong>' + esc(t.headline[2]) + '</p>'
+    + '<p>' + esc(t.facts) + '</p><p>' + esc(t.existing) + '</p>'
+    + '<p class="hc-method">' + esc(t.method) + ' <a href="/glossary/heavy-capex-spending/">How this works</a></p>';
+  el.hidden = false;
 }
 
 // Terminal growth cannot exceed the risk-free rate in perpetuity — Damodaran's

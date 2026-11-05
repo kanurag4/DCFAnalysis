@@ -78,6 +78,52 @@ function heavyCapexCheck(data, opts) {
   return { applies: tests.every(t => t.pass) && maintenance != null, tests, metrics };
 }
 
+// Resolve a sibling module's export: the browser global when the page loaded it, else require() (Node, Workers bundle).
+function hcDep(name, globalFn, path) {
+  if (typeof globalFn === 'function') return globalFn;
+  if (typeof require === 'function') return require(path)[name];
+  return null;
+}
+
+// Altman Z zone ('safe' | 'grey' | 'distress' | null) from exactly the inputs /evaluate/'s Solvency Check uses
+// (evaluate-core.js solvencyFor), so every surface blocks the same distressed companies.
+function heavyCapexAltmanZone(data) {
+  const isFin = hcDep('isFinancialSector', typeof isFinancialSector === 'function' ? isFinancialSector : null, '../utils.js');
+  const isRe = hcDep('isReit', typeof isReit === 'function' ? isReit : null, '../utils.js');
+  if ((isFin && isFin(data.sector)) || (isRe && isRe(data.sector, data.industry))) return null;
+  const align = hcDep('alignFiscalYears', typeof alignFiscalYears === 'function' ? alignFiscalYears : null, './fiscalYearAlign.js');
+  const altman = hcDep('altmanZScore', typeof altmanZScore === 'function' ? altmanZScore : null, './altmanZ.js');
+  if (!align || !altman) return null;
+  const years = align({
+    netIncome: data.annualNetIncomeHistory, totalAssets: data.annualTotalAssetsHistory, fcf: data.annualFcfHistory,
+    capex: data.annualCapexHistory, totalDebt: data.annualTotalDebtHistory, totalLiabilities: data.annualTotalLiabilitiesHistory,
+    currentAssets: data.annualCurrentAssetsHistory, currentLiabilities: data.annualCurrentLiabilitiesHistory,
+    shares: data.annualSharesHistory, revenue: data.annualRevenueHistory, grossProfit: data.annualGrossProfitHistory,
+  });
+  const re = data.annualRetainedEarningsHistory;
+  const lastRe = Array.isArray(re) && re.length ? hcFinite(re[re.length - 1] && re[re.length - 1].value) : null;
+  const y = years[0];
+  const z = altman({
+    totalAssets: y ? y.totalAssets : null, currentAssets: y ? y.currentAssets : null,
+    currentLiabilities: y ? y.currentLiabilities : null, retainedEarnings: lastRe, ebit: data.ebit,
+    marketCap: data.marketCap, totalLiabilities: y ? y.totalLiabilities : null, revenue: y ? y.revenue : null,
+  });
+  return z ? z.zone : null;
+}
+
+// THE entry point for every surface: the six tests for one company, from its deriveDcfAssumptions() result.
+// Only a company whose model would be plain DCF (or Growth, its negative-FCF fallback) can qualify.
+function heavyCapexForAssumptions(data, assumptions) {
+  const isFin = hcDep('isFinancialSector', typeof isFinancialSector === 'function' ? isFinancialSector : null, '../utils.js');
+  const ownModel = !assumptions || assumptions.valuationModel !== 'dcf' || !!assumptions.isCyclical
+    || !!(isFin && isFin(data.sector));
+  return heavyCapexCheck(data, {
+    ownModel,
+    altmanZone: heavyCapexAltmanZone(data),
+    engineFcf: assumptions && assumptions.fcfInfo ? assumptions.fcfInfo.value : null,
+  });
+}
+
 // The FCF every surface passes to its DCF for the existing business.
 function heavyCapexExistingFcf(check) {
   return check.metrics.ocf - check.metrics.maintenance;
@@ -164,9 +210,10 @@ function heavyCapexCardText(hc, fmt) {
   return { title: 'Heavy capex spending', headline, facts, existing, method, tests: (hc.check.tests || []).map(t => ({ label: t.label, pass: t.pass })) };
 }
 
-if (typeof module !== 'undefined') module.exports = { HEAVY_CAPEX, heavyCapexCheck, heavyCapexValuation, heavyCapexExistingFcf, heavyCapexCardText };
+if (typeof module !== 'undefined') module.exports = { HEAVY_CAPEX, heavyCapexCheck, heavyCapexValuation, heavyCapexExistingFcf, heavyCapexCardText, heavyCapexAltmanZone, heavyCapexForAssumptions };
 if (typeof window !== 'undefined') {
   window.HEAVY_CAPEX = HEAVY_CAPEX; window.heavyCapexCheck = heavyCapexCheck;
   window.heavyCapexValuation = heavyCapexValuation; window.heavyCapexExistingFcf = heavyCapexExistingFcf;
-  window.heavyCapexCardText = heavyCapexCardText;
+  window.heavyCapexCardText = heavyCapexCardText; window.heavyCapexAltmanZone = heavyCapexAltmanZone;
+  window.heavyCapexForAssumptions = heavyCapexForAssumptions;
 }

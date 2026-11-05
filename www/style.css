@@ -820,3 +820,20 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
 .ai-corr-block > h2 { font-size: 1rem; margin-bottom: 10px; text-align: center; }
 .ai-corr-label { font-size: 0.9rem; font-weight: 600; color: var(--kv-text); }
 .ai-corr-guide { margin-top: auto; padding-top: 6px; }
+
+/* Heavy capex spending card (calc/heavyCapex.js) -- /dcf/ tool and per-ticker pages. No display rule: the
+   element's own `hidden` attribute must win (an author display rule beats [hidden]). */
+.heavy-capex-card {
+  border: 1px solid var(--kv-border, var(--border));
+  border-left: 3px solid var(--kv-accent, var(--accent));
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  background: var(--kv-card, var(--card));
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.heavy-capex-card h3 { margin: 0 0 8px; font-size: 1rem; color: var(--kv-primary, var(--text)); }
+.heavy-capex-card p { margin: 0 0 8px; color: var(--kv-muted, var(--muted)); }
+.heavy-capex-card .hc-headline { color: var(--kv-text, var(--text)); font-size: 0.95rem; }
+.heavy-capex-card .hc-method { font-size: 0.8rem; margin-bottom: 0; }
