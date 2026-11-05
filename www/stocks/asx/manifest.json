@@ -208,6 +208,19 @@
     "updatedAt": "2026-10-31T01:13:47.836Z"
   },
   {
+    "ticker": "BRG.AX",
+    "slug": "brg-ax",
+    "name": "Breville Group Limited",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 13.410640415471596,
+    "price": 33,
+    "marginOfSafety": -0.5936169571069213,
+    "marketCap": 4813790208,
+    "updated": "2026-11-05",
+    "updatedAt": "2026-11-05T09:26:32.427Z"
+  },
+  {
     "ticker": "BVS.AX",
     "slug": "bvs-ax",
     "name": "Bravura Solutions Limited",
