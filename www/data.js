@@ -69,11 +69,14 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
   // `types` list for other reasons, just never mapped into a history array
   // here before now).
   let annualGrossProfitHistory = [];
+  // Heavy capex spending (2026-11-05): trailing-12-month capex / operating cash flow / depreciation -- see ttmFromTimeseries().
+  let ttm = ttmFromTimeseries(null, gbpToPence);
   try {
     const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`, { headers: extraHeaders });
     if (tsRes.ok) {
       const tsBody = await tsRes.json();
       if (!tsBody.error) {
+        ttm = ttmFromTimeseries(tsBody, gbpToPence);
         dilutedSharesOutstanding = latestSeriesValue(tsBody.annualDilutedAverageShares);
         const rawEbit = latestSeriesValue(tsBody.annualOperatingIncome);
         ebit = (rawEbit != null) ? rawEbit * gbpToPence : null;
@@ -216,8 +219,10 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
       annualTotalDebtHistoryConverted = annualTotalDebtHistory.map(e => ({ date: e.date, value: c(e.value) }));
       annualCapexHistoryConverted = annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
       annualGrossProfitHistoryConverted = annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
+      ttm = { ...ttm, ttmCapex: c(ttm.ttmCapex), ttmOcf: c(ttm.ttmOcf), ttmDepreciation: c(ttm.ttmDepreciation), lastQuarterCapex: c(ttm.lastQuarterCapex) };
     } else {
       fxConversionFailed = true;
+      ttm = { ...ttm, ttmCapex: null, ttmOcf: null, ttmDepreciation: null, lastQuarterCapex: null };
       freeCashflow = null;
       operatingCashflow = null;
       capitalExpenditures = null;
@@ -277,6 +282,8 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
     annualSharesHistory,
     annualCapexHistory: annualCapexHistoryConverted,
     annualGrossProfitHistory: annualGrossProfitHistoryConverted,
+    // Heavy capex spending (calc/heavyCapex.js). Same FX conversion as every money field above.
+    ttmCapex: ttm.ttmCapex, ttmOcf: ttm.ttmOcf, ttmDepreciation: ttm.ttmDepreciation, lastQuarterCapex: ttm.lastQuarterCapex,
   };
 }
 
@@ -432,6 +439,44 @@ function scaleTimeseries(series, scale) {
   return series.map(e => (e && e.value != null) ? { ...e, value: e.value * scale } : e);
 }
 
+// Pure (heavy capex spending, 2026-11-05): trailing-12-month capex, operating cash flow and depreciation from a
+// /timeseries body. Each figure is the sum of its last 4 quarters when those are 4 consecutive quarters (each end
+// date within 100 days of the previous); otherwise the latest fiscal year (semiannual filers such as BABA have no
+// quarterly series). Capex is returned as a positive magnitude. ttmSource says where capex came from.
+const TTM_MAX_QUARTER_GAP_DAYS = 100;
+function ttmFromTimeseries(tsBody, gbpToPence) {
+  const scale = gbpToPence || 1;
+  const body = tsBody || {};
+  function lastFourQuarters(series) {
+    const pts = (Array.isArray(series) ? series : []).filter(e => e && e.date && e.value != null && isFinite(e.value));
+    if (pts.length < 4) return null;
+    const four = pts.slice(-4);
+    for (let i = 1; i < 4; i++) {
+      const days = (Date.parse(four[i].date) - Date.parse(four[i - 1].date)) / 86400000;
+      if (!(days > 0 && days <= TTM_MAX_QUARTER_GAP_DAYS)) return null;
+    }
+    return four.reduce((s, e) => s + e.value, 0);
+  }
+  function figure(quarterlyKey, annualKey) {
+    const qSum = lastFourQuarters(body[quarterlyKey]);
+    if (qSum != null) return { value: qSum * scale, source: 'quarterly' };
+    const annual = latestSeriesValue(body[annualKey]);
+    if (annual != null) return { value: annual * scale, source: 'annual' };
+    return { value: null, source: null };
+  }
+  const capex = figure('quarterlyCapitalExpenditure', 'annualCapitalExpenditure');
+  const ocf = figure('quarterlyOperatingCashFlow', 'annualOperatingCashFlow');
+  const dep = figure('quarterlyDepreciationAndAmortization', 'annualDepreciationAndAmortization');
+  const lastQ = latestSeriesValue(body.quarterlyCapitalExpenditure);
+  return {
+    ttmCapex: capex.value != null ? Math.abs(capex.value) : null,
+    ttmOcf: ocf.value,
+    ttmDepreciation: dep.value,
+    lastQuarterCapex: lastQ != null ? Math.abs(lastQ * scale) : null,
+    ttmSource: capex.source,
+  };
+}
+
 // GBp (pence-quoted LSE stock) vs GBP (pounds, the SAME company's financial-
 // statement reporting currency) is not a real cross-currency mismatch -- it's
 // one currency at two different quote sub-units, already reconciled by
@@ -511,5 +556,5 @@ async function fetchTickerPageUrl(ticker, currentMarket) {
 if (typeof module !== 'undefined') module.exports = {
   fetchDCFDataFromBody,
   fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER,
-  gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair,
+  gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair, ttmFromTimeseries,
 };
