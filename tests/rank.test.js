@@ -90,3 +90,11 @@ test('distressZone funnel bucket counts only confirmed Distress Zone rows', () =
   assert.strictEqual(f.distressZone, 1);
   assert.strictEqual(f.kept, 3);
 });
+
+// Heavy capex spending (2026-11-05): fcfMethod 'heavy-capex' is built from reported operating cash flow and capex,
+// not a rough proxy -- it must not be dropped (same class of bug as 'normalized' on 2026-09-05).
+test('heavy-capex rows are exempt from the proxy-FCF filter', () => {
+  const hc = [{ ticker: 'K.AX', method: 'DCF', fcfMethod: 'heavy-capex', intrinsic: 13, snapshotPrice: 10, marginOfSafety: 0.3 }];
+  assert.deepStrictEqual(rankRows(hc, { topN: 10, maxMargin: 1.5 }).map(r => r.ticker), ['K.AX']);
+  assert.strictEqual(rankFunnel(hc, { maxMargin: 1.5 }).proxyDropped, 0);
+});

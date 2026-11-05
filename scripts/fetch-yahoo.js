@@ -4,7 +4,7 @@
 // Optional retries with linear backoff handle transient failures (429 rate-limit,
 // Yahoo 5xx, network blips) — the Worker caps at 20 req/60s, so the batch also
 // throttles between calls; retries catch the occasional straggler.
-const { mapQuoteSummary, latestSeriesValue, gbpPenceScale, scaleTimeseries } = require('../www/data.js');
+const { mapQuoteSummary, latestSeriesValue, gbpPenceScale, scaleTimeseries, ttmFromTimeseries } = require('../www/data.js');
 const { batchHeaders } = require('./lib/batch-auth.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -35,6 +35,7 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     annualTotalAssetsHistory: [], annualCurrentAssetsHistory: [], annualCurrentLiabilitiesHistory: [],
     annualTotalLiabilitiesHistory: [], annualRetainedEarningsHistory: [], annualTotalDebtHistory: [],
     annualSharesHistory: [], annualCapexHistory: [], annualGrossProfitHistory: [],
+    ttmCapex: null, ttmOcf: null, ttmDepreciation: null, lastQuarterCapex: null,
   };
   try {
     const url = `${proxyUrl.replace(/\/$/, '')}/timeseries/${encodeURIComponent(symbol)}`;
@@ -115,6 +116,8 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
       annualSharesHistory,
       annualCapexHistory,
       annualGrossProfitHistory,
+      // Heavy capex spending (www/calc/heavyCapex.js) -- same helper as www/data.js's fetchDCFData().
+      ...(({ ttmCapex, ttmOcf, ttmDepreciation, lastQuarterCapex }) => ({ ttmCapex, ttmOcf, ttmDepreciation, lastQuarterCapex }))(ttmFromTimeseries(body, gbpToPence)),
     };
   } catch (_) {
     return withHistoryDefaults; // enrichment fields stay absent/empty — evaluate.js's existing fallbacks apply

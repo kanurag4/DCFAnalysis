@@ -20,6 +20,8 @@ const SCALAR_FIELDS = [
   'freeCashflow', 'operatingCashflow', 'capitalExpenditures', 'totalCash', 'totalDebt',
   'totalRevenue', 'ebit', 'interestExpense', 'annualFcf', 'netIncome',
   'depreciationAndAmortization', 'ebitda',
+  // Heavy capex spending (www/calc/heavyCapex.js): trailing-12-month figures from /timeseries.
+  'ttmCapex', 'ttmOcf', 'ttmDepreciation', 'lastQuarterCapex',
 ];
 
 // Monetary history series from /timeseries enrichment that also need conversion.

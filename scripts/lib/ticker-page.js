@@ -6,7 +6,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const { mapQuoteSummary, fetchFxRate, gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair } = require('../../www/data.js');
+const { mapQuoteSummary, fetchFxRate, gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair, ttmFromTimeseries } = require('../../www/data.js');
+const { heavyCapexForAssumptions, heavyCapexExistingFcf, heavyCapexValuation, heavyCapexCardText } = require('../../www/calc/heavyCapex.js');
 const { calculateWACC } = require('../../www/calc/wacc.js');
 const { calculateDCF } = require('../../www/calc/dcf.js');
 const { calculateFadingGrowthDCF } = require('../../www/calc/fadingGrowthDcf.js');
@@ -579,7 +580,41 @@ async function fetchHistorySeries(symbol, proxyUrl, currency) {
     // Not in the plan's original field list -- Piotroski's gross-margin
     // criterion needs it (see www/data.js's identical addition).
     annualGrossProfitHistory: scaleTimeseries(Array.isArray(series.annualGrossProfit) ? series.annualGrossProfit : [], gbpToPence),
+    // Heavy capex spending (www/calc/heavyCapex.js): trailing-12-month capex / operating cash flow / depreciation.
+    ttm: ttmFromTimeseries(series, gbpToPence),
   };
+}
+
+// Heavy capex spending: the shared six tests (www/calc/heavyCapex.js) from this generator's data + history. Only
+// called from the plain-DCF branch (banks, utilities, REITs and airlines have returned earlier), so the model is 'dcf'.
+function heavyCapexForTickerPage(data, hist, fcfInfo) {
+  const t = (hist && hist.ttm) || {};
+  const hcData = {
+    ...data, ...t, ebit: hist.ebit,
+    annualFcfHistory: hist.annualFcfHistory, annualRevenueHistory: hist.annualRevenueHistory, annualCapexHistory: hist.annualCapexHistory,
+    annualNetIncomeHistory: hist.annualNetIncomeHistory, annualTotalAssetsHistory: hist.annualTotalAssetsHistory,
+    annualCurrentAssetsHistory: hist.annualCurrentAssetsHistory, annualCurrentLiabilitiesHistory: hist.annualCurrentLiabilitiesHistory,
+    annualTotalLiabilitiesHistory: hist.annualTotalLiabilitiesHistory, annualRetainedEarningsHistory: hist.annualRetainedEarningsHistory,
+    annualTotalDebtHistory: hist.annualTotalDebtHistory, annualSharesHistory: hist.annualSharesHistory,
+    annualGrossProfitHistory: hist.annualGrossProfitHistory,
+  };
+  return heavyCapexForAssumptions(hcData, { valuationModel: 'dcf', isCyclical: isCyclical(data.sector, data.industry), fcfInfo });
+}
+
+// The static card for the page -- the same wording as /evaluate/, /dcf/ and the apps.
+function heavyCapexPageCardHtml(hc, price, sym) {
+  const t = heavyCapexCardText(hc, {
+    price,
+    money: (v) => money(v, sym),
+    moneyBig: (v) => moneyB(v, sym),
+    pct: (v) => (v == null || !isFinite(v) ? 'N/A' : (v * 100).toFixed(1) + '%'),
+  });
+  return '<section class="heavy-capex-card">'
+    + '<h3>' + escapeHtml(t.title) + '</h3>'
+    + '<p class="hc-headline">' + escapeHtml(t.headline[0]) + '<strong>' + escapeHtml(t.headline[1]) + '</strong>' + escapeHtml(t.headline[2]) + '</p>'
+    + '<p>' + escapeHtml(t.facts) + '</p><p>' + escapeHtml(t.existing) + '</p>'
+    + '<p class="hc-method">' + escapeHtml(t.method) + ' <a href="/glossary/heavy-capex-spending/">How this works</a></p>'
+    + '</section>';
 }
 
 // The Worker's /timeseries route already flattens Yahoo's response to
@@ -827,6 +862,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         hist.annualTotalDebtHistory = hist.annualTotalDebtHistory.map(e => ({ date: e.date, value: c(e.value) }));
         hist.annualCapexHistory = hist.annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
         hist.annualGrossProfitHistory = hist.annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
+        if (hist.ttm) hist.ttm = { ...hist.ttm, ttmCapex: c(hist.ttm.ttmCapex), ttmOcf: c(hist.ttm.ttmOcf), ttmDepreciation: c(hist.ttm.ttmDepreciation), lastQuarterCapex: c(hist.ttm.lastQuarterCapex) };
       } else {
         fxConversionFailed = true;
         data.freeCashflow = null;
@@ -854,6 +890,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         hist.annualTotalDebtHistory = [];
         hist.annualCapexHistory = [];
         hist.annualGrossProfitHistory = [];
+        if (hist.ttm) hist.ttm = { ...hist.ttm, ttmCapex: null, ttmOcf: null, ttmDepreciation: null, lastQuarterCapex: null };
       }
     }
 
@@ -863,6 +900,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     const isUtilityTicker = !isBank && !isReitTicker && !isAirlineTicker && isUtility(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
+    let heavyCapex = null, heavyCapexValued = null; // heavy capex spending (www/calc/heavyCapex.js)
     let affoPerShare = null, reitMultiples = null, reitIndustryKey = null;
     let airlineMultiples = null;
     let utilityBookValue = null, utilityRoePct = null;
@@ -1004,6 +1042,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         baseFcf = Math.round(data.totalRevenue * (revenueTargetMarginPct / 100));
         revenueNormalised = true;
       }
+      // Heavy capex spending: the existing business (operating cash flow minus maintenance capex) is the DCF's
+      // starting cash flow; the growth capex is added per scenario after the holdco discount below.
+      const hcCheck = heavyCapexForTickerPage(data, hist, fcfInfo);
+      if (hcCheck.applies) {
+        heavyCapex = hcCheck;
+        baseFcf = Math.round(heavyCapexExistingFcf(hcCheck));
+        revenueNormalised = false;
+      }
       // Prefer /timeseries-sourced diluted shares and interest expense over
       // the basic share count / incomeStatementHistory's frequently-empty
       // interestExpense — same precedence as www/dcf/app.js and
@@ -1064,6 +1110,14 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     const isHoldcoTicker = isConglomerate(data.sector, data.industry, data.ticker);
     if (isHoldcoTicker) {
       scenarios = applyHoldcoDiscountToScenarios(scenarios, HOLDCO_DISCOUNT, data.price);
+    }
+    // Heavy capex spending: add the growth capex at its return to every scenario (after the holdco discount, which
+    // applies to the existing business only -- same order as /evaluate/'s computeScenarios + heavyCapexValuation).
+    if (heavyCapex) {
+      const hcShares = (hist.dilutedSharesOutstanding != null && hist.dilutedSharesOutstanding > 0) ? hist.dilutedSharesOutstanding : data.sharesOutstanding;
+      heavyCapexValued = heavyCapexValuation({ ...data, dilutedSharesOutstanding: hcShares }, heavyCapex,
+        scenarios.map(sc => ({ ...sc, wacc: sc.discountPct / 100 })));
+      scenarios = heavyCapexValued.scenarios;
     }
 
     await sleep(FETCH_SPACING_MS);
@@ -1145,13 +1199,15 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     // negative -- confirmed live on TM, 2026-08-24). Without this check the
     // badge would show a stale "Nyr avg margin"/"OCF−CapEx" tag next to a
     // value that's actually revenue-normalised.
-    const fcfMethodBadge = revenueNormalised ? ''
+    const fcfMethodBadge = (revenueNormalised || heavyCapex) ? ''
       : fcfInfo && fcfInfo.value != null
       ? (fcfInfo.method === 'proxy' ? ' <span class="stat-warn">⚠ est.</span>'
         : fcfInfo.method === 'derived' ? ' <span style="font-size:0.7rem;color:var(--kv-muted)">OCF−CapEx</span>'
         : fcfInfo.method === 'normalized' ? ` <span style="font-size:0.7rem;color:var(--kv-muted)">${fcfInfo.yearsUsed}yr avg margin</span>` : '')
       : '';
-    const fcfMethodNote = revenueNormalised
+    const fcfMethodNote = heavyCapex
+      ? 'Existing business: operating cash flow minus the capex needed to keep it running (heavy capex spending, see below)'
+      : revenueNormalised
       ? revenueFallbackNote(revenueTargetMarginPct, fcfInfo?.value)
       : !fcfInfo ? ''
       : fcfInfo.method === 'reported' ? 'Reported free cash flow (Yahoo)'
@@ -1551,9 +1607,11 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       ${nullReasonNoticeHtml}
 
       <section class="scenarios-results">
-        <h3>Intrinsic value estimate · 5-year forecast${revenueNormalised ? ' · Revenue-normalised' : ''}</h3>
+        <h3>Intrinsic value estimate · 5-year forecast${heavyCapex ? ' · Heavy capex spending' : revenueNormalised ? ' · Revenue-normalised' : ''}</h3>
         <div class="scenario-cards">${scenarioCardsHtml}</div>
       </section>
+
+      ${heavyCapexValued ? heavyCapexPageCardHtml({ check: heavyCapex, valuation: heavyCapexValued }, data.price, currencySym) : ''}
 
       <section class="assumptions">
         <h2>Assumptions used in this valuation</h2>
@@ -1653,4 +1711,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, deriveBaseGrowthPct, shouldApplyRevenueFallback, revenueFallbackNote, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };
+module.exports = { heavyCapexForTickerPage, heavyCapexPageCardHtml, buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, deriveBaseGrowthPct, shouldApplyRevenueFallback, revenueFallbackNote, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };

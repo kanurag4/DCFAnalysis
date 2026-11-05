@@ -18,6 +18,8 @@ const { HOLDCO_DISCOUNT } = require('../../www/config.js');
 const { alignFiscalYears } = require('../../www/calc/fiscalYearAlign.js');
 const { altmanZScore } = require('../../www/calc/altmanZ.js');
 const { piotroskiScore, piotroskiTrend } = require('../../www/calc/piotroski.js');
+const { heavyCapexForAssumptions, heavyCapexExistingFcf, heavyCapexValuation } = require('../../www/calc/heavyCapex.js');
+const { isAirline } = require('../../www/utils.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -218,6 +220,17 @@ function evaluateStockCore(data, params) {
     baseFcf = Math.round(baseFcf);
   }
 
+  // Heavy capex spending (www/calc/heavyCapex.js): the same six tests as every other surface. REITs and airlines
+  // reach this DCF branch in the screens (their own models are the ETF radar's, see etf/sector-models.js) but have
+  // their own model everywhere else, so they never qualify.
+  const hcCheck = heavyCapexForAssumptions(data, {
+    valuationModel: (isReit(data.sector, data.industry) || isAirline(data.sector, data.industry)) ? 'own-model' : 'dcf',
+    isCyclical: isCyclical(data.sector, data.industry),
+    fcfInfo,
+  });
+  const heavyCapex = hcCheck.applies ? hcCheck : null;
+  if (heavyCapex) baseFcf = Math.round(heavyCapexExistingFcf(heavyCapex));
+
   const waccResult = calculateWACC({
     marketCap: data.marketCap, totalDebt: data.totalDebt, beta: effectiveBeta,
     interestExpense: data.interestExpense, taxRate: data.taxRate, ebit: data.ebit,
@@ -264,6 +277,24 @@ function evaluateStockCore(data, params) {
   if (!isUsableResult(result)) {
     return { ...base, excluded: true, reason: 'dcf-unavailable' };
   }
+  if (heavyCapex) {
+    const v = heavyCapexValuation(data, heavyCapex, [{ key: 'base', wacc: waccUsed, result }]);
+    const s = v.scenarios[0];
+    const row = {
+      ...base, method: 'DCF', fcfMethod: 'heavy-capex',
+      intrinsic: s.result.intrinsicValue,
+      marginOfSafety: s.result.marginOfSafety,
+      wacc: waccUsed,
+      terminalValuePct: result.terminalValuePct,
+      impliedReturnOnCapex: v.implied ? v.implied.returnOnCapex : null,
+      impliedReturnStatus: v.implied ? v.implied.status : null,
+      heavyCapexTerm: s.capexValuePerShare,
+      ...(highLeverage ? { highLeverage: true } : {}),
+    };
+    // Kept off the published JSON (non-enumerable): the check is for callers/tests, not the ranking files.
+    Object.defineProperty(row, 'heavyCapexCheck', { value: heavyCapex, enumerable: false });
+    return row;
+  }
   return {
     ...base, method: 'DCF', fcfMethod: fcfInfo.method,
     intrinsic: result.intrinsicValue,
@@ -285,11 +316,18 @@ function evaluateStock(data, params) {
   const result = evaluateStockCore(data, params);
   if (result.excluded) return result;
   if (!isConglomerate(data.sector, data.industry, data.ticker)) return result;
+  // Heavy capex: the discount applies to the existing business only (as computeScenarios does for /evaluate/), then
+  // the growth capex term is added back.
+  const term = result.heavyCapexTerm != null ? result.heavyCapexTerm : 0;
+  const existing = result.intrinsic - term;
   const discounted = applyHoldcoDiscount(
-    { result: { intrinsicValue: result.intrinsic, marginOfSafety: result.marginOfSafety } },
+    { result: { intrinsicValue: existing, marginOfSafety: data.price > 0 ? (existing - data.price) / data.price : null } },
     HOLDCO_DISCOUNT, data.price,
   );
-  return { ...result, intrinsic: discounted.result.intrinsicValue, marginOfSafety: discounted.result.marginOfSafety };
+  const intrinsic = discounted.result.intrinsicValue + term;
+  const out = { ...result, intrinsic, marginOfSafety: term ? (data.price > 0 ? (intrinsic - data.price) / data.price : null) : discounted.result.marginOfSafety };
+  if (result.heavyCapexCheck) Object.defineProperty(out, 'heavyCapexCheck', { value: result.heavyCapexCheck, enumerable: false });
+  return out;
 }
 
 // computeSolvency is also exported standalone — scripts/_backfill-solvency-
