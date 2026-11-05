@@ -78,11 +78,19 @@ function heavyCapexCheck(data, opts) {
   return { applies: tests.every(t => t.pass) && maintenance != null, tests, metrics };
 }
 
-// Resolve a sibling module's export: the browser global when the page loaded it, else require() (Node, Workers bundle).
+// Resolve a sibling module's export: the browser global when the page loaded it, else require() (Node, and the
+// Watchlist Worker's esbuild bundle). Each require() has a LITERAL path on purpose -- a bundler cannot follow a
+// variable path, and the Worker would throw at runtime.
+function hcRequire(path) {
+  if (typeof require !== 'function') return {};
+  if (path === '../utils.js') return require('../utils.js');
+  if (path === './fiscalYearAlign.js') return require('./fiscalYearAlign.js');
+  if (path === './altmanZ.js') return require('./altmanZ.js');
+  return {};
+}
 function hcDep(name, globalFn, path) {
   if (typeof globalFn === 'function') return globalFn;
-  if (typeof require === 'function') return require(path)[name];
-  return null;
+  return hcRequire(path)[name] || null;
 }
 
 // Altman Z zone ('safe' | 'grey' | 'distress' | null) from exactly the inputs /evaluate/'s Solvency Check uses
