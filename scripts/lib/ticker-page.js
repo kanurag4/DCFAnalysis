@@ -451,6 +451,13 @@ function pickCadence(series, name) {
 // average-cyclical-margin-design.md). A negative cyclical value now flows to
 // calculateDCF()'s own `fcf <= 0 -> null` guard and this file's existing
 // null-base-case retry/skip path instead.
+// Assumptions-row note for the revenue-normalised fallback. reportedFcf is the pre-fallback figure: a number
+// <= 0 means Yahoo DID report FCF, it was just negative (NEU.AX, 2026-11-05) -- not "unavailable".
+function revenueFallbackNote(marginPct, reportedFcf) {
+  const why = Number.isFinite(reportedFcf) && reportedFcf <= 0 ? 'negative' : 'unavailable';
+  return `Revenue × ${marginPct}% target margin — reported FCF ${why}`;
+}
+
 function shouldApplyRevenueFallback({ baseFcf, fcfMethod, totalRevenue }) {
   return (baseFcf == null || (baseFcf <= 0 && fcfMethod !== 'normalized')) && totalRevenue > 0;
 }
@@ -1145,7 +1152,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         : fcfInfo.method === 'normalized' ? ` <span style="font-size:0.7rem;color:var(--kv-muted)">${fcfInfo.yearsUsed}yr avg margin</span>` : '')
       : '';
     const fcfMethodNote = revenueNormalised
-      ? `Revenue × ${revenueTargetMarginPct}% target margin — reported FCF unavailable`
+      ? revenueFallbackNote(revenueTargetMarginPct, fcfInfo?.value)
       : !fcfInfo ? ''
       : fcfInfo.method === 'reported' ? 'Reported free cash flow (Yahoo)'
       : fcfInfo.method === 'derived' ? 'Derived: operating cash flow − capital expenditure'
@@ -1646,4 +1653,4 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
   }
 }
 
-module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, deriveBaseGrowthPct, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };
+module.exports = { buildTickerPage, upsertManifestEntry, deriveNullReason, latestAnnual, pickCadence, deriveScenarios, deriveBaseGrowthPct, shouldApplyRevenueFallback, revenueFallbackNote, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, bucketMonthly };

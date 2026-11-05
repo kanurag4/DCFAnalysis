@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { test } = require('node:test');
-const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, deriveBaseGrowthPct } = require('../scripts/lib/ticker-page.js');
+const { latestAnnual, pickCadence, deriveScenarios, shouldApplyRevenueFallback, revenueFallbackNote, marketMeta, lineChart, fetchHistorySeries, isGbpPenceCurrencyPair, deriveBaseGrowthPct } = require('../scripts/lib/ticker-page.js');
 
 // Regression tests for a real bug (found 2026-09-25 generating PSX's page): the ticker-page
 // generator called deriveMultiYearGrowth() WITHOUT sector/industry, so isCyclical() was always
@@ -197,6 +197,21 @@ test('shouldApplyRevenueFallback does not fire when baseFcf is positive', () => 
 
 test('shouldApplyRevenueFallback does not fire when totalRevenue is missing, even with null baseFcf', () => {
   assert.strictEqual(shouldApplyRevenueFallback({ baseFcf: null, fcfMethod: 'reported', totalRevenue: 0 }), false);
+});
+
+// ── revenueFallbackNote (2026-11-05, NEU.AX): Yahoo reported a NEGATIVE FCF, but the page said "unavailable" ──
+
+test('revenueFallbackNote says "negative" when Yahoo reported a negative FCF', () => {
+  assert.strictEqual(revenueFallbackNote(29.1, -13546250), 'Revenue × 29.1% target margin — reported FCF negative');
+});
+
+test('revenueFallbackNote says "negative" for a reported FCF of exactly zero', () => {
+  assert.strictEqual(revenueFallbackNote(10, 0), 'Revenue × 10% target margin — reported FCF negative');
+});
+
+test('revenueFallbackNote keeps "unavailable" when Yahoo reported no FCF at all', () => {
+  assert.strictEqual(revenueFallbackNote(29.1, null), 'Revenue × 29.1% target margin — reported FCF unavailable');
+  assert.strictEqual(revenueFallbackNote(29.1, undefined), 'Revenue × 29.1% target margin — reported FCF unavailable');
 });
 
 // ── fetchHistorySeries: GBp (pence-quoted UK) unit handling ────────────────
