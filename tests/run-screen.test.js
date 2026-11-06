@@ -19,7 +19,7 @@ test('readProxyUrl falls back to parsing www/config.js when the env var is unset
   const prev = process.env.YAHOO_PROXY_URL;
   delete process.env.YAHOO_PROXY_URL;
   try {
-    assert.strictEqual(readProxyUrl(), 'https://stock-evaluator.anurag-kor.workers.dev');
+    assert.strictEqual(readProxyUrl(), 'https://api.kashvector.com');
   } finally {
     if (prev !== undefined) process.env.YAHOO_PROXY_URL = prev;
   }

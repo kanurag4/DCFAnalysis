@@ -1,5 +1,5 @@
 const CONFIG = {
-  YAHOO_PROXY_URL: 'https://stock-evaluator.anurag-kor.workers.dev',
+  YAHOO_PROXY_URL: 'https://api.kashvector.com',
 };
 
 // Reference P/AFFO multiples per REIT property type, used as the "fair

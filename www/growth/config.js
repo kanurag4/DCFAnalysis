@@ -1,6 +1,6 @@
 // www/growth/config.js
 const CONFIG = {
-  YAHOO_PROXY_URL: 'https://stock-evaluator.anurag-kor.workers.dev',
+  YAHOO_PROXY_URL: 'https://api.kashvector.com',
 };
 
 // Starting-point EV/Sales multiples by Yahoo assetProfile.sector. This is
