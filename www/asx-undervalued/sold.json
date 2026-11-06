@@ -676,5 +676,45 @@
     "exitDate": "2026-10-30",
     "exitPrice": 19.57,
     "dollarPnl": 18.55
+  },
+  {
+    "ticker": "CUV.AX",
+    "entryDate": "2026-10-30",
+    "entryPrice": 7.22,
+    "exitDate": "2026-11-06",
+    "exitPrice": 7.52,
+    "dollarPnl": 21.81
+  },
+  {
+    "ticker": "LNW.AX",
+    "entryDate": "2026-10-23",
+    "entryPrice": 130,
+    "exitDate": "2026-11-06",
+    "exitPrice": 116.46,
+    "dollarPnl": -40.63
+  },
+  {
+    "ticker": "SKS.AX",
+    "entryDate": "2026-10-16",
+    "entryPrice": 6.91,
+    "exitDate": "2026-11-06",
+    "exitPrice": 5.25,
+    "dollarPnl": -67.9
+  },
+  {
+    "ticker": "ELS.AX",
+    "entryDate": "2026-10-30",
+    "entryPrice": 1.81,
+    "exitDate": "2026-11-06",
+    "exitPrice": 1.43,
+    "dollarPnl": -110.21
+  },
+  {
+    "ticker": "IGO.AX",
+    "entryDate": "2026-09-25",
+    "entryPrice": 6.58,
+    "exitDate": "2026-11-06",
+    "exitPrice": 4.96,
+    "dollarPnl": -2.11
   }
 ]

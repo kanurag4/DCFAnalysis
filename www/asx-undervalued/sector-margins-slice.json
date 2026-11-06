@@ -1,10 +1,10 @@
 {
- "asAt": "2026-10-30",
+ "asAt": "2026-11-06",
  "industries": {
   "Software - Application": [
    {
     "ticker": "360.AX",
-    "margin": 0.0010353116107312405
+    "margin": 0.0010353116107312196
    },
    {
     "ticker": "BVS.AX",
@@ -68,7 +68,7 @@
   "Aluminum": [
    {
     "ticker": "AAI.AX",
-    "margin": 0.008371553248108395
+    "margin": 0.008371553248108399
    }
   ],
   "Telecom Services": [
@@ -86,7 +86,7 @@
    },
    {
     "ticker": "SPK.AX",
-    "margin": 0.09469943548415856
+    "margin": 0.09469943548415857
    },
    {
     "ticker": "TLS.AX",
@@ -98,7 +98,7 @@
    },
    {
     "ticker": "TUA.AX",
-    "margin": 0.12480816341088129
+    "margin": 0.12480816341088127
    }
   ],
   "REIT - Diversified": [
@@ -168,7 +168,7 @@
    },
    {
     "ticker": "GQG.AX",
-    "margin": 0.5856728733950384
+    "margin": 0.5856728733950385
    },
    {
     "ticker": "L1G.AX",
@@ -205,12 +205,20 @@
     "margin": -0.35927697039773204
    },
    {
+    "ticker": "BPT.AX",
+    "margin": -0.02198814967442959
+   },
+   {
     "ticker": "KAR.AX",
     "margin": 0.06327607575164988
    },
    {
+    "ticker": "STO.AX",
+    "margin": 0.1882316127452056
+   },
+   {
     "ticker": "WDS.AX",
-    "margin": 0.1024898279867592
+    "margin": 0.10248982798675922
    }
   ],
   "Utilities - Independent Power Producers": [
@@ -233,6 +241,92 @@
    {
     "ticker": "VEA.AX",
     "margin": 0.010954264131443353
+   }
+  ],
+  "Gold": [
+   {
+    "ticker": "ALK.AX",
+    "margin": -0.03369722555103946
+   },
+   {
+    "ticker": "BGL.AX",
+    "margin": -0.23619328898253633
+   },
+   {
+    "ticker": "CMM.AX",
+    "margin": 0.2559950986002303
+   },
+   {
+    "ticker": "CYL.AX",
+    "margin": -0.04204637805642436
+   },
+   {
+    "ticker": "DPM.AX",
+    "margin": 0.4495715044422875
+   },
+   {
+    "ticker": "EMR.AX",
+    "margin": 0.36140866626235907
+   },
+   {
+    "ticker": "EVN.AX",
+    "margin": 0.09313269419708166
+   },
+   {
+    "ticker": "GGP.AX",
+    "margin": 0.392290100037748
+   },
+   {
+    "ticker": "GMD.AX",
+    "margin": -0.016005372450419594
+   },
+   {
+    "ticker": "KCN.AX",
+    "margin": -0.4972597305963546
+   },
+   {
+    "ticker": "NEM.AX",
+    "margin": 0.1450214386511585
+   },
+   {
+    "ticker": "NST.AX",
+    "margin": 0.08735383570377944
+   },
+   {
+    "ticker": "OBM.AX",
+    "margin": -0.06975035282186029
+   },
+   {
+    "ticker": "PNR.AX",
+    "margin": -0.1444898146867203
+   },
+   {
+    "ticker": "PRU.AX",
+    "margin": 0.25283821125255024
+   },
+   {
+    "ticker": "RMS.AX",
+    "margin": 0.18370535989601167
+   },
+   {
+    "ticker": "RRL.AX",
+    "margin": 0.21247014207343423
+   },
+   {
+    "ticker": "RSG.AX",
+    "margin": 0.06005875525084584
+   },
+   {
+    "ticker": "VAU.AX",
+    "margin": -0.221703232554643
+   },
+   {
+    "ticker": "WAF.AX",
+    "margin": -0.0018686610640139198
+   },
+   {
+    "ticker": "WGX.AX",
+    "margin": 0.07573858518330703
    }
   ],
   "Gambling": [
@@ -276,7 +370,7 @@
   "Packaging & Containers": [
    {
     "ticker": "AMC.AX",
-    "margin": 0.054262421281265974
+    "margin": 0.05426242128126598
    },
    {
     "ticker": "ORA.AX",
@@ -292,11 +386,11 @@
   "Medical Instruments & Supplies": [
    {
     "ticker": "ANN.AX",
-    "margin": 0.11034217742624874
+    "margin": 0.11034217742624877
    },
    {
     "ticker": "FPH.AX",
-    "margin": 0.1548118269782292
+    "margin": 0.15481182697822918
    },
    {
     "ticker": "NAN.AX",
@@ -305,6 +399,24 @@
    {
     "ticker": "RMD.AX",
     "margin": 0.2539715619773956
+   }
+  ],
+  "Banks - Diversified": [
+   {
+    "ticker": "ANZ.AX",
+    "margin": 0.7606101469401746
+   },
+   {
+    "ticker": "CBA.AX",
+    "margin": -0.43109245013873687
+   },
+   {
+    "ticker": "NAB.AX",
+    "margin": -0.5583578560896265
+   },
+   {
+    "ticker": "WBC.AX",
+    "margin": -0.5051545867687613
    }
   ],
   "Auto Parts": [
@@ -427,92 +539,10 @@
     "margin": -0.3498573007575375
    }
   ],
-  "Gold": [
-   {
-    "ticker": "BGL.AX",
-    "margin": -0.23619328898253633
-   },
-   {
-    "ticker": "CMM.AX",
-    "margin": 0.2559950986002303
-   },
-   {
-    "ticker": "CYL.AX",
-    "margin": -0.04204637805642436
-   },
-   {
-    "ticker": "DPM.AX",
-    "margin": 0.4495715044422875
-   },
-   {
-    "ticker": "EMR.AX",
-    "margin": 0.36140866626235907
-   },
-   {
-    "ticker": "EVN.AX",
-    "margin": 0.09313269419708166
-   },
-   {
-    "ticker": "GGP.AX",
-    "margin": 0.392290100037748
-   },
-   {
-    "ticker": "GMD.AX",
-    "margin": -0.016005372450419594
-   },
-   {
-    "ticker": "KCN.AX",
-    "margin": -0.4972597305963546
-   },
-   {
-    "ticker": "NEM.AX",
-    "margin": 0.14502143865115852
-   },
-   {
-    "ticker": "NST.AX",
-    "margin": 0.08735383570377944
-   },
-   {
-    "ticker": "OBM.AX",
-    "margin": -0.06975035282186029
-   },
-   {
-    "ticker": "PNR.AX",
-    "margin": -0.1444898146867203
-   },
-   {
-    "ticker": "PRU.AX",
-    "margin": 0.25283821125255024
-   },
-   {
-    "ticker": "RMS.AX",
-    "margin": 0.18370535989601167
-   },
-   {
-    "ticker": "RRL.AX",
-    "margin": 0.21247014207343423
-   },
-   {
-    "ticker": "RSG.AX",
-    "margin": 0.06005875525084584
-   },
-   {
-    "ticker": "VAU.AX",
-    "margin": -0.221703232554643
-   },
-   {
-    "ticker": "WAF.AX",
-    "margin": -0.0018686610640139198
-   },
-   {
-    "ticker": "WGX.AX",
-    "margin": 0.07573858518330703
-   }
-  ],
   "Other Industrial Metals & Mining": [
    {
     "ticker": "BHP.AX",
-    "margin": 0.20489720918415288
+    "margin": 0.2048972091841529
    },
    {
     "ticker": "DRR.AX",
@@ -524,7 +554,7 @@
    },
    {
     "ticker": "ELV.AX",
-    "margin": -0.436300294927724
+    "margin": -0.43630029492772393
    },
    {
     "ticker": "FMG.AX",
@@ -599,6 +629,24 @@
     "margin": 0.07399577909602023
    }
   ],
+  "Steel": [
+   {
+    "ticker": "BSL.AX",
+    "margin": 0.031210133341483162
+   },
+   {
+    "ticker": "CIA.AX",
+    "margin": -0.03279070080525346
+   },
+   {
+    "ticker": "SGM.AX",
+    "margin": 0.016542340803359555
+   },
+   {
+    "ticker": "VSL.AX",
+    "margin": 0.09001350366925687
+   }
+  ],
   "REIT - Industrial": [
    {
     "ticker": "BWP.AX",
@@ -620,7 +668,7 @@
   "Specialty Business Services": [
    {
     "ticker": "BXB.AX",
-    "margin": 0.06377390593657675
+    "margin": 0.06377390593657677
    },
    {
     "ticker": "IPH.AX",
@@ -655,16 +703,6 @@
     "margin": 0.14280164481392055
    }
   ],
-  "Banks - Diversified": [
-   {
-    "ticker": "CBA.AX",
-    "margin": -0.43109245013873687
-   },
-   {
-    "ticker": "WBC.AX",
-    "margin": -0.2547711984277229
-   }
-  ],
   "Software - Infrastructure": [
    {
     "ticker": "CCL.AX",
@@ -697,20 +735,6 @@
    {
     "ticker": "CGF.AX",
     "margin": 0.6115902124936605
-   }
-  ],
-  "Steel": [
-   {
-    "ticker": "CIA.AX",
-    "margin": -0.03279070080525345
-   },
-   {
-    "ticker": "SGM.AX",
-    "margin": 0.016542340803359555
-   },
-   {
-    "ticker": "VSL.AX",
-    "margin": 0.09001350366925687
    }
   ],
   "Restaurants": [
@@ -755,6 +779,28 @@
    {
     "ticker": "COL.AX",
     "margin": 0.03275366389763165
+   },
+   {
+    "ticker": "WOW.AX",
+    "margin": 0.03145612450452469
+   }
+  ],
+  "Capital Markets": [
+   {
+    "ticker": "CPU.AX",
+    "margin": 0.22034087033454497
+   },
+   {
+    "ticker": "HUB.AX",
+    "margin": 0.257829199483651
+   },
+   {
+    "ticker": "MQG.AX",
+    "margin": -0.09935082182951926
+   },
+   {
+    "ticker": "SOL.AX",
+    "margin": 0.5595413526827595
    }
   ],
   "REIT - Retail": [
@@ -829,6 +875,10 @@
    {
     "ticker": "DNL.AX",
     "margin": 0.038183801560361434
+   },
+   {
+    "ticker": "ORI.AX",
+    "margin": 0.04269731454642713
    }
   ],
   "Engineering & Construction": [
@@ -979,16 +1029,6 @@
     "margin": 0.04959463358559807
    }
   ],
-  "Capital Markets": [
-   {
-    "ticker": "HUB.AX",
-    "margin": 0.257829199483651
-   },
-   {
-    "ticker": "SOL.AX",
-    "margin": 0.5595413526827595
-   }
-  ],
   "Specialty Retail": [
    {
     "ticker": "HVN.AX",
@@ -1022,7 +1062,7 @@
    },
    {
     "ticker": "QBE.AX",
-    "margin": 0.1514498503188252
+    "margin": 0.15144985031882524
    },
    {
     "ticker": "SUN.AX",
@@ -1061,6 +1101,12 @@
    {
     "ticker": "MMS.AX",
     "margin": -0.11883839552025886
+   }
+  ],
+  "Food Distribution": [
+   {
+    "ticker": "MTS.AX",
+    "margin": 0.022493043020846364
    }
   ],
   "Thermal Coal": [
@@ -1152,7 +1198,7 @@
   "Coking Coal": [
    {
     "ticker": "SMR.AX",
-    "margin": 0.20622980300706806
+    "margin": 0.20622980300706803
    }
   ],
   "Home Improvement Retail": [
