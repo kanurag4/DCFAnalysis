@@ -7,6 +7,10 @@
 // established, since Yahoo's per-series /timeseries arrays aren't
 // guaranteed to share length or have entries for identical dates.
 
+// Latest 4 fiscal years only -- same window as utils.js's HISTORY_WINDOW_YEARS (own name: these files share
+// one browser global scope). Our market-data store can hold more years than Yahoo's 4.
+const FY_ALIGN_YEARS = 4;
+
 function alignFiscalYears(seriesMap) {
   const names = Object.keys(seriesMap || {});
   const byName = {};
@@ -23,7 +27,7 @@ function alignFiscalYears(seriesMap) {
     byName[name] = map;
   }
 
-  const dates = [...dateSet].sort().reverse(); // most recent first
+  const dates = [...dateSet].sort().reverse().slice(0, FY_ALIGN_YEARS); // most recent first
   return dates.map(date => {
     const row = { date };
     for (const name of names) {
@@ -34,4 +38,4 @@ function alignFiscalYears(seriesMap) {
   });
 }
 
-if (typeof module !== 'undefined') module.exports = { alignFiscalYears };
+if (typeof module !== 'undefined') module.exports = { alignFiscalYears, FY_ALIGN_YEARS };

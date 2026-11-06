@@ -28,13 +28,22 @@ const HEAVY_CAPEX = {
 
 function hcFinite(v) { return (v != null && isFinite(v)) ? v : null; }
 
+// Latest 4 fiscal years only -- same window as utils.js's HISTORY_WINDOW_YEARS (own name: these files share
+// one browser global scope). Our market-data store can hold more years than Yahoo's 4.
+const HC_HISTORY_YEARS = 4;
+function hcLatestYears(series) {
+  const arr = Array.isArray(series) ? series : [];
+  if (arr.length <= HC_HISTORY_YEARS) return arr;
+  return arr.filter(e => e && e.date).slice().sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(-HC_HISTORY_YEARS);
+}
+
 // Average capex / revenue of the two earliest fiscal years that have both, matched by calendar year of period end.
 function hcPreBuildIntensity(capexHistory, revenueHistory) {
   const revByYear = {};
-  (revenueHistory || []).forEach(e => {
+  hcLatestYears(revenueHistory).forEach(e => {
     if (e && hcFinite(e.value) != null && e.value > 0) revByYear[String(e.date).slice(0, 4)] = e.value;
   });
-  const ratios = (capexHistory || [])
+  const ratios = hcLatestYears(capexHistory)
     .filter(e => e && hcFinite(e.value) != null && revByYear[String(e.date).slice(0, 4)])
     .sort((a, b) => String(a.date).localeCompare(String(b.date)))
     .map(e => Math.abs(e.value) / revByYear[String(e.date).slice(0, 4)]);
@@ -52,7 +61,7 @@ function heavyCapexCheck(data, opts) {
   const ocf = hcFinite(data.ttmOcf) ?? hcFinite(data.operatingCashflow);
   const depreciation = hcFinite(data.ttmDepreciation);
   const fcfNow = hcFinite(opts.engineFcf) ?? (capex != null && ocf != null ? ocf - capex : null);
-  const fcfHistory = (data.annualFcfHistory || []).map(e => e && hcFinite(e.value)).filter(v => v != null);
+  const fcfHistory = hcLatestYears(data.annualFcfHistory).map(e => e && hcFinite(e.value)).filter(v => v != null);
   const bestFcf = fcfHistory.length ? Math.max(...fcfHistory) : null;
   const preBuildIntensity = hcPreBuildIntensity(data.annualCapexHistory, data.annualRevenueHistory);
   const preBuildMaintenance = preBuildIntensity != null && revenue > 0 ? preBuildIntensity * revenue : null;
@@ -218,7 +227,7 @@ function heavyCapexCardText(hc, fmt) {
   return { title: 'Heavy capex spending', headline, facts, existing, method, tests: (hc.check.tests || []).map(t => ({ label: t.label, pass: t.pass })) };
 }
 
-if (typeof module !== 'undefined') module.exports = { HEAVY_CAPEX, heavyCapexCheck, heavyCapexValuation, heavyCapexExistingFcf, heavyCapexCardText, heavyCapexAltmanZone, heavyCapexForAssumptions };
+if (typeof module !== 'undefined') module.exports = { HEAVY_CAPEX, heavyCapexCheck, heavyCapexValuation, heavyCapexExistingFcf, heavyCapexCardText, heavyCapexAltmanZone, heavyCapexForAssumptions, HC_HISTORY_YEARS };
 if (typeof window !== 'undefined') {
   window.HEAVY_CAPEX = HEAVY_CAPEX; window.heavyCapexCheck = heavyCapexCheck;
   window.heavyCapexValuation = heavyCapexValuation; window.heavyCapexExistingFcf = heavyCapexExistingFcf;

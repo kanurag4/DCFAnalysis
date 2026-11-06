@@ -15,10 +15,20 @@
 // genuine multi-year commodity cycle (5-10yr), a real data-availability
 // limitation surfaced to the user (see calc/assumptions.js's isCyclical
 // dispatch and app.js's cyclical-note UI), not hidden.
+// Latest 4 fiscal years only -- same window as utils.js's HISTORY_WINDOW_YEARS (own name: these files share
+// one browser global scope). Our market-data store can hold more years than Yahoo's 4.
+const CN_HISTORY_YEARS = 4;
+function cnLatestYears(series) {
+  if (series.length <= CN_HISTORY_YEARS) return series;
+  return series.filter(e => e && e.date).slice().sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(-CN_HISTORY_YEARS);
+}
+
 function normalizeCyclicalFcf({ fcfHistory, revenueHistory, trailingRevenue, minYears = 2, capRevenue = true }) {
   if (!Array.isArray(fcfHistory) || !Array.isArray(revenueHistory)) {
     return { value: null, marginUsed: null, yearsUsed: 0 };
   }
+  fcfHistory = cnLatestYears(fcfHistory);
+  revenueHistory = cnLatestYears(revenueHistory);
 
   // Pair by fiscal-year date, not array position -- the two series can come
   // back with different lengths or ordering from Yahoo, and pairing by
@@ -123,5 +133,5 @@ function cyclicalBaseFcf({ fcfHistory, revenueHistory, trailingRevenue, sectorLo
   };
 }
 
-if (typeof module !== 'undefined') module.exports = { normalizeCyclicalFcf, resolveCyclicalMargin, cyclicalBaseFcf };
+if (typeof module !== 'undefined') module.exports = { normalizeCyclicalFcf, resolveCyclicalMargin, cyclicalBaseFcf, CN_HISTORY_YEARS };
 if (typeof window !== 'undefined') { window.normalizeCyclicalFcf = normalizeCyclicalFcf; window.resolveCyclicalMargin = resolveCyclicalMargin; window.cyclicalBaseFcf = cyclicalBaseFcf; }

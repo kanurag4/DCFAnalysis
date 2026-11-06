@@ -286,8 +286,23 @@ function deriveBaseGrowth(revenueGrowth, earningsGrowth) {
 // Returns null unless there are >= minPoints non-null points spanning >=
 // minYears -- a 2-point series with only a 1-year gap is just a 1-year rate,
 // which isn't the "multi-year trend" this function is for.
+// Multi-year calculations use the latest 4 fiscal years (user decision 2026-11-06). Yahoo serves 4 annual
+// periods; our own market-data store keeps every year it has seen and adds each new one, so a series can be
+// longer. Without this window a value would drift as the store's history grows (AAPL Base $128 on 4 years
+// vs $114 on 5). calc/cyclicalNormalization.js, calc/heavyCapex.js and calc/fiscalYearAlign.js apply the
+// same 4 with their own copy of this constant (tests/history-window.test.js keeps them equal).
+const HISTORY_WINDOW_YEARS = 4;
+
+// The newest `n` entries of a [{date, value}] series by date, oldest first. Entries without a date are
+// dropped only when the series is longer than the window (a short series passes through untouched).
+function latestYears(series, n = HISTORY_WINDOW_YEARS) {
+  const arr = Array.isArray(series) ? series : [];
+  if (arr.length <= n) return arr;
+  return arr.filter(e => e && e.date).slice().sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(-n);
+}
+
 function seriesCagr(series, { minPoints = 3, minYears = 2 } = {}) {
-  const pts = (Array.isArray(series) ? series : [])
+  const pts = latestYears(series)
     .filter(e => e && e.value != null && isFinite(e.value));
   if (pts.length < minPoints) return null;
   const first = pts[0], last = pts[pts.length - 1];
@@ -316,18 +331,18 @@ function seriesCagr(series, { minPoints = 3, minYears = 2 } = {}) {
 // cyclicalNormalization.js's own minYears already uses.
 function fundamentalGrowth({ netIncomeHistory, equityHistory, dividendsHistory, minYears = 2 }) {
   const niByDate = new Map(
-    (Array.isArray(netIncomeHistory) ? netIncomeHistory : [])
+    latestYears(netIncomeHistory)
       .filter(e => e && e.value != null && isFinite(e.value))
       .map(e => [e.date, e.value])
   );
   const divByDate = new Map(
-    (Array.isArray(dividendsHistory) ? dividendsHistory : [])
+    latestYears(dividendsHistory)
       .filter(e => e && e.value != null && isFinite(e.value))
       .map(e => [e.date, e.value])
   );
 
   const rates = [];
-  for (const e of (Array.isArray(equityHistory) ? equityHistory : [])) {
+  for (const e of latestYears(equityHistory)) {
     if (!e || e.value == null || !isFinite(e.value) || e.value <= 0) continue;
     const ni = niByDate.get(e.date);
     if (ni == null || ni <= 0) continue;
@@ -454,6 +469,6 @@ if (typeof module !== 'undefined') module.exports = {
   isAsxTicker, getAsxSectorWaccRange,
   getUsSectorWaccRange, getIndianSectorWaccRange,
   deriveBaseGrowth, deriveDividendGrowth, getMarketBetaFloor,
-  deriveMultiYearGrowth, seriesCagr, fundamentalGrowth,
+  deriveMultiYearGrowth, seriesCagr, fundamentalGrowth, latestYears, HISTORY_WINDOW_YEARS,
   formatUpdatedDate,
 };
