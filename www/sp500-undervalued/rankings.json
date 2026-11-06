@@ -1,148 +1,40 @@
 {
-  "asAt": "2026-10-30",
+  "asAt": "2026-11-06",
   "universe": "S&P 500",
   "summary": {
     "tickers": 502,
     "evaluated": 502,
-    "qualified": 63,
+    "qualified": 71,
     "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 0,
-      "unvaluable": 42,
-      "overvalued": 346,
-      "marginOverCap": 33,
-      "distressZone": 11,
-      "proxyFcf": 7
+      "unvaluable": 41,
+      "overvalued": 339,
+      "marginOverCap": 36,
+      "distressZone": 10,
+      "proxyFcf": 5
     }
   },
   "rows": [
     {
       "rank": 1,
-      "ticker": "GEV",
-      "name": "GE Vernova Inc.",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 1714.46,
-      "snapshotPrice": 857.87,
-      "marginOfSafety": 0.9985,
-      "wacc": 0.089,
-      "terminalValuePct": 76.1,
-      "trailingPE": 22.5,
-      "marketCap": 227058515968,
-      "operatingMargin": 0.1277,
-      "analystTarget": 1197.39,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 3.49,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": 0.45,
-        "n": 251,
-        "band": "high"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.59,
-        "n": 251,
-        "band": "high"
-      }
-    },
-    {
-      "rank": 2,
-      "ticker": "DG",
-      "name": "Dollar General Corporation",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 262.27,
-      "snapshotPrice": 132.3,
-      "marginOfSafety": 0.9824,
-      "wacc": 0.0516,
-      "terminalValuePct": 88.3,
-      "trailingPE": 17.2,
-      "marketCap": 29187600384,
-      "operatingMargin": 0.0681,
-      "analystTarget": 142.9,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 2.63,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.22,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.32,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 3,
-      "ticker": "MCK",
-      "name": "McKesson Corporation",
+      "ticker": "BDX",
+      "name": "Becton, Dickinson and Company",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 1872.99,
-      "snapshotPrice": 994.58,
-      "marginOfSafety": 0.8832,
-      "wacc": 0.0584,
-      "terminalValuePct": 85.9,
-      "trailingPE": 26.7,
-      "marketCap": 115958439936,
-      "operatingMargin": 0.0135,
-      "analystTarget": 1009.64,
+      "intrinsic": 418.05,
+      "snapshotPrice": 211.88,
+      "marginOfSafety": 0.9731,
+      "wacc": 0.0556,
+      "terminalValuePct": 86.2,
+      "trailingPE": 41.9,
+      "marketCap": 57713319936,
+      "operatingMargin": 0.186,
+      "analystTarget": 195.57,
       "currency": "USD",
       "altmanZ": {
-        "score": 6.23,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": -0.36,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.33,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 4,
-      "ticker": "EXE",
-      "name": "Expand Energy Corporation",
-      "sector": "Energy",
-      "method": "DCF",
-      "intrinsic": 170.43,
-      "snapshotPrice": 90.55,
-      "marginOfSafety": 0.8822,
-      "wacc": 0.0603,
-      "terminalValuePct": 87.2,
-      "trailingPE": 7.8,
-      "marketCap": 20913188864,
-      "operatingMargin": 0.2318,
-      "analystTarget": 123.04,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 2.29,
+        "score": 2.17,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -151,101 +43,65 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.07,
+        "r": -0.45,
         "n": 251,
-        "band": "none"
+        "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.1,
+        "r": -0.47,
         "n": 251,
-        "band": "none"
+        "band": "inverse"
       }
     },
     {
-      "rank": 5,
-      "ticker": "HAL",
-      "name": "Halliburton Company",
-      "sector": "Energy",
+      "rank": 2,
+      "ticker": "PFE",
+      "name": "Pfizer Inc.",
+      "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 67.09,
-      "snapshotPrice": 36.17,
-      "marginOfSafety": 0.8549,
-      "wacc": 0.0753,
-      "terminalValuePct": 82.3,
-      "trailingPE": 15.2,
-      "marketCap": 29917157376,
-      "operatingMargin": 0.1243,
-      "analystTarget": 43.68,
+      "intrinsic": 55.98,
+      "snapshotPrice": 29.39,
+      "marginOfSafety": 0.9049,
+      "wacc": 0.0551,
+      "terminalValuePct": 86.1,
+      "trailingPE": 42,
+      "marketCap": 167518702497,
+      "operatingMargin": 0.3338,
+      "analystTarget": 29.45,
       "currency": "USD",
       "altmanZ": {
-        "score": 3.65,
-        "zone": "safe"
+        "score": 2.21,
+        "zone": "grey"
       },
       "piotroskiF": {
         "score": 5,
         "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": -0.01,
-        "n": 251,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.05,
-        "n": 251,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 6,
-      "ticker": "LYB",
-      "name": "LyondellBasell Industries N.V.",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 121.66,
-      "snapshotPrice": 68.64,
-      "marginOfSafety": 0.7725,
-      "wacc": 0.0665,
-      "terminalValuePct": 82.1,
-      "trailingPE": null,
-      "marketCap": 22173325312,
-      "operatingMargin": 0.1792,
-      "analystTarget": 67.89,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 1.97,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 3,
-        "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.15,
-        "n": 251,
-        "band": "none"
+        "r": -0.29,
+        "n": 250,
+        "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.17,
-        "n": 251,
-        "band": "none"
+        "r": -0.29,
+        "n": 250,
+        "band": "inverse"
       }
     },
     {
-      "rank": 7,
+      "rank": 3,
       "ticker": "ELV",
       "name": "Elevance Health, Inc.",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 734.39,
-      "snapshotPrice": 420.07,
-      "marginOfSafety": 0.7482,
-      "wacc": 0.0683,
-      "terminalValuePct": 80.7,
-      "trailingPE": 17.8,
-      "marketCap": 91100282880,
+      "intrinsic": 791.95,
+      "snapshotPrice": 425.62,
+      "marginOfSafety": 0.8607,
+      "wacc": 0.065,
+      "terminalValuePct": 82,
+      "trailingPE": 18.1,
+      "marketCap": 91957706752,
       "operatingMargin": 0.0422,
       "analystTarget": 482.38,
       "currency": "USD",
@@ -261,29 +117,173 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.16,
+        "r": -0.17,
         "n": 251,
         "band": "none"
       }
     },
     {
-      "rank": 8,
-      "ticker": "PFE",
-      "name": "Pfizer Inc.",
-      "sector": "Healthcare",
+      "rank": 4,
+      "ticker": "LMT",
+      "name": "Lockheed Martin Corporation",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 52.73,
-      "snapshotPrice": 30.52,
-      "marginOfSafety": 0.7277,
-      "wacc": 0.0552,
-      "terminalValuePct": 86,
-      "trailingPE": 40.2,
-      "marketCap": 173954039808,
-      "operatingMargin": 0.2788,
-      "analystTarget": 29.26,
+      "intrinsic": 1045.07,
+      "snapshotPrice": 567.08,
+      "marginOfSafety": 0.8429,
+      "wacc": 0.0491,
+      "terminalValuePct": 89.3,
+      "trailingPE": 20.1,
+      "marketCap": 130998116352,
+      "operatingMargin": 0.114,
+      "analystTarget": 660.86,
       "currency": "USD",
       "altmanZ": {
-        "score": 2.24,
+        "score": 3.53,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.2,
+        "n": 251,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.15,
+        "n": 251,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 5,
+      "ticker": "DVN",
+      "name": "Devon Energy Corporation",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 77.14,
+      "snapshotPrice": 42.21,
+      "marginOfSafety": 0.8275,
+      "wacc": 0.0813,
+      "terminalValuePct": 80.4,
+      "trailingPE": 10.6,
+      "marketCap": 46430998528,
+      "operatingMargin": 0.214,
+      "analystTarget": 61.69,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.13,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.13,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.09,
+        "n": 251,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 6,
+      "ticker": "CVS",
+      "name": "CVS Health Corporation",
+      "sector": "Healthcare",
+      "method": "DCF",
+      "intrinsic": 150.44,
+      "snapshotPrice": 83.85,
+      "marginOfSafety": 0.7942,
+      "wacc": 0.0652,
+      "terminalValuePct": 81.9,
+      "trailingPE": 9.7,
+      "marketCap": 107283906560,
+      "operatingMargin": 0.0272,
+      "analystTarget": 115.48,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.35,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.14,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.04,
+        "n": 251,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 7,
+      "ticker": "INTU",
+      "name": "Intuit Inc.",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 611,
+      "snapshotPrice": 341.5,
+      "marginOfSafety": 0.7892,
+      "wacc": 0.0831,
+      "terminalValuePct": 79.1,
+      "trailingPE": 20.7,
+      "marketCap": 91261091840,
+      "operatingMargin": 0.1764,
+      "analystTarget": 407.76,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 5.11,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.12,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.38,
+        "n": 251,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 8,
+      "ticker": "ZBH",
+      "name": "Zimmer Biomet Holdings, Inc.",
+      "sector": "Healthcare",
+      "method": "DCF",
+      "intrinsic": 185.78,
+      "snapshotPrice": 105.59,
+      "marginOfSafety": 0.7594,
+      "wacc": 0.061,
+      "terminalValuePct": 84.6,
+      "trailingPE": 26.7,
+      "marketCap": 19983316992,
+      "operatingMargin": 0.1734,
+      "analystTarget": 108.48,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 2.54,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -292,12 +292,12 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.28,
+        "r": -0.36,
         "n": 251,
         "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.29,
+        "r": -0.4,
         "n": 251,
         "band": "inverse"
       }
@@ -308,18 +308,18 @@
       "name": "Centene Corporation",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 117.41,
-      "snapshotPrice": 68.45,
-      "marginOfSafety": 0.7153,
-      "wacc": 0.078,
-      "terminalValuePct": 77,
-      "trailingPE": 23.5,
-      "marketCap": 33887404032,
+      "intrinsic": 120.94,
+      "snapshotPrice": 69.74,
+      "marginOfSafety": 0.7341,
+      "wacc": 0.0762,
+      "terminalValuePct": 77.7,
+      "trailingPE": 24,
+      "marketCap": 34526040064,
       "operatingMargin": 0.0074,
-      "analystTarget": 74.5,
+      "analystTarget": 75.39,
       "currency": "USD",
       "altmanZ": {
-        "score": 3.1,
+        "score": 3.11,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -333,106 +333,214 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.14,
+        "r": -0.16,
         "n": 251,
         "band": "none"
       }
     },
     {
       "rank": 10,
-      "ticker": "INTU",
-      "name": "Intuit Inc.",
-      "sector": "Technology",
+      "ticker": "HSY",
+      "name": "The Hershey Company",
+      "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 567.94,
-      "snapshotPrice": 341.09,
-      "marginOfSafety": 0.6651,
-      "wacc": 0.0873,
-      "terminalValuePct": 77.8,
-      "trailingPE": 20.7,
-      "marketCap": 91151523840,
-      "operatingMargin": 0.1764,
-      "analystTarget": 407.76,
+      "intrinsic": 303.8,
+      "snapshotPrice": 178.08,
+      "marginOfSafety": 0.706,
+      "wacc": 0.0486,
+      "terminalValuePct": 89.1,
+      "trailingPE": 20.1,
+      "marketCap": 35790588853,
+      "operatingMargin": 0.2555,
+      "analystTarget": 180.9,
       "currency": "USD",
       "altmanZ": {
-        "score": 5.1,
+        "score": 4.17,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 8,
+        "score": 5,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.1,
+        "r": -0.49,
         "n": 251,
-        "band": "none"
+        "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.37,
+        "r": -0.45,
         "n": 251,
         "band": "inverse"
       }
     },
     {
       "rank": 11,
-      "ticker": "NFLX",
-      "name": "Netflix, Inc.",
-      "sector": "Communication Services",
+      "ticker": "LHX",
+      "name": "L3Harris Technologies, Inc.",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 100.13,
-      "snapshotPrice": 62.08,
-      "marginOfSafety": 0.6129,
-      "wacc": 0.1134,
-      "terminalValuePct": 70.3,
-      "trailingPE": 17.9,
-      "marketCap": 258497380352,
-      "operatingMargin": 0.3463,
-      "analystTarget": 84.76,
+      "intrinsic": 436.87,
+      "snapshotPrice": 259.89,
+      "marginOfSafety": 0.681,
+      "wacc": 0.0638,
+      "terminalValuePct": 83,
+      "trailingPE": 24.2,
+      "marketCap": 48391712768,
+      "operatingMargin": 0.1434,
+      "analystTarget": 334.4,
       "currency": "USD",
       "altmanZ": {
-        "score": 8.06,
+        "score": 2.23,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.25,
+        "n": 251,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.19,
+        "n": 251,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "CF",
+      "name": "CF Industries Holdings, Inc.",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 199.8,
+      "snapshotPrice": 119.39,
+      "marginOfSafety": 0.6735,
+      "wacc": 0.065,
+      "terminalValuePct": 82,
+      "trailingPE": 8.4,
+      "marketCap": 17753292800,
+      "operatingMargin": 0.3312,
+      "analystTarget": 128.69,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.31,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 8,
         "maxScore": 9,
-        "trend": "Deteriorating"
+        "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.09,
+        "r": -0.21,
         "n": 251,
-        "band": "none"
+        "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.27,
+        "r": -0.2,
         "n": 251,
         "band": "inverse"
       }
     },
     {
-      "rank": 12,
-      "ticker": "BKNG",
-      "name": "Booking Holdings Inc.",
+      "rank": 13,
+      "ticker": "DECK",
+      "name": "Deckers Outdoor Corporation",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 237.57,
-      "snapshotPrice": 148.13,
-      "marginOfSafety": 0.6038,
-      "wacc": 0.089,
-      "terminalValuePct": 77.7,
-      "trailingPE": 16.4,
-      "marketCap": 114782748672,
-      "operatingMargin": 0.3441,
-      "analystTarget": 232.71,
+      "intrinsic": 144.75,
+      "snapshotPrice": 86.71,
+      "marginOfSafety": 0.6694,
+      "wacc": 0.0928,
+      "terminalValuePct": 76.9,
+      "trailingPE": 11.5,
+      "marketCap": 11574049792,
+      "operatingMargin": 0.263,
+      "analystTarget": 96.74,
       "currency": "USD",
       "altmanZ": {
-        "score": 6.12,
+        "score": 9.98,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 6,
-        "maxScore": 8,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.18,
+        "n": 251,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.2,
+        "n": 251,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 14,
+      "ticker": "CVX",
+      "name": "Chevron Corporation",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 348.07,
+      "snapshotPrice": 212.61,
+      "marginOfSafety": 0.6371,
+      "wacc": 0.0642,
+      "terminalValuePct": 83.9,
+      "trailingPE": 15.6,
+      "marketCap": 414802116608,
+      "operatingMargin": 0.1801,
+      "analystTarget": 241.67,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.53,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.25,
+        "n": 251,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.23,
+        "n": 251,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 15,
+      "ticker": "ADBE",
+      "name": "Adobe Inc.",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 390.09,
+      "snapshotPrice": 239.3,
+      "marginOfSafety": 0.6301,
+      "wacc": 0.1029,
+      "terminalValuePct": 72.4,
+      "trailingPE": 13.4,
+      "marketCap": 93135560704,
+      "operatingMargin": 0.3482,
+      "analystTarget": 268.3,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 7.06,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
         "trend": "Stable"
       },
       "aiCorrelation": {
@@ -441,29 +549,29 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.24,
+        "r": -0.44,
         "n": 251,
         "band": "inverse"
       }
     },
     {
-      "rank": 13,
+      "rank": 16,
       "ticker": "LDOS",
       "name": "Leidos Holdings, Inc.",
       "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 223.28,
-      "snapshotPrice": 142.98,
-      "marginOfSafety": 0.5616,
-      "wacc": 0.0646,
-      "terminalValuePct": 83.7,
-      "trailingPE": 13.4,
-      "marketCap": 17984804864,
-      "operatingMargin": 0.1172,
+      "intrinsic": 214.91,
+      "snapshotPrice": 132.68,
+      "marginOfSafety": 0.6197,
+      "wacc": 0.0619,
+      "terminalValuePct": 84.7,
+      "trailingPE": 11.9,
+      "marketCap": 16186255360,
+      "operatingMargin": 0.1205,
       "analystTarget": 151.73,
       "currency": "USD",
       "altmanZ": {
-        "score": 3.71,
+        "score": 3.58,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -477,254 +585,153 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.26,
+        "r": -0.27,
         "n": 251,
         "band": "inverse"
-      }
-    },
-    {
-      "rank": 14,
-      "ticker": "LMT",
-      "name": "Lockheed Martin Corporation",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 988.21,
-      "snapshotPrice": 636.95,
-      "marginOfSafety": 0.5515,
-      "wacc": 0.0504,
-      "terminalValuePct": 88.8,
-      "trailingPE": 22.6,
-      "marketCap": 147138412544,
-      "operatingMargin": 0.114,
-      "analystTarget": 652.57,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 3.71,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.22,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.2,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 15,
-      "ticker": "ADBE",
-      "name": "Adobe Inc.",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 378.9,
-      "snapshotPrice": 250.23,
-      "marginOfSafety": 0.5142,
-      "wacc": 0.1051,
-      "terminalValuePct": 71.7,
-      "trailingPE": 14,
-      "marketCap": 97389510656,
-      "operatingMargin": 0.3482,
-      "analystTarget": 272.31,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 7.2,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": -0.12,
-        "n": 251,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.44,
-        "n": 251,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 16,
-      "ticker": "FSLR",
-      "name": "First Solar, Inc.",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 261.5,
-      "snapshotPrice": 174.4,
-      "marginOfSafety": 0.4994,
-      "wacc": 0.1255,
-      "terminalValuePct": 68,
-      "trailingPE": 10.8,
-      "marketCap": 18742730752,
-      "operatingMargin": 0.4264,
-      "analystTarget": 274.24,
-      "currency": "USD",
-      "altmanZ": {
-        "score": 4.81,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0.31,
-        "n": 251,
-        "band": "moderate"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.32,
-        "n": 251,
-        "band": "moderate"
       }
     },
     {
       "rank": 17,
-      "ticker": "DASH",
-      "name": "DoorDash, Inc.",
-      "sector": "Consumer Cyclical",
+      "ticker": "KVUE",
+      "name": "Kenvue Inc.",
+      "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 265.34,
-      "snapshotPrice": 178.99,
-      "marginOfSafety": 0.4824,
-      "wacc": 0.0892,
-      "terminalValuePct": 74.9,
-      "trailingPE": 94.2,
-      "marketCap": 77555998720,
-      "operatingMargin": 0.096,
-      "analystTarget": 256.18,
+      "intrinsic": 31.16,
+      "snapshotPrice": 19.31,
+      "marginOfSafety": 0.6139,
+      "wacc": 0.0602,
+      "terminalValuePct": 83.9,
+      "trailingPE": 21.9,
+      "marketCap": 37109346304,
+      "operatingMargin": 0.1922,
+      "analystTarget": 19.5,
       "currency": "USD",
       "altmanZ": {
-        "score": 5.5,
+        "score": 2.23,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.46,
+        "n": 246,
+        "band": "inverse"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.44,
+        "n": 246,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 18,
+      "ticker": "EOG",
+      "name": "EOG Resources, Inc.",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 235.24,
+      "snapshotPrice": 147.13,
+      "marginOfSafety": 0.5988,
+      "wacc": 0.0857,
+      "terminalValuePct": 78.3,
+      "trailingPE": 11.4,
+      "marketCap": 78365638656,
+      "operatingMargin": 0.4223,
+      "analystTarget": 167.14,
+      "currency": "USD",
+      "altmanZ": {
+        "score": 3.91,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
+        "score": 4,
         "maxScore": 9,
-        "trend": "Deteriorating"
+        "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0.08,
+        "r": -0.2,
         "n": 251,
-        "band": "low"
+        "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.1,
+        "r": -0.16,
         "n": 251,
         "band": "none"
       }
     },
     {
-      "rank": 18,
-      "ticker": "HON",
-      "name": "Honeywell International Inc.",
-      "sector": "Industrials",
+      "rank": 19,
+      "ticker": "NFLX",
+      "name": "Netflix, Inc.",
+      "sector": "Communication Services",
       "method": "DCF",
-      "intrinsic": 318.29,
-      "snapshotPrice": 218.33,
-      "marginOfSafety": 0.4579,
-      "wacc": 0.0781,
-      "terminalValuePct": 77.4,
-      "trailingPE": 10.8,
-      "marketCap": 69197512704,
-      "operatingMargin": 0.1692,
-      "analystTarget": 253.91,
+      "intrinsic": 101.24,
+      "snapshotPrice": 63.41,
+      "marginOfSafety": 0.5966,
+      "wacc": 0.1125,
+      "terminalValuePct": 70.6,
+      "trailingPE": 18.3,
+      "marketCap": 260382130176,
+      "operatingMargin": 0.3463,
+      "analystTarget": 84.76,
       "currency": "USD",
       "altmanZ": {
-        "score": 2.59,
-        "zone": "grey"
+        "score": 8.1,
+        "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
+        "score": 7,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.06,
+        "r": -0.1,
         "n": 251,
-        "band": "low"
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.07,
-        "n": 251,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 19,
-      "ticker": "ALL",
-      "name": "The Allstate Corporation",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 369.61,
-      "snapshotPrice": 259.87,
-      "marginOfSafety": 0.4223,
-      "wacc": 0.0532,
-      "terminalValuePct": null,
-      "trailingPE": 5.2,
-      "marketCap": 65710194688,
-      "operatingMargin": 0.2283,
-      "analystTarget": 269.27,
-      "currency": "USD",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": -0.55,
-        "n": 251,
-        "band": "inverse"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.56,
+        "r": -0.28,
         "n": 251,
         "band": "inverse"
       }
     },
     {
       "rank": 20,
-      "ticker": "CL",
-      "name": "Colgate-Palmolive Company",
-      "sector": "Consumer Defensive",
+      "ticker": "INCY",
+      "name": "Incyte Corporation",
+      "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 130.37,
-      "snapshotPrice": 95.29,
-      "marginOfSafety": 0.3681,
-      "wacc": 0.0593,
-      "terminalValuePct": 85.3,
-      "trailingPE": 37.5,
-      "marketCap": 75962597376,
-      "operatingMargin": 0.2097,
-      "analystTarget": 98.15,
+      "intrinsic": 189.82,
+      "snapshotPrice": 119.65,
+      "marginOfSafety": 0.5864,
+      "wacc": 0.081,
+      "terminalValuePct": 79.5,
+      "trailingPE": 61,
+      "marketCap": 24388558848,
+      "operatingMargin": 0.3372,
+      "analystTarget": 130.92,
       "currency": "USD",
       "altmanZ": {
-        "score": 7.15,
+        "score": 10.2,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
+        "score": 7,
         "maxScore": 9,
-        "trend": "Deteriorating"
+        "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.52,
+        "r": -0.13,
         "n": 251,
-        "band": "inverse"
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.52,
+        "r": -0.11,
         "n": 251,
-        "band": "inverse"
+        "band": "none"
       }
     }
   ]

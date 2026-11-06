@@ -897,5 +897,101 @@
     "exitDate": "2026-10-30",
     "exitPrice": 399.66,
     "dollarPnl": -28.64
+  },
+  {
+    "ticker": "GEV",
+    "entryDate": "2026-10-23",
+    "entryPrice": 815,
+    "exitDate": "2026-11-06",
+    "exitPrice": 774.11,
+    "dollarPnl": -60.07
+  },
+  {
+    "ticker": "DG",
+    "entryDate": "2026-09-04",
+    "entryPrice": 133.21,
+    "exitDate": "2026-11-06",
+    "exitPrice": 133.75,
+    "dollarPnl": 6.74
+  },
+  {
+    "ticker": "MCK",
+    "entryDate": "2026-09-18",
+    "entryPrice": 874.65,
+    "exitDate": "2026-11-06",
+    "exitPrice": 1060.84,
+    "dollarPnl": 40.99
+  },
+  {
+    "ticker": "EXE",
+    "entryDate": "2026-10-23",
+    "entryPrice": 93.23,
+    "exitDate": "2026-11-06",
+    "exitPrice": 84.6,
+    "dollarPnl": -40.43
+  },
+  {
+    "ticker": "HAL",
+    "entryDate": "2026-10-09",
+    "entryPrice": 32.55,
+    "exitDate": "2026-11-06",
+    "exitPrice": 31.84,
+    "dollarPnl": -73.65
+  },
+  {
+    "ticker": "LYB",
+    "entryDate": "2026-09-04",
+    "entryPrice": 63.52,
+    "exitDate": "2026-11-06",
+    "exitPrice": 60.72,
+    "dollarPnl": -70.99
+  },
+  {
+    "ticker": "BKNG",
+    "entryDate": "2026-10-23",
+    "entryPrice": 155.83,
+    "exitDate": "2026-11-06",
+    "exitPrice": 160.665,
+    "dollarPnl": 52.06
+  },
+  {
+    "ticker": "FSLR",
+    "entryDate": "2026-09-25",
+    "entryPrice": 177.71,
+    "exitDate": "2026-11-06",
+    "exitPrice": 201.14,
+    "dollarPnl": 94.33
+  },
+  {
+    "ticker": "DASH",
+    "entryDate": "2026-10-30",
+    "entryPrice": 178.99,
+    "exitDate": "2026-11-06",
+    "exitPrice": 179.67,
+    "dollarPnl": 2.34
+  },
+  {
+    "ticker": "HON",
+    "entryDate": "2026-10-30",
+    "entryPrice": 218.33,
+    "exitDate": "2026-11-06",
+    "exitPrice": 220.05,
+    "dollarPnl": 4.85
+  },
+  {
+    "ticker": "ALL",
+    "entryDate": "2026-09-04",
+    "entryPrice": 259.57,
+    "exitDate": "2026-11-06",
+    "exitPrice": 254.81,
+    "dollarPnl": -11.98
+  },
+  {
+    "ticker": "CL",
+    "entryDate": "2026-10-30",
+    "entryPrice": 95.29,
+    "exitDate": "2026-11-06",
+    "exitPrice": 96.56,
+    "dollarPnl": 8.2
   }
 ]

@@ -312,8 +312,8 @@
     "firstPrice": 66.82
   },
   "HSY": {
-    "firstSeen": "2026-09-04",
-    "firstPrice": 173.15
+    "firstSeen": "2026-11-06",
+    "firstPrice": 178.08
   },
   "GEN": {
     "firstSeen": "2026-09-04",
@@ -324,12 +324,12 @@
     "firstPrice": 101.31
   },
   "DECK": {
-    "firstSeen": "2026-09-04",
-    "firstPrice": 85.81
+    "firstSeen": "2026-11-06",
+    "firstPrice": 86.71
   },
   "CVX": {
-    "firstSeen": "2026-09-18",
-    "firstPrice": 209.51
+    "firstSeen": "2026-11-06",
+    "firstPrice": 212.61
   },
   "KDP": {
     "firstSeen": "2026-09-11",
@@ -360,8 +360,8 @@
     "firstPrice": 108.23
   },
   "CF": {
-    "firstSeen": "2026-09-25",
-    "firstPrice": 114.67
+    "firstSeen": "2026-11-06",
+    "firstPrice": 119.39
   },
   "FSLR": {
     "firstSeen": "2026-09-25",
@@ -376,8 +376,8 @@
     "firstPrice": 32.29
   },
   "INCY": {
-    "firstSeen": "2026-10-09",
-    "firstPrice": 112.79
+    "firstSeen": "2026-11-06",
+    "firstPrice": 119.65
   },
   "EXE": {
     "firstSeen": "2026-10-23",
@@ -410,5 +410,33 @@
   "CL": {
     "firstSeen": "2026-10-30",
     "firstPrice": 95.29
+  },
+  "BDX": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 211.88
+  },
+  "DVN": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 42.21
+  },
+  "CVS": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 83.85
+  },
+  "ZBH": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 105.59
+  },
+  "LHX": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 259.89
+  },
+  "KVUE": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 19.31
+  },
+  "EOG": {
+    "firstSeen": "2026-11-06",
+    "firstPrice": 147.13
   }
 }
