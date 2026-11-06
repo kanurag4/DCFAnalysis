@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-30",
+ "asAt": "2026-11-06",
  "industries": {
   "Household & Personal Products": [
    {
@@ -297,10 +297,6 @@
    {
     "ticker": "000660.KS",
     "margin": 0.051223717100328935
-   },
-   {
-    "ticker": "402340.KS",
-    "margin": 0.011756243773551965
    }
   ],
   "Insurance - Property & Casualty": [
@@ -855,6 +851,10 @@
    {
     "ticker": "010060.KS",
     "margin": 0.04723316620945987
+   },
+   {
+    "ticker": "402340.KS",
+    "margin": 0.011756243773551965
    }
   ],
   "Metal Fabrication": [
