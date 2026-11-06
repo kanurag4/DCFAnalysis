@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-30",
+ "asAt": "2026-11-06",
  "industries": {
   "Utilities - Diversified": [
    {
@@ -139,6 +139,10 @@
    {
     "ticker": "NDA-FI.HE",
     "margin": 0.33379880126607947
+   },
+   {
+    "ticker": "RBI.VI",
+    "margin": 0.661342275220053
    },
    {
     "ticker": "SBNOR.OL",
@@ -455,6 +459,10 @@
    {
     "ticker": "INDU-C.ST",
     "margin": 0.3781921333074261
+   },
+   {
+    "ticker": "INVE-B.ST",
+    "margin": 0.09888733074440247
    },
    {
     "ticker": "LGEN.L",
@@ -1010,7 +1018,7 @@
    },
    {
     "ticker": "VAR.OL",
-    "margin": 0.17250953306844446
+    "margin": 0.1725095330684445
    }
   ],
   "Medical Instruments & Supplies": [
@@ -1600,7 +1608,7 @@
    },
    {
     "ticker": "IFCN.SW",
-    "margin": 0.09787439731978763
+    "margin": 0.0978743973197876
    }
   ],
   "Restaurants": [
@@ -2020,7 +2028,7 @@
    },
    {
     "ticker": "TGS.OL",
-    "margin": 0.18642594543707725
+    "margin": 0.1864259454370773
    }
   ],
   "Apparel Manufacturing": [
@@ -2096,7 +2104,7 @@
    },
    {
     "ticker": "NOD.OL",
-    "margin": -0.003139484730125132
+    "margin": -0.003139484730125125
    },
    {
     "ticker": "STMMI.MI",

@@ -214,5 +214,77 @@
     "exitDate": "2026-10-30",
     "exitPrice": 77.78,
     "dollarPnl": 11.51
+  },
+  {
+    "ticker": "ACA.PA",
+    "entryDate": "2026-10-23",
+    "entryPrice": 14.92,
+    "exitDate": "2026-11-06",
+    "exitPrice": 15.84,
+    "dollarPnl": 29.74
+  },
+  {
+    "ticker": "CAP.PA",
+    "entryDate": "2026-10-23",
+    "entryPrice": 123.95,
+    "exitDate": "2026-11-06",
+    "exitPrice": 126.9,
+    "dollarPnl": -3.08
+  },
+  {
+    "ticker": "AGS.BR",
+    "entryDate": "2026-10-07",
+    "entryPrice": 72.85,
+    "exitDate": "2026-11-06",
+    "exitPrice": 77.5,
+    "dollarPnl": 13.9
+  },
+  {
+    "ticker": "LOGN.SW",
+    "entryDate": "2026-10-30",
+    "entryPrice": 85.4286,
+    "exitDate": "2026-11-06",
+    "exitPrice": 86.1491,
+    "dollarPnl": 7.59
+  },
+  {
+    "ticker": "AXFO.ST",
+    "entryDate": "2026-10-30",
+    "entryPrice": 24.9484,
+    "exitDate": "2026-11-06",
+    "exitPrice": 25.6442,
+    "dollarPnl": 14.75
+  },
+  {
+    "ticker": "PNDORA.CO",
+    "entryDate": "2026-10-23",
+    "entryPrice": 109.8685,
+    "exitDate": "2026-11-06",
+    "exitPrice": 120.5079,
+    "dollarPnl": 57.94
+  },
+  {
+    "ticker": "TEL2-B.ST",
+    "entryDate": "2026-10-30",
+    "entryPrice": 14.4215,
+    "exitDate": "2026-11-06",
+    "exitPrice": 14.5389,
+    "dollarPnl": 4.39
+  },
+  {
+    "ticker": "NDA-FI.HE",
+    "entryDate": "2026-10-23",
+    "entryPrice": 15.27,
+    "exitDate": "2026-11-06",
+    "exitPrice": 16.365,
+    "dollarPnl": 23.61
+  },
+  {
+    "ticker": "SLHN.SW",
+    "entryDate": "2026-10-07",
+    "entryPrice": 975.6721,
+    "exitDate": "2026-11-06",
+    "exitPrice": 1060.1619,
+    "dollarPnl": 11.08
   }
 ]
