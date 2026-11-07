@@ -303,6 +303,32 @@ function discountRateSpread(baseDiscountPct) {
   };
 }
 
+// Dividend-model inputs (DDM / Gordon Growth): the dividend D0, its growth rate and the cost of equity
+// (CAPM on the market's rate table, beta floored per market). ONE source for deriveDcfAssumptions()'s
+// DDM seeds (so /evaluate/'s dividend card) AND the Gordon Growth tool on web and app, so its "Adjust"
+// opens on the same number the card showed. They used to differ: MQG.AX 2026-11-07, card $261.10 vs tool
+// $115.17, because the tool had a fixed 2/4/6% growth and a hard-coded ASX sector cost of equity.
+// Needs dcf/utils.js (getMarketBetaFloor, deriveDividendGrowth) loaded first.
+function deriveDividendSeeds(data) {
+  const market = detectMarket(data.ticker);
+  const rf  = FALLBACK_RF[market] ?? FALLBACK_RF.us;
+  const erp = MARKET_ERP[market]  ?? MARKET_ERP.us;
+  const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
+  const beta = Math.max(rawBeta, getMarketBetaFloor(data.ticker));
+  const re = rf + beta * erp;
+  const dividend = data.trailingAnnualDividendRate
+    ?? data.dividendRate
+    ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
+  const growth = deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth); // fraction, not *100 yet
+  const growthPct = +(growth * 100).toFixed(1);
+  const rePct = +(re * 100).toFixed(2);
+  return {
+    dividend, rf, erp, rawBeta, beta, re, growth, growthPct, rePct,
+    growthScenarios:   { bear: +(Math.max(0, growthPct * 0.5)).toFixed(1), base: growthPct, bull: +(Math.min(12, growthPct * 1.5)).toFixed(1) },
+    discountScenarios: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
+  };
+}
+
 // Pure equivalent of app.js's prefillInputs() + its modelSeeds block.
 // Returns everything needed to seed and run Bear/Base/Bull without
 // touching any DOM element.
@@ -349,12 +375,11 @@ function deriveDcfAssumptions(data, opts) {
 
   const marketTGrowth = MARKET_TGROWTH[currentMarket] ?? MARKET_TGROWTH_DEFAULT;
 
-  const dividend = data.trailingAnnualDividendRate
-    ?? data.dividendRate
-    ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
-  const growth = deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth); // fraction, not *100 yet
-  const divGrowthPct = +(growth * 100).toFixed(1);
-  const rePct = +(re * 100).toFixed(2);
+  const divSeeds = deriveDividendSeeds(data);
+  const dividend = divSeeds.dividend;
+  const growth = divSeeds.growth; // fraction, not *100 yet
+  const divGrowthPct = divSeeds.growthPct;
+  const rePct = +(re * 100).toFixed(2); // same CAPM as divSeeds.rePct (same rf/erp/floored beta)
 
   // Excess Return Model inputs -- only meaningful when isBankIns, but computed
   // unconditionally (cheap, no network call) so financialModel below can decide.
@@ -391,9 +416,9 @@ function deriveDcfAssumptions(data, opts) {
     },
     ddm: {
       dividend,
-      growth:   { bear: +(Math.max(0, divGrowthPct * 0.5)).toFixed(1), base: divGrowthPct, bull: +(Math.min(12, divGrowthPct * 1.5)).toFixed(1) },
+      growth:   divSeeds.growthScenarios,
       tgrowth:  { bear: marketTGrowth, base: marketTGrowth, bull: marketTGrowth },
-      discount: { bear: +(rePct + 1).toFixed(2), base: rePct, bull: +(Math.max(1, rePct - 1)).toFixed(2) },
+      discount: divSeeds.discountScenarios,
     },
     excessReturn: {
       bookValue,
@@ -567,5 +592,5 @@ function computeScenarios(data, valuationModel, seeds, options) {
 // 2026-08-15 Damodaran rf fix and caused a real live valuation mismatch (see
 // kashvector-native-apps.md / the Watchlist bug investigation). Single source of
 // truth now; a future rate change here flows to Watchlist automatically.
-if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, US_DEFAULT_SPREAD, usRiskFreeFromYield, applyWorkerRates, MARKET_SUFFIXES, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
+if (typeof module !== 'undefined') module.exports = { detectMarket, deriveDividendSeeds, deriveDcfAssumptions, computeScenarios, growthOffsetSpread, roeOffsetSpread, discountRateSpread, US_DEFAULT_SPREAD, usRiskFreeFromYield, applyWorkerRates, MARKET_SUFFIXES, FALLBACK_RF, FALLBACK_RF_META, MARKET_ERP, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
 if (typeof window !== 'undefined') { window.detectMarket = detectMarket; window.deriveDcfAssumptions = deriveDcfAssumptions; window.computeScenarios = computeScenarios; window.growthOffsetSpread = growthOffsetSpread; window.roeOffsetSpread = roeOffsetSpread; window.discountRateSpread = discountRateSpread; }
