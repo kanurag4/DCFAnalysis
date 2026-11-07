@@ -343,5 +343,37 @@
     "exitDate": "2026-10-30",
     "exitPrice": 1973.7,
     "dollarPnl": 209.48
+  },
+  {
+    "ticker": "HINDZINC.NS",
+    "entryDate": "2026-09-05",
+    "entryPrice": 601,
+    "exitDate": "2026-11-07",
+    "exitPrice": 568.1,
+    "dollarPnl": 604.55
+  },
+  {
+    "ticker": "PETRONET.NS",
+    "entryDate": "2026-09-05",
+    "entryPrice": 288.1,
+    "exitDate": "2026-11-07",
+    "exitPrice": 317,
+    "dollarPnl": 584.92
+  },
+  {
+    "ticker": "YESBANK.NS",
+    "entryDate": "2026-10-30",
+    "entryPrice": 15.15,
+    "exitDate": "2026-11-07",
+    "exitPrice": 17.2,
+    "dollarPnl": 664.15
+  },
+  {
+    "ticker": "ADANIENT.NS",
+    "entryDate": "2026-09-26",
+    "entryPrice": 2916.5,
+    "exitDate": "2026-11-07",
+    "exitPrice": 2745.8,
+    "dollarPnl": 316.63
   }
 ]

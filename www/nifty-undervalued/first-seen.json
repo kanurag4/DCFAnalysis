@@ -64,8 +64,8 @@
     "firstPrice": 4895.5
   },
   "TBOTEK.NS": {
-    "firstSeen": "2026-06-05",
-    "firstPrice": 1225.2
+    "firstSeen": "2026-11-07",
+    "firstPrice": 1564.7
   },
   "AWL.NS": {
     "firstSeen": "2026-06-05",
@@ -202,5 +202,17 @@
   "YESBANK.NS": {
     "firstSeen": "2026-10-30",
     "firstPrice": 15.15
+  },
+  "INDGN.NS": {
+    "firstSeen": "2026-11-07",
+    "firstPrice": 609.75
+  },
+  "NAVA.NS": {
+    "firstSeen": "2026-11-07",
+    "firstPrice": 529.15
+  },
+  "IEX.NS": {
+    "firstSeen": "2026-11-07",
+    "firstPrice": 109.5
   }
 }

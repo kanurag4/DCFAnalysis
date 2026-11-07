@@ -1,5 +1,5 @@
 {
- "asAt": "2026-10-30",
+ "asAt": "2026-11-07",
  "industries": {
   "Asset Management": [
    {
@@ -342,7 +342,7 @@
    },
    {
     "ticker": "SBIN.NS",
-    "margin": -0.02182091829822971
+    "margin": -0.028881615814114456
    },
    {
     "ticker": "UCOBANK.NS",
@@ -1147,10 +1147,6 @@
     "margin": 0.03455610658299124
    },
    {
-    "ticker": "CARBORUNIV.NS",
-    "margin": 0.030903404014435597
-   },
-   {
     "ticker": "CYIENT.NS",
     "margin": 0.08964416403182178
    },
@@ -1431,6 +1427,16 @@
    {
     "ticker": "STARHEALTH.NS",
     "margin": 0.09006428515170511
+   }
+  ],
+  "Tools & Accessories": [
+   {
+    "ticker": "CARBORUNIV.NS",
+    "margin": 0.030903404014435597
+   },
+   {
+    "ticker": "TIMKEN.NS",
+    "margin": 0.04416056493922521
    }
   ],
   "Auto & Truck Dealerships": [
@@ -1717,6 +1723,10 @@
    {
     "ticker": "VEDL.NS",
     "margin": 0.21873411739849224
+   },
+   {
+    "ticker": "VOGL.NS",
+    "margin": -0.10392234261939848
    }
   ],
   "Insurance - Diversified": [
@@ -1933,12 +1943,6 @@
    {
     "ticker": "ZEEL.NS",
     "margin": 0.06258903489243386
-   }
-  ],
-  "Tools & Accessories": [
-   {
-    "ticker": "TIMKEN.NS",
-    "margin": 0.04416056493922521
    }
   ],
   "Apparel Retail": [
