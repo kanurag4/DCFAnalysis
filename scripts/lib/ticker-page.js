@@ -1261,7 +1261,9 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
 
     // Three-stage DCF (method 4): what the page shows instead of the classic FCF-based inputs.
     const ts3 = threeStageInfo ? { i: threeStageInfo.inputs, s: threeStageInfo.seeds, b: threeStageInfo.seeds.base } : null;
-    const ts3MarginNote = ts3 && ((ts3.i.marginSource === 'history' ? `${ts3.i.marginYears}-year average` : 'Trailing 12 months (too little usable history to average)')
+    const ts3MarginNote = ts3 && ((ts3.i.marginSource === 'history' ? `${ts3.i.marginYears}-year average`
+      : ts3.i.marginSource === 'turnaround' ? `Average of the ${ts3.i.marginYears} profitable years since a turnaround (earlier loss years left out)`
+      : 'Trailing 12 months (too little usable history to average)')
       + (ts3.i.marginDroppedYears > 0 ? ` (${ts3.i.marginDroppedYears} ${ts3.i.marginDroppedYears === 1 ? 'year' : 'years'} skipped: Yahoo reported an operating loss beside a net profit)` : ''));
     const ts3BetaNote = ts3 && `${escapeHtml(ts3.i.betaInfo.industry)} industry beta ${ts3.i.betaInfo.unlevered.toFixed(2)} (Damodaran), re-levered on debt ÷ equity`;
     const stats = isReitTicker

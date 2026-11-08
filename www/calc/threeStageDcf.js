@@ -75,12 +75,13 @@ const THREE_STAGE_NO_MARGIN_NOTE = "There is no operating margin history for thi
 function tsDeps() {
   if (typeof industryFor === 'function' && typeof deriveMultiYearGrowth === 'function' && typeof detectMarket === 'function'
     && typeof growthOffsetSpread === 'function') {
-    return { industryFor, deriveMultiYearGrowth, detectMarket, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT, growthOffsetSpread, discountRateSpread };
+    return { industryFor, deriveMultiYearGrowth, detectMarket, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT, growthOffsetSpread, discountRateSpread, isCyclical };
   }
   const a = require('./assumptions.js');
   return {
     industryFor: require('./industryBetas.js').industryFor,
     deriveMultiYearGrowth: require('../utils.js').deriveMultiYearGrowth,
+    isCyclical: require('../utils.js').isCyclical,
     detectMarket: a.detectMarket, MARKET_TGROWTH: a.MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT: a.MARKET_TGROWTH_DEFAULT,
     growthOffsetSpread: a.growthOffsetSpread, discountRateSpread: a.discountRateSpread,
   };
@@ -138,7 +139,19 @@ function cycleAverageMargin(data) {
     .map(e => ({ date: e.date, value: opInc.get(String(e.date)) / e.value }));
   const years = matched;
   if (years.length >= 2) {
-    return { value: years.reduce((s, e) => s + e.value, 0) / years.length, years: years.length, source: 'history', droppedYears };
+    const avg = years.reduce((s, e) => s + e.value, 0) / years.length;
+    // Turnaround (user decision 2026-11-08, GEV: -9.7%, -2.8%, then +1.3%, +3.6%, trailing +12.8%): when the average is
+    // <= 0 only because of loss years before a real turnaround, value on the profitable years. Guarded so it never
+    // revives a boom-bust business or a one-year rebound: not a cyclical industry, the last two years profitable with
+    // the latest margin at least the year before's, and the trailing 12 months profitable.
+    const ttmNow = tsNum(d.operatingMargins);
+    const last = years[years.length - 1].value, prior = years[years.length - 2].value;
+    if (avg <= 0 && last > 0 && prior > 0 && last >= prior && ttmNow !== null && ttmNow > 0
+      && !tsDeps().isCyclical(d.sector, d.industry)) {
+      const good = years.filter(e => e.value > 0);
+      return { value: good.reduce((s, e) => s + e.value, 0) / good.length, years: good.length, source: 'turnaround', droppedYears };
+    }
+    return { value: avg, years: years.length, source: 'history', droppedYears };
   }
   const ttm = tsNum(d.operatingMargins);
   if (ttm !== null) return { value: ttm, years: years.length, source: 'ttm', droppedYears };
