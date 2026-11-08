@@ -35,6 +35,7 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     annualTotalAssetsHistory: [], annualCurrentAssetsHistory: [], annualCurrentLiabilitiesHistory: [],
     annualTotalLiabilitiesHistory: [], annualRetainedEarningsHistory: [], annualTotalDebtHistory: [],
     annualSharesHistory: [], annualCapexHistory: [], annualGrossProfitHistory: [],
+    annualOperatingIncomeHistory: [], annualDepreciationHistory: [],
     ttmCapex: null, ttmOcf: null, ttmDepreciation: null, lastQuarterCapex: null,
   };
   try {
@@ -93,6 +94,9 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
     const annualSharesHistory = Array.isArray(body.annualOrdinarySharesNumber) ? body.annualOrdinarySharesNumber : [];
     const annualCapexHistory = scaleTimeseries(Array.isArray(body.annualCapitalExpenditure) ? body.annualCapitalExpenditure : [], gbpToPence);
     const annualGrossProfitHistory = scaleTimeseries(Array.isArray(body.annualGrossProfit) ? body.annualGrossProfit : [], gbpToPence);
+    // Three-stage DCF (www/calc/threeStageDcf.js): cycle-average operating margin and own sales-to-capital.
+    const annualOperatingIncomeHistory = scaleTimeseries(Array.isArray(body.annualOperatingIncome) ? body.annualOperatingIncome : [], gbpToPence);
+    const annualDepreciationHistory = scaleTimeseries(Array.isArray(body.annualDepreciationAndAmortization) ? body.annualDepreciationAndAmortization : [], gbpToPence);
 
     return {
       ...mapped,
@@ -116,6 +120,8 @@ async function enrichFromTimeseries(mapped, symbol, { fetchImpl, proxyUrl }) {
       annualSharesHistory,
       annualCapexHistory,
       annualGrossProfitHistory,
+      annualOperatingIncomeHistory,
+      annualDepreciationHistory,
       // Heavy capex spending (www/calc/heavyCapex.js) -- same helper as www/data.js's fetchDCFData().
       ...(({ ttmCapex, ttmOcf, ttmDepreciation, lastQuarterCapex }) => ({ ttmCapex, ttmOcf, ttmDepreciation, lastQuarterCapex }))(ttmFromTimeseries(body, gbpToPence)),
     };

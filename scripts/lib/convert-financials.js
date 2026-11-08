@@ -33,6 +33,8 @@ const HISTORY_FIELDS = [
   'annualTotalAssetsHistory', 'annualCurrentAssetsHistory', 'annualCurrentLiabilitiesHistory',
   'annualTotalLiabilitiesHistory', 'annualRetainedEarningsHistory',
   'annualTotalDebtHistory', 'annualCapexHistory', 'annualGrossProfitHistory',
+  // Three-stage DCF (www/calc/threeStageDcf.js):
+  'annualOperatingIncomeHistory', 'annualDepreciationHistory',
 ];
 
 async function convertFinancials(data, { proxyUrl, fxCache, fetchFx = fetchFxRate }) {

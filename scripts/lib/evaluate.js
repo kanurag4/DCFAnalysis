@@ -20,6 +20,7 @@ const { altmanZScore } = require('../../www/calc/altmanZ.js');
 const { piotroskiScore, piotroskiTrend } = require('../../www/calc/piotroski.js');
 const { heavyCapexForAssumptions, heavyCapexExistingFcf, heavyCapexValuation } = require('../../www/calc/heavyCapex.js');
 const { isAirline } = require('../../www/utils.js');
+const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario } = require('../../www/calc/threeStageDcf.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -109,7 +110,7 @@ const isUsableResult = (result) =>
 const round1pct = (x) => +(x * 100).toFixed(1) / 100;  // 1 dp as a percent (growth)
 const round2pct = (x) => +(x * 100).toFixed(2) / 100;  // 2 dp as a percent (WACC / Re)
 
-function evaluateStockCore(data, params) {
+function evaluateStockCore(data, params, opts = {}) {
   const { rf, erp, terminalGrowth = DEFAULT_TERMINAL_GROWTH } = params;
   const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(data.ticker));
@@ -254,6 +255,28 @@ function evaluateStockCore(data, params) {
   const capitalBase = totalDebtVal + mktCapVal;
   const highLeverage = capitalBase > 0 && (totalDebtVal / capitalBase) > 0.65;
 
+  // Three-stage DCF (method 4, www/calc/threeStageDcf.js) -- the same engine and seeds as every other surface, on
+  // the plain-DCF path only: heavy capex keeps its own method, and REITs/airlines (which reach this branch in the
+  // screens) keep the classic DCF so the screen rankings for them don't move (they have their own models elsewhere).
+  const threeStage = opts.threeStage !== undefined ? opts.threeStage === true : THREE_STAGE_DCF_ENABLED;
+  if (threeStage && !heavyCapex && !isReit(data.sector, data.industry) && !isAirline(data.sector, data.industry)) {
+    const inputs = threeStageInputs(data, { waccResult, terminalGrowth });
+    if (inputs.note) return { ...base, excluded: true, reason: inputs.margin == null ? 'dcf-unavailable' : 'margin-negative' };
+    const seed = threeStageScenarioSeeds(inputs).base;
+    const s = threeStageScenario('base', inputs, seed, {
+      totalDebt: data.totalDebt, totalCash: data.totalCash, shares: sharesForDcf, price: data.price,
+    });
+    if (!isUsableResult(s.result)) return { ...base, excluded: true, reason: 'dcf-unavailable' };
+    return {
+      ...base, method: 'DCF', fcfMethod: 'three-stage',
+      intrinsic: s.result.intrinsicValue,
+      marginOfSafety: s.result.marginOfSafety,
+      wacc: seed.wacc,
+      terminalValuePct: s.result.terminalValuePct,
+      ...(highLeverage ? { highLeverage: true } : {}),
+    };
+  }
+
   // Fade growth toward the terminal rate instead of holding one flat rate
   // for the whole horizon whenever the base case itself is negative — same
   // auto-enable rule as the live tool's prefillInputs()/ticker-page.js (see
@@ -312,8 +335,9 @@ function evaluateStockCore(data, params) {
 // wraps a successful (non-excluded) result; reuses calc/holdcoDiscount.js's
 // single-scenario function directly rather than reimplementing the discount
 // math a third time.
-function evaluateStock(data, params) {
-  const result = evaluateStockCore(data, params);
+// opts.threeStage: true/false forces the three-stage DCF on/off; omitted = THREE_STAGE_DCF_ENABLED.
+function evaluateStock(data, params, opts) {
+  const result = evaluateStockCore(data, params, opts);
   if (result.excluded) return result;
   if (!isConglomerate(data.sector, data.industry, data.ticker)) return result;
   // Heavy capex: the discount applies to the existing business only (as computeScenarios does for /evaluate/), then
