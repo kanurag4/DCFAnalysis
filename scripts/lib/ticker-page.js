@@ -1260,7 +1260,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
 
     // Three-stage DCF (method 4): what the page shows instead of the classic FCF-based inputs.
     const ts3 = threeStageInfo ? { i: threeStageInfo.inputs, s: threeStageInfo.seeds, b: threeStageInfo.seeds.base } : null;
-    const ts3MarginNote = ts3 && (ts3.i.marginSource === 'history' ? `${ts3.i.marginYears}-year average` : 'Trailing 12 months (too little history to average)');
+    const ts3MarginNote = ts3 && ((ts3.i.marginSource === 'history' ? `${ts3.i.marginYears}-year average` : 'Trailing 12 months (too little usable history to average)')
+      + (ts3.i.marginDroppedYears > 0 ? ` (${ts3.i.marginDroppedYears} ${ts3.i.marginDroppedYears === 1 ? 'year' : 'years'} skipped: Yahoo reported an operating loss beside a net profit)` : ''));
     const ts3BetaNote = ts3 && `${escapeHtml(ts3.i.betaInfo.industry)} industry beta ${ts3.i.betaInfo.unlevered.toFixed(2)} (Damodaran), re-levered on debt ÷ equity`;
     const stats = isReitTicker
       ? [
@@ -1382,7 +1383,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       : ts3
       ? `<div class="assump-item"><div class="al">Revenue</div><div class="av">${moneyB(ts3.i.revenue, currencySym)}</div><div class="an">Trailing 12 months — the starting point</div></div>
          <div class="assump-item"><div class="al">Operating margin</div><div class="av">${pct(ts3.b.margin)}</div><div class="an">${ts3MarginNote}, held for every year — a boom or bust year doesn't set the value</div></div>
-         <div class="assump-item"><div class="al">Sales to capital</div><div class="av">${ts3.b.salesToCapital.toFixed(2)}</div><div class="an">${ts3.i.s2cSource === 'own' ? "The company's own: revenue added ÷ net capex over four years" : `Industry figure (${escapeHtml(ts3.i.betaInfo.industry)}, Damodaran)`} — growth is paid for by reinvesting new revenue ÷ this</div></div>
+         <div class="assump-item"><div class="al">Sales to capital</div><div class="av">${ts3.b.salesToCapital.toFixed(2)}</div><div class="an">${ts3.i.s2cSource === 'own' ? "The company's own: revenue added ÷ net capex over four years" : `Industry figure (${escapeHtml(ts3.i.betaInfo.industry)}, Damodaran)`}${ts3.i.s2cCapped ? ', capped at 3× the industry figure (acquisitions are not counted)' : ''} — growth is paid for by reinvesting new revenue ÷ this</div></div>
          <div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
          <div class="assump-item"><div class="al">Beta</div><div class="av">${ts3.i.beta.toFixed(2)}</div><div class="an">${ts3BetaNote}</div></div>
          <div class="assump-item"><div class="al">Equity risk premium</div><div class="av">${pct(erp, 2)}</div><div class="an">Market-specific seed</div></div>
