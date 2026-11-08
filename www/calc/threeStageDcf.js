@@ -3,8 +3,8 @@
 //
 //   revenue base     trailing-12-month revenue
 //   margin           mean operating income / revenue over the latest 4 fiscal years, held flat
-//   starting growth  the company's own revenue trend: the latest year-on-year rate x the average ratio of
-//                    successive rates (never above the latest rate), clamped to [-5%, 15%]
+//   starting growth  the median of the company's last three year-on-year revenue growth rates, clamped to
+//                    [-5%, 15%] (user decision 2026-11-08)
 //   shape            years 1-5 at the starting growth, years 6-10 a straight line to the market's terminal rate,
 //                    terminal value from year 11
 //   reinvestment     revenue added / sales-to-capital (own 4-year ratio, else Damodaran's industry figure);
@@ -162,15 +162,14 @@ function revenueTrendGrowth(data) {
   if (rev.length < 2) {
     return { value: tsDeps().deriveMultiYearGrowth(d), raw: null, source: 'fallback' };
   }
+  // The MEDIAN of the year-on-year rates (user decision 2026-11-08): one year's jump or rebound is not the trend.
+  // The earlier "latest x mean ratio, never above the latest" rule collapsed to last year's growth on a choppy history
+  // (CF: -41%, -11%, then a +19% price rebound read as 15% a year; CNC: a one-off +19% membership jump).
   const rates = [];
   for (let i = 1; i < rev.length; i++) rates.push(rev[i].value / rev[i - 1].value - 1);
-  const latest = rates[rates.length - 1];
-  // The ratio of one year's growth to the year before only means something when both are positive: a negative
-  // year in between would flip the sign of the momentum.
-  const ratios = [];
-  for (let i = 1; i < rates.length; i++) if (rates[i] > 0 && rates[i - 1] > 0) ratios.push(rates[i] / rates[i - 1]);
-  let raw = latest;
-  if (latest > 0 && ratios.length) raw = Math.min(latest, latest * (ratios.reduce((s, r) => s + r, 0) / ratios.length));
+  const sorted = rates.slice().sort((x, y) => x - y);
+  const mid = Math.floor(sorted.length / 2);
+  const raw = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
   return { value: tsClamp(raw, THREE_STAGE_GROWTH_MIN, THREE_STAGE_GROWTH_MAX), raw, source: 'trend' };
 }
 
