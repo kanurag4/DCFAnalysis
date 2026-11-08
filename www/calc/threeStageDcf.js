@@ -48,6 +48,16 @@ function threeStageLender(data) {
   return interest !== null && revenue > 0 && Math.abs(interest) / revenue >= THREE_STAGE_LENDER_INTEREST_SHARE;
 }
 
+// Every US company that the three-stage switch sends to the bank / insurer equity models (DDM / Excess Return):
+// lenders (above) and health insurers -- Yahoo "Healthcare Plans" (UNH, ELV, CI, CVS, CNC, HUM): thin margins on revenue
+// several times their market value made method 4 swing with a one-point margin change and with the industry mapping
+// (UNH $153-$778 across models); valued on book value / ROE / dividends like every other insurer (user decision
+// 2026-11-08). Every consumer's model routing reads this one function.
+function threeStageBankModel(data) {
+  if (threeStageLender(data)) return true;
+  return threeStageApplies(data) && /^healthcare plans$/i.test(String((data && data.industry) || ''));
+}
+
 // Latest 4 fiscal years -- same window as utils.js's HISTORY_WINDOW_YEARS (own name: these files share one browser
 // global scope; tests/history-window.test.js keeps them equal).
 const THREE_STAGE_HISTORY_YEARS = 4;
@@ -346,7 +356,7 @@ if (typeof module !== 'undefined') {
     THREE_STAGE_DCF_ENABLED, THREE_STAGE_HISTORY_YEARS, THREE_STAGE_GROWTH_MIN, THREE_STAGE_GROWTH_MAX,
     THREE_STAGE_NEGATIVE_MARGIN_NOTE, THREE_STAGE_NO_MARGIN_NOTE, threeStagePctToFraction,
     cycleAverageMargin, revenueTrendGrowth, ownSalesToCapital, bottomUpBeta, calculateThreeStageDCF, threeStageInputs,
-    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes, threeStageApplies, threeStageLender, threeStageEligible,
+    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes, threeStageApplies, threeStageLender, threeStageBankModel, threeStageEligible,
     THREE_STAGE_LENDER_INTEREST_SHARE,
   };
 }

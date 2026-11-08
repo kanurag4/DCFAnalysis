@@ -669,7 +669,7 @@ function seedInputsForModel(model) {
 function bankInsTicker(data) {
   if (!data) return false;
   return isBankOrInsurance(data.sector, data.industry, data.ticker)
-    || (typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true && threeStageLender(data));
+    || (typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true && threeStageBankModel(data));
 }
 
 // ── Three-stage DCF (method 4, calc/threeStageDcf.js) ─────────────────────
@@ -1158,7 +1158,7 @@ function renderFinancialWarning(data, sym) {
     const isMortgageReit = /^REIT\s*-\s*Mortgage/i.test(data.industry || '');
     const kind = isMortgageReit
       ? 'Mortgage REIT'
-      : (/insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank');
+      : (/insurance|healthcare plans/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank');
     const icon = isMortgageReit ? '🏢' : '🏦';
     const usingExcessReturn = valuationModel === 'excess-return';
     const modelLabel = usingExcessReturn

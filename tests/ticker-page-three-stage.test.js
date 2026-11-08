@@ -134,3 +134,18 @@ test('#9: the ticker page labels the revenue it used (latest fiscal year when th
     assert.ok(!r.html.includes('Trailing 12 months — the starting point'));
   } finally { global.fetch = realFetch; global.setTimeout = realTimeout; }
 });
+
+test('US health plans: the ticker page uses the bank / insurer model with the switch on', async () => {
+  const rec = JSON.parse(fs.readFileSync(path.join(REPLAY, 'nvda.json'), 'utf8')).responses;
+  const qs = JSON.parse(rec['/quoteSummary/NVDA'].body);
+  qs.quoteSummary.result[0].assetProfile.industry = 'Healthcare Plans';
+  qs.quoteSummary.result[0].assetProfile.sector = 'Healthcare';
+  rec['/quoteSummary/NVDA'] = { status: 200, body: JSON.stringify(qs) };
+  const realFetch = global.fetch, realTimeout = global.setTimeout;
+  global.fetch = async (url) => { const r = rec[new URL(String(url)).pathname]; return r ? new Response(r.body, { status: r.status }) : new Response('nr', { status: 404 }); };
+  global.setTimeout = (cb, _ms, ...args) => realTimeout(cb, 0, ...args);
+  try {
+    const r = await page('NVDA', true);
+    assert.ok(['DDM', 'ExcessReturn'].includes(r.entry && r.entry.method), r.status + ' ' + (r.entry && r.entry.method) + ' ' + r.reason);
+  } finally { global.fetch = realFetch; global.setTimeout = realTimeout; }
+});

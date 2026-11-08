@@ -20,7 +20,7 @@ const { altmanZScore } = require('../../www/calc/altmanZ.js');
 const { piotroskiScore, piotroskiTrend } = require('../../www/calc/piotroski.js');
 const { heavyCapexForAssumptions, heavyCapexExistingFcf, heavyCapexValuation } = require('../../www/calc/heavyCapex.js');
 const { isAirline } = require('../../www/utils.js');
-const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageEligible, threeStageLender } = require('../../www/calc/threeStageDcf.js');
+const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageEligible, threeStageBankModel } = require('../../www/calc/threeStageDcf.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -137,8 +137,8 @@ function evaluateStockCore(data, params, opts = {}) {
   // utilities alike). Which of the two depends on payout ratio vs.
   // sustainable payout for banks -- see chooseFinancialModel() -- but is
   // unconditional (always Excess Return) for utilities.
-  // US lenders go to the bank models with the three-stage switch on (www/calc/threeStageDcf.js threeStageLender).
-  if (isBankOrInsurance(data.sector, data.industry, data.ticker) || (tsSwitch && threeStageLender(data)) || isUtilityTicker) {
+  // US lenders and health insurers go to the bank models with the three-stage switch on (threeStageBankModel).
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker) || (tsSwitch && threeStageBankModel(data)) || isUtilityTicker) {
     const dividend = data.trailingAnnualDividendRate
       ?? data.dividendRate
       ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
