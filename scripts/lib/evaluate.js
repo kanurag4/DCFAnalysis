@@ -20,7 +20,7 @@ const { altmanZScore } = require('../../www/calc/altmanZ.js');
 const { piotroskiScore, piotroskiTrend } = require('../../www/calc/piotroski.js');
 const { heavyCapexForAssumptions, heavyCapexExistingFcf, heavyCapexValuation } = require('../../www/calc/heavyCapex.js');
 const { isAirline } = require('../../www/utils.js');
-const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies } = require('../../www/calc/threeStageDcf.js');
+const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender } = require('../../www/calc/threeStageDcf.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -112,6 +112,7 @@ const round2pct = (x) => +(x * 100).toFixed(2) / 100;  // 2 dp as a percent (WAC
 
 function evaluateStockCore(data, params, opts = {}) {
   const { rf, erp, terminalGrowth = DEFAULT_TERMINAL_GROWTH } = params;
+  const tsSwitch = opts.threeStage !== undefined ? opts.threeStage === true : THREE_STAGE_DCF_ENABLED;
   const rawBeta = (data.beta != null && isFinite(data.beta) && data.beta > 0) ? data.beta : 1.0;
   const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(data.ticker));
 
@@ -136,7 +137,8 @@ function evaluateStockCore(data, params, opts = {}) {
   // utilities alike). Which of the two depends on payout ratio vs.
   // sustainable payout for banks -- see chooseFinancialModel() -- but is
   // unconditional (always Excess Return) for utilities.
-  if (isBankOrInsurance(data.sector, data.industry, data.ticker) || isUtilityTicker) {
+  // US lenders go to the bank models with the three-stage switch on (www/calc/threeStageDcf.js threeStageLender).
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker) || (tsSwitch && threeStageLender(data)) || isUtilityTicker) {
     const dividend = data.trailingAnnualDividendRate
       ?? data.dividendRate
       ?? ((data.price != null && data.dividendYield != null) ? data.price * data.dividendYield : null);
@@ -258,7 +260,7 @@ function evaluateStockCore(data, params, opts = {}) {
   // Three-stage DCF (method 4, www/calc/threeStageDcf.js) -- the same engine and seeds as every other surface, on
   // the plain-DCF path only: heavy capex keeps its own method, and REITs/airlines (which reach this branch in the
   // screens) keep the classic DCF so the screen rankings for them don't move (they have their own models elsewhere).
-  const threeStage = opts.threeStage !== undefined ? opts.threeStage === true : THREE_STAGE_DCF_ENABLED;
+  const threeStage = tsSwitch;
   // US market only (threeStageApplies, user decision 2026-11-08).
   if (threeStage && threeStageApplies(data) && !heavyCapex && !isReit(data.sector, data.industry) && !isAirline(data.sector, data.industry)) {
     const inputs = threeStageInputs(data, { waccResult, terminalGrowth });

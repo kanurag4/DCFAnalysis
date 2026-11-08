@@ -26,6 +26,21 @@ function threeStageApplies(data) {
   return typeof t === 'string' && t.length > 0 && !t.includes('.');
 }
 
+// US lenders (user decision 2026-11-08): with the three-stage switch on, a US credit-services or mortgage firm whose
+// interest expense is at least this share of revenue is valued with the bank models (DDM / Excess Return), as
+// Damodaran does -- debt is a lender's raw material, so a revenue-driven FCFF with net debt subtracted wipes out
+// the equity (COF: no value). Payment networks share the Yahoo industry but not the economics: COF 32%, SYF 42%,
+// ALLY 80%, AXP 11% vs V 1.3%, MA 2.0%, PYPL 1.3% (2026-11-08). Non-US credit services keep the existing rule
+// (utils.js isBankOrInsurance routes India's NBFCs).
+const THREE_STAGE_LENDER_INTEREST_SHARE = 0.10;
+
+function threeStageLender(data) {
+  if (!threeStageApplies(data)) return false;
+  if (!/^(credit services|mortgage finance)$/i.test(String(data.industry || ''))) return false;
+  const interest = tsNum(data.interestExpense), revenue = tsNum(data.totalRevenue);
+  return interest !== null && revenue > 0 && Math.abs(interest) / revenue >= THREE_STAGE_LENDER_INTEREST_SHARE;
+}
+
 // Latest 4 fiscal years -- same window as utils.js's HISTORY_WINDOW_YEARS (own name: these files share one browser
 // global scope; tests/history-window.test.js keeps them equal).
 const THREE_STAGE_HISTORY_YEARS = 4;
@@ -296,6 +311,7 @@ if (typeof module !== 'undefined') {
     THREE_STAGE_DCF_ENABLED, THREE_STAGE_HISTORY_YEARS, THREE_STAGE_GROWTH_MIN, THREE_STAGE_GROWTH_MAX,
     THREE_STAGE_NEGATIVE_MARGIN_NOTE, THREE_STAGE_NO_MARGIN_NOTE, threeStagePctToFraction,
     cycleAverageMargin, revenueTrendGrowth, ownSalesToCapital, bottomUpBeta, calculateThreeStageDCF, threeStageInputs,
-    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes, threeStageApplies,
+    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes, threeStageApplies, threeStageLender,
+    THREE_STAGE_LENDER_INTEREST_SHARE,
   };
 }

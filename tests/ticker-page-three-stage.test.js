@@ -91,3 +91,13 @@ test('US only: BHP.AX with the switch on is the classic page, value and text', a
     assert.ok(!on.html.includes('Starting growth (yrs 1–5)'));
   });
 });
+
+test('US lenders: COF ticker page with the switch on uses the bank model', async () => {
+  await withReplay('cof', async () => {
+    const on = await page('COF', true);
+    assert.strictEqual(on.status, 'ok', on.reason);
+    assert.ok(['DDM', 'ExcessReturn'].includes(on.entry.method), on.entry.method);
+    const off = await page('COF', false);
+    assert.strictEqual(off.entry.method, 'DCF');
+  });
+});

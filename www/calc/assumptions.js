@@ -333,7 +333,7 @@ function deriveDividendSeeds(data) {
 // breaks every ticker, see CLAUDE.md Known Traps), or require()d in Node.
 function threeStageModule() {
   if (typeof threeStageInputs === 'function') {
-    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies };
+    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender, THREE_STAGE_DCF_ENABLED };
   }
   return require('./threeStageDcf.js');
 }
@@ -346,8 +346,11 @@ function threeStageModule() {
 // } } lookup (scripts/lib/sector-margin-tally.js, DCFAnalysis) -- optional,
 // omit or pass undefined for identical behavior to before this parameter
 // existed.
+// opts.threeStage: true/false forces the three-stage switch for the US-lender routing below; omitted = THREE_STAGE_DCF_ENABLED.
 function deriveDcfAssumptions(data, opts) {
-  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
+  const tsSwitch = opts && opts.threeStage !== undefined ? opts.threeStage === true : threeStageModule().THREE_STAGE_DCF_ENABLED === true;
+  // US lenders go to the bank models with the three-stage switch on (calc/threeStageDcf.js threeStageLender).
+  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker) || (tsSwitch && threeStageModule().threeStageLender(data));
   const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
   const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
   const isUtilityFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isUtility(data.sector, data.industry);

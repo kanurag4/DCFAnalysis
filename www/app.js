@@ -664,6 +664,14 @@ function seedInputsForModel(model) {
   if (model === 'dcf' && threeStageActive()) seedThreeStageInputs(modelSeeds.dcf.threeStage);
 }
 
+// Banks / insurers -- plus, with the three-stage switch on, US lenders (calc/threeStageDcf.js threeStageLender), the
+// same rule deriveDcfAssumptions() routes to the bank models, so this page's panels agree with the model it runs.
+function bankInsTicker(data) {
+  if (!data) return false;
+  return isBankOrInsurance(data.sector, data.industry, data.ticker)
+    || (typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true && threeStageLender(data));
+}
+
 // ── Three-stage DCF (method 4, calc/threeStageDcf.js) ─────────────────────
 // On when the shared switch is on and this ticker is on the plain-DCF path (not heavy capex).
 function threeStageActive() {
@@ -705,7 +713,7 @@ function applyModelUI() {
   const excessReturn = valuationModel === 'excess-return';
   const reit = valuationModel === 'reit';
   const airline = valuationModel === 'airline';
-  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
+  const isBankIns = currentData && bankInsTicker(currentData);
   const isReitTicker = currentData && isReit(currentData.sector, currentData.industry);
   const isAirlineTicker = currentData && isAirline(currentData.sector, currentData.industry);
   const isUtilityTicker = currentData && isUtility(currentData.sector, currentData.industry);
@@ -1139,7 +1147,7 @@ function renderFinancialWarning(data, sym) {
     return;
   }
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
-  if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
+  if (bankInsTicker(data)) {
     // Mortgage REITs route through isBankOrInsurance() too (loan-book
     // economics, see that function's own comment) but aren't a "Bank" --
     // they don't take deposits, they hold levered mortgage/MBS portfolios
@@ -1217,7 +1225,7 @@ function renderFinancialWarning(data, sym) {
 // never silently disagree on which FCF was actually run.
 function resolveDcfFcfInputs(data) {
   const useNormFcf = isFinancialSector(data.sector)
-    && !isBankOrInsurance(data.sector, data.industry, data.ticker)
+    && !bankInsTicker(data)
     && els.fcfNorm && els.fcfNorm.value;
   const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
 
@@ -1655,7 +1663,7 @@ function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, y
 
 function renderBreakeven(data, sym) {
   if (!els.breakevenCallout) return;
-  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
+  const isBankIns = bankInsTicker(data);
   if (isBankIns || valuationModel === 'ddm' || valuationModel === 'reit' || valuationModel === 'airline' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }

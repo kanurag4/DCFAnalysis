@@ -27,7 +27,7 @@ const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
 const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
-const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies } = require('../../www/calc/threeStageDcf.js');
+const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender } = require('../../www/calc/threeStageDcf.js');
 const { buildValueScaleCard } = require('./value-scale.js');
 const { buildSolvencyScaleCard } = require('./solvency-scale.js');
 const { buildAiCorrelationCard, buildAiCorrelationFaqHtml } = require('./ai-correlation-card.js');
@@ -904,7 +904,10 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       }
     }
 
-    const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
+    // US lenders go to the bank models with the three-stage switch on (threeStageLender; /timeseries interest first,
+    // the same precedence the WACC uses).
+    const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker)
+      || (threeStageOn && threeStageLender({ ...data, interestExpense: hist.interestExpense != null ? hist.interestExpense : data.interestExpense }));
     const isReitTicker = !isBank && isReit(data.sector, data.industry);
     const isAirlineTicker = !isBank && !isReitTicker && isAirline(data.sector, data.industry);
     const isUtilityTicker = !isBank && !isReitTicker && !isAirlineTicker && isUtility(data.sector, data.industry);

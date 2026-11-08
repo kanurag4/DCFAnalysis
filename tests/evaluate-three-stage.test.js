@@ -92,3 +92,12 @@ test('US only: with the switch on, non-US tickers keep the classic screen value 
     assert.deepStrictEqual(evaluateStock(data, p, { threeStage: true }), evaluateStock(data, p, { threeStage: false }), name);
   }
 });
+
+test('US lenders: with the switch on COF is valued with the bank models; off it stays DCF; Visa stays DCF', { skip: !HAVE_SA && 'no ../StockAnalysis' }, () => {
+  const cof = fixture('cof'), v = fixture('v');
+  const off = evaluateStock(cof, marketParamsFor('COF', {}), { threeStage: false });
+  assert.strictEqual(off.method, 'DCF');
+  const on = evaluateStock(cof, marketParamsFor('COF', {}), { threeStage: true });
+  assert.ok(['DDM', 'ExcessReturn'].includes(on.method), JSON.stringify(on).slice(0, 200));
+  assert.strictEqual(evaluateStock(v, marketParamsFor('V', {}), { threeStage: true }).method, 'DCF');
+});
