@@ -124,13 +124,15 @@ function cycleAverageMargin(data) {
 
 // Trailing revenue (quoteSummary) and the annual revenue series (/timeseries) can be on different bases: MAR's
 // trailing $7.6B excludes the cost reimbursements in its ~$25B annual series (2026-11-08). The margin comes from the
-// annual series, so when the two differ by more than this share the latest annual revenue is the base instead.
+// annual series, so when trailing revenue is more than this share BELOW the latest annual figure, the annual figure
+// is the base instead. One-sided: a fast grower's trailing revenue sits above its last fiscal year (NVDA trailing
+// $303B vs FY $216B, +40%, 2026-11-08) -- that is growth, not a different basis.
 const THREE_STAGE_REVENUE_MISMATCH = 0.4;
 
 function tsRevenueBase(d) {
   const ttm = tsNum(d.totalRevenue);
   const latest = tsLatest(d.annualRevenueHistory).filter(e => e.value > 0).pop();
-  if (latest && (!(ttm > 0) || Math.abs(ttm / latest.value - 1) > THREE_STAGE_REVENUE_MISMATCH)) {
+  if (latest && (!(ttm > 0) || ttm < latest.value * (1 - THREE_STAGE_REVENUE_MISMATCH))) {
     return { revenue: latest.value, source: 'annual' };
   }
   return { revenue: ttm, source: 'ttm' };
