@@ -323,7 +323,13 @@ function threeStageScenarioSeeds(inputs) {
     startGrowth: threeStagePctToFraction(g), wacc: w != null ? threeStagePctToFraction(w) : null,
     margin, salesToCapital, terminalGrowth: inputs.terminalGrowth,
   });
-  return { bear: one(gs.bear, ws.bear), base: one(gPct, wPct), bull: one(gs.bull, ws.bull) };
+  // When return on new capital (margin x (1 - tax) x sales-to-capital) is below the Base WACC, growth destroys value, so
+  // Bear takes the higher growth and Bull the lower: Bear <= Base <= Bull always (GEV, 2026-11-08: Bear $52 > Bull $14).
+  const roc = margin != null && salesToCapital != null ? margin * (1 - tsTax(inputs.taxRate)) * salesToCapital : null;
+  const growthDestroysValue = roc !== null && wPct != null && roc < wPct / 100;
+  const bearG = growthDestroysValue ? gs.bull : gs.bear;
+  const bullG = growthDestroysValue ? gs.bear : gs.bull;
+  return { bear: one(bearG, ws.bear), base: one(gPct, wPct), bull: one(bullG, ws.bull) };
 }
 
 // The Adjust boxes back into seeds: boxes = { growth, tgrowth, discount: { bear, base, bull } (percent), marginPct,
