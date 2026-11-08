@@ -20,8 +20,8 @@ function shared(data) {
   return { a, sc: A.computeScenarios(data, 'dcf', a.modelSeeds.dcf, { threeStage: true, holdcoDiscount: a.holdcoDiscount }) };
 }
 
-test('three-stage on: evaluateStock Base = the shared three-stage Base (NVDA, MU, 000660.KS, KO, HON)', { skip: !HAVE_SA && 'no ../StockAnalysis' }, () => {
-  for (const name of ['nvda', 'mu', '000660-ks', 'ko', 'hon']) {
+test('three-stage on: evaluateStock Base = the shared three-stage Base (NVDA, MU, KO, HON)', { skip: !HAVE_SA && 'no ../StockAnalysis' }, () => {
+  for (const name of ['nvda', 'mu', 'ko', 'hon']) {
     const data = fixture(name);
     const { sc } = shared(data);
     const r = evaluateStock(data, marketParamsFor(data.ticker, {}), { threeStage: true });
@@ -83,4 +83,12 @@ test('ETF radar: a margin-negative holding falls back to EV/Sales like dcf-unava
   const data = { sector: 'Technology', price: 90, totalRevenue: 2e9, totalDebt: 0, totalCash: 1e8, dilutedSharesOutstanding: 1e8 };
   const ev = valueOne('X', data, () => ({ excluded: true, reason: 'margin-negative' }));
   assert.strictEqual(ev.method, 'EV/Sales');
+});
+
+test('US only: with the switch on, non-US tickers keep the classic screen value (BHP.AX, 000660.KS)', { skip: !HAVE_SA && 'no ../StockAnalysis' }, () => {
+  for (const name of ['bhp-ax', '000660-ks']) {
+    const data = fixture(name);
+    const p = marketParamsFor(data.ticker, {});
+    assert.deepStrictEqual(evaluateStock(data, p, { threeStage: true }), evaluateStock(data, p, { threeStage: false }), name);
+  }
 });

@@ -668,7 +668,8 @@ function seedInputsForModel(model) {
 // On when the shared switch is on and this ticker is on the plain-DCF path (not heavy capex).
 function threeStageActive() {
   return typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true
-    && valuationModel === 'dcf' && !heavyCapexState && !!(modelSeeds && modelSeeds.dcf && modelSeeds.dcf.threeStage);
+    && valuationModel === 'dcf' && !heavyCapexState && !!(modelSeeds && modelSeeds.dcf && modelSeeds.dcf.threeStage)
+    && threeStageApplies(currentData); // US market only (user decision 2026-11-08)
 }
 
 // The scenario boxes take the three-stage seeds: growth = starting growth (years 1-5), terminal = long-run rate,

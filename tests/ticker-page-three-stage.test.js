@@ -45,7 +45,7 @@ async function screen(t, threeStage) {
   return evaluateStock(d, marketParamsFor(t, live), { threeStage });
 }
 
-for (const [t, name] of [['NVDA', 'nvda'], ['BHP.AX', 'bhp-ax']]) {
+for (const [t, name] of [['NVDA', 'nvda']]) {
   test(`${t}: three-stage page Base = the screen engine's three-stage Base on the same replies`, async () => {
     await withReplay(name, async () => {
       const r = await page(t, true);
@@ -82,3 +82,12 @@ for (const [t, name] of [['NVDA', 'nvda'], ['BHP.AX', 'bhp-ax']]) {
     });
   });
 }
+
+test('US only: BHP.AX with the switch on is the classic page, value and text', async () => {
+  await withReplay('bhp-ax', async () => {
+    const on = await page('BHP.AX', true);
+    const off = await page('BHP.AX', false);
+    assert.strictEqual(on.entry.intrinsic, off.entry.intrinsic);
+    assert.ok(!on.html.includes('Starting growth (yrs 1–5)'));
+  });
+});

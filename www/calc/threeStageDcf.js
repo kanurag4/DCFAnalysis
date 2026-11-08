@@ -18,6 +18,14 @@
 // Off until the user approves the before/after report (plan Task 13). Every consumer reads it from here.
 const THREE_STAGE_DCF_ENABLED = false;
 
+// Scope (user decision 2026-11-08): US market only; every other market keeps the classic DCF. "US" = a ticker with
+// no exchange suffix -- assumptions.js detectMarket()'s 'us' rule (US-listed ADRs such as TSM count as US). Written
+// out here rather than calling detectMarket, which reads browser globals Node consumers don't have.
+function threeStageApplies(data) {
+  const t = data && data.ticker;
+  return typeof t === 'string' && t.length > 0 && !t.includes('.');
+}
+
 // Latest 4 fiscal years -- same window as utils.js's HISTORY_WINDOW_YEARS (own name: these files share one browser
 // global scope; tests/history-window.test.js keeps them equal).
 const THREE_STAGE_HISTORY_YEARS = 4;
@@ -288,6 +296,6 @@ if (typeof module !== 'undefined') {
     THREE_STAGE_DCF_ENABLED, THREE_STAGE_HISTORY_YEARS, THREE_STAGE_GROWTH_MIN, THREE_STAGE_GROWTH_MAX,
     THREE_STAGE_NEGATIVE_MARGIN_NOTE, THREE_STAGE_NO_MARGIN_NOTE, threeStagePctToFraction,
     cycleAverageMargin, revenueTrendGrowth, ownSalesToCapital, bottomUpBeta, calculateThreeStageDCF, threeStageInputs,
-    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes,
+    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes, threeStageApplies,
   };
 }

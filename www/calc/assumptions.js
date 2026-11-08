@@ -333,7 +333,7 @@ function deriveDividendSeeds(data) {
 // breaks every ticker, see CLAUDE.md Known Traps), or require()d in Node.
 function threeStageModule() {
   if (typeof threeStageInputs === 'function') {
-    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario };
+    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies };
   }
   return require('./threeStageDcf.js');
 }
@@ -572,7 +572,8 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
     ? data.dilutedSharesOutstanding : data.sharesOutstanding;
 
-  if (options.threeStage === true) {
+  // US market only (calc/threeStageDcf.js threeStageApplies): any other ticker keeps the classic DCF below.
+  if (options.threeStage === true && threeStageModule().threeStageApplies(data)) {
     const tsMod = threeStageModule();
     const company = { totalDebt: data.totalDebt, totalCash: data.totalCash, shares: resolvedShares, price: data.price };
     const t = seeds.threeStage;
