@@ -101,3 +101,19 @@ test('US lenders: COF ticker page with the switch on uses the bank model', async
     assert.strictEqual(off.entry.method, 'DCF');
   });
 });
+
+test('#1 negative trailing FCF: the ticker page stays classic (NVDA replay with FCF made negative)', async () => {
+  const rec = JSON.parse(fs.readFileSync(path.join(REPLAY, 'nvda.json'), 'utf8')).responses;
+  const qs = JSON.parse(rec['/quoteSummary/NVDA'].body);
+  qs.quoteSummary.result[0].financialData.freeCashflow = { raw: -1e9 };
+  // Non-cyclical industry, or the cycle-normalised FCF (positive for NVDA) would rightly stand in for it.
+  qs.quoteSummary.result[0].assetProfile.industry = 'Software - Application';
+  rec['/quoteSummary/NVDA'] = { status: 200, body: JSON.stringify(qs) };
+  const realFetch = global.fetch, realTimeout = global.setTimeout;
+  global.fetch = async (url) => { const r = rec[new URL(String(url)).pathname]; return r ? new Response(r.body, { status: r.status }) : new Response('nr', { status: 404 }); };
+  global.setTimeout = (cb, _ms, ...args) => realTimeout(cb, 0, ...args);
+  try {
+    const r = await page('NVDA', true);
+    assert.ok(!r.html || !r.html.includes('Starting growth (yrs 1–5)'), 'no three-stage text');
+  } finally { global.fetch = realFetch; global.setTimeout = realTimeout; }
+});

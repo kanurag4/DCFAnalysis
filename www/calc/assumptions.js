@@ -333,7 +333,7 @@ function deriveDividendSeeds(data) {
 // breaks every ticker, see CLAUDE.md Known Traps), or require()d in Node.
 function threeStageModule() {
   if (typeof threeStageInputs === 'function') {
-    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender, THREE_STAGE_DCF_ENABLED };
+    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender, threeStageEligible, THREE_STAGE_DCF_ENABLED };
   }
   return require('./threeStageDcf.js');
 }
@@ -491,6 +491,9 @@ function deriveDcfAssumptions(data, opts) {
     if (cyclicalFcf) finalFcfInfo = cyclicalFcf;
   }
 
+  // Three-stage eligibility needs the (cycle-normalised) trailing FCF: US + positive FCF, as /evaluate/'s model choice.
+  threeStageSeeds.eligible = tsMod.threeStageEligible(data, finalFcfInfo.value);
+
   const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));
 
   return {
@@ -576,7 +579,8 @@ function computeScenarios(data, valuationModel, seeds, options) {
     ? data.dilutedSharesOutstanding : data.sharesOutstanding;
 
   // US market only (calc/threeStageDcf.js threeStageApplies): any other ticker keeps the classic DCF below.
-  if (options.threeStage === true && threeStageModule().threeStageApplies(data)) {
+  // Only for an eligible ticker (calc/threeStageDcf.js threeStageEligible: US market, positive trailing FCF).
+  if (options.threeStage === true && seeds.threeStage && seeds.threeStage.eligible === true) {
     const tsMod = threeStageModule();
     const company = { totalDebt: data.totalDebt, totalCash: data.totalCash, shares: resolvedShares, price: data.price };
     const t = seeds.threeStage;

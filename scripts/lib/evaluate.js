@@ -20,7 +20,7 @@ const { altmanZScore } = require('../../www/calc/altmanZ.js');
 const { piotroskiScore, piotroskiTrend } = require('../../www/calc/piotroski.js');
 const { heavyCapexForAssumptions, heavyCapexExistingFcf, heavyCapexValuation } = require('../../www/calc/heavyCapex.js');
 const { isAirline } = require('../../www/utils.js');
-const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender } = require('../../www/calc/threeStageDcf.js');
+const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageEligible, threeStageLender } = require('../../www/calc/threeStageDcf.js');
 
 const DEFAULT_TERMINAL_GROWTH = 0.025;
 const PROJECTION_YEARS = 5;
@@ -261,8 +261,8 @@ function evaluateStockCore(data, params, opts = {}) {
   // the plain-DCF path only: heavy capex keeps its own method, and REITs/airlines (which reach this branch in the
   // screens) keep the classic DCF so the screen rankings for them don't move (they have their own models elsewhere).
   const threeStage = tsSwitch;
-  // US market only (threeStageApplies, user decision 2026-11-08).
-  if (threeStage && threeStageApplies(data) && !heavyCapex && !isReit(data.sector, data.industry) && !isAirline(data.sector, data.industry)) {
+  // US market + positive trailing FCF only (threeStageEligible, 2026-11-08).
+  if (threeStage && threeStageEligible(data, fcfInfo.value) && !heavyCapex && !isReit(data.sector, data.industry) && !isAirline(data.sector, data.industry)) {
     const inputs = threeStageInputs(data, { waccResult, terminalGrowth });
     if (inputs.note) return { ...base, excluded: true, reason: inputs.margin == null ? 'dcf-unavailable' : 'margin-negative' };
     const seed = threeStageScenarioSeeds(inputs).base;

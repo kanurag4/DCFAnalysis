@@ -27,7 +27,7 @@ const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
 const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
-const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender } = require('../../www/calc/threeStageDcf.js');
+const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageEligible, threeStageLender } = require('../../www/calc/threeStageDcf.js');
 const { buildValueScaleCard } = require('./value-scale.js');
 const { buildSolvencyScaleCard } = require('./solvency-scale.js');
 const { buildAiCorrelationCard, buildAiCorrelationFaqHtml } = require('./ai-correlation-card.js');
@@ -1079,7 +1079,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       if (!waccResult) {
         return { status: 'skipped', ticker: t, market: market.folder, reason: 'WACC uncomputable (no market cap or debt data)' };
       }
-      if (threeStageOn && threeStageApplies(data) && !heavyCapex) { // US market only (2026-11-08)
+      // US + positive trailing FCF (threeStageEligible): fcfInfo after cyclical normalisation, before the revenue fallback.
+      if (threeStageOn && threeStageEligible(data, fcfInfo.value) && !heavyCapex) {
       // Three-stage DCF (method 4): the shared engine and seeds, on the whole data object (lesson: a hand-built
       // input object silently drops fields a shared function reads -- the cyclical-growth bug, PSX 2026-10).
       const tsData = {

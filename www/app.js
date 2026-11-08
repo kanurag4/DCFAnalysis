@@ -677,7 +677,7 @@ function bankInsTicker(data) {
 function threeStageActive() {
   return typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true
     && valuationModel === 'dcf' && !heavyCapexState && !!(modelSeeds && modelSeeds.dcf && modelSeeds.dcf.threeStage)
-    && threeStageApplies(currentData); // US market only (user decision 2026-11-08)
+    && modelSeeds.dcf.threeStage.eligible === true; // US market + positive trailing FCF (threeStageEligible)
 }
 
 // The scenario boxes take the three-stage seeds: growth = starting growth (years 1-5), terminal = long-run rate,
