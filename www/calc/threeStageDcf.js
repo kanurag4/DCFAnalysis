@@ -214,6 +214,29 @@ function threeStageScenarioSeeds(inputs) {
   return { bear: one(gs.bear, ws.bear), base: one(gPct, wPct), bull: one(gs.bull, ws.bull) };
 }
 
+// The Adjust boxes back into seeds: boxes = { growth, tgrowth, discount: { bear, base, bull } (percent), marginPct,
+// salesToCapital }. An empty or invalid box (NaN / missing) keeps its seed. One helper for the web /dcf/ tool and the
+// native DCF tab, so an edit means the same thing on both.
+function threeStageSeedsFromBoxes(t, boxes) {
+  const b = boxes || {};
+  const ok = v => typeof v === 'number' && isFinite(v);
+  const base = t.scenarios.base;
+  const margin = ok(b.marginPct) ? threeStagePctToFraction(b.marginPct) : base.margin;
+  const salesToCapital = ok(b.salesToCapital) ? b.salesToCapital : base.salesToCapital;
+  const pick = (triple, key) => (triple && ok(triple[key]) ? threeStagePctToFraction(triple[key]) : undefined);
+  const one = key => {
+    const seed = t.scenarios[key];
+    const g = pick(b.growth, key), tg = pick(b.tgrowth, key), w = pick(b.discount, key);
+    return {
+      startGrowth: g !== undefined ? g : seed.startGrowth,
+      terminalGrowth: tg !== undefined ? tg : (seed.terminalGrowth ?? t.inputs.terminalGrowth),
+      wacc: w !== undefined ? w : seed.wacc,
+      margin, salesToCapital,
+    };
+  };
+  return { inputs: t.inputs, scenarios: { bear: one('bear'), base: one('base'), bull: one('bull') } };
+}
+
 // One scenario's value. `company` = { totalDebt, totalCash, shares, price }. Returns the computeScenarios-shaped
 // scenario object every surface renders.
 function threeStageScenario(key, inputs, seed, company) {
@@ -234,6 +257,6 @@ if (typeof module !== 'undefined') {
     THREE_STAGE_DCF_ENABLED, THREE_STAGE_HISTORY_YEARS, THREE_STAGE_GROWTH_MIN, THREE_STAGE_GROWTH_MAX,
     THREE_STAGE_NEGATIVE_MARGIN_NOTE, THREE_STAGE_NO_MARGIN_NOTE, threeStagePctToFraction,
     cycleAverageMargin, revenueTrendGrowth, ownSalesToCapital, bottomUpBeta, calculateThreeStageDCF, threeStageInputs,
-    threeStageScenarioSeeds, threeStageScenario,
+    threeStageScenarioSeeds, threeStageScenario, threeStageSeedsFromBoxes,
   };
 }

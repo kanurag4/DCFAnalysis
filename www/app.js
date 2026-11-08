@@ -689,25 +689,13 @@ function seedThreeStageInputs(t) {
 
 // The boxes back into computeScenarios()'s three-stage seed shape; an empty/invalid box keeps its seed.
 function threeStageSeedsFromInputs() {
-  const t = modelSeeds.dcf.threeStage;
-  const num = (el, fallback) => { const v = parseFloat(el && el.value); return isFinite(v) ? v : fallback; };
-  const margin = threeStagePctToFraction(num(els.tsMarginInput, t.scenarios.base.margin * 100));
-  const salesToCapital = num(els.tsS2cInput, t.scenarios.base.salesToCapital);
-  const one = (key, g, tg, w) => {
-    const seed = t.scenarios[key];
-    const waccPct = num(w, seed.wacc != null ? seed.wacc * 100 : NaN);
-    return {
-      startGrowth: threeStagePctToFraction(num(g, seed.startGrowth * 100)),
-      terminalGrowth: threeStagePctToFraction(num(tg, seed.terminalGrowth * 100)),
-      wacc: isFinite(waccPct) ? threeStagePctToFraction(waccPct) : null,
-      margin, salesToCapital,
-    };
-  };
-  return { threeStage: { inputs: t.inputs, scenarios: {
-    bear: one('bear', els.growthBear, els.tgrowthBear, els.waccBear),
-    base: one('base', els.growthBase, els.tgrowthBase, els.waccBase),
-    bull: one('bull', els.growthBull, els.tgrowthBull, els.waccBull),
-  } } };
+  const n = el => parseFloat(el && el.value);
+  return { threeStage: threeStageSeedsFromBoxes(modelSeeds.dcf.threeStage, {
+    growth: { bear: n(els.growthBear), base: n(els.growthBase), bull: n(els.growthBull) },
+    tgrowth: { bear: n(els.tgrowthBear), base: n(els.tgrowthBase), bull: n(els.tgrowthBull) },
+    discount: { bear: n(els.waccBear), base: n(els.waccBase), bull: n(els.waccBull) },
+    marginPct: n(els.tsMarginInput), salesToCapital: n(els.tsS2cInput),
+  }) };
 }
 
 // Relabel shared inputs, swap input rows, and refresh the toggle + breakdown for the active model.
