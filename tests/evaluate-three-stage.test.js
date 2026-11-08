@@ -44,7 +44,9 @@ test('three-stage on: heavy capex keeps its own method (MSFT)', { skip: !HAVE_SA
 
 test('three-stage on: a negative 4-year margin is excluded as margin-negative', { skip: !HAVE_SA && 'no ../StockAnalysis' }, () => {
   const data = fixture('nvda');
-  const loss = { ...data, annualOperatingIncomeHistory: data.annualOperatingIncomeHistory.map(e => ({ ...e, value: -Math.abs(e.value) })) };
+  // A real loss: operating income AND net income negative (operating income alone negative is treated as a Yahoo error).
+  const neg = (h) => h.map(e => ({ ...e, value: -Math.abs(e.value) }));
+  const loss = { ...data, annualOperatingIncomeHistory: neg(data.annualOperatingIncomeHistory), annualNetIncomeHistory: neg(data.annualNetIncomeHistory) };
   const r = evaluateStock(loss, marketParamsFor(data.ticker, {}), { threeStage: true });
   assert.strictEqual(r.excluded, true);
   assert.strictEqual(r.reason, 'margin-negative');

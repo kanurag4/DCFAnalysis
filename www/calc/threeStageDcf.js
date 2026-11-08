@@ -68,19 +68,49 @@ function tsTax(taxRate) {
 
 function tsClamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
+// A year whose operating income is below a positive net income is a Yahoo data error, not a real year: operating
+// income comes before interest and tax, so it can only sit under net income with a large non-operating gain. Seen
+// on WOW.AX (2026-11-08): operating income -$1.15B / -$1.04B against net income +$0.11B / +$0.96B, which gave
+// Woolworths a negative four-year margin and no value. Such years are dropped (droppedYears counts them); a real
+// loss year (net income negative too) stays in, so a boom-bust cycle still averages its bust.
+function tsOperatingIncomeSuspect(opInc, netIncome) {
+  return netIncome != null && netIncome > 0 && opInc < netIncome;
+}
+
 function cycleAverageMargin(data) {
   const d = data || {};
   const opInc = tsByDate(d.annualOperatingIncomeHistory);
-  const matched = (Array.isArray(d.annualRevenueHistory) ? d.annualRevenueHistory : [])
-    .filter(e => e && e.date && tsNum(e.value) !== null && e.value > 0 && opInc.has(String(e.date)))
+  const netInc = tsByDate(d.annualNetIncomeHistory);
+  let droppedYears = 0;
+  const matched = tsLatest((Array.isArray(d.annualRevenueHistory) ? d.annualRevenueHistory : [])
+    .filter(e => e && e.date && tsNum(e.value) !== null && e.value > 0 && opInc.has(String(e.date))))
+    .filter(e => {
+      const k = String(e.date);
+      if (tsOperatingIncomeSuspect(opInc.get(k), netInc.has(k) ? netInc.get(k) : null)) { droppedYears++; return false; }
+      return true;
+    })
     .map(e => ({ date: e.date, value: opInc.get(String(e.date)) / e.value }));
-  const years = tsLatest(matched);
+  const years = matched;
   if (years.length >= 2) {
-    return { value: years.reduce((s, e) => s + e.value, 0) / years.length, years: years.length, source: 'history' };
+    return { value: years.reduce((s, e) => s + e.value, 0) / years.length, years: years.length, source: 'history', droppedYears };
   }
   const ttm = tsNum(d.operatingMargins);
-  if (ttm !== null) return { value: ttm, years: years.length, source: 'ttm' };
-  return { value: null, years: years.length, source: null };
+  if (ttm !== null) return { value: ttm, years: years.length, source: 'ttm', droppedYears };
+  return { value: null, years: years.length, source: null, droppedYears };
+}
+
+// Trailing revenue (quoteSummary) and the annual revenue series (/timeseries) can be on different bases: MAR's
+// trailing $7.6B excludes the cost reimbursements in its ~$25B annual series (2026-11-08). The margin comes from the
+// annual series, so when the two differ by more than this share the latest annual revenue is the base instead.
+const THREE_STAGE_REVENUE_MISMATCH = 0.4;
+
+function tsRevenueBase(d) {
+  const ttm = tsNum(d.totalRevenue);
+  const latest = tsLatest(d.annualRevenueHistory).filter(e => e.value > 0).pop();
+  if (latest && (!(ttm > 0) || Math.abs(ttm / latest.value - 1) > THREE_STAGE_REVENUE_MISMATCH)) {
+    return { revenue: latest.value, source: 'annual' };
+  }
+  return { revenue: ttm, source: 'ttm' };
 }
 
 function revenueTrendGrowth(data) {
@@ -185,8 +215,9 @@ function threeStageInputs(data, { waccResult, terminalGrowth: tgIn } = {}) {
     : null;
   const note = margin.value === null ? THREE_STAGE_NO_MARGIN_NOTE
     : (margin.value <= 0 ? THREE_STAGE_NEGATIVE_MARGIN_NOTE : null);
+  const rev = tsRevenueBase(d);
   return {
-    revenue: tsNum(d.totalRevenue), startGrowth: growth.value, startGrowthRaw: growth.raw, growthSource: growth.source,
+    revenue: rev.revenue, revenueSource: rev.source, marginDroppedYears: margin.droppedYears, startGrowth: growth.value, startGrowthRaw: growth.raw, growthSource: growth.source,
     terminalGrowth, margin: margin.value, marginYears: margin.years, marginSource: margin.source,
     salesToCapital, s2cSource: own !== null ? 'own' : 'industry',
     beta: betaInfo.beta, betaInfo, wacc, taxRate, note,
