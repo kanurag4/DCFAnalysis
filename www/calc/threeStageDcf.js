@@ -193,10 +193,11 @@ function threeStageInputs(data, { waccResult, terminalGrowth: tgIn } = {}) {
   };
 }
 
-// Bear / Base / Bull seeds from the inputs: Base = the starting growth rounded to 0.1 point and the WACC to 0.01
-// point (what the Adjust inputs show, so re-running from them gives the same number); Bear / Bull starting growth via
-// growthOffsetSpread then the [-5%, 15%] clamp, WACC via discountRateSpread. Margin and sales-to-capital are the
-// same in all three. wacc is null when the inputs have none.
+// Bear / Base / Bull seeds from the inputs, rounded the way the Adjust boxes show them (starting growth and margin
+// to 0.1 point, WACC to 0.01 point, sales-to-capital to 2 decimals) so re-running from the boxes gives the same
+// number on every surface. Bear / Bull starting growth via growthOffsetSpread then the [-5%, 15%] clamp, WACC via
+// discountRateSpread. Margin, sales-to-capital and the long-run rate are the same in all three. wacc is null when
+// the inputs have none.
 function threeStageScenarioSeeds(inputs) {
   const deps = tsDeps();
   const gPct = +(inputs.startGrowth * 100).toFixed(1);
@@ -204,9 +205,11 @@ function threeStageScenarioSeeds(inputs) {
   const clampPct = p => tsClamp(p, THREE_STAGE_GROWTH_MIN * 100, THREE_STAGE_GROWTH_MAX * 100);
   const wPct = inputs.wacc != null ? +(inputs.wacc * 100).toFixed(2) : null;
   const ws = wPct != null ? deps.discountRateSpread(wPct) : { bear: null, bull: null };
+  const margin = inputs.margin != null ? threeStagePctToFraction(+(inputs.margin * 100).toFixed(1)) : null;
+  const salesToCapital = inputs.salesToCapital != null ? Math.round(inputs.salesToCapital * 100) / 100 : null;
   const one = (g, w) => ({
     startGrowth: threeStagePctToFraction(clampPct(g)), wacc: w != null ? threeStagePctToFraction(w) : null,
-    margin: inputs.margin, salesToCapital: inputs.salesToCapital,
+    margin, salesToCapital, terminalGrowth: inputs.terminalGrowth,
   });
   return { bear: one(gs.bear, ws.bear), base: one(gPct, wPct), bull: one(gs.bull, ws.bull) };
 }
@@ -215,11 +218,11 @@ function threeStageScenarioSeeds(inputs) {
 // scenario object every surface renders.
 function threeStageScenario(key, inputs, seed, company) {
   const out = { key, startGrowth: seed.startGrowth, growthRate: seed.startGrowth, wacc: seed.wacc,
-    terminalGrowth: inputs.terminalGrowth, margin: seed.margin, salesToCapital: seed.salesToCapital, threeStage: true };
+    terminalGrowth: seed.terminalGrowth ?? inputs.terminalGrowth, margin: seed.margin, salesToCapital: seed.salesToCapital, threeStage: true };
   if (inputs.note) return { ...out, result: null, note: inputs.note };
   if (seed.wacc == null) return { ...out, result: null, noWacc: true };
   const result = calculateThreeStageDCF({
-    revenue: inputs.revenue, startGrowth: seed.startGrowth, terminalGrowth: inputs.terminalGrowth, margin: seed.margin,
+    revenue: inputs.revenue, startGrowth: seed.startGrowth, terminalGrowth: out.terminalGrowth, margin: seed.margin,
     salesToCapital: seed.salesToCapital, wacc: seed.wacc, taxRate: inputs.taxRate,
     totalDebt: company.totalDebt ?? 0, totalCash: company.totalCash ?? 0, shares: company.shares, currentPrice: company.price,
   });
