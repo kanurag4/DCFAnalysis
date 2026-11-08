@@ -115,8 +115,11 @@ function cycleAverageMargin(data) {
   const opInc = tsByDate(d.annualOperatingIncomeHistory);
   const netInc = tsByDate(d.annualNetIncomeHistory);
   let droppedYears = 0;
+  // The window is the latest 4 revenue years first, then matched: a latest year whose operating income Yahoo hasn't
+  // filed yet leaves 3 years, never pulls in a 5th, older one (our store keeps more than 4 years).
   const matched = tsLatest((Array.isArray(d.annualRevenueHistory) ? d.annualRevenueHistory : [])
-    .filter(e => e && e.date && tsNum(e.value) !== null && e.value > 0 && opInc.has(String(e.date))))
+    .filter(e => e && e.date && tsNum(e.value) !== null && e.value > 0))
+    .filter(e => opInc.has(String(e.date)))
     .filter(e => {
       const k = String(e.date);
       if (tsOperatingIncomeSuspect(opInc.get(k), netInc.has(k) ? netInc.get(k) : null, e.value)) { droppedYears++; return false; }
@@ -222,7 +225,9 @@ function calculateThreeStageDCF({
       ? startGrowth
       : startGrowth + (terminalGrowth - startGrowth) * (y - THREE_STAGE_HIGH_YEARS) / THREE_STAGE_FADE_YEARS;
     const rev = prev * (1 + g);
-    const fcf = rev * margin * (1 - t) - (rev - prev) / salesToCapital;
+    // Reinvestment is floored at 0: a shrinking company is not assumed to free up capital for every dollar of lost
+    // revenue (peer review 2026-11-08: that 'capital release' lifted XOM +14%, CVX +15%).
+    const fcf = rev * margin * (1 - t) - Math.max(0, rev - prev) / salesToCapital;
     revenues.push(rev); growthRates.push(g); fcfs.push(fcf);
     pvFcfs.push(fcf / Math.pow(1 + wacc, y));
     prev = rev;

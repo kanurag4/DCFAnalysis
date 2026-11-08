@@ -117,3 +117,20 @@ test('#1 negative trailing FCF: the ticker page stays classic (NVDA replay with 
     assert.ok(!r.html || !r.html.includes('Starting growth (yrs 1–5)'), 'no three-stage text');
   } finally { global.fetch = realFetch; global.setTimeout = realTimeout; }
 });
+
+test('#9: the ticker page labels the revenue it used (latest fiscal year when the annual figure is the base)', async () => {
+  const rec = JSON.parse(fs.readFileSync(path.join(REPLAY, 'nvda.json'), 'utf8')).responses;
+  const qs = JSON.parse(rec['/quoteSummary/NVDA'].body);
+  const fd = qs.quoteSummary.result[0].financialData;
+  fd.totalRevenue = { raw: fd.totalRevenue.raw * 0.4 };
+  fd.revenueGrowth = { raw: 0.05 };
+  rec['/quoteSummary/NVDA'] = { status: 200, body: JSON.stringify(qs) };
+  const realFetch = global.fetch, realTimeout = global.setTimeout;
+  global.fetch = async (url) => { const r = rec[new URL(String(url)).pathname]; return r ? new Response(r.body, { status: r.status }) : new Response('nr', { status: 404 }); };
+  global.setTimeout = (cb, _ms, ...args) => realTimeout(cb, 0, ...args);
+  try {
+    const r = await page('NVDA', true);
+    assert.ok(r.html.includes('Latest fiscal year — the starting point'), 'annual label');
+    assert.ok(!r.html.includes('Trailing 12 months — the starting point'));
+  } finally { global.fetch = realFetch; global.setTimeout = realTimeout; }
+});
