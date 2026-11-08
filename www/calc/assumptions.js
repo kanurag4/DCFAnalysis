@@ -329,6 +329,15 @@ function deriveDividendSeeds(data) {
   };
 }
 
+// calc/threeStageDcf.js: a browser global (its <script> tag must precede this file's on every page -- a missing tag
+// breaks every ticker, see CLAUDE.md Known Traps), or require()d in Node.
+function threeStageModule() {
+  if (typeof threeStageInputs === 'function') {
+    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario };
+  }
+  return require('./threeStageDcf.js');
+}
+
 // Pure equivalent of app.js's prefillInputs() + its modelSeeds block.
 // Returns everything needed to seed and run Bear/Base/Bull without
 // touching any DOM element.
@@ -375,6 +384,12 @@ function deriveDcfAssumptions(data, opts) {
 
   const marketTGrowth = MARKET_TGROWTH[currentMarket] ?? MARKET_TGROWTH_DEFAULT;
 
+  // Three-stage DCF (calc/threeStageDcf.js) -- computed for every ticker, like every other model's seeds below;
+  // computeScenarios() only uses it when options.threeStage is true (callers pass THREE_STAGE_DCF_ENABLED).
+  const tsMod = threeStageModule();
+  const threeStageInputsResult = tsMod.threeStageInputs(data, { waccResult, terminalGrowth: marketTGrowth / 100 });
+  const threeStageSeeds = { inputs: threeStageInputsResult, scenarios: tsMod.threeStageScenarioSeeds(threeStageInputsResult) };
+
   const divSeeds = deriveDividendSeeds(data);
   const dividend = divSeeds.dividend;
   const growth = divSeeds.growth; // fraction, not *100 yet
@@ -413,6 +428,7 @@ function deriveDcfAssumptions(data, opts) {
       discount: waccResult
         ? { bear: +(waccResult.wacc * 100 + 1).toFixed(2), base: +(waccResult.wacc * 100).toFixed(2), bull: +(Math.max(1, waccResult.wacc * 100 - 1)).toFixed(2) }
         : { bear: 11, base: 10, bull: 9 },
+      threeStage: threeStageSeeds,
     },
     ddm: {
       dividend,
@@ -555,6 +571,14 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const normFcf = options.normFcf === undefined ? null : options.normFcf;
   const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
     ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+
+  if (options.threeStage === true) {
+    const tsMod = threeStageModule();
+    const company = { totalDebt: data.totalDebt, totalCash: data.totalCash, shares: resolvedShares, price: data.price };
+    const t = seeds.threeStage;
+    const scenarios = configs.map(key => tsMod.threeStageScenario(key, t.inputs, t.scenarios[key], company));
+    return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
+  }
 
   function runDcf(fcfValue, growthRate, terminalGrowth, wacc) {
     const common = {

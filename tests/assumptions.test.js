@@ -16,7 +16,7 @@ function loadAssumptionsContext(repoRoot) {
     'www/utils.js', 'www/calc/wacc.js', 'www/calc/dcf.js', 'www/calc/ddm.js',
     'www/calc/fadingGrowthDcf.js', 'www/calc/excessReturn.js', 'www/calc/reit.js',
     'www/calc/holdcoDiscount.js', 'www/calc/cyclicalNormalization.js',
-    'www/config.js', 'www/calc/assumptions.js',
+    'www/config.js', 'www/calc/industryBetas.js', 'www/calc/threeStageDcf.js', 'www/calc/assumptions.js',
   ];
   for (const f of files) {
     ctx.module = { exports: {} }; // reset between files -- each script tag is its own global scope for module.exports, but functions/consts persist on ctx

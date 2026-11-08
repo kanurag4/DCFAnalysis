@@ -32,16 +32,21 @@ const THREE_STAGE_NEGATIVE_MARGIN_NOTE = "Operating margin averaged over the las
 const THREE_STAGE_NO_MARGIN_NOTE = "There is no operating margin history for this company — this model can't value it.";
 
 function tsDeps() {
-  if (typeof industryFor === 'function' && typeof deriveMultiYearGrowth === 'function' && typeof detectMarket === 'function') {
-    return { industryFor, deriveMultiYearGrowth, detectMarket, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT };
+  if (typeof industryFor === 'function' && typeof deriveMultiYearGrowth === 'function' && typeof detectMarket === 'function'
+    && typeof growthOffsetSpread === 'function') {
+    return { industryFor, deriveMultiYearGrowth, detectMarket, MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT, growthOffsetSpread, discountRateSpread };
   }
   const a = require('./assumptions.js');
   return {
     industryFor: require('./industryBetas.js').industryFor,
     deriveMultiYearGrowth: require('../utils.js').deriveMultiYearGrowth,
     detectMarket: a.detectMarket, MARKET_TGROWTH: a.MARKET_TGROWTH, MARKET_TGROWTH_DEFAULT: a.MARKET_TGROWTH_DEFAULT,
+    growthOffsetSpread: a.growthOffsetSpread, discountRateSpread: a.discountRateSpread,
   };
 }
+
+// A percent with at most 2 decimals -> its exact fraction (5.27 -> 0.0527, never 0.052699999...).
+function threeStagePctToFraction(pct) { return Math.round(pct * 100) / 10000; }
 
 function tsNum(v) { return (v != null && isFinite(v)) ? v : null; }
 
@@ -188,10 +193,44 @@ function threeStageInputs(data, { waccResult, terminalGrowth: tgIn } = {}) {
   };
 }
 
+// Bear / Base / Bull seeds from the inputs: Base = the starting growth rounded to 0.1 point and the WACC to 0.01
+// point (what the Adjust inputs show, so re-running from them gives the same number); Bear / Bull starting growth via
+// growthOffsetSpread then the [-5%, 15%] clamp, WACC via discountRateSpread. Margin and sales-to-capital are the
+// same in all three. wacc is null when the inputs have none.
+function threeStageScenarioSeeds(inputs) {
+  const deps = tsDeps();
+  const gPct = +(inputs.startGrowth * 100).toFixed(1);
+  const gs = deps.growthOffsetSpread(gPct);
+  const clampPct = p => tsClamp(p, THREE_STAGE_GROWTH_MIN * 100, THREE_STAGE_GROWTH_MAX * 100);
+  const wPct = inputs.wacc != null ? +(inputs.wacc * 100).toFixed(2) : null;
+  const ws = wPct != null ? deps.discountRateSpread(wPct) : { bear: null, bull: null };
+  const one = (g, w) => ({
+    startGrowth: threeStagePctToFraction(clampPct(g)), wacc: w != null ? threeStagePctToFraction(w) : null,
+    margin: inputs.margin, salesToCapital: inputs.salesToCapital,
+  });
+  return { bear: one(gs.bear, ws.bear), base: one(gPct, wPct), bull: one(gs.bull, ws.bull) };
+}
+
+// One scenario's value. `company` = { totalDebt, totalCash, shares, price }. Returns the computeScenarios-shaped
+// scenario object every surface renders.
+function threeStageScenario(key, inputs, seed, company) {
+  const out = { key, startGrowth: seed.startGrowth, growthRate: seed.startGrowth, wacc: seed.wacc,
+    terminalGrowth: inputs.terminalGrowth, margin: seed.margin, salesToCapital: seed.salesToCapital, threeStage: true };
+  if (inputs.note) return { ...out, result: null, note: inputs.note };
+  if (seed.wacc == null) return { ...out, result: null, noWacc: true };
+  const result = calculateThreeStageDCF({
+    revenue: inputs.revenue, startGrowth: seed.startGrowth, terminalGrowth: inputs.terminalGrowth, margin: seed.margin,
+    salesToCapital: seed.salesToCapital, wacc: seed.wacc, taxRate: inputs.taxRate,
+    totalDebt: company.totalDebt ?? 0, totalCash: company.totalCash ?? 0, shares: company.shares, currentPrice: company.price,
+  });
+  return { ...out, result };
+}
+
 if (typeof module !== 'undefined') {
   module.exports = {
     THREE_STAGE_DCF_ENABLED, THREE_STAGE_HISTORY_YEARS, THREE_STAGE_GROWTH_MIN, THREE_STAGE_GROWTH_MAX,
-    THREE_STAGE_NEGATIVE_MARGIN_NOTE, THREE_STAGE_NO_MARGIN_NOTE,
+    THREE_STAGE_NEGATIVE_MARGIN_NOTE, THREE_STAGE_NO_MARGIN_NOTE, threeStagePctToFraction,
     cycleAverageMargin, revenueTrendGrowth, ownSalesToCapital, bottomUpBeta, calculateThreeStageDCF, threeStageInputs,
+    threeStageScenarioSeeds, threeStageScenario,
   };
 }
