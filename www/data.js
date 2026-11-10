@@ -69,9 +69,6 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
   // `types` list for other reasons, just never mapped into a history array
   // here before now).
   let annualGrossProfitHistory = [];
-  // Three-stage DCF (calc/threeStageDcf.js): cycle-average operating margin and own sales-to-capital.
-  let annualOperatingIncomeHistory = [];
-  let annualDepreciationHistory = [];
   // Heavy capex spending (2026-11-05): trailing-12-month capex / operating cash flow / depreciation -- see ttmFromTimeseries().
   let ttm = ttmFromTimeseries(null, gbpToPence);
   try {
@@ -121,8 +118,6 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
         annualSharesHistory = Array.isArray(tsBody.annualOrdinarySharesNumber) ? tsBody.annualOrdinarySharesNumber : [];
         annualCapexHistory = scaleTimeseries(Array.isArray(tsBody.annualCapitalExpenditure) ? tsBody.annualCapitalExpenditure : [], gbpToPence);
         annualGrossProfitHistory = scaleTimeseries(Array.isArray(tsBody.annualGrossProfit) ? tsBody.annualGrossProfit : [], gbpToPence);
-        annualOperatingIncomeHistory = scaleTimeseries(Array.isArray(tsBody.annualOperatingIncome) ? tsBody.annualOperatingIncome : [], gbpToPence);
-        annualDepreciationHistory = scaleTimeseries(Array.isArray(tsBody.annualDepreciationAndAmortization) ? tsBody.annualDepreciationAndAmortization : [], gbpToPence);
       }
     }
   } catch (_) {
@@ -187,8 +182,6 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
   let annualTotalDebtHistoryConverted = annualTotalDebtHistory;
   let annualCapexHistoryConverted = annualCapexHistory;
   let annualGrossProfitHistoryConverted = annualGrossProfitHistory;
-  let annualOperatingIncomeHistoryConverted = annualOperatingIncomeHistory;
-  let annualDepreciationHistoryConverted = annualDepreciationHistory;
 
   // GBp/GBP is the same currency at two quote sub-units, already reconciled
   // by mapQuoteSummary()'s gbpPenceScale() and the /timeseries scaling above
@@ -226,8 +219,6 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
       annualTotalDebtHistoryConverted = annualTotalDebtHistory.map(e => ({ date: e.date, value: c(e.value) }));
       annualCapexHistoryConverted = annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
       annualGrossProfitHistoryConverted = annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
-      annualOperatingIncomeHistoryConverted = annualOperatingIncomeHistory.map(e => ({ date: e.date, value: c(e.value) }));
-      annualDepreciationHistoryConverted = annualDepreciationHistory.map(e => ({ date: e.date, value: c(e.value) }));
       ttm = { ...ttm, ttmCapex: c(ttm.ttmCapex), ttmOcf: c(ttm.ttmOcf), ttmDepreciation: c(ttm.ttmDepreciation), lastQuarterCapex: c(ttm.lastQuarterCapex) };
     } else {
       fxConversionFailed = true;
@@ -257,8 +248,6 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
       annualTotalDebtHistoryConverted = [];
       annualCapexHistoryConverted = [];
       annualGrossProfitHistoryConverted = [];
-      annualOperatingIncomeHistoryConverted = [];
-      annualDepreciationHistoryConverted = [];
     }
   }
 
@@ -293,9 +282,6 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
     annualSharesHistory,
     annualCapexHistory: annualCapexHistoryConverted,
     annualGrossProfitHistory: annualGrossProfitHistoryConverted,
-    // Three-stage DCF (calc/threeStageDcf.js). Same FX conversion as revenue history.
-    annualOperatingIncomeHistory: annualOperatingIncomeHistoryConverted,
-    annualDepreciationHistory: annualDepreciationHistoryConverted,
     // Heavy capex spending (calc/heavyCapex.js). Same FX conversion as every money field above.
     ttmCapex: ttm.ttmCapex, ttmOcf: ttm.ttmOcf, ttmDepreciation: ttm.ttmDepreciation, lastQuarterCapex: ttm.lastQuarterCapex,
   };

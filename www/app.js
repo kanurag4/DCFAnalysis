@@ -29,13 +29,6 @@ const els = {
   midyearToggle: $('midyear-toggle'),
   multistageToggle: $('multistage-toggle'),
   multistageRow: $('multistage-row'),
-  // Three-stage DCF (calc/threeStageDcf.js, method 4): its own two boxes plus the rows it hides.
-  tsRow:         $('three-stage-row'),
-  tsMarginInput: $('ts-margin-input'),
-  tsS2cInput:    $('ts-s2c-input'),
-  tsNote:        $('ts-source-note'),
-  yearsRow:      $('years-row'),
-  midyearRow:    $('midyear-row'),
   growthBear:   $('growth-bear'),
   growthBase:   $('growth-base'),
   growthBull:   $('growth-bull'),
@@ -661,50 +654,6 @@ function seedInputsForModel(model) {
     els.bookvalueInput.value = s.bookValue != null ? (+s.bookValue).toFixed(2) : '';
     els.bookvalueInput.placeholder = s.bookValue != null ? '' : 'Enter book value / share';
   }
-  if (model === 'dcf' && threeStageActive()) seedThreeStageInputs(modelSeeds.dcf.threeStage);
-}
-
-// Banks / insurers -- plus, with the three-stage switch on, US lenders (calc/threeStageDcf.js threeStageLender), the
-// same rule deriveDcfAssumptions() routes to the bank models, so this page's panels agree with the model it runs.
-function bankInsTicker(data) {
-  if (!data) return false;
-  return isBankOrInsurance(data.sector, data.industry, data.ticker)
-    || (typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true && threeStageBankModel(data));
-}
-
-// ── Three-stage DCF (method 4, calc/threeStageDcf.js) ─────────────────────
-// On when the shared switch is on and this ticker is on the plain-DCF path (not heavy capex).
-function threeStageActive() {
-  return typeof THREE_STAGE_DCF_ENABLED !== 'undefined' && THREE_STAGE_DCF_ENABLED === true
-    && valuationModel === 'dcf' && !heavyCapexState && !!(modelSeeds && modelSeeds.dcf && modelSeeds.dcf.threeStage)
-    && modelSeeds.dcf.threeStage.eligible === true; // US market + positive trailing FCF (threeStageEligible)
-}
-
-// The scenario boxes take the three-stage seeds: growth = starting growth (years 1-5), terminal = long-run rate,
-// WACC = the bottom-up-beta WACC; plus the operating margin and sales-to-capital boxes. Rounded exactly as the
-// seeds are, so the boxes give back the shared Base.
-function seedThreeStageInputs(t) {
-  const pct1 = f => String(+(f * 100).toFixed(1));
-  const pct2 = f => String(+(f * 100).toFixed(2));
-  const sc = t.scenarios;
-  els.growthBear.value = pct1(sc.bear.startGrowth); els.growthBase.value = pct1(sc.base.startGrowth); els.growthBull.value = pct1(sc.bull.startGrowth);
-  els.tgrowthBear.value = pct2(sc.bear.terminalGrowth); els.tgrowthBase.value = pct2(sc.base.terminalGrowth); els.tgrowthBull.value = pct2(sc.bull.terminalGrowth);
-  els.waccBear.value = sc.bear.wacc != null ? pct2(sc.bear.wacc) : '';
-  els.waccBase.value = sc.base.wacc != null ? pct2(sc.base.wacc) : '';
-  els.waccBull.value = sc.bull.wacc != null ? pct2(sc.bull.wacc) : '';
-  if (els.tsMarginInput) els.tsMarginInput.value = sc.base.margin != null ? pct1(sc.base.margin) : '';
-  if (els.tsS2cInput) els.tsS2cInput.value = sc.base.salesToCapital != null ? String(sc.base.salesToCapital) : '';
-}
-
-// The boxes back into computeScenarios()'s three-stage seed shape; an empty/invalid box keeps its seed.
-function threeStageSeedsFromInputs() {
-  const n = el => parseFloat(el && el.value);
-  return { threeStage: threeStageSeedsFromBoxes(modelSeeds.dcf.threeStage, {
-    growth: { bear: n(els.growthBear), base: n(els.growthBase), bull: n(els.growthBull) },
-    tgrowth: { bear: n(els.tgrowthBear), base: n(els.tgrowthBase), bull: n(els.tgrowthBull) },
-    discount: { bear: n(els.waccBear), base: n(els.waccBase), bull: n(els.waccBull) },
-    marginPct: n(els.tsMarginInput), salesToCapital: n(els.tsS2cInput),
-  }) };
 }
 
 // Relabel shared inputs, swap input rows, and refresh the toggle + breakdown for the active model.
@@ -713,7 +662,7 @@ function applyModelUI() {
   const excessReturn = valuationModel === 'excess-return';
   const reit = valuationModel === 'reit';
   const airline = valuationModel === 'airline';
-  const isBankIns = currentData && bankInsTicker(currentData);
+  const isBankIns = currentData && isBankOrInsurance(currentData.sector, currentData.industry, currentData.ticker);
   const isReitTicker = currentData && isReit(currentData.sector, currentData.industry);
   const isAirlineTicker = currentData && isAirline(currentData.sector, currentData.industry);
   const isUtilityTicker = currentData && isUtility(currentData.sector, currentData.industry);
@@ -726,27 +675,13 @@ function applyModelUI() {
   if (els.multistageRow) els.multistageRow.hidden = ddm || excessReturn || reit || airline;
   if (els.tgrowthRow) els.tgrowthRow.hidden = excessReturn || reit || airline; // no terminal value for these models
   if (els.discountScenarioRow) els.discountScenarioRow.hidden = reit || airline; // no discount rate at all
-  // Three-stage DCF: no free-cash-flow box, fixed 10-year shape (5 + 5-year fade), end-year discounting.
-  const threeStage = threeStageActive();
-  if (els.tsRow) els.tsRow.hidden = !threeStage;
-  if (els.yearsRow) els.yearsRow.hidden = threeStage;
-  if (els.midyearRow) els.midyearRow.hidden = threeStage;
-  if (threeStage) {
-    if (els.fcfRow) els.fcfRow.hidden = true;
-    if (els.multistageRow) els.multistageRow.hidden = true;
-    const ti = modelSeeds.dcf.threeStage.inputs;
-    const asOf = typeof INDUSTRY_BETAS_AS_OF !== 'undefined' ? INDUSTRY_BETAS_AS_OF : '';
-    if (els.tsNote) els.tsNote.textContent = (ti.marginSource === 'history' ? `Margin: ${ti.marginYears}-year average` : 'Margin: trailing 12 months')
-      + ` · Sales to capital: ${ti.s2cSource === 'own' ? "the company's own" : 'industry'} figure`
-      + ` · Beta: ${ti.betaInfo.industry} ${ti.betaInfo.unlevered.toFixed(2)} unlevered → ${ti.beta.toFixed(2)} (Damodaran, ${asOf})`;
-  }
 
   // innerHTML (not textContent) so the glossary term span survives the
   // DDM/DCF toggle — a plain textContent write would strip it every time.
   if (els.growthLabel) els.growthLabel.innerHTML = reit
     ? T('p-affo-multiple', 'P/AFFO Multiple')
     : (airline ? T('ev-ebitda-multiple', 'EV/EBITDA Multiple')
-    : (excessReturn ? T('roe', 'ROE %') : T('growth-rate', ddm ? 'Div Growth %' : (threeStage ? 'Growth yrs 1–5 %' : '5yr Growth %'))));
+    : (excessReturn ? T('roe', 'ROE %') : T('growth-rate', ddm ? 'Div Growth %' : '5yr Growth %')));
   const discountLabelText = $('discount-label-text');
   if (discountLabelText) discountLabelText.innerHTML = T((ddm || excessReturn) ? 'cost-of-equity' : 'wacc', (ddm || excessReturn) ? 'Cost of Equity %' : 'WACC %');
   if (els.discountTip) els.discountTip.setAttribute('data-tip', (ddm || excessReturn)
@@ -1147,7 +1082,7 @@ function renderFinancialWarning(data, sym) {
     return;
   }
   // Banks / insurers — DDM panel with banking metrics (replaces the DCF warning)
-  if (bankInsTicker(data)) {
+  if (isBankOrInsurance(data.sector, data.industry, data.ticker)) {
     // Mortgage REITs route through isBankOrInsurance() too (loan-book
     // economics, see that function's own comment) but aren't a "Bank" --
     // they don't take deposits, they hold levered mortgage/MBS portfolios
@@ -1158,7 +1093,7 @@ function renderFinancialWarning(data, sym) {
     const isMortgageReit = /^REIT\s*-\s*Mortgage/i.test(data.industry || '');
     const kind = isMortgageReit
       ? 'Mortgage REIT'
-      : (/insurance|healthcare plans/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank');
+      : (/insurance/i.test(data.industry || '') || /insurance/i.test(data.sector || '') ? 'Insurance' : 'Bank');
     const icon = isMortgageReit ? '🏢' : '🏦';
     const usingExcessReturn = valuationModel === 'excess-return';
     const modelLabel = usingExcessReturn
@@ -1225,7 +1160,7 @@ function renderFinancialWarning(data, sym) {
 // never silently disagree on which FCF was actually run.
 function resolveDcfFcfInputs(data) {
   const useNormFcf = isFinancialSector(data.sector)
-    && !bankInsTicker(data)
+    && !isBankOrInsurance(data.sector, data.industry, data.ticker)
     && els.fcfNorm && els.fcfNorm.value;
   const fcfRaw = useNormFcf ? parseMoney(els.fcfNorm) : parseMoney(els.fcfInput);
 
@@ -1395,7 +1330,6 @@ function buildScenarios(data) {
   }
 
   // ── DCF ──
-  if (threeStageActive()) return computeScenarios(data, 'dcf', threeStageSeedsFromInputs(), { threeStage: true, holdcoDiscount });
   const { fcfRaw, normFcf } = resolveDcfFcfInputs(data);
   const seeds = {
     growth:   { bear: parseFloat(els.growthBear.value) || 5, base: parseFloat(els.growthBase.value) || 5, bull: parseFloat(els.growthBull.value) || 5 },
@@ -1615,9 +1549,7 @@ function renderScenarios(scenarios, data, sym) {
   const ivLabel = T('intrinsic-value', 'Intrinsic Value');
   const heading = isNormalised
     ? `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-yr · Revenue-normalised)`
-    : (scenarios.some(s => s.threeStage)
-      ? `${ivLabel} Estimate (3-stage · 10-year forecast)`
-      : `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`);
+    : `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`;
   els.scenarios.innerHTML = `<h3>${heading}</h3><div class="scenario-cards">${cards}</div>`;
   show(els.scenarios);
 
@@ -1663,7 +1595,7 @@ function computeBreakeven(revenue, currentMargin, targetMargin, revenueGrowth, y
 
 function renderBreakeven(data, sym) {
   if (!els.breakevenCallout) return;
-  const isBankIns = bankInsTicker(data);
+  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   if (isBankIns || valuationModel === 'ddm' || valuationModel === 'reit' || valuationModel === 'airline' || !data.totalRevenue) {
     els.breakevenCallout.hidden = true; return;
   }
@@ -1883,10 +1815,8 @@ function recomputeDiscount() {
   const erp = parseFloat(els.erpInput.value) / 100 || 0.055;
   const rawBeta = (currentData.beta != null && isFinite(currentData.beta) && currentData.beta > 0)
     ? currentData.beta : 1.0;
-  // Three-stage DCF: the bottom-up beta (industry, re-levered) replaces Yahoo's beta and the market floor.
-  const threeStage = threeStageActive();
-  const effectiveBeta = threeStage ? modelSeeds.dcf.threeStage.inputs.beta : Math.max(rawBeta, getMarketBetaFloor(currentData.ticker));
-  const betaWasFloored = !threeStage && effectiveBeta > rawBeta;
+  const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(currentData.ticker));
+  const betaWasFloored = effectiveBeta > rawBeta;
 
   if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
     const re    = rf + effectiveBeta * erp;

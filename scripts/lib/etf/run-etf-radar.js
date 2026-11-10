@@ -26,7 +26,7 @@ const { renderRadarPage } = require('./etf-radar-page.js');
 const { readGrowthManifest, listGrowthMarketFolders } = require('../growth-manifest-reader.js');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-const DCF_FALLBACK_REASONS = new Set(['dcf-unavailable', 'no-wacc', 'margin-negative']); // margin-negative: three-stage DCF (www/calc/threeStageDcf.js)
+const DCF_FALLBACK_REASONS = new Set(['dcf-unavailable', 'no-wacc']);
 const FINANCIALish = /financial|bank|insurance/i;
 const COOLDOWN_MS = 65000;
 // A single holding's premium/discount outside this band is almost always a data

@@ -320,17 +320,6 @@
               <input type="text" id="fcf-normalized" inputmode="numeric">
             </div>
           </div>
-          <div class="input-row" id="three-stage-row" hidden>
-            <label for="ts-margin-input">Operating margin %
-              <span class="tip" data-tip="The company's operating margin averaged over its last four fiscal years, held for every forecast year. A cycle average, so a boom or bust year doesn't set the whole valuation.">?</span>
-            </label>
-            <input type="number" id="ts-margin-input" step="0.1" min="-50" max="90">
-            <label for="ts-s2c-input">Sales to capital
-              <span class="tip" data-tip="Revenue each dollar of new investment brings in. Growth costs (new revenue ÷ this ratio) a year in reinvestment. The company's own four-year figure when it can be measured, else its industry's (Damodaran).">?</span>
-            </label>
-            <input type="number" id="ts-s2c-input" step="0.01" min="0.5" max="10">
-            <div id="ts-source-note" class="rf-note"></div>
-          </div>
           <div id="cyclical-note" class="cyclical-note" hidden></div>
           <div class="input-row" id="target-margin-row" hidden>
             <label for="target-margin-input">Target FCF Margin %
@@ -362,14 +351,14 @@
             </label>
             <input type="text" id="ebitda-input" inputmode="decimal" placeholder="e.g. 7500000000">
           </div>
-          <div class="input-row" id="years-row">
+          <div class="input-row">
             <label>Projection Years</label>
             <div class="slider-row">
               <input type="range" id="years-slider" min="3" max="10" value="5">
               <span id="years-display">5</span>
             </div>
           </div>
-          <div class="input-row" id="midyear-row">
+          <div class="input-row">
             <label class="asx-toggle" style="margin:0">
               <input type="checkbox" id="midyear-toggle">
               <span>Mid-year discounting <span class="tip" data-tip="Assumes cash flows land through the year rather than all at fiscal year-end — the standard practitioner convention. Slightly increases intrinsic value.">?</span></span>
@@ -637,8 +626,6 @@
   <script src="calc/fiscalYearAlign.js"></script>
   <script src="calc/altmanZ.js"></script>
   <script src="calc/heavyCapex.js"></script>
-  <script src="calc/industryBetas.js"></script>
-  <script src="calc/threeStageDcf.js"></script>
   <script src="calc/assumptions.js"></script>
   <!-- Self-hosted, not CDN (chart.umd.min.js@4.5.1 / chartjs-plugin-datalabels@2.2.0) --
        a CDN dependency here meant the Android app's first-ever DCF chart render on a

@@ -27,7 +27,6 @@ const { marketParamsFor } = require('./market.js');
 const { fetchUsRf, fetchAusRf, fetchIndRf } = require('./rf.js');
 const { batchHeaders } = require('./batch-auth.js');
 const { verdict } = require('./verdict.js');
-const { THREE_STAGE_DCF_ENABLED, threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageEligible, threeStageBankModel } = require('../../www/calc/threeStageDcf.js');
 const { buildValueScaleCard } = require('./value-scale.js');
 const { buildSolvencyScaleCard } = require('./solvency-scale.js');
 const { buildAiCorrelationCard, buildAiCorrelationFaqHtml } = require('./ai-correlation-card.js');
@@ -581,9 +580,6 @@ async function fetchHistorySeries(symbol, proxyUrl, currency) {
     // Not in the plan's original field list -- Piotroski's gross-margin
     // criterion needs it (see www/data.js's identical addition).
     annualGrossProfitHistory: scaleTimeseries(Array.isArray(series.annualGrossProfit) ? series.annualGrossProfit : [], gbpToPence),
-    // Three-stage DCF (www/calc/threeStageDcf.js): cycle-average operating margin and own sales-to-capital.
-    annualOperatingIncomeHistory: scaleTimeseries(Array.isArray(series.annualOperatingIncome) ? series.annualOperatingIncome : [], gbpToPence),
-    annualDepreciationHistory: scaleTimeseries(Array.isArray(series.annualDepreciationAndAmortization) ? series.annualDepreciationAndAmortization : [], gbpToPence),
     // Heavy capex spending (www/calc/heavyCapex.js): trailing-12-month capex / operating cash flow / depreciation.
     ttm: ttmFromTimeseries(series, gbpToPence),
   };
@@ -779,9 +775,7 @@ function buildRelatedStocksPool() {
 // (proxyUrl, optional indexHistoryCache Map). Returns:
 // - { status: 'ok', html: string, entry: {...}, market: {...} }
 // - { status: 'skipped', ticker: string, market: string|null, reason: string }
-// threeStage: true/false forces the three-stage DCF (www/calc/threeStageDcf.js) on/off; omitted = THREE_STAGE_DCF_ENABLED.
-async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelationCache, threeStage } = {}) {
-  const threeStageOn = threeStage !== undefined ? threeStage === true : THREE_STAGE_DCF_ENABLED;
+async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelationCache } = {}) {
   const t = (ticker || '').trim().toUpperCase();
   if (!TICKER_RE.test(t)) {
     return { status: 'skipped', ticker: ticker, market: null, reason: `invalid ticker format "${ticker}"` };
@@ -868,8 +862,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         hist.annualTotalDebtHistory = hist.annualTotalDebtHistory.map(e => ({ date: e.date, value: c(e.value) }));
         hist.annualCapexHistory = hist.annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
         hist.annualGrossProfitHistory = hist.annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
-        hist.annualOperatingIncomeHistory = hist.annualOperatingIncomeHistory.map(e => ({ date: e.date, value: c(e.value) }));
-        hist.annualDepreciationHistory = hist.annualDepreciationHistory.map(e => ({ date: e.date, value: c(e.value) }));
         if (hist.ttm) hist.ttm = { ...hist.ttm, ttmCapex: c(hist.ttm.ttmCapex), ttmOcf: c(hist.ttm.ttmOcf), ttmDepreciation: c(hist.ttm.ttmDepreciation), lastQuarterCapex: c(hist.ttm.lastQuarterCapex) };
       } else {
         fxConversionFailed = true;
@@ -898,24 +890,17 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         hist.annualTotalDebtHistory = [];
         hist.annualCapexHistory = [];
         hist.annualGrossProfitHistory = [];
-        hist.annualOperatingIncomeHistory = [];
-        hist.annualDepreciationHistory = [];
         if (hist.ttm) hist.ttm = { ...hist.ttm, ttmCapex: null, ttmOcf: null, ttmDepreciation: null, lastQuarterCapex: null };
       }
     }
 
-    // US lenders and health insurers go to the bank models with the three-stage switch on (threeStageBankModel;
-    // /timeseries interest first,
-    // the same precedence the WACC uses).
-    const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker)
-      || (threeStageOn && threeStageBankModel({ ...data, interestExpense: hist.interestExpense != null ? hist.interestExpense : data.interestExpense }));
+    const isBank = isBankOrInsurance(data.sector, data.industry, data.ticker);
     const isReitTicker = !isBank && isReit(data.sector, data.industry);
     const isAirlineTicker = !isBank && !isReitTicker && isAirline(data.sector, data.industry);
     const isUtilityTicker = !isBank && !isReitTicker && !isAirlineTicker && isUtility(data.sector, data.industry);
     let method, scenarios, waccBreakdown = null, d0 = null, waccOrRePct = null;
     let fcfInfo = null, baseFcf = null, fcfNormalised = false, revenueNormalised = false, revenueTargetMarginPct = null;
     let heavyCapex = null, heavyCapexValued = null; // heavy capex spending (www/calc/heavyCapex.js)
-    let threeStageInfo = null; // three-stage DCF (method 4): { inputs, seeds } when it ran
     let affoPerShare = null, reitMultiples = null, reitIndustryKey = null;
     let airlineMultiples = null;
     let utilityBookValue = null, utilityRoePct = null;
@@ -1080,29 +1065,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       if (!waccResult) {
         return { status: 'skipped', ticker: t, market: market.folder, reason: 'WACC uncomputable (no market cap or debt data)' };
       }
-      // US + positive trailing FCF (threeStageEligible): fcfInfo after cyclical normalisation, before the revenue fallback.
-      if (threeStageOn && threeStageEligible(data, fcfInfo.value) && !heavyCapex) {
-      // Three-stage DCF (method 4): the shared engine and seeds, on the whole data object (lesson: a hand-built
-      // input object silently drops fields a shared function reads -- the cyclical-growth bug, PSX 2026-10).
-      const tsData = {
-        ...data, dilutedSharesOutstanding: resolvedShares,
-        annualRevenueHistory: hist.annualRevenueHistory, annualOperatingIncomeHistory: hist.annualOperatingIncomeHistory,
-        annualDepreciationHistory: hist.annualDepreciationHistory, annualCapexHistory: hist.annualCapexHistory,
-        annualFcfHistory: hist.annualFcfHistory, annualNetIncomeHistory: hist.annualNetIncomeHistory,
-        annualStockholdersEquityHistory: hist.annualStockholdersEquityHistory, annualDividendsPaidHistory: hist.annualDividendsPaidHistory,
-      };
-      const inputs = threeStageInputs(tsData, { waccResult, terminalGrowth });
-      if (inputs.note) return { status: 'skipped', ticker: t, market: market.folder, reason: inputs.note };
-      const seeds = threeStageScenarioSeeds(inputs);
-      threeStageInfo = { inputs, seeds };
-      method = 'DCF';
-      waccOrRePct = +(seeds.base.wacc * 100).toFixed(2);
-      scenarios = ['bear', 'base', 'bull'].map(key => {
-        const sc = threeStageScenario(key, inputs, seeds[key], { totalDebt: data.totalDebt, totalCash: data.totalCash, shares: resolvedShares, price: data.price });
-        return { key, growthPct: seeds[key].startGrowth * 100, discountPct: seeds[key].wacc * 100, result: sc.result };
-      });
-      waccBreakdown = { ...waccResult, isBank: false };
-      } else {
       const waccPct = r2(waccResult.wacc * 100);
       waccOrRePct = waccPct;
       const baseGrowthPct = deriveBaseGrowthPct(data, hist);
@@ -1135,7 +1097,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
         return { key, growthPct: s.growth[key], discountPct: s.discount[key], result };
       });
       waccBreakdown = { ...waccResult, isBank: false };
-      }
     }
 
     // Holdco/conglomerate discount is independent of the model dispatch
@@ -1259,13 +1220,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       : fcfInfo.method === 'normalized' ? `Cyclical company — average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue), not the latest year alone, to avoid over/under-valuing at a cycle extreme${fcfInfo.revenueCapped ? `, applied to ${fcfInfo.yearsUsed}-year average revenue` : ''}`
       : 'Rough estimate: operating cash flow × 0.8';
 
-    // Three-stage DCF (method 4): what the page shows instead of the classic FCF-based inputs.
-    const ts3 = threeStageInfo ? { i: threeStageInfo.inputs, s: threeStageInfo.seeds, b: threeStageInfo.seeds.base } : null;
-    const ts3MarginNote = ts3 && ((ts3.i.marginSource === 'history' ? `${ts3.i.marginYears}-year average`
-      : ts3.i.marginSource === 'turnaround' ? `Average of the ${ts3.i.marginYears} profitable years since a turnaround (earlier loss years left out)`
-      : 'Trailing 12 months (too little usable history to average)')
-      + (ts3.i.marginDroppedYears > 0 ? ` (${ts3.i.marginDroppedYears} ${ts3.i.marginDroppedYears === 1 ? 'year' : 'years'} skipped: Yahoo reported an operating loss beside a net profit)` : ''));
-    const ts3BetaNote = ts3 && `${escapeHtml(ts3.i.betaInfo.industry)} industry beta ${ts3.i.betaInfo.unlevered.toFixed(2)} (Damodaran), re-levered on debt ÷ equity`;
     const stats = isReitTicker
       ? [
           ['Price', money(data.price, currencySym)],
@@ -1312,9 +1266,8 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
           // staleness class as fcfMethodBadge above, pre-existing (not
           // specific to Cyclical) but only surfaced live via TM's cyclical
           // normalization producing a negative multi-year average margin.
-          ts3 ? ['Operating margin', pct(ts3.b.margin) + ` <span style="font-size:0.7rem;color:var(--kv-muted)">${ts3.i.marginSource === 'history' ? ts3.i.marginYears + 'yr avg' : 'TTM'}</span>`]
-            : ['Free Cash Flow', moneyB(baseFcf, currencySym) + fcfMethodBadge],
-          ['Beta', ts3 ? ts3.i.beta.toFixed(2) : effectiveBeta.toFixed(2)],
+          ['Free Cash Flow', moneyB(baseFcf, currencySym) + fcfMethodBadge],
+          ['Beta', effectiveBeta.toFixed(2)],
           ['P/E (TTM)', data.trailingPE != null ? data.trailingPE.toFixed(1) + 'x' : 'N/A'],
           ['52-Week Range', `${money(data.fiftyTwoWeekLow, currencySym)}–${money(data.fiftyTwoWeekHigh, currencySym)}`],
         ];
@@ -1345,10 +1298,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       ? `<tr><td>Dividend growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
          <tr><td><a href="/glossary/terminal-growth-rate/">Terminal growth</a></td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
          <tr><td>Cost of equity</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`
-      : ts3
-      ? `<tr><td>Starting growth (yrs 1–5)</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
-         <tr><td>Long-run growth (<a href="/glossary/terminal-growth-rate/">terminal</a>)</td><td class="col-bear">${(ts3.s.bear.terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(ts3.s.base.terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(ts3.s.bull.terminalGrowth * 100).toFixed(1)}%</td></tr>
-         <tr><td><a href="/glossary/wacc/">WACC</a> (discount rate)</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`
       : `<tr><td>5-yr FCF growth</td><td class="col-bear">${scenarios[0].growthPct.toFixed(1)}%</td><td class="col-base">${scenarios[1].growthPct.toFixed(1)}%</td><td class="col-bull">${scenarios[2].growthPct.toFixed(1)}%</td></tr>
          <tr><td><a href="/glossary/terminal-growth-rate/">Terminal growth</a></td><td class="col-bear">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-base">${(terminalGrowth * 100).toFixed(1)}%</td><td class="col-bull">${(terminalGrowth * 100).toFixed(1)}%</td></tr>
          <tr><td><a href="/glossary/wacc/">WACC</a> (discount rate)</td><td class="col-bear">${scenarios[0].discountPct.toFixed(2)}%</td><td class="col-base">${scenarios[1].discountPct.toFixed(2)}%</td><td class="col-bull">${scenarios[2].discountPct.toFixed(2)}%</td></tr>`;
@@ -1383,20 +1332,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
          <div class="assump-item"><div class="al">Debt component</div><div class="av">None</div><div class="an">DDM discounts dividends at cost of equity only</div></div>
          <div class="assump-item"><div class="al">Starting dividend (D0)</div><div class="av">${d0 != null ? money(d0, currencySym) : 'N/A'}</div><div class="an">Annual, per share</div></div>
          <div class="assump-item"><div class="al">Projection horizon</div><div class="av">5 years</div><div class="an">+ terminal value beyond</div></div>`
-      : ts3
-      ? `<div class="assump-item"><div class="al">Revenue</div><div class="av">${moneyB(ts3.i.revenue, currencySym)}</div><div class="an">${ts3.i.revenueSource === 'annual' ? 'Latest fiscal year — the starting point (trailing 12 months is on a different basis)' : 'Trailing 12 months — the starting point'}</div></div>
-         <div class="assump-item"><div class="al">Operating margin</div><div class="av">${pct(ts3.b.margin)}</div><div class="an">${ts3MarginNote}, held for every year — a boom or bust year doesn't set the value</div></div>
-         <div class="assump-item"><div class="al">Sales to capital</div><div class="av">${ts3.b.salesToCapital.toFixed(2)}</div><div class="an">${ts3.i.s2cSource === 'own' ? "The company's own: revenue added ÷ net capex over four years" : `Industry figure (${escapeHtml(ts3.i.betaInfo.industry)}, Damodaran)`}${ts3.i.s2cCapped ? ', capped at 3× the industry figure (acquisitions are not counted)' : ''} — growth is paid for by reinvesting new revenue ÷ this</div></div>
-         <div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
-         <div class="assump-item"><div class="al">Beta</div><div class="av">${ts3.i.beta.toFixed(2)}</div><div class="an">${ts3BetaNote}</div></div>
-         <div class="assump-item"><div class="al">Equity risk premium</div><div class="av">${pct(erp, 2)}</div><div class="an">Market-specific seed</div></div>
-         <div class="assump-item"><div class="al">Cost of debt</div><div class="av">${pct(waccBreakdown.rd, 2)}</div><div class="an">${
-           waccBreakdown.rdMethod === 'synthetic'
-             ? `Synthetic rating ${waccBreakdown.syntheticRating}, ICR ${waccBreakdown.icr.toFixed(1)}x`
-             : waccBreakdown.isRdEstimated ? 'Estimated (no debt/interest data)' : 'From income statement'
-         }</div></div>
-         <div class="assump-item"><div class="al">Tax rate</div><div class="av">${pct(waccBreakdown.tc, 2)}</div><div class="an">${waccBreakdown.isTcEstimated ? 'Estimated default' : 'From income statement'}</div></div>
-         <div class="assump-item"><div class="al">Projection horizon</div><div class="av">10 years</div><div class="an">5 years at the starting growth, 5 fading to the long-run rate, + terminal value beyond</div></div>`
       : `<div class="assump-item"><div class="al">Starting free cash flow</div><div class="av">${moneyB(baseFcf, currencySym)}</div><div class="an">${fcfMethodNote}${fcfNormalised ? ', then ×0.6 — the financial-sector haircut the DCF tool and every screen apply' : ''}</div></div>
          <div class="assump-item"><div class="al">Risk-free rate</div><div class="av">${pct(rf, 2)} ${isRfLive ? '<span class="live-badge">● LIVE</span>' : ''}</div><div class="an">${isRfLive ? 'Live 10-yr govt bond' : 'Fixed market seed'}</div></div>
          <div class="assump-item"><div class="al">Beta</div><div class="av">${effectiveBeta.toFixed(2)}</div><div class="an">${getMarketBetaFloor(t) > 0 ? 'Floored for non-US stocks' : 'Direct from Yahoo'}</div></div>
@@ -1416,8 +1351,6 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       ? `Enterprise Value = EBITDA × Multiple = ${data.ebitda != null ? moneyB(data.ebitda, currencySym) : 'N/A'} × ${airlineMultiples.base}x — Equity Value = EV − Net Debt, ÷ shares outstanding`
       : (isBank || isUtilityTicker)
       ? `Cost of Equity (CAPM) = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + effectiveBeta * erp, 2)}`
-      : ts3
-      ? `3-stage DCF: revenue grows at the starting rate for 5 years, then fades to the long-run rate; each year's free cash flow = revenue × operating margin × (1 − tax) − new revenue ÷ sales to capital. Cost of Equity = ${pct(rf, 2)} + ${ts3.i.beta.toFixed(2)} × ${pct(erp, 2)} = ${pct(rf + ts3.i.beta * erp, 2)} · <a href="/glossary/wacc/">WACC</a> = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`
       : `Cost of Equity = Risk-free rate + Beta × Equity Risk Premium = ${pct(rf, 2)} + ${effectiveBeta.toFixed(2)} × ${pct(erp, 2)} = ${pct(waccBreakdown.re, 2)} · <a href="/glossary/wacc/">WACC</a> = weighted by ${(waccBreakdown.eWeight * 100).toFixed(0)}%/${(waccBreakdown.dWeight * 100).toFixed(0)}% capital structure`;
 
     const reitAffoPayoutRatio = (() => {
@@ -1493,7 +1426,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
     const cyclicalRevenueNote = (fcfInfo && fcfInfo.revenueCapped)
       ? ` That margin is applied to the ${fcfInfo.yearsUsed}-year average revenue, not the latest year's, which sits above it — so a peak in commodity prices doesn't inflate the starting cash flow.`
       : '';
-    const cyclicalNoteHtml = ts3 ? '' : (fcfInfo && fcfInfo.method === 'normalized' && fcfInfo.source === 'sector')
+    const cyclicalNoteHtml = (fcfInfo && fcfInfo.method === 'normalized' && fcfInfo.source === 'sector')
       ? `<p class="cyclical-note">📊 Cyclical company — this company's own multi-year FCF margin came out negative (a capital-intensive stretch, not necessarily a bad sign), so this uses the industry average margin across ${fcfInfo.peerCount} peer companies (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead, per Damodaran's sector-average normalization technique.${cyclicalRevenueNote}</p>`
       : (fcfInfo && fcfInfo.method === 'normalized')
       ? `<p class="cyclical-note">📊 Cyclical company — this uses the average FCF margin across the last ${fcfInfo.yearsUsed} years (${(fcfInfo.marginUsed * 100).toFixed(1)}% of revenue) instead of the latest year alone, to avoid over- or under-valuing at a cycle extreme. Yahoo's data only covers up to ${fcfInfo.yearsUsed} years, shorter than a full commodity cycle — a known limitation, not hidden here.${cyclicalRevenueNote}</p>`

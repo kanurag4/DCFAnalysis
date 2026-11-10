@@ -329,15 +329,6 @@ function deriveDividendSeeds(data) {
   };
 }
 
-// calc/threeStageDcf.js: a browser global (its <script> tag must precede this file's on every page -- a missing tag
-// breaks every ticker, see CLAUDE.md Known Traps), or require()d in Node.
-function threeStageModule() {
-  if (typeof threeStageInputs === 'function') {
-    return { threeStageInputs, threeStageScenarioSeeds, threeStageScenario, threeStageApplies, threeStageLender, threeStageBankModel, threeStageEligible, THREE_STAGE_DCF_ENABLED };
-  }
-  return require('./threeStageDcf.js');
-}
-
 // Pure equivalent of app.js's prefillInputs() + its modelSeeds block.
 // Returns everything needed to seed and run Bear/Base/Bull without
 // touching any DOM element.
@@ -346,12 +337,8 @@ function threeStageModule() {
 // } } lookup (scripts/lib/sector-margin-tally.js, DCFAnalysis) -- optional,
 // omit or pass undefined for identical behavior to before this parameter
 // existed.
-// opts.threeStage: true/false forces the three-stage switch for the US-lender routing below; omitted = THREE_STAGE_DCF_ENABLED.
 function deriveDcfAssumptions(data, opts) {
-  const tsSwitch = opts && opts.threeStage !== undefined ? opts.threeStage === true : threeStageModule().THREE_STAGE_DCF_ENABLED === true;
-  // US lenders and health insurers go to the bank models with the three-stage switch on (calc/threeStageDcf.js
-  // threeStageBankModel).
-  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker) || (tsSwitch && threeStageModule().threeStageBankModel(data));
+  const isBankIns = isBankOrInsurance(data.sector, data.industry, data.ticker);
   const isReitFlag = !isBankIns && isReit(data.sector, data.industry); // mortgage REITs already routed to isBankIns above -- isReit() itself already excludes them too, this guard is just defense-in-depth against the two ever disagreeing
   const isAirlineFlag = !isBankIns && !isReitFlag && isAirline(data.sector, data.industry);
   const isUtilityFlag = !isBankIns && !isReitFlag && !isAirlineFlag && isUtility(data.sector, data.industry);
@@ -387,12 +374,6 @@ function deriveDcfAssumptions(data, opts) {
   const bullGrowthPct = dcfGrowthSpread.bull;
 
   const marketTGrowth = MARKET_TGROWTH[currentMarket] ?? MARKET_TGROWTH_DEFAULT;
-
-  // Three-stage DCF (calc/threeStageDcf.js) -- computed for every ticker, like every other model's seeds below;
-  // computeScenarios() only uses it when options.threeStage is true (callers pass THREE_STAGE_DCF_ENABLED).
-  const tsMod = threeStageModule();
-  const threeStageInputsResult = tsMod.threeStageInputs(data, { waccResult, terminalGrowth: marketTGrowth / 100 });
-  const threeStageSeeds = { inputs: threeStageInputsResult, scenarios: tsMod.threeStageScenarioSeeds(threeStageInputsResult) };
 
   const divSeeds = deriveDividendSeeds(data);
   const dividend = divSeeds.dividend;
@@ -432,7 +413,6 @@ function deriveDcfAssumptions(data, opts) {
       discount: waccResult
         ? { bear: +(waccResult.wacc * 100 + 1).toFixed(2), base: +(waccResult.wacc * 100).toFixed(2), bull: +(Math.max(1, waccResult.wacc * 100 - 1)).toFixed(2) }
         : { bear: 11, base: 10, bull: 9 },
-      threeStage: threeStageSeeds,
     },
     ddm: {
       dividend,
@@ -491,9 +471,6 @@ function deriveDcfAssumptions(data, opts) {
     });
     if (cyclicalFcf) finalFcfInfo = cyclicalFcf;
   }
-
-  // Three-stage eligibility needs the (cycle-normalised) trailing FCF: US + positive FCF, as /evaluate/'s model choice.
-  threeStageSeeds.eligible = tsMod.threeStageEligible(data, finalFcfInfo.value);
 
   const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));
 
@@ -578,16 +555,6 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const normFcf = options.normFcf === undefined ? null : options.normFcf;
   const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
     ? data.dilutedSharesOutstanding : data.sharesOutstanding;
-
-  // US market only (calc/threeStageDcf.js threeStageApplies): any other ticker keeps the classic DCF below.
-  // Only for an eligible ticker (calc/threeStageDcf.js threeStageEligible: US market, positive trailing FCF).
-  if (options.threeStage === true && seeds.threeStage && seeds.threeStage.eligible === true) {
-    const tsMod = threeStageModule();
-    const company = { totalDebt: data.totalDebt, totalCash: data.totalCash, shares: resolvedShares, price: data.price };
-    const t = seeds.threeStage;
-    const scenarios = configs.map(key => tsMod.threeStageScenario(key, t.inputs, t.scenarios[key], company));
-    return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
-  }
 
   function runDcf(fcfValue, growthRate, terminalGrowth, wacc) {
     const common = {
