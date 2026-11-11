@@ -837,3 +837,28 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
 .heavy-capex-card p { margin: 0 0 8px; color: var(--kv-muted, var(--muted)); }
 .heavy-capex-card .hc-headline { color: var(--kv-text, var(--text)); font-size: 0.95rem; }
 .heavy-capex-card .hc-method { font-size: 0.8rem; margin-bottom: 0; }
+
+/* ── Interactive DCF (P62): sliders, beta choice, "Your numbers" -- scoped under .idcf so ticker pages, which
+   also load this stylesheet, are untouched. ── */
+.idcf-main { display: flex; flex-direction: column; gap: 14px; }
+.idcf-edited { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.idcf-chip { font-size: 0.75rem; font-weight: 700; color: var(--kv-bg); background: var(--kv-primary); border-radius: 999px; padding: 3px 10px; }
+.idcf-reset { font: inherit; font-size: 0.8rem; color: var(--kv-primary); background: none; border: 1px solid var(--kv-border); border-radius: 6px; padding: 6px 10px; cursor: pointer; min-height: 36px; }
+.idcf-slider-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.idcf-slider-head label { font-size: 0.85rem; font-weight: 600; color: var(--kv-text); }
+.idcf-slider-head output { font-size: 1.25rem; font-weight: 700; color: var(--kv-primary); font-variant-numeric: tabular-nums; }
+.idcf-slider input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--kv-primary); height: 28px; }
+.idcf-implied { font-size: 0.75rem; color: var(--kv-muted); margin-top: 2px; }
+.idcf-beta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+.idcf-beta button { font: inherit; font-size: 0.78rem; text-align: left; line-height: 1.35; color: var(--kv-text); background: var(--kv-card-2); border: 1px solid var(--kv-border); border-radius: 8px; padding: 8px 10px; cursor: pointer; min-height: 44px; min-width: 0; }
+.idcf-beta button b { display: block; font-size: 1rem; color: var(--kv-primary); }
+.idcf-beta button[aria-pressed="true"] { border-color: var(--kv-primary); box-shadow: inset 0 0 0 1px var(--kv-primary); }
+.idcf-beta .idcf-prev { color: var(--kv-muted); }
+.idcf-beta-hint { font-size: 0.75rem; color: var(--kv-muted); margin: 6px 0 0; }
+.idcf-more { border-top: 1px solid var(--kv-border); padding-top: 12px; }
+.idcf-more > summary { cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--kv-primary); min-height: 32px; }
+.idcf-more[open] > summary { margin-bottom: 12px; }
+@media (max-width: 800px) {
+  .dcf-layout.idcf-page .results-panel { order: -1; }
+  .idcf-slider input[type="range"] { height: 44px; }
+}

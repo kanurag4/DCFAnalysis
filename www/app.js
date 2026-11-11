@@ -7,8 +7,25 @@ if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
 const $ = id => document.getElementById(id);
 
 const els = {
-  recalcBtn:    $('recalc-btn'),
   status:       $('status'),
+  // Interactive assumptions (P62): main sliders, beta choice, "Your numbers" chip.
+  idcfEdited:     $('idcf-edited'),
+  idcfReset:      $('idcf-reset'),
+  idcfGrowth:     $('idcf-growth'),
+  idcfGrowthOut:  $('idcf-growth-out'),
+  idcfGrowthLabel:$('idcf-growth-label'),
+  idcfTgrowth:    $('idcf-tgrowth'),
+  idcfTgrowthOut: $('idcf-tgrowth-out'),
+  idcfTgrowthLabel:$('idcf-tgrowth-label'),
+  idcfDiscount:   $('idcf-discount'),
+  idcfDiscountOut:$('idcf-discount-out'),
+  idcfDiscountLabel:$('idcf-discount-label'),
+  idcfRowTgrowth: $('idcf-row-tgrowth'),
+  idcfRowDiscount:$('idcf-row-discount'),
+  idcfBeta:       $('idcf-beta'),
+  idcfBetaStock:  $('idcf-beta-stock'),
+  idcfBetaIndustry:$('idcf-beta-industry'),
+  idcfBetaHint:   $('idcf-beta-hint'),
   layout:       $('dcf-layout'),
   summary:      $('summary'),
   finWarning:   $('financial-warning'),
@@ -307,18 +324,42 @@ let shareInfo = null;
 
 els.yearsSlider.addEventListener('input', () => {
   els.yearsDisplay.textContent = els.yearsSlider.value;
-  if (currentData) renderAll(currentData);
+  onInputsEdited(false);
 });
+els.yearsSlider.addEventListener('change', () => onInputsEdited(true));
 
-els.recalcBtn.addEventListener('click', onRecalc);
 if (els.ddmToggle) els.ddmToggle.addEventListener('click', onToggleModel);
-if (els.midyearToggle) els.midyearToggle.addEventListener('change', () => { if (currentData) renderAll(currentData); });
-if (els.multistageToggle) els.multistageToggle.addEventListener('change', () => { if (currentData) renderAll(currentData); });
+if (els.midyearToggle) els.midyearToggle.addEventListener('change', () => onInputsEdited(true));
+if (els.multistageToggle) els.multistageToggle.addEventListener('change', () => onInputsEdited(true));
 if (shareBtn) shareBtn.addEventListener('click', onShareClick);
 
-// Re-derive discount rates live as RF or ERP values change (debounced).
+// Main sliders: move the Base value, re-derive Bear/Bull, update live (debounced while dragging).
+els.idcfGrowth.addEventListener('input',  () => onSlider(hasMultipleModel() ? 'multiple' : 'growth', els.idcfGrowth, false));
+els.idcfGrowth.addEventListener('change', () => onSlider(hasMultipleModel() ? 'multiple' : 'growth', els.idcfGrowth, true));
+els.idcfTgrowth.addEventListener('input',  () => onSlider('tgrowth', els.idcfTgrowth, false));
+els.idcfTgrowth.addEventListener('change', () => onSlider('tgrowth', els.idcfTgrowth, true));
+els.idcfDiscount.addEventListener('input',  () => onSlider('discount', els.idcfDiscount, false));
+els.idcfDiscount.addEventListener('change', () => onSlider('discount', els.idcfDiscount, true));
+els.idcfBetaStock.addEventListener('click', () => setBetaChoice('stock'));
+els.idcfBetaIndustry.addEventListener('click', () => setBetaChoice('industry'));
+els.idcfReset.addEventListener('click', onResetOurs);
+// The folded Bear/Base/Bull grid and the starting-figure boxes update live too (no Recalculate step).
+['growthBear', 'growthBase', 'growthBull', 'tgrowthBear', 'tgrowthBase', 'tgrowthBull'].forEach(k => {
+  els[k].addEventListener('input', () => onInputsEdited(false));
+});
+['waccBear', 'waccBase', 'waccBull'].forEach(k => {
+  els[k].addEventListener('input', () => { if (pageState) pageState.beta = 'custom'; onInputsEdited(false); });
+});
+['fcfInput', 'fcfNorm', 'dividendInput', 'bookvalueInput', 'affoInput', 'ebitdaInput', 'targetMarginInput'].forEach(k => {
+  if (els[k]) els[k].addEventListener('input', () => onInputsEdited(false));
+});
+
+// Re-derive discount rates live as RF or ERP values change (debounced), then revalue.
 let _waccTimer = null;
-const debouncedRecompute = () => { clearTimeout(_waccTimer); _waccTimer = setTimeout(recomputeDiscount, 350); };
+const debouncedRecompute = () => {
+  clearTimeout(_waccTimer);
+  _waccTimer = setTimeout(() => { recomputeDiscount(); onInputsEdited(true); }, 350);
+};
 els.rfInput.addEventListener('input',  debouncedRecompute);
 els.erpInput.addEventListener('input', debouncedRecompute);
 // Reset RF + ERP to defaults, then recalculate.
@@ -382,9 +423,213 @@ async function onAnalyse(req) {
   }
 }
 
-function onRecalc() {
+// ── Interactive assumptions (P62) ─────────────────────────────────────────
+// The existing inputs (the folded Bear/Base/Bull grid, years, toggles, starting figure) stay the one source the
+// valuation reads (buildScenarios). pageState mirrors them; the sliders write into them through page-state.js
+// (psSetBase re-derives Bear/Bull with today's spreads), and every change revalues at once.
+
+let pageState = null;    // page-state.js State: what the inputs hold now
+let ourState = null;     // the derived assumptions ("Reset to our numbers")
+let betaInfo = null;     // { ib, industryEffBeta } when the stock/industry beta choice applies, else null
+let lastAssumptions = null;
+let _recomputeTimer = null;
+
+const IDCF_RANGES = { growth: [-10, 40, 0.1], roe: [0, 60, 0.1], multiple: [1, 40, 0.1], tgrowth: [0, 4, 0.1], discount: [4, 18, 0.05] };
+
+function hasMultipleModel() { return valuationModel === 'reit' || valuationModel === 'airline'; }
+function hasTgrowthModel() { return valuationModel === 'dcf' || valuationModel === 'ddm'; }
+
+function readCells(prefix) {
+  const n = el => { const v = parseFloat(el.value); return isFinite(v) ? v : null; };
+  return { bear: n(els[prefix + 'Bear']), base: n(els[prefix + 'Base']), bull: n(els[prefix + 'Bull']) };
+}
+
+function startInputEl() {
+  return { dcf: els.fcfInput, ddm: els.dividendInput, 'excess-return': els.bookvalueInput, reit: els.affoInput, airline: els.ebitdaInput }[valuationModel] || null;
+}
+
+function readStart() {
+  const el = startInputEl();
+  if (!el) return null;
+  const v = parseFloat(String(el.value).replace(/,/g, ''));
+  return isFinite(v) ? v : null;
+}
+
+// Same key order as psFromSeeds(), so psIsEdited's comparison is like for like.
+function readStateFromInputs(beta) {
+  const g = readCells('growth');
+  return {
+    model: valuationModel,
+    years: parseInt(els.yearsSlider.value, 10),
+    midYear: !!(els.midyearToggle && els.midyearToggle.checked),
+    fade: !!(els.multistageToggle && els.multistageToggle.checked),
+    beta: beta || 'stock',
+    growth: hasMultipleModel() ? null : g,
+    tgrowth: hasTgrowthModel() ? readCells('tgrowth') : null,
+    discount: hasMultipleModel() ? null : readCells('wacc'),
+    multiple: hasMultipleModel() ? g : null,
+    start: readStart(),
+  };
+}
+
+function writeStateToInputs(s) {
+  const put = (prefix, v) => { if (!v) return; els[prefix + 'Bear'].value = v.bear; els[prefix + 'Base'].value = v.base; els[prefix + 'Bull'].value = v.bull; };
+  put('growth', s.multiple || s.growth);
+  put('tgrowth', s.tgrowth);
+  put('wacc', s.discount);
+  els.yearsSlider.value = s.years;
+  els.yearsDisplay.textContent = String(s.years);
+  if (els.midyearToggle) els.midyearToggle.checked = !!s.midYear;
+  if (els.multistageToggle) els.multistageToggle.checked = !!s.fade;
+}
+
+// Called once per derive (new ticker, model toggle, reset): what the inputs now hold is "our numbers".
+function initInteractive(data, assumptions) {
+  lastAssumptions = assumptions;
+  ourState = readStateFromInputs('stock');
+  pageState = JSON.parse(JSON.stringify(ourState));
+  betaInfo = computeBetaInfo(data, assumptions);
+  syncSliders();
+}
+
+// The stock / industry beta choice: US tickers whose Yahoo industry maps to a Damodaran row, discounted models only.
+function computeBetaInfo(data, a) {
+  if (typeof industryBetaFor !== 'function' || detectMarket(data.ticker) !== 'us') return null;
+  if (hasMultipleModel() || heavyCapexState) return null;
+  const ib = industryBetaFor({ industry: data.industry, marketCap: data.marketCap, totalDebt: data.totalDebt, taxRate: data.taxRate, financial: !!(a && a.isBankIns) });
+  if (!ib) return null;
+  return { ib, industryEffBeta: Math.max(ib.beta, getMarketBetaFloor(data.ticker)) };
+}
+
+function stockEffectiveBeta() {
+  const rawBeta = (currentData && currentData.beta != null && isFinite(currentData.beta) && currentData.beta > 0) ? currentData.beta : 1.0;
+  return Math.max(rawBeta, getMarketBetaFloor(currentData ? currentData.ticker : ''));
+}
+
+function selectedBeta() {
+  return (pageState && pageState.beta === 'industry' && betaInfo) ? betaInfo.industryEffBeta : stockEffectiveBeta();
+}
+
+function onSlider(field, el, immediate) {
+  if (!pageState || !pageState[field]) return;
+  const v = parseFloat(el.value);
+  if (!isFinite(v)) return;
+  pageState = psSetBase(pageState, field, v);
+  writeStateToInputs(pageState);
+  scheduleRecompute(immediate);
+}
+
+function onInputsEdited(immediate) {
+  if (!currentData) return;
+  pageState = readStateFromInputs(pageState ? pageState.beta : 'stock');
+  scheduleRecompute(immediate);
+}
+
+function scheduleRecompute(immediate) {
+  clearTimeout(_recomputeTimer);
+  if (immediate) recompute();
+  else _recomputeTimer = setTimeout(recompute, 80);
+}
+
+function recompute() {
   if (!currentData) return;
   renderAll(currentData);
+  syncSliders();
+}
+
+function setBetaChoice(kind) {
+  if (!pageState || !currentData) return;
+  if (kind === 'industry' && !betaInfo) return;
+  pageState.beta = kind;
+  recomputeDiscount();
+  pageState = readStateFromInputs(kind);
+  scheduleRecompute(true);
+}
+
+function onResetOurs() {
+  if (!currentData) return;
+  prefillInputs(currentData);
+  scheduleRecompute(true);
+}
+
+// The Base value the current inputs give with the Base discount rate set to `discountPct` (the beta buttons'
+// previews), through the same buildScenarios() the page itself uses: the Base discount box is set for the call and
+// put back straight after (never a heavy-capex ticker: the beta choice is hidden for those).
+function baseValueAtDiscount(discountPct) {
+  const keep = els.waccBase.value;
+  els.waccBase.value = discountPct;
+  let base = null;
+  try { base = buildScenarios(currentData).find(s => s.key === 'base'); } finally { els.waccBase.value = keep; }
+  return base && base.result && base.result.intrinsicValue != null ? base.result.intrinsicValue : null;
+}
+
+function idcfFormat(field, v) {
+  if (v == null || !isFinite(v)) return '—';
+  if (field === 'multiple') return (+v).toFixed(1) + '×';
+  if (field === 'discount') return (+v).toFixed(2) + '%';
+  return (+v).toFixed(1) + '%';
+}
+
+function setSlider(el, outEl, field, rangeKey, value) {
+  const r = IDCF_RANGES[rangeKey];
+  const v = isFinite(value) ? value : r[0];
+  el.min = String(Math.min(r[0], Math.floor(v)));
+  el.max = String(Math.max(r[1], Math.ceil(v)));
+  el.step = String(r[2]);
+  el.value = String(v);
+  outEl.textContent = idcfFormat(field, value);
+}
+
+function syncSliders() {
+  if (!pageState || !currentData) return;
+  const sym = CURRENCY_SYMBOLS[currentData.currency] ?? '';
+  const m = valuationModel;
+  const multiple = hasMultipleModel();
+  const growthField = multiple ? 'multiple' : 'growth';
+  const growthLabel = m === 'reit' ? T('p-affo-multiple', 'P/AFFO multiple')
+    : m === 'airline' ? T('ev-ebitda-multiple', 'EV/EBITDA multiple')
+    : m === 'excess-return' ? T('roe', 'Return on equity')
+    : m === 'ddm' ? T('growth-rate', 'Dividend growth a year') : T('growth-rate', 'Free cash flow growth a year');
+  els.idcfGrowthLabel.innerHTML = growthLabel;
+  const g = pageState[growthField];
+  setSlider(els.idcfGrowth, els.idcfGrowthOut, growthField, multiple ? 'multiple' : (m === 'excess-return' ? 'roe' : 'growth'), g ? g.base : NaN);
+
+  els.idcfRowTgrowth.hidden = !pageState.tgrowth;
+  if (pageState.tgrowth) {
+    els.idcfTgrowthLabel.innerHTML = T('terminal-growth', 'Long-run growth');
+    setSlider(els.idcfTgrowth, els.idcfTgrowthOut, 'tgrowth', 'tgrowth', pageState.tgrowth.base);
+  }
+
+  els.idcfRowDiscount.hidden = !pageState.discount;
+  if (pageState.discount) {
+    els.idcfDiscountLabel.innerHTML = (m === 'ddm' || m === 'excess-return') ? T('cost-of-equity', 'Cost of equity') : T('wacc', 'Discount rate (WACC)');
+    setSlider(els.idcfDiscount, els.idcfDiscountOut, 'discount', 'discount', pageState.discount.base);
+  }
+
+  // Beta choice: each button previews the Base value it gives.
+  els.idcfBeta.hidden = !betaInfo;
+  if (betaInfo) {
+    const stockPct = discountForBeta(stockEffectiveBeta()).pct;
+    const indPct = discountForBeta(betaInfo.industryEffBeta).pct;
+    const vs = baseValueAtDiscount(stockPct);
+    const vi = baseValueAtDiscount(indPct);
+    const prev = v => (v == null ? '' : ` <span class="idcf-prev">· Base ${sym}${v.toFixed(2)}</span>`);
+    els.idcfBetaStock.innerHTML = `<b>${stockEffectiveBeta().toFixed(2)}</b> This stock's beta${prev(vs)}`;
+    els.idcfBetaIndustry.innerHTML = `<b>${betaInfo.industryEffBeta.toFixed(2)}</b> ${T('industry-beta', 'Industry beta')}${prev(vi)}`;
+    els.idcfBetaStock.setAttribute('aria-pressed', String(pageState.beta === 'stock'));
+    els.idcfBetaIndustry.setAttribute('aria-pressed', String(pageState.beta === 'industry'));
+  }
+  const showHint = pageState.beta === 'custom' && !!pageState.discount;
+  els.idcfBetaHint.hidden = !showHint;
+  if (showHint) {
+    const parts = (m === 'dcf' && lastWaccResult)
+      ? { rf: lastWaccResult.riskFreeRate, erp: lastWaccResult.erp, eW: lastWaccResult.eWeight, dW: lastWaccResult.dWeight, rd: lastWaccResult.rd, tc: lastWaccResult.tc }
+      : { rf: lastCapm ? lastCapm.rf : null, erp: lastCapm ? lastCapm.erp : null };
+    const b = impliedBeta({ discountPct: pageState.discount.base, model: m, waccParts: parts });
+    els.idcfBetaHint.textContent = b == null ? '' : `The beta your rate implies: ${b.toFixed(2)}`;
+  }
+
+  els.idcfEdited.hidden = !psIsEdited(pageState, ourState);
 }
 
 // ── Pre-fill inputs ───────────────────────────────────────────────────────
@@ -592,6 +837,7 @@ function prefillInputs(data) {
 
   seedInputsForModel(valuationModel);
   applyModelUI();
+  initInteractive(data, assumptions);
 }
 
 // Write a model's seed values into the shared scenario inputs.
@@ -897,7 +1143,7 @@ function onToggleModel() {
   valuationModel = valuationModel === 'ddm' ? 'dcf' : 'ddm';
   seedInputsForModel(valuationModel);
   applyModelUI();
-  if (currentData) renderAll(currentData);
+  if (currentData) { initInteractive(currentData, lastAssumptions); recompute(); }
 }
 
 // ── Render all ────────────────────────────────────────────────────────────
@@ -1809,53 +2055,48 @@ function resetRfErp() {
   if (currentData) renderAll(currentData);
 }
 
-function recomputeDiscount() {
-  if (!currentData) return;
+// The Base discount rate (percent, 2dp) one beta gives at the current RF / ERP boxes: CAPM cost of equity for
+// DDM / Excess Return, the WACC for DCF (pure CAPM when there is no capital-structure data). No DOM writes.
+function discountForBeta(effectiveBeta) {
   const rf  = parseFloat(els.rfInput.value)  / 100 || 0.045;
   const erp = parseFloat(els.erpInput.value) / 100 || 0.055;
+  const re = rf + effectiveBeta * erp;
+  if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
+    return { pct: +(re * 100).toFixed(2), rf, erp, re, waccResult: null };
+  }
+  const waccResult = calculateWACC({
+    marketCap:       currentData.marketCap,
+    totalDebt:       currentData.totalDebt,
+    beta:            effectiveBeta,
+    interestExpense: currentData.interestExpense,
+    taxRate:         currentData.taxRate,
+    ebit:            currentData.ebit,
+    riskFreeRate:    rf,
+    erp,
+  });
+  return waccResult
+    ? { pct: +(waccResult.wacc * 100).toFixed(2), rf, erp, re, waccResult }
+    : { pct: +(re * 100).toFixed(2), rf, erp, re, waccResult: null };
+}
+
+// Re-derive the discount rates from the RF / ERP boxes with the selected beta (this stock's or the industry's).
+// A discount rate the visitor set themselves (beta 'custom') is left as it is.
+function recomputeDiscount() {
+  if (!currentData) return;
+  if (pageState && pageState.beta === 'custom') { renderDiscountBreakdown(); return; }
   const rawBeta = (currentData.beta != null && isFinite(currentData.beta) && currentData.beta > 0)
     ? currentData.beta : 1.0;
-  const effectiveBeta = Math.max(rawBeta, getMarketBetaFloor(currentData.ticker));
-  const betaWasFloored = effectiveBeta > rawBeta;
-
-  if (valuationModel === 'ddm' || valuationModel === 'excess-return') {
-    const re    = rf + effectiveBeta * erp;
-    const rePct = +(re * 100).toFixed(2);
-    els.waccBase.value = rePct;
-    els.waccBear.value = +(rePct + 1).toFixed(2);
-    els.waccBull.value = +(Math.max(1, rePct - 1)).toFixed(2);
-    lastCapm = { re, rf, erp, beta: effectiveBeta, rawBeta, betaWasFloored };
-  } else {
-    const waccResult = calculateWACC({
-      marketCap:       currentData.marketCap,
-      totalDebt:       currentData.totalDebt,
-      beta:            effectiveBeta,
-      interestExpense: currentData.interestExpense,
-      taxRate:         currentData.taxRate,
-      ebit:            currentData.ebit,
-      riskFreeRate:    rf,
-      erp,
-    });
-    if (waccResult) {
-      const waccPct = +(waccResult.wacc * 100).toFixed(2);
-      els.waccBase.value = waccPct;
-      els.waccBear.value = +(waccPct + 1).toFixed(2);
-      els.waccBull.value = +(Math.max(1, waccPct - 1)).toFixed(2);
-      lastWaccResult = waccResult;
-      const re = rf + effectiveBeta * erp;
-      lastCapm = { re, rf, erp, beta: effectiveBeta, rawBeta, betaWasFloored };
-    } else {
-      // No capital structure data — fall back to pure CAPM (Re only)
-      const re    = rf + effectiveBeta * erp;
-      const rePct = +(re * 100).toFixed(2);
-      els.waccBase.value = rePct;
-      els.waccBear.value = +(rePct + 1).toFixed(2);
-      els.waccBull.value = +(Math.max(1, rePct - 1)).toFixed(2);
-    }
+  const effectiveBeta = selectedBeta();
+  const betaWasFloored = effectiveBeta > rawBeta && !(pageState && pageState.beta === 'industry');
+  const d = discountForBeta(effectiveBeta);
+  els.waccBase.value = d.pct;
+  els.waccBear.value = +(d.pct + 1).toFixed(2);
+  els.waccBull.value = +(Math.max(1, d.pct - 1)).toFixed(2);
+  if (d.waccResult) lastWaccResult = d.waccResult;
+  if (d.waccResult || valuationModel === 'ddm' || valuationModel === 'excess-return') {
+    lastCapm = { re: d.re, rf: d.rf, erp: d.erp, beta: effectiveBeta, rawBeta, betaWasFloored };
   }
   renderDiscountBreakdown();
-  // Do NOT call renderAll here — mid-edit keystrokes would flash partial valuations.
-  // Full re-render happens via the Recalculate button or the ↺ reset button.
 }
 
 // Idempotently creates or updates the RF rate badge and note below the input.

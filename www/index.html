@@ -296,7 +296,7 @@
     <section id="recent" class="recent" hidden></section>
     <section id="status" class="status" hidden></section>
 
-    <div id="dcf-layout" class="dcf-layout" hidden>
+    <div id="dcf-layout" class="dcf-layout idcf-page" hidden>
 
       <!-- LEFT: Inputs -->
       <aside class="inputs-panel">
@@ -307,6 +307,37 @@
 
         <div id="holdco-note" class="holdco-note" hidden></div>
 
+        <div class="idcf idcf-main" id="idcf-main">
+          <div class="idcf-edited" id="idcf-edited" hidden>
+            <span class="idcf-chip">Your numbers</span>
+            <button type="button" class="idcf-reset" id="idcf-reset">Reset to our numbers</button>
+          </div>
+          <div class="idcf-slider" id="idcf-row-growth">
+            <div class="idcf-slider-head"><label for="idcf-growth" id="idcf-growth-label">Growth a year</label><output id="idcf-growth-out" for="idcf-growth"></output></div>
+            <input type="range" id="idcf-growth" min="-10" max="40" step="0.1">
+            <div class="idcf-implied" id="idcf-implied" hidden></div>
+          </div>
+          <div class="idcf-slider" id="idcf-row-years">
+            <div class="idcf-slider-head"><label for="years-slider">Forecast years</label><output id="years-display" for="years-slider">5</output></div>
+            <input type="range" id="years-slider" min="3" max="10" value="5">
+          </div>
+          <div class="idcf-slider" id="idcf-row-tgrowth">
+            <div class="idcf-slider-head"><label for="idcf-tgrowth" id="idcf-tgrowth-label">Long-run growth</label><output id="idcf-tgrowth-out" for="idcf-tgrowth"></output></div>
+            <input type="range" id="idcf-tgrowth" min="0" max="4" step="0.1">
+          </div>
+          <div class="idcf-slider" id="idcf-row-discount">
+            <div class="idcf-slider-head"><label for="idcf-discount" id="idcf-discount-label">Discount rate</label><output id="idcf-discount-out" for="idcf-discount"></output></div>
+            <input type="range" id="idcf-discount" min="4" max="18" step="0.05">
+            <div class="idcf-beta" id="idcf-beta" role="group" aria-label="Beta used for the discount rate" hidden>
+              <button type="button" id="idcf-beta-stock" aria-pressed="true"></button>
+              <button type="button" id="idcf-beta-industry" aria-pressed="false"></button>
+            </div>
+            <p class="idcf-beta-hint" id="idcf-beta-hint" hidden></p>
+          </div>
+        </div>
+
+        <details class="idcf idcf-more" id="idcf-more">
+        <summary>Set Bear, Base and Bull separately</summary>
         <div class="input-section">
           <div class="input-row" id="fcf-row">
             <label for="fcf-input"><span class="kv-term" data-term="free-cash-flow" tabindex="0" role="button" aria-expanded="false">Free Cash Flow</span>
@@ -352,13 +383,6 @@
             <input type="text" id="ebitda-input" inputmode="decimal" placeholder="e.g. 7500000000">
           </div>
           <div class="input-row">
-            <label>Projection Years</label>
-            <div class="slider-row">
-              <input type="range" id="years-slider" min="3" max="10" value="5">
-              <span id="years-display">5</span>
-            </div>
-          </div>
-          <div class="input-row">
             <label class="asx-toggle" style="margin:0">
               <input type="checkbox" id="midyear-toggle">
               <span>Mid-year discounting <span class="tip" data-tip="Assumes cash flows land through the year rather than all at fiscal year-end — the standard practitioner convention. Slightly increases intrinsic value.">?</span></span>
@@ -401,6 +425,7 @@
             <input type="number" id="wacc-bull" class="scenario-num" step="0.1" min="1" max="25">
           </div>
         </div>
+        </details>
 
         <details class="wacc-breakdown" id="wacc-details">
           <summary id="wacc-summary">How WACC is calculated</summary>
@@ -420,8 +445,6 @@
           </div>
           <button id="rf-erp-reset-btn" class="rf-erp-reset" type="button">↺ Reset to defaults</button>
         </details>
-
-        <button id="recalc-btn" class="recalc-btn">↻ Recalculate</button>
       </aside>
 
       <!-- RIGHT: Results -->
