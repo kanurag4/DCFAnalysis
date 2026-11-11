@@ -1527,6 +1527,14 @@ function resolveDcfFcfInputs(data) {
 // used `parseFloat(v)/100 || 0.05`, which is mathematically identical to
 // `parseFloat(v) || 5` since dividing then multiplying by the same
 // nonzero constant never changes which branch of `||` fires).
+// A growth-type rate box: its number, or the fallback only when the box is empty / not a number. 0% is a real
+// answer -- the old `parseFloat(v) || 5` turned a typed (or seeded, or linked) 0% growth into 5% (found 2026-11-11 by
+// the /evaluate/ -> /dcf/ hand-off test).
+function rateOr(el, fallback) {
+  const v = parseFloat(el.value);
+  return isFinite(v) ? v : fallback;
+}
+
 function scenarioInputs(data) {
   const years = parseInt(els.yearsSlider.value, 10);
   const num = el => parseFloat(String(el.value).replace(/,/g, ''));
@@ -1555,7 +1563,7 @@ function scenarioInputs(data) {
     return { model: 'ddm', options: { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount }, seeds: {
       dividend,
       growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // 0% is a valid DDM case (flat dividend perpetuity)
-      tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
+      tgrowth:  { bear: rateOr(els.tgrowthBear, 2.5), base: rateOr(els.tgrowthBase, 2.5), bull: rateOr(els.tgrowthBull, 2.5) },
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
     } };
   }
@@ -1582,8 +1590,8 @@ function scenarioInputs(data) {
     useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
     fcfRaw, normFcf, holdcoDiscount,
   }, seeds: {
-    growth:   { bear: parseFloat(els.growthBear.value) || 5, base: parseFloat(els.growthBase.value) || 5, bull: parseFloat(els.growthBull.value) || 5 },
-    tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
+    growth:   { bear: rateOr(els.growthBear, 5), base: rateOr(els.growthBase, 5), bull: rateOr(els.growthBull, 5) },
+    tgrowth:  { bear: rateOr(els.tgrowthBear, 2.5), base: rateOr(els.tgrowthBase, 2.5), bull: rateOr(els.tgrowthBull, 2.5) },
     discount: { bear: parseFloat(els.waccBear.value) || 10, base: parseFloat(els.waccBase.value) || 10, bull: parseFloat(els.waccBull.value) || 10 },
   } };
 }
