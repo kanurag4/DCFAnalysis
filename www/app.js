@@ -1,8 +1,6 @@
 // app.js — ONLY file allowed to touch the DOM.
 'use strict';
 
-// Register Chart.js datalabels plugin (loaded via CDN after chart.js)
-if (typeof ChartDataLabels !== 'undefined') Chart.register(ChartDataLabels);
 
 const $ = id => document.getElementById(id);
 
@@ -31,9 +29,10 @@ const els = {
   finWarning:   $('financial-warning'),
   scenarios:    $('scenarios'),
   disclaimer:   $('disclaimer'),
-  charts:       $('charts'),
-  sensitivity:      $('sensitivity'),
-  sensitivityGrid:  $('sensitivity-grid'),
+  idcfChart:    $('idcf-chart'),
+  idcfChartSvg: $('idcf-chart-svg'),
+  idcfTip:      $('idcf-tip'),
+  idcfCross:    $('idcf-cross'),
   howDcf:       $('how-dcf'),
   fcfInput:     $('fcf-input'),
   fcfSource:    $('fcf-source'),
@@ -303,8 +302,6 @@ let holdcoDiscount = null; // set in prefillInputs() from assumptions.holdcoDisc
 // read by buildScenarios(); lastHeavyCapexValuation is the latest wrapped result, for the card.
 let heavyCapexState = null;
 let lastHeavyCapexValuation = null;
-let breakdownChart = null;
-let priceChart    = null;
 
 // Valuation model: 'dcf' (default) or 'ddm' (banks/insurance, or user-toggled).
 let valuationModel = 'dcf';
@@ -343,6 +340,11 @@ els.idcfDiscount.addEventListener('change', () => onSlider('discount', els.idcfD
 els.idcfBetaStock.addEventListener('click', () => setBetaChoice('stock'));
 els.idcfBetaIndustry.addEventListener('click', () => setBetaChoice('industry'));
 els.idcfReset.addEventListener('click', onResetOurs);
+els.idcfChartSvg.addEventListener('pointermove', onChartPointer);
+els.idcfChartSvg.addEventListener('pointerdown', onChartPointer);
+els.idcfChartSvg.addEventListener('pointerleave', onChartLeave);
+let _resizeTimer = null;
+window.addEventListener('resize', () => { clearTimeout(_resizeTimer); _resizeTimer = setTimeout(() => { if (currentData && !els.layout.hidden) recompute(); }, 150); });
 // The folded Bear/Base/Bull grid and the starting-figure boxes update live too (no Recalculate step).
 ['growthBear', 'growthBase', 'growthBull', 'tgrowthBear', 'tgrowthBase', 'tgrowthBull'].forEach(k => {
   els[k].addEventListener('input', () => onInputsEdited(false));
@@ -1156,8 +1158,7 @@ function renderAll(data) {
   renderTerminalGrowthWarning(scenarios);
   renderBreakeven(data, sym);
   renderScenarios(scenarios, data, sym);
-  renderCharts(scenarios, data.price, sym);
-  renderSensitivityGrid(buildSensitivityGrid(data), data.price, sym);
+  renderValueChart(scenarios, data, sym);
   renderHeavyCapexCard(data, sym);
   // Show the explainer matching the active model. Excess Return has no
   // explainer section of its own yet (out of scope this pass) -- hide both
@@ -1418,96 +1419,6 @@ function resolveDcfFcfInputs(data) {
   return { fcfRaw, normFcf };
 }
 
-// Sensitivity grid: intrinsic value across a 5×5 discount-rate × terminal-
-// growth grid, holding the Base scenario's growth rate and projection years
-// fixed. Unlike Bear/Base/Bull (which move growth, terminal growth, and
-// discount rate together), this isolates exactly one axis per cell.
-function buildSensitivityGrid(data) {
-  // Excess Return Model has no terminal-growth axis (see the design's "no terminal
-  // value" decision) -- there's nothing for this discount-rate × terminal-growth
-  // grid to vary on the second axis, so the section is hidden entirely rather than
-  // reusing DDM's dividend-based math (which would read stale/hidden dividend-input
-  // state left over from a previously-viewed ticker and silently show wrong numbers).
-  if (valuationModel === 'excess-return' || valuationModel === 'reit' || valuationModel === 'airline') return null;
-
-  const years = parseInt(els.yearsSlider.value, 10);
-  const ddm = valuationModel === 'ddm';
-
-  const baseDiscount = parseFloat(els.waccBase.value) / 100;
-  const baseTGrowth  = parseFloat(els.tgrowthBase.value) / 100;
-  if (!isFinite(baseDiscount) || !isFinite(baseTGrowth)) return null;
-
-  const discountStep = 0.005;  // 0.5pp
-  const tgrowthStep  = 0.0025; // 0.25pp
-  const discountRates = [-2, -1, 0, 1, 2].map(n => baseDiscount + n * discountStep);
-  const tgrowthRates  = [-2, -1, 0, 1, 2].map(n => baseTGrowth + n * tgrowthStep);
-  const useMidYear = !!(els.midyearToggle && els.midyearToggle.checked);
-
-  if (ddm) {
-    const dividend = els.dividendInput
-      ? parseFloat(String(els.dividendInput.value).replace(/,/g, ''))
-      : NaN;
-    if (!(dividend > 0)) return null;
-    const growthRate = parseFloat(els.growthBase.value) / 100 || 0;
-    const rows = discountRates.map(costOfEquity => tgrowthRates.map(terminalGrowth => {
-      if (costOfEquity <= terminalGrowth) return null;
-      const r = calculateDDM({ dividend, growthRate, terminalGrowth, costOfEquity, projectionYears: years, currentPrice: data.price, midYear: useMidYear });
-      return r ? r.intrinsicValue : null;
-    }));
-    return { rows, discountRates, tgrowthRates, baseDiscount, baseTGrowth };
-  }
-
-  const { fcfRaw, normFcf } = resolveDcfFcfInputs(data);
-  const fcf = (fcfRaw !== null && fcfRaw > 0) ? fcfRaw : normFcf;
-  if (fcf === null) return null;
-  const growthRate = parseFloat(els.growthBase.value) / 100 || 0.05;
-  const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
-    ? data.dilutedSharesOutstanding : data.sharesOutstanding;
-
-  const useMultiStage = !!(els.multistageToggle && els.multistageToggle.checked);
-  const rows = discountRates.map(wacc => tgrowthRates.map(terminalGrowth => {
-    if (wacc <= terminalGrowth) return null;
-    const common = {
-      terminalGrowth, wacc, projectionYears: years,
-      totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
-      sharesOutstanding: resolvedShares, currentPrice: data.price,
-      midYear: useMidYear,
-    };
-    const r = useMultiStage
-      ? calculateFadingGrowthDCF({ ...common, fcf, initialGrowth: growthRate })
-      : calculateDCF({ ...common, fcf, growthRate });
-    return r ? r.intrinsicValue : null;
-  }));
-  return { rows, discountRates, tgrowthRates, baseDiscount, baseTGrowth };
-}
-
-function renderSensitivityGrid(grid, currentPrice, sym) {
-  if (!els.sensitivity || !els.sensitivityGrid) return;
-  if (!grid) { els.sensitivity.hidden = true; return; }
-  const { rows, discountRates, tgrowthRates, baseDiscount, baseTGrowth } = grid;
-  const discountLabel = valuationModel === 'ddm' ? 'Cost of Equity' : 'WACC';
-
-  const colHeaders = tgrowthRates.map(g => `<th>${(g * 100).toFixed(2)}%</th>`).join('');
-  const bodyRows = rows.map((row, i) => {
-    const isBaseRow = Math.abs(discountRates[i] - baseDiscount) < 1e-9;
-    const cells = row.map((val, j) => {
-      const isBaseCol = Math.abs(tgrowthRates[j] - baseTGrowth) < 1e-9;
-      const isBaseCell = isBaseRow && isBaseCol;
-      if (val === null) return `<td class="sens-na${isBaseCell ? ' sens-base' : ''}">—</td>`;
-      const cls = val > (currentPrice ?? 0) ? 'sens-up' : 'sens-down';
-      return `<td class="${cls}${isBaseCell ? ' sens-base' : ''}">${sym}${val.toFixed(2)}</td>`;
-    }).join('');
-    return `<tr><th>${(discountRates[i] * 100).toFixed(2)}%</th>${cells}</tr>`;
-  }).join('');
-
-  els.sensitivityGrid.innerHTML = `
-    <table class="sensitivity-table">
-      <thead><tr><th class="sens-corner">${discountLabel} \\ Terminal Growth</th>${colHeaders}</tr></thead>
-      <tbody>${bodyRows}</tbody>
-    </table>`;
-  els.sensitivity.hidden = false;
-}
-
 // Reads the shared scenario <input> elements into a plain seed object and
 // delegates the actual DCF/DDM math to the pure computeScenarios()
 // (www/dcf/calc/assumptions.js) — the exact same function the native
@@ -1713,100 +1624,113 @@ async function onShareClick() {
   });
 }
 
+// The message a tile shows when its scenario has no value (missing inputs, discount <= long-run growth, ...).
+function noResultMessage(s) {
+  const { fcfNegative, fcfMissing, noDividend, noBookValue, noAffo } = s;
+  if (fcfMissing) return 'Enter a Free Cash Flow value in the inputs panel to run the DCF.';
+  if (noDividend) return 'No dividend data available — the Dividend Discount Model needs a dividend. Enter an annual dividend per share in the inputs panel, or use the metrics above.';
+  if (noBookValue) return 'Enter a Book Value / Share in the inputs panel to run the Excess Return Model.';
+  if (noAffo) return 'Enter a positive AFFO / Share in the inputs panel to run the REIT model.';
+  if (fcfNegative) {
+    return isFinancialSector(currentData?.sector)
+      ? 'Reported FCF is negative. Enter a positive Normalised FCF in the inputs panel to run the DCF.'
+      : 'FCF is negative — DCF requires positive free cash flow. This company may not be suitable for DCF valuation.';
+  }
+  if (valuationModel === 'excess-return') return 'ROE and Cost of Equity must both be positive to run the Excess Return Model.';
+  if (valuationModel === 'reit') return 'Enter a positive P/AFFO Multiple in the inputs panel to run this model.';
+  if (valuationModel === 'airline') return 'Enter a positive EBITDA in the inputs panel to run this model.';
+  return valuationModel === 'ddm'
+    ? 'The cost of equity must be above long-run growth.'
+    : 'The discount rate must be above long-run growth.';
+}
+
+// "Growth 12.6% · WACC 9.40%" (per model) for a tile.
+function scenarioMetaText(s) {
+  const pct = (v, d) => (v == null || !isFinite(v) ? null : (v * 100).toFixed(d) + '%');
+  const mult = v => (v == null || !isFinite(v) ? null : (+v).toFixed(1) + '×');
+  let parts;
+  if (valuationModel === 'reit') parts = [mult(s.multiple) && 'P/AFFO ' + mult(s.multiple)];
+  else if (valuationModel === 'airline') parts = [mult(s.multiple) && 'EV/EBITDA ' + mult(s.multiple)];
+  else if (valuationModel === 'excess-return') parts = [pct(s.roe, 1) && 'ROE ' + pct(s.roe, 1), pct(s.wacc, 2) && 'Cost of equity ' + pct(s.wacc, 2)];
+  else if (valuationModel === 'ddm') parts = [pct(s.growthRate, 1) && 'Dividend growth ' + pct(s.growthRate, 1), pct(s.wacc, 2) && 'Cost of equity ' + pct(s.wacc, 2)];
+  else parts = [pct(s.growthRate, 1) && 'Growth ' + pct(s.growthRate, 1), pct(s.wacc, 2) && 'WACC ' + pct(s.wacc, 2)];
+  return parts.filter(Boolean).join(' · ');
+}
+
+let ourBaseValue = null; // the Base value at our numbers, shown on the Base tile once the visitor changes anything
+
 function renderScenarios(scenarios, data, sym) {
   let baseShareInfo = null;
-  const cards = scenarios.map(({ key, result, fcfNegative, fcfMissing, noDividend, noBookValue, noAffo, normalised }) => {
-    if (!result) {
-      let msg;
-      if (fcfMissing) {
-        msg = 'Enter a Free Cash Flow value in the inputs panel to run the DCF.';
-      } else if (noDividend) {
-        msg = 'No dividend data available — the Dividend Discount Model needs a dividend. Enter an annual dividend per share in the inputs panel, or use the metrics above.';
-      } else if (noBookValue) {
-        msg = 'Enter a Book Value / Share in the inputs panel to run the Excess Return Model.';
-      } else if (noAffo) {
-        msg = 'Enter a positive AFFO / Share in the inputs panel to run the REIT model.';
-      } else if (fcfNegative) {
-        msg = isFinancialSector(currentData?.sector)
-          ? 'Reported FCF is negative. Enter a positive Normalised FCF in the inputs panel to run the DCF.'
-          : 'FCF is negative — DCF requires positive free cash flow. This company may not be suitable for DCF valuation.';
-      } else if (valuationModel === 'excess-return') {
-        // No terminal-growth concept in this model -- ROE/Cost of Equity must both be
-        // positive for calculateExcessReturn() to return a value (see calc/excessReturn.js).
-        msg = 'ROE and Cost of Equity must both be positive to run the Excess Return Model.';
-      } else if (valuationModel === 'reit') {
-        msg = 'Enter a positive P/AFFO Multiple in the inputs panel to run this model.';
-      } else if (valuationModel === 'airline') {
-        msg = 'Enter a positive EBITDA in the inputs panel to run this model.';
-      } else {
-        msg = valuationModel === 'ddm'
-          ? 'Cost of equity must exceed the terminal growth rate.'
-          : 'WACC must exceed the terminal growth rate.';
-      }
-      return `<div class="scenario-card ${key}">
-        <div class="sc-header ${key}">${key.toUpperCase()}</div>
-        <div class="sc-no-result">${msg}</div>
-      </div>`;
-    }
+  const years = parseInt(els.yearsSlider.value, 10);
+  const price = data.price;
+  const edited = !!(pageState && ourState && psIsEdited(pageState, ourState));
+  const names = { bear: 'Bear', base: 'Base', bull: 'Bull' };
+  const values = {};
+
+  const tiles = scenarios.map(s => {
+    const { key, result, normalised } = s;
+    const head = `<div class="idcf-tile-h">${names[key]}</div>`;
+    if (!result) return `<div class="idcf-tile ${key}">${head}<div class="sc-no-result">${noResultMessage(s)}</div></div>`;
     if (result.intrinsicValue === null) {
       if (result.negativeEquity) {
-        return `<div class="scenario-card ${key}">
-          <div class="sc-header ${key}">${key.toUpperCase()}</div>
-          <div class="sc-no-result">Net debt (${formatMarketCap(result.netDebt, sym)}) exceeds DCF firm value (${formatMarketCap(result.firmValue, sym)}). Under these assumptions the equity is worth zero on a DCF basis. The stock is likely priced on future growth or asset value — try a higher growth rate or check the FCF is not inflated by one-off items.</div>
-        </div>`;
+        return `<div class="idcf-tile ${key}">${head}<div class="sc-no-result">Net debt (${formatMarketCap(result.netDebt, sym)}) exceeds DCF firm value (${formatMarketCap(result.firmValue, sym)}). Under these assumptions the equity is worth zero on a DCF basis. The stock is likely priced on future growth or asset value — try a higher growth rate or check the FCF is not inflated by one-off items.</div></div>`;
       }
-      return `<div class="scenario-card ${key}">
-        <div class="sc-header ${key}">${key.toUpperCase()}</div>
-        <div style="font-size:0.82rem;color:var(--kv-muted);margin-top:8px;">Shares outstanding unavailable — showing firm value only.</div>
-        <div class="sc-intrinsic" style="margin-top:8px">${formatMarketCap(result.firmValue, sym)} <span style="font-size:0.72rem;color:var(--kv-muted)">firm value</span></div>
-      </div>`;
+      return `<div class="idcf-tile ${key}">${head}<div class="sc-no-result">Shares outstanding unavailable — firm value ${formatMarketCap(result.firmValue, sym)}.</div></div>`;
     }
 
-    const mos     = result.marginOfSafety;
+    values[key] = result.intrinsicValue;
+    const mos = result.marginOfSafety;
     const verdict = deriveVerdict(mos);
-    const mosClass = verdict === 'Undervalued' ? 'undervalued' : verdict === 'Overvalued' ? 'overvalued' : 'fair';
-    const mosLabel = verdict === 'Undervalued' ? '✅ Undervalued' : verdict === 'Overvalued' ? '❌ Overvalued' : '⚠️ Fairly Valued';
-    const mosPct   = (mos * 100).toFixed(1);
-
+    const pillCls = verdict === 'Undervalued' ? 'idcf-pill-green' : verdict === 'Overvalued' ? 'idcf-pill-red' : 'idcf-pill-amber';
+    const mosPct = (mos * 100).toFixed(1);
     if (key === 'base') {
-      baseShareInfo = {
-        name: data.name, ticker: data.ticker, sym,
-        price: data.price, intrinsicValue: result.intrinsicValue,
-        mosLabel, mosPct,
-        url: null, // resolved async below, once/if a published ticker page is found
-      };
+      const mosLabel = verdict === 'Undervalued' ? '✅ Undervalued' : verdict === 'Overvalued' ? '❌ Overvalued' : '⚠️ Fairly Valued';
+      baseShareInfo = { name: data.name, ticker: data.ticker, sym, price: data.price, intrinsicValue: result.intrinsicValue, mosLabel, mosPct, url: null };
+      if (!edited) ourBaseValue = result.intrinsicValue;
     }
-
-    return `<div class="scenario-card ${key}">
-      <div class="sc-header ${key}">${key.toUpperCase()}</div>
-      <div class="sc-intrinsic">${sym}${result.intrinsicValue.toFixed(2)}</div>
-      <div class="sc-price">vs current ${sym}${(data.price ?? 0).toFixed(2)}</div>
-      <span class="sc-mos ${mosClass}">${parseFloat(mosPct) > 0 ? '+' : ''}${mosPct}% ${mosLabel}</span>
-      <div class="sc-divider"></div>
-      <div class="sc-cagr-title">Expected return to reach intrinsic value:</div>
-      <div class="sc-cagr-row"><span>1 yr</span><span class="cagr-val">${fmtCagr(result.cagr1yr)}</span></div>
-      <div class="sc-cagr-row highlight"><span>3 yrs</span><span class="cagr-val">${fmtCagr(result.cagr3yr)}</span></div>
-      <div class="sc-cagr-row"><span>5 yrs</span><span class="cagr-val">${fmtCagr(result.cagr5yr)}</span></div>
-      <div class="sc-caveat">Assumes market price converges to intrinsic value. No guarantee of timing.${normalised ? ' FCF estimated as Revenue × target margin.' : ''}</div>
+    const ret = (price > 0 && result.intrinsicValue > 0 && years > 0) ? Math.pow(result.intrinsicValue / price, 1 / years) - 1 : null;
+    const retLine = ret == null ? '' : `<div class="idcf-tile-ret">${ret >= 0 ? '+' : '−'}${Math.abs(ret * 100).toFixed(1)}% a year if the price meets this value by year ${years}</div>`;
+    const ours = (key === 'base' && edited && ourBaseValue != null) ? `<div class="idcf-tile-ours">Our number: ${sym}${ourBaseValue.toFixed(2)}</div>` : '';
+    const meta = scenarioMetaText(s);
+    return `<div class="idcf-tile ${key}">${head}
+      <div class="idcf-tile-v">${sym}${result.intrinsicValue.toFixed(2)}</div>
+      <span class="idcf-pill ${pillCls}">${parseFloat(mosPct) > 0 ? '+' : ''}${mosPct}% · ${verdict}</span>
+      ${meta ? `<div class="idcf-tile-meta">${escapeHtml(meta)}</div>` : ''}
+      ${retLine}${ours}
+      ${normalised ? '<div class="idcf-tile-meta">FCF estimated as Revenue × target margin.</div>' : ''}
     </div>`;
   }).join('');
+
+  // Range bar: Bear-Bull band, Base tick, today's price.
+  let range = '';
+  if (values.bear != null && values.base != null && values.bull != null && price > 0) {
+    const lo = Math.min(values.bear, values.bull, price) * 0.9;
+    const hi = Math.max(values.bear, values.bull, price) * 1.1;
+    const at = v => (((v - lo) / (hi - lo)) * 100).toFixed(2);
+    const b0 = Math.min(values.bear, values.bull), b1 = Math.max(values.bear, values.bull);
+    range = `<div class="idcf-range-wrap">
+      <div class="idcf-range" role="img" aria-label="Bear to Bull ${sym}${b0.toFixed(2)} to ${sym}${b1.toFixed(2)}, Base ${sym}${values.base.toFixed(2)}, today's price ${sym}${price.toFixed(2)}">
+        <div class="idcf-range-band" style="left:${at(b0)}%;width:${(at(b1) - at(b0)).toFixed(2)}%"></div>
+        <i class="idcf-range-base" style="left:${at(values.base)}%"></i>
+        <i class="idcf-range-price" style="left:${at(price)}%"></i>
+      </div>
+      <div class="idcf-range-key"><span><i class="idcf-range-base-k"></i>Base</span><span><i class="idcf-range-price-k"></i>Price ${sym}${price.toFixed(2)}</span></div>
+    </div>`;
+  }
 
   const isNormalised = scenarios.some(s => s.normalised);
   const ivLabel = T('intrinsic-value', 'Intrinsic Value');
   const heading = isNormalised
-    ? `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-yr · Revenue-normalised)`
-    : `${ivLabel} Estimate (${parseInt(els.yearsSlider.value, 10)}-year forecast)`;
-  els.scenarios.innerHTML = `<h3>${heading}</h3><div class="scenario-cards">${cards}</div>`;
+    ? `${ivLabel} Estimate (${years}-yr · Revenue-normalised)`
+    : `${ivLabel} Estimate (${years}-year forecast)`;
+  els.scenarios.innerHTML = `<h3>${heading}</h3><div class="idcf idcf-tiles">${tiles}</div>${range}`;
   show(els.scenarios);
 
   shareInfo = baseShareInfo;
   updateShareButton();
 
-  // Not awaited — renderScenarios() stays synchronous, and navigator.share()
-  // (called from a later, separate click) must not be preceded by an
-  // awaited fetch or some browsers reject it as no longer gesture-triggered.
-  // The identity check discards a stale resolution if the user has already
-  // re-analysed a different ticker by the time this resolves.
+  // Not awaited — renderScenarios() stays synchronous, and navigator.share() (called from a later, separate click)
+  // must not be preceded by an awaited fetch. The identity check discards a stale resolution.
   if (baseShareInfo) {
     fetchTickerPageUrl(baseShareInfo.ticker, currentMarket).then(url => {
       if (url && shareInfo === baseShareInfo) shareInfo.url = url;
@@ -1814,11 +1738,129 @@ function renderScenarios(scenarios, data, sym) {
   }
 }
 
-function fmtCagr(v) {
-  if (v === null || v === undefined || !isFinite(v)) return 'N/A';
-  const pct = (v * 100).toFixed(1);
-  return `<span class="${v >= 0 ? 'stat-up' : 'stat-down'}">${v >= 0 ? '+' : ''}${pct}% p.a.</span>`;
+// ── Value per share, year by year (chart) ─────────────────────────────────
+
+let lastChart = null;   // { m, paths, sym, price } for the tooltip
+let chartTarget = null; // { kind, value } from the pressure test, drawn on the chart
+
+function valuePathCtx(data) {
+  const shares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0) ? data.dilutedSharesOutstanding : data.sharesOutstanding;
+  return {
+    years: parseInt(els.yearsSlider.value, 10),
+    midYear: !!(els.midyearToggle && els.midyearToggle.checked),
+    shares,
+    netDebt: (data.totalDebt ?? 0) - (data.totalCash ?? 0),
+    holdcoDiscount,
+    // Same book-value compounding rate buildScenarios() passes to the Excess Return engine.
+    bookValueGrowthRate: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth),
+  };
 }
+
+function scenarioPaths(scenarios, data) {
+  if (valuationModel === 'reit' || valuationModel === 'airline' || lastHeavyCapexValuation) return null;
+  // Negative-FCF companies valued on Revenue × target margin: no time path (spec call 12).
+  if (scenarios.some(s => s.normalised)) return null;
+  const ctx = valuePathCtx(data);
+  const paths = {};
+  for (const s of scenarios) {
+    const p = valuePath(s, valuationModel, ctx);
+    if (!p || p.some(v => !isFinite(v))) return null;
+    paths[s.key] = p;
+  }
+  return paths.base ? paths : null;
+}
+
+function renderValueChart(scenarios, data, sym) {
+  const sec = els.idcfChart;
+  if (!sec) return;
+  const paths = scenarioPaths(scenarios, data);
+  if (!paths) { sec.hidden = true; els.idcfChartSvg.innerHTML = ''; lastChart = null; if (els.tvWarning) els.tvWarning.hidden = true; return; }
+  const w = Math.round((els.scenarios.getBoundingClientRect().width || 0)) || 800;
+  const width = Math.max(320, w);
+  const height = width < 520 ? 280 : 320;
+  const m = buildChartModel({ paths, price: data.price, target: chartTarget, width, height, prefix: sym });
+  lastChart = { m, paths, sym, price: data.price };
+  els.idcfChartSvg.innerHTML = chartSvgHtml(m);
+  const base = scenarios.find(s => s.key === 'base');
+  if (els.tvWarning) els.tvWarning.hidden = !(base && base.result && base.result.terminalValuePct > 70);
+  sec.hidden = false;
+}
+
+function chartSvgHtml(m) {
+  const f = n => (+n).toFixed(1);
+  const p = m.plot;
+  const esc = s => escapeHtml(String(s));
+  let s = `<svg class="idcf-svg" viewBox="0 0 ${m.width} ${m.height}" width="100%" height="${m.height}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Value per share by year: Bear, Base and Bull">`;
+  for (const t of m.yTicks) {
+    s += `<line class="idcf-grid" x1="${f(p.left)}" x2="${f(p.left + p.width)}" y1="${f(t.y)}" y2="${f(t.y)}"/>`;
+    s += `<text class="idcf-axis" x="${f(p.left - 6)}" y="${f(t.y + 4)}" text-anchor="end">${esc(t.label)}</text>`;
+  }
+  for (const t of m.xTicks) {
+    s += `<text class="idcf-axis" x="${f(t.x)}" y="${f(p.top + p.height + 18)}" text-anchor="${t.t === 0 ? 'start' : t.t === m.years ? 'end' : 'middle'}">${esc(t.label)}</text>`;
+  }
+  const line = k => m.lines.find(l => l.key === k);
+  const bear = line('bear'), bull = line('bull');
+  if (bear && bull) {
+    const pts = bull.points.map(q => `${f(q.x)},${f(q.y)}`).concat(bear.points.slice().reverse().map(q => `${f(q.x)},${f(q.y)}`));
+    s += `<polygon class="idcf-band" points="${pts.join(' ')}"/>`;
+  }
+  const pl = m.priceLine;
+  if (isFinite(pl.y) && pl.y >= p.top && pl.y <= p.top + p.height) {
+    s += `<line class="idcf-price" x1="${f(p.left)}" x2="${f(p.left + p.width)}" y1="${f(pl.y)}" y2="${f(pl.y)}"/>`;
+    s += `<text class="idcf-price-lbl" x="${f(pl.box.x)}" y="${f(pl.box.y + pl.box.h - 3)}">${esc(pl.label)}</text>`;
+  }
+  for (const k of ['bull', 'bear', 'base']) {
+    const l = line(k);
+    if (!l) continue;
+    s += `<polyline class="idcf-line idcf-line-${k}" points="${l.points.map(q => `${f(q.x)},${f(q.y)}`).join(' ')}"/>`;
+    for (const q of l.points) s += `<circle class="idcf-dot idcf-dot-${k}" cx="${f(q.x)}" cy="${f(q.y)}" r="${k === 'base' ? 3.5 : 2.5}"/>`;
+  }
+  for (const lb of m.labels) {
+    s += `<text class="idcf-lbl idcf-lbl-${lb.key}" x="${f(lb.x + 2)}" y="${f(lb.y + lb.h - 3)}">${esc(lb.text)}</text>`;
+  }
+  for (const lb of m.endLabels) {
+    s += `<text class="idcf-end idcf-end-${lb.key}" x="${f(lb.x)}" y="${f(lb.y + lb.h - 3)}">${esc(lb.text)}</text>`;
+  }
+  const tm = m.targetMarker;
+  if (tm) {
+    if (tm.edge) {
+      const y = tm.edge === 'top' ? p.top + 12 : p.top + p.height - 4;
+      s += `<text class="idcf-target-lbl" x="${f(p.left + p.width - 4)}" y="${f(y)}" text-anchor="end">${esc(tm.label)} ${tm.edge === 'top' ? '↑' : '↓'}</text>`;
+    } else if (tm.x != null) {
+      s += `<circle class="idcf-target-dot" cx="${f(tm.x)}" cy="${f(tm.y)}" r="5"/>`;
+      s += `<text class="idcf-target-lbl" x="${f(tm.x - 8)}" y="${f(tm.y - 8)}" text-anchor="end">${esc(tm.label)}</text>`;
+    } else {
+      s += `<line class="idcf-target" x1="${f(p.left)}" x2="${f(p.left + p.width)}" y1="${f(tm.y)}" y2="${f(tm.y)}"/>`;
+      s += `<text class="idcf-target-lbl" x="${f(p.left + 4)}" y="${f(tm.y - 4)}">${esc(tm.label)}</text>`;
+    }
+  }
+  return s + '</svg>';
+}
+
+// Hover / tap: a crosshair and a tooltip with the year's three values and the price.
+function onChartPointer(e) {
+  if (!lastChart || !els.idcfTip) return;
+  const { m, paths, sym, price } = lastChart;
+  const rect = els.idcfChartSvg.getBoundingClientRect();
+  if (!rect.width) return;
+  const scale = m.width / rect.width;
+  const x = (e.clientX - rect.left) * scale;
+  const t = Math.max(0, Math.min(m.years, Math.round(((x - m.plot.left) / m.plot.width) * m.years)));
+  const money = v => (v == null || !isFinite(v) ? '—' : sym + v.toFixed(2));
+  els.idcfTip.innerHTML = `<b>${t === 0 ? 'Today' : 'Year ' + t}</b>`
+    + `<span>Bull ${money(paths.bull && paths.bull[t])}</span><span>Base ${money(paths.base[t])}</span>`
+    + `<span>Bear ${money(paths.bear && paths.bear[t])}</span><span>Price ${money(price)}</span>`;
+  const cx = (m.plot.left + (m.plot.width * t) / m.years) / scale;
+  els.idcfTip.style.left = Math.min(Math.max(cx - 70, 0), rect.width - 140) + 'px';
+  els.idcfTip.hidden = false;
+  if (els.idcfCross) { els.idcfCross.style.left = cx + 'px'; els.idcfCross.hidden = false; }
+}
+
+function onChartLeave() {
+  if (els.idcfTip) els.idcfTip.hidden = true;
+  if (els.idcfCross) els.idcfCross.hidden = true;
+}
+
 
 // ── Charts ────────────────────────────────────────────────────────────────
 
@@ -1873,125 +1915,6 @@ function renderBreakeven(data, sym) {
   els.breakevenCallout.hidden = false;
 }
 
-function renderCharts(scenarios, currentPrice, sym) {
-  const labels = ['Bear', 'Base', 'Bull'];
-  const excessReturn = valuationModel === 'excess-return';
-  const noProjectionModel = excessReturn || valuationModel === 'reit' || valuationModel === 'airline'; // none of these have a per-year PV series or a terminal value
-
-  // Terminal value warning — meaningless for Excess Return / REIT, neither
-  // of which has a terminal value component (see calc/excessReturn.js,
-  // calc/reit.js).
-  if (noProjectionModel) {
-    els.tvWarning.hidden = true;
-  } else {
-    const withResult = scenarios.filter(s => s.result);
-    const maxTVPct = withResult.length ? Math.max(...withResult.map(s => s.result.terminalValuePct)) : 0;
-    els.tvWarning.hidden = maxTVPct <= 70;
-  }
-
-  const ddm = valuationModel === 'ddm';
-  const breakdownCard = $('breakdown-chart') ? $('breakdown-chart').closest('.chart-card') : null;
-
-  // Chart 1: Stacked bar — near-term PV (green) + PV Terminal Value (orange).
-  // Skipped for Excess Return Model and REIT — neither's result shape has
-  // pvFcfs/pvDividends/pvTerminal fields to stack (see the comment above).
-  if (noProjectionModel) {
-    if (breakdownChart) { breakdownChart.destroy(); breakdownChart = null; }
-    if (breakdownCard) breakdownCard.hidden = true;
-  } else {
-    if (breakdownCard) breakdownCard.hidden = false;
-    // DCF works in $B of firm value; DDM works in per-share currency units.
-    const stackNear = ddm
-      ? scenarios.map(s => s.result ? +s.result.pvDividends.reduce((a, b) => a + b, 0).toFixed(2) : 0)
-      : scenarios.map(s => s.result ? +(s.result.pvFcfs.reduce((a, b) => a + b, 0) / 1e9).toFixed(2) : 0);
-    const stackTerminal = ddm
-      ? scenarios.map(s => s.result ? +s.result.pvTerminal.toFixed(2) : 0)
-      : scenarios.map(s => s.result ? +(s.result.pvTerminal / 1e9).toFixed(2) : 0);
-
-    const fmtBar    = ddm ? (v => `${sym}${v.toFixed(2)}`) : (v => `${sym}${v.toFixed(1)}B`);
-    const labelMin  = ddm ? 0.01 : 0.5;
-    const nearLabel = ddm ? 'PV of Dividends (forecast years)' : 'PV of FCFs (forecast years)';
-
-    if (breakdownChart) breakdownChart.destroy();
-    breakdownChart = new Chart($('breakdown-chart'), {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          { label: nearLabel,               data: stackNear,     backgroundColor: 'rgba(34,197,94,0.75)',  borderRadius: 4 },
-          { label: 'PV of Terminal Value',  data: stackTerminal, backgroundColor: 'rgba(251,146,60,0.85)', borderRadius: 4 },
-        ],
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#7b8eaa', font: { size: 11 } } },
-          datalabels: {
-            color: '#fff',
-            font: { size: 10, weight: 'bold' },
-            formatter: (value) => value >= labelMin ? fmtBar(value) : '',
-            anchor: 'center',
-            align: 'center',
-          },
-        },
-        scales: {
-          x: { stacked: true, ticks: { color: '#7b8eaa' }, grid: { color: 'rgba(34,48,82,0.5)' } },
-          y: {
-            stacked: true,
-            ticks: { color: '#7b8eaa', callback: v => fmtBar(v) },
-            grid: { color: 'rgba(34,48,82,0.5)' },
-            afterFit: scale => { scale.width = 72; },
-          },
-        },
-      },
-    });
-  }
-
-  // Chart 2: Horizontal bar — current price vs intrinsic values
-  const intrinsics  = scenarios.map(s => s.result?.intrinsicValue ?? 0);
-  const chartData   = [currentPrice ?? 0, ...intrinsics];
-  const chartLabels = ['Current Price', 'Bear', 'Base', 'Bull'];
-  const chartColors = [
-    'rgba(147,160,189,0.8)',  // slate — current price
-    'rgba(239,68,68,0.8)',    // red   — bear
-    'rgba(251,191,36,0.8)',   // amber — base (matches --kv-accent)
-    'rgba(34,197,94,0.8)',    // green — bull
-  ];
-
-  if (priceChart) priceChart.destroy();
-  priceChart = new Chart($('price-chart'), {
-    type: 'bar',
-    data: {
-      labels: chartLabels,
-      datasets: [{ data: chartData, backgroundColor: chartColors, borderRadius: 4 }],
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true, maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        datalabels: {
-          color: '#fff',
-          font: { size: 11, weight: 'bold' },
-          formatter: (value) => value > 0 ? `${sym}${value.toFixed(2)}` : '',
-          anchor: 'end',
-          align: 'start',
-          offset: 4,
-        },
-      },
-      scales: {
-        x: {
-          ticks: { color: '#7b8eaa', callback: v => `${sym}${v.toFixed(2)}` },
-          grid: { color: 'rgba(34,48,82,0.5)' },
-        },
-        y: { ticks: { color: '#7b8eaa' }, grid: { display: false } },
-      },
-    },
-  });
-
-  show(els.charts);
-}
-
 // ── Helpers ───────────────────────────────────────────────────────────────
 
 function setLoading(on) { ctl.setLoading(on); }
@@ -2003,7 +1926,7 @@ function showError(msg) {
 }
 
 function hideResults() {
-  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.charts, els.howDcf, els.howDdm, els.layout]
+  [els.summary, els.finWarning, els.breakevenCallout, els.scenarios, els.disclaimer, els.idcfChart, els.howDcf, els.howDdm, els.layout]
     .forEach(el => { if (el) el.hidden = true; });
   els.status.hidden = true;
   const growthSuggestion = document.getElementById('growthSuggestion');

@@ -464,20 +464,20 @@
         <section id="disclaimer" class="disclaimer" hidden>
           <p>⚠️ <strong>Not financial advice.</strong> DCF valuations are highly sensitive to assumptions — small changes in growth rate or discount rate produce large swings in output. Always use multiple valuation methods and consult a licensed financial adviser before making investment decisions.</p>
         </section>
-        <section id="charts" class="charts-section" hidden>
-          <div class="chart-card">
-            <h3><span id="breakdown-title">DCF Value Breakdown</span> <span id="tv-warning" class="tv-warning" hidden>⚠ Terminal value &gt;70% — highly sensitive to terminal growth assumption</span></h3>
-            <canvas id="breakdown-chart"></canvas>
+        <section id="idcf-chart" class="idcf idcf-chart-section" hidden>
+          <h3><span class="kv-term" data-term="value-per-share-by-year" tabindex="0" role="button" aria-expanded="false">Value per share, year by year</span> <span id="tv-warning" class="tv-warning" hidden>⚠ Terminal value &gt;70% — highly sensitive to the long-run growth assumption</span></h3>
+          <div class="idcf-legend" aria-hidden="true">
+            <span><i class="idcf-key idcf-key-bull"></i>Bull</span>
+            <span><i class="idcf-key idcf-key-base"></i>Base</span>
+            <span><i class="idcf-key idcf-key-bear"></i>Bear</span>
+            <span><i class="idcf-key idcf-key-price"></i>Today's price</span>
           </div>
-          <div class="chart-card">
-            <h3>Intrinsic Value vs Current Price</h3>
-            <canvas id="price-chart"></canvas>
+          <div class="idcf-chart-wrap">
+            <div id="idcf-chart-svg" class="idcf-chart-svg"></div>
+            <div id="idcf-cross" class="idcf-cross" hidden></div>
+            <div id="idcf-tip" class="idcf-tip" role="status" hidden></div>
           </div>
-        </section>
-        <section id="sensitivity" class="sensitivity-section" hidden>
-          <h3>Sensitivity: Intrinsic Value by Discount Rate × Terminal Growth</h3>
-          <p class="sensitivity-note">Holds the Base scenario's growth rate and projection years fixed, varying only the two inputs the terminal value is most sensitive to. The highlighted cell is your current Base scenario.</p>
-          <div id="sensitivity-grid" class="sensitivity-grid-wrap"></div>
+          <p class="idcf-caption">Each point is what that scenario's cash flows say one share is worth in that year. It is not a share-price forecast.</p>
         </section>
         <section id="how-dcf" class="how-dcf" hidden>
           <details>
@@ -653,14 +653,6 @@
   <script src="calc/heavyCapex.js"></script>
   <script src="calc/assumptions.js"></script>
   <script src="calc/industryBetas.js"></script>
-  <!-- Self-hosted, not CDN (chart.umd.min.js@4.5.1 / chartjs-plugin-datalabels@2.2.0) --
-       a CDN dependency here meant the Android app's first-ever DCF chart render on a
-       fresh Play Store install had to make an extra live network round-trip before
-       Chart became defined, producing a silent ~20-30s window where every ticker threw
-       "Chart is not defined" (confirmed live 2026-08-15). Vendoring removes that cold-
-       start entirely, since these ship bundled in the APK like every other local script. -->
-  <script src="chart.umd.min.js"></script>
-  <script src="chartjs-plugin-datalabels.min.js"></script>
   <script src="/kv-exchange-label.js"></script>
   <script src="/kv-ticker-input.js"></script>
   <script src="/kv-glossary-data.js"></script>
