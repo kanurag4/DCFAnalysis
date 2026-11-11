@@ -866,9 +866,17 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
 
 /* Company summary, full width above the two columns (P62): compact stat tiles, so the value cards and chart start
    level with the sliders. Scoped to .idcf-top -- ticker pages keep the shared .stats look. */
-.idcf-top { margin-bottom: 14px; }
+main.idcf-wide { max-width: 1440px; }
+.idcf-top { position: relative; margin-bottom: 14px; }
 .idcf-top .summary { margin-bottom: 0; }
-.idcf-top .stats { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; margin-top: 8px; }
+/* Share sits on the company-name line, at the right. */
+.idcf-top .summary-toolbar { position: absolute; top: 0; right: 0; margin: 0; z-index: 1; }
+.idcf-top .summary h2 { padding-right: 110px; }
+/* Desktop: every metric on one row (REIT / airline add two, still one row). Narrower screens wrap. */
+.idcf-top .stats { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); grid-template-columns: none; gap: 6px; margin-top: 8px; }
+@media (max-width: 1100px) {
+  .idcf-top .stats { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+}
 .idcf-top .stat { padding: 6px 9px; border-radius: 6px; }
 .idcf-top .stat-label { font-size: 0.64rem; margin-bottom: 2px; }
 .idcf-top .stat-value { font-size: 0.85rem; }
