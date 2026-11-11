@@ -453,7 +453,7 @@ let _recomputeTimer = null;
 // Shareable link: the page's own query at load (applied once, to the first lookup), and the params page-state.js owns.
 const initialQuery = window.location.search || '';
 let urlStateConsumed = false;
-const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', 'tb', 'tu', 'wb', 'wu'];
+const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', 'tb', 'tu', 'wb', 'wu', 'model', 'rf', 'erp'];
 
 const IDCF_RANGES = { growth: [-10, 40, 0.1], roe: [0, 60, 0.1], multiple: [1, 40, 0.1], tgrowth: [0, 4, 0.1], discount: [4, 18, 0.05] };
 
@@ -565,7 +565,15 @@ function writeUrlState() {
   const keep = new URLSearchParams(window.location.search);
   PS_PARAM_NAMES.forEach(k => keep.delete(k));
   const rest = keep.toString();
-  const enc = psEncode(pageState, ourState);
+  // Beyond page-state.js: the DDM view of a non-bank dividend payer, and edited RF / ERP boxes (they move the
+  // discount rate without making it 'custom'), so whoever opens the link sees the same numbers.
+  const extra = [];
+  if (lastAssumptions && valuationModel !== lastAssumptions.valuationModel) extra.push('model=' + valuationModel);
+  const d = rfErpForMarket(currentMarket);
+  const rf = parseFloat(els.rfInput.value), erp = parseFloat(els.erpInput.value);
+  if (isFinite(rf) && rf !== +d.rf) extra.push('rf=' + String(+rf.toFixed(4)));
+  if (isFinite(erp) && erp !== +d.erp) extra.push('erp=' + String(+erp.toFixed(4)));
+  const enc = [psEncode(pageState, ourState)].concat(extra).filter(Boolean).join('&');
   const q = rest + (enc ? (rest ? '&' : '') + enc : '');
   const url = window.location.pathname + (q ? '?' + q : '');
   if (url !== window.location.pathname + window.location.search) window.history.replaceState(null, '', url);
@@ -578,8 +586,21 @@ function applyUrlStateOnce() {
   urlStateConsumed = true;
   const tk = (new URLSearchParams(initialQuery).get('ticker') || '').toUpperCase();
   if (!tk || !currentData || !String(currentData.ticker || '').toUpperCase().startsWith(tk)) return;
-  const s = psDecode(initialQuery, ourState, { betaAllowed: !!betaInfo });
-  if (!psIsEdited(s, ourState)) return;
+  const q = new URLSearchParams(initialQuery);
+  // The DDM view first (it re-seeds every input), then the RF / ERP boxes, then the page-state.js fields on top.
+  if (q.get('model') === 'ddm' && valuationModel === 'dcf' && dividendAvailable && els.ddmToggle && !els.ddmToggle.hidden) {
+    valuationModel = 'ddm';
+    seedInputsForModel(valuationModel);
+    applyModelUI();
+    initInteractive(currentData, lastAssumptions);
+  }
+  const qNum = (k, lo, hi) => { const raw = q.get(k); const v = raw != null && /^-?\d+(\.\d+)?$/.test(raw) ? Number(raw) : NaN; return v >= lo && v <= hi ? v : null; };
+  const rf = qNum('rf', 0, 15), erp = qNum('erp', 1, 15);
+  if (rf != null) els.rfInput.value = rf;
+  if (erp != null) els.erpInput.value = erp;
+  if (rf != null || erp != null) recomputeDiscount();
+  const s = psDecode(initialQuery, readStateFromInputs('stock'), { betaAllowed: !!betaInfo });
+  if (!psIsEdited(s, ourState) && rf == null && erp == null) return;
   writeStateToInputs(s);
   if (s.start != null && s.start !== ourState.start) {
     const el = startInputEl();
@@ -712,6 +733,10 @@ function prefillInputs(data) {
   // into the DOM (input fields, badges, notes).
   const assumptions = deriveDcfAssumptions(data, { sectorMarginLookup });
   const isBankIns = assumptions.isBankIns;
+  // A new ticker (or Reset) starts the pressure test from today's price again.
+  ptMode = 'value';
+  ptTarget = null;
+  if (els.idcfPtTarget) els.idcfPtTarget.value = '';
   const isReitTicker = assumptions.isReit;
   valuationModel = assumptions.valuationModel;
   currentMarket = assumptions.currentMarket;
@@ -1218,12 +1243,19 @@ function onToggleModel() {
 
 function renderAll(data) {
   const sym = CURRENCY_SYMBOLS[data.currency] ?? '';
+  // Visible first, so the chart measures the real width (a hidden layout measures 0 and drew the desktop size on phones).
+  show(els.layout);
   renderSummary(data, sym);
   renderFinancialWarning(data, sym);
   const scenarios = buildScenarios(data);
   renderTerminalGrowthWarning(scenarios);
   renderBreakeven(data, sym);
   renderScenarios(scenarios, data, sym);
+  // The starting-figure boxes live in the folded section: open it when a value needs one of them filled in.
+  const needsInput = scenarios.some(s => !s.result)
+    || (els.fcfNormRow && !els.fcfNormRow.hidden) || (els.targetMarginRow && !els.targetMarginRow.hidden);
+  const more = $('idcf-more');
+  if (needsInput && more) more.open = true;
   renderValueChart(scenarios, data, sym);
   renderPressureTest(scenarios, data, sym);
   renderHeavyCapexCard(data, sym);
@@ -1889,16 +1921,10 @@ function chartSvgHtml(m) {
   }
   const tm = m.targetMarker;
   if (tm) {
-    if (tm.edge) {
-      const y = tm.edge === 'top' ? p.top + 12 : p.top + p.height - 4;
-      s += `<text class="idcf-target-lbl" x="${f(p.left + p.width - 4)}" y="${f(y)}" text-anchor="end">${esc(tm.label)} ${tm.edge === 'top' ? '↑' : '↓'}</text>`;
-    } else if (tm.x != null) {
-      s += `<circle class="idcf-target-dot" cx="${f(tm.x)}" cy="${f(tm.y)}" r="5"/>`;
-      s += `<text class="idcf-target-lbl" x="${f(tm.x - 8)}" y="${f(tm.y - 8)}" text-anchor="end">${esc(tm.label)}</text>`;
-    } else {
-      s += `<line class="idcf-target" x1="${f(p.left)}" x2="${f(p.left + p.width)}" y1="${f(tm.y)}" y2="${f(tm.y)}"/>`;
-      s += `<text class="idcf-target-lbl" x="${f(p.left + 4)}" y="${f(tm.y - 4)}">${esc(tm.label)}</text>`;
-    }
+    // The label sits in the box the chart model reserved for it (value labels already keep clear of it).
+    if (!tm.edge && tm.x != null) s += `<circle class="idcf-target-dot" cx="${f(tm.x)}" cy="${f(tm.y)}" r="5"/>`;
+    else if (!tm.edge) s += `<line class="idcf-target" x1="${f(p.left)}" x2="${f(p.left + p.width)}" y1="${f(tm.y)}" y2="${f(tm.y)}"/>`;
+    s += `<text class="idcf-target-lbl" x="${f(tm.box.x + 2)}" y="${f(tm.box.y + tm.box.h - 3)}">${esc(tm.text)}</text>`;
   }
   return s + '</svg>';
 }
@@ -2203,7 +2229,9 @@ function resetRfErp() {
   els.rfInput.value  = seed.rf;
   els.erpInput.value = seed.erp;
   recomputeDiscount();
-  if (currentData) renderAll(currentData);
+  // Through onInputsEdited, not renderAll: the sliders and the "Your numbers" chip must follow the boxes, or the
+  // next slider move writes the old discount back.
+  if (currentData) onInputsEdited(true);
 }
 
 // The Base discount rate (percent, 2dp) one beta gives at the current RF / ERP boxes: CAPM cost of equity for

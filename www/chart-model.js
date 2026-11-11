@@ -76,8 +76,28 @@ function buildChartModel({ paths, price, target, width, height, compact, prefix 
   const priceBox = { x: left + plotW + 6, y: py - CM_LABEL_H / 2, w: cmTextWidth(priceText), h: CM_LABEL_H };
   const priceLine = { y: py, label: priceText, box: priceBox };
 
+  // Target (from the pressure test): placed FIRST, so every value label then keeps clear of it.
+  let targetMarker = null;
+  if (target && isFinite(target.value)) {
+    const label = 'Target ' + fmt(target.value);
+    const tx = target.kind === 'year-n' ? x(N) : null;
+    const edge = target.value > hi ? 'top' : target.value < lo ? 'bottom' : null;
+    const text = edge ? label + (edge === 'top' ? ' ↑' : ' ↓') : label;
+    const w = cmTextWidth(text);
+    let box;
+    if (edge) {
+      box = { x: left + plotW - w, y: edge === 'top' ? top + 2 : top + plotH - CM_LABEL_H - 2, w, h: CM_LABEL_H };
+    } else {
+      const ty = y(target.value);
+      const bx = tx != null ? Math.max(left, tx - w - 8) : left + 4;
+      const aboveY = ty - CM_LABEL_H - (tx != null ? 6 : 3);
+      box = { x: bx, y: aboveY >= 0 ? aboveY : ty + 6, w, h: CM_LABEL_H };
+    }
+    targetMarker = edge ? { edge, label, text, x: tx, box } : { y: y(target.value), label, text, x: tx, box };
+  }
+
   // Point labels.
-  const placed = [];
+  const placed = targetMarker ? [targetMarker.box] : [];
   const shown = t => !isCompact || t === 0 || t === N || t % 2 === 0;
   const fits = b => b.y >= 0 && b.y + b.h <= height && !placed.some(p => cmIntersects(p, b)) && !cmIntersects(b, priceBox);
   const boxAt = (px, yTop, text, t) => {
@@ -134,16 +154,6 @@ function buildChartModel({ paths, price, target, width, height, compact, prefix 
     if (!box) continue;
     endPlaced.push(box);
     endLabels.push({ key: k, t: N, x: box.x, y: box.y, w: box.w, h: box.h, text });
-  }
-
-  // Target.
-  let targetMarker = null;
-  if (target && isFinite(target.value)) {
-    const label = 'Target ' + fmt(target.value);
-    const tx = target.kind === 'year-n' ? x(N) : null;
-    if (target.value > hi) targetMarker = { edge: 'top', label, x: tx };
-    else if (target.value < lo) targetMarker = { edge: 'bottom', label, x: tx };
-    else targetMarker = { y: y(target.value), label, x: tx };
   }
 
   return {
