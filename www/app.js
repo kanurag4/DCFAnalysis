@@ -33,6 +33,15 @@ const els = {
   idcfChartSvg: $('idcf-chart-svg'),
   idcfTip:      $('idcf-tip'),
   idcfCross:    $('idcf-cross'),
+  idcfPt:           $('idcf-pt'),
+  idcfPtModes:      $('idcf-pt-modes'),
+  idcfPtModeValue:  $('idcf-pt-mode-value'),
+  idcfPtModeReturn: $('idcf-pt-mode-return'),
+  idcfPtTarget:     $('idcf-pt-target'),
+  idcfPtTargetLabel:$('idcf-pt-target-label'),
+  idcfPtChips:      $('idcf-pt-chips'),
+  idcfPtLead:       $('idcf-pt-lead'),
+  idcfPtBoxes:      $('idcf-pt-boxes'),
   howDcf:       $('how-dcf'),
   fcfInput:     $('fcf-input'),
   fcfSource:    $('fcf-source'),
@@ -340,6 +349,10 @@ els.idcfDiscount.addEventListener('change', () => onSlider('discount', els.idcfD
 els.idcfBetaStock.addEventListener('click', () => setBetaChoice('stock'));
 els.idcfBetaIndustry.addEventListener('click', () => setBetaChoice('industry'));
 els.idcfReset.addEventListener('click', onResetOurs);
+els.idcfPtModeValue.addEventListener('click', () => onPtMode('value'));
+els.idcfPtModeReturn.addEventListener('click', () => onPtMode('return'));
+els.idcfPtTarget.addEventListener('input', onPtTargetInput);
+els.idcfPtChips.addEventListener('click', onPtChip);
 els.idcfChartSvg.addEventListener('pointermove', onChartPointer);
 els.idcfChartSvg.addEventListener('pointerdown', onChartPointer);
 els.idcfChartSvg.addEventListener('pointerleave', onChartLeave);
@@ -1159,6 +1172,7 @@ function renderAll(data) {
   renderBreakeven(data, sym);
   renderScenarios(scenarios, data, sym);
   renderValueChart(scenarios, data, sym);
+  renderPressureTest(scenarios, data, sym);
   renderHeavyCapexCard(data, sym);
   // Show the explainer matching the active model. Excess Return has no
   // explainer section of its own yet (out of scope this pass) -- hide both
@@ -1428,53 +1442,43 @@ function resolveDcfFcfInputs(data) {
 // used `parseFloat(v)/100 || 0.05`, which is mathematically identical to
 // `parseFloat(v) || 5` since dividing then multiplying by the same
 // nonzero constant never changes which branch of `||` fires).
-function buildScenarios(data) {
+function scenarioInputs(data) {
   const years = parseInt(els.yearsSlider.value, 10);
+  const num = el => parseFloat(String(el.value).replace(/,/g, ''));
 
   // ── REIT (property REITs, locked model) ──
   if (valuationModel === 'reit') {
-    const affoPerShare = els.affoInput
-      ? parseFloat(String(els.affoInput.value).replace(/,/g, ''))
-      : NaN;
-    const seeds = {
+    const affoPerShare = els.affoInput ? num(els.affoInput) : NaN;
+    return { model: 'reit', options: { holdcoDiscount }, seeds: {
       affoPerShare: isFinite(affoPerShare) ? affoPerShare : null,
       multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // reuses the growth-bear/base/bull inputs, relabeled "P/AFFO Multiple" in applyModelUI()
-    };
-    return computeScenarios(data, 'reit', seeds, { holdcoDiscount });
+    } };
   }
 
   // ── Airline (EV/EBITDA, locked model) ──
   if (valuationModel === 'airline') {
-    const ebitda = els.ebitdaInput
-      ? parseFloat(String(els.ebitdaInput.value).replace(/,/g, ''))
-      : NaN;
-    const seeds = {
+    const ebitda = els.ebitdaInput ? num(els.ebitdaInput) : NaN;
+    return { model: 'airline', options: { holdcoDiscount }, seeds: {
       ebitda: isFinite(ebitda) ? ebitda : null,
       multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 },
-    };
-    return computeScenarios(data, 'airline', seeds, { holdcoDiscount });
+    } };
   }
 
   // ── DDM (banks/insurance, or user-toggled) ──
   if (valuationModel === 'ddm') {
-    const dividend = els.dividendInput
-      ? parseFloat(String(els.dividendInput.value).replace(/,/g, ''))
-      : NaN;
-    const seeds = {
+    const dividend = els.dividendInput ? num(els.dividendInput) : NaN;
+    return { model: 'ddm', options: { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount }, seeds: {
       dividend,
       growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // 0% is a valid DDM case (flat dividend perpetuity)
       tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
-    };
-    return computeScenarios(data, 'ddm', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount });
+    } };
   }
 
   // ── Excess Return Model (low-payout banks/insurers/NBFCs) ──
   if (valuationModel === 'excess-return') {
-    const bookValue = els.bookvalueInput
-      ? parseFloat(String(els.bookvalueInput.value).replace(/,/g, ''))
-      : NaN;
-    const seeds = {
+    const bookValue = els.bookvalueInput ? num(els.bookvalueInput) : NaN;
+    return { model: 'excess-return', options: { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount }, seeds: {
       bookValue,
       growth:   { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 }, // "growth" slot holds ROE
       discount: { bear: parseFloat(els.waccBear.value) || 9, base: parseFloat(els.waccBase.value) || 9, bull: parseFloat(els.waccBull.value) || 9 },
@@ -1482,23 +1486,27 @@ function buildScenarios(data) {
       // so re-derived from the same source data assumptions.js seeds it from.
       // NOT the ROE inputs above (fixed 2026-08-15, see calc/assumptions.js).
       bookValueGrowthPct: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth) * 100,
-    };
-    return computeScenarios(data, 'excess-return', seeds, { years, useMidYear: !!(els.midyearToggle && els.midyearToggle.checked), holdcoDiscount });
+    } };
   }
 
   // ── DCF ──
   const { fcfRaw, normFcf } = resolveDcfFcfInputs(data);
-  const seeds = {
-    growth:   { bear: parseFloat(els.growthBear.value) || 5, base: parseFloat(els.growthBase.value) || 5, bull: parseFloat(els.growthBull.value) || 5 },
-    tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
-    discount: { bear: parseFloat(els.waccBear.value) || 10, base: parseFloat(els.waccBase.value) || 10, bull: parseFloat(els.waccBull.value) || 10 },
-  };
-  const scenarios = computeScenarios(data, 'dcf', seeds, {
+  return { model: 'dcf', options: {
     years,
     useMultiStage: !!(els.multistageToggle && els.multistageToggle.checked),
     useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
     fcfRaw, normFcf, holdcoDiscount,
-  });
+  }, seeds: {
+    growth:   { bear: parseFloat(els.growthBear.value) || 5, base: parseFloat(els.growthBase.value) || 5, bull: parseFloat(els.growthBull.value) || 5 },
+    tgrowth:  { bear: parseFloat(els.tgrowthBear.value) || 2.5, base: parseFloat(els.tgrowthBase.value) || 2.5, bull: parseFloat(els.tgrowthBull.value) || 2.5 },
+    discount: { bear: parseFloat(els.waccBear.value) || 10, base: parseFloat(els.waccBase.value) || 10, bull: parseFloat(els.waccBull.value) || 10 },
+  } };
+}
+
+function buildScenarios(data) {
+  const inp = scenarioInputs(data);
+  const scenarios = computeScenarios(data, inp.model, inp.seeds, inp.options);
+  if (inp.model !== 'dcf') return scenarios;
   // Heavy capex spending: the box above is the existing business; add the growth capex at its return per scenario.
   if (!heavyCapexState) { lastHeavyCapexValuation = null; return scenarios; }
   lastHeavyCapexValuation = heavyCapexValuation(data, heavyCapexState, scenarios);
@@ -1778,6 +1786,8 @@ function renderValueChart(scenarios, data, sym) {
   const w = Math.round((els.scenarios.getBoundingClientRect().width || 0)) || 800;
   const width = Math.max(320, w);
   const height = width < 520 ? 280 : 320;
+  const pt = ptAvailable(scenarios) ? ptCurrentTarget(data) : null;
+  chartTarget = pt ? { kind: pt.kind, value: pt.value } : null;
   const m = buildChartModel({ paths, price: data.price, target: chartTarget, width, height, prefix: sym });
   lastChart = { m, paths, sym, price: data.price };
   els.idcfChartSvg.innerHTML = chartSvgHtml(m);
@@ -1913,6 +1923,168 @@ function renderBreakeven(data, sym) {
 
   els.breakevenCallout.innerHTML = `<span class="be-icon">📈</span><span>${msg}</span>`;
   els.breakevenCallout.hidden = false;
+}
+
+// ── Pressure test (P62) ───────────────────────────────────────────────────
+// "What would have to be true?" The visitor picks a value today or a yearly return; each box is the one Base input
+// (solveLever, calc/pressureTest.js) that gets there with every other input held at the page's Base case.
+
+let ptMode = 'value';   // 'value' | 'return'
+let ptTarget = null;    // number typed or chosen; null = the mode's default (today's price / 10%)
+const PT_RETURN_CHIPS = [5, 10, 15, 20];
+const PT_VALUE_CHIPS = [[1, "Today's price"], [1.25, '+25%'], [1.5, '+50%'], [2, 'Double']];
+
+function ptAvailable(scenarios) {
+  if (!currentData || lastHeavyCapexValuation) return false;
+  if (scenarios.some(s => s.normalised)) return false;
+  const base = scenarios.find(s => s.key === 'base');
+  return !!(base && base.result && base.result.intrinsicValue != null);
+}
+
+function ptModeAllowed() { return valuationModel !== 'reit' && valuationModel !== 'airline'; }
+
+// { kind: 'value' | 'year-n', value, rate? } for the current mode, or null.
+function ptCurrentTarget(data) {
+  const price = data.price;
+  if (ptMode === 'return' && ptModeAllowed()) {
+    const r = ptTarget != null ? ptTarget : 10;
+    const years = parseInt(els.yearsSlider.value, 10);
+    if (!(price > 0) || !isFinite(r) || r <= -100) return null;
+    return { kind: 'year-n', value: price * Math.pow(1 + r / 100, years), rate: r, years };
+  }
+  const v = ptTarget != null ? ptTarget : price;
+  return isFinite(v) && v > 0 ? { kind: 'value', value: v } : null;
+}
+
+function ptMoney(v, sym) {
+  if (v == null || !isFinite(v)) return '—';
+  return Math.abs(v) >= 1e6 ? formatMarketCap(v, sym) : sym + v.toFixed(2);
+}
+
+function ptBoxHtml(label, needed, yours, context, pos) {
+  const track = pos
+    ? `<div class="idcf-pt-track" aria-hidden="true"><i class="idcf-pt-track-base" style="left:${pos.base}%"></i><i class="idcf-pt-track-need" style="left:${pos.need}%"></i></div>`
+    : '';
+  const body = needed == null
+    ? '<div class="idcf-pt-none">No value in a sensible range gets there on its own.</div>'
+    : `<div class="idcf-pt-need">${needed}</div><div class="idcf-pt-yours">Your Base: ${yours}</div>${track}${context ? `<div class="idcf-pt-ctx">${context}</div>` : ''}`;
+  return `<div class="idcf-pt-box"><div class="idcf-pt-label">${label}</div>${body}</div>`;
+}
+
+function ptTrackPos(base, need) {
+  if (!isFinite(base) || !isFinite(need)) return null;
+  const lo = Math.min(base, need), hi = Math.max(base, need);
+  const pad = (hi - lo) * 0.2 || Math.abs(hi) * 0.1 || 1;
+  const at = v => (((v - (lo - pad)) / ((hi + pad) - (lo - pad))) * 100).toFixed(1);
+  return { base: at(base), need: at(need) };
+}
+
+function renderPressureTest(scenarios, data, sym) {
+  const sec = els.idcfPt;
+  if (!sec) return;
+  if (!ptAvailable(scenarios)) { sec.hidden = true; return; }
+  if (!ptModeAllowed()) ptMode = 'value';
+  els.idcfPtModes.hidden = !ptModeAllowed();
+  els.idcfPtModeValue.setAttribute('aria-pressed', String(ptMode === 'value'));
+  els.idcfPtModeReturn.setAttribute('aria-pressed', String(ptMode === 'return'));
+  els.idcfPtTargetLabel.textContent = ptMode === 'return' ? 'Yearly return %' : `Value per share (${sym || data.currency || ''})`;
+  if (document.activeElement !== els.idcfPtTarget) {
+    els.idcfPtTarget.value = ptTarget != null ? String(ptTarget) : (ptMode === 'return' ? '10' : (+data.price).toFixed(2));
+  }
+  els.idcfPtChips.innerHTML = ptMode === 'return'
+    ? PT_RETURN_CHIPS.map(r => `<button type="button" class="idcf-pt-chip" data-v="${r}">${r}%</button>`).join('')
+    : PT_VALUE_CHIPS.map(([k, l]) => `<button type="button" class="idcf-pt-chip" data-v="${k}">${l}</button>`).join('');
+
+  const target = ptCurrentTarget(data);
+  const base = scenarios.find(s => s.key === 'base');
+  const years = parseInt(els.yearsSlider.value, 10);
+  if (!target) { els.idcfPtLead.textContent = 'Enter a positive number to see what it would take.'; els.idcfPtBoxes.innerHTML = ''; sec.hidden = false; return; }
+
+  const inp = scenarioInputs(data);
+  const pathCtx = valuePathCtx(data);
+  const year = target.kind === 'year-n' ? years : 0;
+  let baseAtYear = base.result.intrinsicValue;
+  if (year) {
+    const p = valuePath(base, valuationModel, pathCtx);
+    baseAtYear = p ? p[year] : null;
+  }
+  els.idcfPtLead.textContent = target.kind === 'year-n'
+    ? `For ${target.rate.toFixed(1)}% a year over ${years} years from today's price, a share would need to be worth ${sym}${target.value.toFixed(2)} in year ${years} (your Base says ${baseAtYear == null ? '—' : sym + baseAtYear.toFixed(2)}). One of these would have to be true:`
+    : `For one share to be worth ${sym}${target.value.toFixed(2)} today (your Base says ${sym}${base.result.intrinsicValue.toFixed(2)}), one of these would have to be true:`;
+
+  const solve = lever => solveLever({ data, model: inp.model, seeds: inp.seeds, options: inp.options, lever, target: target.value, year, pathCtx });
+  const m = valuationModel;
+  const pct = (v, d) => (+v).toFixed(d) + '%';
+  const boxes = [];
+  for (const lever of PT_LEVERS[m] || []) {
+    const ans = solve(lever);
+    if (lever === 'growth') {
+      const label = m === 'ddm' ? 'Dividend growth a year' : m === 'excess-return' ? 'Return on equity' : 'FCF growth a year';
+      const b = inp.seeds.growth.base;
+      const fmtG = v => (m === 'excess-return' ? pct(v, 1) : pct(v, 1) + ' a year');
+      let ctx = '';
+      if (m === 'dcf') {
+        const rc = seriesCagr(data.annualRevenueHistory);
+        if (rc != null && isFinite(rc)) ctx = `Revenue grew ${(rc >= 0 ? '+' : '−') + Math.abs(rc * 100).toFixed(1)}% a year recently.`;
+      }
+      boxes.push(ptBoxHtml(label, ans == null ? null : fmtG(ans), fmtG(b), ctx, ans == null ? null : ptTrackPos(b, ans)));
+    } else if (lever === 'discount') {
+      const label = (m === 'ddm' || m === 'excess-return') ? 'Cost of equity' : 'WACC';
+      const b = inp.seeds.discount.base;
+      let ctx = '';
+      if (ans != null) {
+        const parts = (m === 'dcf' && lastWaccResult)
+          ? { rf: lastWaccResult.riskFreeRate, erp: lastWaccResult.erp, eW: lastWaccResult.eWeight, dW: lastWaccResult.dWeight, rd: lastWaccResult.rd, tc: lastWaccResult.tc }
+          : { rf: lastCapm ? lastCapm.rf : null, erp: lastCapm ? lastCapm.erp : null };
+        const beta = impliedBeta({ discountPct: ans, model: m, waccParts: parts });
+        if (beta != null && isFinite(beta)) ctx = `That implies a beta of about ${beta.toFixed(2)} (this stock's: ${stockEffectiveBeta().toFixed(2)}).`;
+      }
+      boxes.push(ptBoxHtml(label, ans == null ? null : pct(ans, 2), pct(b, 2), ctx, ans == null ? null : ptTrackPos(b, ans)));
+    } else if (lever === 'multiple') {
+      const label = m === 'reit' ? 'P/AFFO multiple' : 'EV/EBITDA multiple';
+      const b = inp.seeds.multiple.base;
+      const x = v => (+v).toFixed(1) + '×';
+      boxes.push(ptBoxHtml(label, ans == null ? null : x(ans), x(b), '', ans == null ? null : ptTrackPos(b, ans)));
+    } else {
+      const label = { dcf: 'Starting free cash flow', ddm: 'Starting dividend per share', 'excess-return': 'Book value per share', reit: 'AFFO per share', airline: 'EBITDA' }[m];
+      const cur = m === 'dcf'
+        ? ((inp.options.fcfRaw > 0) ? inp.options.fcfRaw : inp.options.normFcf)
+        : { ddm: inp.seeds.dividend, 'excess-return': inp.seeds.bookValue, reit: inp.seeds.affoPerShare, airline: inp.seeds.ebitda }[m];
+      let ctx = '';
+      if (ans != null && cur > 0) {
+        const d = (ans / cur - 1) * 100;
+        ctx = `${d >= 0 ? '+' : '−'}${Math.abs(d).toFixed(0)}% vs the figure used${lastAssumptions && lastAssumptions.fcfInfo && lastAssumptions.fcfInfo.method === 'normalized' && m === 'dcf' ? ' (normalised)' : ''}.`;
+      }
+      boxes.push(ptBoxHtml(label, ans == null ? null : ptMoney(ans, sym), ptMoney(cur, sym), ctx, ans == null ? null : ptTrackPos(cur, ans)));
+    }
+  }
+  els.idcfPtBoxes.innerHTML = boxes.join('');
+  sec.hidden = false;
+}
+
+function onPtMode(mode) {
+  if (mode === ptMode) return;
+  ptMode = mode;
+  ptTarget = null;
+  els.idcfPtTarget.value = '';
+  scheduleRecompute(true);
+}
+
+function onPtTargetInput() {
+  const v = parseFloat(String(els.idcfPtTarget.value).replace(/[,$\s%]/g, ''));
+  ptTarget = isFinite(v) ? v : null;
+  scheduleRecompute(false);
+}
+
+function onPtChip(e) {
+  const t = (e.target && e.target.closest && e.target.closest('[data-v]')) || e.target;
+  const raw = t && t.dataset ? t.dataset.v : null;
+  if (raw == null || !currentData) return;
+  const k = parseFloat(raw);
+  if (!isFinite(k)) return;
+  ptTarget = ptMode === 'return' ? k : +(currentData.price * k).toFixed(2);
+  els.idcfPtTarget.value = ptMode === 'return' ? String(k) : ptTarget.toFixed(2);
+  scheduleRecompute(true);
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────

@@ -479,6 +479,22 @@
           </div>
           <p class="idcf-caption">Each point is what that scenario's cash flows say one share is worth in that year. It is not a share-price forecast.</p>
         </section>
+        <section id="idcf-pt" class="idcf idcf-pt" hidden>
+          <h3><span class="kv-term" data-term="pressure-test" tabindex="0" role="button" aria-expanded="false">Pressure test</span></h3>
+          <p class="idcf-pt-intro">Pick a value or a yearly return. We work out what would have to be true to get there.</p>
+          <div class="idcf-pt-modes" id="idcf-pt-modes" role="group" aria-label="Pressure test mode">
+            <button type="button" id="idcf-pt-mode-value" aria-pressed="true">A value today</button>
+            <button type="button" id="idcf-pt-mode-return" aria-pressed="false">A yearly return</button>
+          </div>
+          <div class="idcf-pt-input">
+            <label for="idcf-pt-target" id="idcf-pt-target-label">Value per share</label>
+            <input type="text" inputmode="decimal" id="idcf-pt-target" autocomplete="off">
+            <div class="idcf-pt-chips" id="idcf-pt-chips"></div>
+          </div>
+          <p class="idcf-pt-lead" id="idcf-pt-lead"></p>
+          <div class="idcf-pt-boxes" id="idcf-pt-boxes"></div>
+          <p class="idcf-pt-foot">Each box changes one assumption and holds the others at your Base case. Descriptive maths on these assumptions, not a recommendation.</p>
+        </section>
         <section id="how-dcf" class="how-dcf" hidden>
           <details>
             <summary>How DCF valuation works — a plain-English guide</summary>

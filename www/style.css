@@ -917,6 +917,31 @@ html.dark .idcf { --idcf-bear: #ef4444; --idcf-base: #eab308; --idcf-bull: #0596
 .idcf-cross { position: absolute; top: 18px; bottom: 30px; width: 0; border-left: 1px dashed var(--kv-muted); pointer-events: none; }
 .idcf-tip { position: absolute; top: 4px; width: 140px; background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 8px; padding: 6px 8px; font-size: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.12); pointer-events: none; display: flex; flex-direction: column; gap: 2px; }
 .idcf-caption { font-size: 0.75rem; color: var(--kv-muted); margin: 8px 0 0; }
+/* Pressure test (P62) */
+.idcf-pt { background: var(--kv-card); border: 1px solid var(--kv-border); border-radius: 12px; padding: 16px; margin-top: 16px; }
+.idcf-pt h3 { font-size: 1rem; margin: 0 0 4px; }
+.idcf-pt-intro { font-size: 0.82rem; color: var(--kv-muted); margin: 0 0 10px; }
+.idcf-pt-modes { display: inline-flex; border: 1px solid var(--kv-border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+.idcf-pt-modes button { font: inherit; font-size: 0.82rem; padding: 8px 14px; min-height: 40px; background: var(--kv-card); color: var(--kv-text); border: 0; cursor: pointer; }
+.idcf-pt-modes button[aria-pressed="true"] { background: var(--kv-primary); color: var(--kv-bg); font-weight: 600; }
+.idcf-pt-input { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.idcf-pt-input label { font-size: 0.82rem; font-weight: 600; width: 100%; }
+.idcf-pt-input input { width: 140px; padding: 8px 10px; border: 1px solid var(--kv-border); border-radius: 8px; background: var(--kv-card-2); color: var(--kv-text); font-size: 1rem; }
+.idcf-pt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.idcf-pt-chip { font: inherit; font-size: 0.78rem; padding: 6px 12px; min-height: 36px; border-radius: 999px; border: 1px solid var(--kv-border); background: var(--kv-card); color: var(--kv-text); cursor: pointer; }
+.idcf-pt-lead { font-size: 0.9rem; line-height: 1.5; margin: 12px 0 10px; }
+.idcf-pt-boxes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.idcf-pt-box { background: var(--kv-card-2); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.idcf-pt-label { font-size: 0.75rem; font-weight: 700; color: var(--kv-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.idcf-pt-need { font-size: 1.3rem; font-weight: 700; color: var(--kv-primary); margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+.idcf-pt-yours, .idcf-pt-ctx { font-size: 0.75rem; color: var(--kv-muted); line-height: 1.4; }
+.idcf-pt-ctx { margin-top: 6px; }
+.idcf-pt-none { font-size: 0.82rem; color: var(--kv-text); margin-top: 6px; }
+.idcf-pt-track { position: relative; height: 6px; background: var(--kv-border); border-radius: 3px; margin: 8px 0 2px; }
+.idcf-pt-track i { position: absolute; top: -3px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; }
+.idcf-pt-track-base { background: var(--kv-muted); } .idcf-pt-track-need { background: var(--kv-primary); }
+.idcf-pt-foot { font-size: 0.75rem; color: var(--kv-muted); margin: 10px 0 0; }
 @media (max-width: 600px) {
   .idcf-tiles { grid-template-columns: minmax(0, 1fr); }
+  .idcf-pt-boxes { grid-template-columns: minmax(0, 1fr); }
 }
