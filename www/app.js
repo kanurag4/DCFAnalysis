@@ -522,6 +522,15 @@ function computeBetaInfo(data, a) {
   return { ib, industryEffBeta: Math.max(ib.beta, getMarketBetaFloor(data.ticker)) };
 }
 
+// The beta a discount rate (percent) implies, on the RF / ERP boxes as they are now: through the WACC when this DCF
+// company has capital-structure data, else plain CAPM (cost of equity models, or a DCF with no WACC possible).
+// One helper for the beta hint and the pressure test.
+function impliedBetaForDiscount(discountPct) {
+  const rf = parseFloat(els.rfInput.value) / 100, erp = parseFloat(els.erpInput.value) / 100;
+  const w = valuationModel === 'dcf' ? lastWaccResult : null;
+  return impliedBeta({ discountPct, model: w ? 'dcf' : 'ddm', waccParts: ptWaccParts({ rf, erp, waccResult: w }) });
+}
+
 function stockEffectiveBeta() {
   const rawBeta = (currentData && currentData.beta != null && isFinite(currentData.beta) && currentData.beta > 0) ? currentData.beta : 1.0;
   return Math.max(rawBeta, getMarketBetaFloor(currentData ? currentData.ticker : ''));
@@ -585,7 +594,10 @@ function applyUrlStateOnce() {
   if (urlStateConsumed) return;
   urlStateConsumed = true;
   const tk = (new URLSearchParams(initialQuery).get('ticker') || '').toUpperCase();
-  if (!tk || !currentData || !String(currentData.ticker || '').toUpperCase().startsWith(tk)) return;
+  // The link's ticker must be this ticker, with or without its market suffix (BHP for BHP.AX) -- never a prefix of
+  // another symbol (A must not match AAPL).
+  const full = String(currentData && currentData.ticker || '').toUpperCase();
+  if (!tk || !currentData || (tk !== full && tk !== full.replace(/\.[A-Z]+$/, ''))) return;
   const q = new URLSearchParams(initialQuery);
   // The DDM view first (it re-seeds every input), then the RF / ERP boxes, then the page-state.js fields on top.
   if (q.get('model') === 'ddm' && valuationModel === 'dcf' && dividendAvailable && els.ddmToggle && !els.ddmToggle.hidden) {
@@ -711,10 +723,7 @@ function syncSliders() {
   const showHint = pageState.beta === 'custom' && !!pageState.discount;
   els.idcfBetaHint.hidden = !showHint;
   if (showHint) {
-    const parts = (m === 'dcf' && lastWaccResult)
-      ? { rf: lastWaccResult.riskFreeRate, erp: lastWaccResult.erp, eW: lastWaccResult.eWeight, dW: lastWaccResult.dWeight, rd: lastWaccResult.rd, tc: lastWaccResult.tc }
-      : { rf: lastCapm ? lastCapm.rf : null, erp: lastCapm ? lastCapm.erp : null };
-    const b = impliedBeta({ discountPct: pageState.discount.base, model: m, waccParts: parts });
+    const b = impliedBetaForDiscount(pageState.discount.base);
     els.idcfBetaHint.textContent = b == null ? '' : `The beta your rate implies: ${b.toFixed(2)}`;
   }
 
@@ -2130,10 +2139,7 @@ function renderPressureTest(scenarios, data, sym) {
       const b = inp.seeds.discount.base;
       let ctx = '';
       if (ans != null) {
-        const parts = (m === 'dcf' && lastWaccResult)
-          ? { rf: lastWaccResult.riskFreeRate, erp: lastWaccResult.erp, eW: lastWaccResult.eWeight, dW: lastWaccResult.dWeight, rd: lastWaccResult.rd, tc: lastWaccResult.tc }
-          : { rf: lastCapm ? lastCapm.rf : null, erp: lastCapm ? lastCapm.erp : null };
-        const beta = impliedBeta({ discountPct: ans, model: m, waccParts: parts });
+        const beta = impliedBetaForDiscount(ans);
         if (beta != null && isFinite(beta)) ctx = `That implies a beta of about ${beta.toFixed(2)} (this stock's: ${stockEffectiveBeta().toFixed(2)}).`;
       }
       boxes.push(ptBoxHtml(label, ans == null ? null : pct(ans, 2), pct(b, 2), ctx, ans == null ? null : ptTrackPos(b, ans)));
@@ -2286,7 +2292,9 @@ function recomputeDiscount() {
   els.waccBase.value = d.pct;
   els.waccBear.value = +(d.pct + 1).toFixed(2);
   els.waccBull.value = +(Math.max(1, d.pct - 1)).toFixed(2);
-  if (d.waccResult) lastWaccResult = d.waccResult;
+  // A DCF whose WACC can no longer be computed must not keep the old one (it would feed a stale implied beta).
+  if (valuationModel === 'dcf') lastWaccResult = d.waccResult;
+  else if (d.waccResult) lastWaccResult = d.waccResult;
   if (d.waccResult || valuationModel === 'ddm' || valuationModel === 'excess-return') {
     lastCapm = { re: d.re, rf: d.rf, erp: d.erp, beta: effectiveBeta, rawBeta, betaWasFloored };
   }

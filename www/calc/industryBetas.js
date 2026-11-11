@@ -282,13 +282,13 @@ function industryFor(yahooIndustry) {
 }
 
 // The industry beta for one company: unlevered x (1 + (1 - tax) x D/E) for a non-financial (tax = the company's
-// rate when it is a fraction in (0,1), else 25%); the published levered beta for a financial. null when the
+// rate when it is a fraction in (0,1), else the US federal 21% -- the table is US data); the published levered beta for a financial. null when the
 // industry is unmapped or the market cap is unknown.
 function industryBetaFor({ industry, marketCap, totalDebt, taxRate, financial }) {
   const row = industryFor(industry);
   if (!row.mapped || !(marketCap > 0)) return null;
   if (financial) return { beta: row.leveredBeta, industry: row.name, unlevered: row.unleveredBeta, levered: row.leveredBeta, relevered: false };
-  const tax = (isFinite(taxRate) && taxRate > 0 && taxRate < 1) ? taxRate : 0.25;
+  const tax = (isFinite(taxRate) && taxRate > 0 && taxRate < 1) ? taxRate : 0.21;
   const debt = totalDebt > 0 ? totalDebt : 0;
   return { beta: row.unleveredBeta * (1 + (1 - tax) * debt / marketCap), industry: row.name, unlevered: row.unleveredBeta, levered: row.leveredBeta, relevered: true };
 }

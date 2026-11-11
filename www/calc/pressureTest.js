@@ -17,7 +17,6 @@ const PT_LEVERS = {
   reit: ['multiple', 'start'],
   airline: ['multiple', 'start'],
 };
-const PT_SEED_KEY = { dcf: 'dcf', ddm: 'ddm', 'excess-return': 'excessReturn', reit: 'reit', airline: 'airline' };
 const PT_ITERATIONS = 100;
 
 function ptStartOf(model, seeds, options) {
@@ -84,7 +83,10 @@ function solveLever(args) {
     const t = lo; lo = hi; hi = t; const f = flo; flo = fhi; fhi = f;
   }
   if (!(flo < 0 && fhi >= 0)) return null;
+  // Stop once the bracket is far tighter than any number shown (~40 rounds, not 100: this runs for every box on
+  // every slider tick).
   for (let i = 0; i < PT_ITERATIONS; i++) {
+    if (Math.abs(hi - lo) <= 1e-9 * Math.max(1, Math.abs(hi))) break;
     const mid = (lo + hi) / 2;
     if (gap(mid) < 0) lo = mid; else hi = mid;
   }
@@ -113,5 +115,5 @@ function impliedBeta({ discountPct, model, waccParts }) {
   return ((r - p.dW * p.rd * (1 - p.tc)) / p.eW - p.rf) / p.erp;
 }
 
-if (typeof module !== 'undefined') module.exports = { PT_LEVERS, PT_SEED_KEY, solveLever, impliedBeta, ptWaccParts };
+if (typeof module !== 'undefined') module.exports = { PT_LEVERS, solveLever, impliedBeta, ptWaccParts };
 if (typeof window !== 'undefined') { window.PT_LEVERS = PT_LEVERS; window.solveLever = solveLever; window.impliedBeta = impliedBeta; window.ptWaccParts = ptWaccParts; }
