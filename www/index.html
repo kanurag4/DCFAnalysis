@@ -69,7 +69,15 @@
         "name": "What do the Bear, Base, and Bull scenarios mean?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Rather than producing a single false-precision number, the tool runs three cases so you can see a range. Base uses the seeded growth and discount-rate assumptions. Bear applies lower growth and a higher discount rate (more conservative). Bull applies higher growth and a lower discount rate (more optimistic). If the current price sits below even the Bear intrinsic value, that's a strong signal; if it's above the Bull value, the stock looks expensive on these assumptions. You can edit every input and recalculate."
+          "text": "Rather than producing a single false-precision number, the tool runs three cases so you can see a range. Base uses the seeded growth and discount-rate assumptions. Bear applies lower growth and a higher discount rate (more conservative). Bull applies higher growth and a lower discount rate (more optimistic). If the current price sits below even the Bear intrinsic value, that's a strong signal; if it's above the Bull value, the stock looks expensive on these assumptions. Move any assumption and every value updates straight away."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does the pressure test show?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pick a value per share, or a yearly return from today's price, and the pressure test works the valuation backwards. Each box shows the one assumption (growth, discount rate or starting cash flow) that would get the Base case there, holding the others at your Base case. It is descriptive maths on these assumptions, not a recommendation."
         }
       },
       {
@@ -584,7 +592,11 @@
       </details>
       <details class="faq-item">
         <summary>What do the Bear, Base, and Bull scenarios mean?</summary>
-        <p>Rather than producing a single false-precision number, the tool runs three cases so you can see a range. <strong>Base</strong> uses the seeded growth and discount-rate assumptions. <strong>Bear</strong> applies lower growth and a higher discount rate (more conservative). <strong>Bull</strong> applies higher growth and a lower discount rate (more optimistic). If the current price sits below even the Bear intrinsic value, that's a strong signal; if it's above the Bull value, the stock looks expensive on these assumptions. You can edit every input and recalculate.</p>
+        <p>Rather than producing a single false-precision number, the tool runs three cases so you can see a range. <strong>Base</strong> uses the seeded growth and discount-rate assumptions. <strong>Bear</strong> applies lower growth and a higher discount rate (more conservative). <strong>Bull</strong> applies higher growth and a lower discount rate (more optimistic). If the current price sits below even the Bear intrinsic value, that's a strong signal; if it's above the Bull value, the stock looks expensive on these assumptions. Move any assumption and every value updates straight away.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What does the pressure test show?</summary>
+        <p>Pick a value per share, or a yearly return from today's price, and the pressure test works the valuation backwards. Each box shows the one assumption (growth, discount rate or starting cash flow) that would get the Base case there, holding the others at your Base case. It is descriptive maths on these assumptions, not a recommendation.</p>
       </details>
       <details class="faq-item">
         <summary>What is the margin of safety?</summary>
