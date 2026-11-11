@@ -864,6 +864,17 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
   .idcf-slider input[type="range"] { height: 44px; }
 }
 
+/* Company summary, full width above the two columns (P62): compact stat tiles, so the value cards and chart start
+   level with the sliders. Scoped to .idcf-top -- ticker pages keep the shared .stats look. */
+.idcf-top { margin-bottom: 14px; }
+.idcf-top .summary { margin-bottom: 0; }
+.idcf-top .stats { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; margin-top: 8px; }
+.idcf-top .stat { padding: 6px 9px; border-radius: 6px; }
+.idcf-top .stat-label { font-size: 0.64rem; margin-bottom: 2px; }
+.idcf-top .stat-value { font-size: 0.85rem; }
+.dcf-layout.idcf-page .results-panel > .scenarios-results { margin-top: 0; }
+.dcf-layout.idcf-page .results-panel > .scenarios-results > h3 { margin-top: 0; }
+
 /* Tiles + range bar (P62) */
 .idcf { --idcf-bear: #dc2626; --idcf-base: #d98e12; --idcf-bull: #15803d; }
 html.dark .idcf { --idcf-bear: #ef4444; --idcf-base: #eab308; --idcf-bull: #059669; }
