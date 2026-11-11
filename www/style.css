@@ -897,8 +897,12 @@ html.dark .idcf, html.dark .idcf-page { --idcf-bear: #ef4444; --idcf-base: #eab3
 .idcf-tile.base .idcf-tile-v { font-size: 2rem; }
 .idcf-pill { display: inline-block; margin-top: 4px; font-size: 0.78rem; font-weight: 700; color: #fff; border-radius: 999px; padding: 2px 9px; }
 .idcf-pill-green { background: #15803d; } .idcf-pill-amber { background: #c2410c; } .idcf-pill-red { background: #dc2626; }
-.idcf-tile-meta, .idcf-tile-ret, .idcf-tile-ours { font-size: 0.76rem; color: var(--kv-muted); margin-top: 6px; line-height: 1.4; }
-.idcf-tile-ret b, .idcf-tile-ours b { color: var(--kv-text); }
+.idcf-tile-meta, .idcf-tile-ret { font-size: 0.76rem; color: var(--kv-muted); margin-top: 6px; line-height: 1.4; }
+.idcf-tile-ret b { color: var(--kv-text); }
+/* "Our number" beside the Base value: two short lines, never taller than the value, so the card keeps its height. */
+.idcf-tile-vrow { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+.idcf-tile-ours { display: flex; flex-direction: column; align-items: flex-end; font-size: 0.72rem; line-height: 1.25; color: var(--kv-muted); white-space: nowrap; }
+.idcf-tile-ours b { color: var(--kv-text); }
 
 /* Range bar: mockup v3 -- Bear-to-Bull band in a red-amber-green gradient, Base tick, navy price marker, labels under. */
 .idcf-range-wrap { margin: 16px 0 4px; }

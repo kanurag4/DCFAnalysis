@@ -1786,13 +1786,14 @@ function renderScenarios(scenarios, data, sym) {
     }
     const ret = (price > 0 && result.intrinsicValue > 0 && years > 0) ? Math.pow(result.intrinsicValue / price, 1 / years) - 1 : null;
     const retLine = ret == null ? '' : `<div class="idcf-tile-ret"><b>${ret >= 0 ? '+' : '−'}${Math.abs(ret * 100).toFixed(1)}% a year</b> if the price meets this value by year ${years}</div>`;
-    const ours = (key === 'base' && edited && ourBaseValue != null) ? `<div class="idcf-tile-ours">Our number: <b>${sym}${ourBaseValue.toFixed(2)}</b></div>` : '';
+    // Beside the value (two short lines, no taller than the value), so the card doesn't grow when it appears.
+    const ours = (key === 'base' && edited && ourBaseValue != null) ? `<div class="idcf-tile-ours"><span>Our number</span> <b>${sym}${ourBaseValue.toFixed(2)}</b></div>` : '';
     const meta = scenarioMetaText(s);
     return `<div class="idcf-tile ${key}">${head}
-      <div class="idcf-tile-v">${sym}${result.intrinsicValue.toFixed(2)}</div>
+      <div class="idcf-tile-vrow"><div class="idcf-tile-v">${sym}${result.intrinsicValue.toFixed(2)}</div>${ours}</div>
       <span class="idcf-pill ${pillCls}">${parseFloat(mosPct) > 0 ? '+' : ''}${mosPct}% · ${verdict}</span>
       ${meta ? `<div class="idcf-tile-meta">${escapeHtml(meta)}</div>` : ''}
-      ${retLine}${ours}
+      ${retLine}
       ${normalised ? '<div class="idcf-tile-meta">FCF estimated as Revenue × target margin.</div>' : ''}
     </div>`;
   }).join('');
