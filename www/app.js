@@ -12,6 +12,7 @@ const els = {
   idcfGrowth:     $('idcf-growth'),
   idcfGrowthOut:  $('idcf-growth-out'),
   idcfGrowthLabel:$('idcf-growth-label'),
+  idcfImplied:    $('idcf-implied'),
   idcfTgrowth:    $('idcf-tgrowth'),
   idcfTgrowthOut: $('idcf-tgrowth-out'),
   idcfTgrowthLabel:$('idcf-tgrowth-label'),
@@ -420,7 +421,8 @@ async function onAnalyse(req) {
     ratesClosed = true; // the first valuation is seeded from the tables as they are now
     currentData = data;
     prefillInputs(data);
-    renderAll(data);
+    applyUrlStateOnce();
+    recompute();
     ctl.recordRecent(data.ticker, { isAsx: isASX, isNse: isNSE });
     if (isNative) updateWatchlistStar(data.ticker, currentMarket);
   } catch (err) {
@@ -448,6 +450,10 @@ let ourState = null;     // the derived assumptions ("Reset to our numbers")
 let betaInfo = null;     // { ib, industryEffBeta } when the stock/industry beta choice applies, else null
 let lastAssumptions = null;
 let _recomputeTimer = null;
+// Shareable link: the page's own query at load (applied once, to the first lookup), and the params page-state.js owns.
+const initialQuery = window.location.search || '';
+let urlStateConsumed = false;
+const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', 'tb', 'tu', 'wb', 'wu'];
 
 const IDCF_RANGES = { growth: [-10, 40, 0.1], roe: [0, 60, 0.1], multiple: [1, 40, 0.1], tgrowth: [0, 4, 0.1], discount: [4, 18, 0.05] };
 
@@ -550,6 +556,45 @@ function recompute() {
   if (!currentData) return;
   renderAll(currentData);
   syncSliders();
+  writeUrlState();
+}
+
+// The URL carries only what the visitor changed (psEncode), next to whatever else is there (?ticker=, market flags).
+function writeUrlState() {
+  if (!pageState || !ourState || !window.history || !window.history.replaceState) return;
+  const keep = new URLSearchParams(window.location.search);
+  PS_PARAM_NAMES.forEach(k => keep.delete(k));
+  const rest = keep.toString();
+  const enc = psEncode(pageState, ourState);
+  const q = rest + (enc ? (rest ? '&' : '') + enc : '');
+  const url = window.location.pathname + (q ? '?' + q : '');
+  if (url !== window.location.pathname + window.location.search) window.history.replaceState(null, '', url);
+}
+
+// A shared link's assumptions, applied once to the first lookup of the ticker it names. Invalid or inapplicable
+// params are ignored field by field (psDecode), so a junk link shows today's numbers.
+function applyUrlStateOnce() {
+  if (urlStateConsumed) return;
+  urlStateConsumed = true;
+  const tk = (new URLSearchParams(initialQuery).get('ticker') || '').toUpperCase();
+  if (!tk || !currentData || !String(currentData.ticker || '').toUpperCase().startsWith(tk)) return;
+  const s = psDecode(initialQuery, ourState, { betaAllowed: !!betaInfo });
+  if (!psIsEdited(s, ourState)) return;
+  writeStateToInputs(s);
+  if (s.start != null && s.start !== ourState.start) {
+    const el = startInputEl();
+    if (el) el.value = (valuationModel === 'dcf' || valuationModel === 'airline') ? Math.round(s.start).toLocaleString('en-AU') : (+s.start).toFixed(2);
+  }
+  pageState = readStateFromInputs(s.beta);
+  if (s.beta === 'industry') { recomputeDiscount(); pageState = readStateFromInputs('industry'); }
+}
+
+// "Price implies X%": the growth (or ROE) that makes the Base value equal today's price, on the page's own inputs.
+function priceImpliedGrowth() {
+  if (!currentData || hasMultipleModel() || lastHeavyCapexValuation) return null;
+  const inp = scenarioInputs(currentData);
+  if (!inp.seeds.growth) return null;
+  return solveLever({ data: currentData, model: inp.model, seeds: inp.seeds, options: inp.options, lever: 'growth', target: currentData.price, year: 0, pathCtx: valuePathCtx(currentData) });
 }
 
 function setBetaChoice(kind) {
@@ -608,6 +653,14 @@ function syncSliders() {
   els.idcfGrowthLabel.innerHTML = growthLabel;
   const g = pageState[growthField];
   setSlider(els.idcfGrowth, els.idcfGrowthOut, growthField, multiple ? 'multiple' : (m === 'excess-return' ? 'roe' : 'growth'), g ? g.base : NaN);
+  const implied = priceImpliedGrowth();
+  const lo = parseFloat(els.idcfGrowth.min), hi = parseFloat(els.idcfGrowth.max);
+  const showImplied = implied != null && implied >= lo && implied <= hi;
+  els.idcfImplied.hidden = !showImplied;
+  if (showImplied) {
+    const at = ((implied - lo) / (hi - lo) * 100).toFixed(1);
+    els.idcfImplied.innerHTML = `<i class="idcf-implied-tick" style="left:${at}%"></i><span>Price implies ${implied.toFixed(1)}%</span>`;
+  }
 
   els.idcfRowTgrowth.hidden = !pageState.tgrowth;
   if (pageState.tgrowth) {
@@ -1588,9 +1641,12 @@ async function onShareClick() {
   // real domain instead. shareInfo.url (a resolved ticker-page URL) is
   // already an absolute kashvector.com URL either way, so this only
   // matters for tickers with no published page.
-  const url = shareInfo.url || (isNative
-    ? 'https://kashvector.com/dcf/' + window.kvTickerInput.buildUrlQuery({ symbol: ticker, isAsx: currentMarket === 'aus', isNse: currentMarket === 'ind' })
-    : location.href);
+  // Once the visitor has changed the numbers, share THIS page with them (the URL carries the changes), not the
+  // ticker's static page.
+  const edited = !!(pageState && ourState && psIsEdited(pageState, ourState));
+  const url = isNative
+    ? (shareInfo.url || 'https://kashvector.com/dcf/' + window.kvTickerInput.buildUrlQuery({ symbol: ticker, isAsx: currentMarket === 'aus', isNse: currentMarket === 'ind' }))
+    : (edited ? window.location.href : (shareInfo.url || window.location.href));
 
   // Inside the Capacitor app, navigator.share() is not reliably wired to
   // the native OS share sheet — the embedded Android/iOS WebView doesn't

@@ -848,7 +848,8 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
 .idcf-slider-head label { font-size: 0.85rem; font-weight: 600; color: var(--kv-text); }
 .idcf-slider-head output { font-size: 1.25rem; font-weight: 700; color: var(--kv-primary); font-variant-numeric: tabular-nums; }
 .idcf-slider input[type="range"] { width: 100%; margin: 6px 0 0; accent-color: var(--kv-primary); height: 28px; }
-.idcf-implied { font-size: 0.75rem; color: var(--kv-muted); margin-top: 2px; }
+.idcf-implied { position: relative; font-size: 0.75rem; color: var(--kv-accent); font-weight: 600; margin-top: 2px; padding-top: 8px; }
+.idcf-implied-tick { position: absolute; top: 0; width: 2px; height: 8px; margin-left: -1px; background: var(--kv-accent); border-radius: 1px; }
 .idcf-beta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
 .idcf-beta button { font: inherit; font-size: 0.78rem; text-align: left; line-height: 1.35; color: var(--kv-text); background: var(--kv-card-2); border: 1px solid var(--kv-border); border-radius: 8px; padding: 8px 10px; cursor: pointer; min-height: 44px; min-width: 0; }
 .idcf-beta button b { display: block; font-size: 1rem; color: var(--kv-primary); }
