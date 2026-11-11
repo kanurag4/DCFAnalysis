@@ -884,8 +884,8 @@ main.idcf-wide { max-width: 1440px; }
 .dcf-layout.idcf-page .results-panel > .scenarios-results > h3 { margin-top: 0; }
 
 /* Tiles + range bar (P62) */
-.idcf { --idcf-bear: #dc2626; --idcf-base: #d98e12; --idcf-bull: #15803d; --idcf-base-bg: rgba(217, 142, 18, 0.12); }
-html.dark .idcf { --idcf-bear: #ef4444; --idcf-base: #eab308; --idcf-bull: #059669; --idcf-base-bg: rgba(234, 179, 8, 0.14); }
+.idcf, .idcf-page { --idcf-bear: #dc2626; --idcf-base: #d98e12; --idcf-bull: #15803d; --idcf-base-bg: rgba(217, 142, 18, 0.12); }
+html.dark .idcf, html.dark .idcf-page { --idcf-bear: #ef4444; --idcf-base: #eab308; --idcf-bull: #059669; --idcf-base-bg: rgba(234, 179, 8, 0.14); }
 /* Bear / Base / Bull cards: mockup v3's type and colour bar (docs/research/2026-11-dcf-what-would-it-take/mockup-v3.html). */
 .idcf-tiles { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); gap: 10px; align-items: stretch; }
 .idcf-tile { background: var(--kv-card); border: 1px solid var(--kv-border); border-top: 4px solid; border-radius: 12px; padding: 12px 14px; min-width: 0; }

@@ -1807,7 +1807,7 @@ function renderScenarios(scenarios, data, sym) {
     const pos = v => Math.min(100, Math.max(0, ((v - lo) / (hi - lo)) * 100));
     const at = v => pos(v).toFixed(2);
     const near = Math.abs(pos(price) - pos(values.base)) < 12;
-    range = `<div class="idcf-range-wrap">
+    range = `<div class="idcf idcf-range-wrap">
       <div class="idcf-range" role="img" aria-label="Bear to Bull ${sym}${b0.toFixed(2)} to ${sym}${b1.toFixed(2)}, Base ${sym}${values.base.toFixed(2)}, today's price ${sym}${price.toFixed(2)}">
         <div class="idcf-range-band" style="left:${at(b0)}%;width:${(pos(b1) - pos(b0)).toFixed(2)}%"></div>
         <i class="idcf-range-base" style="left:${at(values.base)}%"></i>
