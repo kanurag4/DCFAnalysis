@@ -1785,8 +1785,8 @@ function renderScenarios(scenarios, data, sym) {
       if (!edited) ourBaseValue = result.intrinsicValue;
     }
     const ret = (price > 0 && result.intrinsicValue > 0 && years > 0) ? Math.pow(result.intrinsicValue / price, 1 / years) - 1 : null;
-    const retLine = ret == null ? '' : `<div class="idcf-tile-ret">${ret >= 0 ? '+' : '−'}${Math.abs(ret * 100).toFixed(1)}% a year if the price meets this value by year ${years}</div>`;
-    const ours = (key === 'base' && edited && ourBaseValue != null) ? `<div class="idcf-tile-ours">Our number: ${sym}${ourBaseValue.toFixed(2)}</div>` : '';
+    const retLine = ret == null ? '' : `<div class="idcf-tile-ret"><b>${ret >= 0 ? '+' : '−'}${Math.abs(ret * 100).toFixed(1)}% a year</b> if the price meets this value by year ${years}</div>`;
+    const ours = (key === 'base' && edited && ourBaseValue != null) ? `<div class="idcf-tile-ours">Our number: <b>${sym}${ourBaseValue.toFixed(2)}</b></div>` : '';
     const meta = scenarioMetaText(s);
     return `<div class="idcf-tile ${key}">${head}
       <div class="idcf-tile-v">${sym}${result.intrinsicValue.toFixed(2)}</div>
@@ -1797,20 +1797,23 @@ function renderScenarios(scenarios, data, sym) {
     </div>`;
   }).join('');
 
-  // Range bar: Bear-Bull band, Base tick, today's price.
+  // Range bar (mockup v3): Bear-to-Bull band in a red-amber-green gradient, Base tick, today's price marker, and
+  // "Price" / "Base" labels under it (the Base label is left out when it would sit on the price label).
   let range = '';
   if (values.bear != null && values.base != null && values.bull != null && price > 0) {
-    const lo = Math.min(values.bear, values.bull, price) * 0.9;
-    const hi = Math.max(values.bear, values.bull, price) * 1.1;
-    const at = v => (((v - lo) / (hi - lo)) * 100).toFixed(2);
     const b0 = Math.min(values.bear, values.bull), b1 = Math.max(values.bear, values.bull);
+    const lo = Math.min(b0, price, 0);
+    const hi = Math.max(b1, price) * 1.08;
+    const pos = v => Math.min(100, Math.max(0, ((v - lo) / (hi - lo)) * 100));
+    const at = v => pos(v).toFixed(2);
+    const near = Math.abs(pos(price) - pos(values.base)) < 12;
     range = `<div class="idcf-range-wrap">
       <div class="idcf-range" role="img" aria-label="Bear to Bull ${sym}${b0.toFixed(2)} to ${sym}${b1.toFixed(2)}, Base ${sym}${values.base.toFixed(2)}, today's price ${sym}${price.toFixed(2)}">
-        <div class="idcf-range-band" style="left:${at(b0)}%;width:${(at(b1) - at(b0)).toFixed(2)}%"></div>
+        <div class="idcf-range-band" style="left:${at(b0)}%;width:${(pos(b1) - pos(b0)).toFixed(2)}%"></div>
         <i class="idcf-range-base" style="left:${at(values.base)}%"></i>
         <i class="idcf-range-price" style="left:${at(price)}%"></i>
       </div>
-      <div class="idcf-range-key"><span><i class="idcf-range-base-k"></i>Base</span><span><i class="idcf-range-price-k"></i>Price ${sym}${price.toFixed(2)}</span></div>
+      <div class="idcf-range-lbls"><span class="idcf-range-lbl idcf-range-lbl-price" style="left:${at(price)}%">Price ${sym}${price.toFixed(2)}</span>${near ? '' : `<span class="idcf-range-lbl" style="left:${at(values.base)}%">Base ${sym}${values.base.toFixed(2)}</span>`}</div>
     </div>`;
   }
 
