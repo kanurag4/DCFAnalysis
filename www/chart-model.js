@@ -79,8 +79,10 @@ function buildChartModel({ paths, price, target, width, height, compact, prefix 
   // Target (from the pressure test): placed FIRST, so every value label then keeps clear of it.
   let targetMarker = null;
   if (target && isFinite(target.value)) {
-    const label = 'Target ' + fmt(target.value);
-    const tx = target.kind === 'year-n' ? x(N) : null;
+    // "Your value" today (a point at t = 0, not a line across the years) or the value "Needed in year N" (a point
+    // at N). Plain description of the visitor's own number -- not "target" wording (AFSL).
+    const label = (target.kind === 'year-n' ? 'Needed in year ' + N + ' ' : 'Your value ') + fmt(target.value);
+    const tx = target.kind === 'year-n' ? x(N) : x(0);
     const edge = target.value > hi ? 'top' : target.value < lo ? 'bottom' : null;
     const text = edge ? label + (edge === 'top' ? ' ↑' : ' ↓') : label;
     const w = cmTextWidth(text);
@@ -89,8 +91,9 @@ function buildChartModel({ paths, price, target, width, height, compact, prefix 
       box = { x: left + plotW - w, y: edge === 'top' ? top + 2 : top + plotH - CM_LABEL_H - 2, w, h: CM_LABEL_H };
     } else {
       const ty = y(target.value);
-      const bx = tx != null ? Math.max(left, tx - w - 8) : left + 4;
-      const aboveY = ty - CM_LABEL_H - (tx != null ? 6 : 3);
+      // Year N: label to the left of the point; today: to the right of it.
+      const bx = target.kind === 'year-n' ? Math.max(left, tx - w - 8) : Math.min(tx + 8, left + plotW - w);
+      const aboveY = ty - CM_LABEL_H - 6;
       box = { x: bx, y: aboveY >= 0 ? aboveY : ty + 6, w, h: CM_LABEL_H };
     }
     targetMarker = edge ? { edge, label, text, x: tx, box } : { y: y(target.value), label, text, x: tx, box };
@@ -99,7 +102,8 @@ function buildChartModel({ paths, price, target, width, height, compact, prefix 
   // Point labels.
   const placed = targetMarker ? [targetMarker.box] : [];
   const shown = t => !isCompact || t === 0 || t === N || t % 2 === 0;
-  const fits = b => b.y >= 0 && b.y + b.h <= height && !placed.some(p => cmIntersects(p, b)) && !cmIntersects(b, priceBox);
+  // Inside the plot vertically (the year labels sit just under it), clear of every placed label and the price label.
+  const fits = b => b.y >= 0 && b.y + b.h <= top + plotH && !placed.some(p => cmIntersects(p, b)) && !cmIntersects(b, priceBox);
   const boxAt = (px, yTop, text, t) => {
     const w = cmTextWidth(text);
     let bx = px - w / 2;

@@ -1890,6 +1890,8 @@ function renderValueChart(scenarios, data, sym) {
   chartTarget = pt ? { kind: pt.kind, value: pt.value } : null;
   const m = buildChartModel({ paths, price: data.price, target: chartTarget, width, height, prefix: sym });
   lastChart = { m, paths, sym, price: data.price };
+  const note = $('idcf-chart-note');
+  if (note) note.hidden = valuationModel !== 'excess-return';
   els.idcfChartSvg.innerHTML = chartSvgHtml(m);
   const base = scenarios.find(s => s.key === 'base');
   if (els.tvWarning) els.tvWarning.hidden = !(base && base.result && base.result.terminalValuePct > 70);
@@ -1934,8 +1936,7 @@ function chartSvgHtml(m) {
   const tm = m.targetMarker;
   if (tm) {
     // The label sits in the box the chart model reserved for it (value labels already keep clear of it).
-    if (!tm.edge && tm.x != null) s += `<circle class="idcf-target-dot" cx="${f(tm.x)}" cy="${f(tm.y)}" r="5"/>`;
-    else if (!tm.edge) s += `<line class="idcf-target" x1="${f(p.left)}" x2="${f(p.left + p.width)}" y1="${f(tm.y)}" y2="${f(tm.y)}"/>`;
+    if (!tm.edge) s += `<circle class="idcf-target-dot" cx="${f(tm.x)}" cy="${f(tm.y)}" r="5"/>`;
     s += `<text class="idcf-target-lbl" x="${f(tm.box.x + 2)}" y="${f(tm.box.y + tm.box.h - 3)}">${esc(tm.text)}</text>`;
   }
   return s + '</svg>';
@@ -2035,7 +2036,9 @@ function ptAvailable(scenarios) {
   return !!(base && base.result && base.result.intrinsicValue != null);
 }
 
-function ptModeAllowed() { return valuationModel !== 'reit' && valuationModel !== 'airline'; }
+// Yearly-return mode needs a year-N value the levers can move. Excess Return's year-N value is book value alone (no
+// terminal value), which ROE and the cost of equity don't change -- so value-today mode only, like REIT / airline.
+function ptModeAllowed() { return valuationModel !== 'reit' && valuationModel !== 'airline' && valuationModel !== 'excess-return'; }
 
 // { kind: 'value' | 'year-n', value, rate? } for the current mode, or null.
 function ptCurrentTarget(data) {
