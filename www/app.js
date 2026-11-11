@@ -1896,7 +1896,9 @@ function renderValueChart(scenarios, data, sym) {
   const width = Math.max(320, w);
   const height = width < 520 ? 280 : 320;
   const pt = ptAvailable(scenarios) ? ptCurrentTarget(data) : null;
-  chartTarget = pt ? { kind: pt.kind, value: pt.value } : null;
+  // A value-today target equal to today's price is the price line already drawn -- no second marker on it.
+  const samePrice = pt && pt.kind === 'value' && Math.abs(pt.value - data.price) < 0.005;
+  chartTarget = pt && !samePrice ? { kind: pt.kind, value: pt.value } : null;
   const m = buildChartModel({ paths, price: data.price, target: chartTarget, width, height, prefix: sym });
   lastChart = { m, paths, sym, price: data.price };
   const note = $('idcf-chart-note');
