@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-06",
+ "asAt": "2026-11-13",
  "industries": {
   "Semiconductors": [
    {
@@ -28,7 +28,7 @@
    },
    {
     "ticker": "QCOM",
-    "margin": 0.25138179662128224
+    "margin": 0.2628844903561189
    },
    {
     "ticker": "ADI",
@@ -52,7 +52,7 @@
    },
    {
     "ticker": "SWKS",
-    "margin": 0.2906177273384857
+    "margin": 0.2614732100251698
    }
   ],
   "Consumer Electronics": [
@@ -184,7 +184,7 @@
    },
    {
     "ticker": "ACGL",
-    "margin": 0.3821739163299485
+    "margin": 0.38223883588403385
    }
   ],
   "Drug Manufacturers - General": [
@@ -282,7 +282,7 @@
   "Credit Services": [
    {
     "ticker": "V",
-    "margin": 0.5682330662278553
+    "margin": 0.5358622332326143
    },
    {
     "ticker": "MA",
@@ -666,7 +666,7 @@
    },
    {
     "ticker": "EMR",
-    "margin": 0.13066341452461938
+    "margin": 0.12971633273556402
    },
    {
     "ticker": "ITW",
@@ -824,7 +824,7 @@
    },
    {
     "ticker": "TEL",
-    "margin": 0.15404318964857233
+    "margin": 0.17072264714029156
    },
    {
     "ticker": "JBL",
@@ -847,10 +847,6 @@
    {
     "ticker": "AEP",
     "margin": -0.14466036287324746
-   },
-   {
-    "ticker": "D",
-    "margin": -0.36740609397713275
    },
    {
     "ticker": "ETR",
@@ -1036,7 +1032,7 @@
    },
    {
     "ticker": "BEN",
-    "margin": 0.13573967818928853
+    "margin": 0.10102718728804091
    },
    {
     "ticker": "IVZ",
@@ -1094,7 +1090,7 @@
    },
    {
     "ticker": "FICO",
-    "margin": 0.3493957204703392
+    "margin": 0.3600299696353098
    },
    {
     "ticker": "PTC",
@@ -1561,10 +1557,6 @@
     "margin": 0.36723144816835207
    },
    {
-    "ticker": "USB",
-    "margin": 0.46683749416591297
-   },
-   {
     "ticker": "TFC",
     "margin": 0.3578240373244431
    },
@@ -1578,7 +1570,7 @@
    },
    {
     "ticker": "MTB",
-    "margin": 0.39647429197468875
+    "margin": 0.39924774111428535
    },
    {
     "ticker": "CFG",
@@ -1732,7 +1724,7 @@
    },
    {
     "ticker": "AJG",
-    "margin": 0.18733175110387723
+    "margin": 0.16574045565852963
    },
    {
     "ticker": "WTW",
@@ -1833,16 +1825,6 @@
     "margin": 0.052394296781690324
    }
   ],
-  "Steel": [
-   {
-    "ticker": "NUE",
-    "margin": 0.08930940077977247
-   },
-   {
-    "ticker": "STLD",
-    "margin": 0.07121505867969806
-   }
-  ],
   "Utilities - Diversified": [
    {
     "ticker": "SRE",
@@ -1927,6 +1909,12 @@
    {
     "ticker": "TTWO",
     "margin": -0.00905548983981324
+   }
+  ],
+  "Steel": [
+   {
+    "ticker": "STLD",
+    "margin": 0.07121505867969806
    }
   ],
   "Grocery Stores": [

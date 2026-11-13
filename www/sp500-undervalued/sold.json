@@ -993,5 +993,45 @@
     "exitDate": "2026-11-06",
     "exitPrice": 96.56,
     "dollarPnl": 8.2
+  },
+  {
+    "ticker": "DVN",
+    "entryDate": "2026-11-06",
+    "entryPrice": 42.21,
+    "exitDate": "2026-11-13",
+    "exitPrice": 46.58,
+    "dollarPnl": 62.79
+  },
+  {
+    "ticker": "LHX",
+    "entryDate": "2026-11-06",
+    "entryPrice": 259.89,
+    "exitDate": "2026-11-13",
+    "exitPrice": 272.35,
+    "dollarPnl": 29.08
+  },
+  {
+    "ticker": "CVX",
+    "entryDate": "2026-11-06",
+    "entryPrice": 212.61,
+    "exitDate": "2026-11-13",
+    "exitPrice": 219.89,
+    "dollarPnl": 20.77
+  },
+  {
+    "ticker": "KVUE",
+    "entryDate": "2026-11-06",
+    "entryPrice": 19.31,
+    "exitDate": "2026-11-13",
+    "exitPrice": 19.31,
+    "dollarPnl": 0
+  },
+  {
+    "ticker": "EOG",
+    "entryDate": "2026-11-06",
+    "entryPrice": 147.13,
+    "exitDate": "2026-11-13",
+    "exitPrice": 158.32,
+    "dollarPnl": 46.13
   }
 ]
