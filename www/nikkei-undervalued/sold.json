@@ -502,5 +502,69 @@
     "exitDate": "2026-11-06",
     "exitPrice": 2759,
     "dollarPnl": -11634.47
+  },
+  {
+    "ticker": "3659.T",
+    "entryDate": "2026-09-04",
+    "entryPrice": 3120,
+    "exitDate": "2026-11-13",
+    "exitPrice": 3084,
+    "dollarPnl": 3968.21
+  },
+  {
+    "ticker": "6724.T",
+    "entryDate": "2026-09-04",
+    "entryPrice": 3237,
+    "exitDate": "2026-11-13",
+    "exitPrice": 2853.5,
+    "dollarPnl": 3624.56
+  },
+  {
+    "ticker": "9064.T",
+    "entryDate": "2026-07-19",
+    "entryPrice": 2003,
+    "exitDate": "2026-11-13",
+    "exitPrice": 2318,
+    "dollarPnl": 2163.5
+  },
+  {
+    "ticker": "7532.T",
+    "entryDate": "2026-10-09",
+    "entryPrice": 678.1,
+    "exitDate": "2026-11-13",
+    "exitPrice": 814.4,
+    "dollarPnl": 3947.07
+  },
+  {
+    "ticker": "5802.T",
+    "entryDate": "2026-11-06",
+    "entryPrice": 1360,
+    "exitDate": "2026-11-13",
+    "exitPrice": 1519,
+    "dollarPnl": 5729.85
+  },
+  {
+    "ticker": "8795.T",
+    "entryDate": "2026-11-06",
+    "entryPrice": 4602,
+    "exitDate": "2026-11-13",
+    "exitPrice": 4934,
+    "dollarPnl": 3535.71
+  },
+  {
+    "ticker": "6103.T",
+    "entryDate": "2026-11-06",
+    "entryPrice": 3775,
+    "exitDate": "2026-11-13",
+    "exitPrice": 4220,
+    "dollarPnl": 5777.34
+  },
+  {
+    "ticker": "6501.T",
+    "entryDate": "2026-11-06",
+    "entryPrice": 4542,
+    "exitDate": "2026-11-13",
+    "exitPrice": 4962,
+    "dollarPnl": 4531.97
   }
 ]

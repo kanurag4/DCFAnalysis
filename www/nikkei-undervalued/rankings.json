@@ -1,41 +1,77 @@
 {
-  "asAt": "2026-11-06",
+  "asAt": "2026-11-13",
   "universe": "Nikkei 225",
   "summary": {
     "tickers": 225,
     "evaluated": 225,
-    "qualified": 28,
+    "qualified": 27,
     "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 0,
-      "unvaluable": 55,
-      "overvalued": 75,
-      "marginOverCap": 48,
-      "distressZone": 6,
-      "proxyFcf": 13
+      "unvaluable": 61,
+      "overvalued": 82,
+      "marginOverCap": 37,
+      "distressZone": 11,
+      "proxyFcf": 7
     }
   },
   "rows": [
     {
       "rank": 1,
+      "ticker": "6902.T",
+      "name": "DENSO Corporation",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 3786.36,
+      "snapshotPrice": 1936.5,
+      "marginOfSafety": 0.9553,
+      "wacc": 0.0463,
+      "terminalValuePct": 85.4,
+      "trailingPE": 12.3,
+      "marketCap": 4860515713024,
+      "operatingMargin": 0.0668,
+      "analystTarget": 2073.33,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.97,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.09,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.08,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 2,
       "ticker": "4503.T",
       "name": "Astellas Pharma Inc.",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 4690.6,
-      "snapshotPrice": 2471.5,
-      "marginOfSafety": 0.8979,
-      "wacc": 0.0498,
-      "terminalValuePct": 83.5,
-      "trailingPE": 12.2,
-      "marketCap": 4431433695232,
-      "operatingMargin": 0.2105,
-      "analystTarget": 2536.43,
+      "intrinsic": 5273,
+      "snapshotPrice": 2699,
+      "marginOfSafety": 0.9537,
+      "wacc": 0.05,
+      "terminalValuePct": 83.4,
+      "trailingPE": 12.6,
+      "marketCap": 4839638564864,
+      "operatingMargin": 0.2354,
+      "analystTarget": 2597.14,
       "currency": "JPY",
       "altmanZ": {
-        "score": 2.91,
-        "zone": "grey"
+        "score": 3.05,
+        "zone": "safe"
       },
       "piotroskiF": {
         "score": 7,
@@ -48,65 +84,101 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.07,
-        "n": 232,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 2,
-      "ticker": "4704.T",
-      "name": "Trend Micro Incorporated",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 12075.33,
-      "snapshotPrice": 6478,
-      "marginOfSafety": 0.8641,
-      "wacc": 0.0525,
-      "terminalValuePct": 82.6,
-      "trailingPE": 24.1,
-      "marketCap": 840794767360,
-      "operatingMargin": 0.0834,
-      "analystTarget": 6537.5,
-      "currency": "JPY",
-      "altmanZ": {
-        "score": 3.33,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 8,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": -0.05,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.13,
+        "r": -0.09,
         "n": 232,
         "band": "none"
       }
     },
     {
       "rank": 3,
+      "ticker": "7951.T",
+      "name": "Yamaha Corporation",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 2544.45,
+      "snapshotPrice": 1311,
+      "marginOfSafety": 0.9408,
+      "wacc": 0.0514,
+      "terminalValuePct": 82.6,
+      "trailingPE": 17.9,
+      "marketCap": 576704937984,
+      "operatingMargin": 0.0867,
+      "analystTarget": 1334.29,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 4.79,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.03,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.12,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 4,
+      "ticker": "5020.T",
+      "name": "ENEOS Holdings, Inc.",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 2272.83,
+      "snapshotPrice": 1249,
+      "marginOfSafety": 0.8197,
+      "wacc": 0.052,
+      "terminalValuePct": 83.4,
+      "trailingPE": 4.7,
+      "marketCap": 3310148911104,
+      "operatingMargin": 0.0657,
+      "analystTarget": 1665,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.37,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.03,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.05,
+        "n": 232,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 5,
       "ticker": "6988.T",
       "name": "Nitto Denko Corporation",
       "sector": "Basic Materials",
       "method": "DCF",
       "intrinsic": 5995.37,
-      "snapshotPrice": 3298,
-      "marginOfSafety": 0.8179,
+      "snapshotPrice": 3550,
+      "marginOfSafety": 0.6888,
       "wacc": 0.0525,
       "terminalValuePct": 84.3,
-      "trailingPE": 15.6,
-      "marketCap": 2119675936768,
-      "operatingMargin": 0.1975,
+      "trailingPE": 16.8,
+      "marketCap": 2336566280192,
+      "operatingMargin": 0.1751,
       "analystTarget": 3800,
       "currency": "JPY",
       "altmanZ": {
-        "score": 6.84,
+        "score": 7.28,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -115,34 +187,34 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0,
+        "r": -0.01,
         "n": 232,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.04,
+        "r": -0.06,
         "n": 232,
         "band": "none"
       }
     },
     {
-      "rank": 4,
+      "rank": 6,
       "ticker": "2432.T",
       "name": "DeNA Co., Ltd.",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 4532.54,
-      "snapshotPrice": 2627,
-      "marginOfSafety": 0.7254,
-      "wacc": 0.0509,
-      "terminalValuePct": 83.4,
-      "trailingPE": 15.4,
-      "marketCap": 243031228416,
-      "operatingMargin": 0.1993,
+      "intrinsic": 3891.79,
+      "snapshotPrice": 2599.5,
+      "marginOfSafety": 0.4971,
+      "wacc": 0.0511,
+      "terminalValuePct": 83.3,
+      "trailingPE": 7.5,
+      "marketCap": 240487120896,
+      "operatingMargin": 0.1168,
       "analystTarget": 2696.67,
       "currency": "JPY",
       "altmanZ": {
-        "score": 3.46,
+        "score": 3.44,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -156,65 +228,101 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.16,
+        "r": -0.17,
         "n": 232,
         "band": "none"
       }
     },
     {
-      "rank": 5,
-      "ticker": "9147.T",
-      "name": "Nippon Express Holdings, Inc.",
-      "sector": "Industrials",
+      "rank": 7,
+      "ticker": "4704.T",
+      "name": "Trend Micro Incorporated",
+      "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 9075.27,
-      "snapshotPrice": 5498,
-      "marginOfSafety": 0.6506,
-      "wacc": 0.0473,
-      "terminalValuePct": 83.8,
-      "trailingPE": 71.2,
-      "marketCap": 1290606739456,
-      "operatingMargin": 0.0443,
-      "analystTarget": 5955,
+      "intrinsic": 10260.34,
+      "snapshotPrice": 7214,
+      "marginOfSafety": 0.4223,
+      "wacc": 0.0525,
+      "terminalValuePct": 82.6,
+      "trailingPE": 30,
+      "marketCap": 936321941504,
+      "operatingMargin": 0.1626,
+      "analystTarget": 6387.5,
       "currency": "JPY",
       "altmanZ": {
-        "score": 2.13,
-        "zone": "grey"
+        "score": 3.52,
+        "zone": "safe"
       },
       "piotroskiF": {
-        "score": 4,
-        "maxScore": 7,
+        "score": 6,
+        "maxScore": 8,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.03,
+        "r": -0.06,
         "n": 232,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.01,
+        "r": -0.14,
         "n": 232,
         "band": "none"
       }
     },
     {
-      "rank": 6,
+      "rank": 8,
+      "ticker": "5108.T",
+      "name": "Bridgestone Corporation",
+      "sector": "Consumer Cyclical",
+      "method": "DCF",
+      "intrinsic": 6227.57,
+      "snapshotPrice": 4402,
+      "marginOfSafety": 0.4147,
+      "wacc": 0.0485,
+      "terminalValuePct": 84.8,
+      "trailingPE": 22.3,
+      "marketCap": 5432622448640,
+      "operatingMargin": 0.1288,
+      "analystTarget": 4065,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 3.7,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": -0.05,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.12,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 9,
       "ticker": "6723.T",
       "name": "Renesas Electronics Corporation",
       "sector": "Technology",
       "method": "DCF",
-      "intrinsic": 3947.92,
-      "snapshotPrice": 2477.5,
-      "marginOfSafety": 0.5935,
-      "wacc": 0.0888,
-      "terminalValuePct": 74.1,
-      "trailingPE": 7.6,
-      "marketCap": 4527604891648,
-      "operatingMargin": 0.2677,
+      "intrinsic": 3919.13,
+      "snapshotPrice": 2847.5,
+      "marginOfSafety": 0.3763,
+      "wacc": 0.0893,
+      "terminalValuePct": 73.9,
+      "trailingPE": 8.7,
+      "marketCap": 5203775979520,
+      "operatingMargin": 0.2499,
       "analystTarget": 4980.77,
       "currency": "JPY",
       "altmanZ": {
-        "score": 2.48,
+        "score": 2.72,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -223,7 +331,7 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0.17,
+        "r": 0.16,
         "n": 232,
         "band": "low"
       },
@@ -234,63 +342,56 @@
       }
     },
     {
-      "rank": 7,
-      "ticker": "3659.T",
-      "name": "NEXON Co., Ltd.",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 4332.62,
-      "snapshotPrice": 2853,
-      "marginOfSafety": 0.5186,
-      "wacc": 0.0519,
-      "terminalValuePct": 82.2,
-      "trailingPE": 16.7,
-      "marketCap": 2223810281472,
-      "operatingMargin": 0.2584,
-      "analystTarget": 2970.67,
+      "rank": 10,
+      "ticker": "8725.T",
+      "name": "MS&AD Insurance Group Holdings, Inc.",
+      "sector": "Financial Services",
+      "method": "ExcessReturn",
+      "intrinsic": 7045.76,
+      "snapshotPrice": 5316,
+      "marginOfSafety": 0.3254,
+      "wacc": 0.0525,
+      "terminalValuePct": null,
+      "trailingPE": 8.7,
+      "marketCap": 7547710865408,
+      "operatingMargin": 0.1638,
+      "analystTarget": 5424.36,
       "currency": "JPY",
-      "altmanZ": {
-        "score": 6.02,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 2,
-        "maxScore": 7,
-        "trend": "Deteriorating"
-      },
+      "altmanZ": null,
+      "piotroskiF": null,
       "aiCorrelation": {
-        "r": -0.04,
+        "r": -0.12,
         "n": 232,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.07,
+        "r": -0.1,
         "n": 232,
         "band": "none"
       }
     },
     {
-      "rank": 8,
-      "ticker": "6724.T",
-      "name": "Seiko Epson Corporation",
-      "sector": "Technology",
+      "rank": 11,
+      "ticker": "6841.T",
+      "name": "Yokogawa Electric Corporation",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 4023.09,
-      "snapshotPrice": 2657,
-      "marginOfSafety": 0.5141,
-      "wacc": 0.0473,
-      "terminalValuePct": 84.5,
-      "trailingPE": 19.2,
-      "marketCap": 845023150080,
-      "operatingMargin": 0.0561,
-      "analystTarget": 2825,
+      "intrinsic": 5766.82,
+      "snapshotPrice": 4354,
+      "marginOfSafety": 0.3245,
+      "wacc": 0.061,
+      "terminalValuePct": 81.4,
+      "trailingPE": 21.4,
+      "marketCap": 1082897530880,
+      "operatingMargin": 0.1277,
+      "analystTarget": 6003.75,
       "currency": "JPY",
       "altmanZ": {
-        "score": 2.7,
-        "zone": "grey"
+        "score": 4.67,
+        "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
+        "score": 6,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
@@ -300,94 +401,29 @@
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.11,
+        "r": 0.15,
         "n": 232,
         "band": "low"
       }
     },
     {
-      "rank": 9,
-      "ticker": "9064.T",
-      "name": "Yamato Holdings Co., Ltd.",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 3187.75,
-      "snapshotPrice": 2220,
-      "marginOfSafety": 0.4359,
-      "wacc": 0.0457,
-      "terminalValuePct": 84.5,
-      "trailingPE": 89.3,
-      "marketCap": 703021973504,
-      "operatingMargin": -0.011,
-      "analystTarget": 1824.55,
-      "currency": "JPY",
-      "altmanZ": {
-        "score": 2.83,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.09,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.21,
-        "n": 232,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 10,
-      "ticker": "8725.T",
-      "name": "MS&AD Insurance Group Holdings, Inc.",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 7045.76,
-      "snapshotPrice": 4930,
-      "marginOfSafety": 0.4292,
-      "wacc": 0.0525,
-      "terminalValuePct": null,
-      "trailingPE": 8.1,
-      "marketCap": 6999670521856,
-      "operatingMargin": 0.2301,
-      "analystTarget": 5380.73,
-      "currency": "JPY",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": -0.11,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.09,
-        "n": 232,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 11,
+      "rank": 12,
       "ticker": "3405.T",
       "name": "Kuraray Co., Ltd.",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 2595.15,
-      "snapshotPrice": 1842,
-      "marginOfSafety": 0.4089,
-      "wacc": 0.041,
-      "terminalValuePct": 87.1,
-      "trailingPE": 68,
-      "marketCap": 554988797952,
-      "operatingMargin": 0.0607,
+      "intrinsic": 2488.45,
+      "snapshotPrice": 1915.5,
+      "marginOfSafety": 0.2991,
+      "wacc": 0.042,
+      "terminalValuePct": 86.7,
+      "trailingPE": 22.1,
+      "marketCap": 577134133248,
+      "operatingMargin": 0.0958,
       "analystTarget": 1812.14,
       "currency": "JPY",
       "altmanZ": {
-        "score": 2.11,
+        "score": 2.14,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -396,43 +432,7 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.04,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.05,
-        "n": 232,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 12,
-      "ticker": "7951.T",
-      "name": "Yamaha Corporation",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 1617.78,
-      "snapshotPrice": 1202.5,
-      "marginOfSafety": 0.3453,
-      "wacc": 0.0512,
-      "terminalValuePct": 82.6,
-      "trailingPE": 16.4,
-      "marketCap": 528976084992,
-      "operatingMargin": 0.0819,
-      "analystTarget": 1341.43,
-      "currency": "JPY",
-      "altmanZ": {
-        "score": 4.58,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0,
+        "r": -0.06,
         "n": 232,
         "band": "none"
       },
@@ -444,185 +444,19 @@
     },
     {
       "rank": 13,
-      "ticker": "9766.T",
-      "name": "Konami Group Corporation",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 35882.88,
-      "snapshotPrice": 27350,
-      "marginOfSafety": 0.312,
-      "wacc": 0.0521,
-      "terminalValuePct": 84.6,
-      "trailingPE": 20.7,
-      "marketCap": 3707469824000,
-      "operatingMargin": 0.3781,
-      "analystTarget": 28580,
-      "currency": "JPY",
-      "altmanZ": {
-        "score": 14.64,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 9,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.12,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.25,
-        "n": 232,
-        "band": "inverse"
-      }
-    },
-    {
-      "rank": 14,
       "ticker": "8750.T",
       "name": "Daiichi Life Group, Inc.",
       "sector": "Financial Services",
       "method": "DDM",
       "intrinsic": 2231.9,
-      "snapshotPrice": 1706,
-      "marginOfSafety": 0.3083,
+      "snapshotPrice": 1811,
+      "marginOfSafety": 0.2324,
       "wacc": 0.0525,
       "terminalValuePct": 83.5,
-      "trailingPE": 11.2,
-      "marketCap": 6145339031552,
-      "operatingMargin": 0.1667,
+      "trailingPE": 11.9,
+      "marketCap": 6523568783360,
+      "operatingMargin": 0.1136,
       "analystTarget": 1993,
-      "currency": "JPY",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": -0.02,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.02,
-        "n": 232,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 15,
-      "ticker": "7532.T",
-      "name": "Pan Pacific International Holdings Corporation",
-      "sector": "Consumer Defensive",
-      "method": "DCF",
-      "intrinsic": 919.87,
-      "snapshotPrice": 753.7,
-      "marginOfSafety": 0.2205,
-      "wacc": 0.0478,
-      "terminalValuePct": 85.6,
-      "trailingPE": 20.5,
-      "marketCap": 2254198276096,
-      "operatingMargin": 0.0603,
-      "analystTarget": 1007.05,
-      "currency": "JPY",
-      "altmanZ": {
-        "score": 4.17,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": -0.11,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.17,
-        "n": 232,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 16,
-      "ticker": "5802.T",
-      "name": "Sumitomo Electric Industries, Ltd.",
-      "sector": "Consumer Cyclical",
-      "method": "DCF",
-      "intrinsic": 1602.45,
-      "snapshotPrice": 1360,
-      "marginOfSafety": 0.1783,
-      "wacc": 0.0601,
-      "terminalValuePct": 80.9,
-      "trailingPE": 13.6,
-      "marketCap": 4243576586240,
-      "operatingMargin": 0.0854,
-      "analystTarget": 3211.82,
-      "currency": "JPY",
-      "altmanZ": {
-        "score": 3.45,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": 0.22,
-        "n": 232,
-        "band": "moderate"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.3,
-        "n": 232,
-        "band": "moderate"
-      }
-    },
-    {
-      "rank": 17,
-      "ticker": "5831.T",
-      "name": "Shizuoka Financial Group,Inc.",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 3347.85,
-      "snapshotPrice": 2903.5,
-      "marginOfSafety": 0.153,
-      "wacc": 0.0525,
-      "terminalValuePct": 83.5,
-      "trailingPE": 15.5,
-      "marketCap": 1529646022656,
-      "operatingMargin": 0.4155,
-      "analystTarget": 4050,
-      "currency": "JPY",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": -0.01,
-        "n": 232,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.07,
-        "n": 232,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 18,
-      "ticker": "8795.T",
-      "name": "T&D Holdings, Inc.",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 5083.78,
-      "snapshotPrice": 4602,
-      "marginOfSafety": 0.1047,
-      "wacc": 0.0525,
-      "terminalValuePct": 83.5,
-      "trailingPE": 15.6,
-      "marketCap": 2180489281536,
-      "operatingMargin": 0.183,
-      "analystTarget": 5267,
       "currency": "JPY",
       "altmanZ": null,
       "piotroskiF": null,
@@ -632,33 +466,33 @@
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0,
+        "r": -0.04,
         "n": 232,
         "band": "none"
       }
     },
     {
-      "rank": 19,
-      "ticker": "6103.T",
-      "name": "Okuma Corporation",
+      "rank": 14,
+      "ticker": "6367.T",
+      "name": "Daikin Industries,Ltd.",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 4111.03,
-      "snapshotPrice": 3775,
-      "marginOfSafety": 0.089,
-      "wacc": 0.0523,
-      "terminalValuePct": 82.3,
-      "trailingPE": 11.4,
-      "marketCap": 219783331840,
-      "operatingMargin": 0.1154,
-      "analystTarget": 4924,
+      "intrinsic": 28910.92,
+      "snapshotPrice": 23480,
+      "marginOfSafety": 0.2313,
+      "wacc": 0.0481,
+      "terminalValuePct": 85.4,
+      "trailingPE": 23.4,
+      "marketCap": 6532292935680,
+      "operatingMargin": 0.0806,
+      "analystTarget": 25114,
       "currency": "JPY",
       "altmanZ": {
-        "score": 3.56,
+        "score": 3.54,
         "zone": "safe"
       },
       "piotroskiF": {
-        "score": 5,
+        "score": 6,
         "maxScore": 9,
         "trend": "Stable"
       },
@@ -668,43 +502,209 @@
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.13,
+        "r": 0.02,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 15,
+      "ticker": "9766.T",
+      "name": "Konami Group Corporation",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 35785.96,
+      "snapshotPrice": 29180,
+      "marginOfSafety": 0.2264,
+      "wacc": 0.0521,
+      "terminalValuePct": 84.6,
+      "trailingPE": 22.1,
+      "marketCap": 3955533807616,
+      "operatingMargin": 0.3323,
+      "analystTarget": 29923.53,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 15.44,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 9,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.13,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.26,
+        "n": 232,
+        "band": "inverse"
+      }
+    },
+    {
+      "rank": 16,
+      "ticker": "8354.T",
+      "name": "Fukuoka Financial Group, Inc.",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 8369.63,
+      "snapshotPrice": 7193,
+      "marginOfSafety": 0.1636,
+      "wacc": 0.0525,
+      "terminalValuePct": 83.5,
+      "trailingPE": 13.5,
+      "marketCap": 1359341420544,
+      "operatingMargin": 0.3016,
+      "analystTarget": 8283.33,
+      "currency": "JPY",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.05,
         "n": 232,
         "band": "low"
       }
     },
     {
-      "rank": 20,
-      "ticker": "6501.T",
-      "name": "Hitachi, Ltd.",
-      "sector": "Industrials",
+      "rank": 17,
+      "ticker": "2503.T",
+      "name": "Kirin Holdings Company, Limited",
+      "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 4944.58,
-      "snapshotPrice": 4542,
-      "marginOfSafety": 0.0886,
-      "wacc": 0.051,
-      "terminalValuePct": 82.6,
-      "trailingPE": 27.3,
-      "marketCap": 20244089274368,
-      "operatingMargin": 0.1202,
-      "analystTarget": 6568.75,
+      "intrinsic": 3617.08,
+      "snapshotPrice": 3120,
+      "marginOfSafety": 0.1593,
+      "wacc": 0.0449,
+      "terminalValuePct": 84.8,
+      "trailingPE": 12.9,
+      "marketCap": 2459482980352,
+      "operatingMargin": 0.1023,
+      "analystTarget": 2968.86,
       "currency": "JPY",
       "altmanZ": {
-        "score": 2.93,
+        "score": 2.25,
         "zone": "grey"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 3,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.14,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.18,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 18,
+      "ticker": "9147.T",
+      "name": "Nippon Express Holdings, Inc.",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 6996.98,
+      "snapshotPrice": 6102,
+      "marginOfSafety": 0.1467,
+      "wacc": 0.0467,
+      "terminalValuePct": 84,
+      "trailingPE": 37.4,
+      "marketCap": 1432390336512,
+      "operatingMargin": 0.0065,
+      "analystTarget": 6081.25,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 2.18,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 7,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.01,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.03,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 19,
+      "ticker": "2914.T",
+      "name": "Japan Tobacco Inc.",
+      "sector": "Consumer Defensive",
+      "method": "DCF",
+      "intrinsic": 6682.89,
+      "snapshotPrice": 5944,
+      "marginOfSafety": 0.1243,
+      "wacc": 0.049,
+      "terminalValuePct": 83.3,
+      "trailingPE": 17.4,
+      "marketCap": 10553154076672,
+      "operatingMargin": 0.272,
+      "analystTarget": 7428.36,
+      "currency": "JPY",
+      "altmanZ": {
+        "score": 3.01,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 9,
         "maxScore": 9,
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.14,
+        "r": -0.1,
         "n": 232,
-        "band": "low"
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.09,
+        "r": -0.14,
+        "n": 232,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 20,
+      "ticker": "5831.T",
+      "name": "Shizuoka Financial Group,Inc.",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 3593.81,
+      "snapshotPrice": 3232,
+      "marginOfSafety": 0.1119,
+      "wacc": 0.0525,
+      "terminalValuePct": 83.4,
+      "trailingPE": 17,
+      "marketCap": 1702709166080,
+      "operatingMargin": 0.3494,
+      "analystTarget": 4050,
+      "currency": "JPY",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.03,
+        "n": 232,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.05,
         "n": 232,
         "band": "low"
       }
