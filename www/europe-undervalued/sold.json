@@ -286,5 +286,45 @@
     "exitDate": "2026-11-06",
     "exitPrice": 1060.1619,
     "dollarPnl": 11.08
+  },
+  {
+    "ticker": "P911.DE",
+    "entryDate": "2026-10-30",
+    "entryPrice": 46.72,
+    "exitDate": "2026-11-13",
+    "exitPrice": 45.4,
+    "dollarPnl": -18.83
+  },
+  {
+    "ticker": "NOVO-B.CO",
+    "entryDate": "2026-11-06",
+    "entryPrice": 36.012,
+    "exitDate": "2026-11-13",
+    "exitPrice": 37.2148,
+    "dollarPnl": 17.79
+  },
+  {
+    "ticker": "REC.MI",
+    "entryDate": "2026-10-16",
+    "entryPrice": 52.95,
+    "exitDate": "2026-11-13",
+    "exitPrice": 52.65,
+    "dollarPnl": -6.02
+  },
+  {
+    "ticker": "GBF.DE",
+    "entryDate": "2026-10-07",
+    "entryPrice": 56.65,
+    "exitDate": "2026-11-13",
+    "exitPrice": 60.05,
+    "dollarPnl": -11.74
+  },
+  {
+    "ticker": "RUI.PA",
+    "entryDate": "2026-11-06",
+    "entryPrice": 35.4,
+    "exitDate": "2026-11-13",
+    "exitPrice": 37,
+    "dollarPnl": 24.13
   }
 ]

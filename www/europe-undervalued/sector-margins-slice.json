@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-06",
+ "asAt": "2026-11-13",
  "industries": {
   "Utilities - Diversified": [
    {
@@ -226,7 +226,7 @@
    },
    {
     "ticker": "ABF.L",
-    "margin": 0.04856601791367013
+    "margin": 0.057004152134066274
    },
    {
     "ticker": "BN.PA",
@@ -276,7 +276,7 @@
    },
    {
     "ticker": "RIO.L",
-    "margin": 0.12693813777320984
+    "margin": 0.1269381377732098
    }
   ],
   "Specialty Industrial Machinery": [
@@ -286,7 +286,7 @@
    },
    {
     "ticker": "ACLN.SW",
-    "margin": 0.1472356795137947
+    "margin": 0.14723567951379474
    },
    {
     "ticker": "ALFA.ST",
@@ -307,6 +307,10 @@
    {
     "ticker": "FLS.CO",
     "margin": 0.014662437419246051
+   },
+   {
+    "ticker": "G1A.DE",
+    "margin": 0.07053992906107899
    },
    {
     "ticker": "IMI.L",
@@ -401,6 +405,10 @@
    {
     "ticker": "NEX.PA",
     "margin": 0.049084431028946204
+   },
+   {
+    "ticker": "NKT.CO",
+    "margin": 0.06719495124857654
    },
    {
     "ticker": "PRY.MI",
@@ -503,6 +511,10 @@
     "margin": 0.16565839837864987
    },
    {
+    "ticker": "CARL-B.CO",
+    "margin": 0.09692193858021325
+   },
+   {
     "ticker": "HEIA.AS",
     "margin": 0.08422809540431508
    },
@@ -541,6 +553,10 @@
     "margin": -0.6048987184958551
    },
    {
+    "ticker": "KBC.BR",
+    "margin": -0.01797686013957263
+   },
+   {
     "ticker": "SAN.MC",
     "margin": -0.19803969543881375
    },
@@ -550,7 +566,7 @@
    },
    {
     "ticker": "STAN.L",
-    "margin": 0.474801640548192
+    "margin": 0.47480164054819207
    },
    {
     "ticker": "UBSG.SW",
@@ -655,8 +671,12 @@
     "margin": 0.03589909927712001
    },
    {
+    "ticker": "SSAB-B.ST",
+    "margin": 0.058368149761902584
+   },
+   {
     "ticker": "VK.PA",
-    "margin": 0.0576294905519549
+    "margin": 0.05762949055195489
    },
    {
     "ticker": "VOE.VI",
@@ -727,6 +747,10 @@
     "margin": 0.0752326834215073
    },
    {
+    "ticker": "GJF.OL",
+    "margin": 0.10059857629221403
+   },
+   {
     "ticker": "HSX.L",
     "margin": 0.045441719518463555
    },
@@ -753,6 +777,10 @@
    {
     "ticker": "ADS.DE",
     "margin": 0.03861249787372688
+   },
+   {
+    "ticker": "PUM.DE",
+    "margin": 0.009679047706191019
    }
   ],
   "Software - Infrastructure": [
@@ -793,6 +821,14 @@
    {
     "ticker": "AGN.AS",
     "margin": 0.029032820473223194
+   },
+   {
+    "ticker": "AGS.BR",
+    "margin": 0.12992687832729882
+   },
+   {
+    "ticker": "ALV.DE",
+    "margin": 0.20761937263944014
    },
    {
     "ticker": "ASRNL.AS",
@@ -859,6 +895,10 @@
    {
     "ticker": "BNR.DE",
     "margin": 0.0486273309112058
+   },
+   {
+    "ticker": "CRDA.L",
+    "margin": 0.08618929870237352
    },
    {
     "ticker": "DSFIR.AS",
@@ -991,6 +1031,10 @@
     "margin": -0.07959301018998077
    },
    {
+    "ticker": "HLMA.L",
+    "margin": 0.1574015444425707
+   },
+   {
     "ticker": "LAGR-B.ST",
     "margin": 0.12879156458871105
    },
@@ -1028,7 +1072,7 @@
    },
    {
     "ticker": "COLO-B.CO",
-    "margin": 0.11664410608578946
+    "margin": 0.14307894701881843
    },
    {
     "ticker": "CTEC.L",
@@ -1087,6 +1131,16 @@
     "margin": 0.1715167587710822
    }
   ],
+  "Railroads": [
+   {
+    "ticker": "ALO.PA",
+    "margin": 0.0054557915828352165
+   },
+   {
+    "ticker": "GET.PA",
+    "margin": 0.47587601863131884
+   }
+  ],
   "Information Technology Services": [
    {
     "ticker": "AMS.MC",
@@ -1120,7 +1174,25 @@
   "Copper": [
    {
     "ticker": "ANTO.L",
-    "margin": -0.014704823561114966
+    "margin": -0.014704823561114964
+   }
+  ],
+  "Security & Protection Services": [
+   {
+    "ticker": "ASSA-B.ST",
+    "margin": 0.12065031130951732
+   },
+   {
+    "ticker": "LOOMIS.ST",
+    "margin": 0.10894123438166493
+   },
+   {
+    "ticker": "SECU-B.ST",
+    "margin": 0.03437748296778245
+   },
+   {
+    "ticker": "VSURE.ST",
+    "margin": 0.10513687008489411
    }
   ],
   "Electronic Components": [
@@ -1162,7 +1234,7 @@
   "Drug Manufacturers - General": [
    {
     "ticker": "AZN.L",
-    "margin": 0.14716696873895868
+    "margin": 0.1471669687389587
    },
    {
     "ticker": "BAYN.DE",
@@ -1375,6 +1447,10 @@
    {
     "ticker": "ORSTED.CO",
     "margin": -0.3089242390296267
+   },
+   {
+    "ticker": "VER.VI",
+    "margin": 0.1917667719966728
    }
   ],
   "REIT - Diversified": [
@@ -1445,6 +1521,10 @@
     "margin": 0.036077561851606835
    },
    {
+    "ticker": "ITRK.L",
+    "margin": 0.12872294264017217
+   },
+   {
     "ticker": "MTO.L",
     "margin": 0.03211755704197397
    },
@@ -1454,7 +1534,7 @@
    },
    {
     "ticker": "RTO.L",
-    "margin": 0.10105109789922793
+    "margin": 0.10105109789922792
    },
    {
     "ticker": "SRP.L",
@@ -1597,6 +1677,24 @@
     "margin": 0.043779127005481894
    }
   ],
+  "Auto Parts": [
+   {
+    "ticker": "CON.DE",
+    "margin": 0.04555014496997113
+   },
+   {
+    "ticker": "FR.PA",
+    "margin": 0.022156616472916862
+   },
+   {
+    "ticker": "KBX.DE",
+    "margin": 0.06727701563672261
+   },
+   {
+    "ticker": "PIRC.MI",
+    "margin": 0.13160795096647546
+   }
+  ],
   "Scientific & Technical Instruments": [
    {
     "ticker": "COTN.SW",
@@ -1637,6 +1735,10 @@
     "margin": 0.35209884596916297
    },
    {
+    "ticker": "ENX.PA",
+    "margin": 0.4034725684030915
+   },
+   {
     "ticker": "LSEG.L",
     "margin": 0.22591558259584246
    }
@@ -1674,7 +1776,7 @@
    },
    {
     "ticker": "SHL.DE",
-    "margin": 0.07680442566534144
+    "margin": 0.08347086051011485
    },
    {
     "ticker": "SN.L",
@@ -1810,7 +1912,7 @@
    },
    {
     "ticker": "PAF.L",
-    "margin": 0.011563649594741779
+    "margin": 0.011563649594741772
    }
   ],
   "Utilities - Regulated Electric": [
@@ -1907,20 +2009,30 @@
    {
     "ticker": "FME.DE",
     "margin": 0.08788553871838309
+   },
+   {
+    "ticker": "FRE.DE",
+    "margin": 0.10007391620212991
    }
   ],
-  "Auto Parts": [
+  "Other Precious Metals & Mining": [
    {
-    "ticker": "FR.PA",
-    "margin": 0.022156616472916862
+    "ticker": "FRES.L",
+    "margin": 0.15545602207818776
    },
    {
-    "ticker": "KBX.DE",
-    "margin": 0.06727701563672261
+    "ticker": "HOC.L",
+    "margin": -0.05645627154463597
+   }
+  ],
+  "Oil & Gas Midstream": [
+   {
+    "ticker": "FRO.OL",
+    "margin": -0.0354637928742932
    },
    {
-    "ticker": "PIRC.MI",
-    "margin": 0.13160795096647546
+    "ticker": "VPK.AS",
+    "margin": 0.37213362289247703
    }
   ],
   "Capital Markets": [
@@ -1960,7 +2072,7 @@
    },
    {
     "ticker": "HIK.L",
-    "margin": 0.10607370288425101
+    "margin": 0.10607370288425103
    },
    {
     "ticker": "HLN.L",
@@ -1999,12 +2111,6 @@
     "margin": 0.3314294789910146
    }
   ],
-  "Railroads": [
-   {
-    "ticker": "GET.PA",
-    "margin": 0.47587601863131884
-   }
-  ],
   "Oil & Gas Equipment & Services": [
    {
     "ticker": "GTT.PA",
@@ -2013,6 +2119,10 @@
    {
     "ticker": "SBMO.AS",
     "margin": 0.04509372179899938
+   },
+   {
+    "ticker": "SPM.MI",
+    "margin": 0.007978527874655713
    },
    {
     "ticker": "SUBC.OL",
@@ -2024,11 +2134,11 @@
    },
    {
     "ticker": "TEN.MI",
-    "margin": 0.1643645872283862
+    "margin": 0.16436458722838623
    },
    {
     "ticker": "TGS.OL",
-    "margin": 0.1864259454370773
+    "margin": 0.18642594543707725
    }
   ],
   "Apparel Manufacturing": [
@@ -2057,12 +2167,6 @@
    {
     "ticker": "SREN.SW",
     "margin": 0.07327080378349725
-   }
-  ],
-  "Other Precious Metals & Mining": [
-   {
-    "ticker": "HOC.L",
-    "margin": -0.05645627154463598
    }
   ],
   "Paper & Paper Products": [
@@ -2184,21 +2288,7 @@
   "Computer Hardware": [
    {
     "ticker": "LOGN.SW",
-    "margin": 0.18122678804989126
-   }
-  ],
-  "Security & Protection Services": [
-   {
-    "ticker": "LOOMIS.ST",
-    "margin": 0.10894123438166493
-   },
-   {
-    "ticker": "SECU-B.ST",
-    "margin": 0.03437748296778245
-   },
-   {
-    "ticker": "VSURE.ST",
-    "margin": 0.10513687008489411
+    "margin": 0.18122678804989129
    }
   ],
   "Marine Shipping": [
@@ -2262,11 +2352,21 @@
   "Insurance - Life": [
    {
     "ticker": "PRU.L",
-    "margin": 0.1143972381855901
+    "margin": 0.11439723818559011
    },
    {
     "ticker": "SDLF.L",
     "margin": 0.02937916073482598
+   }
+  ],
+  "Advertising Agencies": [
+   {
+    "ticker": "PUB.PA",
+    "margin": 0.1414965010698107
+   },
+   {
+    "ticker": "WPP.L",
+    "margin": 0.05526168162774339
    }
   ],
   "Electronics & Computer Distribution": [
@@ -2277,6 +2377,16 @@
    {
     "ticker": "SCT.L",
     "margin": 0.09455333275891495
+   }
+  ],
+  "Agricultural Inputs": [
+   {
+    "ticker": "SDF.DE",
+    "margin": 0.06767750211822986
+   },
+   {
+    "ticker": "YAR.OL",
+    "margin": 0.05361078309815798
    }
   ],
   "Tools & Accessories": [
@@ -2307,24 +2417,6 @@
    {
     "ticker": "TUI1.DE",
     "margin": 0.06192364382444659
-   }
-  ],
-  "Oil & Gas Midstream": [
-   {
-    "ticker": "VPK.AS",
-    "margin": 0.37213362289247703
-   }
-  ],
-  "Advertising Agencies": [
-   {
-    "ticker": "WPP.L",
-    "margin": 0.05526168162774339
-   }
-  ],
-  "Agricultural Inputs": [
-   {
-    "ticker": "YAR.OL",
-    "margin": 0.05361078309815798
    }
   ]
  }
