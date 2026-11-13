@@ -716,5 +716,29 @@
     "exitDate": "2026-11-06",
     "exitPrice": 4.96,
     "dollarPnl": -2.11
+  },
+  {
+    "ticker": "UNI.AX",
+    "entryDate": "2026-11-06",
+    "entryPrice": 8,
+    "exitDate": "2026-11-13",
+    "exitPrice": 7.64,
+    "dollarPnl": -23.51
+  },
+  {
+    "ticker": "DMP.AX",
+    "entryDate": "2026-08-28",
+    "entryPrice": 20.09,
+    "exitDate": "2026-11-13",
+    "exitPrice": 24.12,
+    "dollarPnl": 36.62
+  },
+  {
+    "ticker": "EOS.AX",
+    "entryDate": "2026-11-06",
+    "entryPrice": 7.02,
+    "exitDate": "2026-11-13",
+    "exitPrice": 7.34,
+    "dollarPnl": 23.82
   }
 ]

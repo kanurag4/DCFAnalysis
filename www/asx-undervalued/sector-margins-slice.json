@@ -1,10 +1,10 @@
 {
- "asAt": "2026-11-06",
+ "asAt": "2026-11-13",
  "industries": {
   "Software - Application": [
    {
     "ticker": "360.AX",
-    "margin": 0.0010353116107312196
+    "margin": 0.0010353116107312405
    },
    {
     "ticker": "BVS.AX",
@@ -46,7 +46,7 @@
   "Packaged Foods": [
    {
     "ticker": "A2M.AX",
-    "margin": 0.08455346148874743
+    "margin": 0.08455346148874741
    },
    {
     "ticker": "BGA.AX",
@@ -68,7 +68,7 @@
   "Aluminum": [
    {
     "ticker": "AAI.AX",
-    "margin": 0.008371553248108399
+    "margin": 0.008371553248108397
    }
   ],
   "Telecom Services": [
@@ -218,7 +218,7 @@
    },
    {
     "ticker": "WDS.AX",
-    "margin": 0.10248982798675922
+    "margin": 0.10248982798675921
    }
   ],
   "Utilities - Independent Power Producers": [
@@ -286,7 +286,7 @@
    },
    {
     "ticker": "NEM.AX",
-    "margin": 0.1450214386511585
+    "margin": 0.14502143865115852
    },
    {
     "ticker": "NST.AX",
@@ -386,7 +386,7 @@
   "Medical Instruments & Supplies": [
    {
     "ticker": "ANN.AX",
-    "margin": 0.11034217742624877
+    "margin": 0.11034217742624874
    },
    {
     "ticker": "FPH.AX",
@@ -412,7 +412,7 @@
    },
    {
     "ticker": "NAB.AX",
-    "margin": -0.5583578560896265
+    "margin": -0.45110703640964495
    },
    {
     "ticker": "WBC.AX",
@@ -542,7 +542,7 @@
   "Other Industrial Metals & Mining": [
    {
     "ticker": "BHP.AX",
-    "margin": 0.2048972091841529
+    "margin": 0.20489720918415288
    },
    {
     "ticker": "DRR.AX",
@@ -554,7 +554,7 @@
    },
    {
     "ticker": "ELV.AX",
-    "margin": -0.43630029492772393
+    "margin": -0.4394163025976236
    },
    {
     "ticker": "FMG.AX",
@@ -1012,7 +1012,7 @@
    },
    {
     "ticker": "RWC.AX",
-    "margin": 0.16877808227777272
+    "margin": 0.16877808227777275
    }
   ],
   "Insurance - Specialty": [
@@ -1062,7 +1062,7 @@
    },
    {
     "ticker": "QBE.AX",
-    "margin": 0.15144985031882524
+    "margin": 0.1514498503188252
    },
    {
     "ticker": "SUN.AX",
