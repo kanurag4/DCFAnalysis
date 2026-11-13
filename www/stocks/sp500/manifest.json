@@ -494,6 +494,19 @@
     "updatedAt": "2026-11-07T02:54:29.719Z"
   },
   {
+    "ticker": "DG",
+    "slug": "dg",
+    "name": "Dollar General Corporation",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 250.3936889206109,
+    "price": 134.14,
+    "marginOfSafety": 0.8666593776696805,
+    "marketCap": 29593534464,
+    "updated": "2026-11-13",
+    "updatedAt": "2026-11-13T22:50:13.112Z"
+  },
+  {
     "ticker": "DKS",
     "slug": "dks",
     "name": "DICK'S Sporting Goods, Inc.",
@@ -609,6 +622,19 @@
     "marketCap": 100246462464,
     "updated": "2026-11-07",
     "updatedAt": "2026-11-07T02:56:42.910Z"
+  },
+  {
+    "ticker": "EXE",
+    "slug": "exe",
+    "name": "Expand Energy Corporation",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 164.5337717547962,
+    "price": 88.53,
+    "marginOfSafety": 0.8585086609600835,
+    "marketCap": 20446652416,
+    "updated": "2026-11-13",
+    "updatedAt": "2026-11-13T22:51:26.421Z"
   },
   {
     "ticker": "FDX",
@@ -934,6 +960,19 @@
     "marketCap": 12832360448,
     "updated": "2026-11-07",
     "updatedAt": "2026-11-07T03:02:52.065Z"
+  },
+  {
+    "ticker": "LYFT",
+    "slug": "lyft",
+    "name": "Lyft, Inc.",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 43.18053468370135,
+    "price": 16.98,
+    "marginOfSafety": 1.5430232440342375,
+    "marketCap": 6416678400,
+    "updated": "2026-11-13",
+    "updatedAt": "2026-11-13T22:49:49.110Z"
   },
   {
     "ticker": "M",
@@ -1586,6 +1625,19 @@
     "updatedAt": "2026-11-07T03:15:18.546Z"
   },
   {
+    "ticker": "SNAP",
+    "slug": "snap",
+    "name": "Snap Inc.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 11.985217679029008,
+    "price": 5.26,
+    "marginOfSafety": 1.2785584941119787,
+    "marketCap": 9081794560,
+    "updated": "2026-11-13",
+    "updatedAt": "2026-11-13T22:51:51.039Z"
+  },
+  {
     "ticker": "SNDK",
     "slug": "sndk",
     "name": "Sandisk Corporation",
@@ -1870,6 +1922,19 @@
     "marketCap": 93945225216,
     "updated": "2026-11-07",
     "updatedAt": "2026-11-07T03:20:48.791Z"
+  },
+  {
+    "ticker": "WMT",
+    "slug": "wmt",
+    "name": "Walmart Inc.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 14.738235112302393,
+    "price": 128.09,
+    "marginOfSafety": -0.8849384408439191,
+    "marketCap": 1019350286336,
+    "updated": "2026-11-13",
+    "updatedAt": "2026-11-13T22:50:36.898Z"
   },
   {
     "ticker": "YUM",
