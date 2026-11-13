@@ -71,7 +71,7 @@
       : `<span class="${sinceListed >= 0 ? 'pos' : 'neg'}">${sinceListed >= 0 ? '+' : ''}${pct(sinceListed)}</span>`;
     return `<tr>
       <td>${r.rank}</td>
-      <td><div class="tk">${escapeHtml(r.ticker)}${r.highLeverage ? '<sup title="High leverage — see note below">*</sup>' : ''}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
+      <td><div class="tk"><a class="tk-link" href="/dcf/?ticker=${encodeURIComponent(r.ticker)}" title="Open in the DCF tool">${escapeHtml(r.ticker)}</a>${r.highLeverage ? '<sup title="High leverage — see note below">*</sup>' : ''}</div><div class="nm">${escapeHtml(r.name || '')}</div></td>
       <td>${escapeHtml(r.sector || '—')}</td>
       <td class="num">${mktCap}</td>
       <td><span class="tag ${tag}">${r.method}</span></td>

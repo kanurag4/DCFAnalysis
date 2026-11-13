@@ -69,6 +69,8 @@ main { max-width:1340px; margin:0 auto; padding:20px 16px 0; }
 #rank-table th { color:var(--kv-muted); font-weight:600; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.03em; }
 #rank-table td.num, #rank-table th.num { text-align:right; }
 .tk { font-weight:600; }
+.tk-link { color:var(--kv-primary); text-decoration:none; }
+.tk-link:hover { text-decoration:underline; }
 .nm { color:var(--kv-muted); font-size:0.78rem; }
 .tag { display:inline-block; padding:1px 7px; border-radius:10px; font-size:0.7rem; font-weight:700; border:1px solid var(--kv-border); }
 .tag.dcf { color:var(--kv-accent); border-color:var(--kv-accent); }
