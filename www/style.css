@@ -45,7 +45,11 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
 .notice strong { color: var(--kv-text); }
 
 /* ── Undervalued screens row (3 pills in one line) ── */
-.screens-row { display: flex; gap: 12px; margin-bottom: 20px; }
+.screens-row { margin-bottom: 20px; }
+.screens-row-label { margin: 0 0 6px; font-size: 0.78rem; font-weight: 600; color: var(--kv-muted); }
+.screens-row-pills { display: flex; gap: 12px; }
+/* "Most undervalued" stays in each link for screen readers and search engines; the label above says it once. */
+.screen-pill-label .screen-pill-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .screen-pill {
   flex: 1; display: flex; align-items: center; gap: 10px;
   background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3);
@@ -70,12 +74,16 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
 .screen-pill-label .screen-pill-date { font-size: 0.68rem; color: var(--kv-accent); }
 .screen-pill-date:empty { display: none; }
 .screen-pill-arrow { flex: 0 0 auto; color: var(--kv-pass); font-weight: 700; font-size: 1rem; }
+/* Flatter cards (2026-11-14): less padding, smaller flag, tighter lines -- same look, less height. */
+.screen-pill { padding: 6px 12px; }
+.screen-pill-flag { font-size: 1.15rem; }
+.screen-pill-label { gap: 0; line-height: 1.2; }
 @media (max-width: 600px) {
   /* 5 pills don't divide evenly into a 2-column grid (a lone half-width
      pill on the last row looks broken) — a single horizontally-scrollable
      row keeps every pill the same size, same pattern as kv-nav.js's
      mobile tool-nav bar. */
-  .screens-row {
+  .screens-row-pills {
     display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 8px;
     scrollbar-width: none; -webkit-overflow-scrolling: touch;
     /* overflow-x: auto forces overflow-y to auto too (can't mix visible +
@@ -84,8 +92,8 @@ html:not(.dark):not(.prestige):not(.sky) .screen-pill-new { border-color: rgba(2
        margin keeps the row's visible position unchanged. */
     padding-top: 12px; margin-top: -12px;
   }
-  .screens-row::-webkit-scrollbar { display: none; }
-  .screen-pill { flex: 0 0 148px; gap: 6px; padding: 8px 10px; }
+  .screens-row-pills::-webkit-scrollbar { display: none; }
+  .screen-pill { flex: 0 0 148px; gap: 6px; padding: 5px 10px; }
   .screen-pill-flag { font-size: 1.05rem; }
   .screen-pill-label strong { font-size: 0.76rem; }
   .screen-pill-label span { font-size: 0.6rem; }
