@@ -30,6 +30,19 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "How to Value a Stock with a Free DCF Calculator (Netflix Example)",
+    "description": "A 6-minute walkthrough valuing Netflix on KashVector's free DCF calculator: what's priced in, free cash flow growth, forecast years, long-run growth, the discount rate (WACC) and beta, Bear, Base and Bull cases, and the Pressure test.",
+    "thumbnailUrl": "https://kashvector.com/videos/dcf-walkthrough.jpg",
+    "uploadDate": "2026-11-16T12:00:00+11:00",
+    "duration": "PT6M26S",
+    "contentUrl": "https://www.youtube.com/watch?v=JEjlsfn0f6M",
+    "embedUrl": "https://www.youtube.com/embed/JEjlsfn0f6M"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
       {
@@ -217,6 +230,7 @@
   <div id="kv-nav-placeholder" style="height:41px"></div>
   <script src="/kv-nav.js"></script>
   <script src="/kv-footer.js"></script>
+  <script defer src="/kv-video.js"></script>
 
   <header class="app-header">
     <h1><img src="../dcf-icon.svg" alt="" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:6px">DCF Valuation</h1>
@@ -293,6 +307,7 @@
       <button id="analyse-btn">Analyse</button>
     </section>
     <p class="hint" id="market-hint">Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).</p>
+    <p class="kv-video-row" style="text-align:left;margin:-4px 0 0 -12px;"><a class="kv-video-link" data-kv-video="JEjlsfn0f6M" data-title="How to value a stock with a free DCF calculator" href="https://youtu.be/JEjlsfn0f6M" target="_blank" rel="noopener">Watch a quick tutorial on how to value a stock here</a></p>
 
     <details class="market-hint">
       <summary>Using another market? Add a suffix to the ticker</summary>
@@ -571,6 +586,11 @@
 
   <section class="tool-info">
     <div class="tool-about">
+      <h2>Watch: how to value a stock with this tool</h2>
+      <div class="kv-video-embed" data-kv-video="JEjlsfn0f6M" data-title="How to value a stock with a free DCF calculator" data-poster="/videos/dcf-walkthrough.webp" style="margin:0 0 8px;--kv-play-x:73%">
+        <a href="https://youtu.be/JEjlsfn0f6M" target="_blank" rel="noopener">Watch the 6-minute walkthrough on YouTube</a>
+      </div>
+      <p style="font-size:0.85rem;margin-top:0;">A 6-minute walkthrough valuing Netflix from start to finish: what's priced in, every assumption, and the Pressure test.</p>
       <h2>About this tool</h2>
       <p>Enter any stock ticker to estimate its intrinsic value using Discounted Cash Flow (DCF) analysis. The tool pulls live data from Yahoo Finance, calculates the discount rate (WACC) from first principles — cost of equity via the CAPM formula, cost of debt from the income statement, weighted by the company's actual capital structure — and runs three scenarios side by side: <strong>Bear, Base, and Bull</strong>. Each scenario shows intrinsic value per share, the margin of safety versus today's price, and the expected annualised return if the price converges to fair value over 1, 3, or 5 years.</p>
       <p>It adapts the method to the company. <strong>Banks, insurers, and NBFCs</strong> automatically switch away from DCF, because free cash flow is structurally meaningless for them — deposits and reserves are raw materials, not owner earnings. Most use the <strong>Dividend Discount Model (DDM)</strong>; ones that retain most of their earnings instead of paying them out — common among high-growth lenders — automatically use the <strong>Excess Return Model</strong> instead, since DDM would understate the value created by reinvesting the rest. <strong>Regulated utilities</strong> use the same Excess Return Model, since a regulator sets their allowed return on a fixed asset base rather than letting cash flow drive value. <strong>REITs</strong> switch to an FFO/AFFO-based model (GAAP depreciation distorts their reported net income), and <strong>airlines</strong> switch to EV/EBITDA (cyclicality and leverage distort a single trailing-year FCF snapshot). Other dividend payers can optionally be valued with DDM too. When a company has <strong>negative or missing free cash flow</strong> (common for fast-growing firms), you can normalise it from revenue × a target margin, and the tool estimates when FCF is likely to turn positive.</p>
