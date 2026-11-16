@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-10-15",
+  "asOf": "2026-11-13",
   "source": "https://www.betashares.com.au/files/csv/DRUG_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-10-17T06:24:31.617Z",
+  "fetchedAt": "2026-11-16T05:36:45.285Z",
   "rows": [
     {
       "yahoo": "LLY",
       "raw": "LLY UN",
       "name": "ELI LILLY & CO",
-      "weight": 0.08315170910000001,
+      "weight": 0.0918275433,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -15,7 +15,7 @@
       "yahoo": "JNJ",
       "raw": "JNJ UN",
       "name": "JOHNSON & JOHNSON",
-      "weight": 0.07599637470000001,
+      "weight": 0.0790958381,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -23,15 +23,7 @@
       "yahoo": "ABBV",
       "raw": "ABBV UN",
       "name": "ABBVIE INC",
-      "weight": 0.07195816490000001,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "MRK",
-      "raw": "MRK UN",
-      "name": "MERCK & CO INC",
-      "weight": 0.0522280117,
+      "weight": 0.0692610016,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -39,15 +31,15 @@
       "yahoo": "UNH",
       "raw": "UNH UN",
       "name": "UNITEDHEALTH GROUP INC",
-      "weight": 0.0510112424,
+      "weight": 0.048588111100000005,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "ROP",
-      "raw": "ROP SE",
-      "name": "ROCHE HOLDING AG",
-      "weight": 0.0408466968,
+      "yahoo": "MRK",
+      "raw": "MRK UN",
+      "name": "MERCK & CO INC",
+      "weight": 0.0484301383,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -55,15 +47,15 @@
       "yahoo": "AZN.L",
       "raw": "AZN LN",
       "name": "ASTRAZENECA PLC",
-      "weight": 0.0400277493,
+      "weight": 0.0418910744,
       "country": "United Kingdom",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "TMO",
-      "raw": "TMO UN",
-      "name": "THERMO FISHER SCIENTIFIC INC",
-      "weight": 0.038915332999999996,
+      "yahoo": "ROP",
+      "raw": "ROP SE",
+      "name": "ROCHE HOLDING AG",
+      "weight": 0.040636768200000006,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -71,15 +63,23 @@
       "yahoo": "NOVN.SW",
       "raw": "NOVN SE",
       "name": "NOVARTIS AG",
-      "weight": 0.0386656691,
+      "weight": 0.0385283269,
       "country": "Switzerland",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "TMO",
+      "raw": "TMO UN",
+      "name": "THERMO FISHER SCIENTIFIC INC",
+      "weight": 0.0374337695,
+      "country": "United States",
       "sector": "Healthcare"
     },
     {
       "yahoo": "AMGN",
       "raw": "AMGN UW",
       "name": "AMGEN INC",
-      "weight": 0.031756016,
+      "weight": 0.0320959285,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -87,7 +87,7 @@
       "yahoo": "GILD",
       "raw": "GILD UW",
       "name": "GILEAD SCIENCES INC",
-      "weight": 0.0281645776,
+      "weight": 0.0285132779,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -95,7 +95,7 @@
       "yahoo": "ABT",
       "raw": "ABT UN",
       "name": "ABBOTT LABORATORIES",
-      "weight": 0.0263590427,
+      "weight": 0.025691257300000003,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -103,7 +103,7 @@
       "yahoo": "PFE",
       "raw": "PFE UN",
       "name": "PFIZER INC",
-      "weight": 0.0246292231,
+      "weight": 0.0225283376,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -111,7 +111,7 @@
       "yahoo": "DHR",
       "raw": "DHR UN",
       "name": "DANAHER CORP",
-      "weight": 0.023366402499999998,
+      "weight": 0.0224112056,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -119,7 +119,7 @@
       "yahoo": "ISRG",
       "raw": "ISRG UW",
       "name": "INTUITIVE SURGICAL INC",
-      "weight": 0.021964097499999998,
+      "weight": 0.0214395557,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -127,23 +127,23 @@
       "yahoo": "NOVO-B.CO",
       "raw": "NOVOB DC",
       "name": "NOVO NORDISK A/S",
-      "weight": 0.0207945631,
+      "weight": 0.020553373,
       "country": "Denmark",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "BMY",
-      "raw": "BMY UN",
-      "name": "BRISTOL-MYERS SQUIBB CO",
-      "weight": 0.0179138881,
-      "country": "United States",
       "sector": "Healthcare"
     },
     {
       "yahoo": "MDT",
       "raw": "MDT UN",
       "name": "MEDTRONIC PLC",
-      "weight": 0.017842691600000002,
+      "weight": 0.0180126228,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "BMY",
+      "raw": "BMY UN",
+      "name": "BRISTOL-MYERS SQUIBB CO",
+      "weight": 0.0177270253,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -151,23 +151,7 @@
       "yahoo": "SYK",
       "raw": "SYK UN",
       "name": "STRYKER CORP",
-      "weight": 0.0161620382,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "GSK.L",
-      "raw": "GSK LN",
-      "name": "GSK PLC",
-      "weight": 0.015259091300000001,
-      "country": "United Kingdom",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "VRTX",
-      "raw": "VRTX UW",
-      "name": "VERTEX PHARMACEUTICALS INC",
-      "weight": 0.0148699573,
+      "weight": 0.0164341559,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -175,23 +159,39 @@
       "yahoo": "SAN.PA",
       "raw": "SAN FP",
       "name": "SANOFI",
-      "weight": 0.0139036431,
+      "weight": 0.015410978200000001,
       "country": "France",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "ELV",
-      "raw": "ELV UN",
-      "name": "ELEVANCE HEALTH INC",
-      "weight": 0.0137342596,
+      "yahoo": "VRTX",
+      "raw": "VRTX UW",
+      "name": "VERTEX PHARMACEUTICALS INC",
+      "weight": 0.0148584171,
       "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "GSK.L",
+      "raw": "GSK LN",
+      "name": "GSK PLC",
+      "weight": 0.0147870971,
+      "country": "United Kingdom",
       "sector": "Healthcare"
     },
     {
       "yahoo": "REGN",
       "raw": "REGN UW",
       "name": "REGENERON PHARMACEUTICALS INC",
-      "weight": 0.0116464554,
+      "weight": 0.0132209686,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "ELV",
+      "raw": "ELV UN",
+      "name": "ELEVANCE HEALTH INC",
+      "weight": 0.0127496583,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -199,7 +199,7 @@
       "yahoo": "HCA",
       "raw": "HCA UN",
       "name": "HCA HEALTHCARE INC",
-      "weight": 0.011641308,
+      "weight": 0.0114220406,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -207,15 +207,7 @@
       "yahoo": "CI",
       "raw": "CI UN",
       "name": "CIGNA GROUP/THE",
-      "weight": 0.0113199576,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "MRNA",
-      "raw": "MRNA UW",
-      "name": "MODERNA INC",
-      "weight": 0.010784298599999999,
+      "weight": 0.0107368115,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -223,23 +215,7 @@
       "yahoo": "4502.T",
       "raw": "4502 JT",
       "name": "TAKEDA PHARMACEUTICAL CO LTD",
-      "weight": 0.009938341,
-      "country": "Japan",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "BSX",
-      "raw": "BSX UN",
-      "name": "BOSTON SCIENTIFIC CORP",
-      "weight": 0.0092189774,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "7741.T",
-      "raw": "7741 JT",
-      "name": "HOYA CORP",
-      "weight": 0.009020344999999999,
+      "weight": 0.010729317700000001,
       "country": "Japan",
       "sector": "Healthcare"
     },
@@ -247,23 +223,23 @@
       "yahoo": "EL.PA",
       "raw": "EL FP",
       "name": "ESSILORLUXOTTICA SA",
-      "weight": 0.008816219699999999,
+      "weight": 0.0098645361,
       "country": "France",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "LONN.SW",
-      "raw": "LONN SE",
-      "name": "LONZA GROUP AG",
-      "weight": 0.0078529735,
-      "country": "Switzerland",
+      "yahoo": "MRNA",
+      "raw": "MRNA UW",
+      "name": "MODERNA INC",
+      "weight": 0.009843512,
+      "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "NTRA",
-      "raw": "NTRA UW",
-      "name": "NATERA INC",
-      "weight": 0.0078437738,
+      "yahoo": "BSX",
+      "raw": "BSX UN",
+      "name": "BOSTON SCIENTIFIC CORP",
+      "weight": 0.008791476999999999,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -271,55 +247,63 @@
       "yahoo": "BAYN.DE",
       "raw": "BAYN GY",
       "name": "BAYER AG",
-      "weight": 0.007681597,
+      "weight": 0.0087540761,
       "country": "Germany",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "HUM",
-      "raw": "HUM UN",
-      "name": "HUMANA INC",
-      "weight": 0.007591190100000001,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "ARGX.BR",
-      "raw": "ARGX BB",
-      "name": "ARGENX SE",
-      "weight": 0.0074839469,
-      "country": "Belgium",
       "sector": "Healthcare"
     },
     {
       "yahoo": "EW",
       "raw": "EW UN",
       "name": "EDWARDS LIFESCIENCES CORP",
-      "weight": 0.007287746899999999,
+      "weight": 0.0083534243,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "HLN.L",
-      "raw": "HLN LN",
-      "name": "HALEON PLC",
-      "weight": 0.0071171373000000005,
-      "country": "United Kingdom",
-      "sector": "Consumer Staples"
+      "yahoo": "LONN.SW",
+      "raw": "LONN SE",
+      "name": "LONZA GROUP AG",
+      "weight": 0.0081452969,
+      "country": "Switzerland",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "ARGX.BR",
+      "raw": "ARGX BB",
+      "name": "ARGENX SE",
+      "weight": 0.008002977,
+      "country": "Belgium",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "7741.T",
+      "raw": "7741 JT",
+      "name": "HOYA CORP",
+      "weight": 0.0077991465000000005,
+      "country": "Japan",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "BDX",
       "raw": "BDX UN",
       "name": "BECTON DICKINSON & CO",
-      "weight": 0.0070930781,
+      "weight": 0.0075715751,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "A",
-      "raw": "A UN",
-      "name": "AGILENT TECHNOLOGIES INC",
-      "weight": 0.006845078100000001,
+      "yahoo": "IDXX",
+      "raw": "IDXX UW",
+      "name": "IDEXX LABORATORIES INC",
+      "weight": 0.0075040526,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "HUM",
+      "raw": "HUM UN",
+      "name": "HUMANA INC",
+      "weight": 0.0073936068,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -327,15 +311,47 @@
       "yahoo": "4578.T",
       "raw": "4578 JT",
       "name": "OTSUKA HOLDINGS CO LTD",
-      "weight": 0.0066108621999999995,
+      "weight": 0.0065019512,
       "country": "Japan",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "RVMD",
-      "raw": "RVMD UW",
-      "name": "REVOLUTION MEDICINES INC",
-      "weight": 0.0065546783,
+      "yahoo": "SDZ.SW",
+      "raw": "SDZ SE",
+      "name": "SANDOZ GROUP AG",
+      "weight": 0.0064826318,
+      "country": "Switzerland",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "6160.HK",
+      "raw": "6160 HK",
+      "name": "BEONE MEDICINES LTD",
+      "weight": 0.0064281291,
+      "country": "Hong Kong",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "A",
+      "raw": "A UN",
+      "name": "AGILENT TECHNOLOGIES INC",
+      "weight": 0.0063292415,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "HLN.L",
+      "raw": "HLN LN",
+      "name": "HALEON PLC",
+      "weight": 0.006239346,
+      "country": "United Kingdom",
+      "sector": "Consumer Staples"
+    },
+    {
+      "yahoo": "WAT",
+      "raw": "WAT UN",
+      "name": "WATERS CORP",
+      "weight": 0.0061880163,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -343,7 +359,7 @@
       "yahoo": "VEEV",
       "raw": "VEEV UN",
       "name": "VEEVA SYSTEMS INC",
-      "weight": 0.0065545714,
+      "weight": 0.0061478628999999995,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -351,87 +367,71 @@
       "yahoo": "IQV",
       "raw": "IQV UN",
       "name": "IQVIA HOLDINGS INC",
-      "weight": 0.0063806405,
+      "weight": 0.005969740100000001,
       "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "WAT",
-      "raw": "WAT UN",
-      "name": "WATERS CORP",
-      "weight": 0.0063473596,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "SDZ.SW",
-      "raw": "SDZ SE",
-      "name": "SANDOZ GROUP AG",
-      "weight": 0.0062042394,
-      "country": "Switzerland",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "IDXX",
-      "raw": "IDXX UW",
-      "name": "IDEXX LABORATORIES INC",
-      "weight": 0.0060956815,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "6160.HK",
-      "raw": "6160 HK",
-      "name": "BEONE MEDICINES LTD",
-      "weight": 0.005825987299999999,
-      "country": "Hong Kong",
       "sector": "Healthcare"
     },
     {
       "yahoo": "GALD.SW",
       "raw": "GALD SE",
       "name": "GALDERMA GROUP AG",
-      "weight": 0.005814932900000001,
+      "weight": 0.0059043237,
       "country": "Switzerland",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "4519.T",
-      "raw": "4519 JT",
-      "name": "CHUGAI PHARMACEUTICAL CO LTD",
-      "weight": 0.0043022445,
-      "country": "Japan",
+      "yahoo": "NTRA",
+      "raw": "NTRA UW",
+      "name": "NATERA INC",
+      "weight": 0.005863878300000001,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "RVMD",
+      "raw": "RVMD UW",
+      "name": "REVOLUTION MEDICINES INC",
+      "weight": 0.005396225100000001,
+      "country": "United States",
       "sector": "Healthcare"
     },
     {
       "yahoo": "UCB.BR",
       "raw": "UCB BB",
       "name": "UCB SA",
-      "weight": 0.0037793341,
+      "weight": 0.005039549,
       "country": "Belgium",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "RDOR3.SA",
-      "raw": "RDOR3 BS",
-      "name": "REDE D'OR SAO LUIZ SA",
-      "weight": 0.0022755187,
-      "country": "Brazil",
+      "yahoo": "4519.T",
+      "raw": "4519 JT",
+      "name": "CHUGAI PHARMACEUTICAL CO LTD",
+      "weight": 0.0046951612,
+      "country": "Japan",
       "sector": "Healthcare"
     },
     {
       "yahoo": "2359.HK",
       "raw": "2359 HK",
       "name": "WUXI APPTEC CO LTD",
-      "weight": 0.0018973109,
+      "weight": 0.0016645344,
       "country": "Hong Kong",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "RDOR3.SA",
+      "raw": "RDOR3 BS",
+      "name": "REDE D'OR SAO LUIZ SA",
+      "weight": 0.0015113509,
+      "country": "Brazil",
       "sector": "Healthcare"
     },
     {
       "yahoo": "6990.HK",
       "raw": "6990 HK",
       "name": "SICHUAN KELUN-BIOTECH BIOPHARM",
-      "weight": 0.0007121075000000001,
+      "weight": 0.0006747277,
       "country": "Hong Kong",
       "sector": "Healthcare"
     },
@@ -439,7 +439,7 @@
       "yahoo": "5225.KL",
       "raw": "IHH MK",
       "name": "IHH HEALTHCARE BHD",
-      "weight": 0.0006705159,
+      "weight": 0.000610975,
       "country": "Malaysia",
       "sector": "Healthcare"
     }

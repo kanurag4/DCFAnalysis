@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-10-15",
+  "asOf": "2026-11-13",
   "source": "https://www.blackrock.com/au/products/273416/fund/1478358644060.ajax?fileType=csv&fileName=IAA_holdings&dataType=fund",
-  "fetchedAt": "2026-10-17T06:24:35.779Z",
+  "fetchedAt": "2026-11-16T05:36:48.151Z",
   "rows": [
     {
       "yahoo": "2330.TW",
       "raw": "2330",
       "name": "TAIWAN SEMICONDUCTOR MANUFACTURING",
-      "weight": 0.30010000000000003,
+      "weight": 0.2973,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -15,7 +15,7 @@
       "yahoo": "005930.KS",
       "raw": "005930",
       "name": "SAMSUNG ELECTRONICS LTD",
-      "weight": 0.11779999999999999,
+      "weight": 0.12119999999999999,
       "country": "Korea (South)",
       "sector": "Information Technology"
     },
@@ -23,7 +23,7 @@
       "yahoo": "000660.KS",
       "raw": "000660",
       "name": "SK HYNIX",
-      "weight": 0.0907,
+      "weight": 0.0917,
       "country": "Korea (South)",
       "sector": "Information Technology"
     },
@@ -31,7 +31,7 @@
       "yahoo": "0700.HK",
       "raw": "700",
       "name": "TENCENT HOLDINGS",
-      "weight": 0.0546,
+      "weight": 0.0526,
       "country": "Hong Kong",
       "sector": "Communication"
     },
@@ -39,7 +39,7 @@
       "yahoo": "9988.HK",
       "raw": "9988",
       "name": "ALIBABA GROUP HOLDING",
-      "weight": 0.0446,
+      "weight": 0.0395,
       "country": "Hong Kong",
       "sector": "Consumer Discretionary"
     },
@@ -47,7 +47,7 @@
       "yahoo": "2454.TW",
       "raw": "2454",
       "name": "MEDIATEK",
-      "weight": 0.034,
+      "weight": 0.0346,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -55,7 +55,7 @@
       "yahoo": "0939.HK",
       "raw": "939",
       "name": "CHINA CONSTRUCTION BANK CORP H",
-      "weight": 0.0208,
+      "weight": 0.0227,
       "country": "Hong Kong",
       "sector": "Financials"
     },
@@ -63,23 +63,15 @@
       "yahoo": "D05.SI",
       "raw": "D05",
       "name": "DBS GROUP HOLDINGS LTD",
-      "weight": 0.0195,
+      "weight": 0.0192,
       "country": "Singapore",
       "sector": "Financials"
-    },
-    {
-      "yahoo": "2308.TW",
-      "raw": "2308",
-      "name": "DELTA ELECTRONICS",
-      "weight": 0.016,
-      "country": "Taiwan",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "1299.HK",
       "raw": "1299",
       "name": "AIA GROUP",
-      "weight": 0.0158,
+      "weight": 0.0178,
       "country": "Hong Kong",
       "sector": "Financials"
     },
@@ -87,15 +79,15 @@
       "yahoo": "005935.KS",
       "raw": "005935",
       "name": "SAMSUNG ELECTRONICS NON VOTING PRE",
-      "weight": 0.015700000000000002,
+      "weight": 0.0176,
       "country": "Korea (South)",
       "sector": "Information Technology"
     },
     {
       "yahoo": "2317.TW",
       "raw": "2317",
-      "name": "HON HAI PRECISION INDUSTRY",
-      "weight": 0.0149,
+      "name": "HON HAI PRECISION INDUSTRY LTD",
+      "weight": 0.0154,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -103,7 +95,7 @@
       "yahoo": "O39.SI",
       "raw": "O39",
       "name": "OVERSEA-CHINESE BANKING",
-      "weight": 0.0143,
+      "weight": 0.0146,
       "country": "Singapore",
       "sector": "Financials"
     },
@@ -111,15 +103,15 @@
       "yahoo": "1398.HK",
       "raw": "1398",
       "name": "INDUSTRIAL AND COMMERCIAL BANK OF",
-      "weight": 0.013000000000000001,
+      "weight": 0.0139,
       "country": "Hong Kong",
       "sector": "Financials"
     },
     {
-      "yahoo": "3711.TW",
-      "raw": "3711",
-      "name": "ASE TECHNOLOGY HOLDING",
-      "weight": 0.0118,
+      "yahoo": "2308.TW",
+      "raw": "2308",
+      "name": "DELTA ELECTRONICS",
+      "weight": 0.0125,
       "country": "Taiwan",
       "sector": "Information Technology"
     },
@@ -127,7 +119,7 @@
       "yahoo": "3988.HK",
       "raw": "3988",
       "name": "BANK OF CHINA LTD H",
-      "weight": 0.0109,
+      "weight": 0.0116,
       "country": "Hong Kong",
       "sector": "Financials"
     },
@@ -135,79 +127,55 @@
       "yahoo": "1810.HK",
       "raw": "1810",
       "name": "XIAOMI",
-      "weight": 0.0098,
+      "weight": 0.011000000000000001,
       "country": "Hong Kong",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "3711.TW",
+      "raw": "3711",
+      "name": "ASE TECHNOLOGY HOLDING",
+      "weight": 0.0108,
+      "country": "Taiwan",
       "sector": "Information Technology"
     },
     {
       "yahoo": "1303.TW",
       "raw": "1303",
       "name": "NAN YA PLASTICS CORP",
-      "weight": 0.0092,
+      "weight": 0.009300000000000001,
       "country": "Taiwan",
       "sector": "Materials"
-    },
-    {
-      "yahoo": "3690.HK",
-      "raw": "3690",
-      "name": "MEITUAN",
-      "weight": 0.0089,
-      "country": "Hong Kong",
-      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "0388.HK",
       "raw": "388",
       "name": "HONG KONG EXCHANGES AND CLEARING",
-      "weight": 0.0088,
+      "weight": 0.0091,
       "country": "Hong Kong",
       "sector": "Financials"
-    },
-    {
-      "yahoo": "2383.TW",
-      "raw": "2383",
-      "name": "ELITE MATERIAL",
-      "weight": 0.0086,
-      "country": "Taiwan",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "402340.KS",
       "raw": "402340",
       "name": "SK SQUARE",
-      "weight": 0.0085,
+      "weight": 0.0088,
       "country": "Korea (South)",
       "sector": "Industrials"
     },
     {
-      "yahoo": "2303.TW",
-      "raw": "2303",
-      "name": "UNITED MICRO ELECTRONICS CORP",
-      "weight": 0.008100000000000001,
-      "country": "Taiwan",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "U11.SI",
-      "raw": "U11",
-      "name": "UNITED OVERSEAS BANK",
-      "weight": 0.0077,
-      "country": "Singapore",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "9999.HK",
-      "raw": "9999",
-      "name": "NETEASE",
-      "weight": 0.0073,
+      "yahoo": "3690.HK",
+      "raw": "3690",
+      "name": "MEITUAN",
+      "weight": 0.0086,
       "country": "Hong Kong",
-      "sector": "Communication"
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "2891.TW",
       "raw": "2891",
       "name": "CTBC FINANCIAL HOLDING",
-      "weight": 0.0073,
+      "weight": 0.008100000000000001,
       "country": "Taiwan",
       "sector": "Financials"
     },
@@ -215,7 +183,7 @@
       "yahoo": "2881.TW",
       "raw": "2881",
       "name": "FUBON FINANCIAL HOLDING",
-      "weight": 0.0073,
+      "weight": 0.0077,
       "country": "Taiwan",
       "sector": "Financials"
     },
@@ -223,41 +191,73 @@
       "yahoo": "2318.HK",
       "raw": "2318",
       "name": "PING AN INSURANCE (GROUP) CO OF CH",
-      "weight": 0.006999999999999999,
+      "weight": 0.0075,
       "country": "Hong Kong",
       "sector": "Financials"
+    },
+    {
+      "yahoo": "9999.HK",
+      "raw": "9999",
+      "name": "NETEASE",
+      "weight": 0.0074,
+      "country": "Hong Kong",
+      "sector": "Communication"
+    },
+    {
+      "yahoo": "U11.SI",
+      "raw": "U11",
+      "name": "UNITED OVERSEAS BANK",
+      "weight": 0.0072,
+      "country": "Singapore",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "2383.TW",
+      "raw": "2383",
+      "name": "ELITE MATERIAL",
+      "weight": 0.0070999999999999995,
+      "country": "Taiwan",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "105560.KS",
       "raw": "105560",
       "name": "KB FINANCIAL GROUP",
-      "weight": 0.0063,
+      "weight": 0.0067,
       "country": "Korea (South)",
       "sector": "Financials"
+    },
+    {
+      "yahoo": "2303.TW",
+      "raw": "2303",
+      "name": "UNITED MICRO ELECTRONICS CORP",
+      "weight": 0.0063,
+      "country": "Taiwan",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "2882.TW",
       "raw": "2882",
       "name": "CATHAY FINANCIAL HOLDING",
-      "weight": 0.005699999999999999,
+      "weight": 0.0059,
       "country": "Taiwan",
       "sector": "Financials"
-    },
-    {
-      "yahoo": "1211.HK",
-      "raw": "1211",
-      "name": "BYD H",
-      "weight": 0.005699999999999999,
-      "country": "Hong Kong",
-      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "9618.HK",
       "raw": "9618",
       "name": "JD.COM CLASS A",
-      "weight": 0.0055000000000000005,
+      "weight": 0.0058,
       "country": "Hong Kong",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "2885.TW",
+      "raw": "2885",
+      "name": "YUANTA FINANCIAL HOLDING",
+      "weight": 0.0054,
+      "country": "Taiwan",
+      "sector": "Financials"
     },
     {
       "yahoo": "2887.TW",
@@ -268,12 +268,20 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "2885.TW",
-      "raw": "2885",
-      "name": "YUANTA FINANCIAL HOLDING",
-      "weight": 0.0051,
-      "country": "Taiwan",
-      "sector": "Financials"
+      "yahoo": "ONC",
+      "raw": "6160",
+      "name": "BEONE MEDICINES AG",
+      "weight": 0.0053,
+      "country": "Hong Kong",
+      "sector": "Health Care"
+    },
+    {
+      "yahoo": "1211.HK",
+      "raw": "1211",
+      "name": "BYD H",
+      "weight": 0.0053,
+      "country": "Hong Kong",
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "055550.KS",
@@ -284,50 +292,26 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "005380.KS",
-      "raw": "005380",
-      "name": "HYUNDAI MOTOR",
-      "weight": 0.0048,
-      "country": "Korea (South)",
-      "sector": "Consumer Discretionary"
-    },
-    {
       "yahoo": "0857.HK",
       "raw": "857",
       "name": "PETROCHINA H",
-      "weight": 0.0045000000000000005,
+      "weight": 0.0048,
       "country": "Hong Kong",
       "sector": "Energy"
     },
     {
-      "yahoo": "ONC",
-      "raw": "6160",
-      "name": "BEONE MEDICINES AG",
-      "weight": 0.0044,
-      "country": "Hong Kong",
-      "sector": "Health Care"
-    },
-    {
-      "yahoo": "Z74.SI",
-      "raw": "Z74",
-      "name": "SINGAPORE TELECOMMUNICATIONS LTD",
-      "weight": 0.0043,
-      "country": "Singapore",
-      "sector": "Communication"
-    },
-    {
-      "yahoo": "2899.HK",
-      "raw": "2899",
-      "name": "ZIJIN MINING GROUP LTD H",
-      "weight": 0.004,
-      "country": "Hong Kong",
-      "sector": "Materials"
+      "yahoo": "005380.KS",
+      "raw": "005380",
+      "name": "HYUNDAI MOTOR",
+      "weight": 0.0046,
+      "country": "Korea (South)",
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "0669.HK",
       "raw": "669",
-      "name": "TECHTRONIC INDUSTRIES COMPANY-100",
-      "weight": 0.0039000000000000003,
+      "name": "TECHTRONIC INDUSTRIES",
+      "weight": 0.0045000000000000005,
       "country": "Hong Kong",
       "sector": "Industrials"
     },
@@ -335,9 +319,33 @@
       "yahoo": "9961.HK",
       "raw": "9961",
       "name": "TRIP.COM GROUP",
-      "weight": 0.0039000000000000003,
+      "weight": 0.0045000000000000005,
       "country": "Hong Kong",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "Z74.SI",
+      "raw": "Z74",
+      "name": "SINGAPORE TELECOMMUNICATIONS LTD",
+      "weight": 0.0044,
+      "country": "Singapore",
+      "sector": "Communication"
+    },
+    {
+      "yahoo": "0001.HK",
+      "raw": "1",
+      "name": "CK HUTCHISON HOLDINGS",
+      "weight": 0.0042,
+      "country": "Hong Kong",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "3968.HK",
+      "raw": "3968",
+      "name": "CHINA MERCHANTS BANK H",
+      "weight": 0.0039000000000000003,
+      "country": "Hong Kong",
+      "sector": "Financials"
     },
     {
       "yahoo": "2628.HK",
@@ -348,20 +356,12 @@
       "sector": "Financials"
     },
     {
-      "yahoo": "0001.HK",
-      "raw": "1",
-      "name": "CK HUTCHISON HOLDINGS",
+      "yahoo": "0016.HK",
+      "raw": "16",
+      "name": "SUN HUNG KAI PROPERTIES LTD",
       "weight": 0.0038,
       "country": "Hong Kong",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "3968.HK",
-      "raw": "3968",
-      "name": "CHINA MERCHANTS BANK H",
-      "weight": 0.0037,
-      "country": "Hong Kong",
-      "sector": "Financials"
+      "sector": "Real Estate"
     },
     {
       "yahoo": "9888.HK",
@@ -372,34 +372,18 @@
       "sector": "Communication"
     },
     {
-      "yahoo": "034020.KS",
-      "raw": "034020",
-      "name": "DOOSAN ENERBILITY LTD",
-      "weight": 0.0034999999999999996,
-      "country": "Korea (South)",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "0016.HK",
-      "raw": "16",
-      "name": "SUN HUNG KAI PROPERTIES LTD",
-      "weight": 0.0034000000000000002,
+      "yahoo": "2899.HK",
+      "raw": "2899",
+      "name": "ZIJIN MINING GROUP -500 LTD H",
+      "weight": 0.0036,
       "country": "Hong Kong",
-      "sector": "Real Estate"
-    },
-    {
-      "yahoo": "012450.KS",
-      "raw": "012450",
-      "name": "HANWHA AEROSPACE LTD",
-      "weight": 0.0034000000000000002,
-      "country": "Korea (South)",
-      "sector": "Industrials"
+      "sector": "Materials"
     },
     {
       "yahoo": "035420.KS",
       "raw": "035420",
       "name": "NAVER",
-      "weight": 0.0033,
+      "weight": 0.0034999999999999996,
       "country": "Korea (South)",
       "sector": "Communication"
     },
@@ -407,9 +391,25 @@
       "yahoo": "000270.KS",
       "raw": "000270",
       "name": "KIA CORPORATION",
-      "weight": 0.0031,
+      "weight": 0.0029,
       "country": "Korea (South)",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "012450.KS",
+      "raw": "012450",
+      "name": "HANWHA AEROSPACE LTD",
+      "weight": 0.0027,
+      "country": "Korea (South)",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "034020.KS",
+      "raw": "034020",
+      "name": "DOOSAN ENERBILITY LTD",
+      "weight": 0.0027,
+      "country": "Korea (South)",
+      "sector": "Industrials"
     },
     {
       "yahoo": "005387.KS",

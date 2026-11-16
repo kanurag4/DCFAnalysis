@@ -1,13 +1,13 @@
 {
-  "asOf": "2026-10-15",
+  "asOf": "2026-11-13",
   "source": "https://www.betashares.com.au/files/csv/RBTZ_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-10-17T06:24:31.781Z",
+  "fetchedAt": "2026-11-16T05:36:45.438Z",
   "rows": [
     {
       "yahoo": "ISRG",
       "raw": "ISRG UW",
       "name": "INTUITIVE SURGICAL INC",
-      "weight": 0.09262521,
+      "weight": 0.1078587154,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -15,7 +15,7 @@
       "yahoo": "6954.T",
       "raw": "6954 JT",
       "name": "FANUC CORP",
-      "weight": 0.08982647469999999,
+      "weight": 0.0869758446,
       "country": "Japan",
       "sector": "Industrials"
     },
@@ -23,7 +23,7 @@
       "yahoo": "6861.T",
       "raw": "6861 JT",
       "name": "KEYENCE CORP",
-      "weight": 0.08471597709999999,
+      "weight": 0.0859020975,
       "country": "Japan",
       "sector": "Information Technology"
     },
@@ -31,7 +31,7 @@
       "yahoo": "ABBN.SW",
       "raw": "ABBN SE",
       "name": "ABB LTD",
-      "weight": 0.08201627350000001,
+      "weight": 0.0791088029,
       "country": "Switzerland",
       "sector": "Industrials"
     },
@@ -39,7 +39,7 @@
       "yahoo": "NVDA",
       "raw": "NVDA UW",
       "name": "NVIDIA CORP",
-      "weight": 0.0808295764,
+      "weight": 0.06561780960000001,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -47,7 +47,7 @@
       "yahoo": "6273.T",
       "raw": "6273 JT",
       "name": "SMC CORP",
-      "weight": 0.050284841499999997,
+      "weight": 0.0473710343,
       "country": "Japan",
       "sector": "Industrials"
     },
@@ -55,103 +55,95 @@
       "yahoo": "6383.T",
       "raw": "6383 JT",
       "name": "DAIFUKU CO LTD",
-      "weight": 0.0368273748,
+      "weight": 0.0327517988,
       "country": "Japan",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "CGNX",
-      "raw": "CGNX UW",
-      "name": "COGNEX CORP",
-      "weight": 0.0253251416,
-      "country": "United States",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "300124.SZ",
       "raw": "300124 C2",
       "name": "SHENZHEN INOVANCE TECHNOLOGY C",
-      "weight": 0.0248444795,
+      "weight": 0.0297667746,
       "country": "China",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "TSLA",
+      "raw": "TSLA UW",
+      "name": "TESLA INC",
+      "weight": 0.0247074342,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "CGNX",
+      "raw": "CGNX UW",
+      "name": "COGNEX CORP",
+      "weight": 0.0243964457,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "DE",
+      "raw": "DE UN",
+      "name": "DEERE & CO",
+      "weight": 0.0218012215,
+      "country": "United States",
       "sector": "Industrials"
     },
     {
       "yahoo": "AUR",
       "raw": "AUR UW",
       "name": "AURORA INNOVATION INC",
-      "weight": 0.022675390599999998,
+      "weight": 0.020854042000000003,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "6645.T",
-      "raw": "6645 JT",
-      "name": "OMRON CORP",
-      "weight": 0.021845267,
-      "country": "Japan",
+      "yahoo": "1810.HK",
+      "raw": "1810 HK",
+      "name": "XIAOMI CORP",
+      "weight": 0.0198492237,
+      "country": "Hong Kong",
       "sector": "Information Technology"
     },
     {
       "yahoo": "GOOGL",
       "raw": "GOOGL UW",
       "name": "ALPHABET INC",
-      "weight": 0.021131044,
+      "weight": 0.0198334768,
       "country": "United States",
       "sector": "Communication Services"
-    },
-    {
-      "yahoo": "TSLA",
-      "raw": "TSLA UW",
-      "name": "TESLA INC",
-      "weight": 0.0210732158,
-      "country": "United States",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "6506.T",
-      "raw": "6506 JT",
-      "name": "YASKAWA ELECTRIC CORP",
-      "weight": 0.0207778406,
-      "country": "Japan",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "DE",
-      "raw": "DE UN",
-      "name": "DEERE & CO",
-      "weight": 0.0190824885,
-      "country": "United States",
-      "sector": "Industrials"
     },
     {
       "yahoo": "9660.HK",
       "raw": "9660 HK",
       "name": "HORIZON ROBOTICS INC",
-      "weight": 0.0183122421,
+      "weight": 0.0191803744,
       "country": "Hong Kong",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "300757.SZ",
-      "raw": "300757 C2",
-      "name": "ROBOTECHNIK INTELLIGENT TECHNO",
-      "weight": 0.0170205739,
-      "country": "China",
+      "yahoo": "6645.T",
+      "raw": "6645 JT",
+      "name": "OMRON CORP",
+      "weight": 0.0185363428,
+      "country": "Japan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "6506.T",
+      "raw": "6506 JT",
+      "name": "YASKAWA ELECTRIC CORP",
+      "weight": 0.0182571849,
+      "country": "Japan",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "1810.HK",
-      "raw": "1810 HK",
-      "name": "XIAOMI CORP",
-      "weight": 0.0164452672,
-      "country": "Hong Kong",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "AUTO.OL",
       "raw": "AUTO NO",
       "name": "AUTOSTORE HOLDINGS LTD",
-      "weight": 0.0146203645,
+      "weight": 0.0165037014,
       "country": "Norway",
       "sector": "Industrials"
     },
@@ -159,31 +151,39 @@
       "yahoo": "277810.KQ",
       "raw": "277810 KQ",
       "name": "RAINBOW ROBOTICS",
-      "weight": 0.0145534643,
+      "weight": 0.0153590304,
       "country": "South Korea",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "6134.T",
-      "raw": "6134 JT",
-      "name": "FUJI CORP/AICHI",
-      "weight": 0.0132476306,
-      "country": "Japan",
       "sector": "Industrials"
     },
     {
       "yahoo": "SYM",
       "raw": "SYM UQ",
       "name": "SYMBOTIC INC",
-      "weight": 0.012938896499999998,
+      "weight": 0.0131177294,
       "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "688017.SS",
+      "raw": "688017 C1",
+      "name": "LEADER HARMONIOUS DRIVE SYSTEM",
+      "weight": 0.0119427199,
+      "country": "China",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "9880.HK",
+      "raw": "9880 HK",
+      "name": "UBTECH ROBOTICS CORP LTD",
+      "weight": 0.011715538400000001,
+      "country": "Hong Kong",
       "sector": "Industrials"
     },
     {
       "yahoo": "ROK",
       "raw": "ROK UN",
       "name": "ROCKWELL AUTOMATION INC",
-      "weight": 0.0107857673,
+      "weight": 0.011308395300000001,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -191,199 +191,159 @@
       "yahoo": "TECN.SW",
       "raw": "TECN SE",
       "name": "TECAN GROUP AG",
-      "weight": 0.0100531948,
+      "weight": 0.0111188452,
       "country": "Switzerland",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "9880.HK",
-      "raw": "9880 HK",
-      "name": "UBTECH ROBOTICS CORP LTD",
-      "weight": 0.0098630445,
-      "country": "Hong Kong",
+      "yahoo": "300757.SZ",
+      "raw": "300757 C2",
+      "name": "ROBOTECHNIK INTELLIGENT TECHNO",
+      "weight": 0.0107078553,
+      "country": "China",
       "sector": "Industrials"
     },
     {
-      "yahoo": "688017.SS",
-      "raw": "688017 C1",
-      "name": "LEADER HARMONIOUS DRIVE SYSTEM",
-      "weight": 0.0095284432,
-      "country": "China",
+      "yahoo": "6134.T",
+      "raw": "6134 JT",
+      "name": "FUJI CORP/AICHI",
+      "weight": 0.0088907722,
+      "country": "Japan",
       "sector": "Industrials"
     },
     {
       "yahoo": "6324.T",
       "raw": "6324 JT",
       "name": "HARMONIC DRIVE SYSTEMS INC",
-      "weight": 0.0093522491,
+      "weight": 0.0083513314,
       "country": "Japan",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "454910.KS",
-      "raw": "454910 KP",
-      "name": "DOOSAN ROBOTICS INC",
-      "weight": 0.0079279065,
-      "country": "South Korea",
       "sector": "Industrials"
     },
     {
       "yahoo": "108490.KQ",
       "raw": "108490 KQ",
       "name": "ROBOTIS CO LTD",
-      "weight": 0.0071954198,
+      "weight": 0.0077620749,
       "country": "South Korea",
       "sector": "Information Technology"
+    },
+    {
+      "yahoo": "688169.SS",
+      "raw": "688169 C1",
+      "name": "BEIJING ROBOROCK TECHNOLOGY CO",
+      "weight": 0.007746934800000001,
+      "country": "China",
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "2252.HK",
       "raw": "2252 HK",
       "name": "SHANGHAI MICROPORT MEDBOT GROU",
-      "weight": 0.0065746641,
+      "weight": 0.0074316943000000005,
       "country": "Hong Kong",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "EXA.PA",
-      "raw": "EXA FP",
-      "name": "EXAIL TECHNOLOGIES SA",
-      "weight": 0.0062993551,
-      "country": "France",
+      "yahoo": "454910.KS",
+      "raw": "454910 KP",
+      "name": "DOOSAN ROBOTICS INC",
+      "weight": 0.007326930000000001,
+      "country": "South Korea",
       "sector": "Industrials"
     },
     {
       "yahoo": "OUST",
       "raw": "OUST UW",
       "name": "OUSTER INC",
-      "weight": 0.0060412647,
+      "weight": 0.0070013264,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "688297.SS",
-      "raw": "688297 C1",
-      "name": "AVIC CHENGDU UAS CO LTD",
-      "weight": 0.005719257100000001,
-      "country": "China",
+      "yahoo": "EXA.PA",
+      "raw": "EXA FP",
+      "name": "EXAIL TECHNOLOGIES SA",
+      "weight": 0.006833764500000001,
+      "country": "France",
       "sector": "Industrials"
     },
     {
       "yahoo": "603486.SS",
       "raw": "603486 C1",
       "name": "ECOVACS ROBOTICS CO LTD",
-      "weight": 0.0056062934,
+      "weight": 0.0061471738,
       "country": "China",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "688169.SS",
-      "raw": "688169 C1",
-      "name": "BEIJING ROBOROCK TECHNOLOGY CO",
-      "weight": 0.005519879199999999,
+      "yahoo": "688297.SS",
+      "raw": "688297 C1",
+      "name": "AVIC CHENGDU UAS CO LTD",
+      "weight": 0.005953019600000001,
       "country": "China",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "HSAI",
+      "raw": "HSAI UW",
+      "name": "HESAI GROUP",
+      "weight": 0.0054421741,
+      "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "BIDU",
       "raw": "BIDU UW",
       "name": "BAIDU INC",
-      "weight": 0.005158578299999999,
+      "weight": 0.0054321978,
       "country": "United States",
       "sector": "Communication Services"
     },
     {
-      "yahoo": "PONY",
-      "raw": "PONY UW",
-      "name": "PONY AI INC",
-      "weight": 0.004789936,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "HSAI",
-      "raw": "HSAI UW",
-      "name": "HESAI GROUP",
-      "weight": 0.0047689215,
-      "country": "United States",
-      "sector": "Consumer Discretionary"
+      "yahoo": "002747.SZ",
+      "raw": "002747 C2",
+      "name": "ESTUN AUTOMATION CO LTD",
+      "weight": 0.0052515483,
+      "country": "China",
+      "sector": "Industrials"
     },
     {
       "yahoo": "ATS.TO",
       "raw": "ATS CT",
       "name": "ATS CORP",
-      "weight": 0.0044590822000000006,
+      "weight": 0.0049523872,
       "country": "Canada",
       "sector": "Industrials"
     },
     {
-      "yahoo": "ALNT",
-      "raw": "ALNT UQ",
-      "name": "ALLIENT INC",
-      "weight": 0.004430722000000001,
-      "country": "United States",
+      "yahoo": "300024.SZ",
+      "raw": "300024 C2",
+      "name": "SIASUN ROBOT & AUTOMATION CO L",
+      "weight": 0.0047785931999999995,
+      "country": "China",
       "sector": "Industrials"
     },
     {
       "yahoo": "OMCL",
       "raw": "OMCL UW",
       "name": "OMNICELL INC",
-      "weight": 0.0042435755,
+      "weight": 0.0046336906,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "300024.SZ",
-      "raw": "300024 C2",
-      "name": "SIASUN ROBOT & AUTOMATION CO L",
-      "weight": 0.0041481089,
-      "country": "China",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "002747.SZ",
-      "raw": "002747 C2",
-      "name": "ESTUN AUTOMATION CO LTD",
-      "weight": 0.0041230861,
-      "country": "China",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "058610.KQ",
-      "raw": "058610 KQ",
-      "name": "SPG CO LTD",
-      "weight": 0.0036439192,
-      "country": "South Korea",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "2675.HK",
-      "raw": "2675 HK",
-      "name": "SHENZHEN EDGE MEDICAL CO LTD",
-      "weight": 0.0035155458,
-      "country": "Hong Kong",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "WRD",
-      "raw": "WRD UQ",
-      "name": "WERIDE INC",
-      "weight": 0.0035127534,
+      "yahoo": "PONY",
+      "raw": "PONY UW",
+      "name": "PONY AI INC",
+      "weight": 0.0045584764,
       "country": "United States",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "2729.HK",
-      "raw": "2729 HK",
-      "name": "ZHEJIANG GALAXIS TECHNOLOGY GR",
-      "weight": 0.002935408,
-      "country": "Hong Kong",
-      "sector": "Industrials"
+      "sector": "Information Technology"
     },
     {
       "yahoo": "688686.SS",
       "raw": "688686 C1",
       "name": "OPT MACHINE VISION TECH CO LTD",
-      "weight": 0.0028792753,
+      "weight": 0.0042103462,
       "country": "China",
       "sector": "Information Technology"
     },
@@ -391,111 +351,159 @@
       "yahoo": "PRCT",
       "raw": "PRCT UQ",
       "name": "PROCEPT BIOROBOTICS CORP",
-      "weight": 0.0026362216,
+      "weight": 0.003952894,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "3881.HK",
-      "raw": "3881 HK",
-      "name": "CIDI INC",
-      "weight": 0.0026302765,
-      "country": "Hong Kong",
+      "yahoo": "ALNT",
+      "raw": "ALNT UQ",
+      "name": "ALLIENT INC",
+      "weight": 0.0038301691999999997,
+      "country": "United States",
       "sector": "Industrials"
     },
     {
-      "yahoo": "278A.T",
-      "raw": "278A JT",
-      "name": "TERRA DRONE CORP",
-      "weight": 0.0025693370999999997,
-      "country": "Japan",
+      "yahoo": "WRD",
+      "raw": "WRD UQ",
+      "name": "WERIDE INC",
+      "weight": 0.0038107651,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "058610.KQ",
+      "raw": "058610 KQ",
+      "name": "SPG CO LTD",
+      "weight": 0.0034106982000000003,
+      "country": "South Korea",
       "sector": "Industrials"
+    },
+    {
+      "yahoo": "2675.HK",
+      "raw": "2675 HK",
+      "name": "SHENZHEN EDGE MEDICAL CO LTD",
+      "weight": 0.0033117062000000003,
+      "country": "Hong Kong",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "2498.HK",
       "raw": "2498 HK",
       "name": "ROBOSENSE TECHNOLOGY CO LTD",
-      "weight": 0.0024697992,
+      "weight": 0.0027158919999999997,
       "country": "Hong Kong",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "MOG-A",
-      "raw": "MOG/A UN",
-      "name": "MOOG INC",
-      "weight": 0.0024155734,
-      "country": "United States",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "6258.T",
-      "raw": "6258 JT",
-      "name": "HIRATA CORP",
-      "weight": 0.0023449148,
-      "country": "Japan",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "UMAC",
-      "raw": "UMAC UA",
-      "name": "UNUSUAL MACHINES INC /US",
-      "weight": 0.0023283415,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "2432.HK",
-      "raw": "2432 HK",
-      "name": "SHENZHEN DOBOT CORP LTD",
-      "weight": 0.0022423497,
-      "country": "Hong Kong",
+      "yahoo": "002896.SZ",
+      "raw": "002896 C2",
+      "name": "NINGBO ZHONGDA LEADER INTELLIG",
+      "weight": 0.0026349614,
+      "country": "China",
       "sector": "Industrials"
     },
     {
       "yahoo": "2590.HK",
       "raw": "2590 HK",
       "name": "BEIJING GEEKPLUS TECHNOLOGY CO",
-      "weight": 0.0021904747,
+      "weight": 0.0024507471,
       "country": "Hong Kong",
       "sector": "Industrials"
     },
     {
-      "yahoo": "002896.SZ",
-      "raw": "002896 C2",
-      "name": "NINGBO ZHONGDA LEADER INTELLIG",
-      "weight": 0.0021590202,
+      "yahoo": "MOG-A",
+      "raw": "MOG/A UN",
+      "name": "MOOG INC",
+      "weight": 0.0024441915,
+      "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "2432.HK",
+      "raw": "2432 HK",
+      "name": "SHENZHEN DOBOT CORP LTD",
+      "weight": 0.0023633205,
+      "country": "Hong Kong",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "3881.HK",
+      "raw": "3881 HK",
+      "name": "CIDI INC",
+      "weight": 0.0022477977,
+      "country": "Hong Kong",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "688160.SS",
+      "raw": "688160 C1",
+      "name": "KINCO AUTOMATION SHANGHAI CO L",
+      "weight": 0.0021549716999999997,
       "country": "China",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "278A.T",
+      "raw": "278A JT",
+      "name": "TERRA DRONE CORP",
+      "weight": 0.0021054406,
+      "country": "Japan",
       "sector": "Industrials"
     },
     {
       "yahoo": "AVEX",
       "raw": "AVEX UN",
       "name": "AEVEX CORP",
-      "weight": 0.0021049077,
+      "weight": 0.0020485858,
       "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "688165.SS",
+      "raw": "688165 C1",
+      "name": "EFORT INTELLIGENT ROBOT CO LTD",
+      "weight": 0.0019241187,
+      "country": "China",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "6258.T",
+      "raw": "6258 JT",
+      "name": "HIRATA CORP",
+      "weight": 0.0018937620999999998,
+      "country": "Japan",
       "sector": "Industrials"
     },
     {
       "yahoo": "XPEV",
       "raw": "XPEV UN",
       "name": "XPENG INC",
-      "weight": 0.0016933501000000002,
+      "weight": 0.0018581613,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "688160.SS",
-      "raw": "688160 C1",
-      "name": "KINCO AUTOMATION SHANGHAI CO L",
-      "weight": 0.0015255416999999999,
-      "country": "China",
+      "yahoo": "UMAC",
+      "raw": "UMAC UA",
+      "name": "UNUSUAL MACHINES INC /US",
+      "weight": 0.0016341097,
+      "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "688165.SS",
-      "raw": "688165 C1",
-      "name": "EFORT INTELLIGENT ROBOT CO LTD",
-      "weight": 0.0014947514,
+      "yahoo": "688277.SS",
+      "raw": "688277 C1",
+      "name": "TINAVI MEDICAL TECHNOLOGIES CO",
+      "weight": 0.0015753643,
+      "country": "China",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "603666.SS",
+      "raw": "603666 C1",
+      "name": "YIJIAHE TECHNOLOGY CO LTD",
+      "weight": 0.0014966448,
       "country": "China",
       "sector": "Industrials"
     },
@@ -503,23 +511,23 @@
       "yahoo": "388720.KQ",
       "raw": "388720 KQ",
       "name": "YUIL ROBOTICS CO LTD",
-      "weight": 0.0014246966,
+      "weight": 0.0014010544,
       "country": "South Korea",
       "sector": "Industrials"
     },
     {
-      "yahoo": "688277.SS",
-      "raw": "688277 C1",
-      "name": "TINAVI MEDICAL TECHNOLOGIES CO",
-      "weight": 0.0013720129,
-      "country": "China",
-      "sector": "Healthcare"
+      "yahoo": "2729.HK",
+      "raw": "2729 HK",
+      "name": "ZHEJIANG GALAXIS TECHNOLOGY GR",
+      "weight": 0.0013654733,
+      "country": "Hong Kong",
+      "sector": "Industrials"
     },
     {
       "yahoo": "1021.HK",
       "raw": "1021 HK",
       "name": "GUANGDONG HUAYAN ROBOTICS CO L",
-      "weight": 0.0013235421,
+      "weight": 0.0013357167,
       "country": "Hong Kong",
       "sector": "Industrials"
     },
@@ -527,7 +535,7 @@
       "yahoo": "090360.KQ",
       "raw": "090360 KQ",
       "name": "ROBOSTAR CO LTD",
-      "weight": 0.0012480023,
+      "weight": 0.0011701114,
       "country": "South Korea",
       "sector": "Information Technology"
     },
@@ -535,7 +543,7 @@
       "yahoo": "NOVT",
       "raw": "NOVT UW",
       "name": "NOVANTA INC",
-      "weight": 0.0012146976,
+      "weight": 0.0011377687,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -543,47 +551,39 @@
       "yahoo": "6481.T",
       "raw": "6481 JT",
       "name": "THK CO LTD",
-      "weight": 0.0011495208,
+      "weight": 0.0010326619,
       "country": "Japan",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "603666.SS",
-      "raw": "603666 C1",
-      "name": "YIJIAHE TECHNOLOGY CO LTD",
-      "weight": 0.0010341312,
-      "country": "China",
       "sector": "Industrials"
     },
     {
       "yahoo": "348340.KQ",
       "raw": "348340 KQ",
       "name": "NEUROMEKA CO LTD",
-      "weight": 0.0008485255999999999,
+      "weight": 0.0007524546,
       "country": "South Korea",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "KDK",
-      "raw": "KDK UQ",
-      "name": "KODIAK AI INC",
-      "weight": 0.0008226845,
-      "country": "United States",
-      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "SERV",
       "raw": "SERV UR",
       "name": "SERVE ROBOTICS INC",
-      "weight": 0.0007840656999999999,
+      "weight": 0.0006587769,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "RR",
-      "raw": "RR UR",
-      "name": "RICHTECH ROBOTICS INC",
-      "weight": 0.0006911817,
+      "yahoo": "KDK",
+      "raw": "KDK UQ",
+      "name": "KODIAK AI INC",
+      "weight": 0.0006457708,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "EH",
+      "raw": "EH UQ",
+      "name": "EHANG HOLDINGS LTD",
+      "weight": 0.0006044167999999999,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -591,31 +591,31 @@
       "yahoo": "455900.KQ",
       "raw": "455900 KQ",
       "name": "ANGEL ROBOTICS CO LTD",
-      "weight": 0.0005666336000000001,
+      "weight": 0.0005779324999999999,
       "country": "South Korea",
       "sector": "Healthcare"
-    },
-    {
-      "yahoo": "EH",
-      "raw": "EH UQ",
-      "name": "EHANG HOLDINGS LTD",
-      "weight": 0.0005597355,
-      "country": "United States",
-      "sector": "Industrials"
     },
     {
       "yahoo": "7779.T",
       "raw": "7779 JT",
       "name": "CYBERDYNE INC",
-      "weight": 0.0004936161,
+      "weight": 0.0004517521,
       "country": "Japan",
       "sector": "Healthcare"
+    },
+    {
+      "yahoo": "RR",
+      "raw": "RR UR",
+      "name": "RICHTECH ROBOTICS INC",
+      "weight": 0.0004055687,
+      "country": "United States",
+      "sector": "Industrials"
     },
     {
       "yahoo": "2431.HK",
       "raw": "2431 HK",
       "name": "MINIEYE TECHNOLOGY CO LTD",
-      "weight": 0.0001948607,
+      "weight": 0.00022086490000000001,
       "country": "Hong Kong",
       "sector": "Consumer Discretionary"
     }

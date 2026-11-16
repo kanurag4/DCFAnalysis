@@ -1,37 +1,53 @@
 {
-  "asOf": "2026-10-15",
+  "asOf": "2026-11-13",
   "source": "https://www.betashares.com.au/files/csv/QLTY_Portfolio_Holdings.csv",
-  "fetchedAt": "2026-10-17T06:24:31.732Z",
+  "fetchedAt": "2026-11-16T05:36:45.396Z",
   "rows": [
     {
-      "yahoo": "META",
-      "raw": "META UW",
-      "name": "META PLATFORMS INC",
-      "weight": 0.055903480500000005,
+      "yahoo": "V",
+      "raw": "V UN",
+      "name": "VISA INC",
+      "weight": 0.057902799500000005,
       "country": "United States",
-      "sector": "Communication Services"
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "JNJ",
+      "raw": "JNJ UN",
+      "name": "JOHNSON & JOHNSON",
+      "weight": 0.053577757999999996,
+      "country": "United States",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "MSFT",
       "raw": "MSFT UW",
       "name": "MICROSOFT CORP",
-      "weight": 0.0529336057,
+      "weight": 0.0531285662,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "V",
-      "raw": "V UN",
-      "name": "VISA INC",
-      "weight": 0.052063651,
+      "yahoo": "META",
+      "raw": "META UW",
+      "name": "META PLATFORMS INC",
+      "weight": 0.0497313891,
       "country": "United States",
-      "sector": "Financials"
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "COST",
+      "raw": "COST UW",
+      "name": "COSTCO WHOLESALE CORP",
+      "weight": 0.04429937019999999,
+      "country": "United States",
+      "sector": "Consumer Staples"
     },
     {
       "yahoo": "GOOG",
       "raw": "GOOG UW",
       "name": "ALPHABET INC",
-      "weight": 0.0508021556,
+      "weight": 0.0442158,
       "country": "United States",
       "sector": "Communication Services"
     },
@@ -39,55 +55,31 @@
       "yahoo": "ASML.AS",
       "raw": "ASML NA",
       "name": "ASML HOLDING NV",
-      "weight": 0.0488445591,
+      "weight": 0.0429905273,
       "country": "Netherlands",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "JNJ",
-      "raw": "JNJ UN",
-      "name": "JOHNSON & JOHNSON",
-      "weight": 0.0465607741,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "PLTR",
-      "raw": "PLTR UW",
-      "name": "PALANTIR TECHNOLOGIES INC",
-      "weight": 0.0408342425,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "COST",
-      "raw": "COST UW",
-      "name": "COSTCO WHOLESALE CORP",
-      "weight": 0.0384607647,
-      "country": "United States",
-      "sector": "Consumer Staples"
-    },
-    {
-      "yahoo": "CSCO",
-      "raw": "CSCO UW",
-      "name": "CISCO SYSTEMS INC",
-      "weight": 0.035956756799999996,
-      "country": "United States",
       "sector": "Information Technology"
     },
     {
       "yahoo": "PG",
       "raw": "PG UN",
       "name": "PROCTER & GAMBLE CO/THE",
-      "weight": 0.0321325591,
+      "weight": 0.0356405809,
       "country": "United States",
       "sector": "Consumer Staples"
     },
     {
-      "yahoo": "LRCX",
-      "raw": "LRCX UW",
-      "name": "LAM RESEARCH CORP",
-      "weight": 0.031707226,
+      "yahoo": "PLTR",
+      "raw": "PLTR UW",
+      "name": "PALANTIR TECHNOLOGIES INC",
+      "weight": 0.034900758500000004,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "CSCO",
+      "raw": "CSCO UW",
+      "name": "CISCO SYSTEMS INC",
+      "weight": 0.0309418478,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -95,7 +87,15 @@
       "yahoo": "AMAT",
       "raw": "AMAT UW",
       "name": "APPLIED MATERIALS INC",
-      "weight": 0.0313168641,
+      "weight": 0.0265629282,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "LRCX",
+      "raw": "LRCX UW",
+      "name": "LAM RESEARCH CORP",
+      "weight": 0.0255277271,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -103,7 +103,7 @@
       "yahoo": "NFLX",
       "raw": "NFLX UW",
       "name": "NETFLIX INC",
-      "weight": 0.025951045399999997,
+      "weight": 0.023368721,
       "country": "United States",
       "sector": "Communication Services"
     },
@@ -111,7 +111,7 @@
       "yahoo": "ANET",
       "raw": "ANET UN",
       "name": "ARISTA NETWORKS INC",
-      "weight": 0.0185886608,
+      "weight": 0.0191886341,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -119,23 +119,39 @@
       "yahoo": "QCOM",
       "raw": "QCOM UW",
       "name": "QUALCOMM INC",
-      "weight": 0.0160070968,
+      "weight": 0.0163527828,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "8035.T",
-      "raw": "8035 JT",
-      "name": "TOKYO ELECTRON LTD",
-      "weight": 0.014692957900000001,
+      "yahoo": "6758.T",
+      "raw": "6758 JT",
+      "name": "SONY GROUP CORP",
+      "weight": 0.0146830712,
       "country": "Japan",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "ISRG",
+      "raw": "ISRG UW",
+      "name": "INTUITIVE SURGICAL INC",
+      "weight": 0.0141511146,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "ACN",
+      "raw": "ACN UN",
+      "name": "ACCENTURE PLC",
+      "weight": 0.013841656499999999,
+      "country": "United States",
       "sector": "Information Technology"
     },
     {
       "yahoo": "6098.T",
       "raw": "6098 JT",
       "name": "RECRUIT HOLDINGS CO LTD",
-      "weight": 0.0141703083,
+      "weight": 0.0137641868,
       "country": "Japan",
       "sector": "Industrials"
     },
@@ -143,55 +159,39 @@
       "yahoo": "TJX",
       "raw": "TJX UN",
       "name": "TJX COS INC/THE",
-      "weight": 0.0139346397,
+      "weight": 0.0134040793,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "ISRG",
-      "raw": "ISRG UW",
-      "name": "INTUITIVE SURGICAL INC",
-      "weight": 0.013111294200000002,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "6758.T",
-      "raw": "6758 JT",
-      "name": "SONY GROUP CORP",
-      "weight": 0.0128589299,
+      "yahoo": "8035.T",
+      "raw": "8035 JT",
+      "name": "TOKYO ELECTRON LTD",
+      "weight": 0.012519228,
       "country": "Japan",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "ACN",
-      "raw": "ACN UN",
-      "name": "ACCENTURE PLC",
-      "weight": 0.011617034699999999,
-      "country": "United States",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "VRTX",
-      "raw": "VRTX UW",
-      "name": "VERTEX PHARMACEUTICALS INC",
-      "weight": 0.011151600800000001,
-      "country": "United States",
-      "sector": "Healthcare"
     },
     {
       "yahoo": "PGR",
       "raw": "PGR UN",
       "name": "PROGRESSIVE CORP/THE",
-      "weight": 0.010960212899999999,
+      "weight": 0.0123787055,
       "country": "United States",
       "sector": "Financials"
+    },
+    {
+      "yahoo": "VRTX",
+      "raw": "VRTX UW",
+      "name": "VERTEX PHARMACEUTICALS INC",
+      "weight": 0.012319484999999998,
+      "country": "United States",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "9983.T",
       "raw": "9983 JT",
       "name": "FAST RETAILING CO LTD",
-      "weight": 0.0108981582,
+      "weight": 0.0119455147,
       "country": "Japan",
       "sector": "Consumer Discretionary"
     },
@@ -199,39 +199,55 @@
       "yahoo": "ADP",
       "raw": "ADP UW",
       "name": "AUTOMATIC DATA PROCESSING INC",
-      "weight": 0.0098348736,
+      "weight": 0.011118264099999999,
       "country": "United States",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "ZURN.SW",
-      "raw": "ZURN SE",
-      "name": "ZURICH INSURANCE GROUP AG",
-      "weight": 0.0095505518,
-      "country": "Switzerland",
-      "sector": "Financials"
     },
     {
       "yahoo": "OR.PA",
       "raw": "OR FP",
       "name": "L'OREAL SA",
-      "weight": 0.009346229000000001,
+      "weight": 0.0107471342,
       "country": "France",
       "sector": "Consumer Staples"
     },
     {
-      "yahoo": "6861.T",
-      "raw": "6861 JT",
-      "name": "KEYENCE CORP",
-      "weight": 0.0092721634,
-      "country": "Japan",
-      "sector": "Information Technology"
+      "yahoo": "ZURN.SW",
+      "raw": "ZURN SE",
+      "name": "ZURICH INSURANCE GROUP AG",
+      "weight": 0.010664581099999999,
+      "country": "Switzerland",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "SPOT",
+      "raw": "SPOT UN",
+      "name": "SPOTIFY TECHNOLOGY SA",
+      "weight": 0.008737316299999999,
+      "country": "United States",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "ADBE",
       "raw": "ADBE UW",
       "name": "ADOBE INC",
-      "weight": 0.0084489489,
+      "weight": 0.0087253208,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "6861.T",
+      "raw": "6861 JT",
+      "name": "KEYENCE CORP",
+      "weight": 0.0087140505,
+      "country": "Japan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "INTU",
+      "raw": "INTU UW",
+      "name": "INTUIT INC",
+      "weight": 0.008440052,
       "country": "United States",
       "sector": "Information Technology"
     },
@@ -239,183 +255,143 @@
       "yahoo": "CDNS",
       "raw": "CDNS UW",
       "name": "CADENCE DESIGN SYSTEMS INC",
-      "weight": 0.008012725699999999,
+      "weight": 0.0080328009,
       "country": "United States",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "INTU",
-      "raw": "INTU UW",
-      "name": "INTUIT INC",
-      "weight": 0.0074995475,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "SPOT",
-      "raw": "SPOT UN",
-      "name": "SPOTIFY TECHNOLOGY SA",
-      "weight": 0.007307781100000001,
-      "country": "United States",
-      "sector": "Communication Services"
     },
     {
       "yahoo": "TRV",
       "raw": "TRV UN",
       "name": "TRAVELERS COS INC/THE",
-      "weight": 0.0069594211999999996,
+      "weight": 0.007594516799999999,
       "country": "United States",
       "sector": "Financials"
-    },
-    {
-      "yahoo": "ROST",
-      "raw": "ROST UW",
-      "name": "ROSS STORES INC",
-      "weight": 0.0065320343000000005,
-      "country": "United States",
-      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "CTAS",
       "raw": "CTAS UW",
       "name": "CINTAS CORP",
-      "weight": 0.0063402572,
+      "weight": 0.0070298871,
       "country": "United States",
       "sector": "Industrials"
+    },
+    {
+      "yahoo": "ROST",
+      "raw": "ROST UW",
+      "name": "ROSS STORES INC",
+      "weight": 0.006710923,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "ITX.MC",
       "raw": "ITX SQ",
       "name": "INDUSTRIA DE DISENO TEXTIL SA",
-      "weight": 0.0059830337,
+      "weight": 0.0065972077,
       "country": "Spain",
       "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "MNST",
-      "raw": "MNST UW",
-      "name": "MONSTER BEVERAGE CORP",
-      "weight": 0.0055084135,
-      "country": "United States",
-      "sector": "Consumer Staples"
     },
     {
       "yahoo": "MPWR",
       "raw": "MPWR UW",
       "name": "MONOLITHIC POWER SYSTEMS INC",
-      "weight": 0.0053956798,
+      "weight": 0.0061701575,
       "country": "United States",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "7974.T",
-      "raw": "7974 JT",
-      "name": "NINTENDO CO LTD",
-      "weight": 0.0053309105,
-      "country": "Japan",
-      "sector": "Communication Services"
     },
     {
       "yahoo": "ALL",
       "raw": "ALL UN",
       "name": "ALLSTATE CORP/THE",
-      "weight": 0.005274047,
+      "weight": 0.0061110419,
       "country": "United States",
       "sector": "Financials"
+    },
+    {
+      "yahoo": "MNST",
+      "raw": "MNST UW",
+      "name": "MONSTER BEVERAGE CORP",
+      "weight": 0.0059176161,
+      "country": "United States",
+      "sector": "Consumer Staples"
+    },
+    {
+      "yahoo": "7974.T",
+      "raw": "7974 JT",
+      "name": "NINTENDO CO LTD",
+      "weight": 0.0057190271,
+      "country": "Japan",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "FAST",
       "raw": "FAST UW",
       "name": "FASTENAL CO",
-      "weight": 0.0052697002000000005,
+      "weight": 0.005718725500000001,
       "country": "United States",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "0388.HK",
-      "raw": "388 HK",
-      "name": "HONG KONG EXCHANGES & CLEARING",
-      "weight": 0.0050017075,
-      "country": "Hong Kong",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "TER",
-      "raw": "TER UW",
-      "name": "TERADYNE INC",
-      "weight": 0.0049627659,
-      "country": "United States",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "FIX",
-      "raw": "FIX UN",
-      "name": "COMFORT SYSTEMS USA INC",
-      "weight": 0.00479267,
-      "country": "United States",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "ATCO-A.ST",
-      "raw": "ATCOA SS",
-      "name": "ATLAS COPCO AB",
-      "weight": 0.0047799812,
-      "country": "Sweden",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "7741.T",
-      "raw": "7741 JT",
-      "name": "HOYA CORP",
-      "weight": 0.0047507902000000005,
-      "country": "Japan",
-      "sector": "Healthcare"
     },
     {
       "yahoo": "ARGX.BR",
       "raw": "ARGX BB",
       "name": "ARGENX SE",
-      "weight": 0.0046396428,
+      "weight": 0.0054878347,
       "country": "Belgium",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "0388.HK",
+      "raw": "388 HK",
+      "name": "HONG KONG EXCHANGES & CLEARING",
+      "weight": 0.0051803432000000005,
+      "country": "Hong Kong",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "IDXX",
+      "raw": "IDXX UW",
+      "name": "IDEXX LABORATORIES INC",
+      "weight": 0.0050100916,
+      "country": "United States",
       "sector": "Healthcare"
     },
     {
       "yahoo": "RMS.PA",
       "raw": "RMS FP",
       "name": "HERMES INTERNATIONAL",
-      "weight": 0.004509958,
+      "weight": 0.004691501,
       "country": "France",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "A",
-      "raw": "A UN",
-      "name": "AGILENT TECHNOLOGIES INC",
-      "weight": 0.0043401399000000005,
-      "country": "United States",
+      "yahoo": "7741.T",
+      "raw": "7741 JT",
+      "name": "HOYA CORP",
+      "weight": 0.0045298447,
+      "country": "Japan",
       "sector": "Healthcare"
     },
     {
       "yahoo": "GRMN",
       "raw": "GRMN UN",
       "name": "GARMIN LTD",
-      "weight": 0.0043157353,
+      "weight": 0.0044651531,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "ASM.AS",
-      "raw": "ASM NA",
-      "name": "ASM INTERNATIONAL NV",
-      "weight": 0.0040307449,
-      "country": "Netherlands",
-      "sector": "Information Technology"
+      "yahoo": "ATCO-A.ST",
+      "raw": "ATCOA SS",
+      "name": "ATLAS COPCO AB",
+      "weight": 0.0044403608,
+      "country": "Sweden",
+      "sector": "Industrials"
     },
     {
-      "yahoo": "IDXX",
-      "raw": "IDXX UW",
-      "name": "IDEXX LABORATORIES INC",
-      "weight": 0.0036806266,
+      "yahoo": "A",
+      "raw": "A UN",
+      "name": "AGILENT TECHNOLOGIES INC",
+      "weight": 0.0044365764,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -423,31 +399,47 @@
       "yahoo": "CMG",
       "raw": "CMG UN",
       "name": "CHIPOTLE MEXICAN GRILL INC",
-      "weight": 0.0034107333,
+      "weight": 0.0040313365,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "ODFL",
-      "raw": "ODFL UW",
-      "name": "OLD DOMINION FREIGHT LINE INC",
-      "weight": 0.0033862318000000002,
+      "yahoo": "FIX",
+      "raw": "FIX UN",
+      "name": "COMFORT SYSTEMS USA INC",
+      "weight": 0.0035357907,
       "country": "United States",
       "sector": "Industrials"
     },
     {
-      "yahoo": "6146.T",
-      "raw": "6146 JT",
-      "name": "DISCO CORP",
-      "weight": 0.003326121,
-      "country": "Japan",
+      "yahoo": "TER",
+      "raw": "TER UW",
+      "name": "TERADYNE INC",
+      "weight": 0.0035230559,
+      "country": "United States",
       "sector": "Information Technology"
+    },
+    {
+      "yahoo": "ASM.AS",
+      "raw": "ASM NA",
+      "name": "ASM INTERNATIONAL NV",
+      "weight": 0.0034104408,
+      "country": "Netherlands",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "ACGL",
+      "raw": "ACGL UW",
+      "name": "ARCH CAPITAL GROUP LTD",
+      "weight": 0.0033774582,
+      "country": "United States",
+      "sector": "Financials"
     },
     {
       "yahoo": "HIG",
       "raw": "HIG UN",
       "name": "HARTFORD FINANCIAL SERVICES GR",
-      "weight": 0.0031566599,
+      "weight": 0.003362707,
       "country": "United States",
       "sector": "Financials"
     },
@@ -455,55 +447,39 @@
       "yahoo": "PAYX",
       "raw": "PAYX UW",
       "name": "PAYCHEX INC",
-      "weight": 0.0030622977,
+      "weight": 0.003342478,
       "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "ODFL",
+      "raw": "ODFL UW",
+      "name": "OLD DOMINION FREIGHT LINE INC",
+      "weight": 0.003277758,
+      "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "EXPN.L",
+      "raw": "EXPN LN",
+      "name": "EXPERIAN PLC",
+      "weight": 0.0031409945,
+      "country": "United Kingdom",
       "sector": "Industrials"
     },
     {
       "yahoo": "RMD",
       "raw": "RMD UN",
       "name": "RESMED INC",
-      "weight": 0.0029974822,
+      "weight": 0.003120046,
       "country": "United States",
       "sector": "Healthcare"
-    },
-    {
-      "yahoo": "ACGL",
-      "raw": "ACGL UW",
-      "name": "ARCH CAPITAL GROUP LTD",
-      "weight": 0.002941156,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "EME",
-      "raw": "EME UN",
-      "name": "EMCOR GROUP INC",
-      "weight": 0.0029035859,
-      "country": "United States",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "ADYEN.AS",
-      "raw": "ADYEN NA",
-      "name": "ADYEN NV",
-      "weight": 0.0028980071000000002,
-      "country": "Netherlands",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "EXPN.L",
-      "raw": "EXPN LN",
-      "name": "EXPERIAN PLC",
-      "weight": 0.0028040334,
-      "country": "United Kingdom",
-      "sector": "Industrials"
     },
     {
       "yahoo": "III.L",
       "raw": "III LN",
       "name": "3I GROUP PLC",
-      "weight": 0.002693186,
+      "weight": 0.0030136501999999997,
       "country": "United Kingdom",
       "sector": "Financials"
     },
@@ -511,63 +487,63 @@
       "yahoo": "PRU.L",
       "raw": "PRU LN",
       "name": "PRUDENTIAL PLC",
-      "weight": 0.0026288905,
+      "weight": 0.0028624062,
       "country": "United Kingdom",
       "sector": "Financials"
     },
     {
-      "yahoo": "WSM",
-      "raw": "WSM UN",
-      "name": "WILLIAMS-SONOMA INC",
-      "weight": 0.0025215388,
-      "country": "United States",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "CTSH",
-      "raw": "CTSH UW",
-      "name": "COGNIZANT TECHNOLOGY SOLUTIONS",
-      "weight": 0.0024850741,
-      "country": "United States",
+      "yahoo": "6146.T",
+      "raw": "6146 JT",
+      "name": "DISCO CORP",
+      "weight": 0.0027507901,
+      "country": "Japan",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "K.TO",
-      "raw": "K CT",
-      "name": "KINROSS GOLD CORP",
-      "weight": 0.0023371182,
-      "country": "Canada",
-      "sector": "Materials"
-    },
-    {
-      "yahoo": "WST",
-      "raw": "WST UN",
-      "name": "WEST PHARMACEUTICAL SERVICES I",
-      "weight": 0.0023283719,
-      "country": "United States",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "FFIV",
-      "raw": "FFIV UW",
-      "name": "F5 INC",
-      "weight": 0.0022950455,
-      "country": "United States",
-      "sector": "Information Technology"
+      "yahoo": "ADYEN.AS",
+      "raw": "ADYEN NA",
+      "name": "ADYEN NV",
+      "weight": 0.0027348044,
+      "country": "Netherlands",
+      "sector": "Financials"
     },
     {
       "yahoo": "4519.T",
       "raw": "4519 JT",
       "name": "CHUGAI PHARMACEUTICAL CO LTD",
-      "weight": 0.0022722413,
+      "weight": 0.0027346174,
       "country": "Japan",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "EXPD",
-      "raw": "EXPD UN",
-      "name": "EXPEDITORS INTERNATIONAL OF WA",
-      "weight": 0.0022543896,
+      "yahoo": "WSM",
+      "raw": "WSM UN",
+      "name": "WILLIAMS-SONOMA INC",
+      "weight": 0.0027010589,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "WST",
+      "raw": "WST UN",
+      "name": "WEST PHARMACEUTICAL SERVICES I",
+      "weight": 0.0026464079000000002,
+      "country": "United States",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "EME",
+      "raw": "EME UN",
+      "name": "EMCOR GROUP INC",
+      "weight": 0.0026261138,
+      "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "VLTO",
+      "raw": "VLTO UN",
+      "name": "VERALTO CORP",
+      "weight": 0.0026032877,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -575,23 +551,23 @@
       "yahoo": "ULTA",
       "raw": "ULTA UW",
       "name": "ULTA BEAUTY INC",
-      "weight": 0.0022492653,
+      "weight": 0.0025650677,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "ZM",
-      "raw": "ZM UW",
-      "name": "ZOOM VIDEO COMMUNICATIONS INC",
-      "weight": 0.0022079781000000002,
+      "yahoo": "CTSH",
+      "raw": "CTSH UW",
+      "name": "COGNIZANT TECHNOLOGY SOLUTIONS",
+      "weight": 0.0025629680999999997,
       "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "VLTO",
-      "raw": "VLTO UN",
-      "name": "VERALTO CORP",
-      "weight": 0.0021672104,
+      "yahoo": "CPRT",
+      "raw": "CPRT UW",
+      "name": "COPART INC",
+      "weight": 0.0025008361000000002,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -599,47 +575,63 @@
       "yahoo": "0669.HK",
       "raw": "669 HK",
       "name": "TECHTRONIC INDUSTRIES CO LTD",
-      "weight": 0.0021472742,
+      "weight": 0.002393226,
       "country": "Hong Kong",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "KNEBV.HE",
-      "raw": "KNEBV FH",
-      "name": "KONE OYJ",
-      "weight": 0.0021272153999999997,
-      "country": "Finland",
       "sector": "Industrials"
     },
     {
       "yahoo": "7832.T",
       "raw": "7832 JT",
       "name": "BANDAI NAMCO HOLDINGS INC",
-      "weight": 0.002046237,
+      "weight": 0.0023884205,
       "country": "Japan",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "ZM",
+      "raw": "ZM UW",
+      "name": "ZOOM VIDEO COMMUNICATIONS INC",
+      "weight": 0.0023849140999999997,
+      "country": "United States",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "KNEBV.HE",
+      "raw": "KNEBV FH",
+      "name": "KONE OYJ",
+      "weight": 0.0023180452,
+      "country": "Finland",
+      "sector": "Industrials"
     },
     {
       "yahoo": "UTHR",
       "raw": "UTHR UW",
       "name": "UNITED THERAPEUTICS CORP",
-      "weight": 0.0020453039,
+      "weight": 0.0022897361999999997,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "CPRT",
-      "raw": "CPRT UW",
-      "name": "COPART INC",
-      "weight": 0.0020186022,
+      "yahoo": "EXPD",
+      "raw": "EXPD UN",
+      "name": "EXPEDITORS INTERNATIONAL OF WA",
+      "weight": 0.0022866859,
       "country": "United States",
       "sector": "Industrials"
+    },
+    {
+      "yahoo": "K.TO",
+      "raw": "K CT",
+      "name": "KINROSS GOLD CORP",
+      "weight": 0.0022233459,
+      "country": "Canada",
+      "sector": "Materials"
     },
     {
       "yahoo": "INCY",
       "raw": "INCY UW",
       "name": "INCYTE CORP",
-      "weight": 0.0019972808,
+      "weight": 0.0022141875,
       "country": "United States",
       "sector": "Healthcare"
     },
@@ -647,23 +639,23 @@
       "yahoo": "GEBN.SW",
       "raw": "GEBN SE",
       "name": "GEBERIT AG",
-      "weight": 0.0019637486,
+      "weight": 0.0021748489,
       "country": "Switzerland",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "RDDT",
-      "raw": "RDDT UN",
-      "name": "REDDIT INC",
-      "weight": 0.0019173125,
-      "country": "United States",
-      "sector": "Communication Services"
     },
     {
       "yahoo": "TROW",
       "raw": "TROW UW",
       "name": "T ROWE PRICE GROUP INC",
-      "weight": 0.0018767834,
+      "weight": 0.0020981978000000003,
+      "country": "United States",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "WRB",
+      "raw": "WRB UN",
+      "name": "W R BERKLEY CORP",
+      "weight": 0.001963083,
       "country": "United States",
       "sector": "Financials"
     },
@@ -671,47 +663,15 @@
       "yahoo": "PTC",
       "raw": "PTC UW",
       "name": "PTC INC",
-      "weight": 0.0018555932999999999,
+      "weight": 0.00192041,
       "country": "United States",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "TPL",
-      "raw": "TPL UN",
-      "name": "TEXAS PACIFIC LAND CORP",
-      "weight": 0.0018431052000000001,
-      "country": "United States",
-      "sector": "Energy"
-    },
-    {
-      "yahoo": "VACN.SW",
-      "raw": "VACN SE",
-      "name": "VAT GROUP AG",
-      "weight": 0.0018303854,
-      "country": "Switzerland",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "WRB",
-      "raw": "WRB UN",
-      "name": "W R BERKLEY CORP",
-      "weight": 0.001829677,
-      "country": "United States",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "SNA",
-      "raw": "SNA UN",
-      "name": "SNAP-ON INC",
-      "weight": 0.0016603604,
-      "country": "United States",
-      "sector": "Industrials"
     },
     {
       "yahoo": "DSY.PA",
       "raw": "DSY FP",
       "name": "DASSAULT SYSTEMES SE",
-      "weight": 0.0016195555000000001,
+      "weight": 0.0018796076000000001,
       "country": "France",
       "sector": "Information Technology"
     },
@@ -719,47 +679,23 @@
       "yahoo": "HNR1.DE",
       "raw": "HNR1 GY",
       "name": "HANNOVER RUECK SE",
-      "weight": 0.0015964285,
+      "weight": 0.0017901119,
       "country": "Germany",
       "sector": "Financials"
     },
     {
-      "yahoo": "HLMA.L",
-      "raw": "HLMA LN",
-      "name": "HALMA PLC",
-      "weight": 0.0015488828,
-      "country": "United Kingdom",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "NDSN",
-      "raw": "NDSN UW",
-      "name": "NORDSON CORP",
-      "weight": 0.0015322415000000001,
+      "yahoo": "SNA",
+      "raw": "SNA UN",
+      "name": "SNAP-ON INC",
+      "weight": 0.0017218716,
       "country": "United States",
       "sector": "Industrials"
-    },
-    {
-      "yahoo": "PGHN.SW",
-      "raw": "PGHN SE",
-      "name": "PARTNERS GROUP HOLDING AG",
-      "weight": 0.0014436842,
-      "country": "Switzerland",
-      "sector": "Financials"
-    },
-    {
-      "yahoo": "SOON.SW",
-      "raw": "SOON SE",
-      "name": "SONOVA HOLDING AG",
-      "weight": 0.0014208716,
-      "country": "Switzerland",
-      "sector": "Healthcare"
     },
     {
       "yahoo": "9766.T",
       "raw": "9766 JT",
       "name": "KONAMI GROUP CORP",
-      "weight": 0.0013705176,
+      "weight": 0.0016953176,
       "country": "Japan",
       "sector": "Communication Services"
     },
@@ -767,31 +703,55 @@
       "yahoo": "TOST",
       "raw": "TOST UN",
       "name": "TOAST INC",
-      "weight": 0.0013550079000000002,
+      "weight": 0.0016096577,
       "country": "United States",
       "sector": "Financials"
     },
     {
-      "yahoo": "NVR",
-      "raw": "NVR UN",
-      "name": "NVR INC",
-      "weight": 0.0013480022,
-      "country": "United States",
-      "sector": "Consumer Discretionary"
+      "yahoo": "PGHN.SW",
+      "raw": "PGHN SE",
+      "name": "PARTNERS GROUP HOLDING AG",
+      "weight": 0.0016043356000000001,
+      "country": "Switzerland",
+      "sector": "Financials"
     },
     {
-      "yahoo": "LOGN.SW",
-      "raw": "LOGN SE",
-      "name": "LOGITECH INTERNATIONAL SA",
-      "weight": 0.0012957811999999998,
-      "country": "Switzerland",
+      "yahoo": "FFIV",
+      "raw": "FFIV UW",
+      "name": "F5 INC",
+      "weight": 0.0015861636,
+      "country": "United States",
       "sector": "Information Technology"
     },
     {
-      "yahoo": "STRL",
-      "raw": "STRL UW",
-      "name": "STERLING INFRASTRUCTURE INC",
-      "weight": 0.0012238646,
+      "yahoo": "HLMA.L",
+      "raw": "HLMA LN",
+      "name": "HALMA PLC",
+      "weight": 0.0015774524000000002,
+      "country": "United Kingdom",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "TPL",
+      "raw": "TPL UN",
+      "name": "TEXAS PACIFIC LAND CORP",
+      "weight": 0.0015515981,
+      "country": "United States",
+      "sector": "Energy"
+    },
+    {
+      "yahoo": "VACN.SW",
+      "raw": "VACN SE",
+      "name": "VAT GROUP AG",
+      "weight": 0.0015495008,
+      "country": "Switzerland",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "NDSN",
+      "raw": "NDSN UW",
+      "name": "NORDSON CORP",
+      "weight": 0.0015477179,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -799,47 +759,47 @@
       "yahoo": "NBIX",
       "raw": "NBIX UW",
       "name": "NEUROCRINE BIOSCIENCES INC",
-      "weight": 0.0012201342,
+      "weight": 0.0015365984999999999,
       "country": "United States",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "S68.SI",
-      "raw": "SGX SP",
-      "name": "SINGAPORE EXCHANGE LTD",
-      "weight": 0.0011863632,
-      "country": "Singapore",
-      "sector": "Financials"
+      "yahoo": "SOON.SW",
+      "raw": "SOON SE",
+      "name": "SONOVA HOLDING AG",
+      "weight": 0.0015160232,
+      "country": "Switzerland",
+      "sector": "Healthcare"
     },
     {
-      "yahoo": "GIB-A.TO",
-      "raw": "GIB/A CT",
-      "name": "CGI INC",
-      "weight": 0.0011729161,
-      "country": "Canada",
-      "sector": "Information Technology"
+      "yahoo": "NVR",
+      "raw": "NVR UN",
+      "name": "NVR INC",
+      "weight": 0.0014082960999999999,
+      "country": "United States",
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "STMN.SW",
       "raw": "STMN SE",
       "name": "STRAUMANN HOLDING AG",
-      "weight": 0.0011712467,
+      "weight": 0.0013673732,
       "country": "Switzerland",
       "sector": "Healthcare"
     },
     {
-      "yahoo": "GGG",
-      "raw": "GGG UN",
-      "name": "GRACO INC",
-      "weight": 0.001151071,
-      "country": "United States",
-      "sector": "Industrials"
+      "yahoo": "GIB-A.TO",
+      "raw": "GIB/A CT",
+      "name": "CGI INC",
+      "weight": 0.0013525169,
+      "country": "Canada",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "SCHP.SW",
       "raw": "SCHP SE",
       "name": "SCHINDLER HOLDING AG",
-      "weight": 0.0011378644,
+      "weight": 0.0013315582000000001,
       "country": "Switzerland",
       "sector": "Industrials"
     },
@@ -847,55 +807,71 @@
       "yahoo": "NXT",
       "raw": "NXT UW",
       "name": "NEXTRACKER INC",
-      "weight": 0.0011062608,
+      "weight": 0.0013019720000000002,
       "country": "United States",
       "sector": "Industrials"
     },
     {
-      "yahoo": "ITRK.L",
-      "raw": "ITRK LN",
-      "name": "INTERTEK GROUP PLC",
-      "weight": 0.0010674544,
-      "country": "United Kingdom",
-      "sector": "Industrials"
+      "yahoo": "LOGN.SW",
+      "raw": "LOGN SE",
+      "name": "LOGITECH INTERNATIONAL SA",
+      "weight": 0.0013016439,
+      "country": "Switzerland",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "RDDT",
+      "raw": "RDDT UN",
+      "name": "REDDIT INC",
+      "weight": 0.0012988277,
+      "country": "United States",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "4684.T",
       "raw": "4684 JT",
       "name": "OBIC CO LTD",
-      "weight": 0.001052042,
+      "weight": 0.0012140844,
       "country": "Japan",
       "sector": "Information Technology"
+    },
+    {
+      "yahoo": "S68.SI",
+      "raw": "SGX SP",
+      "name": "SINGAPORE EXCHANGE LTD",
+      "weight": 0.0011918536,
+      "country": "Singapore",
+      "sector": "Financials"
+    },
+    {
+      "yahoo": "ITRK.L",
+      "raw": "ITRK LN",
+      "name": "INTERTEK GROUP PLC",
+      "weight": 0.0010910883000000001,
+      "country": "United Kingdom",
+      "sector": "Industrials"
     },
     {
       "yahoo": "DECK",
       "raw": "DECK UN",
       "name": "DECKERS OUTDOOR CORP",
-      "weight": 0.0009961148,
+      "weight": 0.0010676514,
       "country": "United States",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "MONC.MI",
-      "raw": "MONC IM",
-      "name": "MONCLER SPA",
-      "weight": 0.0009935401,
-      "country": "Italy",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "BS6.SI",
-      "raw": "YZJSGD SP",
-      "name": "YANGZIJIANG SHIPBUILDING HOLDI",
-      "weight": 0.0009728417,
-      "country": "Singapore",
+      "yahoo": "GGG",
+      "raw": "GGG UN",
+      "name": "GRACO INC",
+      "weight": 0.0010590827999999999,
+      "country": "United States",
       "sector": "Industrials"
     },
     {
-      "yahoo": "WSO",
-      "raw": "WSO UN",
-      "name": "WATSCO INC",
-      "weight": 0.0009276054999999999,
+      "yahoo": "ROL",
+      "raw": "ROL UN",
+      "name": "ROLLINS INC",
+      "weight": 0.0010488374,
       "country": "United States",
       "sector": "Industrials"
     },
@@ -903,95 +879,127 @@
       "yahoo": "LULU",
       "raw": "LULU UW",
       "name": "LULULEMON ATHLETICA INC",
-      "weight": 0.0009010074,
+      "weight": 0.0010344538000000001,
       "country": "United States",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "MONC.MI",
+      "raw": "MONC IM",
+      "name": "MONCLER SPA",
+      "weight": 0.0009921126,
+      "country": "Italy",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "WSO",
+      "raw": "WSO UN",
+      "name": "WATSCO INC",
+      "weight": 0.0009914906,
+      "country": "United States",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "6532.T",
+      "raw": "6532 JT",
+      "name": "BAYCURRENT CONSULTING INC",
+      "weight": 0.0009908563,
+      "country": "Japan",
+      "sector": "Industrials"
     },
     {
       "yahoo": "WISE.L",
       "raw": "WISE LN",
       "name": "WISE PLC",
-      "weight": 0.0008998258000000001,
+      "weight": 0.0008946891,
       "country": "United Kingdom",
       "sector": "Financials"
-    },
-    {
-      "yahoo": "ROL",
-      "raw": "ROL UN",
-      "name": "ROLLINS INC",
-      "weight": 0.0008608928000000001,
-      "country": "United States",
-      "sector": "Industrials"
     },
     {
       "yahoo": "9697.T",
       "raw": "9697 JT",
       "name": "CAPCOM CO LTD",
-      "weight": 0.0008490994,
+      "weight": 0.0008734633,
       "country": "Japan",
       "sector": "Communication Services"
+    },
+    {
+      "yahoo": "BS6.SI",
+      "raw": "YZJSGD SP",
+      "name": "YANGZIJIANG SHIPBUILDING HOLDI",
+      "weight": 0.0008305384,
+      "country": "Singapore",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "EVO.ST",
+      "raw": "EVO SS",
+      "name": "EVOLUTION AB",
+      "weight": 0.0008190174,
+      "country": "Sweden",
+      "sector": "Consumer Discretionary"
     },
     {
       "yahoo": "BEAN.SW",
       "raw": "BEAN SE",
       "name": "BELIMO HOLDING AG",
-      "weight": 0.0008448864,
+      "weight": 0.0008166806,
       "country": "Switzerland",
+      "sector": "Industrials"
+    },
+    {
+      "yahoo": "STRL",
+      "raw": "STRL UW",
+      "name": "STERLING INFRASTRUCTURE INC",
+      "weight": 0.0008077513,
+      "country": "United States",
       "sector": "Industrials"
     },
     {
       "yahoo": "GTT.PA",
       "raw": "GTT FP",
       "name": "GAZTRANSPORT ET TECHNIGAZ SA",
-      "weight": 0.0007840569999999999,
+      "weight": 0.0006879354,
       "country": "France",
       "sector": "Energy"
-    },
-    {
-      "yahoo": "EVO.ST",
-      "raw": "EVO SS",
-      "name": "EVOLUTION AB",
-      "weight": 0.0007405897000000001,
-      "country": "Sweden",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "6532.T",
-      "raw": "6532 JT",
-      "name": "BAYCURRENT CONSULTING INC",
-      "weight": 0.0006909609999999999,
-      "country": "Japan",
-      "sector": "Industrials"
-    },
-    {
-      "yahoo": "4021.T",
-      "raw": "4021 JT",
-      "name": "NISSAN CHEMICAL CORP",
-      "weight": 0.0006742868,
-      "country": "Japan",
-      "sector": "Materials"
     },
     {
       "yahoo": "GAW.L",
       "raw": "GAW LN",
       "name": "GAMES WORKSHOP GROUP PLC",
-      "weight": 0.0006499233,
+      "weight": 0.0006637629,
       "country": "United Kingdom",
       "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "G24.DE",
+      "raw": "G24 GY",
+      "name": "SCOUT24 SE",
+      "weight": 0.0006216113,
+      "country": "Germany",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "EMSN.SW",
       "raw": "EMSN SE",
       "name": "EMS-CHEMIE HOLDING AG",
-      "weight": 0.0006303948,
+      "weight": 0.0006201529,
       "country": "Switzerland",
       "sector": "Materials"
+    },
+    {
+      "yahoo": "AUTO.L",
+      "raw": "AUTO LN",
+      "name": "AUTO TRADER GROUP PLC",
+      "weight": 0.000537887,
+      "country": "United Kingdom",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "4768.T",
       "raw": "4768 JT",
       "name": "OTSUKA CORP",
-      "weight": 0.0005831119,
+      "weight": 0.0005355034,
       "country": "Japan",
       "sector": "Information Technology"
     },
@@ -999,111 +1007,95 @@
       "yahoo": "FRES.L",
       "raw": "FRES LN",
       "name": "FRESNILLO PLC",
-      "weight": 0.000559592,
+      "weight": 0.0005331039,
       "country": "United Kingdom",
+      "sector": "Materials"
+    },
+    {
+      "yahoo": "4021.T",
+      "raw": "4021 JT",
+      "name": "NISSAN CHEMICAL CORP",
+      "weight": 0.0005301531,
+      "country": "Japan",
       "sector": "Materials"
     },
     {
       "yahoo": "4704.T",
       "raw": "4704 JT",
       "name": "TREND MICRO INC/JAPAN",
-      "weight": 0.0005361297999999999,
+      "weight": 0.0005294889,
       "country": "Japan",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "REC.MI",
-      "raw": "REC IM",
-      "name": "RECORDATI INDUSTRIA CHIMICA E",
-      "weight": 0.0005282612,
-      "country": "Italy",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "ELISA.HE",
-      "raw": "ELISA FH",
-      "name": "ELISA OYJ",
-      "weight": 0.0005210453,
-      "country": "Finland",
-      "sector": "Communication Services"
     },
     {
       "yahoo": "3626.T",
       "raw": "3626 JT",
       "name": "TIS INC",
-      "weight": 0.0005092216,
+      "weight": 0.0005223964,
       "country": "Japan",
       "sector": "Information Technology"
-    },
-    {
-      "yahoo": "G24.DE",
-      "raw": "G24 GY",
-      "name": "SCOUT24 SE",
-      "weight": 0.0005017773,
-      "country": "Germany",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "2413.T",
-      "raw": "2413 JT",
-      "name": "M3 INC",
-      "weight": 0.00047960259999999997,
-      "country": "Japan",
-      "sector": "Healthcare"
-    },
-    {
-      "yahoo": "4732.T",
-      "raw": "4732 JT",
-      "name": "USS CO LTD",
-      "weight": 0.0004707607,
-      "country": "Japan",
-      "sector": "Consumer Discretionary"
-    },
-    {
-      "yahoo": "AUTO.L",
-      "raw": "AUTO LN",
-      "name": "AUTO TRADER GROUP PLC",
-      "weight": 0.000469441,
-      "country": "United Kingdom",
-      "sector": "Communication Services"
-    },
-    {
-      "yahoo": "SQN.SW",
-      "raw": "SQN SE",
-      "name": "SWISSQUOTE GROUP HOLDING SA",
-      "weight": 0.0004518685,
-      "country": "Switzerland",
-      "sector": "Financials"
     },
     {
       "yahoo": "RMV.L",
       "raw": "RMV LN",
       "name": "RIGHTMOVE PLC",
-      "weight": 0.0004410249,
+      "weight": 0.0005189740000000001,
       "country": "United Kingdom",
       "sector": "Communication Services"
+    },
+    {
+      "yahoo": "ELISA.HE",
+      "raw": "ELISA FH",
+      "name": "ELISA OYJ",
+      "weight": 0.0005115259,
+      "country": "Finland",
+      "sector": "Communication Services"
+    },
+    {
+      "yahoo": "4732.T",
+      "raw": "4732 JT",
+      "name": "USS CO LTD",
+      "weight": 0.0005007989,
+      "country": "Japan",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "2702.T",
+      "raw": "2702 JT",
+      "name": "MCDONALD'S HOLDINGS CO JAPAN L",
+      "weight": 0.0004665058,
+      "country": "Japan",
+      "sector": "Consumer Discretionary"
+    },
+    {
+      "yahoo": "2413.T",
+      "raw": "2413 JT",
+      "name": "M3 INC",
+      "weight": 0.0004648133,
+      "country": "Japan",
+      "sector": "Healthcare"
+    },
+    {
+      "yahoo": "SQN.SW",
+      "raw": "SQN SE",
+      "name": "SWISSQUOTE GROUP HOLDING SA",
+      "weight": 0.0004555126,
+      "country": "Switzerland",
+      "sector": "Financials"
     },
     {
       "yahoo": "CDR.WA",
       "raw": "CDR PW",
       "name": "CD PROJEKT SA",
-      "weight": 0.0004259173,
+      "weight": 0.00044287479999999995,
       "country": "Poland",
       "sector": "Communication Services"
-    },
-    {
-      "yahoo": "NEM.DE",
-      "raw": "NEM GY",
-      "name": "NEMETSCHEK SE",
-      "weight": 0.0004236609,
-      "country": "Germany",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "AZM.MI",
       "raw": "AZM IM",
       "name": "AZIMUT HOLDING SPA",
-      "weight": 0.0004004212,
+      "weight": 0.0004180781,
       "country": "Italy",
       "sector": "Financials"
     },
@@ -1111,39 +1103,31 @@
       "yahoo": "IGG.L",
       "raw": "IGG LN",
       "name": "IG GROUP HOLDINGS PLC",
-      "weight": 0.0003717029,
+      "weight": 0.00038488359999999997,
       "country": "United Kingdom",
       "sector": "Financials"
     },
     {
-      "yahoo": "2702.T",
-      "raw": "2702 JT",
-      "name": "MCDONALD'S HOLDINGS CO JAPAN L",
-      "weight": 0.0003670088,
-      "country": "Japan",
-      "sector": "Consumer Discretionary"
+      "yahoo": "NEM.DE",
+      "raw": "NEM GY",
+      "name": "NEMETSCHEK SE",
+      "weight": 0.0003823527,
+      "country": "Germany",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "EVD.DE",
       "raw": "EVD GY",
       "name": "CTS EVENTIM AG & CO KGAA",
-      "weight": 0.0003521813,
+      "weight": 0.0003561183,
       "country": "Germany",
       "sector": "Communication Services"
-    },
-    {
-      "yahoo": "4980.T",
-      "raw": "4980 JT",
-      "name": "DEXERIALS CORP",
-      "weight": 0.0003430138,
-      "country": "Japan",
-      "sector": "Information Technology"
     },
     {
       "yahoo": "3064.T",
       "raw": "3064 JT",
       "name": "MONOTARO CO LTD",
-      "weight": 0.00031876990000000003,
+      "weight": 0.0003400041,
       "country": "Japan",
       "sector": "Industrials"
     },
@@ -1151,7 +1135,7 @@
       "yahoo": "RAA.DE",
       "raw": "RAA GY",
       "name": "RATIONAL AG",
-      "weight": 0.0003078148,
+      "weight": 0.00031621570000000003,
       "country": "Germany",
       "sector": "Industrials"
     },
@@ -1159,47 +1143,63 @@
       "yahoo": "3092.T",
       "raw": "3092 JT",
       "name": "ZOZO INC",
-      "weight": 0.0002835812,
+      "weight": 0.0002879267,
       "country": "Japan",
       "sector": "Consumer Discretionary"
     },
     {
-      "yahoo": "5344.T",
-      "raw": "5344 JT",
-      "name": "MARUWA CO LTD/AICHI",
-      "weight": 0.0002712786,
-      "country": "Japan",
-      "sector": "Information Technology"
-    },
-    {
-      "yahoo": "2371.T",
-      "raw": "2371 JT",
-      "name": "KAKAKU.COM INC",
-      "weight": 0.0002595748,
-      "country": "Japan",
-      "sector": "Communication Services"
+      "yahoo": "REC.MI",
+      "raw": "REC IM",
+      "name": "RECORDATI INDUSTRIA CHIMICA E",
+      "weight": 0.0002785962,
+      "country": "Italy",
+      "sector": "Healthcare"
     },
     {
       "yahoo": "3038.T",
       "raw": "3038 JT",
       "name": "KOBE BUSSAN CO LTD",
-      "weight": 0.0002451837,
+      "weight": 0.0002694347,
       "country": "Japan",
       "sector": "Consumer Staples"
+    },
+    {
+      "yahoo": "2371.T",
+      "raw": "2371 JT",
+      "name": "KAKAKU.COM INC",
+      "weight": 0.000258329,
+      "country": "Japan",
+      "sector": "Communication Services"
     },
     {
       "yahoo": "7164.T",
       "raw": "7164 JT",
       "name": "ZENKOKU HOSHO CO LTD",
-      "weight": 0.0002342974,
+      "weight": 0.00025389950000000004,
       "country": "Japan",
       "sector": "Financials"
+    },
+    {
+      "yahoo": "5344.T",
+      "raw": "5344 JT",
+      "name": "MARUWA CO LTD/AICHI",
+      "weight": 0.00021753560000000003,
+      "country": "Japan",
+      "sector": "Information Technology"
+    },
+    {
+      "yahoo": "4980.T",
+      "raw": "4980 JT",
+      "name": "DEXERIALS CORP",
+      "weight": 0.0002042323,
+      "country": "Japan",
+      "sector": "Information Technology"
     },
     {
       "yahoo": "ZEAL.CO",
       "raw": "ZEAL DC",
       "name": "ZEALAND PHARMA A/S",
-      "weight": 0.00018322620000000002,
+      "weight": 0.00019591649999999998,
       "country": "Denmark",
       "sector": "Healthcare"
     }
