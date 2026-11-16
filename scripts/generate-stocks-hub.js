@@ -72,8 +72,8 @@ function generateStocksHub() {
 
   const mainHtml = `    <section class="other-tickers" style="margin-top:16px">
       <h2>Browse by market</h2>
-      <div class="screens-row">${cards}
-      </div>
+      <div class="screens-row"><div class="screens-row-pills">${cards}
+      </div></div>
     </section>
 ${etfSection}
 
