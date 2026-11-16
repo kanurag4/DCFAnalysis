@@ -689,6 +689,19 @@
     "updatedAt": "2026-11-14T00:50:23.429Z"
   },
   {
+    "ticker": "MQG.AX",
+    "slug": "mqg-ax",
+    "name": "Macquarie Group Limited",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 126.07561028312254,
+    "price": 241.18,
+    "marginOfSafety": -0.4772551194828653,
+    "marketCap": 91922958747.25482,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:54:21.383Z"
+  },
+  {
     "ticker": "MTS.AX",
     "slug": "mts-ax",
     "name": "Metcash Limited",
@@ -791,6 +804,19 @@
     "marketCap": 10921061376,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T00:52:27.105Z"
+  },
+  {
+    "ticker": "PPT.AX",
+    "slug": "ppt-ax",
+    "name": "Perpetual Limited",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 2.502853361058054,
+    "price": 18.34,
+    "marginOfSafety": -0.8635303510873471,
+    "marketCap": 2133506939.8889492,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:43:33.437Z"
   },
   {
     "ticker": "PRN.AX",

@@ -1,5 +1,18 @@
 [
   {
+    "ticker": "AEGISLOG.NS",
+    "slug": "aegislog-ns",
+    "name": "Aegis Logistics Limited",
+    "sector": "Energy",
+    "method": "DCF",
+    "intrinsic": 104.51374750271025,
+    "price": 1228,
+    "marginOfSafety": -0.9148910850955129,
+    "marketCap": 431028011355.74207,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:49:14.646Z"
+  },
+  {
     "ticker": "AXISBANK.NS",
     "slug": "axisbank-ns",
     "name": "Axis Bank Limited",
@@ -234,6 +247,19 @@
     "updatedAt": "2026-11-14T01:44:48.984Z"
   },
   {
+    "ticker": "KOVAI.NS",
+    "slug": "kovai-ns",
+    "name": "Kovai Medical Center and Hospital Limited",
+    "sector": "Healthcare",
+    "method": "DCF",
+    "intrinsic": 353.2541220274049,
+    "price": 6368,
+    "marginOfSafety": -0.9445266768173045,
+    "marketCap": 69680324608,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:41:55.810Z"
+  },
+  {
     "ticker": "LT.NS",
     "slug": "lt-ns",
     "name": "Larsen & Toubro Limited",
@@ -403,6 +429,19 @@
     "updatedAt": "2026-11-14T01:48:03.275Z"
   },
   {
+    "ticker": "SCI.NS",
+    "slug": "sci-ns",
+    "name": "The Shipping Corporation of India Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 168.6015045881291,
+    "price": 263.98,
+    "marginOfSafety": -0.3613095515261418,
+    "marketCap": 122961618484.8248,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:52:02.942Z"
+  },
+  {
     "ticker": "SIGNATURE.NS",
     "slug": "signature-ns",
     "name": "Signatureglobal (India) Limited",
@@ -453,6 +492,32 @@
     "marketCap": 1549621919744,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T01:49:02.995Z"
+  },
+  {
+    "ticker": "VRLLOG.NS",
+    "slug": "vrllog-ns",
+    "name": "VRL Logistics Limited",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 46.3296373113515,
+    "price": 338.75,
+    "marginOfSafety": -0.8632335429923202,
+    "marketCap": 59259904000,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:45:10.765Z"
+  },
+  {
+    "ticker": "WAAREEENER.NS",
+    "slug": "waareeener-ns",
+    "name": "Waaree Energies Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 2370.671912831343,
+    "price": 2427.8,
+    "marginOfSafety": -0.023530804501465195,
+    "marketCap": 698359891189.02,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:36:41.955Z"
   },
   {
     "ticker": "WIPRO.NS",

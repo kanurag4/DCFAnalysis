@@ -1,5 +1,18 @@
 [
   {
+    "ticker": "0003.HK",
+    "slug": "0003-hk",
+    "name": "The Hong Kong and China Gas Company Limited",
+    "sector": "Utilities",
+    "method": "ExcessReturn",
+    "intrinsic": 3.8078228939603154,
+    "price": 7.435,
+    "marginOfSafety": -0.4878516618748735,
+    "marketCap": 138736140288,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:40:38.525Z"
+  },
+  {
     "ticker": "0005.HK",
     "slug": "0005-hk",
     "name": "HSBC Holdings plc",
@@ -299,6 +312,19 @@
     "updatedAt": "2026-11-14T01:53:54.151Z"
   },
   {
+    "ticker": "1070.HK",
+    "slug": "1070-hk",
+    "name": "TCL Electronics Holdings Limited",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 25.28060854730578,
+    "price": 14.77,
+    "marginOfSafety": 0.7116187235819755,
+    "marketCap": 37232480079.23398,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:38:40.479Z"
+  },
+  {
     "ticker": "112610.KS",
     "slug": "112610-ks",
     "name": "CS Wind Corporation",
@@ -310,6 +336,19 @@
     "marketCap": 1918351179776,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T01:54:05.246Z"
+  },
+  {
+    "ticker": "1208.HK",
+    "slug": "1208-hk",
+    "name": "MMG Limited",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 8.934801739397884,
+    "price": 6.25,
+    "marginOfSafety": 0.4295682783036614,
+    "marketCap": 80290145851.67075,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:36:14.403Z"
   },
   {
     "ticker": "1211.HK",
@@ -416,6 +455,19 @@
     "updatedAt": "2026-11-14T01:55:50.155Z"
   },
   {
+    "ticker": "300274.SZ",
+    "slug": "300274-sz",
+    "name": "Sungrow Power Supply Co., Ltd.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 173.11040231668838,
+    "price": 75.81,
+    "marginOfSafety": 1.2834771443963642,
+    "marketCap": 157170159195.21878,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:43:56.937Z"
+  },
+  {
     "ticker": "3659.T",
     "slug": "3659-t",
     "name": "NEXON Co., Ltd.",
@@ -507,6 +559,32 @@
     "updatedAt": "2026-11-14T01:57:08.916Z"
   },
   {
+    "ticker": "5401.T",
+    "slug": "5401-t",
+    "name": "Nippon Steel Corporation",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 1141.9621600249257,
+    "price": 695.1,
+    "marginOfSafety": 0.6428746367787738,
+    "marketCap": 3632781418127.3306,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T09:09:03.973Z"
+  },
+  {
+    "ticker": "600900.SS",
+    "slug": "600900-ss",
+    "name": "China Yangtze Power Co., Ltd.",
+    "sector": "Utilities",
+    "method": "DCF",
+    "intrinsic": 24.699265212981075,
+    "price": 30.49,
+    "marginOfSafety": -0.18992242659950553,
+    "marketCap": 746035986707.316,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:39:03.946Z"
+  },
+  {
     "ticker": "6525.T",
     "slug": "6525-t",
     "name": "Kokusai Electric Corporation",
@@ -557,6 +635,19 @@
     "marketCap": 3770822688768,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T01:57:54.012Z"
+  },
+  {
+    "ticker": "7203.T",
+    "slug": "7203-t",
+    "name": "Toyota Motor Corporation",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 5035.503159484664,
+    "price": 3428,
+    "marginOfSafety": 0.46893324372364764,
+    "marketCap": 40231175880893.84,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:44:44.062Z"
   },
   {
     "ticker": "7832.T",
@@ -622,6 +713,19 @@
     "marketCap": 6523568783360,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T01:58:49.896Z"
+  },
+  {
+    "ticker": "9021.T",
+    "slug": "9021-t",
+    "name": "West Japan Railway Company",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 8961.875327322481,
+    "price": 3436,
+    "marginOfSafety": 1.6082291406642844,
+    "marketCap": 1563865520737.124,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:37:05.361Z"
   },
   {
     "ticker": "9064.T",
@@ -702,6 +806,19 @@
     "updatedAt": "2026-11-14T02:00:01.198Z"
   },
   {
+    "ticker": "ABDN.L",
+    "slug": "abdn-l",
+    "name": "Aberdeen Group Plc",
+    "sector": "Financial Services",
+    "method": "DCF",
+    "intrinsic": 355.3976582218368,
+    "price": 228.8,
+    "marginOfSafety": 0.5533114432772588,
+    "marketCap": 409767948732.74963,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T09:09:27.357Z"
+  },
+  {
     "ticker": "ACA.PA",
     "slug": "aca-pa",
     "name": "Crédit Agricole S.A.",
@@ -754,6 +871,19 @@
     "updatedAt": "2026-11-14T02:00:49.924Z"
   },
   {
+    "ticker": "AKER.OL",
+    "slug": "aker-ol",
+    "name": "Aker ASA",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 3096.8178522280346,
+    "price": 1082,
+    "marginOfSafety": 1.8621237081589967,
+    "marketCap": 79769669977.08426,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:34:56.740Z"
+  },
+  {
     "ticker": "ASML.AS",
     "slug": "asml-as",
     "name": "ASML Holding N.V.",
@@ -767,6 +897,19 @@
     "updatedAt": "2026-11-14T02:01:01.062Z"
   },
   {
+    "ticker": "AZZA3.SA",
+    "slug": "azza3-sa",
+    "name": "Azzas 2154 S.A.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 36.55847746476612,
+    "price": 15.91,
+    "marginOfSafety": 1.2978301360632383,
+    "marketCap": 3216635136,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:34:33.229Z"
+  },
+  {
     "ticker": "BAS.DE",
     "slug": "bas-de",
     "name": "BASF SE",
@@ -778,6 +921,32 @@
     "marketCap": 46722232320,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T02:01:12.408Z"
+  },
+  {
+    "ticker": "BBAS3.SA",
+    "slug": "bbas3-sa",
+    "name": "Banco do Brasil S.A.",
+    "sector": "Financial Services",
+    "method": "ExcessReturn",
+    "intrinsic": 20.715563128648295,
+    "price": 15.1,
+    "marginOfSafety": 0.37189159792372817,
+    "marketCap": 86204735488,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:39:50.801Z"
+  },
+  {
+    "ticker": "BBSE3.SA",
+    "slug": "bbse3-sa",
+    "name": "BB Seguridade Participações S.A.",
+    "sector": "Financial Services",
+    "method": "DDM",
+    "intrinsic": 33.13645918710647,
+    "price": 37.33,
+    "marginOfSafety": -0.11233701615037586,
+    "marketCap": 72466808832,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:52:50.078Z"
   },
   {
     "ticker": "BN.PA",
@@ -804,6 +973,19 @@
     "marketCap": 20804702208,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T02:01:34.637Z"
+  },
+  {
+    "ticker": "CPFE3.SA",
+    "slug": "cpfe3-sa",
+    "name": "CPFL Energia S.A.",
+    "sector": "Utilities",
+    "method": "ExcessReturn",
+    "intrinsic": 26.427472950982114,
+    "price": 43.97,
+    "marginOfSafety": -0.398965818717714,
+    "marketCap": 50664628224,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:46:46.227Z"
   },
   {
     "ticker": "CS.PA",
@@ -858,6 +1040,19 @@
     "updatedAt": "2026-11-14T02:02:19.503Z"
   },
   {
+    "ticker": "EMBJ3.SA",
+    "slug": "embj3-sa",
+    "name": "Embraer S.A.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 12.622801559176311,
+    "price": 112.06,
+    "marginOfSafety": -0.8873567592434739,
+    "marketCap": 79768018944,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:45:34.275Z"
+  },
+  {
     "ticker": "ENR.DE",
     "slug": "enr-de",
     "name": "Siemens Energy AG",
@@ -871,6 +1066,19 @@
     "updatedAt": "2026-11-14T02:02:30.721Z"
   },
   {
+    "ticker": "FDJU.PA",
+    "slug": "fdju-pa",
+    "name": "FDJ United",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 64.01071921908071,
+    "price": 21.83,
+    "marginOfSafety": 1.9322363361924286,
+    "marketCap": 4034164663.142071,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:50:01.495Z"
+  },
+  {
     "ticker": "FME.DE",
     "slug": "fme-de",
     "name": "Fresenius Medical Care AG",
@@ -882,6 +1090,19 @@
     "marketCap": 10408921088,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T02:02:41.843Z"
+  },
+  {
+    "ticker": "GOAU4.SA",
+    "slug": "goau4-sa",
+    "name": "Metalurgica Gerdau S.A.",
+    "sector": "Basic Materials",
+    "method": "DCF",
+    "intrinsic": 30.27659347801276,
+    "price": 10.94,
+    "marginOfSafety": 1.7675131149920256,
+    "marketCap": 14427321344,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:53:37.394Z"
   },
   {
     "ticker": "HNR1.DE",
@@ -949,6 +1170,19 @@
     "updatedAt": "2026-11-14T02:03:38.114Z"
   },
   {
+    "ticker": "MGLU3.SA",
+    "slug": "mglu3-sa",
+    "name": "Magazine Luiza S.A.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 17.53884862041756,
+    "price": 7.81,
+    "marginOfSafety": 1.2456912446117236,
+    "marketCap": 6058178048,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:35:20.331Z"
+  },
+  {
     "ticker": "MUV2.DE",
     "slug": "muv2-de",
     "name": "Münchener Rückversicherungs-Gesellschaft Aktiengesellschaft in München",
@@ -960,6 +1194,32 @@
     "marketCap": 74381511388.07785,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T02:03:49.245Z"
+  },
+  {
+    "ticker": "NATU3.SA",
+    "slug": "natu3-sa",
+    "name": "Natura Cosméticos S.A.",
+    "sector": "Consumer Defensive",
+    "method": "DCF",
+    "intrinsic": 11.188654301857744,
+    "price": 5.13,
+    "marginOfSafety": 1.1810242303816265,
+    "marketCap": 7048540672,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:47:57.703Z"
+  },
+  {
+    "ticker": "NEM.DE",
+    "slug": "nem-de",
+    "name": "Nemetschek SE",
+    "sector": "Technology",
+    "method": "DCF",
+    "intrinsic": 154.8823249822119,
+    "price": 64.55,
+    "marginOfSafety": 1.3994163436438718,
+    "marketCap": 7454930198.138364,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:52:26.290Z"
   },
   {
     "ticker": "NOVO-B.CO",
@@ -986,6 +1246,32 @@
     "marketCap": 9354292224,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T02:04:15.525Z"
+  },
+  {
+    "ticker": "RACE.MI",
+    "slug": "race-mi",
+    "name": "Ferrari N.V.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 258.97125185194665,
+    "price": 371.75,
+    "marginOfSafety": -0.30337255722408435,
+    "marketCap": 65138929887.63851,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:37:52.594Z"
+  },
+  {
+    "ticker": "RENT3.SA",
+    "slug": "rent3-sa",
+    "name": "Localiza Rent a Car S.A.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 47.7136133031004,
+    "price": 30.07,
+    "marginOfSafety": 0.58675135693716,
+    "marketCap": 33221285888,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:47:09.852Z"
   },
   {
     "ticker": "RO.SW",
@@ -1053,6 +1339,32 @@
     "updatedAt": "2026-11-14T02:05:11.854Z"
   },
   {
+    "ticker": "TASA4.SA",
+    "slug": "tasa4-sa",
+    "name": "Taurus Armas S.A.",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 2.215107750569166,
+    "price": 4.85,
+    "marginOfSafety": -0.5432767524599658,
+    "marketCap": 675520576,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T09:09:50.873Z"
+  },
+  {
+    "ticker": "TKMS.DE",
+    "slug": "tkms-de",
+    "name": "TKMS AG & Co KGaA",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 37.94191453463864,
+    "price": 76.4,
+    "marginOfSafety": -0.5033780820073477,
+    "marketCap": 4853206772.394668,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:43:06.292Z"
+  },
+  {
     "ticker": "TTE.PA",
     "slug": "tte-pa",
     "name": "TotalEnergies SE",
@@ -1079,6 +1391,19 @@
     "updatedAt": "2026-11-14T02:05:37.828Z"
   },
   {
+    "ticker": "VBBR3.SA",
+    "slug": "vbbr3-sa",
+    "name": "Vibra Energia S.A.",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 25.52687182209449,
+    "price": 30.57,
+    "marginOfSafety": -0.1649698455317472,
+    "marketCap": 36579262464,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:37:28.880Z"
+  },
+  {
     "ticker": "VIE.PA",
     "slug": "vie-pa",
     "name": "Veolia Environnement SA",
@@ -1090,5 +1415,44 @@
     "marketCap": 25576013824,
     "updated": "2026-11-14",
     "updatedAt": "2026-11-14T02:05:49.163Z"
+  },
+  {
+    "ticker": "VIVT3.SA",
+    "slug": "vivt3-sa",
+    "name": "Telefônica Brasil S.A.",
+    "sector": "Communication Services",
+    "method": "DCF",
+    "intrinsic": 25.720958019860127,
+    "price": 34.04,
+    "marginOfSafety": -0.24439018743066604,
+    "marketCap": 108778438656,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:48:21.266Z"
+  },
+  {
+    "ticker": "WDP.BR",
+    "slug": "wdp-br",
+    "name": "Warehouses De Pauw SA",
+    "sector": "Real Estate",
+    "method": "REIT",
+    "intrinsic": 27.634287109631163,
+    "price": 19.9,
+    "marginOfSafety": 0.38865764370005856,
+    "marketCap": 5225096101.29844,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:50:48.701Z"
+  },
+  {
+    "ticker": "ZAL.DE",
+    "slug": "zal-de",
+    "name": "Zalando SE",
+    "sector": "Consumer Cyclical",
+    "method": "DCF",
+    "intrinsic": 52.740539089769754,
+    "price": 28.55,
+    "marginOfSafety": 0.8473043464017427,
+    "marketCap": 6972570041.503337,
+    "updated": "2026-11-16",
+    "updatedAt": "2026-11-16T08:49:38.050Z"
   }
 ]
