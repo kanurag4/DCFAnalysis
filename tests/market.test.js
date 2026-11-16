@@ -157,6 +157,21 @@ test('Shanghai (.SS) / Shenzhen (.SZ) tickers get the spread-adjusted rf and a t
   assert.ok(expected.terminalGrowth < expected.rf, 'terminalGrowth must stay under rf (Damodaran stable-growth ceiling)');
 });
 
+// Brazil (.SA), 2026-11-16: the live tool has had a 'br' bucket since 2026-10-17, but this file
+// fell through to the US seed (4.8% rf), so a generated Brazil ticker page would value against a
+// third of Brazil's rate and contradict /evaluate/. Must read the same table as the live tool.
+test('Brazil (.SA) tickers read the live tool\'s br bucket, not the US seed', () => {
+  const { FALLBACK_RF, MARKET_ERP, MARKET_TGROWTH } = require('../www/calc/assumptions.js');
+  const p = marketParamsFor('PETR4.SA');
+  assert.strictEqual(p.rf, FALLBACK_RF.br);
+  assert.strictEqual(p.erp, MARKET_ERP.br);
+  assert.strictEqual(p.terminalGrowth, Number((MARKET_TGROWTH.br / 100).toFixed(6)));
+  assert.notStrictEqual(p.rf, FALLBACK_RF.us);
+  assert.ok(p.terminalGrowth < p.rf, 'terminalGrowth must stay under rf (Damodaran stable-growth ceiling)');
+  // A live US rate must never leak into Brazil.
+  assert.strictEqual(marketParamsFor('VALE3.SA', { usRf: 0.05 }).rf, FALLBACK_RF.br);
+});
+
 // ETF radar (2026-08-31): thematic-fund holdings pull in suffixes that previously
 // hit the generic US-style fallback. Static Damodaran-style seeds, same posture as
 // the no-live-source markets above — see market.js's inline comments. These 6 markets

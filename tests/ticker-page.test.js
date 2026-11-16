@@ -83,6 +83,13 @@ test('marketMeta gives every ETF-radar-added suffix (SW/TW/TA/ST/OL/SI/KQ) a rea
   }
 });
 
+test('marketMeta Brazil (.SA) files under other with R$ and the Ibovespa, not the generic fallback (2026-11-16)', () => {
+  const m = marketMeta('PETR4.SA');
+  assert.equal(m.folder, 'other');
+  assert.equal(m.currencySymbol, 'R$');
+  assert.equal(m.indexTicker, '^BVSP');
+});
+
 test('marketMeta KOSDAQ (.KQ) matches KOSPI (.KS) metadata exactly, per market.js\'s "same market" convention', () => {
   assert.deepEqual(marketMeta('012450.KQ'), marketMeta('012450.KS'));
 });

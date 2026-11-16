@@ -186,10 +186,19 @@ function isSaas(ticker) {
 // under this tag, which is what makes the ticker-suffix scope safe there.
 // `ticker` is optional and defaults to not matching NBFC industries at all --
 // every existing call site that omits it keeps today's behaviour unchanged.
+//
+// BANK_TICKER_ALLOWLIST (2026-11-16): companies that run a bank's balance sheet but that
+// Yahoo tags otherwise. Macquarie (MQG.AX) is "Financial Services / Capital Markets", yet
+// its lending book flows through operating cash flow (-A$31.6B), so DCF finds no value.
+// Full Yahoo symbol only, same explicit-list pattern as HOLDCO/SAAS above -- the tag lives
+// here, not in the data store, because the store mirrors Yahoo and is refreshed daily.
+const BANK_TICKER_ALLOWLIST = new Set(['MQG.AX']);
+
 function isBankOrInsurance(sector, industry, ticker) {
   const s = sector || '';
   const i = industry || '';
   if (/bank|insurance/i.test(i) || /bank|insurance/i.test(s)) return true;
+  if (BANK_TICKER_ALLOWLIST.has((ticker || '').toUpperCase())) return true;
   if (/^REIT\s*-\s*Mortgage/i.test(i)) return true; // mortgage REITs -- loan-book economics, not property
   const t = (ticker || '').toUpperCase();
   if ((t.endsWith('.NS') || t.endsWith('.BO')) && /credit services|mortgage finance/i.test(i)) return true;

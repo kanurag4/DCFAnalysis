@@ -69,6 +69,11 @@ function marketParamsFor(ticker, live = {}) {
   // -- different currency (CNY vs HKD) and risk profile.
   if (t.endsWith('.SS') || t.endsWith('.SZ')) return { rf: FALLBACK_RF.cn, erp: MARKET_ERP.cn, terminalGrowth: pct(MARKET_TGROWTH.cn) };
 
+  // Brazil (.SA), 2026-11-16: the live tool's 'br' bucket (assumptions.js, since 2026-10-17).
+  // Before this a Brazilian ticker fell through to the US seed below -- ~4.8% rf against
+  // Brazil's ~13% -- so a generated ticker page would contradict /evaluate/ for the same stock.
+  if (t.endsWith('.SA')) return { rf: FALLBACK_RF.br, erp: MARKET_ERP.br, terminalGrowth: pct(MARKET_TGROWTH.br) };
+
   // ETF radar additions (2026-08-31): no www/ mirror exists for these -- the live web
   // tool's own market detection never routes to them (ETF-holdings look-through only),
   // so there's no second copy anywhere else to drift against. Static Damodaran-style

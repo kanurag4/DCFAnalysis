@@ -115,6 +115,9 @@ function marketMeta(ticker) {
   if (t.endsWith('.ST')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'kr', indexTicker: '^OMX', indexName: 'OMX Stockholm 30' };
   if (t.endsWith('.OL')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'kr', indexTicker: 'OSEBX.OL', indexName: 'Oslo Børs Benchmark' };
   if (t.endsWith('.SI')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'S$', indexTicker: '^STI', indexName: 'Straits Times Index' };
+  // Brazil (2026-11-16): first Brazil pages, from site lookups. market.js has the matching
+  // 'br' rate bucket; ^BVSP confirmed live against the Worker's /history route.
+  if (t.endsWith('.SA')) return { folder: 'other', label: null, screenName: null, screenUrl: null, currencySymbol: 'R$', indexTicker: '^BVSP', indexName: 'Ibovespa' };
   // KOSDAQ: same market as KOSPI (.KS above) for valuation-parameter purposes
   // -- see market.js's identical note -- so it gets the identical metadata too.
   if (t.endsWith('.KQ')) return { folder: 'other', label: 'KOSPI 200', screenName: 'KOSPI 200 Most Undervalued', screenUrl: '/dcf/kospi-undervalued/', currencySymbol: '₩', indexTicker: '^KS11', indexName: 'KOSPI Composite' };

@@ -78,6 +78,7 @@ function generateMarketIndex(folder) {
     { id: 'japan',  label: 'Japan',  match: t => /\.T$/i.test(t) },
     { id: 'kospi',  label: 'South Korea', match: t => /\.KS$/i.test(t) },
     { id: 'china',  label: 'China',  match: t => /\.(SS|SZ)$/i.test(t) },
+    { id: 'brazil', label: 'Brazil', match: t => /\.SA$/i.test(t) },
   ];
   function detectSubMarket(ticker) {
     for (const sm of SUB_MARKETS) {
