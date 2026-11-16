@@ -1,39 +1,39 @@
 {
   "asAt": "2026-11-16",
   "union": {
-    "count": 1309,
-    "fetched": 1280,
-    "failed": 29
+    "count": 1303,
+    "fetched": 1303,
+    "failed": 0
   },
   "cryptoExcluded": [],
   "ranked": [
-    {
-      "slug": "game",
-      "name": "Betashares Video Games and Esports ETF",
-      "theme": "Video games & esports",
-      "fee": 0.0057,
-      "lookThroughMos": -0.1230872517354587,
-      "coverage": 0.8485571323835511,
-      "ranked": true,
-      "holdingsCount": 35,
-      "valuedCount": 21,
-      "rank": 1,
-      "flags": []
-    },
     {
       "slug": "shld",
       "name": "Global X Defense Tech ETF",
       "theme": "Defense technology",
       "fee": 0.005,
-      "lookThroughMos": -0.12520651864476148,
-      "coverage": 0.8491340474521973,
+      "lookThroughMos": -0.0990912618501377,
+      "coverage": 0.8882771048152968,
       "ranked": true,
       "holdingsCount": 50,
-      "valuedCount": 42,
-      "rank": 2,
+      "valuedCount": 44,
+      "rank": 1,
       "flags": [
         "fetch-failed"
       ]
+    },
+    {
+      "slug": "game",
+      "name": "Betashares Video Games and Esports ETF",
+      "theme": "Video games & esports",
+      "fee": 0.0057,
+      "lookThroughMos": -0.12531748140328786,
+      "coverage": 0.8556774344707097,
+      "ranked": true,
+      "holdingsCount": 35,
+      "valuedCount": 22,
+      "rank": 2,
+      "flags": []
     },
     {
       "slug": "ixj",
@@ -53,7 +53,7 @@
       "name": "iShares Asia 50 ETF",
       "theme": "Asia large-cap",
       "fee": 0.0029,
-      "lookThroughMos": -0.19524476580185363,
+      "lookThroughMos": -0.1951286408290671,
       "coverage": 0.9325356927408004,
       "ranked": true,
       "holdingsCount": 53,
@@ -79,7 +79,7 @@
       "name": "Betashares Asia Technology Tigers ETF",
       "theme": "Asia technology",
       "fee": 0.0067,
-      "lookThroughMos": -0.23681209182365603,
+      "lookThroughMos": -0.2367575574770403,
       "coverage": 0.8384263549125203,
       "ranked": true,
       "holdingsCount": 50,
@@ -222,11 +222,11 @@
       "name": "Vanguard Global Technology Index ETF",
       "theme": "Technology",
       "fee": 0.0023,
-      "lookThroughMos": -0.5157761985429106,
-      "coverage": 0.9730031756596134,
+      "lookThroughMos": -0.515581087406441,
+      "coverage": 0.9756458075485571,
       "ranked": true,
       "holdingsCount": 296,
-      "valuedCount": 219,
+      "valuedCount": 234,
       "rank": 17,
       "flags": []
     },
@@ -235,11 +235,11 @@
       "name": "Betashares Global Momentum ETF",
       "theme": "Momentum factor",
       "fee": 0.0035,
-      "lookThroughMos": -0.5452849376951838,
-      "coverage": 0.9075395119547472,
+      "lookThroughMos": -0.5323006247218144,
+      "coverage": 0.9221796023055023,
       "ranked": true,
       "holdingsCount": 198,
-      "valuedCount": 156,
+      "valuedCount": 161,
       "rank": 18,
       "flags": []
     },
@@ -261,11 +261,11 @@
       "name": "Global X Data Center & Digital Infrastructure ETF",
       "theme": "Data centers & digital infrastructure",
       "fee": 0.005,
-      "lookThroughMos": -0.648457810476733,
-      "coverage": 0.8662063444411089,
+      "lookThroughMos": -0.6237908727026866,
+      "coverage": 0.9105373761633144,
       "ranked": true,
       "holdingsCount": 25,
-      "valuedCount": 20,
+      "valuedCount": 21,
       "rank": 20,
       "flags": [
         "fetch-failed"
