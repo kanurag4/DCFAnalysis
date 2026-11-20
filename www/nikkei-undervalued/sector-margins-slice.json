@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-13",
+ "asAt": "2026-11-20",
  "industries": {
   "Airlines": [
    {
@@ -86,7 +86,7 @@
   "Banks - Diversified": [
    {
     "ticker": "8306.T",
-    "margin": -0.7059658922544706
+    "margin": -0.7169959368487036
    },
    {
     "ticker": "8316.T",
@@ -725,6 +725,12 @@
    {
     "ticker": "8697.T",
     "margin": 0.4449848100265136
+   }
+  ],
+  "Financial Conglomerates": [
+   {
+    "ticker": "8591.T",
+    "margin": -0.01923521009586661
    }
   ],
   "Leisure": [
