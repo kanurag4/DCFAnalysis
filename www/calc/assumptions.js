@@ -393,7 +393,12 @@ function deriveDcfAssumptions(data, opts) {
 
   // Excess Return Model inputs -- only meaningful when isBankIns, but computed
   // unconditionally (cheap, no network call) so financialModel below can decide.
-  const roe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+  // v2 Part 2 (/dcf/ toggle only): ROE on start-of-period equity (calc/roe.js); none when that equity is <= 0, and
+  // then no Yahoo / EPS fallback either (Damodaran: the ratio is meaningless).
+  const roeOn = !!(opts && opts.fcffMethod) && typeof roeStartOfPeriod === 'function';
+  const roeInfo = roeOn ? roeStartOfPeriod({ quarterlyNetIncome: data.quarterlyNetIncomeHistory, quarterlyEquity: data.quarterlyStockholdersEquityHistory,
+    annualNetIncome: data.annualNetIncomeHistory, annualEquity: data.annualStockholdersEquityHistory }) : null;
+  const roe = roeOn ? (roeInfo && roeInfo.value > 0 ? roeInfo.value : null) : (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
     ? data.returnOnEquity
     : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
         ? data.trailingEps / (data.price / data.priceToBook)
@@ -505,6 +510,7 @@ function deriveDcfAssumptions(data, opts) {
     holdcoDiscount: isHoldcoFlag ? HOLDCO_DISCOUNT : null,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
     fcffMethod: fcffOn,
+    roeMethod: roeOn, roeInfo,
   };
 }
 

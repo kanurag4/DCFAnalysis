@@ -467,7 +467,10 @@ let fcffMode = new URLSearchParams(initialQuery).get('fm') === '1';
 
 function fcffApplies() {
   const a = lastAssumptions;
-  return !!a && typeof fcffBase === 'function' && !a.isBankIns && !a.isReit && (valuationModel === 'dcf' || valuationModel === 'airline');
+  if (!a || typeof fcffBase !== 'function' || a.isReit) return false;
+  // Cash-flow models get FCFF; Excess Return (banks, insurers, utilities) gets ROE on start-of-year equity (Part 2).
+  if (valuationModel === 'excess-return') return typeof roeStartOfPeriod === 'function';
+  return !a.isBankIns && (valuationModel === 'dcf' || valuationModel === 'airline');
 }
 
 function setFcffMode(on) {
@@ -489,6 +492,15 @@ function fcffMoney(v, sym) {
   if (v == null || !isFinite(v)) return '—';
   const a = Math.abs(v), sign = v < 0 ? '−' : '';
   return a >= 1e9 ? `${sign}${sym}${(a / 1e9).toFixed(2)}B` : `${sign}${sym}${(a / 1e6).toFixed(0)}M`;
+}
+
+// Excess Return under the toggle: return on equity on start-of-year equity (calc/roe.js).
+function roeNoteText(a, data) {
+  const r = a.roeInfo;
+  const sym = CURRENCY_SYMBOLS[data.currency] ?? '';
+  if (!r || !(r.value > 0)) return 'No return on equity: equity a year earlier was zero or negative, so the ratio is not meaningful (Damodaran) and the Excess Return model cannot run.';
+  const span = r.method === 'ttm' ? 'over the last 12 months' : 'in the latest year';
+  return `Return on equity ${(r.value * 100).toFixed(1)}% = net income ${fcffMoney(r.netIncome, sym)} ${span} ÷ equity at the start of the year, a year earlier (${fcffMoney(r.startEquity, sym)}), as Damodaran measures it.`;
 }
 
 // The "numbers used" for the FCFF method, one line per term (spec docs/superpowers/specs/2026-11-20-fcff-damodaran-design.md).
@@ -924,8 +936,9 @@ function prefillInputs(data) {
 
   if (els.fcffNote) {
     const showFcff = !!assumptions.fcffMethod && !heavyCapexState && (assumptions.valuationModel === 'dcf' || assumptions.valuationModel === 'airline');
-    els.fcffNote.hidden = !showFcff;
-    els.fcffNote.textContent = showFcff ? fcffNoteText(assumptions, data) : '';
+    const showRoe = !showFcff && !!assumptions.roeMethod && assumptions.valuationModel === 'excess-return';
+    els.fcffNote.hidden = !(showFcff || showRoe);
+    els.fcffNote.textContent = showFcff ? fcffNoteText(assumptions, data) : (showRoe ? roeNoteText(assumptions, data) : '');
   }
 
   if (els.cyclicalNote && assumptions.fcffMethod) {

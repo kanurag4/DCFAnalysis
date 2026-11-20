@@ -524,6 +524,9 @@ function fcffInputsFromTimeseries(tsBody, gbpToPence) {
     operatingLeaseCost: latest('annualOperatingLeaseCost'),
     ppeDepreciation: latest('annualPpeDepreciation'),
     reconciledDepreciation: latest('annualReconciledDepreciation'),
+    // ROE on start-of-period equity (calc/roe.js, /dcf/ toggle): TTM net income and the equity a year earlier.
+    quarterlyNetIncomeHistory: series('quarterlyNetIncome'),
+    quarterlyStockholdersEquityHistory: series('quarterlyStockholdersEquity'),
   };
 }
 
