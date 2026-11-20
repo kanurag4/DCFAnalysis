@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-13",
+ "asAt": "2026-11-20",
  "industries": {
   "Semiconductors": [
    {
@@ -89,6 +89,10 @@
     "margin": 0.008495178960234648
    },
    {
+    "ticker": "PLTR",
+    "margin": 0.3193258382204648
+   },
+   {
     "ticker": "PANW",
     "margin": 0.3756350282029335
    },
@@ -126,7 +130,7 @@
    },
    {
     "ticker": "FFIV",
-    "margin": 0.23220765559306258
+    "margin": 0.2578594928327139
    },
    {
     "ticker": "GEN",
@@ -374,7 +378,7 @@
    },
    {
     "ticker": "DIS",
-    "margin": 0.0670967867731788
+    "margin": 0.08969680043746282
    },
    {
     "ticker": "LYV",
@@ -502,7 +506,7 @@
    },
    {
     "ticker": "TDG",
-    "margin": 0.19570320797440233
+    "margin": 0.20283028573852027
    },
    {
     "ticker": "LHX",
@@ -678,7 +682,7 @@
    },
    {
     "ticker": "ROK",
-    "margin": 0.1154777167970696
+    "margin": 0.1408150204831164
    },
    {
     "ticker": "DOV",
@@ -784,7 +788,7 @@
    },
    {
     "ticker": "SBUX",
-    "margin": 0.08470091283187887
+    "margin": 0.08945019462491427
    },
    {
     "ticker": "YUM",
@@ -847,6 +851,10 @@
    {
     "ticker": "AEP",
     "margin": -0.14466036287324746
+   },
+   {
+    "ticker": "D",
+    "margin": -0.36740609397713275
    },
    {
     "ticker": "ETR",
@@ -1466,7 +1474,7 @@
    },
    {
     "ticker": "JCI",
-    "margin": 0.06577450229878762
+    "margin": 0.07979827064514744
    },
    {
     "ticker": "CARR",
@@ -1555,6 +1563,10 @@
    {
     "ticker": "PNC",
     "margin": 0.36723144816835207
+   },
+   {
+    "ticker": "USB",
+    "margin": 0.46683749416591297
    },
    {
     "ticker": "TFC",
@@ -1825,6 +1837,16 @@
     "margin": 0.052394296781690324
    }
   ],
+  "Steel": [
+   {
+    "ticker": "NUE",
+    "margin": 0.08930940077977247
+   },
+   {
+    "ticker": "STLD",
+    "margin": 0.07121505867969806
+   }
+  ],
   "Utilities - Diversified": [
    {
     "ticker": "SRE",
@@ -1859,10 +1881,6 @@
     "margin": 0.03176204068486742
    },
    {
-    "ticker": "UAL",
-    "margin": 0.033326273096393175
-   },
-   {
     "ticker": "LUV",
     "margin": -0.0269334957762428
    }
@@ -1876,7 +1894,7 @@
   "Residential Construction": [
    {
     "ticker": "DHI",
-    "margin": 0.07010492274511113
+    "margin": 0.09233775593536844
    },
    {
     "ticker": "PHM",
@@ -1902,19 +1920,13 @@
    },
    {
     "ticker": "TSN",
-    "margin": 0.015111980803223485
+    "margin": 0.018727339396642617
    }
   ],
   "Electronic Gaming & Multimedia": [
    {
     "ticker": "TTWO",
     "margin": -0.00905548983981324
-   }
-  ],
-  "Steel": [
-   {
-    "ticker": "STLD",
-    "margin": 0.07121505867969806
    }
   ],
   "Grocery Stores": [
@@ -2006,7 +2018,7 @@
   "Utilities - Regulated Gas": [
    {
     "ticker": "ATO",
-    "margin": -0.20165187463845757
+    "margin": -0.21970249727013186
    },
    {
     "ticker": "NI",
