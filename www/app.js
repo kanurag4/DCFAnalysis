@@ -460,7 +460,7 @@ let _recomputeTimer = null;
 const initialQuery = window.location.search || '';
 let urlStateConsumed = false;
 const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', 'tb', 'tu', 'wb', 'wu', 'model', 'rf', 'erp', 'fm'];
-// Valuation method v2 (2026-11-21): the free-cash-flow method toggle. Default = today's method; "Damodaran FCFF"
+// Valuation method v2 (2026-11-21): the free-cash-flow method toggle. Default = "Operating cash flow" (today's method); "FCFF"
 // re-derives with deriveDcfAssumptions(..., { fcffMethod: true }). Only /dcf/ offers it (/evaluate/ never does).
 // A shared link carries fm=1.
 let fcffMode = new URLSearchParams(initialQuery).get('fm') === '1';
@@ -498,9 +498,9 @@ function fcffMoney(v, sym) {
 function roeNoteText(a, data) {
   const r = a.roeInfo;
   const sym = CURRENCY_SYMBOLS[data.currency] ?? '';
-  if (!r || !(r.value > 0)) return 'No return on equity: equity a year earlier was zero or negative, so the ratio is not meaningful (Damodaran) and the Excess Return model cannot run.';
+  if (!r || !(r.value > 0)) return 'No return on equity: equity a year earlier was zero or negative, so the ratio is not meaningful and the Excess Return model cannot run.';
   const span = r.method === 'ttm' ? 'over the last 12 months' : 'in the latest year';
-  return `Return on equity ${(r.value * 100).toFixed(1)}% = net income ${fcffMoney(r.netIncome, sym)} ${span} ÷ equity at the start of the year, a year earlier (${fcffMoney(r.startEquity, sym)}), as Damodaran measures it.`;
+  return `Return on equity ${(r.value * 100).toFixed(1)}% = net income ${fcffMoney(r.netIncome, sym)} ${span} ÷ equity at the start of the year, a year earlier (${fcffMoney(r.startEquity, sym)}).`;
 }
 
 // The "numbers used" for the FCFF method, one line per term (spec docs/superpowers/specs/2026-11-20-fcff-damodaran-design.md).
@@ -901,7 +901,7 @@ function prefillInputs(data) {
       els.fcfSource.textContent = '⚠ negative';
       els.fcfSource.className = 'fcf-source estimated';
     } else if (fcfInfo.method === 'fcff') {
-      els.fcfSource.textContent = '≈ Damodaran FCFF';
+      els.fcfSource.textContent = '≈ FCFF';
       els.fcfSource.className = 'fcf-source confirmed';
     } else if (fcfInfo.method === 'ocf-capex-avg') {
       els.fcfSource.textContent = '≈ 4-yr avg OCF − CapEx';
