@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-13",
+ "asAt": "2026-11-20",
  "industries": {
   "Asset Management": [
    {
@@ -1033,6 +1033,10 @@
     "margin": 0.02811884290866724
    },
    {
+    "ticker": "BOSCHLTD.NS",
+    "margin": 0.07678987375301109
+   },
+   {
     "ticker": "CIEINDIA.NS",
     "margin": 0.08138799657075392
    },
@@ -1273,6 +1277,10 @@
    {
     "ticker": "GRAVITA.NS",
     "margin": 0.012450726982569691
+   },
+   {
+    "ticker": "PTCIL.NS",
+    "margin": -0.5754694193489497
    },
    {
     "ticker": "RHIM.NS",
