@@ -348,6 +348,13 @@
             <span class="idcf-chip">Your numbers</span>
             <button type="button" class="idcf-reset" id="idcf-reset">Reset to our numbers</button>
           </div>
+          <div class="idcf-method" id="idcf-method" hidden>
+            <div class="idcf-method-label" id="idcf-method-label">Free cash flow method</div>
+            <div class="idcf-beta" role="group" aria-labelledby="idcf-method-label">
+              <button type="button" id="idcf-method-standard" aria-pressed="true"><b>Standard</b> Today's method</button>
+              <button type="button" id="idcf-method-fcff" aria-pressed="false"><b>Damodaran FCFF</b> Operating income, leases, stakes</button>
+            </div>
+          </div>
           <div class="idcf-slider" id="idcf-row-growth">
             <div class="idcf-slider-head"><label for="idcf-growth" id="idcf-growth-label">Growth a year</label><output id="idcf-growth-out" for="idcf-growth"></output></div>
             <input type="range" id="idcf-growth" min="-10" max="40" step="0.1">
@@ -388,6 +395,7 @@
             </div>
           </div>
           <div id="cyclical-note" class="cyclical-note" hidden></div>
+          <div id="fcff-note" class="cyclical-note fcff-note" hidden></div>
           <div class="input-row" id="target-margin-row" hidden>
             <label for="target-margin-input">Target FCF Margin %
               <span class="tip" data-tip="What FCF margin do you expect this business to earn at maturity? Applied to current revenue to estimate a normalised FCF for the DCF. E.g. 15% for tech, 20% for SaaS, 8% for retail. Seeded from Yahoo's reported profit margin if available.">?</span>
@@ -706,6 +714,8 @@
   <script src="calc/fiscalYearAlign.js"></script>
   <script src="calc/altmanZ.js"></script>
   <script src="calc/heavyCapex.js"></script>
+  <script src="calc/marginalTax.js"></script>
+  <script src="calc/fcff.js"></script>
   <script src="calc/assumptions.js"></script>
   <script src="calc/industryBetas.js"></script>
   <script src="/kv-exchange-label.js"></script>

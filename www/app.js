@@ -22,6 +22,10 @@ const els = {
   idcfRowTgrowth: $('idcf-row-tgrowth'),
   idcfRowDiscount:$('idcf-row-discount'),
   idcfBeta:       $('idcf-beta'),
+  idcfMethod:     $('idcf-method'),
+  idcfMethodStandard: $('idcf-method-standard'),
+  idcfMethodFcff: $('idcf-method-fcff'),
+  fcffNote:       $('fcff-note'),
   idcfBetaStock:  $('idcf-beta-stock'),
   idcfBetaIndustry:$('idcf-beta-industry'),
   idcfBetaHint:   $('idcf-beta-hint'),
@@ -348,6 +352,8 @@ els.idcfTgrowth.addEventListener('change', () => onSlider('tgrowth', els.idcfTgr
 els.idcfDiscount.addEventListener('input',  () => onSlider('discount', els.idcfDiscount, false));
 els.idcfDiscount.addEventListener('change', () => onSlider('discount', els.idcfDiscount, true));
 els.idcfBetaStock.addEventListener('click', () => setBetaChoice('stock'));
+els.idcfMethodStandard.addEventListener('click', () => setFcffMode(false));
+els.idcfMethodFcff.addEventListener('click', () => setFcffMode(true));
 els.idcfBetaIndustry.addEventListener('click', () => setBetaChoice('industry'));
 els.idcfReset.addEventListener('click', onResetOurs);
 els.idcfPtModeValue.addEventListener('click', () => onPtMode('value'));
@@ -453,7 +459,58 @@ let _recomputeTimer = null;
 // Shareable link: the page's own query at load (applied once, to the first lookup), and the params page-state.js owns.
 const initialQuery = window.location.search || '';
 let urlStateConsumed = false;
-const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', 'tb', 'tu', 'wb', 'wu', 'model', 'rf', 'erp'];
+const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', 'tb', 'tu', 'wb', 'wu', 'model', 'rf', 'erp', 'fm'];
+// Valuation method v2 (2026-11-21): the free-cash-flow method toggle. Default = today's method; "Damodaran FCFF"
+// re-derives with deriveDcfAssumptions(..., { fcffMethod: true }). Only /dcf/ offers it (/evaluate/ never does).
+// A shared link carries fm=1.
+let fcffMode = new URLSearchParams(initialQuery).get('fm') === '1';
+
+function fcffApplies() {
+  const a = lastAssumptions;
+  return !!a && typeof fcffBase === 'function' && !a.isBankIns && !a.isReit && (valuationModel === 'dcf' || valuationModel === 'airline');
+}
+
+function setFcffMode(on) {
+  if (!currentData || fcffMode === on) return;
+  fcffMode = on;
+  prefillInputs(currentData);
+  scheduleRecompute(true);
+}
+
+function renderFcffToggle() {
+  const show = fcffApplies();
+  els.idcfMethod.hidden = !show;
+  if (!show) return;
+  els.idcfMethodStandard.setAttribute('aria-pressed', String(!fcffMode));
+  els.idcfMethodFcff.setAttribute('aria-pressed', String(fcffMode));
+}
+
+function fcffMoney(v, sym) {
+  if (v == null || !isFinite(v)) return '—';
+  const a = Math.abs(v), sign = v < 0 ? '−' : '';
+  return a >= 1e9 ? `${sign}${sym}${(a / 1e9).toFixed(2)}B` : `${sign}${sym}${(a / 1e6).toFixed(0)}M`;
+}
+
+// The "numbers used" for the FCFF method, one line per term (spec docs/superpowers/specs/2026-11-20-fcff-damodaran-design.md).
+function fcffNoteText(a, data) {
+  const f = a.fcfInfo, t = f.terms || {};
+  const sym = CURRENCY_SYMBOLS[data.currency] ?? '';
+  const pct = v => (v == null ? '—' : (v * 100).toFixed(1) + '%');
+  if (f.method === 'ocf-capex') return 'Free cash flow to the firm could not be built (operating income or depreciation is missing), so this uses operating cash flow − capex.';
+  const lines = [];
+  if (f.method === 'ocf-capex-avg') {
+    lines.push(`Free cash flow to the firm came out at ${fcffMoney(t.fcffComputed, sym)}: reinvestment (including acquisitions averaged over 4 years) exceeds after-tax operating income this year. This established company is valued on its average reported free cash flow over the last 4 years instead: ${fcffMoney(f.value, sym)}.`);
+  } else {
+    lines.push(`Free cash flow to the firm ${fcffMoney(f.value, sym)} = operating income ${fcffMoney(t.operatingIncome, sym)} × (1 − tax ${pct(t.effectiveTax)}) + depreciation ${fcffMoney(t.depreciation, sym)} − capex ${fcffMoney(t.capexAvg, sym)} (4-yr average) − acquisitions ${fcffMoney(t.acquisitionsAvg, sym)} (4-yr average) − leases ${fcffMoney(t.leaseReinvestment, sym)} − working capital ${fcffMoney(t.workingCapital, sym)}.`);
+    if (t.cashChargesAvg) lines.push(`Operating income is after one-off cash charges (restructuring, legal) averaged over 4 years: ${fcffMoney(t.cashChargesAvg, sym)}.`);
+    if (t.leaseInterest) lines.push(`It includes the interest part of operating-lease rent (${fcffMoney(t.leaseInterest, sym)}), because leases count as debt.`);
+    lines.push(`The final year is taxed at the marginal rate (${pct(t.marginalTax)}).`);
+  }
+  if (f.nonOperatingNet) lines.push(`Stakes in other companies and long-term securities, less minority interests, add ${fcffMoney(f.nonOperatingNet, sym)} to the equity value.`);
+  if (f.crossCheck && f.crossCheck.flag) lines.push(`Note: this differs from operating cash flow − capex (${fcffMoney(f.crossCheck.ocfRoute, sym)}) by more than 30%.`);
+  if (data.industry && /Auto Manufacturers|Farm & Heavy Construction Machinery/.test(data.industry)) lines.push('Includes a finance arm: its loans and borrowings distort working capital and debt (known limitation).');
+  return lines.join(' ');
+}
 
 const IDCF_RANGES = { growth: [-10, 40, 0.1], roe: [0, 60, 0.1], multiple: [1, 40, 0.1], tgrowth: [0, 4, 0.1], discount: [4, 18, 0.05] };
 
@@ -517,7 +574,8 @@ function initInteractive(data, assumptions) {
 function computeBetaInfo(data, a) {
   if (typeof industryBetaFor !== 'function' || detectMarket(data.ticker) !== 'us') return null;
   if (hasMultipleModel() || heavyCapexState) return null;
-  const ib = industryBetaFor({ industry: data.industry, marketCap: data.marketCap, totalDebt: data.totalDebt, taxRate: data.taxRate, financial: !!(a && a.isBankIns) });
+  const taxRate = a && a.fcffMethod && typeof marginalTaxFor === 'function' ? marginalTaxFor(a.currentMarket, data.ticker) : data.taxRate;
+  const ib = industryBetaFor({ industry: data.industry, marketCap: data.marketCap, totalDebt: data.totalDebt, taxRate, financial: !!(a && a.isBankIns) });
   if (!ib) return null;
   return { ib, industryEffBeta: Math.max(ib.beta, getMarketBetaFloor(data.ticker)) };
 }
@@ -578,6 +636,7 @@ function writeUrlState() {
   // discount rate without making it 'custom'), so whoever opens the link sees the same numbers.
   const extra = [];
   if (lastAssumptions && valuationModel !== lastAssumptions.valuationModel) extra.push('model=' + valuationModel);
+  if (fcffMode && fcffApplies()) extra.push('fm=1');
   const d = rfErpForMarket(currentMarket);
   const rf = parseFloat(els.rfInput.value), erp = parseFloat(els.erpInput.value);
   if (isFinite(rf) && rf !== +d.rf) extra.push('rf=' + String(+rf.toFixed(4)));
@@ -728,6 +787,7 @@ function syncSliders() {
   }
 
   els.idcfEdited.hidden = !psIsEdited(pageState, ourState);
+  renderFcffToggle();
 }
 
 // ── Pre-fill inputs ───────────────────────────────────────────────────────
@@ -740,7 +800,7 @@ function prefillInputs(data) {
   // the app can never silently compute different numbers for the same
   // ticker. This function's remaining job is purely writing those values
   // into the DOM (input fields, badges, notes).
-  const assumptions = deriveDcfAssumptions(data, { sectorMarginLookup });
+  const assumptions = deriveDcfAssumptions(data, { sectorMarginLookup, fcffMethod: fcffMode });
   const isBankIns = assumptions.isBankIns;
   // A new ticker (or Reset) starts the pressure test from today's price again.
   ptMode = 'value';
@@ -828,6 +888,15 @@ function prefillInputs(data) {
     if (isFcfNegative) {
       els.fcfSource.textContent = '⚠ negative';
       els.fcfSource.className = 'fcf-source estimated';
+    } else if (fcfInfo.method === 'fcff') {
+      els.fcfSource.textContent = '≈ Damodaran FCFF';
+      els.fcfSource.className = 'fcf-source confirmed';
+    } else if (fcfInfo.method === 'ocf-capex-avg') {
+      els.fcfSource.textContent = '≈ 4-yr avg OCF − CapEx';
+      els.fcfSource.className = 'fcf-source confirmed';
+    } else if (fcfInfo.method === 'ocf-capex') {
+      els.fcfSource.textContent = '≈ OCF − CapEx';
+      els.fcfSource.className = 'fcf-source confirmed';
     } else if (fcfInfo.method === 'reported') {
       els.fcfSource.textContent = '✓ Yahoo';
       els.fcfSource.className = 'fcf-source confirmed';
@@ -853,7 +922,15 @@ function prefillInputs(data) {
     els.fcfSource.className = 'fcf-source estimated';
   }
 
-  if (els.cyclicalNote) {
+  if (els.fcffNote) {
+    const showFcff = !!assumptions.fcffMethod && !heavyCapexState && (assumptions.valuationModel === 'dcf' || assumptions.valuationModel === 'airline');
+    els.fcffNote.hidden = !showFcff;
+    els.fcffNote.textContent = showFcff ? fcffNoteText(assumptions, data) : '';
+  }
+
+  if (els.cyclicalNote && assumptions.fcffMethod) {
+    els.cyclicalNote.hidden = true; // FCFF normalises the operating margin itself; the note above explains it
+  } else if (els.cyclicalNote) {
     const revenueNote = fcfInfo.revenueCapped
       ? ` That margin is applied to the ${fcfInfo.yearsUsed}-year average revenue, not the latest year's, which sits above it — so a peak in commodity prices doesn't inflate the starting cash flow.`
       : '';
@@ -1560,7 +1637,7 @@ function scenarioInputs(data) {
   // ── Airline (EV/EBITDA, locked model) ──
   if (valuationModel === 'airline') {
     const ebitda = els.ebitdaInput ? num(els.ebitdaInput) : NaN;
-    return { model: 'airline', options: { holdcoDiscount }, seeds: {
+    return { model: 'airline', options: { holdcoDiscount, nonOperatingNet: fcffNonOperatingNet() }, seeds: {
       ebitda: isFinite(ebitda) ? ebitda : null,
       multiple: { bear: parseFloat(els.growthBear.value) || 0, base: parseFloat(els.growthBase.value) || 0, bull: parseFloat(els.growthBull.value) || 0 },
     } };
@@ -1598,11 +1675,17 @@ function scenarioInputs(data) {
     useMultiStage: !!(els.multistageToggle && els.multistageToggle.checked),
     useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
     fcfRaw, normFcf, holdcoDiscount,
+    terminalFcfFactor: fcffMode && lastAssumptions && lastAssumptions.fcffMethod ? lastAssumptions.fcfInfo.terminalFcfFactor : 1,
+    nonOperatingNet: fcffNonOperatingNet(),
   }, seeds: {
     growth:   { bear: rateOr(els.growthBear, 5), base: rateOr(els.growthBase, 5), bull: rateOr(els.growthBull, 5) },
     tgrowth:  { bear: rateOr(els.tgrowthBear, 2.5), base: rateOr(els.tgrowthBase, 2.5), bull: rateOr(els.tgrowthBull, 2.5) },
     discount: { bear: parseFloat(els.waccBear.value) || 10, base: parseFloat(els.waccBase.value) || 10, bull: parseFloat(els.waccBull.value) || 10 },
   } };
+}
+
+function fcffNonOperatingNet() {
+  return fcffMode && lastAssumptions && lastAssumptions.fcffMethod ? (lastAssumptions.fcfInfo.nonOperatingNet || 0) : 0;
 }
 
 function buildScenarios(data) {

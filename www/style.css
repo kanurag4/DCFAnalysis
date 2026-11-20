@@ -865,6 +865,8 @@ html.dark .etf-holdings-table a { color: var(--kv-accent); }
 .idcf-beta button b { display: block; font-size: 1rem; color: var(--kv-primary); }
 .idcf-beta button[aria-pressed="true"] { border-color: var(--kv-primary); box-shadow: inset 0 0 0 1px var(--kv-primary); }
 .idcf-beta .idcf-prev { color: var(--kv-muted); }
+.idcf-method { margin-bottom: 14px; }
+.idcf-method-label { font-size: 0.85rem; font-weight: 600; color: var(--kv-text); }
 .idcf-beta-hint { font-size: 0.75rem; color: var(--kv-muted); margin: 6px 0 0; }
 .idcf-more { border-top: 1px solid var(--kv-border); padding-top: 12px; }
 .idcf-more > summary { cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--kv-primary); min-height: 44px; display: flex; align-items: center; }

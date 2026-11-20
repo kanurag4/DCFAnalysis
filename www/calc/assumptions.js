@@ -355,6 +355,11 @@ function deriveDcfAssumptions(data, opts) {
   // calc/holdcoDiscount.js.
   const isHoldcoFlag = isConglomerate(data.sector, data.industry, data.ticker);
   const currentMarket = detectMarket(data.ticker);
+  // Valuation method v2 (2026-11-21): ONLY when the caller asks (/dcf/'s method toggle, opts.fcffMethod). Off = today
+  // exactly. The calc/fcff.js + calc/marginalTax.js globals are referenced only when on, so a page that never passes
+  // the option needs neither script tag. Banks/insurers and REITs are never affected.
+  const fcffOn = !!(opts && opts.fcffMethod) && !isBankIns && !isReitFlag && typeof fcffBase === 'function';
+  const fcffMarginal = fcffOn ? (typeof marginalTaxFor === 'function' ? marginalTaxFor(currentMarket, data.ticker) : 0.25) : null;
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
   const erp = MARKET_ERP[currentMarket]  ?? MARKET_ERP.us;
 
@@ -364,7 +369,7 @@ function deriveDcfAssumptions(data, opts) {
 
   const waccResult = calculateWACC({
     marketCap: data.marketCap, totalDebt: data.totalDebt, beta: effectiveBeta,
-    interestExpense: data.interestExpense, taxRate: data.taxRate, ebit: data.ebit,
+    interestExpense: data.interestExpense, taxRate: fcffOn ? fcffMarginal : data.taxRate, ebit: data.ebit, // v2: marginal debt shield
     riskFreeRate: rf, erp,
   });
   const re = rf + effectiveBeta * erp;
@@ -448,7 +453,10 @@ function deriveDcfAssumptions(data, opts) {
       multiple: { bear: +(reitBaseMultiple * 0.8).toFixed(1), base: reitBaseMultiple, bull: +(reitBaseMultiple * 1.2).toFixed(1) },
     },
     airline: {
-      ebitda: data.ebitda,
+      // v2 (toggle on, US filers): EBITDAR = EBITDA + operating lease cost, matching lease-inclusive debt (IFRS EBITDA is
+      // already before lease cost).
+      ebitda: (fcffOn && data.reportingRegime === 'us-gaap' && data.ebitda != null && data.operatingLeaseCost > 0)
+        ? data.ebitda + data.operatingLeaseCost : data.ebitda,
       multiple: {
         bear: +(AIRLINE_EV_EBITDA_MULTIPLE * 0.8).toFixed(1),
         base: AIRLINE_EV_EBITDA_MULTIPLE,
@@ -477,6 +485,17 @@ function deriveDcfAssumptions(data, opts) {
     if (cyclicalFcf) finalFcfInfo = cyclicalFcf;
   }
 
+  // v2 (toggle on): Damodaran FCFF replaces deriveFcf / cyclicalBaseFcf (cyclicals normalise the operating margin
+  // instead). Carries the terminal-tax factor and the equity-bridge term for computeScenarios' callers to pass on.
+  if (fcffOn) {
+    const r = fcffBase(data, { growth: baseGrowthPct / 100, marginal: fcffMarginal, cyclical: isCyclicalFlag, costOfDebt: waccResult ? waccResult.rd : null });
+    finalFcfInfo = {
+      value: r.fcff, method: r.fallback || 'fcff', terms: r.terms,
+      terminalFcfFactor: r.terminalFactor, nonOperatingNet: fcffEquityBridge(data),
+      crossCheck: fcffOcfCrossCheck(data, r.fcff, r.terms && r.terms.effectiveTax != null ? r.terms.effectiveTax : fcffMarginal),
+    };
+  }
+
   const valuationModel = isReitFlag ? 'reit' : (isAirlineFlag ? 'airline' : (isUtilityFlag ? 'excess-return' : (!isBankIns ? 'dcf' : (financialModel === 'excess-return' ? 'excess-return' : 'ddm'))));
 
   return {
@@ -485,6 +504,7 @@ function deriveDcfAssumptions(data, opts) {
     valuationModel,
     holdcoDiscount: isHoldcoFlag ? HOLDCO_DISCOUNT : null,
     useMultiStage: baseGrowthPct < 0, // same auto-enable rule as app.js's prefillInputs()
+    fcffMethod: fcffOn,
   };
 }
 
@@ -500,6 +520,9 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const useMultiStage = !!options.useMultiStage;
   const useMidYear = !!options.useMidYear;
   const configs = ['bear', 'base', 'bull'];
+  // v2 (/dcf/ toggle): terminal year at the marginal tax rate, and stakes - minority interests. Defaults = today.
+  const terminalFcfFactor = options.terminalFcfFactor == null ? 1 : options.terminalFcfFactor;
+  const nonOperatingNet = options.nonOperatingNet == null ? 0 : options.nonOperatingNet;
 
   if (valuationModel === 'reit') {
     const affoPerShare = seeds.affoPerShare;
@@ -519,7 +542,7 @@ function computeScenarios(data, valuationModel, seeds, options) {
     const scenarios = configs.map((key) => {
       const multiple = seeds.multiple[key];
       if (!(ebitda > 0)) return { key, multiple, result: null, noEbitda: true };
-      const result = calculateAirlineValue({ ebitda, multiple, totalDebt: data.totalDebt, totalCash: data.totalCash, sharesOutstanding: resolvedShares, currentPrice: data.price });
+      const result = calculateAirlineValue({ ebitda, multiple, totalDebt: data.totalDebt, totalCash: data.totalCash, sharesOutstanding: resolvedShares, currentPrice: data.price, nonOperatingNet });
       return { key, multiple, result };
     });
     return applyHoldcoDiscountToScenarios(scenarios, options.holdcoDiscount, data.price);
@@ -561,12 +584,14 @@ function computeScenarios(data, valuationModel, seeds, options) {
   const resolvedShares = (data.dilutedSharesOutstanding != null && data.dilutedSharesOutstanding > 0)
     ? data.dilutedSharesOutstanding : data.sharesOutstanding;
 
-  function runDcf(fcfValue, growthRate, terminalGrowth, wacc) {
+  // normalised = a user/cyclical override FCF: the terminal-tax factor belongs to the FCFF it was computed from, so 1.
+  function runDcf(fcfValue, growthRate, terminalGrowth, wacc, normalised) {
     const common = {
       terminalGrowth, wacc, projectionYears: years,
       totalDebt: data.totalDebt ?? 0, totalCash: data.totalCash ?? 0,
       sharesOutstanding: resolvedShares, currentPrice: data.price,
       midYear: useMidYear,
+      terminalFcfFactor: normalised ? 1 : terminalFcfFactor, nonOperatingNet,
     };
     return useMultiStage
       ? calculateFadingGrowthDCF({ ...common, fcf: fcfValue, initialGrowth: growthRate })
@@ -579,11 +604,11 @@ function computeScenarios(data, valuationModel, seeds, options) {
     const wacc            = seeds.discount[key] / 100;
 
     if (fcfRaw === null) {
-      if (normFcf !== null) return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc), normalised: true };
+      if (normFcf !== null) return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc, true), normalised: true };
       return { key, growthRate, terminalGrowth, wacc, result: null, fcfMissing: true };
     }
     if (fcfRaw <= 0) {
-      if (normFcf !== null) return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc), normalised: true };
+      if (normFcf !== null) return { key, growthRate, terminalGrowth, wacc, result: runDcf(normFcf, growthRate, terminalGrowth, wacc, true), normalised: true };
       return { key, growthRate, terminalGrowth, wacc, result: null, fcfNegative: true };
     }
     return { key, growthRate, terminalGrowth, wacc, result: runDcf(fcfRaw, growthRate, terminalGrowth, wacc) };

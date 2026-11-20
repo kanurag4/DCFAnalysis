@@ -25,7 +25,8 @@
 // still fixes the core problem (DCF's sensitivity to a single volatile
 // FCF/growth year); EV/EBITDAR is a documented future refinement, not a
 // silent gap.
-function calculateAirlineValue({ ebitda, multiple, totalDebt, totalCash, sharesOutstanding, currentPrice }) {
+// nonOperatingNet (valuation method v2, /dcf/ toggle only): stakes - minority interests, added to equity. Default 0.
+function calculateAirlineValue({ ebitda, multiple, totalDebt, totalCash, sharesOutstanding, currentPrice, nonOperatingNet = 0 }) {
   if (ebitda == null || !isFinite(ebitda) || ebitda <= 0) {
     return { intrinsicValue: null, marginOfSafety: null, ev: null, netDebt: null, equityValue: null };
   }
@@ -35,7 +36,7 @@ function calculateAirlineValue({ ebitda, multiple, totalDebt, totalCash, sharesO
 
   const ev = ebitda * multiple;
   const netDebt = (totalDebt || 0) - (totalCash || 0);
-  const equityValue = ev - netDebt;
+  const equityValue = ev - netDebt + nonOperatingNet;
 
   if (equityValue <= 0 || !sharesOutstanding || sharesOutstanding <= 0) {
     return { intrinsicValue: null, marginOfSafety: null, ev, netDebt, equityValue };

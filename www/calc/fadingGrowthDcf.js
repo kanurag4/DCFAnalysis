@@ -28,6 +28,9 @@ function calculateFadingGrowthDCF({
   totalDebt = 0, totalCash = 0,
   sharesOutstanding = null, currentPrice = null,
   midYear = false,
+  // Valuation method v2 (2026-11-21, /dcf/ toggle only): terminalFcfFactor taxes the terminal year at the marginal
+  // rate (calc/fcff.js); nonOperatingNet = stakes - minority interests, added to equity. Defaults = today exactly.
+  terminalFcfFactor = 1, nonOperatingNet = 0,
 }) {
   if (!fcf || fcf <= 0) return null;
   if (!wacc || wacc <= terminalGrowth) return null;
@@ -48,7 +51,7 @@ function calculateFadingGrowthDCF({
 
   const sumPvFcfs = pvFcfs.reduce((a, b) => a + b, 0);
   const terminalFcf = forecastedFcfs[projectionYears - 1];
-  const terminalValue = terminalFcf * (1 + terminalGrowth) / (wacc - terminalGrowth);
+  const terminalValue = terminalFcf * (1 + terminalGrowth) * terminalFcfFactor / (wacc - terminalGrowth);
   const terminalExponent = midYear ? projectionYears - 0.5 : projectionYears;
   const pvTerminal = terminalValue / Math.pow(1 + wacc, terminalExponent);
 
@@ -56,7 +59,7 @@ function calculateFadingGrowthDCF({
   const terminalValuePct = (pvTerminal / firmValue) * 100;
 
   const netDebt = (totalDebt || 0) - (totalCash || 0);
-  const equityValue = firmValue - netDebt;
+  const equityValue = firmValue - netDebt + nonOperatingNet;
 
   if (equityValue < 0) {
     return {

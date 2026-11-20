@@ -71,12 +71,15 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
   let annualGrossProfitHistory = [];
   // Heavy capex spending (2026-11-05): trailing-12-month capex / operating cash flow / depreciation -- see ttmFromTimeseries().
   let ttm = ttmFromTimeseries(null, gbpToPence);
+  // Valuation method v2 (2026-11-21): FCFF inputs (fcffInputsFromTimeseries), same FX handling as everything below.
+  let fcffInputs = fcffInputsFromTimeseries(null, gbpToPence);
   try {
     const tsRes = await fetch(`${base}/timeseries/${encodeURIComponent(symbol)}`, { headers: extraHeaders });
     if (tsRes.ok) {
       const tsBody = await tsRes.json();
       if (!tsBody.error) {
         ttm = ttmFromTimeseries(tsBody, gbpToPence);
+        fcffInputs = fcffInputsFromTimeseries(tsBody, gbpToPence);
         dilutedSharesOutstanding = latestSeriesValue(tsBody.annualDilutedAverageShares);
         const rawEbit = latestSeriesValue(tsBody.annualOperatingIncome);
         ebit = (rawEbit != null) ? rawEbit * gbpToPence : null;
@@ -220,8 +223,10 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
       annualCapexHistoryConverted = annualCapexHistory.map(e => ({ date: e.date, value: c(e.value) }));
       annualGrossProfitHistoryConverted = annualGrossProfitHistory.map(e => ({ date: e.date, value: c(e.value) }));
       ttm = { ...ttm, ttmCapex: c(ttm.ttmCapex), ttmOcf: c(ttm.ttmOcf), ttmDepreciation: c(ttm.ttmDepreciation), lastQuarterCapex: c(ttm.lastQuarterCapex) };
+      fcffInputs = convertFcffInputs(fcffInputs, c);
     } else {
       fxConversionFailed = true;
+      fcffInputs = convertFcffInputs(fcffInputs, null);
       ttm = { ...ttm, ttmCapex: null, ttmOcf: null, ttmDepreciation: null, lastQuarterCapex: null };
       freeCashflow = null;
       operatingCashflow = null;
@@ -284,6 +289,10 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
     annualGrossProfitHistory: annualGrossProfitHistoryConverted,
     // Heavy capex spending (calc/heavyCapex.js). Same FX conversion as every money field above.
     ttmCapex: ttm.ttmCapex, ttmOcf: ttm.ttmOcf, ttmDepreciation: ttm.ttmDepreciation, lastQuarterCapex: ttm.lastQuarterCapex,
+    // Valuation method v2 (2026-11-21): FCFF inputs (FX-converted above) and the accounting regime (US filer = no
+    // exchange suffix; an approximation -- a US-listed 20-F filer reports IFRS).
+    ...fcffInputs,
+    reportingRegime: symbol.includes('.') ? 'ifrs' : 'us-gaap',
   };
 }
 
@@ -444,19 +453,22 @@ function scaleTimeseries(series, scale) {
 // date within 100 days of the previous); otherwise the latest fiscal year (semiannual filers such as BABA have no
 // quarterly series). Capex is returned as a positive magnitude. ttmSource says where capex came from.
 const TTM_MAX_QUARTER_GAP_DAYS = 100;
+// Sum of the last 4 points when they are 4 consecutive quarters (each end date within TTM_MAX_QUARTER_GAP_DAYS of the
+// previous), else null -- half-years (UK, ASX, Spain) are never summed as a year.
+function lastFourQuarters(series) {
+  const pts = (Array.isArray(series) ? series : []).filter(e => e && e.date && e.value != null && isFinite(e.value));
+  if (pts.length < 4) return null;
+  const four = pts.slice(-4);
+  for (let i = 1; i < 4; i++) {
+    const days = (Date.parse(four[i].date) - Date.parse(four[i - 1].date)) / 86400000;
+    if (!(days > 0 && days <= TTM_MAX_QUARTER_GAP_DAYS)) return null;
+  }
+  return four.reduce((s, e) => s + e.value, 0);
+}
+
 function ttmFromTimeseries(tsBody, gbpToPence) {
   const scale = gbpToPence || 1;
   const body = tsBody || {};
-  function lastFourQuarters(series) {
-    const pts = (Array.isArray(series) ? series : []).filter(e => e && e.date && e.value != null && isFinite(e.value));
-    if (pts.length < 4) return null;
-    const four = pts.slice(-4);
-    for (let i = 1; i < 4; i++) {
-      const days = (Date.parse(four[i].date) - Date.parse(four[i - 1].date)) / 86400000;
-      if (!(days > 0 && days <= TTM_MAX_QUARTER_GAP_DAYS)) return null;
-    }
-    return four.reduce((s, e) => s + e.value, 0);
-  }
   function figure(quarterlyKey, annualKey) {
     const qSum = lastFourQuarters(body[quarterlyKey]);
     if (qSum != null) return { value: qSum * scale, source: 'quarterly' };
@@ -475,6 +487,57 @@ function ttmFromTimeseries(tsBody, gbpToPence) {
     lastQuarterCapex: lastQ != null ? Math.abs(lastQ * scale) : null,
     ttmSource: capex.source,
   };
+}
+
+// Pure (valuation method v2, 2026-11-21): the FCFF inputs from a /timeseries body (docs/superpowers/specs/
+// 2026-11-20-fcff-damodaran-design.md). Money values are GBp-scaled like every other /timeseries field; the lease
+// rate is a ratio and never scaled. Acquisitions become positive magnitudes. Stakes and minority interests are 0 when
+// Yahoo has none (never null, so the equity bridge never breaks); the US lease series come only from SEC EDGAR.
+function fcffInputsFromTimeseries(tsBody, gbpToPence) {
+  const scale = gbpToPence || 1;
+  const body = tsBody || {};
+  const series = key => scaleTimeseries(Array.isArray(body[key]) ? body[key] : [], scale);
+  const latest = key => { const v = latestSeriesValue(body[key]); return v != null ? v * scale : null; };
+  const ttm = key => { const v = lastFourQuarters(body[key]); return v != null ? v * scale : null; };
+  const stakes = latest('quarterlyInvestmentsAndAdvances')
+    ?? (latest('quarterlyInvestmentinFinancialAssets') != null || latest('quarterlyLongTermEquityInvestment') != null
+      ? (latest('quarterlyInvestmentinFinancialAssets') || 0) + (latest('quarterlyLongTermEquityInvestment') || 0) : null);
+  return {
+    annualOperatingIncomeHistory: series('annualOperatingIncome'),
+    ttmOperatingIncome: ttm('quarterlyOperatingIncome'),
+    ttmRevenue: ttm('quarterlyTotalRevenue'),
+    annualRestructuringHistory: series('annualRestructuringAndMergernAcquisition'),
+    annualOtherSpecialChargesHistory: series('annualOtherSpecialCharges'),
+    annualTaxProvisionHistory: series('annualTaxProvision'),
+    annualPretaxIncomeHistory: series('annualPretaxIncome'),
+    annualAcquisitionsHistory: series('annualPurchaseOfBusiness').map(e => (e && e.value != null ? { ...e, value: Math.abs(e.value) } : e)),
+    annualCashAndStHistory: series('annualCashCashEquivalentsAndShortTermInvestments'),
+    annualCurrentDebtInclLeasesHistory: series('annualCurrentDebtAndCapitalLeaseObligation'),
+    annualLeaseLiabilitiesHistory: series('annualCapitalLeaseObligations'),
+    annualCurrentLeaseLiabilitiesHistory: series('annualCurrentCapitalLeaseObligation'),
+    longTermInvestments: stakes ?? 0,
+    minorityInterest: latest('quarterlyMinorityInterest') ?? latest('annualMinorityInterest') ?? 0,
+    annualOperatingLeaseLiabilityHistory: series('annualOperatingLeaseLiability'),
+    annualFinanceLeaseLiabilityHistory: series('annualFinanceLeaseLiability'),
+    operatingLeaseRate: latestSeriesValue(body.annualOperatingLeaseRate),
+    financeLeaseRouAmortization: latest('annualFinanceLeaseRouAmortization'),
+    operatingLeaseCost: latest('annualOperatingLeaseCost'),
+    ppeDepreciation: latest('annualPpeDepreciation'),
+    reconciledDepreciation: latest('annualReconciledDepreciation'),
+  };
+}
+
+const FCFF_RATIO_FIELDS = ['operatingLeaseRate'];
+// FX-convert the FCFF inputs with c(v) (financial currency -> trading currency); c === null = the rate failed: every
+// money input is nulled (histories emptied) so currencies are never mixed. Ratios pass through either way.
+function convertFcffInputs(inputs, c) {
+  const out = {};
+  for (const [k, v] of Object.entries(inputs)) {
+    if (FCFF_RATIO_FIELDS.includes(k)) out[k] = v;
+    else if (Array.isArray(v)) out[k] = c ? v.map(e => (e && e.value != null ? { date: e.date, value: c(e.value) } : e)) : [];
+    else out[k] = c ? (v != null ? c(v) : v) : null;
+  }
+  return out;
 }
 
 // GBp (pence-quoted LSE stock) vs GBP (pounds, the SAME company's financial-
@@ -554,6 +617,7 @@ async function fetchTickerPageUrl(ticker, currentMarket) {
 }
 
 if (typeof module !== 'undefined') module.exports = {
+  fcffInputsFromTimeseries, convertFcffInputs,
   fetchDCFDataFromBody,
   fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER,
   gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair, ttmFromTimeseries,
