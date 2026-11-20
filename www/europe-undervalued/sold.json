@@ -326,5 +326,61 @@
     "exitDate": "2026-11-13",
     "exitPrice": 37,
     "dollarPnl": 24.13
+  },
+  {
+    "ticker": "MTO.L",
+    "entryDate": "2026-10-09",
+    "entryPrice": 2.5109,
+    "exitDate": "2026-11-20",
+    "exitPrice": 2.4942,
+    "dollarPnl": -0.51
+  },
+  {
+    "ticker": "A5G.IR",
+    "entryDate": "2026-11-13",
+    "entryPrice": 11.63,
+    "exitDate": "2026-11-20",
+    "exitPrice": 11.005,
+    "dollarPnl": -29.29
+  },
+  {
+    "ticker": "ACKB.BR",
+    "entryDate": "2026-11-13",
+    "entryPrice": 277,
+    "exitDate": "2026-11-20",
+    "exitPrice": 258.2,
+    "dollarPnl": -36.99
+  },
+  {
+    "ticker": "TEMN.SW",
+    "entryDate": "2026-11-06",
+    "entryPrice": 85.4662,
+    "exitDate": "2026-11-20",
+    "exitPrice": 81.039,
+    "dollarPnl": -35.87
+  },
+  {
+    "ticker": "INVE-B.ST",
+    "entryDate": "2026-11-06",
+    "entryPrice": 38.0625,
+    "exitDate": "2026-11-20",
+    "exitPrice": 36.2934,
+    "dollarPnl": -40.03
+  },
+  {
+    "ticker": "TRYG.CO",
+    "entryDate": "2026-10-16",
+    "entryPrice": 20.4649,
+    "exitDate": "2026-11-20",
+    "exitPrice": 22.109,
+    "dollarPnl": -8.03
+  },
+  {
+    "ticker": "ABDN.L",
+    "entryDate": "2026-10-23",
+    "entryPrice": 2.573,
+    "exitDate": "2026-11-20",
+    "exitPrice": 2.5515,
+    "dollarPnl": -36.29
   }
 ]

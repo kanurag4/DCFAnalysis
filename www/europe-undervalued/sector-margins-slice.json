@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-13",
+ "asAt": "2026-11-20",
  "industries": {
   "Utilities - Diversified": [
    {
@@ -276,7 +276,7 @@
    },
    {
     "ticker": "RIO.L",
-    "margin": 0.1269381377732098
+    "margin": 0.12693813777320984
    }
   ],
   "Specialty Industrial Machinery": [
@@ -286,7 +286,7 @@
    },
    {
     "ticker": "ACLN.SW",
-    "margin": 0.14723567951379474
+    "margin": 0.1472356795137947
    },
    {
     "ticker": "ALFA.ST",
@@ -302,7 +302,7 @@
    },
    {
     "ticker": "ENR.DE",
-    "margin": 0.04849520081337065
+    "margin": 0.08448730964153171
    },
    {
     "ticker": "FLS.CO",
@@ -311,6 +311,10 @@
    {
     "ticker": "G1A.DE",
     "margin": 0.07053992906107899
+   },
+   {
+    "ticker": "GF.SW",
+    "margin": 0.0332806454192955
    },
    {
     "ticker": "IMI.L",
@@ -354,7 +358,7 @@
    },
    {
     "ticker": "SIE.DE",
-    "margin": 0.12781312587035037
+    "margin": 0.13575232889121333
    },
    {
     "ticker": "SMIN.L",
@@ -418,7 +422,7 @@
   "Asset Management": [
    {
     "ticker": "ABDN.L",
-    "margin": 0.1304734122208409
+    "margin": 0.14950430162437683
    },
    {
     "ticker": "ALLFG.AS",
@@ -459,10 +463,6 @@
    {
     "ticker": "ICG.L",
     "margin": 0.42121881629404045
-   },
-   {
-    "ticker": "III.L",
-    "margin": 0.14320619084548972
    },
    {
     "ticker": "INDU-C.ST",
@@ -566,7 +566,7 @@
    },
    {
     "ticker": "STAN.L",
-    "margin": 0.47480164054819207
+    "margin": 0.474801640548192
    },
    {
     "ticker": "UBSG.SW",
@@ -676,7 +676,7 @@
    },
    {
     "ticker": "VK.PA",
-    "margin": 0.05762949055195489
+    "margin": 0.0576294905519549
    },
    {
     "ticker": "VOE.VI",
@@ -1174,7 +1174,7 @@
   "Copper": [
    {
     "ticker": "ANTO.L",
-    "margin": -0.014704823561114964
+    "margin": -0.014704823561114966
    }
   ],
   "Security & Protection Services": [
@@ -1234,7 +1234,7 @@
   "Drug Manufacturers - General": [
    {
     "ticker": "AZN.L",
-    "margin": 0.1471669687389587
+    "margin": 0.14716696873895868
    },
    {
     "ticker": "BAYN.DE",
@@ -1272,7 +1272,7 @@
   "Confectioners": [
    {
     "ticker": "BARN.SW",
-    "margin": -0.052016813291306335
+    "margin": -0.019724486289272265
    },
    {
     "ticker": "LISP.SW",
@@ -1406,7 +1406,7 @@
    },
    {
     "ticker": "QIA.DE",
-    "margin": 0.22077532222934412
+    "margin": 0.2207753222293441
    }
   ],
   "Residential Construction": [
@@ -1534,7 +1534,7 @@
    },
    {
     "ticker": "RTO.L",
-    "margin": 0.10105109789922792
+    "margin": 0.10105109789922793
    },
    {
     "ticker": "SRP.L",
@@ -1706,7 +1706,7 @@
    },
    {
     "ticker": "IFCN.SW",
-    "margin": 0.0978743973197876
+    "margin": 0.09787439731978761
    }
   ],
   "Restaurants": [
@@ -1912,7 +1912,7 @@
    },
    {
     "ticker": "PAF.L",
-    "margin": 0.011563649594741772
+    "margin": 0.011563649594741779
    }
   ],
   "Utilities - Regulated Electric": [
@@ -2022,13 +2022,13 @@
    },
    {
     "ticker": "HOC.L",
-    "margin": -0.05645627154463597
+    "margin": -0.05645627154463598
    }
   ],
   "Oil & Gas Midstream": [
    {
     "ticker": "FRO.OL",
-    "margin": -0.0354637928742932
+    "margin": -0.03546379287429319
    },
    {
     "ticker": "VPK.AS",
@@ -2072,7 +2072,7 @@
    },
    {
     "ticker": "HIK.L",
-    "margin": 0.10607370288425103
+    "margin": 0.10607370288425101
    },
    {
     "ticker": "HLN.L",
@@ -2134,7 +2134,7 @@
    },
    {
     "ticker": "TEN.MI",
-    "margin": 0.16436458722838623
+    "margin": 0.1643645872283862
    },
    {
     "ticker": "TGS.OL",
@@ -2208,7 +2208,7 @@
    },
    {
     "ticker": "NOD.OL",
-    "margin": -0.003139484730125125
+    "margin": -0.0031394847301251146
    },
    {
     "ticker": "STMMI.MI",
@@ -2288,7 +2288,7 @@
   "Computer Hardware": [
    {
     "ticker": "LOGN.SW",
-    "margin": 0.18122678804989129
+    "margin": 0.18122678804989126
    }
   ],
   "Marine Shipping": [
@@ -2316,7 +2316,7 @@
   "Farm Products": [
    {
     "ticker": "MOWI.OL",
-    "margin": 0.08906699199529133
+    "margin": 0.08906699199529135
    },
    {
     "ticker": "SALM.OL",
@@ -2352,7 +2352,7 @@
   "Insurance - Life": [
    {
     "ticker": "PRU.L",
-    "margin": 0.11439723818559011
+    "margin": 0.1143972381855901
    },
    {
     "ticker": "SDLF.L",

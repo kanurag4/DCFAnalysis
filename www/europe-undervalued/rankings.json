@@ -1,37 +1,171 @@
 {
-  "asAt": "2026-11-13",
+  "asAt": "2026-11-20",
   "universe": "Europe (STOXX Europe 600)",
   "summary": {
     "tickers": 574,
     "evaluated": 573,
-    "qualified": 139,
+    "qualified": 131,
     "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 1,
-      "unvaluable": 74,
-      "overvalued": 253,
-      "marginOverCap": 87,
-      "distressZone": 14,
-      "proxyFcf": 6
+      "unvaluable": 76,
+      "overvalued": 252,
+      "marginOverCap": 91,
+      "distressZone": 16,
+      "proxyFcf": 7
     }
   },
   "rows": [
     {
       "rank": 1,
+      "ticker": "UNI.MC",
+      "name": "Unicaja Banco, S.A.",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 6.35,
+      "snapshotPrice": 3.23,
+      "marginOfSafety": 0.9687,
+      "wacc": 0.0548,
+      "terminalValuePct": 84.8,
+      "trailingPE": 12.4,
+      "marketCap": 8289439744,
+      "operatingMargin": 0.51,
+      "analystTarget": 3.27,
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.18,
+        "n": 248,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.17,
+        "n": 248,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 2,
+      "ticker": "ERIC-B.ST",
+      "name": "Telefonaktiebolaget LM Ericsson (publ)",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 200.13,
+      "snapshotPrice": 101.7,
+      "marginOfSafety": 0.9679,
+      "wacc": 0.0535,
+      "terminalValuePct": 82.6,
+      "trailingPE": 17.5,
+      "marketCap": 329450618880,
+      "operatingMargin": 0.143,
+      "analystTarget": 100.55,
+      "currency": "SEK",
+      "altmanZ": {
+        "score": 2.84,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": 0.11,
+        "n": 244,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.08,
+        "n": 244,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 3,
+      "ticker": "VAR.OL",
+      "name": "Vår Energi ASA",
+      "sector": "Energy",
+      "method": "DCF",
+      "intrinsic": 90.9,
+      "snapshotPrice": 46.21,
+      "marginOfSafety": 0.9672,
+      "wacc": 0.0729,
+      "terminalValuePct": 77.2,
+      "trailingPE": 8.2,
+      "marketCap": 115351707648,
+      "operatingMargin": 0.6143,
+      "analystTarget": 56.39,
+      "currency": "NOK",
+      "altmanZ": null,
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 244,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.01,
+        "n": 244,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 4,
+      "ticker": "EVK.DE",
+      "name": "Evonik Industries AG",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 34.59,
+      "snapshotPrice": 18.31,
+      "marginOfSafety": 0.8889,
+      "wacc": 0.0532,
+      "terminalValuePct": 83.9,
+      "trailingPE": 59.1,
+      "marketCap": 8532459520,
+      "operatingMargin": 0.0536,
+      "analystTarget": 19.28,
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 2.09,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.08,
+        "n": 246,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.06,
+        "n": 246,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 5,
       "ticker": "CCH.L",
       "name": "Coca-Cola HBC AG",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 8396.28,
-      "snapshotPrice": 4238,
-      "marginOfSafety": 0.9812,
-      "wacc": 0.0634,
-      "terminalValuePct": 81.3,
-      "trailingPE": 18.3,
-      "marketCap": 1544600678400,
+      "intrinsic": 7998.39,
+      "snapshotPrice": 4250,
+      "marginOfSafety": 0.882,
+      "wacc": 0.0656,
+      "terminalValuePct": 80.5,
+      "trailingPE": 17.9,
+      "marketCap": 1548974284800,
       "operatingMargin": 0.1194,
-      "analystTarget": 4943.24,
+      "analystTarget": 4965.73,
       "currency": "GBp",
       "altmanZ": {
         "score": 3.94,
@@ -43,223 +177,67 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": -0.15,
-        "n": 246,
+        "r": -0.17,
+        "n": 247,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.08,
-        "n": 246,
+        "r": -0.11,
+        "n": 247,
         "band": "none"
       }
     },
     {
-      "rank": 2,
-      "ticker": "MTO.L",
-      "name": "Mitie Group plc",
-      "sector": "Industrials",
+      "rank": 6,
+      "ticker": "UPM.HE",
+      "name": "UPM-Kymmene Oyj",
+      "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 409.54,
-      "snapshotPrice": 208.6,
-      "marginOfSafety": 0.9633,
-      "wacc": 0.0821,
-      "terminalValuePct": 78,
-      "trailingPE": 34.8,
-      "marketCap": 265346073600,
-      "operatingMargin": 0.0399,
-      "analystTarget": 210.36,
-      "currency": "GBp",
+      "intrinsic": 39.64,
+      "snapshotPrice": 21.18,
+      "marginOfSafety": 0.8714,
+      "wacc": 0.0496,
+      "terminalValuePct": 85.4,
+      "trailingPE": 16.5,
+      "marketCap": 11168722944,
+      "operatingMargin": 0.0917,
+      "analystTarget": 24.72,
+      "currency": "EUR",
       "altmanZ": {
-        "score": 3.27,
-        "zone": "safe"
+        "score": 2.25,
+        "zone": "grey"
       },
-      "piotroskiF": {
-        "score": 4,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": 0.12,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.1,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 3,
-      "ticker": "A5G.IR",
-      "name": "AIB Group plc",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 22.81,
-      "snapshotPrice": 11.63,
-      "marginOfSafety": 0.9625,
-      "wacc": 0.0536,
-      "terminalValuePct": 85.3,
-      "trailingPE": 12,
-      "marketCap": 24343912448,
-      "operatingMargin": 0.5647,
-      "analystTarget": 11.73,
-      "currency": "EUR",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": 0.14,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.11,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 4,
-      "ticker": "ACKB.BR",
-      "name": "Ackermans & Van Haaren NV",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 535.84,
-      "snapshotPrice": 277,
-      "marginOfSafety": 0.9344,
-      "wacc": 0.0582,
-      "terminalValuePct": 84.2,
-      "trailingPE": 13.8,
-      "marketCap": 9048007680,
-      "operatingMargin": 0.1379,
-      "analystTarget": 313.86,
-      "currency": "EUR",
-      "altmanZ": null,
       "piotroskiF": {
         "score": 6,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.07,
-        "n": 247,
-        "band": "low"
+        "r": -0.08,
+        "n": 244,
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.09,
-        "n": 247,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 5,
-      "ticker": "TEMN.SW",
-      "name": "Temenos AG",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 153.59,
-      "snapshotPrice": 80.1,
-      "marginOfSafety": 0.9175,
-      "wacc": 0.0265,
-      "terminalValuePct": 89.6,
-      "trailingPE": 32,
-      "marketCap": 5392552448,
-      "operatingMargin": 0.2641,
-      "analystTarget": 85.58,
-      "currency": "CHF",
-      "altmanZ": {
-        "score": 3.74,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": 0.08,
-        "n": 243,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.15,
-        "n": 243,
+        "r": -0.07,
+        "n": 244,
         "band": "none"
       }
     },
     {
-      "rank": 6,
-      "ticker": "INVE-B.ST",
-      "name": "Investor AB (publ)",
-      "sector": "Financial Services",
-      "method": "DCF",
-      "intrinsic": 832.3,
-      "snapshotPrice": 436.25,
-      "marginOfSafety": 0.9078,
-      "wacc": 0.0691,
-      "terminalValuePct": 81,
-      "trailingPE": 6.2,
-      "marketCap": 1336545640448,
-      "operatingMargin": 0.7894,
-      "analystTarget": 416,
-      "currency": "SEK",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": 0.13,
-        "n": 243,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.15,
-        "n": 243,
-        "band": "low"
-      }
-    },
-    {
       "rank": 7,
-      "ticker": "UNI.MC",
-      "name": "Unicaja Banco, S.A.",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 6.57,
-      "snapshotPrice": 3.45,
-      "marginOfSafety": 0.9048,
-      "wacc": 0.0536,
-      "terminalValuePct": 85.3,
-      "trailingPE": 13.3,
-      "marketCap": 8859884544,
-      "operatingMargin": 0.51,
-      "analystTarget": 3.24,
-      "currency": "EUR",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": 0.17,
-        "n": 247,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.16,
-        "n": 247,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 8,
       "ticker": "ZAL.DE",
       "name": "Zalando SE",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 53.67,
-      "snapshotPrice": 28.47,
-      "marginOfSafety": 0.8851,
-      "wacc": 0.0876,
-      "terminalValuePct": 73.3,
-      "trailingPE": 118.6,
-      "marketCap": 6953032192,
+      "intrinsic": 52.82,
+      "snapshotPrice": 28.24,
+      "marginOfSafety": 0.8703,
+      "wacc": 0.0887,
+      "terminalValuePct": 72.9,
+      "trailingPE": 122.8,
+      "marketCap": 6896860672,
       "operatingMargin": 0.0319,
-      "analystTarget": 35.23,
+      "analystTarget": 35.35,
       "currency": "EUR",
       "altmanZ": {
         "score": 2.38,
@@ -271,178 +249,34 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.08,
-        "n": 245,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.17,
-        "n": 245,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 9,
-      "ticker": "ERIC-B.ST",
-      "name": "Telefonaktiebolaget LM Ericsson (publ)",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 199.12,
-      "snapshotPrice": 106.3,
-      "marginOfSafety": 0.8732,
-      "wacc": 0.0537,
-      "terminalValuePct": 82.5,
-      "trailingPE": 18.3,
-      "marketCap": 344405180416,
-      "operatingMargin": 0.143,
-      "analystTarget": 100.55,
-      "currency": "SEK",
-      "altmanZ": {
-        "score": 2.9,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0.1,
-        "n": 243,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.07,
-        "n": 243,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 10,
-      "ticker": "UPM.HE",
-      "name": "UPM-Kymmene Oyj",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 40.96,
-      "snapshotPrice": 22.55,
-      "marginOfSafety": 0.8165,
-      "wacc": 0.0487,
-      "terminalValuePct": 85.8,
-      "trailingPE": 17.6,
-      "marketCap": 11891156992,
-      "operatingMargin": 0.0917,
-      "analystTarget": 24.72,
-      "currency": "EUR",
-      "altmanZ": {
-        "score": 2.31,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": -0.08,
-        "n": 243,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.06,
-        "n": 243,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 11,
-      "ticker": "AAF.L",
-      "name": "Airtel Africa Plc",
-      "sector": "Communication Services",
-      "method": "DCF",
-      "intrinsic": 517.64,
-      "snapshotPrice": 285,
-      "marginOfSafety": 0.8163,
-      "wacc": 0.0703,
-      "terminalValuePct": 80.2,
-      "trailingPE": 19,
-      "marketCap": 1032677376000,
-      "operatingMargin": 0.3358,
-      "analystTarget": 401.73,
-      "currency": "GBp",
-      "altmanZ": {
-        "score": 1.91,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 9,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.06,
+        "r": -0.07,
         "n": 246,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0,
+        "r": -0.16,
         "n": 246,
         "band": "none"
       }
     },
     {
-      "rank": 12,
-      "ticker": "DKSH.SW",
-      "name": "DKSH Holding AG",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 143.02,
-      "snapshotPrice": 79.1,
-      "marginOfSafety": 0.808,
-      "wacc": 0.0267,
-      "terminalValuePct": 88.7,
-      "trailingPE": 24.3,
-      "marketCap": 5144264704,
-      "operatingMargin": 0.029,
-      "analystTarget": 77.5,
-      "currency": "CHF",
-      "altmanZ": {
-        "score": 3.85,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.11,
-        "n": 243,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.1,
-        "n": 243,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 13,
+      "rank": 8,
       "ticker": "EVO.ST",
       "name": "Evolution AB (publ)",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 1574.79,
-      "snapshotPrice": 871,
-      "marginOfSafety": 0.808,
+      "intrinsic": 1590.98,
+      "snapshotPrice": 854,
+      "marginOfSafety": 0.863,
       "wacc": 0.0618,
       "terminalValuePct": 82.9,
-      "trailingPE": 14.9,
-      "marketCap": 156618358784,
+      "trailingPE": 14.6,
+      "marketCap": 153208061952,
       "operatingMargin": 0.5697,
-      "analystTarget": 794.04,
+      "analystTarget": 802.46,
       "currency": "SEK",
       "altmanZ": {
-        "score": 7.6,
+        "score": 7.42,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -452,33 +286,69 @@
       },
       "aiCorrelation": {
         "r": 0.01,
-        "n": 243,
+        "n": 244,
         "band": "none"
       },
       "aiHardwareCorrelation": {
         "r": -0.12,
-        "n": 243,
+        "n": 244,
         "band": "none"
       }
     },
     {
-      "rank": 14,
+      "rank": 9,
+      "ticker": "DKSH.SW",
+      "name": "DKSH Holding AG",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 143.02,
+      "snapshotPrice": 77.1,
+      "marginOfSafety": 0.8549,
+      "wacc": 0.0267,
+      "terminalValuePct": 88.7,
+      "trailingPE": 23.7,
+      "marketCap": 5014194688,
+      "operatingMargin": 0.029,
+      "analystTarget": 77.5,
+      "currency": "CHF",
+      "altmanZ": {
+        "score": 3.83,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 7,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.11,
+        "n": 244,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.1,
+        "n": 244,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 10,
       "ticker": "WKL.AS",
       "name": "Wolters Kluwer N.V.",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 164.22,
-      "snapshotPrice": 90.84,
-      "marginOfSafety": 0.8078,
-      "wacc": 0.0483,
-      "terminalValuePct": 86.4,
-      "trailingPE": 15.3,
-      "marketCap": 20205914112,
+      "intrinsic": 158.98,
+      "snapshotPrice": 85.88,
+      "marginOfSafety": 0.8511,
+      "wacc": 0.0492,
+      "terminalValuePct": 86,
+      "trailingPE": 14.7,
+      "marketCap": 19102640128,
       "operatingMargin": 0.2555,
       "analystTarget": 96.31,
       "currency": "EUR",
       "altmanZ": {
-        "score": 2.59,
+        "score": 2.52,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -488,13 +358,143 @@
       },
       "aiCorrelation": {
         "r": -0.19,
-        "n": 247,
+        "n": 248,
         "band": "none"
       },
       "aiHardwareCorrelation": {
         "r": -0.41,
-        "n": 247,
+        "n": 248,
         "band": "inverse"
+      }
+    },
+    {
+      "rank": 11,
+      "ticker": "FRES.L",
+      "name": "Fresnillo plc",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 3937.12,
+      "snapshotPrice": 2151,
+      "marginOfSafety": 0.8304,
+      "wacc": 0.0858,
+      "terminalValuePct": 74.6,
+      "trailingPE": 9.3,
+      "marketCap": 1585058033529,
+      "operatingMargin": 0.5938,
+      "analystTarget": 3282.29,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 8.52,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.24,
+        "n": 247,
+        "band": "moderate"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.2,
+        "n": 247,
+        "band": "moderate"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "BAMI.MI",
+      "name": "Banco BPM S.p.A.",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 25.82,
+      "snapshotPrice": 14.13,
+      "marginOfSafety": 0.827,
+      "wacc": 0.0548,
+      "terminalValuePct": 83.3,
+      "trailingPE": 11,
+      "marketCap": 21271359488,
+      "operatingMargin": 0.4669,
+      "analystTarget": 15.3,
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.19,
+        "n": 246,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.18,
+        "n": 246,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 13,
+      "ticker": "AAF.L",
+      "name": "Airtel Africa Plc",
+      "sector": "Communication Services",
+      "method": "DCF",
+      "intrinsic": 499.41,
+      "snapshotPrice": 274.2,
+      "marginOfSafety": 0.8213,
+      "wacc": 0.0722,
+      "terminalValuePct": 79.5,
+      "trailingPE": 18.3,
+      "marketCap": 992832307200,
+      "operatingMargin": 0.3358,
+      "analystTarget": 389.75,
+      "currency": "GBp",
+      "altmanZ": {
+        "score": 1.87,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 9,
+        "maxScore": 9,
+        "trend": "Improving"
+      },
+      "aiCorrelation": {
+        "r": -0.07,
+        "n": 247,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.01,
+        "n": 247,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 14,
+      "ticker": "ISP.MI",
+      "name": "Intesa Sanpaolo S.p.A.",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 10.69,
+      "snapshotPrice": 5.9,
+      "marginOfSafety": 0.8119,
+      "wacc": 0.0684,
+      "terminalValuePct": 79.9,
+      "trailingPE": 10.2,
+      "marketCap": 102094192640,
+      "operatingMargin": 0.6018,
+      "analystTarget": 7.44,
+      "currency": "EUR",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0.06,
+        "n": 246,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.04,
+        "n": 246,
+        "band": "none"
       }
     },
     {
@@ -503,15 +503,15 @@
       "name": "Sodexo S.A.",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 111.08,
-      "snapshotPrice": 61.85,
-      "marginOfSafety": 0.796,
-      "wacc": 0.0503,
-      "terminalValuePct": 85.1,
-      "trailingPE": 29.9,
-      "marketCap": 9005615104,
+      "intrinsic": 107.44,
+      "snapshotPrice": 59.3,
+      "marginOfSafety": 0.8119,
+      "wacc": 0.0512,
+      "terminalValuePct": 84.7,
+      "trailingPE": 28.6,
+      "marketCap": 8634324992,
       "operatingMargin": 0.0302,
-      "analystTarget": 59.28,
+      "analystTarget": 59.86,
       "currency": "EUR",
       "altmanZ": null,
       "piotroskiF": {
@@ -520,42 +520,42 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.16,
-        "n": 247,
+        "r": -0.17,
+        "n": 248,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.19,
-        "n": 247,
-        "band": "none"
+        "r": -0.2,
+        "n": 248,
+        "band": "inverse"
       }
     },
     {
       "rank": 16,
-      "ticker": "BAMI.MI",
-      "name": "Banco BPM S.p.A.",
+      "ticker": "AGS.BR",
+      "name": "ageas SA/NV",
       "sector": "Financial Services",
       "method": "DDM",
-      "intrinsic": 26.68,
-      "snapshotPrice": 14.88,
-      "marginOfSafety": 0.7937,
-      "wacc": 0.0536,
-      "terminalValuePct": 83.8,
-      "trailingPE": 11.6,
-      "marketCap": 22392885248,
-      "operatingMargin": 0.4669,
-      "analystTarget": 15.31,
+      "intrinsic": 134.82,
+      "snapshotPrice": 75.1,
+      "marginOfSafety": 0.7953,
+      "wacc": 0.059,
+      "terminalValuePct": 83.3,
+      "trailingPE": 7.7,
+      "marketCap": 15712996212,
+      "operatingMargin": 0.0876,
+      "analystTarget": 80.52,
       "currency": "EUR",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.18,
-        "n": 245,
-        "band": "low"
+        "r": 0.03,
+        "n": 248,
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.18,
-        "n": 245,
+        "r": 0.05,
+        "n": 248,
         "band": "low"
       }
     },
@@ -565,15 +565,15 @@
       "name": "Sanofi",
       "sector": "Healthcare",
       "method": "DCF",
-      "intrinsic": 156.68,
-      "snapshotPrice": 87.6,
-      "marginOfSafety": 0.7886,
-      "wacc": 0.0528,
-      "terminalValuePct": 84,
-      "trailingPE": 25.3,
-      "marketCap": 104950815375,
+      "intrinsic": 152.01,
+      "snapshotPrice": 84.92,
+      "marginOfSafety": 0.7901,
+      "wacc": 0.0538,
+      "terminalValuePct": 83.6,
+      "trailingPE": 24.5,
+      "marketCap": 101955485696,
       "operatingMargin": 0.2228,
-      "analystTarget": 95.7,
+      "analystTarget": 96.36,
       "currency": "EUR",
       "altmanZ": null,
       "piotroskiF": {
@@ -582,111 +582,125 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": -0.39,
-        "n": 247,
+        "r": -0.4,
+        "n": 248,
         "band": "inverse"
       },
       "aiHardwareCorrelation": {
-        "r": -0.41,
-        "n": 247,
+        "r": -0.42,
+        "n": 248,
         "band": "inverse"
       }
     },
     {
       "rank": 18,
-      "ticker": "TRYG.CO",
-      "name": "Tryg A/S",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 297.27,
-      "snapshotPrice": 167.9,
-      "marginOfSafety": 0.7705,
-      "wacc": 0.0536,
-      "terminalValuePct": 85.3,
-      "trailingPE": 21.7,
-      "marketCap": 100046569472,
-      "operatingMargin": 0.1381,
-      "analystTarget": 166.37,
-      "currency": "DKK",
-      "altmanZ": null,
-      "piotroskiF": null,
+      "ticker": "ARCAD.AS",
+      "name": "Arcadis NV",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 79.48,
+      "snapshotPrice": 44.64,
+      "marginOfSafety": 0.7804,
+      "wacc": 0.0594,
+      "terminalValuePct": 83.3,
+      "trailingPE": 19.2,
+      "marketCap": 3833098240,
+      "operatingMargin": 0.0657,
+      "analystTarget": 50.94,
+      "currency": "EUR",
+      "altmanZ": {
+        "score": 2.9,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 5,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
       "aiCorrelation": {
-        "r": -0.13,
-        "n": 241,
+        "r": -0.01,
+        "n": 248,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.17,
-        "n": 241,
+        "r": -0.09,
+        "n": 248,
         "band": "none"
       }
     },
     {
       "rank": 19,
-      "ticker": "ABDN.L",
-      "name": "Aberdeen Group Plc",
+      "ticker": "BPT.L",
+      "name": "Bridgepoint Group plc",
       "sector": "Financial Services",
       "method": "DCF",
-      "intrinsic": 402.19,
-      "snapshotPrice": 228.4,
-      "marginOfSafety": 0.7609,
-      "wacc": 0.106,
-      "terminalValuePct": 66.2,
-      "trailingPE": 10.9,
-      "marketCap": 409051571200,
-      "operatingMargin": 0.1447,
-      "analystTarget": 241.63,
+      "intrinsic": 673.1,
+      "snapshotPrice": 383.8,
+      "marginOfSafety": 0.7538,
+      "wacc": 0.1138,
+      "terminalValuePct": 64.4,
+      "trailingPE": 127.9,
+      "marketCap": 346958976000,
+      "operatingMargin": 0.4944,
+      "analystTarget": 483,
       "currency": "GBp",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.12,
-        "n": 246,
+        "r": 0.07,
+        "n": 247,
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.09,
-        "n": 246,
-        "band": "low"
+        "r": 0.01,
+        "n": 247,
+        "band": "none"
       }
     },
     {
       "rank": 20,
-      "ticker": "ISP.MI",
-      "name": "Intesa Sanpaolo S.p.A.",
-      "sector": "Financial Services",
-      "method": "DDM",
-      "intrinsic": 10.93,
-      "snapshotPrice": 6.26,
-      "marginOfSafety": 0.7459,
-      "wacc": 0.0673,
-      "terminalValuePct": 80.3,
-      "trailingPE": 11.2,
-      "marketCap": 108357214208,
-      "operatingMargin": 0.5943,
-      "analystTarget": 7.46,
-      "currency": "EUR",
-      "altmanZ": null,
-      "piotroskiF": null,
+      "ticker": "NOVO-B.CO",
+      "name": "Novo Nordisk A/S",
+      "sector": "Healthcare",
+      "method": "DCF",
+      "intrinsic": 462.95,
+      "snapshotPrice": 264.5,
+      "marginOfSafety": 0.7503,
+      "wacc": 0.0522,
+      "terminalValuePct": 84.3,
+      "trailingPE": 10.2,
+      "marketCap": 1165745324032,
+      "operatingMargin": 0.5078,
+      "analystTarget": 299.91,
+      "currency": "DKK",
+      "altmanZ": {
+        "score": 3.76,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
       "aiCorrelation": {
-        "r": 0.06,
-        "n": 245,
-        "band": "low"
+        "r": -0.03,
+        "n": 242,
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.05,
-        "n": 245,
-        "band": "low"
+        "r": -0.11,
+        "n": 242,
+        "band": "none"
       }
     }
   ],
   "fxRates": {
-    "GBP": 1.1968,
-    "USD": 0.9042,
-    "CHF": 1.083,
-    "SEK": 0.08979,
-    "DKK": 0.13365,
-    "NOK": 0.09467
+    "GBP": 1.1934,
+    "USD": 0.9113,
+    "CHF": 1.0798,
+    "SEK": 0.0889,
+    "DKK": 0.13367,
+    "NOK": 0.09327
   },
   "fxSource": "live"
 }
