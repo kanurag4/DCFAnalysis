@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-13",
+ "asAt": "2026-11-20",
  "industries": {
   "Household & Personal Products": [
    {
@@ -310,7 +310,7 @@
    },
    {
     "ticker": "000810.KS",
-    "margin": 0.07577023481170242
+    "margin": 0.07115618190885295
    }
   ],
   "Auto Parts": [
@@ -473,12 +473,6 @@
    {
     "ticker": "004170.KS",
     "margin": 0.03565081325556687
-   }
-  ],
-  "Real Estate Services": [
-   {
-    "ticker": "180640.KS",
-    "margin": 0.2509635485244113
    }
   ],
   "Medical Distribution": [
@@ -743,6 +737,12 @@
    {
     "ticker": "034230.KS",
     "margin": 0.13909589458713334
+   }
+  ],
+  "Utilities - Regulated Electric": [
+   {
+    "ticker": "015760.KS",
+    "margin": -0.14582142909868895
    }
   ],
   "Utilities - Renewable": [
