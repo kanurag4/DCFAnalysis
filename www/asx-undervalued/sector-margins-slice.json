@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-13",
+ "asAt": "2026-11-20",
  "industries": {
   "Software - Application": [
    {
@@ -17,10 +17,6 @@
    {
     "ticker": "IRE.AX",
     "margin": 0.09893904537580267
-   },
-   {
-    "ticker": "NWL.AX",
-    "margin": 0.30146686520160365
    },
    {
     "ticker": "PXA.AX",
@@ -46,7 +42,7 @@
   "Packaged Foods": [
    {
     "ticker": "A2M.AX",
-    "margin": 0.08455346148874741
+    "margin": 0.08455346148874743
    },
    {
     "ticker": "BGA.AX",
@@ -98,7 +94,7 @@
    },
    {
     "ticker": "TUA.AX",
-    "margin": 0.12480816341088127
+    "margin": 0.12480816341088129
    }
   ],
   "REIT - Diversified": [
@@ -187,6 +183,10 @@
     "margin": 0.20976287091873153
    },
    {
+    "ticker": "NWL.AX",
+    "margin": 0.30146686520160365
+   },
+   {
     "ticker": "PNI.AX",
     "margin": 1.2605972027997365
    },
@@ -262,7 +262,7 @@
    },
    {
     "ticker": "DPM.AX",
-    "margin": 0.4495715044422875
+    "margin": 0.44957150444228755
    },
    {
     "ticker": "EMR.AX",
@@ -404,7 +404,7 @@
   "Banks - Diversified": [
    {
     "ticker": "ANZ.AX",
-    "margin": 0.7606101469401746
+    "margin": 0.9886878669108738
    },
    {
     "ticker": "CBA.AX",
@@ -644,7 +644,7 @@
    },
    {
     "ticker": "VSL.AX",
-    "margin": 0.09001350366925687
+    "margin": 0.09001350366925688
    }
   ],
   "REIT - Industrial": [
@@ -795,10 +795,6 @@
     "margin": 0.257829199483651
    },
    {
-    "ticker": "MQG.AX",
-    "margin": -0.09935082182951926
-   },
-   {
     "ticker": "SOL.AX",
     "margin": 0.5595413526827595
    }
@@ -878,7 +874,7 @@
    },
    {
     "ticker": "ORI.AX",
-    "margin": 0.04269731454642713
+    "margin": 0.04982418053616618
    }
   ],
   "Engineering & Construction": [
@@ -952,7 +948,7 @@
    },
    {
     "ticker": "GNC.AX",
-    "margin": 0.03603278060458241
+    "margin": 0.02262417487106681
    },
    {
     "ticker": "ING.AX",
@@ -973,14 +969,18 @@
     "margin": 0.06912444666140902
    }
   ],
-  "Building Materials": [
+  "Building Products & Equipment": [
    {
     "ticker": "FBU.AX",
     "margin": 0.023896339749525673
    },
    {
-    "ticker": "JHX.AX",
-    "margin": 0.062318508482760174
+    "ticker": "GWA.AX",
+    "margin": 0.11330187036796754
+   },
+   {
+    "ticker": "RWC.AX",
+    "margin": 0.16877808227777272
    }
   ],
   "Travel Services": [
@@ -1003,16 +1003,6 @@
    {
     "ticker": "GLF.AX",
     "margin": 0.24584099181300625
-   }
-  ],
-  "Building Products & Equipment": [
-   {
-    "ticker": "GWA.AX",
-    "margin": 0.11330187036796754
-   },
-   {
-    "ticker": "RWC.AX",
-    "margin": 0.16877808227777275
    }
   ],
   "Insurance - Specialty": [
@@ -1097,6 +1087,12 @@
     "margin": 0.24558606795937898
    }
   ],
+  "Building Materials": [
+   {
+    "ticker": "JHX.AX",
+    "margin": 0.062318508482760174
+   }
+  ],
   "Staffing & Employment Services": [
    {
     "ticker": "MMS.AX",
@@ -1161,10 +1157,14 @@
     "margin": 0.11501016574599188
    }
   ],
-  "Chemicals": [
+  "Industrial Distribution": [
    {
     "ticker": "RDX.AX",
     "margin": 0.07525221805824633
+   },
+   {
+    "ticker": "REH.AX",
+    "margin": 0.052246668533078515
    }
   ],
   "Medical Care Facilities": [
@@ -1175,12 +1175,6 @@
    {
     "ticker": "RHC.AX",
     "margin": 0.03692793628488075
-   }
-  ],
-  "Industrial Distribution": [
-   {
-    "ticker": "REH.AX",
-    "margin": 0.052246668533078515
    }
   ],
   "Electrical Equipment & Parts": [

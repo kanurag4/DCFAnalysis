@@ -740,5 +740,37 @@
     "exitDate": "2026-11-13",
     "exitPrice": 7.34,
     "dollarPnl": 23.82
+  },
+  {
+    "ticker": "NHC.AX",
+    "entryDate": "2026-09-04",
+    "entryPrice": 6.1,
+    "exitDate": "2026-11-20",
+    "exitPrice": 4.63,
+    "dollarPnl": -61.18
+  },
+  {
+    "ticker": "TUA.AX",
+    "entryDate": "2026-11-06",
+    "entryPrice": 1.46,
+    "exitDate": "2026-11-20",
+    "exitPrice": 1.39,
+    "dollarPnl": -55.05
+  },
+  {
+    "ticker": "PXA.AX",
+    "entryDate": "2026-10-30",
+    "entryPrice": 7.03,
+    "exitDate": "2026-11-20",
+    "exitPrice": 6.76,
+    "dollarPnl": -21.94
+  },
+  {
+    "ticker": "MYS.AX",
+    "entryDate": "2026-11-13",
+    "entryPrice": 5.06,
+    "exitDate": "2026-11-20",
+    "exitPrice": 4.94,
+    "dollarPnl": -12.65
   }
 ]
