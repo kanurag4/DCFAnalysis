@@ -289,10 +289,9 @@ async function fetchDCFDataFromBody(body, symbol, base, extraHeaders = {}) {
     annualGrossProfitHistory: annualGrossProfitHistoryConverted,
     // Heavy capex spending (calc/heavyCapex.js). Same FX conversion as every money field above.
     ttmCapex: ttm.ttmCapex, ttmOcf: ttm.ttmOcf, ttmDepreciation: ttm.ttmDepreciation, lastQuarterCapex: ttm.lastQuarterCapex,
-    // Valuation method v2 (2026-11-21): FCFF inputs (FX-converted above) and the accounting regime (US filer = no
-    // exchange suffix; an approximation -- a US-listed 20-F filer reports IFRS).
+    // Valuation method v2 (2026-11-21): FCFF inputs (FX-converted above) and the accounting regime.
     ...fcffInputs,
-    reportingRegime: symbol.includes('.') ? 'ifrs' : 'us-gaap',
+    reportingRegime: fcffReportingRegime(symbol, data.country, fcffInputs),
   };
 }
 
@@ -373,6 +372,7 @@ function mapQuoteSummary(body, symbol) {
     // currency-conversion step, which uses this field.
     financialCurrency: result.financialData?.financialCurrency ?? null,
     sector:            result.assetProfile?.sector ?? null,
+    country:           result.assetProfile?.country ?? null, // FCFF method: the accounting regime of US-listed foreign issuers
     industry:          result.assetProfile?.industry ?? null,
     // DCF core inputs -- GBp stocks: Yahoo reports these in GBP (pounds)
     // while price is in pence -- scale by gbpToPence (see the gbpPenceScale()
@@ -530,6 +530,15 @@ function fcffInputsFromTimeseries(tsBody, gbpToPence) {
   };
 }
 
+// An exchange suffix = IFRS. No suffix = US GAAP, except a company based outside the US with no US-GAAP lease
+// figures from EDGAR: a 20-F filer reporting IFRS (TSM, ASML), whose leases then come from Yahoo like any IFRS filer.
+// A foreign company filing US GAAP (BABA) has EDGAR lease figures and stays US GAAP (review 2026-11-21).
+function fcffReportingRegime(symbol, country, inputs) {
+  if (String(symbol || '').includes('.')) return 'ifrs';
+  const usLeases = inputs && ((inputs.annualOperatingLeaseLiabilityHistory || []).length || (inputs.annualFinanceLeaseLiabilityHistory || []).length);
+  return country && country !== 'United States' && !usLeases ? 'ifrs' : 'us-gaap';
+}
+
 const FCFF_RATIO_FIELDS = ['operatingLeaseRate'];
 // FX-convert the FCFF inputs with c(v) (financial currency -> trading currency); c === null = the rate failed: every
 // money input is nulled (histories emptied) so currencies are never mixed. Ratios pass through either way.
@@ -620,7 +629,7 @@ async function fetchTickerPageUrl(ticker, currentMarket) {
 }
 
 if (typeof module !== 'undefined') module.exports = {
-  fcffInputsFromTimeseries, convertFcffInputs,
+  fcffInputsFromTimeseries, convertFcffInputs, fcffReportingRegime,
   fetchDCFDataFromBody,
   fetchDCFData, mapQuoteSummary, latestSeriesValue, fetchTickerPageUrl, fetchFxRate, MARKET_STOCKS_FOLDER,
   gbpPenceScale, scaleTimeseries, isGbpPenceCurrencyPair, ttmFromTimeseries,

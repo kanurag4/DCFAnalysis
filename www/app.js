@@ -463,11 +463,18 @@ const PS_PARAM_NAMES = ['g', 't', 'w', 'y', 's', 'm', 'f', 'beta', 'gb', 'gu', '
 // Valuation method v2 (2026-11-21): the free-cash-flow method toggle. Default = "Operating cash flow" (today's method); "FCFF"
 // re-derives with deriveDcfAssumptions(..., { fcffMethod: true }). Only /dcf/ offers it (/evaluate/ never does).
 // A shared link carries fm=1.
-let fcffMode = new URLSearchParams(initialQuery).get('fm') === '1';
+// Hidden until the switch-on (FCFF_METHOD_ON in calc/fcff.js, flipped together with EDGAR primary): before that the
+// toggle and fm=1 work only on a local dev server, never on kashvector.com or in the apps (review 2026-11-21).
+function fcffMethodEnabled() {
+  if (typeof FCFF_METHOD_ON !== 'undefined' && FCFF_METHOD_ON) return true;
+  const host = window.location && window.location.hostname;
+  return !isNative && (host === 'localhost' || host === '127.0.0.1');
+}
+let fcffMode = fcffMethodEnabled() && new URLSearchParams(initialQuery).get('fm') === '1';
 
 function fcffApplies() {
   const a = lastAssumptions;
-  if (!a || typeof fcffBase !== 'function' || a.isReit) return false;
+  if (!fcffMethodEnabled() || !a || typeof fcffBase !== 'function' || a.isReit) return false;
   // Cash-flow models get FCFF; Excess Return (banks, insurers, utilities) gets ROE on start-of-year equity (Part 2).
   if (valuationModel === 'excess-return') return typeof roeStartOfPeriod === 'function';
   return !a.isBankIns && (valuationModel === 'dcf' || valuationModel === 'airline');
@@ -518,7 +525,9 @@ function fcffNoteText(a, data) {
     if (t.leaseInterest) lines.push(`It includes the interest part of operating-lease rent (${fcffMoney(t.leaseInterest, sym)}), because leases count as debt.`);
     lines.push(`The final year is taxed at the marginal rate (${pct(t.marginalTax)}).`);
   }
-  if (f.nonOperatingNet) lines.push(`Stakes in other companies and long-term securities, less minority interests, add ${fcffMoney(f.nonOperatingNet, sym)} to the equity value.`);
+  const stakesNet = f.stakesNet ?? f.nonOperatingNet;
+  if (stakesNet) lines.push(`Stakes in other companies and long-term securities, less minority interests, add ${fcffMoney(stakesNet, sym)} to the equity value.`);
+  if (f.leaseDebtAdded) lines.push(`Lease liabilities of ${fcffMoney(f.leaseDebtAdded, sym)} are not in the reported debt, so they are subtracted as debt.`);
   if (f.crossCheck && f.crossCheck.flag) lines.push(`Note: this differs from operating cash flow − capex (${fcffMoney(f.crossCheck.ocfRoute, sym)}) by more than 30%.`);
   if (data.industry && /Auto Manufacturers|Farm & Heavy Construction Machinery/.test(data.industry)) lines.push('Includes a finance arm: its loans and borrowings distort working capital and debt (known limitation).');
   return lines.join(' ');
@@ -1688,8 +1697,7 @@ function scenarioInputs(data) {
     useMultiStage: !!(els.multistageToggle && els.multistageToggle.checked),
     useMidYear: !!(els.midyearToggle && els.midyearToggle.checked),
     fcfRaw, normFcf, holdcoDiscount,
-    terminalFcfFactor: fcffMode && lastAssumptions && lastAssumptions.fcffMethod ? lastAssumptions.fcfInfo.terminalFcfFactor : 1,
-    nonOperatingNet: fcffNonOperatingNet(),
+    ...fcffDcfExtras(fcfRaw),
   }, seeds: {
     growth:   { bear: rateOr(els.growthBear, 5), base: rateOr(els.growthBase, 5), bull: rateOr(els.growthBull, 5) },
     tgrowth:  { bear: rateOr(els.tgrowthBear, 2.5), base: rateOr(els.tgrowthBase, 2.5), bull: rateOr(els.tgrowthBull, 2.5) },
@@ -1698,7 +1706,19 @@ function scenarioInputs(data) {
 }
 
 function fcffNonOperatingNet() {
-  return fcffMode && lastAssumptions && lastAssumptions.fcffMethod ? (lastAssumptions.fcfInfo.nonOperatingNet || 0) : 0;
+  return fcffMode && lastAssumptions && lastAssumptions.fcffMethod && !heavyCapexState ? (lastAssumptions.fcfInfo.nonOperatingNet || 0) : 0;
+}
+
+// The FCFF terms a DCF run gets (review 2026-11-21). The terminal-tax factor was computed for the FCFF figure, so it
+// applies only while the box still holds that figure: never to the heavy-capex existing-business cash flow or a
+// number the user typed. Heavy capex is its own model, so it gets neither term. One source for buildScenarios() and
+// the year-by-year chart, so the chart's year 0 always equals the headline value.
+function fcffDcfExtras(fcfRaw) {
+  const a = lastAssumptions;
+  const on = fcffMode && a && a.fcffMethod && !heavyCapexState;
+  const seed = on && a.fcfInfo && a.fcfInfo.value != null ? Math.round(a.fcfInfo.value) : null;
+  const factor = on && seed !== null && fcfRaw === seed && isFinite(a.fcfInfo.terminalFcfFactor) ? a.fcfInfo.terminalFcfFactor : 1;
+  return { terminalFcfFactor: factor, nonOperatingNet: fcffNonOperatingNet() };
 }
 
 function buildScenarios(data) {
@@ -1964,6 +1984,7 @@ function valuePathCtx(data) {
     shares,
     netDebt: (data.totalDebt ?? 0) - (data.totalCash ?? 0),
     holdcoDiscount,
+    ...(valuationModel === 'dcf' ? fcffDcfExtras(resolveDcfFcfInputs(data).fcfRaw) : {}),
     // Same book-value compounding rate buildScenarios() passes to the Excess Return engine.
     bookValueGrowthRate: deriveDividendGrowth(data.earningsGrowth, data.revenueGrowth),
   };

@@ -357,7 +357,8 @@ function deriveDcfAssumptions(data, opts) {
   const currentMarket = detectMarket(data.ticker);
   // Valuation method v2 (2026-11-21): ONLY when the caller asks (/dcf/'s method toggle, opts.fcffMethod). Off = today
   // exactly. The calc/fcff.js + calc/marginalTax.js globals are referenced only when on, so a page that never passes
-  // the option needs neither script tag. Banks/insurers and REITs are never affected.
+  // the option needs neither script tag. REITs and DDM banks/insurers are never affected; Excess Return
+  // banks/insurers (and utilities) get only the start-of-year ROE below, never a different model.
   const fcffOn = !!(opts && opts.fcffMethod) && !isBankIns && !isReitFlag && typeof fcffBase === 'function';
   const fcffMarginal = fcffOn ? (typeof marginalTaxFor === 'function' ? marginalTaxFor(currentMarket, data.ticker) : 0.25) : null;
   const rf  = FALLBACK_RF[currentMarket] ?? FALLBACK_RF.us;
@@ -395,15 +396,19 @@ function deriveDcfAssumptions(data, opts) {
   // unconditionally (cheap, no network call) so financialModel below can decide.
   // v2 Part 2 (/dcf/ toggle only): ROE on start-of-period equity (calc/roe.js); none when that equity is <= 0, and
   // then no Yahoo / EPS fallback either (Damodaran: the ratio is meaningless).
-  const roeOn = !!(opts && opts.fcffMethod) && typeof roeStartOfPeriod === 'function';
-  const roeInfo = roeOn ? roeStartOfPeriod({ quarterlyNetIncome: data.quarterlyNetIncomeHistory, quarterlyEquity: data.quarterlyStockholdersEquityHistory,
-    annualNetIncome: data.annualNetIncomeHistory, annualEquity: data.annualStockholdersEquityHistory }) : null;
-  const roe = roeOn ? (roeInfo && roeInfo.value > 0 ? roeInfo.value : null) : (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
+  const defaultRoe = (data.returnOnEquity != null && isFinite(data.returnOnEquity) && data.returnOnEquity > 0)
     ? data.returnOnEquity
     : (data.trailingEps != null && data.priceToBook != null && data.price != null && data.priceToBook > 0
         ? data.trailingEps / (data.price / data.priceToBook)
         : null);
-  const financialModel = isBankIns ? chooseFinancialModel({ roe, dividend, trailingEps: data.trailingEps, growth }) : null;
+  // The bank/insurer model choice (DDM vs Excess Return) always uses today's ROE, so the toggle never switches a
+  // company's model (review 2026-11-21: a missing start-of-year ROE flipped Excess Return to DDM and hid the toggle).
+  const financialModel = isBankIns ? chooseFinancialModel({ roe: defaultRoe, dividend, trailingEps: data.trailingEps, growth }) : null;
+  const roeOn = !!(opts && opts.fcffMethod) && typeof roeStartOfPeriod === 'function'
+    && (!isBankIns || financialModel === 'excess-return');
+  const roeInfo = roeOn ? roeStartOfPeriod({ quarterlyNetIncome: data.quarterlyNetIncomeHistory, quarterlyEquity: data.quarterlyStockholdersEquityHistory,
+    annualNetIncome: data.annualNetIncomeHistory, annualEquity: data.annualStockholdersEquityHistory }) : null;
+  const roe = roeOn ? (roeInfo && roeInfo.value > 0 ? roeInfo.value : null) : defaultRoe;
   const roePct = roe != null ? +(roe * 100).toFixed(1) : null;
   const bookValue = (data.price != null && data.priceToBook != null && data.priceToBook > 0)
     ? data.price / data.priceToBook : null;
@@ -494,9 +499,11 @@ function deriveDcfAssumptions(data, opts) {
   // instead). Carries the terminal-tax factor and the equity-bridge term for computeScenarios' callers to pass on.
   if (fcffOn) {
     const r = fcffBase(data, { growth: baseGrowthPct / 100, marginal: fcffMarginal, cyclical: isCyclicalFlag, costOfDebt: waccResult ? waccResult.rd : null });
+    const stakesNet = fcffEquityBridge(data);
+    const leaseDebtAdded = typeof fcffLeaseDebtMissing === 'function' ? fcffLeaseDebtMissing(data) : 0;
     finalFcfInfo = {
       value: r.fcff, method: r.fallback || 'fcff', terms: r.terms,
-      terminalFcfFactor: r.terminalFactor, nonOperatingNet: fcffEquityBridge(data),
+      terminalFcfFactor: r.terminalFactor, nonOperatingNet: stakesNet - leaseDebtAdded, stakesNet, leaseDebtAdded,
       crossCheck: fcffOcfCrossCheck(data, r.fcff, r.terms && r.terms.effectiveTax != null ? r.terms.effectiveTax : fcffMarginal),
     };
   }

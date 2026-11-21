@@ -102,8 +102,11 @@ function fcffWorkingCapitalPct(data) {
   const pcts = [];
   for (const e of fcffLatest(d.annualRevenueHistory)) {
     const ca = fcffAt(d.annualCurrentAssetsHistory, e.date), cl = fcffAt(d.annualCurrentLiabilitiesHistory, e.date);
-    if (ca === null || cl === null || !e.value) continue;
-    const nonCash = (ca - (fcffAt(d.annualCashAndStHistory, e.date) || 0)) - (cl - (fcffAt(d.annualCurrentDebtInclLeasesHistory, e.date) || 0));
+    // A year without its cash figure is skipped, never read as zero cash (that would count all the cash as working
+    // capital; review 2026-11-21). A missing current-debt point is zero debt, as filers omit a nil line.
+    const cash = fcffAt(d.annualCashAndStHistory, e.date);
+    if (ca === null || cl === null || cash === null || !e.value) continue;
+    const nonCash = (ca - cash) - (cl - (fcffAt(d.annualCurrentDebtInclLeasesHistory, e.date) || 0));
     pcts.push(nonCash / e.value);
   }
   return pcts.length ? pcts.reduce((a, b) => a + b, 0) / pcts.length : null;
@@ -161,14 +164,31 @@ function fcffBase(data, { growth = 0, marginal = 0.25, cyclical = false, costOfD
       return { fcff: fcfs.reduce((s, e) => s + e.value, 0) / fcfs.length, terminalFactor: 1, fallback: 'ocf-capex-avg', terms: { ...terms, fcffComputed: value } };
     }
   }
-  const terminalFactor = value > 0 ? 1 - (oi.value * (tax.marginal - tax.effective)) / value : 1;
-  return { fcff: value, terminalFactor, fallback: null, terms };
+  // Terminal year at the marginal rate. When that taxed figure is zero or below the business has no terminal cash
+  // flow, so the factor floors at 0 (no terminal value) instead of turning the terminal value negative.
+  const rawFactor = value > 0 ? 1 - (oi.value * (tax.marginal - tax.effective)) / value : 1;
+  const terminalFactor = Math.max(0, rawFactor);
+  return { fcff: value, terminalFactor, fallback: null, terms: rawFactor < 0 ? { ...terms, terminalFactorFloored: true } : terms };
 }
 
 // Added to firm value after net debt: long-term securities and stakes (book) minus minority interests (book).
 function fcffEquityBridge(data) {
   const d = data || {};
   return (fcffNum(d.longTermInvestments) || 0) - (fcffNum(d.minorityInterest) || 0);
+}
+
+// US lease liabilities missing from Yahoo's total debt, subtracted from equity like debt (review 2026-11-21). Yahoo
+// counts leases in TotalDebt when it reports a lease line for that year (MCD, DAL, WMT: TotalDebt - lease line =
+// borrowings); when it reports none (AAPL since FY2024) TotalDebt is borrowings only, so the EDGAR operating + finance
+// lease liabilities are added. IFRS 16 filers: Yahoo's debt already carries the leases -> 0.
+function fcffLeaseDebtMissing(data) {
+  const d = data || {};
+  if (d.reportingRegime !== 'us-gaap') return 0;
+  const debt = fcffLatest(d.annualTotalDebtHistory);
+  const yahooLease = fcffLatest(d.annualLeaseLiabilitiesHistory);
+  const debtDate = debt.length ? debt[debt.length - 1].date : null;
+  if (debtDate ? yahooLease.some(e => e.date === debtDate) : yahooLease.length > 0) return 0;
+  return Math.max(0, (fcffLast(d.annualOperatingLeaseLiabilityHistory) || 0) + (fcffLast(d.annualFinanceLeaseLiabilityHistory) || 0));
 }
 
 // The OCF route (operating cash flow - capex + after-tax interest - acquisitions) beside FCFF: a "Numbers used" note
@@ -186,5 +206,5 @@ function fcffOcfCrossCheck(data, fcffValue, taxRate) {
 
 if (typeof module !== 'undefined') module.exports = {
   FCFF_METHOD_ON, FCFF_HISTORY_YEARS, fcffOperatingIncome, fcffTaxRate, fcffLeaseReinvestment, fcffWorkingCapital,
-  fcffWorkingCapitalPct, fcffAcquisitionsAvg, fcffEstablished, fcffBase, fcffEquityBridge, fcffOcfCrossCheck,
+  fcffWorkingCapitalPct, fcffAcquisitionsAvg, fcffEstablished, fcffBase, fcffEquityBridge, fcffLeaseDebtMissing, fcffOcfCrossCheck,
 };
