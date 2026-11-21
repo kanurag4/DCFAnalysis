@@ -53,6 +53,9 @@ function fcffOperatingIncome(data, { cyclical = false, costOfDebt = null } = {})
       source = 'cyclical-margin';
     }
   }
+  // Yahoo's OperatingIncome is BEFORE unusual items (checked 2026-11-21: INTC FY2024 -4.71B vs -11.68B as reported, the
+  // gap = its special charges incl. 2.48B restructuring; MMM FY2022 1.92B vs 4.37B, a one-off gain left out), so the
+  // cash charges are subtracted once here, never twice. Divided by 4, not by the years present: Yahoo omits a zero line.
   const charges = [...fcffLatest(d.annualRestructuringHistory), ...fcffLatest(d.annualOtherSpecialChargesHistory)];
   const cashChargesAvg = Math.max(0, charges.reduce((s, e) => s + e.value, 0) / FCFF_HISTORY_YEARS);
   let leaseInterest = 0;
@@ -119,6 +122,8 @@ function fcffWorkingCapital(data, growth) {
   return Math.max(0, pct * rev * growth);
 }
 
+// Divided by 4, not by the years present (review 2026-11-21): Yahoo omits a zero acquisitions line, so a missing year
+// is a year with none. Capex is averaged over the years present instead, because every company reports it.
 function fcffAcquisitionsAvg(data) {
   return fcffLatest((data || {}).annualAcquisitionsHistory).reduce((s, e) => s + Math.abs(e.value), 0) / FCFF_HISTORY_YEARS;
 }

@@ -539,13 +539,13 @@ function fcffReportingRegime(symbol, country, inputs) {
   return country && country !== 'United States' && !usLeases ? 'ifrs' : 'us-gaap';
 }
 
-const FCFF_RATIO_FIELDS = ['operatingLeaseRate'];
+const DATA_FCFF_RATIO_FIELDS = ['operatingLeaseRate'];
 // FX-convert the FCFF inputs with c(v) (financial currency -> trading currency); c === null = the rate failed: every
 // money input is nulled (histories emptied) so currencies are never mixed. Ratios pass through either way.
 function convertFcffInputs(inputs, c) {
   const out = {};
   for (const [k, v] of Object.entries(inputs)) {
-    if (FCFF_RATIO_FIELDS.includes(k)) out[k] = v;
+    if (DATA_FCFF_RATIO_FIELDS.includes(k)) out[k] = v;
     else if (Array.isArray(v)) out[k] = c ? v.map(e => (e && e.value != null ? { date: e.date, value: c(e.value) } : e)) : [];
     else out[k] = c ? (v != null ? c(v) : v) : null;
   }

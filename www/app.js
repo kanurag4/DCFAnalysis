@@ -140,6 +140,9 @@ function updateWatchlistStar(ticker, market) {
 }
 
 if (isNative) {
+  // The app never links out (review 2026-11-21): the FCFF line keeps its glossary popovers, not the /glossary/ link.
+  document.querySelectorAll('.idcf-method-terms a').forEach(a => a.remove());
+
   // Icon-only in the app — the text label is nice-to-have on web but just
   // adds width to an already-compact native header row.
   if (shareBtn) {

@@ -40,13 +40,13 @@ const MARGINAL_TAX_BY_COUNTRY = {
 // MARGINAL-TAX-TABLE-END
 
 // FALLBACK_RF market key -> country. 'eu' without a known suffix = Germany.
-const MARKET_COUNTRY = {
+const MARGINAL_TAX_MARKET_COUNTRY = {
   us: 'United States', aus: 'Australia', ind: 'India', kor: 'Korea', jpn: 'Japan', uk: 'United Kingdom',
   eu: 'Germany', hk: 'Hong Kong', cn: 'China', br: 'Brazil', fr: 'France',
 };
 
 // Exchange suffix -> country; wins over the market key ('eu' covers several countries with different rates).
-const SUFFIX_COUNTRY = {
+const MARGINAL_TAX_SUFFIX_COUNTRY = {
   AX: 'Australia', NS: 'India', BO: 'India', KS: 'Korea', KQ: 'Korea', T: 'Japan', L: 'United Kingdom',
   DE: 'Germany', F: 'Germany', PA: 'France', MC: 'Spain', MI: 'Italy', AS: 'Netherlands', SW: 'Switzerland',
   CO: 'Denmark', ST: 'Sweden', OL: 'Norway', HE: 'Finland', BR: 'Belgium', LS: 'Portugal', VI: 'Austria',
@@ -59,7 +59,7 @@ const MARGINAL_TAX_DEFAULT = 0.25;
 function marginalTaxFor(market, symbol) {
   const m = /\.([A-Z]+)$/.exec(String(symbol || '').toUpperCase());
   const byCountry = c => (c && typeof MARGINAL_TAX_BY_COUNTRY[c] === 'number' ? MARGINAL_TAX_BY_COUNTRY[c] : null);
-  return (m && byCountry(SUFFIX_COUNTRY[m[1]])) ?? byCountry(MARKET_COUNTRY[market]) ?? MARGINAL_TAX_DEFAULT;
+  return (m && byCountry(MARGINAL_TAX_SUFFIX_COUNTRY[m[1]])) ?? byCountry(MARGINAL_TAX_MARKET_COUNTRY[market]) ?? MARGINAL_TAX_DEFAULT;
 }
 
-if (typeof module !== 'undefined') module.exports = { MARGINAL_TAX_AS_OF, MARGINAL_TAX_BY_COUNTRY, MARKET_COUNTRY, SUFFIX_COUNTRY, MARGINAL_TAX_DEFAULT, marginalTaxFor };
+if (typeof module !== 'undefined') module.exports = { MARGINAL_TAX_AS_OF, MARGINAL_TAX_BY_COUNTRY, MARGINAL_TAX_MARKET_COUNTRY, MARGINAL_TAX_SUFFIX_COUNTRY, MARGINAL_TAX_DEFAULT, marginalTaxFor };
