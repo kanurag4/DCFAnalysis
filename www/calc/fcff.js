@@ -15,7 +15,7 @@
 // Shared browser global scope: every top-level name starts with fcff / FCFF. Authored here, vendored byte-identical
 // into DCFAnalysis www/calc/ (scripts/shared-files-manifest.json).
 
-const FCFF_METHOD_ON = false; // the method switch: ships together with EDGAR as one switch-on (user, 2026-11-20)
+const FCFF_METHOD_ON = true; // switched on 2026-11-21 together with EDGAR primary (user, 2026-11-20: one switch-on)
 const FCFF_HISTORY_YEARS = 4; // own name: HISTORY_WINDOW_YEARS lives in dcf/utils.js (same global scope)
 const FCFF_TAX_CAP_OVER_MARGINAL = 0.10;
 const FCFF_CROSS_CHECK_GAP = 0.30;
