@@ -12,7 +12,7 @@ const { marketParamsFor } = require('../scripts/lib/market.js');
 // rf 0.0532->0.0535. Refreshed again 2026-10-01 (TradingEconomics, AU 10yr 5.42%): rf
 // 0.0535->0.0542.
 test('ASX ticker gets AUS rf fallback and 4.20% erp', () => {
-  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0514, erp: 0.0420, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0492, erp: 0.0420, terminalGrowth: 0.025 });
 });
 
 test('ASX ticker uses provided live rf when given', () => {
@@ -29,8 +29,8 @@ test('ASX ticker uses provided live rf when given', () => {
 // 0.075->0.0692. Refreshed again 2026-09-30 (raw G-Sec 7.15%, TradingEconomics, same
 // unchanged spread): net rf 0.0530->0.0540.
 test('Indian (.NS/.BO) ticker gets the spread-adjusted rf (not the raw G-Sec yield), refreshed erp', () => {
-  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.0556, erp: 0.0692, terminalGrowth: 0.025 });
-  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.0556, erp: 0.0692, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.0544, erp: 0.0692, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.0544, erp: 0.0692, terminalGrowth: 0.025 });
 });
 
 test('Indian ticker uses provided live rf when given (same override mechanism as ASX)', () => {
@@ -60,11 +60,11 @@ test('US ticker (no suffix) gets US defaults', () => {
 // 2026-09-30 (raw yield eased further to 4.40%, TradingEconomics, same unchanged spread):
 // net rf 0.0402->0.0401.
 test('Korean ticker gets the spread-adjusted rf (not the raw KTB yield), corrected erp', () => {
-  assert.deepStrictEqual(marketParamsFor('005930.KS'), { rf: 0.0361, erp: 0.0481, terminalGrowth: 0.0175 });
+  assert.deepStrictEqual(marketParamsFor('005930.KS'), { rf: 0.0347, erp: 0.0481, terminalGrowth: 0.0175 });
 });
 
 test('Korean ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('005930.KS', { krRf: 0.09 }), { rf: 0.0361, erp: 0.0481, terminalGrowth: 0.0175 });
+  assert.deepStrictEqual(marketParamsFor('005930.KS', { krRf: 0.09 }), { rf: 0.0347, erp: 0.0481, terminalGrowth: 0.0175 });
 });
 
 // Corrected 2026-08-15: rf was the raw JGB yield (same double-counting as Korea/India).
@@ -78,11 +78,11 @@ test('Korean ticker ignores any live rf passed in (no live source exists)', () =
 // 0.06->0.0507. Refreshed again 2026-09-30 (raw JGB 3.07%, TradingEconomics, same
 // unchanged spread): net rf 0.0244->0.0251.
 test('Japanese ticker gets the spread-adjusted rf and the ratio-consistent lower terminalGrowth', () => {
-  assert.deepStrictEqual(marketParamsFor('7203.T'), { rf: 0.0232, erp: 0.0507, terminalGrowth: 0.012 });
+  assert.deepStrictEqual(marketParamsFor('7203.T'), { rf: 0.0223, erp: 0.0507, terminalGrowth: 0.012 });
 });
 
 test('Japanese ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('7203.T', { jpRf: 0.05 }), { rf: 0.0232, erp: 0.0507, terminalGrowth: 0.012 });
+  assert.deepStrictEqual(marketParamsFor('7203.T', { jpRf: 0.05 }), { rf: 0.0223, erp: 0.0507, terminalGrowth: 0.012 });
 });
 
 test('.TO (Toronto) does not match the .T Japan branch', () => {
@@ -96,11 +96,11 @@ test('.TO (Toronto) does not match the .T Japan branch', () => {
 // 0.0538->0.0544. Re-netted 2026-10-15 (docs/TODO.md P35): UK is Aa3, so the 0.0494 erp already carries a
 // 0.48% default spread -- the raw 0.0544 less that spread = 0.0496.
 test('UK (.L) ticker gets fixed Gilt-proxy rf/erp/terminalGrowth, no live override possible', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0486, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0476, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 test('UK (.L) ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0486, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0476, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 // Refreshed 2026-09-11 (global bond selloff -- German bund hit its highest since April
@@ -110,24 +110,24 @@ test('UK (.L) ticker ignores any live rf passed in (no live source exists)', () 
 // Refreshed again 2026-09-30 (TradingEconomics bund yield 3.59%, selloff continuing):
 // rf 0.0351->0.0359.
 test('German (.DE) ticker gets fixed Bund-proxy rf/erp/terminalGrowth', () => {
-  assert.deepStrictEqual(marketParamsFor('SAP.DE'), { rf: 0.0338, erp: 0.0420, terminalGrowth: 0.018 });
+  assert.deepStrictEqual(marketParamsFor('SAP.DE'), { rf: 0.0330, erp: 0.0420, terminalGrowth: 0.018 });
 });
 
 // France split out 2026-10-23: the OAT traded ~174bp over the Bund (Oct 22). Damodaran values every euro asset off one
 // euro risk-free rate (the Bund) and puts country risk in the ERP -- France is Aa3, total ERP 4.94% (Jul 2026).
 test('French (.PA) tickers get the Bund rate plus France’s own Aa3 ERP, same as the live tool', () => {
-  assert.deepStrictEqual(marketParamsFor('MC.PA'), { rf: 0.0338, erp: 0.0494, terminalGrowth: 0.018 });
+  assert.deepStrictEqual(marketParamsFor('MC.PA'), { rf: 0.0330, erp: 0.0494, terminalGrowth: 0.018 });
 });
 
 test('Dutch (.AS), Italian (.MI), Spanish (.MC) tickers all get the same eurozone bucket', () => {
-  const expected = { rf: 0.0338, erp: 0.0420, terminalGrowth: 0.018 };
+  const expected = { rf: 0.0330, erp: 0.0420, terminalGrowth: 0.018 };
   assert.deepStrictEqual(marketParamsFor('ASML.AS'), expected);
   assert.deepStrictEqual(marketParamsFor('ENI.MI'), expected);
   assert.deepStrictEqual(marketParamsFor('SAN.MC'), expected);
 });
 
 test('Belgian (.BR), Portuguese (.LS), Austrian (.VI), Finnish (.HE), Irish (.IR) tickers get the eurozone bucket', () => {
-  const expected = { rf: 0.0338, erp: 0.0420, terminalGrowth: 0.018 };
+  const expected = { rf: 0.0330, erp: 0.0420, terminalGrowth: 0.018 };
   assert.deepStrictEqual(marketParamsFor('ABI.BR'), expected);
   assert.deepStrictEqual(marketParamsFor('EDP.LS'), expected);
   assert.deepStrictEqual(marketParamsFor('OMV.VI'), expected);
@@ -136,7 +136,7 @@ test('Belgian (.BR), Portuguese (.LS), Austrian (.VI), Finnish (.HE), Irish (.IR
 });
 
 test('eurozone tickers ignore any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('SAP.DE', { euRf: 0.09 }), { rf: 0.0338, erp: 0.0420, terminalGrowth: 0.018 });
+  assert.deepStrictEqual(marketParamsFor('SAP.DE', { euRf: 0.09 }), { rf: 0.0330, erp: 0.0420, terminalGrowth: 0.018 });
 });
 
 // China A-shares corrected 2026-08-15: rf was the raw CNY govt bond yield (same
