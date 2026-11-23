@@ -130,7 +130,7 @@
         "name": "How does the tool handle international (ASX, India, UK) stocks?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Add the market suffix to the ticker — .AX for Australia, .NS/.BO for India, .L for the UK — or tick the ASX / NSE box. The tool then uses the correct local 10-year government bond yield as the risk-free rate (US ~4.5%, Australia ~4.8%, India ~7.0%), a market-appropriate equity risk premium, and a sector WACC reference range for that market. Currencies are handled automatically, including the UK's pence-vs-pounds quirk. International betas are also floored (see below)."
+          "text": "Add the market suffix to the ticker — .AX for Australia, .NS/.BO for India, .L for the UK — or pick the company from the search list. The tool then uses the correct local 10-year government bond yield as the risk-free rate (US ~4.5%, Australia ~4.8%, India ~7.0%), a market-appropriate equity risk premium, and a sector WACC reference range for that market. Currencies are handled automatically, including the UK's pence-vs-pounds quirk. International betas are also floored (see below)."
         }
       },
       {
@@ -312,23 +312,15 @@
         <button class="go-btn" id="go-btn" aria-label="Analyse">Go</button>
         <button class="watchlist-star" id="watchlist-star" aria-label="Add to Watchlist" hidden>☆</button>
       </div>
-      <label class="asx-toggle">
-        <input type="checkbox" id="asx-checkbox">
-        <span>ASX stock</span>
-      </label>
-      <label class="asx-toggle nse-toggle">
-        <input type="checkbox" id="nse-checkbox">
-        <span>NSE / BSE</span>
-      </label>
       <button id="analyse-btn">Analyse</button>
     </section>
-    <p class="hint" id="market-hint">Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).</p>
+    <p class="hint" id="market-hint">Pick the company from the list, or add <code>.AX</code> for Australian (e.g. BHP.AX) or <code>.NS</code> for Indian tickers (e.g. RELIANCE.NS). No suffix means US (e.g. AAPL).</p>
     <p class="kv-video-row" style="text-align:left;margin:-4px 0 0 -12px;"><a class="kv-video-link" data-kv-video="JEjlsfn0f6M" data-title="How to value a stock with a free DCF calculator" href="https://youtu.be/JEjlsfn0f6M" target="_blank" rel="noopener">Watch a quick tutorial on how to value a stock here</a></p>
 
     <details class="market-hint">
       <summary>Using another market? Add a suffix to the ticker</summary>
       <ul>
-        <li><strong>Australia</strong> — <code>.AX</code> (or tick ASX box)</li>
+        <li><strong>Australia</strong> — <code>.AX</code></li>
         <li><strong>India (NSE)</strong> — <code>.NS</code> (e.g. <code>RELIANCE.NS</code>)</li>
         <li><strong>India (BSE)</strong> — <code>.BO</code> (e.g. <code>TATAMOTORS.BO</code>)</li>
         <li><strong>UK</strong> — <code>.L</code> &nbsp;|&nbsp; <strong>Germany</strong> — <code>.DE</code> &nbsp;|&nbsp; <strong>Hong Kong</strong> — <code>.HK</code></li>
@@ -668,7 +660,7 @@
       </details>
       <details class="faq-item">
         <summary>How does the tool handle international (ASX, India, UK) stocks?</summary>
-        <p>Add the market suffix to the ticker — <code>.AX</code> for Australia, <code>.NS</code>/<code>.BO</code> for India, <code>.L</code> for the UK — or tick the ASX / NSE box. The tool then uses the correct local 10-year government bond yield as the risk-free rate (US ~4.5%, Australia ~4.8%, India ~7.0%), a market-appropriate equity risk premium, and a sector WACC reference range for that market. Currencies are handled automatically, including the UK's pence-vs-pounds quirk. International betas are also floored (see below).</p>
+        <p>Add the market suffix to the ticker — <code>.AX</code> for Australia, <code>.NS</code>/<code>.BO</code> for India, <code>.L</code> for the UK — or pick the company from the search list. The tool then uses the correct local 10-year government bond yield as the risk-free rate (US ~4.5%, Australia ~4.8%, India ~7.0%), a market-appropriate equity risk premium, and a sector WACC reference range for that market. Currencies are handled automatically, including the UK's pence-vs-pounds quirk. International betas are also floored (see below).</p>
       </details>
       <details class="faq-item">
         <summary>What is beta, and why does the tool "floor" it for non-US stocks?</summary>

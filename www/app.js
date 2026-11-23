@@ -408,8 +408,7 @@ const ctl = window.kvTickerInput.mount({
   hints: {
     none: isNative
       ? 'Add <code>.AX</code> for Australian tickers (e.g. BHP.AX) or <code>.NS</code> for Indian tickers (e.g. RELIANCE.NS). No suffix defaults to US (e.g. AAPL).'
-      : 'Tick <strong>ASX stock</strong> for Australian tickers (e.g. BHP, CBA). Leave unticked for US tickers (e.g. AAPL).',
-    nse:  'Tick <strong>NSE / BSE</strong> for Indian tickers (e.g. RELIANCE, TCS). Adds <code>.NS</code> suffix automatically.',
+      : 'Pick the company from the list, or add <code>.AX</code> for Australian (e.g. BHP.AX) or <code>.NS</code> for Indian tickers (e.g. RELIANCE.NS). No suffix means US (e.g. AAPL).',
   },
   onAnalyse: (req) => onAnalyse(req),
 });
