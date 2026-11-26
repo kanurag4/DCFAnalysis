@@ -624,6 +624,19 @@
     "updatedAt": "2026-11-21T03:51:19.560Z"
   },
   {
+    "ticker": "ETN",
+    "slug": "etn",
+    "name": "Eaton Corporation plc",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 119.76119110520888,
+    "price": 317.81,
+    "marginOfSafety": -0.6231673292054722,
+    "marketCap": 123469185024,
+    "updated": "2026-11-26",
+    "updatedAt": "2026-11-26T05:51:06.911Z"
+  },
+  {
     "ticker": "EXE",
     "slug": "exe",
     "name": "Expand Energy Corporation",
@@ -1287,6 +1300,19 @@
     "updatedAt": "2026-11-21T04:03:44.812Z"
   },
   {
+    "ticker": "NVT",
+    "slug": "nvt",
+    "name": "nVent Electric plc",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 33.18518946491252,
+    "price": 103.71,
+    "marginOfSafety": -0.6800193861256145,
+    "marketCap": 16759334912,
+    "updated": "2026-11-26",
+    "updatedAt": "2026-11-26T05:51:31.996Z"
+  },
+  {
     "ticker": "NXPI",
     "slug": "nxpi",
     "name": "NXP Semiconductors N.V.",
@@ -1857,6 +1883,19 @@
     "marketCap": 43103375360,
     "updated": "2026-11-21",
     "updatedAt": "2026-11-21T04:14:37.581Z"
+  },
+  {
+    "ticker": "VRT",
+    "slug": "vrt",
+    "name": "Vertiv Holdings Co",
+    "sector": "Industrials",
+    "method": "DCF",
+    "intrinsic": 116.14244041196051,
+    "price": 173.37,
+    "marginOfSafety": -0.3300891710678866,
+    "marketCap": 66757922816,
+    "updated": "2026-11-26",
+    "updatedAt": "2026-11-26T05:51:55.575Z"
   },
   {
     "ticker": "VZ",
