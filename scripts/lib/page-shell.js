@@ -34,6 +34,7 @@ function pageShell({ title, description, canonical, h1, subtitle, jsonLd = [], b
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-itunes-app" content="app-id=6794551964">
   <meta name="theme-color" content="#f8fafc">
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
