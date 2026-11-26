@@ -1633,6 +1633,7 @@ async function buildTickerPage(ticker, { proxyUrl, indexHistoryCache, aiCorrelat
       </p>
 
       <p class="ticker-cta"><span>Want to test your own ${method === 'DCF' ? 'growth or discount-rate' : method === 'DDM' ? 'dividend growth or cost-of-equity' : method === 'REIT' ? 'P/AFFO multiple' : method === 'Airline' ? 'EV/EBITDA multiple' : 'ROE or cost-of-equity'} assumptions?</span><a href="${calcHref}">Open the full interactive calculator, pre-filled with ${escapeHtml(t)} &rarr;</a></p>
+      <p class="ticker-cta"><span>Want every model, score and check in one view?</span><a href="/evaluate/?ticker=${encodeURIComponent(t)}">Value ${escapeHtml(t)} with the free stock evaluator &rarr;</a></p>
 
       ${relatedStocksSectionHtml}
 
