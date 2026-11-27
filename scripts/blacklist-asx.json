@@ -43,5 +43,15 @@
     "ticker": "IGO.AX",
     "reason": "Excluded via admin console review, run 42191396890",
     "addedAt": "2026-11-06"
+  },
+  {
+    "ticker": "SLC.AX",
+    "reason": "Excluded via admin console review, run 45980151044",
+    "addedAt": "2026-11-27"
+  },
+  {
+    "ticker": "PRN.AX",
+    "reason": "Excluded via admin console review, run 45980151044",
+    "addedAt": "2026-11-27"
   }
 ]
