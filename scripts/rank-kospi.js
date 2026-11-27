@@ -52,6 +52,10 @@ const config = {
     '005300.KS': 'Lotte Group',          // Lotte Chilsung Beverage
     '329180.KS': 'Hyundai Heavy Industries Group', // HD Hyundai Heavy Industries -- same group label as 071970.KS / 009540.KS above
     '051900.KS': 'LG Group',             // LG H&H -- same group as LG CNS above
+    // Added 2026-11-28 -- the KOSPI review flagged all three as untagged.
+    '017670.KS': 'SK Group',             // SK Telecom
+    '402340.KS': 'SK Group',             // SK Square -- SK Group's ICT investment holding company
+    '005930.KS': 'Samsung Group',        // Samsung Electronics
   },
   // Moved to scripts/blacklist-kospi.json (2026-08-01) — see rank-asx.js's comment.
   blacklist: blacklistEntries.map(e => e.ticker),
