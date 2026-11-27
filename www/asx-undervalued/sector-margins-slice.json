@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-20",
+ "asAt": "2026-11-27",
  "industries": {
   "Software - Application": [
    {
@@ -28,7 +28,7 @@
    },
    {
     "ticker": "TNE.AX",
-    "margin": 0.2494166289594357
+    "margin": 0.27071386932032493
    },
    {
     "ticker": "WTC.AX",
@@ -644,7 +644,7 @@
    },
    {
     "ticker": "VSL.AX",
-    "margin": 0.09001350366925688
+    "margin": 0.09001350366925687
    }
   ],
   "REIT - Industrial": [
@@ -795,6 +795,10 @@
     "margin": 0.257829199483651
    },
    {
+    "ticker": "MQG.AX",
+    "margin": -0.09935082182951926
+   },
+   {
     "ticker": "SOL.AX",
     "margin": 0.5595413526827595
    }
@@ -870,7 +874,7 @@
   "Specialty Chemicals": [
    {
     "ticker": "DNL.AX",
-    "margin": 0.038183801560361434
+    "margin": 0.00702019267507714
    },
    {
     "ticker": "ORI.AX",
@@ -944,7 +948,7 @@
   "Farm Products": [
    {
     "ticker": "ELD.AX",
-    "margin": 0.025110215297308974
+    "margin": 0.0327259617701202
    },
    {
     "ticker": "GNC.AX",
@@ -996,7 +1000,7 @@
   "Rental & Leasing Services": [
    {
     "ticker": "FPR.AX",
-    "margin": -0.19832175666314067
+    "margin": -0.16111881787596055
    }
   ],
   "Real Estate - Development": [
@@ -1122,7 +1126,7 @@
   "Agricultural Inputs": [
    {
     "ticker": "NUF.AX",
-    "margin": -0.001239404687749004
+    "margin": -0.008671368023949903
    }
   ],
   "Advertising Agencies": [

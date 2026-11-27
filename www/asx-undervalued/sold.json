@@ -772,5 +772,37 @@
     "exitDate": "2026-11-20",
     "exitPrice": 4.94,
     "dollarPnl": -12.65
+  },
+  {
+    "ticker": "PRN.AX",
+    "entryDate": "2026-09-25",
+    "entryPrice": 2.2,
+    "exitDate": "2026-11-27",
+    "exitPrice": 1.81,
+    "dollarPnl": 44.34
+  },
+  {
+    "ticker": "SLC.AX",
+    "entryDate": "2026-11-13",
+    "entryPrice": 2.57,
+    "exitDate": "2026-11-27",
+    "exitPrice": 2.08,
+    "dollarPnl": -41.07
+  },
+  {
+    "ticker": "EOS.AX",
+    "entryDate": "2026-11-20",
+    "entryPrice": 6.64,
+    "exitDate": "2026-11-27",
+    "exitPrice": 7.1,
+    "dollarPnl": 33.99
+  },
+  {
+    "ticker": "DOW.AX",
+    "entryDate": "2026-11-13",
+    "entryPrice": 7.26,
+    "exitDate": "2026-11-27",
+    "exitPrice": 7.32,
+    "dollarPnl": 26.12
   }
 ]

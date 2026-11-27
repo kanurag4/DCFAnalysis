@@ -1,16 +1,16 @@
 {
-  "asAt": "2026-11-20",
+  "asAt": "2026-11-27",
   "universe": "ASX 300",
   "summary": {
     "tickers": 298,
     "evaluated": 298,
-    "qualified": 39,
+    "qualified": 42,
     "shown": 20,
     "marginCapPct": 100,
     "dropped": {
       "fetchFailed": 0,
-      "unvaluable": 89,
-      "overvalued": 125,
+      "unvaluable": 90,
+      "overvalued": 121,
       "marginOverCap": 38,
       "distressZone": 7,
       "proxyFcf": 0
@@ -19,159 +19,87 @@
   "rows": [
     {
       "rank": 1,
-      "ticker": "MLX.AX",
-      "name": "Metals X Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 2.66,
-      "snapshotPrice": 1.33,
-      "marginOfSafety": 0.9934,
-      "wacc": 0.0957,
-      "terminalValuePct": 76.1,
-      "trailingPE": 7.4,
-      "marketCap": 1183334016,
-      "operatingMargin": 0.5313,
-      "analystTarget": 2.05,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 10.48,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": 0.09,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.12,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 2,
       "ticker": "RPL.AX",
       "name": "Regal Partners Limited",
       "sector": "Financial Services",
       "method": "DCF",
-      "intrinsic": 3.63,
-      "snapshotPrice": 1.84,
-      "marginOfSafety": 0.9724,
-      "wacc": 0.118,
-      "terminalValuePct": 63.8,
-      "trailingPE": 3.2,
-      "marketCap": 1197804032,
+      "intrinsic": 3.7,
+      "snapshotPrice": 1.91,
+      "marginOfSafety": 0.935,
+      "wacc": 0.1158,
+      "terminalValuePct": 64.4,
+      "trailingPE": 3.3,
+      "marketCap": 1243372544,
       "operatingMargin": 0.6145,
       "analystTarget": 3.9,
       "currency": "AUD",
       "altmanZ": null,
       "piotroskiF": null,
       "aiCorrelation": {
-        "r": 0.13,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.08,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 3,
-      "ticker": "RRL.AX",
-      "name": "Regis Resources Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 10.3,
-      "snapshotPrice": 5.77,
-      "marginOfSafety": 0.7849,
-      "wacc": 0.1097,
-      "terminalValuePct": 72.2,
-      "trailingPE": 6.1,
-      "marketCap": 4377678336,
-      "operatingMargin": 0.424,
-      "analystTarget": 7.73,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 5.86,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Stable"
-      },
-      "aiCorrelation": {
-        "r": 0.06,
-        "n": 246,
+        "r": 0.11,
+        "n": 245,
         "band": "low"
       },
       "aiHardwareCorrelation": {
         "r": 0.05,
-        "n": 246,
+        "n": 245,
         "band": "low"
       }
     },
     {
-      "rank": 4,
-      "ticker": "PRN.AX",
-      "name": "Perenti Limited",
-      "sector": "Basic Materials",
+      "rank": 2,
+      "ticker": "NHC.AX",
+      "name": "New Hope Corporation Limited",
+      "sector": "Energy",
       "method": "DCF",
-      "intrinsic": 2.91,
-      "snapshotPrice": 1.66,
-      "marginOfSafety": 0.7543,
-      "wacc": 0.0659,
-      "terminalValuePct": 82.5,
-      "trailingPE": 18.4,
-      "marketCap": 1548535040,
-      "operatingMargin": 0.0884,
-      "analystTarget": 2.78,
+      "intrinsic": 9.85,
+      "snapshotPrice": 5.09,
+      "marginOfSafety": 0.9348,
+      "wacc": 0.0872,
+      "terminalValuePct": 75.1,
+      "trailingPE": 26.8,
+      "marketCap": 4296904704,
+      "operatingMargin": 0.1514,
+      "analystTarget": 5.66,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.54,
-        "zone": "grey"
+        "score": 4.54,
+        "zone": "safe"
       },
       "piotroskiF": {
-        "score": 7,
+        "score": 5,
         "maxScore": 9,
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": 0.14,
-        "n": 246,
-        "band": "low"
+        "r": 0,
+        "n": 245,
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.09,
-        "n": 246,
-        "band": "low"
+        "r": 0.02,
+        "n": 245,
+        "band": "none"
       }
     },
     {
-      "rank": 5,
+      "rank": 3,
       "ticker": "MTS.AX",
       "name": "Metcash Limited",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 5.89,
-      "snapshotPrice": 3.38,
-      "marginOfSafety": 0.7429,
-      "wacc": 0.0639,
-      "terminalValuePct": 82.5,
-      "trailingPE": 13.5,
-      "marketCap": 3717074688,
+      "intrinsic": 6.34,
+      "snapshotPrice": 3.3,
+      "marginOfSafety": 0.9216,
+      "wacc": 0.0617,
+      "terminalValuePct": 83.4,
+      "trailingPE": 13.2,
+      "marketCap": 3629096448,
       "operatingMargin": 0.0269,
       "analystTarget": 3.39,
       "currency": "AUD",
       "altmanZ": {
-        "score": 3.27,
+        "score": 3.26,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -180,34 +108,70 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": -0.06,
-        "n": 246,
+        "r": -0.07,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.08,
-        "n": 246,
+        "r": -0.09,
+        "n": 245,
         "band": "none"
       }
     },
     {
-      "rank": 6,
+      "rank": 4,
+      "ticker": "MLX.AX",
+      "name": "Metals X Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 2.74,
+      "snapshotPrice": 1.43,
+      "marginOfSafety": 0.9207,
+      "wacc": 0.0935,
+      "terminalValuePct": 76.8,
+      "trailingPE": 7.9,
+      "marketCap": 1263109248,
+      "operatingMargin": 0.5313,
+      "analystTarget": 2.05,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 11.03,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.1,
+        "n": 245,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 5,
       "ticker": "VSL.AX",
       "name": "Vulcan Steel Limited",
       "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 9.74,
-      "snapshotPrice": 5.87,
-      "marginOfSafety": 0.66,
-      "wacc": 0.0671,
-      "terminalValuePct": 81.4,
-      "trailingPE": 48.9,
-      "marketCap": 860130816,
+      "intrinsic": 10.45,
+      "snapshotPrice": 5.65,
+      "marginOfSafety": 0.8501,
+      "wacc": 0.065,
+      "terminalValuePct": 82.3,
+      "trailingPE": 47.1,
+      "marketCap": 827894272,
       "operatingMargin": 0.0586,
-      "analystTarget": 6.09,
+      "analystTarget": 6.06,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.27,
+        "score": 2.24,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -216,34 +180,34 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0.02,
-        "n": 246,
+        "r": -0.06,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.05,
-        "n": 246,
+        "r": -0.15,
+        "n": 245,
         "band": "none"
       }
     },
     {
-      "rank": 7,
-      "ticker": "MND.AX",
-      "name": "Monadelphous Group Limited",
-      "sector": "Industrials",
+      "rank": 6,
+      "ticker": "TUA.AX",
+      "name": "Tuas Limited",
+      "sector": "Communication Services",
       "method": "DCF",
-      "intrinsic": 48.1,
-      "snapshotPrice": 30.17,
-      "marginOfSafety": 0.5944,
-      "wacc": 0.0717,
-      "terminalValuePct": 80.3,
-      "trailingPE": 23.9,
-      "marketCap": 3034708224,
-      "operatingMargin": 0.0568,
-      "analystTarget": 31.02,
+      "intrinsic": 2.88,
+      "snapshotPrice": 1.68,
+      "marginOfSafety": 0.7183,
+      "wacc": 0.0874,
+      "terminalValuePct": 74.3,
+      "trailingPE": 33.5,
+      "marketCap": 918563520,
+      "operatingMargin": 0.1186,
+      "analystTarget": 3.1,
       "currency": "AUD",
       "altmanZ": {
-        "score": 5.9,
+        "score": 6.7,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -252,106 +216,70 @@
         "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0.04,
-        "n": 246,
+        "r": -0.05,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.04,
-        "n": 246,
+        "r": -0.07,
+        "n": 245,
         "band": "none"
+      }
+    },
+    {
+      "rank": 7,
+      "ticker": "RRL.AX",
+      "name": "Regis Resources Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 10.53,
+      "snapshotPrice": 6.19,
+      "marginOfSafety": 0.7009,
+      "wacc": 0.1077,
+      "terminalValuePct": 72.7,
+      "trailingPE": 6.6,
+      "marketCap": 4696330752,
+      "operatingMargin": 0.424,
+      "analystTarget": 7.65,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 6.08,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 8,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.06,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.06,
+        "n": 245,
+        "band": "low"
       }
     },
     {
       "rank": 8,
-      "ticker": "MAH.AX",
-      "name": "Macmahon Holdings Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 1.19,
-      "snapshotPrice": 0.76,
-      "marginOfSafety": 0.5718,
-      "wacc": 0.0821,
-      "terminalValuePct": 77.8,
-      "trailingPE": 15.2,
-      "marketCap": 1637789184,
-      "operatingMargin": 0.0667,
-      "analystTarget": 1.17,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 3.07,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 7,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0.16,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.17,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 9,
-      "ticker": "PRU.AX",
-      "name": "Perseus Mining Limited",
-      "sector": "Basic Materials",
-      "method": "DCF",
-      "intrinsic": 8.98,
-      "snapshotPrice": 5.77,
-      "marginOfSafety": 0.556,
-      "wacc": 0.0958,
-      "terminalValuePct": 76.1,
-      "trailingPE": 12.3,
-      "marketCap": 7651663872,
-      "operatingMargin": 0.4796,
-      "analystTarget": 6.99,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 8.97,
-        "zone": "safe"
-      },
-      "piotroskiF": {
-        "score": 6,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": 0.06,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.06,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 10,
       "ticker": "HVN.AX",
       "name": "Harvey Norman Holdings Limited",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 6.35,
-      "snapshotPrice": 4.28,
-      "marginOfSafety": 0.4845,
-      "wacc": 0.0706,
-      "terminalValuePct": 79.8,
-      "trailingPE": 10.2,
-      "marketCap": 5332908544,
+      "intrinsic": 6.79,
+      "snapshotPrice": 4.14,
+      "marginOfSafety": 0.639,
+      "wacc": 0.0683,
+      "terminalValuePct": 80.7,
+      "trailingPE": 9.9,
+      "marketCap": 5158467584,
       "operatingMargin": 0.2502,
-      "analystTarget": 4.55,
+      "analystTarget": 4.18,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.17,
+        "score": 2.15,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -361,63 +289,70 @@
       },
       "aiCorrelation": {
         "r": -0.04,
-        "n": 246,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.06,
-        "n": 246,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 11,
-      "ticker": "JDO.AX",
-      "name": "Judo Capital Holdings Limited",
-      "sector": "Financial Services",
-      "method": "ExcessReturn",
-      "intrinsic": 1.29,
-      "snapshotPrice": 0.88,
-      "marginOfSafety": 0.4673,
-      "wacc": 0.1086,
-      "terminalValuePct": null,
-      "trailingPE": 9.8,
-      "marketCap": 988299776,
-      "operatingMargin": 0.4519,
-      "analystTarget": 1.49,
-      "currency": "AUD",
-      "altmanZ": null,
-      "piotroskiF": null,
-      "aiCorrelation": {
-        "r": 0.01,
-        "n": 246,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
         "r": -0.05,
-        "n": 246,
+        "n": 245,
         "band": "none"
       }
     },
     {
-      "rank": 12,
-      "ticker": "SLC.AX",
-      "name": "Superloop Limited",
-      "sector": "Communication Services",
+      "rank": 9,
+      "ticker": "MND.AX",
+      "name": "Monadelphous Group Limited",
+      "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 3.31,
-      "snapshotPrice": 2.27,
-      "marginOfSafety": 0.4585,
-      "wacc": 0.0717,
-      "terminalValuePct": 83.4,
-      "trailingPE": 75.7,
-      "marketCap": 1169625856,
-      "operatingMargin": 0.0495,
-      "analystTarget": 3.51,
+      "intrinsic": 50.27,
+      "snapshotPrice": 31.11,
+      "marginOfSafety": 0.6159,
+      "wacc": 0.0696,
+      "terminalValuePct": 81.1,
+      "trailingPE": 24.7,
+      "marketCap": 3129259776,
+      "operatingMargin": 0.0568,
+      "analystTarget": 31.32,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.13,
-        "zone": "grey"
+        "score": 5.98,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Stable"
+      },
+      "aiCorrelation": {
+        "r": 0.04,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.03,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 10,
+      "ticker": "MAH.AX",
+      "name": "Macmahon Holdings Limited",
+      "sector": "Basic Materials",
+      "method": "DCF",
+      "intrinsic": 1.23,
+      "snapshotPrice": 0.81,
+      "marginOfSafety": 0.5228,
+      "wacc": 0.0804,
+      "terminalValuePct": 78.4,
+      "trailingPE": 16.2,
+      "marketCap": 1745538432,
+      "operatingMargin": 0.0667,
+      "analystTarget": 1.17,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 3.13,
+        "zone": "safe"
       },
       "piotroskiF": {
         "score": 7,
@@ -425,70 +360,99 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.06,
-        "n": 246,
+        "r": 0.17,
+        "n": 245,
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.02,
-        "n": 246,
-        "band": "none"
+        "r": 0.18,
+        "n": 245,
+        "band": "low"
       }
     },
     {
-      "rank": 13,
-      "ticker": "RWC.AX",
-      "name": "Reliance Worldwide Corporation Limited",
-      "sector": "Industrials",
+      "rank": 11,
+      "ticker": "PRU.AX",
+      "name": "Perseus Mining Limited",
+      "sector": "Basic Materials",
       "method": "DCF",
-      "intrinsic": 6.46,
-      "snapshotPrice": 4.57,
-      "marginOfSafety": 0.4126,
-      "wacc": 0.0794,
-      "terminalValuePct": 76.9,
-      "trailingPE": 457,
-      "marketCap": 3418537472,
-      "operatingMargin": 0.1309,
-      "analystTarget": 4.75,
+      "intrinsic": 9.29,
+      "snapshotPrice": 6.2,
+      "marginOfSafety": 0.4984,
+      "wacc": 0.0936,
+      "terminalValuePct": 76.7,
+      "trailingPE": 13.2,
+      "marketCap": 8204841984,
+      "operatingMargin": 0.4796,
+      "analystTarget": 6.99,
       "currency": "AUD",
       "altmanZ": {
-        "score": 3.01,
+        "score": 9.41,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 6,
         "maxScore": 9,
-        "trend": "Deteriorating"
+        "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.01,
-        "n": 246,
+        "r": 0.07,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.06,
+        "n": 245,
+        "band": "low"
+      }
+    },
+    {
+      "rank": 12,
+      "ticker": "JDO.AX",
+      "name": "Judo Capital Holdings Limited",
+      "sector": "Financial Services",
+      "method": "ExcessReturn",
+      "intrinsic": 1.3,
+      "snapshotPrice": 0.89,
+      "marginOfSafety": 0.4735,
+      "wacc": 0.1064,
+      "terminalValuePct": null,
+      "trailingPE": 9.8,
+      "marketCap": 993915072,
+      "operatingMargin": 0.4519,
+      "analystTarget": 1.49,
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": 0,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.01,
-        "n": 246,
+        "r": -0.06,
+        "n": 245,
         "band": "none"
       }
     },
     {
-      "rank": 14,
+      "rank": 13,
       "ticker": "COL.AX",
       "name": "Coles Group Limited",
       "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 29.23,
-      "snapshotPrice": 21.66,
-      "marginOfSafety": 0.3493,
-      "wacc": 0.065,
-      "terminalValuePct": 83,
-      "trailingPE": 26.7,
-      "marketCap": 29112170496,
+      "intrinsic": 31.14,
+      "snapshotPrice": 21.91,
+      "marginOfSafety": 0.4213,
+      "wacc": 0.063,
+      "terminalValuePct": 83.8,
+      "trailingPE": 27,
+      "marketCap": 29448183808,
       "operatingMargin": 0.0427,
       "analystTarget": 22.21,
       "currency": "AUD",
       "altmanZ": {
-        "score": 3.53,
+        "score": 3.54,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -498,64 +462,64 @@
       },
       "aiCorrelation": {
         "r": 0.04,
-        "n": 246,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0,
-        "n": 246,
+        "r": -0.01,
+        "n": 245,
         "band": "none"
       }
     },
     {
-      "rank": 15,
-      "ticker": "EOS.AX",
-      "name": "Electro Optic Systems Holdings Limited",
-      "sector": "Industrials",
+      "rank": 14,
+      "ticker": "A2M.AX",
+      "name": "The a2 Milk Company Limited",
+      "sector": "Consumer Defensive",
       "method": "DCF",
-      "intrinsic": 8.72,
-      "snapshotPrice": 6.64,
-      "marginOfSafety": 0.3129,
-      "wacc": 0.1424,
-      "terminalValuePct": 57.5,
-      "trailingPE": null,
-      "marketCap": 1472102272,
-      "operatingMargin": -0.1052,
-      "analystTarget": 15.34,
+      "intrinsic": 8.14,
+      "snapshotPrice": 5.97,
+      "marginOfSafety": 0.3637,
+      "wacc": 0.0701,
+      "terminalValuePct": 80,
+      "trailingPE": 23.9,
+      "marketCap": 4346493440,
+      "operatingMargin": 0.1474,
+      "analystTarget": 7.56,
       "currency": "AUD",
       "altmanZ": {
-        "score": 5.87,
+        "score": 6.21,
         "zone": "safe"
       },
       "piotroskiF": {
         "score": 6,
         "maxScore": 9,
-        "trend": "Improving"
+        "trend": "Stable"
       },
       "aiCorrelation": {
-        "r": 0.16,
-        "n": 246,
-        "band": "low"
+        "r": -0.13,
+        "n": 245,
+        "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": 0.15,
-        "n": 246,
-        "band": "low"
+        "r": -0.11,
+        "n": 245,
+        "band": "none"
       }
     },
     {
-      "rank": 16,
+      "rank": 15,
       "ticker": "QRI.AX",
       "name": "Qualitas Real Estate Income Fund",
       "sector": "Real Estate",
       "method": "DDM",
-      "intrinsic": 1.92,
-      "snapshotPrice": 1.49,
-      "marginOfSafety": 0.2913,
-      "wacc": 0.0934,
-      "terminalValuePct": 73,
+      "intrinsic": 1.98,
+      "snapshotPrice": 1.48,
+      "marginOfSafety": 0.339,
+      "wacc": 0.0912,
+      "terminalValuePct": 73.7,
       "trailingPE": 13.5,
-      "marketCap": 937221696,
+      "marketCap": 934066048,
       "operatingMargin": 0,
       "analystTarget": 1.6,
       "currency": "AUD",
@@ -566,13 +530,49 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0,
-        "n": 246,
+        "r": 0.02,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.01,
-        "n": 246,
+        "r": 0.02,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 16,
+      "ticker": "RWC.AX",
+      "name": "Reliance Worldwide Corporation Limited",
+      "sector": "Industrials",
+      "method": "DCF",
+      "intrinsic": 6.72,
+      "snapshotPrice": 5.06,
+      "marginOfSafety": 0.3274,
+      "wacc": 0.0777,
+      "terminalValuePct": 77.5,
+      "trailingPE": 506,
+      "marketCap": 3785076224,
+      "operatingMargin": 0.1309,
+      "analystTarget": 4.75,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 3.18,
+        "zone": "safe"
+      },
+      "piotroskiF": {
+        "score": 6,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": -0.04,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.08,
+        "n": 245,
         "band": "none"
       }
     },
@@ -582,18 +582,18 @@
       "name": "Nick Scali Limited",
       "sector": "Consumer Cyclical",
       "method": "DCF",
-      "intrinsic": 15.87,
-      "snapshotPrice": 12.54,
-      "marginOfSafety": 0.2658,
-      "wacc": 0.0846,
-      "terminalValuePct": 74.6,
-      "trailingPE": 14.1,
-      "marketCap": 1072554944,
+      "intrinsic": 16.52,
+      "snapshotPrice": 12.73,
+      "marginOfSafety": 0.2975,
+      "wacc": 0.0826,
+      "terminalValuePct": 75.3,
+      "trailingPE": 14.3,
+      "marketCap": 1088805760,
       "operatingMargin": 0.2343,
       "analystTarget": 14.34,
       "currency": "AUD",
       "altmanZ": {
-        "score": 2.96,
+        "score": 2.98,
         "zone": "grey"
       },
       "piotroskiF": {
@@ -602,106 +602,34 @@
         "trend": "Improving"
       },
       "aiCorrelation": {
-        "r": 0.1,
-        "n": 246,
+        "r": 0.09,
+        "n": 245,
         "band": "low"
       },
       "aiHardwareCorrelation": {
-        "r": 0.08,
-        "n": 246,
+        "r": 0.05,
+        "n": 245,
         "band": "low"
       }
     },
     {
       "rank": 18,
-      "ticker": "DOW.AX",
-      "name": "Downer EDI Limited",
-      "sector": "Industrials",
-      "method": "DCF",
-      "intrinsic": 8.77,
-      "snapshotPrice": 6.95,
-      "marginOfSafety": 0.2612,
-      "wacc": 0.0826,
-      "terminalValuePct": 75.3,
-      "trailingPE": 21.1,
-      "marketCap": 4471020544,
-      "operatingMargin": 0.0457,
-      "analystTarget": 7.73,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 2.28,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 8,
-        "maxScore": 9,
-        "trend": "Improving"
-      },
-      "aiCorrelation": {
-        "r": -0.03,
-        "n": 246,
-        "band": "none"
-      },
-      "aiHardwareCorrelation": {
-        "r": -0.01,
-        "n": 246,
-        "band": "none"
-      }
-    },
-    {
-      "rank": 19,
-      "ticker": "CAT.AX",
-      "name": "Catapult Sports Ltd",
-      "sector": "Technology",
-      "method": "DCF",
-      "intrinsic": 3.37,
-      "snapshotPrice": 2.68,
-      "marginOfSafety": 0.2579,
-      "wacc": 0.0962,
-      "terminalValuePct": 76,
-      "trailingPE": null,
-      "marketCap": 846814361,
-      "operatingMargin": -0.2169,
-      "analystTarget": 4.8,
-      "currency": "AUD",
-      "altmanZ": {
-        "score": 2.48,
-        "zone": "grey"
-      },
-      "piotroskiF": {
-        "score": 4,
-        "maxScore": 9,
-        "trend": "Deteriorating"
-      },
-      "aiCorrelation": {
-        "r": 0.14,
-        "n": 246,
-        "band": "low"
-      },
-      "aiHardwareCorrelation": {
-        "r": 0.08,
-        "n": 246,
-        "band": "low"
-      }
-    },
-    {
-      "rank": 20,
       "ticker": "VNT.AX",
       "name": "Ventia Services Group Limited",
       "sector": "Industrials",
       "method": "DCF",
-      "intrinsic": 5.76,
-      "snapshotPrice": 4.6,
-      "marginOfSafety": 0.2528,
-      "wacc": 0.0659,
-      "terminalValuePct": 82.1,
-      "trailingPE": 14.4,
-      "marketCap": 3751804672,
+      "intrinsic": 6.09,
+      "snapshotPrice": 4.71,
+      "marginOfSafety": 0.2921,
+      "wacc": 0.064,
+      "terminalValuePct": 82.9,
+      "trailingPE": 14.7,
+      "marketCap": 3841521920,
       "operatingMargin": 0.0719,
       "analystTarget": 5.97,
       "currency": "AUD",
       "altmanZ": {
-        "score": 3.71,
+        "score": 3.74,
         "zone": "safe"
       },
       "piotroskiF": {
@@ -710,14 +638,79 @@
         "trend": "Deteriorating"
       },
       "aiCorrelation": {
-        "r": -0.02,
-        "n": 246,
+        "r": 0,
+        "n": 245,
         "band": "none"
       },
       "aiHardwareCorrelation": {
-        "r": -0.04,
-        "n": 246,
+        "r": -0.01,
+        "n": 245,
         "band": "none"
+      }
+    },
+    {
+      "rank": 19,
+      "ticker": "MYS.AX",
+      "name": "MyState Limited",
+      "sector": "Financial Services",
+      "method": "DDM",
+      "intrinsic": 6.24,
+      "snapshotPrice": 4.91,
+      "marginOfSafety": 0.2712,
+      "wacc": 0.0729,
+      "terminalValuePct": 80.7,
+      "trailingPE": 16.4,
+      "marketCap": 839969152,
+      "operatingMargin": 0.3382,
+      "analystTarget": 5.3,
+      "currency": "AUD",
+      "altmanZ": null,
+      "piotroskiF": null,
+      "aiCorrelation": {
+        "r": -0.06,
+        "n": 245,
+        "band": "none"
+      },
+      "aiHardwareCorrelation": {
+        "r": -0.05,
+        "n": 245,
+        "band": "none"
+      }
+    },
+    {
+      "rank": 20,
+      "ticker": "CAT.AX",
+      "name": "Catapult Sports Ltd",
+      "sector": "Technology",
+      "method": "DCF",
+      "intrinsic": 3.49,
+      "snapshotPrice": 2.76,
+      "marginOfSafety": 0.2649,
+      "wacc": 0.094,
+      "terminalValuePct": 76.6,
+      "trailingPE": null,
+      "marketCap": 872092416,
+      "operatingMargin": -0.2169,
+      "analystTarget": 4.78,
+      "currency": "AUD",
+      "altmanZ": {
+        "score": 2.56,
+        "zone": "grey"
+      },
+      "piotroskiF": {
+        "score": 4,
+        "maxScore": 9,
+        "trend": "Deteriorating"
+      },
+      "aiCorrelation": {
+        "r": 0.13,
+        "n": 245,
+        "band": "low"
+      },
+      "aiHardwareCorrelation": {
+        "r": 0.06,
+        "n": 245,
+        "band": "low"
       }
     }
   ]
