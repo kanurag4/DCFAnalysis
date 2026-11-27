@@ -382,5 +382,53 @@
     "exitDate": "2026-11-20",
     "exitPrice": 2.5515,
     "dollarPnl": -36.29
+  },
+  {
+    "ticker": "VAR.OL",
+    "entryDate": "2026-11-20",
+    "entryPrice": 4.3123,
+    "exitDate": "2026-11-27",
+    "exitPrice": 4.107,
+    "dollarPnl": -24.56
+  },
+  {
+    "ticker": "FRES.L",
+    "entryDate": "2026-11-20",
+    "entryPrice": 25.6829,
+    "exitDate": "2026-11-27",
+    "exitPrice": 27.4023,
+    "dollarPnl": 35.19
+  },
+  {
+    "ticker": "SAN.PA",
+    "entryDate": "2026-11-06",
+    "entryPrice": 83.74,
+    "exitDate": "2026-11-27",
+    "exitPrice": 97.65,
+    "dollarPnl": 78.18
+  },
+  {
+    "ticker": "ARCAD.AS",
+    "entryDate": "2026-11-20",
+    "entryPrice": 44.64,
+    "exitDate": "2026-11-27",
+    "exitPrice": 46.34,
+    "dollarPnl": 19.86
+  },
+  {
+    "ticker": "BPT.L",
+    "entryDate": "2026-11-20",
+    "entryPrice": 4.5826,
+    "exitDate": "2026-11-27",
+    "exitPrice": 4.8548,
+    "dollarPnl": 31.26
+  },
+  {
+    "ticker": "NOVO-B.CO",
+    "entryDate": "2026-11-20",
+    "entryPrice": 35.3557,
+    "exitDate": "2026-11-27",
+    "exitPrice": 37.5078,
+    "dollarPnl": 31.74
   }
 ]

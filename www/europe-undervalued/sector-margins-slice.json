@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-20",
+ "asAt": "2026-11-27",
  "industries": {
   "Utilities - Diversified": [
    {
@@ -286,7 +286,7 @@
    },
    {
     "ticker": "ACLN.SW",
-    "margin": 0.1472356795137947
+    "margin": 0.14723567951379474
    },
    {
     "ticker": "ALFA.ST",
@@ -463,6 +463,10 @@
    {
     "ticker": "ICG.L",
     "margin": 0.42121881629404045
+   },
+   {
+    "ticker": "III.L",
+    "margin": 0.14320619084548972
    },
    {
     "ticker": "INDU-C.ST",
@@ -676,7 +680,7 @@
    },
    {
     "ticker": "VK.PA",
-    "margin": 0.0576294905519549
+    "margin": 0.05762949055195489
    },
    {
     "ticker": "VOE.VI",
@@ -1406,7 +1410,7 @@
    },
    {
     "ticker": "QIA.DE",
-    "margin": 0.2207753222293441
+    "margin": 0.22077532222934412
    }
   ],
   "Residential Construction": [
@@ -1534,7 +1538,7 @@
    },
    {
     "ticker": "RTO.L",
-    "margin": 0.10105109789922793
+    "margin": 0.10105109789922795
    },
    {
     "ticker": "SRP.L",
@@ -2028,7 +2032,7 @@
   "Oil & Gas Midstream": [
    {
     "ticker": "FRO.OL",
-    "margin": -0.03546379287429319
+    "margin": -0.0354637928742932
    },
    {
     "ticker": "VPK.AS",
@@ -2134,7 +2138,7 @@
    },
    {
     "ticker": "TEN.MI",
-    "margin": 0.1643645872283862
+    "margin": 0.16436458722838623
    },
    {
     "ticker": "TGS.OL",
@@ -2208,7 +2212,7 @@
    },
    {
     "ticker": "NOD.OL",
-    "margin": -0.0031394847301251146
+    "margin": -0.003139484730125118
    },
    {
     "ticker": "STMMI.MI",
@@ -2316,7 +2320,7 @@
   "Farm Products": [
    {
     "ticker": "MOWI.OL",
-    "margin": 0.08906699199529135
+    "margin": 0.08906699199529133
    },
    {
     "ticker": "SALM.OL",
