@@ -12,8 +12,8 @@
     "peerCount": 13
   },
   "Airlines": {
-    "avgMargin": 0.08731095798906716,
-    "peerCount": 12
+    "avgMargin": 0.07319033799459451,
+    "peerCount": 13
   },
   "Airports & Air Services": {
     "avgMargin": 0.10362131349287003,
@@ -32,7 +32,7 @@
     "peerCount": 9
   },
   "Asset Management": {
-    "avgMargin": 0.20968943654905817,
+    "avgMargin": 0.21090784490496617,
     "peerCount": 58
   },
   "Auto & Truck Dealerships": {
@@ -40,7 +40,7 @@
     "peerCount": 6
   },
   "Auto Manufacturers": {
-    "avgMargin": 0.03156037617819529,
+    "avgMargin": 0.032882774784608104,
     "peerCount": 33
   },
   "Auto Parts": {
@@ -48,7 +48,7 @@
     "peerCount": 46
   },
   "Banks - Diversified": {
-    "avgMargin": -0.09334925909734233,
+    "avgMargin": -0.09259548275993129,
     "peerCount": 22
   },
   "Banks - Regional": {
@@ -92,7 +92,7 @@
     "peerCount": 28
   },
   "Chemicals": {
-    "avgMargin": 0.03169175854495054,
+    "avgMargin": 0.032910631917770536,
     "peerCount": 22
   },
   "Coking Coal": {
@@ -136,7 +136,7 @@
     "peerCount": 12
   },
   "Diagnostics & Research": {
-    "avgMargin": 0.1303538552769569,
+    "avgMargin": 0.11828712070646578,
     "peerCount": 23
   },
   "Discount Stores": {
@@ -224,7 +224,7 @@
     "peerCount": 4
   },
   "Healthcare Plans": {
-    "avgMargin": 0.029324528203904753,
+    "avgMargin": 0.02932087392875914,
     "peerCount": 6
   },
   "Home Improvement Retail": {
@@ -304,7 +304,7 @@
     "peerCount": 15
   },
   "Medical Devices": {
-    "avgMargin": 0.11869807120799675,
+    "avgMargin": 0.11997650368231103,
     "peerCount": 22
   },
   "Medical Distribution": {
@@ -312,7 +312,7 @@
     "peerCount": 8
   },
   "Medical Instruments & Supplies": {
-    "avgMargin": 0.11792301818110693,
+    "avgMargin": 0.1246590162714254,
     "peerCount": 21
   },
   "Metal Fabrication": {
@@ -324,7 +324,7 @@
     "peerCount": 2
   },
   "Oil & Gas E&P": {
-    "avgMargin": 0.14882482846329473,
+    "avgMargin": 0.16392058497264894,
     "peerCount": 15
   },
   "Oil & Gas Equipment & Services": {
@@ -336,7 +336,7 @@
     "peerCount": 10
   },
   "Oil & Gas Midstream": {
-    "avgMargin": 0.1571401942198245,
+    "avgMargin": 0.157140240119927,
     "peerCount": 6
   },
   "Oil & Gas Refining & Marketing": {
@@ -380,11 +380,11 @@
     "peerCount": 14
   },
   "REIT - Healthcare Facilities": {
-    "avgMargin": 0.2527717303055981,
+    "avgMargin": 0.1174328925441439,
     "peerCount": 5
   },
   "REIT - Hotel & Motel": {
-    "avgMargin": 0.16108105394154987,
+    "avgMargin": 0.20886755878382382,
     "peerCount": 1
   },
   "REIT - Industrial": {
@@ -396,8 +396,8 @@
     "peerCount": 8
   },
   "REIT - Residential": {
-    "avgMargin": 0.3562832972943709,
-    "peerCount": 7
+    "avgMargin": 0.3565174271895831,
+    "peerCount": 6
   },
   "REIT - Retail": {
     "avgMargin": 0.5131567320108719,
@@ -420,7 +420,7 @@
     "peerCount": 12
   },
   "Real Estate Services": {
-    "avgMargin": 0.06019748036169055,
+    "avgMargin": 0.08116070050788494,
     "peerCount": 11
   },
   "Rental & Leasing Services": {
@@ -464,8 +464,8 @@
     "peerCount": 35
   },
   "Software - Infrastructure": {
-    "avgMargin": 0.2353685182064315,
-    "peerCount": 28
+    "avgMargin": 0.20833851073614407,
+    "peerCount": 27
   },
   "Solar": {
     "avgMargin": -0.0983573465053951,
@@ -544,7 +544,7 @@
     "peerCount": 14
   },
   "Utilities - Regulated Water": {
-    "avgMargin": -0.16400901209862684,
+    "avgMargin": -0.14757403485470966,
     "peerCount": 4
   },
   "Utilities - Renewable": {
@@ -552,7 +552,7 @@
     "peerCount": 11
   },
   "Waste Management": {
-    "avgMargin": 0.10421318931071068,
+    "avgMargin": 0.10280441684650111,
     "peerCount": 6
   }
 }
