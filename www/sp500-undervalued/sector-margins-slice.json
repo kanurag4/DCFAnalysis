@@ -1,5 +1,5 @@
 {
- "asAt": "2026-11-20",
+ "asAt": "2026-11-27",
  "industries": {
   "Semiconductors": [
    {
@@ -32,7 +32,7 @@
    },
    {
     "ticker": "ADI",
-    "margin": 0.3306872397761859
+    "margin": 0.3419152726084982
    },
    {
     "ticker": "MPWR",
@@ -89,10 +89,6 @@
     "margin": 0.008495178960234648
    },
    {
-    "ticker": "PLTR",
-    "margin": 0.3193258382204648
-   },
-   {
     "ticker": "PANW",
     "margin": 0.3756350282029335
    },
@@ -106,7 +102,7 @@
    },
    {
     "ticker": "SNPS",
-    "margin": 0.2572333432169017
+    "margin": 0.20833851073614407
    },
    {
     "ticker": "XYZ",
@@ -114,7 +110,7 @@
    },
    {
     "ticker": "NTAP",
-    "margin": 0.21350369319596132
+    "margin": 0.23326766937651
    },
    {
     "ticker": "VRSN",
@@ -162,11 +158,11 @@
   "Auto Manufacturers": [
    {
     "ticker": "TSLA",
-    "margin": 0.05999464856774031
+    "margin": 0.060037613385692246
    },
    {
     "ticker": "GM",
-    "margin": -0.019141490123491055
+    "margin": 0.06147956394231214
    },
    {
     "ticker": "F",
@@ -176,29 +172,29 @@
   "Insurance - Diversified": [
    {
     "ticker": "BRK-B",
-    "margin": 0.0624157735614612
+    "margin": 0.0632202605210817
    },
    {
     "ticker": "AIG",
-    "margin": 0.15129320441870808
+    "margin": 0.1473909849388399
    },
    {
     "ticker": "HIG",
-    "margin": 0.19085329122938777
+    "margin": 0.1886794379205604
    },
    {
     "ticker": "ACGL",
-    "margin": 0.38223883588403385
+    "margin": 0.3742017536365589
    }
   ],
   "Drug Manufacturers - General": [
    {
     "ticker": "LLY",
-    "margin": 0.042376869496388206
+    "margin": 0.11128675253433327
    },
    {
     "ticker": "JNJ",
-    "margin": 0.20798932253409347
+    "margin": 0.2154094530258718
    },
    {
     "ticker": "ABBV",
@@ -214,19 +210,19 @@
    },
    {
     "ticker": "GILD",
-    "margin": 0.3147721757650928
+    "margin": 0.3147694486836702
    },
    {
     "ticker": "PFE",
-    "margin": 0.15933947552008468
+    "margin": 0.15933981337703454
    },
    {
     "ticker": "BMY",
-    "margin": 0.2737789876538731
+    "margin": 0.27378037019850204
    },
    {
     "ticker": "BIIB",
-    "margin": 0.17422632287120995
+    "margin": 0.17549014913048644
    }
   ],
   "Discount Stores": [
@@ -248,13 +244,13 @@
    },
    {
     "ticker": "DLTR",
-    "margin": 0.0781908763710685
+    "margin": 0.07828201585088707
    }
   ],
   "Banks - Diversified": [
    {
     "ticker": "JPM",
-    "margin": -0.034558698086232464
+    "margin": -0.03305114541141038
    },
    {
     "ticker": "BAC",
@@ -266,21 +262,21 @@
    },
    {
     "ticker": "C",
-    "margin": -0.4895150675116991
+    "margin": -0.49025596439156316
    },
    {
     "ticker": "BNY",
-    "margin": 0.334368038579661
+    "margin": 0.32778139122046906
    }
   ],
   "Oil & Gas Integrated": [
    {
     "ticker": "XOM",
-    "margin": 0.10246022683555203
+    "margin": 0.09928889988914466
    },
    {
     "ticker": "CVX",
-    "margin": 0.10695664743312203
+    "margin": 0.10329852614204851
    }
   ],
   "Credit Services": [
@@ -290,11 +286,11 @@
    },
    {
     "ticker": "MA",
-    "margin": 0.46789197871687876
+    "margin": 0.49432334736971206
    },
    {
     "ticker": "AXP",
-    "margin": 0.2625356203431169
+    "margin": 0.42963939892033176
    },
    {
     "ticker": "COF",
@@ -346,7 +342,7 @@
    },
    {
     "ticker": "KLAC",
-    "margin": 0.3029085660343613
+    "margin": 0.3028067658115607
    },
    {
     "ticker": "TER",
@@ -364,7 +360,7 @@
    },
    {
     "ticker": "DE",
-    "margin": 0.061543842409487945
+    "margin": 0.06024332251193436
    },
    {
     "ticker": "PCAR",
@@ -382,7 +378,7 @@
    },
    {
     "ticker": "LYV",
-    "margin": 0.046334236229256594
+    "margin": 0.04675650417780034
    },
    {
     "ticker": "TKO",
@@ -398,11 +394,11 @@
    },
    {
     "ticker": "NWS",
-    "margin": 0.06912444666140902
+    "margin": 0.08504288601643367
    },
    {
     "ticker": "NWSA",
-    "margin": 0.06912444666140902
+    "margin": 0.08504288601643367
    },
    {
     "ticker": "PSKY",
@@ -420,11 +416,11 @@
    },
    {
     "ticker": "ELV",
-    "margin": 0.03186160070496363
+    "margin": 0.031854292154672406
    },
    {
     "ticker": "CI",
-    "margin": 0.04020451252381569
+    "margin": 0.039995151082486836
    },
    {
     "ticker": "HUM",
@@ -446,7 +442,7 @@
    },
    {
     "ticker": "MNST",
-    "margin": 0.19130273431752337
+    "margin": 0.19487084935774646
    },
    {
     "ticker": "KDP",
@@ -456,7 +452,7 @@
   "Capital Markets": [
    {
     "ticker": "MS",
-    "margin": -0.3173753494484792
+    "margin": -0.29680285302682824
    },
    {
     "ticker": "GS",
@@ -468,17 +464,17 @@
    },
    {
     "ticker": "HOOD",
-    "margin": 0.059149058406018286
+    "margin": 0.0644877918375352
    },
    {
     "ticker": "IBKR",
-    "margin": 0.9946875319524464
+    "margin": 4.079090026140886
    }
   ],
   "Aerospace & Defense": [
    {
     "ticker": "GE",
-    "margin": 0.13905004585313774
+    "margin": 0.1319976418584914
    },
    {
     "ticker": "RTX",
@@ -486,7 +482,7 @@
    },
    {
     "ticker": "BA",
-    "margin": -0.036543300192937896
+    "margin": -0.03618740761395052
    },
    {
     "ticker": "LMT",
@@ -498,7 +494,7 @@
    },
    {
     "ticker": "GD",
-    "margin": 0.08007047531146888
+    "margin": 0.07773936208596935
    },
    {
     "ticker": "NOC",
@@ -514,7 +510,7 @@
    },
    {
     "ticker": "AXON",
-    "margin": 0.10488926183989598
+    "margin": 0.10472289358144847
    },
    {
     "ticker": "TXT",
@@ -568,7 +564,7 @@
   "Information Technology Services": [
    {
     "ticker": "IBM",
-    "margin": 0.17319301523081426
+    "margin": 0.18299530142455545
    },
    {
     "ticker": "ACN",
@@ -580,7 +576,7 @@
    },
    {
     "ticker": "FIS",
-    "margin": 0.1802393489903538
+    "margin": 0.23983297038953075
    },
    {
     "ticker": "BR",
@@ -600,7 +596,7 @@
    },
    {
     "ticker": "JKHY",
-    "margin": 0.15183280332712995
+    "margin": 0.15380819358768386
    },
    {
     "ticker": "EPAM",
@@ -610,11 +606,11 @@
   "Tobacco": [
    {
     "ticker": "PM",
-    "margin": 0.26927310586516884
+    "margin": 0.24877047029858046
    },
    {
     "ticker": "MO",
-    "margin": 0.42608771907717424
+    "margin": 0.3601107804546706
    }
   ],
   "Computer Hardware": [
@@ -682,11 +678,11 @@
    },
    {
     "ticker": "ROK",
-    "margin": 0.1408150204831164
+    "margin": 0.14082882043895653
    },
    {
     "ticker": "DOV",
-    "margin": 0.10960033542544555
+    "margin": 0.10960030355465838
    },
    {
     "ticker": "IR",
@@ -736,7 +732,7 @@
    },
    {
     "ticker": "APD",
-    "margin": -0.16548805991136878
+    "margin": -0.16229141174419717
    },
    {
     "ticker": "PPG",
@@ -752,7 +748,7 @@
    },
    {
     "ticker": "DD",
-    "margin": -0.022533431136287255
+    "margin": -0.03522836852585475
    },
    {
     "ticker": "IFF",
@@ -784,7 +780,7 @@
   "Restaurants": [
    {
     "ticker": "MCD",
-    "margin": 0.2614987494238239
+    "margin": 0.2614989870405942
    },
    {
     "ticker": "SBUX",
@@ -810,7 +806,7 @@
   "Advertising Agencies": [
    {
     "ticker": "APP",
-    "margin": 0.5126158939017713
+    "margin": 0.5111412585122207
    },
    {
     "ticker": "OMC",
@@ -850,7 +846,7 @@
    },
    {
     "ticker": "AEP",
-    "margin": -0.14466036287324746
+    "margin": 0.15079513219557503
    },
    {
     "ticker": "D",
@@ -858,7 +854,7 @@
    },
    {
     "ticker": "ETR",
-    "margin": -0.14539762026595363
+    "margin": -0.10434769168403851
    },
    {
     "ticker": "XEL",
@@ -870,11 +866,11 @@
    },
    {
     "ticker": "PEG",
-    "margin": -0.054392594111564156
+    "margin": -0.05617830839727844
    },
    {
     "ticker": "ED",
-    "margin": -0.06200730824400964
+    "margin": -0.06674566178580926
    },
    {
     "ticker": "PCG",
@@ -882,7 +878,7 @@
    },
    {
     "ticker": "WEC",
-    "margin": -0.005315215258413223
+    "margin": -0.015765962335746668
    },
    {
     "ticker": "DTE",
@@ -890,7 +886,7 @@
    },
    {
     "ticker": "AEE",
-    "margin": -0.1526689003674105
+    "margin": -0.14166639690125496
    },
    {
     "ticker": "EIX",
@@ -914,7 +910,7 @@
    },
    {
     "ticker": "CMS",
-    "margin": -0.1630390423690712
+    "margin": -0.15992712985162122
    },
    {
     "ticker": "EVRG",
@@ -922,7 +918,7 @@
    },
    {
     "ticker": "LNT",
-    "margin": 0.22300304996331605
+    "margin": -0.232051538523037
    },
    {
     "ticker": "PNW",
@@ -932,7 +928,7 @@
   "Diagnostics & Research": [
    {
     "ticker": "TMO",
-    "margin": 0.15655266995427242
+    "margin": 0.15655346241108414
    },
    {
     "ticker": "DHR",
@@ -968,7 +964,7 @@
    },
    {
     "ticker": "RVTY",
-    "margin": 0.1394946521022061
+    "margin": 0.02846234281078986
    },
    {
     "ticker": "CRL",
@@ -976,7 +972,7 @@
    },
    {
     "ticker": "ILMN",
-    "margin": 0.11562330974495247
+    "margin": 0.10575104960155463
    }
   ],
   "Apparel Retail": [
@@ -996,15 +992,15 @@
   "Asset Management": [
    {
     "ticker": "BLK",
-    "margin": 0.2096160021793848
+    "margin": 0.3152440697223276
    },
    {
     "ticker": "BX",
-    "margin": 0.5204195663246675
+    "margin": 0.44179689359286045
    },
    {
     "ticker": "KKR",
-    "margin": -0.1896342163187517
+    "margin": -0.1842901283015337
    },
    {
     "ticker": "APO",
@@ -1012,15 +1008,15 @@
    },
    {
     "ticker": "STT",
-    "margin": 0.1492628108170993
+    "margin": 0.15082157607294547
    },
    {
     "ticker": "ARES",
-    "margin": 0.23264274502231982
+    "margin": 0.2607762551576292
    },
    {
     "ticker": "AMP",
-    "margin": 0.3498711163594804
+    "margin": 0.3410048579302235
    },
    {
     "ticker": "NTRS",
@@ -1028,7 +1024,7 @@
    },
    {
     "ticker": "RJF",
-    "margin": -0.0016775393181889878
+    "margin": 0.030932418145672297
    },
    {
     "ticker": "TROW",
@@ -1102,7 +1098,7 @@
    },
    {
     "ticker": "PTC",
-    "margin": 0.28111870353278173
+    "margin": 0.3074664851802066
    },
    {
     "ticker": "TYL",
@@ -1142,7 +1138,7 @@
    },
    {
     "ticker": "BSX",
-    "margin": 0.12561381306461925
+    "margin": 0.13499257347476756
    },
    {
     "ticker": "EW",
@@ -1176,7 +1172,7 @@
    },
    {
     "ticker": "EOG",
-    "margin": 0.2071504426681529
+    "margin": 0.43615114426804363
    },
    {
     "ticker": "OXY",
@@ -1184,23 +1180,23 @@
    },
    {
     "ticker": "FANG",
-    "margin": -0.02662247621357016
+    "margin": -0.02695258479912754
    },
    {
     "ticker": "DVN",
-    "margin": 0.1142632450247027
+    "margin": 0.21340654353307512
    },
    {
     "ticker": "EQT",
-    "margin": 0.21208196706025625
+    "margin": 0.22006838318966568
    },
    {
     "ticker": "TPL",
-    "margin": 0.3426376510974764
+    "margin": 0.3433519667778106
    },
    {
     "ticker": "EXE",
-    "margin": 0.10220254546760346
+    "margin": 0.10319603485082324
    },
    {
     "ticker": "APA",
@@ -1214,11 +1210,11 @@
    },
    {
     "ticker": "BDX",
-    "margin": 0.11792301818110693
+    "margin": 0.14528457222961882
    },
    {
     "ticker": "RMD",
-    "margin": 0.2539715619773956
+    "margin": 0.256142199874115
    },
    {
     "ticker": "WST",
@@ -1238,7 +1234,7 @@
    },
    {
     "ticker": "BAX",
-    "margin": 0.06576867489940229
+    "margin": 0.07280782117164163
    }
   ],
   "Conglomerates": [
@@ -1254,15 +1250,15 @@
   "REIT - Healthcare Facilities": [
    {
     "ticker": "WELL",
-    "margin": 0.2527717303055981
+    "margin": 0.24826387197931482
    },
    {
     "ticker": "VTR",
-    "margin": 0.1466237249378864
+    "margin": -0.0764068412837258
    },
    {
     "ticker": "DOC",
-    "margin": 0.4287969895889462
+    "margin": 0.07585562140895027
    }
   ],
   "REIT - Industrial": [
@@ -1276,7 +1272,7 @@
    },
    {
     "ticker": "EXR",
-    "margin": 0.5719737939663498
+    "margin": 0.3330164811117318
    }
   ],
   "Travel Services": [
@@ -1286,15 +1282,15 @@
    },
    {
     "ticker": "ABNB",
-    "margin": 0.39663262699348134
+    "margin": 0.3958884907867901
    },
    {
     "ticker": "RCL",
-    "margin": -0.005090725210065542
+    "margin": -0.005089848650043954
    },
    {
     "ticker": "CCL",
-    "margin": -0.08681111638165259
+    "margin": -0.0868231960994718
    },
    {
     "ticker": "EXPE",
@@ -1346,7 +1342,7 @@
    },
    {
     "ticker": "COIN",
-    "margin": 0.1327587253858181
+    "margin": 0.12266873915336292
    },
    {
     "ticker": "CBOE",
@@ -1360,23 +1356,23 @@
   "Insurance - Property & Casualty": [
    {
     "ticker": "CB",
-    "margin": 0.2538689751443634
+    "margin": 0.2553013970672906
    },
    {
     "ticker": "PGR",
-    "margin": 0.17318883107172445
+    "margin": 0.17311735556511657
    },
    {
     "ticker": "TRV",
-    "margin": 0.19356341926731427
+    "margin": 0.1935930717329867
    },
    {
     "ticker": "ALL",
-    "margin": 0.11187858598212774
+    "margin": 0.11071413821578327
    },
    {
     "ticker": "WRB",
-    "margin": 0.23895633967812616
+    "margin": 0.23903768013364068
    },
    {
     "ticker": "CINF",
@@ -1384,7 +1380,7 @@
    },
    {
     "ticker": "L",
-    "margin": 0.17042615298435534
+    "margin": 0.1686294704464057
    },
    {
     "ticker": "AIZ",
@@ -1400,11 +1396,11 @@
   "Biotechnology": [
    {
     "ticker": "VRTX",
-    "margin": 0.23728187633367898
+    "margin": 0.241540004662823
    },
    {
     "ticker": "REGN",
-    "margin": 0.267610846252193
+    "margin": 0.3003675883949524
    },
    {
     "ticker": "INCY",
@@ -1412,7 +1408,7 @@
    },
    {
     "ticker": "MRNA",
-    "margin": -0.6677043186909939
+    "margin": -0.6603052211060053
    },
    {
     "ticker": "TECH",
@@ -1422,7 +1418,7 @@
   "Engineering & Construction": [
    {
     "ticker": "PWR",
-    "margin": 0.05377770966478596
+    "margin": 0.05376084181681939
    },
    {
     "ticker": "FIX",
@@ -1502,7 +1498,7 @@
    },
    {
     "ticker": "HLT",
-    "margin": 0.16747222826306607
+    "margin": 0.17563881853943986
    }
   ],
   "Utilities - Independent Power Producers": [
@@ -1512,11 +1508,11 @@
    },
    {
     "ticker": "VST",
-    "margin": 0.10367598850671075
+    "margin": 0.02727744516239452
    },
    {
     "ticker": "NRG",
-    "margin": 0.014951454908113589
+    "margin": 0.015375287565585111
    }
   ],
   "Integrated Freight & Logistics": [
@@ -1544,11 +1540,11 @@
   "Medical Distribution": [
    {
     "ticker": "MCK",
-    "margin": 0.014083056581952861
+    "margin": 0.014857677245406174
    },
    {
     "ticker": "COR",
-    "margin": 0.010649425207294953
+    "margin": 0.011116123542952891
    },
    {
     "ticker": "CAH",
@@ -1556,33 +1552,33 @@
    },
    {
     "ticker": "HSIC",
-    "margin": 0.03863042400870738
+    "margin": 0.0418288193929294
    }
   ],
   "Banks - Regional": [
    {
     "ticker": "PNC",
-    "margin": 0.36723144816835207
+    "margin": 0.3639830980352921
    },
    {
     "ticker": "USB",
-    "margin": 0.46683749416591297
+    "margin": 0.46469248454654005
    },
    {
     "ticker": "TFC",
-    "margin": 0.3578240373244431
+    "margin": 0.3507645069584491
    },
    {
     "ticker": "FITB",
-    "margin": 0.47629746456103705
+    "margin": 0.4909803015133781
    },
    {
     "ticker": "HBAN",
-    "margin": 0.34238400600569563
+    "margin": 1.8155501004232797
    },
    {
     "ticker": "MTB",
-    "margin": 0.39924774111428535
+    "margin": 1.209989626430585
    },
    {
     "ticker": "CFG",
@@ -1590,17 +1586,17 @@
    },
    {
     "ticker": "RF",
-    "margin": 0.2918681224417044
+    "margin": 0.29267918253140845
    },
    {
     "ticker": "KEY",
-    "margin": 0.37240085271275203
+    "margin": 0.3603024313889961
    }
   ],
   "Oil & Gas Midstream": [
    {
     "ticker": "WMB",
-    "margin": 0.2101418009516378
+    "margin": 0.21671162867310817
    },
    {
     "ticker": "KMI",
@@ -1612,17 +1608,17 @@
    },
    {
     "ticker": "OKE",
-    "margin": 0.11022023268485445
+    "margin": 0.1102203244850595
    }
   ],
   "Waste Management": [
    {
     "ticker": "WM",
-    "margin": 0.09945661128898356
+    "margin": 0.09663906636056444
    },
    {
     "ticker": "RSG",
-    "margin": 0.13406661894959537
+    "margin": 0.11638847482362732
    }
   ],
   "Oil & Gas Equipment & Services": [
@@ -1650,7 +1646,7 @@
    },
    {
     "ticker": "GRMN",
-    "margin": 0.1807487259216477
+    "margin": 0.18057871802433684
    },
    {
     "ticker": "TDY",
@@ -1658,7 +1654,7 @@
    },
    {
     "ticker": "FTV",
-    "margin": 0.29691812002538354
+    "margin": 0.2803055079894565
    },
    {
     "ticker": "TRMB",
@@ -1676,7 +1672,7 @@
    },
    {
     "ticker": "UHS",
-    "margin": 0.043687289297367274
+    "margin": 0.04404282116007666
    }
   ],
   "Confectioners": [
@@ -1696,7 +1692,7 @@
    },
    {
     "ticker": "VLO",
-    "margin": 0.05117150297224185
+    "margin": 0.04572563590965679
    },
    {
     "ticker": "PSX",
@@ -1714,7 +1710,7 @@
    },
    {
     "ticker": "KIM",
-    "margin": 0.5290792168490344
+    "margin": 0.5269298006491647
    },
    {
     "ticker": "REG",
@@ -1744,11 +1740,11 @@
    },
    {
     "ticker": "BRO",
-    "margin": 0.23216731245182365
+    "margin": 0.2286216945711008
    },
    {
     "ticker": "ERIE",
-    "margin": 0.11390260782772939
+    "margin": 0.11551951636571663
    }
   ],
   "Auto Parts": [
@@ -1806,7 +1802,7 @@
   "Rental & Leasing Services": [
    {
     "ticker": "URI",
-    "margin": 0.04412080005573815
+    "margin": 0.0476652817220406
    }
   ],
   "Footwear & Accessories": [
@@ -1860,15 +1856,15 @@
   "Insurance - Life": [
    {
     "ticker": "AFL",
-    "margin": 0.16514997081236482
+    "margin": 0.16628123990952176
    },
    {
     "ticker": "MET",
-    "margin": 0.20738934010879406
+    "margin": 0.20553397081769376
    },
    {
     "ticker": "PRU",
-    "margin": 0.1084090868365313
+    "margin": 0.10880676043461239
    },
    {
     "ticker": "GL",
@@ -1881,8 +1877,12 @@
     "margin": 0.03176204068486742
    },
    {
+    "ticker": "UAL",
+    "margin": 0.033326273096393175
+   },
+   {
     "ticker": "LUV",
-    "margin": -0.0269334957762428
+    "margin": -0.026702539196079872
    }
   ],
   "Trucking": [
@@ -1906,7 +1906,7 @@
    },
    {
     "ticker": "NVR",
-    "margin": 0.1409629725936541
+    "margin": 0.1411839490681224
    }
   ],
   "Farm Products": [
@@ -1938,11 +1938,11 @@
   "Real Estate Services": [
    {
     "ticker": "CBRE",
-    "margin": 0.029618953606637098
+    "margin": 0.0296178182751203
    },
    {
     "ticker": "CSGP",
-    "margin": 0.06019748036169055
+    "margin": 0.08116070050788494
    }
   ],
   "Food Distribution": [
@@ -1960,7 +1960,7 @@
   "Resorts & Casinos": [
    {
     "ticker": "LVS",
-    "margin": 0.021802318204401025
+    "margin": 0.02931520904314932
    },
    {
     "ticker": "MGM",
@@ -1968,7 +1968,7 @@
    },
    {
     "ticker": "WYNN",
-    "margin": 0.06430549019102683
+    "margin": 0.06563632113233495
    }
   ],
   "Drug Manufacturers - Specialty & Generic": [
@@ -1978,7 +1978,7 @@
    },
    {
     "ticker": "VTRS",
-    "margin": 0.141584942470017
+    "margin": 0.14814425382578614
    }
   ],
   "REIT - Diversified": [
@@ -2022,7 +2022,7 @@
    },
    {
     "ticker": "NI",
-    "margin": -0.1355467361597622
+    "margin": -0.12329454854992436
    }
   ],
   "Packaged Foods": [
@@ -2032,7 +2032,7 @@
    },
    {
     "ticker": "GIS",
-    "margin": 0.109308205307717
+    "margin": 0.6285038408544495
    },
    {
     "ticker": "HRL",
@@ -2048,7 +2048,7 @@
    },
    {
     "ticker": "CPB",
-    "margin": 0.07256924064401708
+    "margin": 0.06652157114203926
    },
    {
     "ticker": "CAG",
@@ -2058,7 +2058,7 @@
   "Chemicals": [
    {
     "ticker": "DOW",
-    "margin": 0.02910357441835014
+    "margin": 0.03154132116399013
    }
   ],
   "REIT - Residential": [
@@ -2081,16 +2081,12 @@
    {
     "ticker": "UDR",
     "margin": 0.3562832972943709
-   },
-   {
-    "ticker": "CPT",
-    "margin": 0.23722475421970302
    }
   ],
   "Utilities - Regulated Water": [
    {
     "ticker": "AWK",
-    "margin": -0.24908423287994808
+    "margin": -0.2162142783921137
    }
   ],
   "Consulting Services": [
@@ -2132,7 +2128,7 @@
    },
    {
     "ticker": "AVY",
-    "margin": 0.073673459333298
+    "margin": 0.07660105560896893
    }
   ],
   "Personal Services": [
@@ -2166,7 +2162,7 @@
   "Agricultural Inputs": [
    {
     "ticker": "CF",
-    "margin": 0.2520388108147206
+    "margin": 0.29858618115063507
    },
    {
     "ticker": "MOS",
@@ -2176,19 +2172,19 @@
   "REIT - Hotel & Motel": [
    {
     "ticker": "HST",
-    "margin": 0.16108105394154987
+    "margin": 0.20886755878382382
    }
   ],
   "Insurance - Reinsurance": [
    {
     "ticker": "EG",
-    "margin": 0.2728899141555634
+    "margin": 0.2701782930596704
    }
   ],
   "Leisure": [
    {
     "ticker": "HAS",
-    "margin": 0.1105201305337388
+    "margin": 0.0966646963555935
    }
   ],
   "Beverages - Wineries & Distilleries": [
@@ -2206,7 +2202,7 @@
   "REIT - Office": [
    {
     "ticker": "BXP",
-    "margin": 0.38248880762360976
+    "margin": 0.2052157531733447
    },
    {
     "ticker": "ARE",

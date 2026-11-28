@@ -1097,5 +1097,21 @@
     "exitDate": "2026-11-20",
     "exitPrice": 114.625,
     "dollarPnl": -32.48
+  },
+  {
+    "ticker": "MCK",
+    "entryDate": "2026-11-13",
+    "entryPrice": 1102.81,
+    "exitDate": "2026-11-27",
+    "exitPrice": 1075.66,
+    "dollarPnl": 3.34
+  },
+  {
+    "ticker": "SLB",
+    "entryDate": "2026-11-20",
+    "entryPrice": 45.89,
+    "exitDate": "2026-11-27",
+    "exitPrice": 49.62,
+    "dollarPnl": 46.54
   }
 ]
