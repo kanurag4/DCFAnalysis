@@ -12,7 +12,7 @@ const { marketParamsFor } = require('../scripts/lib/market.js');
 // rf 0.0532->0.0535. Refreshed again 2026-10-01 (TradingEconomics, AU 10yr 5.42%): rf
 // 0.0535->0.0542.
 test('ASX ticker gets AUS rf fallback and 4.20% erp', () => {
-  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0492, erp: 0.0420, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('BHP.AX'), { rf: 0.0485, erp: 0.0420, terminalGrowth: 0.025 });
 });
 
 test('ASX ticker uses provided live rf when given', () => {
@@ -29,8 +29,8 @@ test('ASX ticker uses provided live rf when given', () => {
 // 0.075->0.0692. Refreshed again 2026-09-30 (raw G-Sec 7.15%, TradingEconomics, same
 // unchanged spread): net rf 0.0530->0.0540.
 test('Indian (.NS/.BO) ticker gets the spread-adjusted rf (not the raw G-Sec yield), refreshed erp', () => {
-  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.0544, erp: 0.0692, terminalGrowth: 0.025 });
-  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.0544, erp: 0.0692, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('RELIANCE.NS'), { rf: 0.0554, erp: 0.0692, terminalGrowth: 0.025 });
+  assert.deepStrictEqual(marketParamsFor('TATASTEEL.BO'), { rf: 0.0554, erp: 0.0692, terminalGrowth: 0.025 });
 });
 
 test('Indian ticker uses provided live rf when given (same override mechanism as ASX)', () => {
@@ -78,11 +78,11 @@ test('Korean ticker ignores any live rf passed in (no live source exists)', () =
 // 0.06->0.0507. Refreshed again 2026-09-30 (raw JGB 3.07%, TradingEconomics, same
 // unchanged spread): net rf 0.0244->0.0251.
 test('Japanese ticker gets the spread-adjusted rf and the ratio-consistent lower terminalGrowth', () => {
-  assert.deepStrictEqual(marketParamsFor('7203.T'), { rf: 0.0223, erp: 0.0507, terminalGrowth: 0.012 });
+  assert.deepStrictEqual(marketParamsFor('7203.T'), { rf: 0.0209, erp: 0.0507, terminalGrowth: 0.012 });
 });
 
 test('Japanese ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('7203.T', { jpRf: 0.05 }), { rf: 0.0223, erp: 0.0507, terminalGrowth: 0.012 });
+  assert.deepStrictEqual(marketParamsFor('7203.T', { jpRf: 0.05 }), { rf: 0.0209, erp: 0.0507, terminalGrowth: 0.012 });
 });
 
 test('.TO (Toronto) does not match the .T Japan branch', () => {
@@ -96,11 +96,11 @@ test('.TO (Toronto) does not match the .T Japan branch', () => {
 // 0.0538->0.0544. Re-netted 2026-10-15 (docs/TODO.md P35): UK is Aa3, so the 0.0494 erp already carries a
 // 0.48% default spread -- the raw 0.0544 less that spread = 0.0496.
 test('UK (.L) ticker gets fixed Gilt-proxy rf/erp/terminalGrowth, no live override possible', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0476, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L'), { rf: 0.0471, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 test('UK (.L) ticker ignores any live rf passed in (no live source exists)', () => {
-  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0476, erp: 0.0494, terminalGrowth: 0.02 });
+  assert.deepStrictEqual(marketParamsFor('HSBA.L', { ukRf: 0.09 }), { rf: 0.0471, erp: 0.0494, terminalGrowth: 0.02 });
 });
 
 // Refreshed 2026-09-11 (global bond selloff -- German bund hit its highest since April
@@ -151,7 +151,7 @@ test('eurozone tickers ignore any live rf passed in (no live source exists)', ()
 // 0.0108->0.0112 (still clears terminalGrowth with margin to spare). erp (same July 2026
 // table, same A1 rating bucket as Japan): 0.052->0.0507.
 test('Shanghai (.SS) / Shenzhen (.SZ) tickers get the spread-adjusted rf and a terminalGrowth that still clears the (now lower) ceiling', () => {
-  const expected = { rf: 0.0110, erp: 0.0507, terminalGrowth: 0.006 };
+  const expected = { rf: 0.0105, erp: 0.0507, terminalGrowth: 0.006 };
   assert.deepStrictEqual(marketParamsFor('600519.SS'), expected);
   assert.deepStrictEqual(marketParamsFor('000001.SZ'), expected);
   assert.ok(expected.terminalGrowth < expected.rf, 'terminalGrowth must stay under rf (Damodaran stable-growth ceiling)');

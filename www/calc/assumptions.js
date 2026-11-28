@@ -169,6 +169,11 @@
 // 4.86%->4.76% (raw 5.243%), jpn 2.32%->2.23% (raw 2.785%), eu/fr 3.38%->3.30% (raw Bund 3.303%) -- a safe-haven
 // rally on an equity selloff. hk (-8bp, thin OTC quote) and cn (-6bp) left; us fallback left (live ^TNX in use).
 // Spreads unchanged (Jul-2026 Damodaran). terminalGrowth still clears every rate (tightest: cn 0.6 vs 1.10; jpn 1.2 vs 2.23).
+// 2026-11-28 pass (TradingEconomics Nov 27 closes, single source each): br 13.30%->12.37% (raw 14.36%), hk 3.51%->3.36%
+// (raw 3.844%, thin OTC quote), jpn 2.23%->2.09% (raw 2.653%), ind 5.44%->5.54% (raw 7.289%, from TE's cross-table --
+// the India page was unreachable), aus 4.92%->4.85% (raw 4.851%), uk 4.76%->4.71% (raw 5.193%), cn 1.10%->1.05% (raw
+// 1.606%). kor (-3bp) and eu/fr (-3bp) left as noise; us fallback left (live ^TNX in use). Spreads unchanged (Jul-2026
+// Damodaran). terminalGrowth still clears every rate (tightest: cn 0.6 vs 1.05; jpn 1.2 vs 2.09).
 //
 const US_DEFAULT_SPREAD = 0.0022;
 // Raw 10Y Treasury yield (fraction, e.g. 0.0529) -> the dollar risk-free rate valuations use (0.0507). Rounded
@@ -176,7 +181,7 @@ const US_DEFAULT_SPREAD = 0.0022;
 function usRiskFreeFromYield(yieldFraction) {
   return Math.round((yieldFraction - US_DEFAULT_SPREAD) * 10000) / 10000;
 }
-const FALLBACK_RF = { us: 0.0480, aus: 0.0492, ind: 0.0544, kor: 0.0347, jpn: 0.0223, uk: 0.0476, eu: 0.0330, hk: 0.0351, cn: 0.0110, br: 0.1330 };
+const FALLBACK_RF = { us: 0.0480, aus: 0.0485, ind: 0.0554, kor: 0.0347, jpn: 0.0209, uk: 0.0471, eu: 0.0330, hk: 0.0336, cn: 0.0105, br: 0.1237 };
 
 // Staleness metadata for FALLBACK_RF, one entry per market -- consumed by
 // scripts/check-rf-staleness.js (not by the live tool itself). asOf: null
@@ -193,15 +198,15 @@ const FALLBACK_RF = { us: 0.0480, aus: 0.0492, ind: 0.0544, kor: 0.0347, jpn: 0.
 // a replacement is found (see docs/TODO.md's P6).
 const FALLBACK_RF_META = {
   us:  { asOf: '2026-10-28', source: 'raw ^TNX 5.02% (Oct 28, TradingEconomics) minus Jul-2026 Damodaran Aa1 default spread 0.22%. Live paths subtract the same spread', method: 'spread-adjusted', liveSymbol: '^TNX', liveSymbolWorks: true },
-  aus: { asOf: '2026-11-21', source: 'TradingEconomics, AU 10yr govt bond 4.916% (Nov 20 close; single source)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
-  ind: { asOf: '2026-11-21', source: 'raw G-Sec 7.189% (Nov 20, TradingEconomics; single source) minus Jul-2026 Damodaran spread 1.75% (Baa3, unchanged)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
+  aus: { asOf: '2026-11-28', source: 'TradingEconomics, AU 10yr govt bond 4.851% (Nov 27 close; single source)', method: 'raw', liveSymbol: '^GSBG10.AX', liveSymbolWorks: false },
+  ind: { asOf: '2026-11-28', source: 'raw G-Sec 7.289% (Nov 27, TradingEconomics bonds cross-table -- the India page was unreachable; single source) minus Jul-2026 Damodaran spread 1.75% (Baa3, unchanged)', method: 'spread-adjusted', liveSymbol: '^INBMKG10.NS', liveSymbolWorks: false },
   kor: { asOf: '2026-11-21', source: 'raw yield 3.864% (Nov 20, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.39% (Aa2, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  jpn: { asOf: '2026-11-21', source: 'raw JGB yield 2.785% (Nov 20, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  uk:  { asOf: '2026-11-21', source: 'raw gilt yield 5.243% (Nov 20, TradingEconomics; single source) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  jpn: { asOf: '2026-11-28', source: 'raw JGB yield 2.653% (Nov 27, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  uk:  { asOf: '2026-11-28', source: 'raw gilt yield 5.193% (Nov 27, TradingEconomics; single source) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
   eu:  { asOf: '2026-11-21', source: 'raw German bund yield 3.303% (Nov 20, TradingEconomics; single source)', method: 'raw', liveSymbol: null, liveSymbolWorks: null },
-  hk:  { asOf: '2026-11-16', source: 'TradingEconomics 3.994% (Nov 16; OTC interbank quote, thin single source -- the Aug 12 HKMA 10yr tender at 3.58% is the only independent data point) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  cn:  { asOf: '2026-10-15', source: 'raw yield 1.66% (Oct 15, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
-  br:  { asOf: '2026-11-05', source: 'raw BRL 10Y 15.29% (Nov 4, TradingEconomics; single source) minus Jul-2026 Damodaran Ba1 default spread 1.99%. Still volatile after the 25 Oct 2026 presidential runoff', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  hk:  { asOf: '2026-11-28', source: 'TradingEconomics 3.844% (Nov 27; OTC interbank quote, thin single source -- the Aug 12 HKMA 10yr tender at 3.58% is the only independent data point) minus Jul-2026 Damodaran Aa3 default spread 0.48% (docs/TODO.md P35)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  cn:  { asOf: '2026-11-28', source: 'raw yield 1.606% (Nov 27, TradingEconomics; single source) minus Jul-2026 Damodaran spread 0.56% (A1, unchanged)', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
+  br:  { asOf: '2026-11-28', source: 'raw BRL 10Y 14.36% (Nov 27, TradingEconomics; single source) minus Jul-2026 Damodaran Ba1 default spread 1.99%. Still volatile after the 25 Oct 2026 presidential runoff', method: 'spread-adjusted', liveSymbol: null, liveSymbolWorks: null },
 };
 
 // fr: France, split out of the eurozone bucket 2026-10-23 when the 10Y OAT traded ~174bp over the Bund (5.08% vs 3.33%,
